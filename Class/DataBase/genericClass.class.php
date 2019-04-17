@@ -95,7 +95,7 @@ class genericClass extends Root {
 			}
 			if (!$Key)
 				return false;
-			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : $Key;
+			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : '';
 		}
 		//On verifie si c est un mot reserve
 		if ($Data == "Id" && isset($this->Id))

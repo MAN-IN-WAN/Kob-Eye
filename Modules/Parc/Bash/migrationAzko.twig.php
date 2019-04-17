@@ -5,7 +5,7 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$serveur='ws2.eng.systems';
+$serveur='192.168.120.55';
 /**
  * MIGRE
  * aurelphotographe;aurelphotographe;aurelphotographe
@@ -24,6 +24,7 @@ $serveur='ws2.eng.systems';
  * greenkub;greenkub;greenkub+greenkub_app+greenkub_callc+greenkub_dev+greenkub_logeen+greenkub_vivasof
  * trouvetonvigneron.com;trouvetonvigneron;trouvetonv_wordpress+trouvetonvignero
  * supersoignant;supersoignant;supersoignant
+ * inrisonline;autoecoleinris;inris-online+inris-online-dev
  *
  * TO DELETE
  * bioccinelle;bioccinelle;bioccinelle
@@ -33,8 +34,9 @@ $serveur='ws2.eng.systems';
  * distillerie;distillerie;distillerie
  */
 //syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
+//blogleboeuf;legoutduboeuf;wdp;192.168.120.55
 $csv= "
-inrisonline;autoecoleinris;inris-online+inris-online-dev
+legoutduboeuf;legoutduboeuf;lgdb_dolibarr+lgdb_prestashop+lgdb_prestashop_1.7;192.168.120.55
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;
@@ -148,11 +150,11 @@ foreach ($result as $org){
         //if ($base->tmsEdit<time()-3600) {
             echo $bc->getColoredString("      -> SQL DUMP ".$bdd." ... ", 'red');
             //importation de la base de donnée
-            if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
+            if ($mysqlsrv=='192.168.120.55'){
+                $cmd = 'mysqldump -h 192.168.120.55 -u root -p"zH34Y6u5" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
                 echo $bc->getColoredString(" DUMP ... ", 'red');
                 exec($cmd);
-                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.19 -u root -pzH34Y6u5 ' . $bdd;
                 //echo $cmd."\n";
                 exec($cmd);
                 echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
@@ -173,9 +175,10 @@ foreach ($result as $org){
     //excution rsync
     //importation de la base de donnée
     try {
-        $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@'.$serveur.':/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
-        echo $bc->getColoredString("       -> RUN RSYNC " , 'yellow');
-        $out = $srv->remoteExec($cmd);
+        //$cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@'.$serveur.':/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
+        $cmd = 'ssh -R localhost:50000:'.$srv->InternalIP.':22 root@'.$serveur.' \'rsync -e "ssh -p 50000 -i /root/.ssh/id_rsa" -vuar /home/'.$host.'/ localhost:/home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin\'';
+        echo $bc->getColoredString("       -> RUN RSYNC ".$cmd , 'yellow');
+        $out = Parc::localExec($cmd);
         echo $bc->getColoredString(" OK "."\n", 'green');
         echo $bc->getColoredString("       -> SETTING RIGHTS " , 'yellow');
         $out = $srv->remoteExec('chown '.$hos->NomLDAP.':users /home/'.$hos->NomLDAP.' -R');

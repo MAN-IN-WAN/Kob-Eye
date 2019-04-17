@@ -1,8 +1,10 @@
 <?php
 
+require_once '/var/www/html/Class/Lib/rtf2html.php';
+
 class AbtelTache extends AbtelGestionBase {
     protected $entity = 'taches';
-
+    protected $identifier = 'NumeroTicket';
 
     public function Set($prop, $newValue){
         if($prop == 'Id'){
@@ -14,6 +16,40 @@ class AbtelTache extends AbtelGestionBase {
             return true;
         }
 
+        $sqlDate = array('DateCrea','DateEcheance');
+        if(in_array($prop,$sqlDate)){
+            $newValue = date('Y-m-d',$newValue);
+        }
+
+        $fausseDate = array('DateCloture','DateTermine'); //format 20190416101700
+        if(in_array($prop,$fausseDate)){
+            if(!empty($newValue)){
+                $newValue = date('YmdHis',$newValue);
+                $newValue .='00';
+            } else {
+                $newValue = '';
+            }
+        }
+
+        if($prop == "CodeContrat"){
+            if(empty($newValue)){
+                $this->props['TACADRE'] = 2;
+            } else {
+                $this->props['TACADRE'] = 1;
+            }
+        }
+
+        //Gestion du rtf
+        if(!empty($newValue) && is_string($newValue) && strpos($newValue,'{\rtf1\ansi') !== false){
+            $reader = new RtfReader();
+            $reader->Parse($newValue);
+            $formatter = new RtfHtml();
+            $desc=$formatter->Format($reader->root);
+            $desc=strip_tags($desc);
+            $newValue = $desc;
+        }
+
+
         return parent::Set($prop, $newValue);
     }
 
@@ -21,7 +57,7 @@ class AbtelTache extends AbtelGestionBase {
      * @param $prop
      * @return bool|mixed
      */
-    public function Get($prop){
+    public function Get($prop ,$Nom = false){
         if($prop == 'Id'){
             if(!$this->getOrigin()){
                 return $this->props['NumeroTicket'];

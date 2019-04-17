@@ -1,7 +1,6 @@
 <?php
 
-class Ticket extends genericClass
-{
+class Ticket extends genericClass{
     protected $con_handle = null;
     protected $api_token = null;
     //TODO : Passer en CONF ?
@@ -14,7 +13,8 @@ class Ticket extends genericClass
     public function Save($syncGestion = false){
 
         if(($syncGestion || !$this->kb_api) && array_key_exists('Abtel',Sys::$Modules)){ // Si ca ne viens pas de l'api on synchro gestion
-            /*$props = $this->getElementsByAttribute('gestion',1);
+
+            $props = $this->getElementsByAttribute('gestion',1);
             $params = array("data"=>array());
             foreach($props as $cat){
                 foreach ($cat['elements'] as $p){
@@ -30,41 +30,49 @@ class Ticket extends genericClass
             }
 
             $res = $this->requestGestion($url,$params,$method);
+            $gok = !!$res['success'];
+            if(!$gok) return false;
+
             $propsRet = $res['data']['props'];
 
             if(empty($this->Numero)){
                 $this->Numero = $propsRet['NumeroTicket'];
             }
-*/
 
         }
 
         $new = empty($this->Id);
-        if( parent::Save() && $new){
+        $ok = parent::Save();
+        if( $ok  && $new){
             AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'','',0,[],'PARC_TECHNICIEN','icmn-user3');
             return true;
         }
-        return false;
+        return $ok;
     }
 
     public function Delete($syncGestion = false){
         $acts = $this->getChildren('Action');
         foreach($acts as $act){
-            $act->Delete();
+            $res = $act->Delete();
+
+            if(!$res){
+                $this->addError(array('Message'=>'Erreur lors de la suppression de l\'action enfant : '.$act->Id));
+                return false;
+            }
         }
 
         if(($syncGestion || !$this->kb_api) && array_key_exists('Abtel',Sys::$Modules)){ // Si ca ne viens pas de l'api on synchro gestion
-            /*
-            $url = self::GESTIONURL.'tache/'.$this->Numero;
+
+           $url = self::GESTIONURL.'tache/'.$this->Numero;
             $method = "DELETE";
 
             $res = $this->requestGestion($url,array(),$method);
-
-            if(!res['success'){
-                $this->addError(array('Message'=>'erreur lors de la suppression de la tach enfant : '.$act->Id));
+            if(!$res['success']){
+                $this->addError(array('Message'=>'Erreur lors de la suppression dans la base gestion '));
                 return false;
             }
-            */
+
+
         }
 
         return parent::Delete();
@@ -130,10 +138,27 @@ class Ticket extends genericClass
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($this->con_handle),true);
+        $temp = curl_exec($this->con_handle);
+        $ret = json_decode($temp,true);
         if(!$ret['success']) {
-            foreach ($ret['error_description'] as $err){
-                $this->addError(array('Message'=>$err));
+            if(!empty($ret['error_description'] )) {
+                if(!is_array($ret['error_description']))
+                    $ret['error_description'] = array($ret['error_description']);
+
+                foreach ($ret['error_description'] as $err) {
+                    $this->addError(array('Message' => $err));
+                }
+            } elseif (!empty(curl_error($this->con_handle))){
+                $this->addError(array('Message' => curl_error($this->con_handle)));
+            } else {
+                $code = curl_getinfo($this->con_handle, CURLINFO_HTTP_CODE);
+                if($code == 500) {
+                    $this->addError(array('Message' => 'Erreur mystère, une erreur 500 coté Catalina'));
+                } elseif ($code == 204) {
+                    $ret['success'] = true;
+                } else {
+                    $this->addError(array('Message' => 'Erreur mystère'));
+                }
             }
         }
 
@@ -144,6 +169,7 @@ class Ticket extends genericClass
         //Ouverture connection curl si besoin
         if(empty($this->con_handle)){
             $this->con_handle = curl_init(self::GESTIONURL);
+
             curl_setopt($this->con_handle, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
             $data =json_encode(array('API_KEY'=>self::APIKEY,'login'=>self::APIUSER,'pass'=>self::APIPASS));
@@ -189,7 +215,18 @@ class Ticket extends genericClass
                 $cli = Process::GetTempVar('ParcClient');
             }
             if(!$cli)
-                return array('errors'=>array(array('Message'=>'Impossible de créer un ticket sans client')));
+                //return array('errors'=>array(array('Message'=>'Impossible de créer un ticket sans client')));
+                return array(
+                    'template' => 'Create',
+                    'step' => 1,
+                    'errors' => array(array('Message'=>'Impossible de créer un ticket sans client')),
+                    'callNext' => array(
+                        'nom'=> 'createTicket',
+                        'title'=> 'Creation d\'un Ticket',
+                        'needConfirm' => false,
+                        'item' => null
+                    )
+                );
             if(!empty($args['contrat']))
                 $contrat = Sys::getOneData('Abtel','Contrat/'.$args['contrat']);
             if(!empty($args['contact'])) {
@@ -308,6 +345,17 @@ class Ticket extends genericClass
                     'infos' => $info
                 );
             } else{
+                return array(
+                    'template' => 'Create',
+                    'step' => 1,
+                    'errors' => $tick->Error,
+                    'callNext' => array(
+                        'nom'=> 'createTicket',
+                        'title'=> 'Creation d\'un Ticket',
+                        'needConfirm' => false,
+                        'item' => null
+                    )
+                );
                 return array(
                     'data' => 'Oups, une erreur s\'est produite !',
                     'errors' => $tick->Error,

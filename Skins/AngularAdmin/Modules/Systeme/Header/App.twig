@@ -466,7 +466,9 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 	$scope.alertUserRead = function(ev, item) {
 		ev.stopPropagation();
 		item.Read = 1;
-		$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
+		//$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
+		$scope.SystemeAlertUser.store.saveData(item);
+		$scope.SystemeAlertUser.store.refresh('default');
 	}
 	
 	// PGF 20190219
