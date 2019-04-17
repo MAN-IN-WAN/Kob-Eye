@@ -242,7 +242,7 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$reg = $params['Diff']['regl'];
 		foreach($reg as $r) {
-			if(!$r['updated'] || !$r[paye]) continue;
+			if(!isset($r['updated']) || !$r['updated'] || !$r[paye]) continue;
 
 			$o = genericClass::createInstance('Cadref', 'Reglement');
 			if($r['id']) $o->initFromId($r['id']);
@@ -503,7 +503,7 @@ order by a.Nom, a.Prenom";
 						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
 					}
 					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MAIL_ADH) Cadref::SendMessage($args);				
+					Cadref::SendMessage($args);				
 				}
 			}
 			return true;
@@ -644,7 +644,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 					$file = $this->imprimeCertificat(array($p), $p['Numero']);
 					$b = Cadref::MailCivility($p).$bod;
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					if(MAIL_ADH) Cadref::SendMessage($args);
+					Cadref::SendMessage($args);
 				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
@@ -743,7 +743,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 			if($mode == 'mail') {
-				$this->sendAttestation($pdo, $annee, $fisc);
+				$this->sendAttestation($pdo, $annee, $fisc, '');
 //				$an = $annee.'-'.($annee+1);
 //				$sub = "CADREF : Attestation fiscale";
 //				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
@@ -834,7 +834,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-			if(MAIL_ADH) Cadref::SendMessage($args);
+			Cadref::SendMessage($args);
 		}
 	}
 	
