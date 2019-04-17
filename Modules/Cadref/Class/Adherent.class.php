@@ -503,7 +503,7 @@ order by a.Nom, a.Prenom";
 						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
 					}
 					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					Cadref::SendMessage($args);				
+					if(MSG_ADH) Cadref::SendMessage($args);				
 				}
 			}
 			return true;
@@ -644,7 +644,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 					$file = $this->imprimeCertificat(array($p), $p['Numero']);
 					$b = Cadref::MailCivility($p).$bod;
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					Cadref::SendMessage($args);
+					if(MSG_ADH) Cadref::SendMessage($args);
 				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
@@ -687,19 +687,18 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 	}
 
 	
-	public static function TacheAdherent($params) {
-		$args = unserialize($params->TaskArgs);
+	public static function TacheAdherent($tache) {
+		$args = unserialize($tache->TaskArgs);
 		$args['ExecTask'] = 1;
-klog::l("aaaaaaaaaaaaaaaaaaaaaaaa",$args);
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
-		switch($args['Nom']) {
+		switch($tache->Nom) {
 			case 'PrintAttestation': return $adh->PrintAttestation($args);
 			case 'PrintCertificat': return $adh->PrintCertificat($args);
 		}
+		return false;
 	}
 
 	function PrintAttestation($params) {
-klog::l("bbbbbbbbbbbbbbbbbb",$params);
 		$sql = "
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
@@ -740,10 +739,11 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$sql .= $where.' order by h.Nom, h.Prenom';
 
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+klog::l($sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 			if($mode == 'mail') {
-				$this->sendAttestation($pdo, $annee, $fisc, '');
+				$this->sendAttestation($pdo, $annee, $fisc);
 //				$an = $annee.'-'.($annee+1);
 //				$sub = "CADREF : Attestation fiscale";
 //				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
@@ -753,7 +753,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 //					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 //					$b = Cadref::MailCivility($p).$bod;
 //					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-//					if(MAIL_ADH) Cadref::SendMessage($args);
+//					if(MSG_ADH) Cadref::SendMessage($args);
 //				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
@@ -834,7 +834,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-			Cadref::SendMessage($args);
+			if(MSG_ADH) Cadref::SendMessage($args);
 		}
 	}
 	
