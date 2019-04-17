@@ -9,14 +9,14 @@ class AbtelGestion extends Module {
 
 	function init() {
 		parent::init();
-		self::OpenDB();
+		//self::OpenDB();
 		self::$Input = json_decode(file_get_contents("php://input"), 1);
 	}
 
 	/**
 	 * ouverture de la base de données
 	 */
-	static function OpenDB() {
+	/*static function OpenDB() {
 		if(!self::$DB) {
 			try {
 				self::$DB = new PDO('mysql:host=10.0.3.130;dbname=gestion;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
@@ -26,7 +26,7 @@ class AbtelGestion extends Module {
 			}
 		}
 		return self::$DB;
-	}
+	}*/
 
 	/**
 	 * paramètres de liste standard envoyés lors de l'appel

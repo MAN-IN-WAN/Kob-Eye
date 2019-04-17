@@ -260,9 +260,9 @@
                             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[act.id]" name="{{ identifier }}" id="{[{ act.id }]}" />&nbsp;
                         </td>
                         <td class="activity_start">
-                            {[{ act.create }]}
+                            {[{ act.DateCrea }]}
                         </td>
-                        <td class="activity_title"  ng-class="{info: act.Priorite == 1 ,info_error: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
+                        <td class="activity_title"  ng-class="{info: act.Priorite == 1 ,info_norm: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
                         <td class="activity_client" width="450"><a href="#/{{ CurrentUrl }}/{[{ act.id }]}">
                             <b>{[{ act.ClientClientIdlabel }]}</b></a>
                         </td>

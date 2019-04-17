@@ -542,6 +542,7 @@
 		<PROPERTIES type="varchar"  description="Créneau horaire" form="1" fiche="1" gestion="1" listDescr="Créneau" values="1::Libre,2::Matin,3::Après-midi,4::Journée" default="1">Creneau</PROPERTIES>
 		<PROPERTIES type="time" description="Date de début" list="1" form="1" fiche="1" gestion="1" listDescr="Début">HeureDebut</PROPERTIES>
 		<PROPERTIES type="time" description="Date de fin" list="1" form="1" fiche="1" gestion="1" listDescr="Fin">HeureFin</PROPERTIES>
+		<PROPERTIES type="int" description="Duree (s)" form="1" fiche="1" gestion="1" listDescr="Duree (s)">Duree</PROPERTIES>
 		<PROPERTIES type="time" description="Temps de trajet" form="1" fiche="1" gestion="1" listDescr="Trajet">Trajet</PROPERTIES>
 		<PROPERTIES type="time" description="Temps de pause" form="1" fiche="1" gestion="1" listDescr="Pause">Pause</PROPERTIES>
 		<PROPERTIES type="varchar"  description="Contexte" form="1" fiche="1" gestion="1" listDescr="Contexte" values="1::Sur site (déplacement),2::Télémaintenance,3::Atelier ou bureau (pas de déplacement)," default="3">Contexte</PROPERTIES>
@@ -556,7 +557,7 @@
 
 		<!--PROPERTIES type="varchar" description="Cadre" list="1" form="1" fiche="1" listDescr="Cadre contractuel" values="1::Sous contrat,2::Hors contrat,3::Gratuit" hasRole="PARC_TECHNICIEN">Cadre</PROPERTIES-->
 		<!--PROPERTIES type="varchar" description="Contact" fiche="1" listDescr="Contact client" hasRole="PARC_TECHNICIEN">Contact</PROPERTIES-->
-		<!--PROPERTIES type="time" description="Duree" form="1" fiche="1" listDescr="Duree">Duree</PROPERTIES-->
+
 		<!--PROPERTIES type="varchar" length="50" description="Code Projet Abtel" fiche="1" listDescr="Projet Abtel" hasRole="PARC_TECHNICIEN">CodeProjet</PROPERTIES-->
 		<!--FKEY card="0,1" data="Projet,Id" hasRole="PARC_TECHNICIEN">ProjetId</FKEY-->
 	</OBJECTCLASS>

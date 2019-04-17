@@ -31,6 +31,7 @@ foreach ($formfields as $f){
         $o->{$f["name"]} = mktime($a['tm_hour'], $a['tm_min'], 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
     }if ($f['type']=='date') {
         //transformation des timestamps en format js
+        if(empty($values->{$f["name"]})) continue;
         $a = strptime($values->{$f["name"]}, '%d/%m/%Y');
         $o->{$f["name"]} = mktime(0, 0, 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
     }elseif ($f['type']=='boolean'){

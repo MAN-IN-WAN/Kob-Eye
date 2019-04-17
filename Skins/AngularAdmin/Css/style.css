@@ -183,6 +183,10 @@ progress.progress.progress-danger:after{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #444;
 }
+#activity_list .activity_title.info_norm{
+    /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
+    border-left: 45px solid #FFD96A;
+}
 #activity_list .activity_title{
 }
 #activity_list .activity_link{
