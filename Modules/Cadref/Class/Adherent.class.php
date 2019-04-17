@@ -690,6 +690,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 	public static function TacheAdherent($params) {
 		$args = unserialize($params->TaskArgs);
 		$args['ExecTask'] = 1;
+klog::l("aaaaaaaaaaaaaaaaaaaaaaaa",$args);
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
 		switch($args['Nom']) {
 			case 'PrintAttestation': return $adh->PrintAttestation($args);
@@ -698,6 +699,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 	}
 
 	function PrintAttestation($params) {
+klog::l("bbbbbbbbbbbbbbbbbb",$params);
 		$sql = "
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a

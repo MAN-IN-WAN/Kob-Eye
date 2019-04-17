@@ -150,7 +150,7 @@ class PrintAdherent extends FPDF {
 		$w = $this->GetStringWidth($this->cv($l['Prenom']));
 		$this->Cell($w + 2, 4, $this->cv($l['Prenom']));
 		$this->SetFont('Arial', 'I', 8);
-		$this->Cell(129 - $x, 4, $l['Mail']);
+		$this->Cell(129 - $w, 4, $l['Mail']);
 
 		$this->SetFont('Arial', '', 10);
 		$this->SetXY($this->left + 124, $this->posy);
