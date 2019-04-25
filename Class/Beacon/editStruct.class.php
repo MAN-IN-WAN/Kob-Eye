@@ -95,7 +95,15 @@ class editStruct extends Beacon {
                             $p = $pt."?";
                         }
                     }
-                    header("Location: ".$_SERVER['HTTP_X_FORWARDED_PROTO']."://".$_SERVER["HTTP_HOST"]."/".$p);
+                    if ( (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
+                        (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') ||
+                        (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
+                        (! empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') ) {
+                        $proto = 'https';
+                    } else {
+                        $proto = 'http';
+                    }
+                    header("Location: ".$proto."://".$_SERVER["HTTP_HOST"]."/".$p);
                 }
 				$GLOBALS["Systeme"]->Close();
 				die();

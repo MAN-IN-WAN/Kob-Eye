@@ -32,6 +32,7 @@ class Bloc extends Beacon {
 			switch ($this->Beacon) {
 				case "MODULE":
 					//$this->setModule();
+                    if(!is_array($this->ChildObjects)) $this->ChildObjects = array();
 					$this->INITOK="NB ".sizeof($this->ChildObjects);
 				break;
 				default:

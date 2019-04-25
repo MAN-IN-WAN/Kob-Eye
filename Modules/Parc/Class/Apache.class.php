@@ -831,7 +831,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 
 
         //Vérification du dépot letsencrypt
-        $act = $task->createActivity('Vérification du dépot letsencrypt');
+        $act = $task->createActivity('Vérification du dépot letsencrypt ');
         $err = false;
         $valid = false;
         $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
@@ -839,7 +839,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
         $incompleteDomain = false;
         $act->Terminate(true);
         if (!empty($cert)) {
-            $act = $task->createActivity('Vérificatio ndu certificat actuel');
+            $act = $task->createActivity('Vérification du certificat actuel');
             $certinfo = openssl_x509_parse($cert);
             //on compare la liste des domaines à certifier et les domaines dans le certificat
             $domains=explode(' ',$this->getDomains());

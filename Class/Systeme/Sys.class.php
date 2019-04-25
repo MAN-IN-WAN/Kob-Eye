@@ -448,7 +448,7 @@ class Sys extends Root{
 				Parser::Init();
 				$Skin = new Skin();
 				$this->CurrentSkin=$Skin; 
-				$this->CurrentSkin->Template = false;  
+				$this->CurrentSkin->Template = false;
 				$data .= $this->getContenu();
 				$data = $Skin->ProcessLang($data);
 				print($data);
@@ -1033,7 +1033,7 @@ class Sys extends Root{
 		$Ap[] = Array($Query,"");
 		if ($all){
 			//récupération de la liste de l'ensemble des menus
-            if (!sizeof(Sys::$allMenus)) {
+            if (!is_array(Sys::$allMenus) || !sizeof(Sys::$allMenus)) {
                 Sys::$allMenus = Sys::getData('Systeme', 'Menu/*', 0, 10000);
                 __autoload("Storproc");
                 Sys::$allMenus = StorProc::sortRecursivResult(Sys::$allMenus, "Menus");
@@ -1130,7 +1130,9 @@ class Sys extends Root{
 	 */
 	 static function getCount($Module, $Query){
 	 	$obj = explode('/',$Query,2);
-	 	$RestQuery = $obj[1];
+	 	$RestQuery = null;
+	 	if(!empty( $obj[1]))
+	 		$RestQuery = $obj[1];
 	 	$obj = $obj[0];
 	 	//on vérfiie la surchagre de getCount
 		if (method_exists($obj, "getCount")){

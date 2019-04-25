@@ -253,6 +253,7 @@ Class Condition extends Beacon{
 		$Vars = str_replace("\n","",$Vars);
 		$Vars = str_replace(" ","",$Vars);
 		$Vars = str_replace("	","",$Vars);
+		if(!is_array($this->CaseTab)) $this->CaseTab = array();
 		$nb=sizeof($this->CaseTab);
 		$this->CaseTab[$nb]["DATA"] = $Data;
 		$this->CaseTab[$nb]["VAR"] = $Vars;
@@ -271,6 +272,7 @@ Class Condition extends Beacon{
 		}
         $this->Data='';
 		//On propage la generatio nuniquement aux objets concern�s
+        if(!is_array($ChildObjects)) $ChildObjects = array();
 		for ($i=0;$i<sizeof($ChildObjects);$i++) {
             $tmp='';
 			if (isset($ChildObjects[$i])&&is_object($ChildObjects[$i])) {

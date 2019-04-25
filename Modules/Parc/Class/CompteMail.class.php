@@ -215,13 +215,13 @@ class CompteMail extends genericClass {
 	public function Delete() {
 		$this->Suppression = time() + $this->delaiSuppression;
 		$this->Status = 'closed';
-		$this->Save();
+		return $this->Save();
 	}
 
     public function unDelete() {
         $this->Suppression = NULL;
         $this->Status = 'active';
-        $this->Save();
+        return $this->Save();
 
     }
 

@@ -8,8 +8,8 @@ foreach($fields as $f){
     $tFields[] = $f->Nom;
 }
 
-$tache = Sys::getOneData('AbtelGestion','Entite/Nom=actions');
-$fields = $tache->getChildren('Champ');
+$action = Sys::getOneData('AbtelGestion','Entite/Nom=actions');
+$fields = $action->getChildren('Champ');
 $aFields = array();
 foreach($fields as $f){
     $aFields[] = $f->Nom;
@@ -99,7 +99,8 @@ if (count($acts)) {
     foreach ($acts as $a) {
         $props = array();
         foreach($aFields as $af){
-            $props[$af] = $a[$af];
+            if(!empty($a[$af]))
+                $props[$af] = $a[$af];
         }
 
         $url = 'http://api.gestion.abtel.fr/gestion/action';
@@ -117,10 +118,13 @@ if (count($acts)) {
 
         $ret = json_decode(curl_exec($curl_handle), true);
         if($ret && $ret['success']){
-            echo 'Action '.$t['Id'].' créée avec succès'.PHP_EOL;
+            echo 'Action '.$a['Id'].' créée avec succès'.PHP_EOL;
         }else{
-            echo 'Erreur lors de la création de l\'action '.$t['Id'].PHP_EOL;
-            file_put_contents('/tmp/erreuraction',$t['Id'].PHP_EOL,8);
+            echo 'Erreur lors de la création de l\'action '.$a['Id'].PHP_EOL;
+            file_put_contents('/tmp/erreuraction',$a['Id'].PHP_EOL,8);
+            print_r($data);
+            print_r($ret);
+            echo PHP_EOL;
         }
     }
 }

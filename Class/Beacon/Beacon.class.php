@@ -241,7 +241,7 @@ class Beacon extends Root{
 		// 		for ($i=0;$i<$level;$i++) echo "--";
 		// 		echo ">GET CHILD RECH $Child Depart Balise ".$this->Beacon." Child ".$this->Child." level ".$level."\r\n";
 		if ($this->Beacon!=$Child||$First||$this->Child!=$Beacon) {
-			if (sizeof($this->ChildObjects))foreach ($this->ChildObjects as $Key) {
+			if (is_array($this->ChildObjects) && sizeof($this->ChildObjects))foreach ($this->ChildObjects as $Key) {
 				if (is_object($Key)){
 					if ($Block&&!$First){
 						// 						for ($i=0;$i<$level;$i++) echo "--";

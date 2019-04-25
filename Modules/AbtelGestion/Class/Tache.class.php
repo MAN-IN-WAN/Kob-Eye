@@ -31,7 +31,7 @@ class AbtelTache extends AbtelGestionBase {
             }
         }
 
-        if($prop == "CodeContrat"){
+        if($prop == "CodeContrat" && !$this->getOrigin()){
             if(empty($newValue)){
                 $this->props['TACADRE'] = 2;
             } else {
@@ -45,7 +45,6 @@ class AbtelTache extends AbtelGestionBase {
             $reader->Parse($newValue);
             $formatter = new RtfHtml();
             $desc=$formatter->Format($reader->root);
-            $desc=strip_tags($desc);
             $newValue = $desc;
         }
 
