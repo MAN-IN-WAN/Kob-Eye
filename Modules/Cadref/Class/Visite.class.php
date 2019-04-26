@@ -46,7 +46,6 @@ class Visite extends genericClass {
 	}
 	
 	function PrintVisite($obj) {
-//klog::l('xxxxxxxxxxxxxxxxxxxxx',$obj);
 		$annee = Cadref::$Annee;
 		$sql = "
 select r.VisiteId, r.Prix+r.Assurance-r.Reduction as Montant, v.Visite, v.Libelle, v.DateVisite, e.Numero, e.Nom, e.Prenom, 

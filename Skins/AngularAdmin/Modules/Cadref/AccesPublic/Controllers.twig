@@ -167,7 +167,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	$scope.messageSend = function(mode) {
 		$scope.msgObj.sendMode = mode;
-		var ajax = $scope.{{ identifier }}callMethod($scope.obj,{% if objecttype == 'Enseignant' %}'SendMessage'{% else %}'SendMessage2'{% endif %},{Msg:$scope.msgObj});
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PublicSendMessage',{Msg:$scope.msgObj});
 		ajax.success(
 			function(data) {
 				swal(mode == 'sms' ? 'SMS' : 'Message',"Message envoyé",'info');

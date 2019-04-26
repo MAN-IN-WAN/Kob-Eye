@@ -1,5 +1,5 @@
 <?php
-// fiche printStatistique
+// fiche printFinance
 $vars['Annee'] = Cadref::$Annee;
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 if(Sys::$User->Admin && !$vars['CurrentMenu']){
@@ -8,6 +8,5 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
 }
 $vars['identifier'] = 'CadrefInscription';
 
-$vars['dateDebut'] = "01/08/".Cadref::$Annee;
 
 

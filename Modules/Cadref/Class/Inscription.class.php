@@ -193,7 +193,50 @@ order by disc, i.Antenne";
 		
 		return array('pdf'=>$file, 'sql'=>$zzz);
 	}
-	
+
+	function PrintFinance($obj) {
+		require_once ('PrintFinance.class.php');
+		
+		$annee = Cadref::$Annee;
+		$sql = "select count(*) as nbr,sum(Cotisation) as cotis from `##_Cadref-AdherentAnnee` where Annee='$annee' and Cotisation>0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$d = $pdo->fetch(PDO::FETCH_ASSOC);
+		$nbcot = $d['nbr'];
+		$cotis = $d['cotis'];
+		
+		$sql = "
+select i.CodeClasse,d.Libelle as libelleD,n.Libelle as libelleN,count(*) as inscrits,
+c.Prix,sum(i.Prix) as total,sum(i.Reduction) as red,sum(if(i.Reduction>0,1,0)) as nred, 
+sum(i.Soutien) as red2,sum(if(i.Soutien>0,1,0)) as nred2
+from `##_Cadref-Inscription` i
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+where i.Annee='$annee'
+group by i.CodeClasse
+order by i.CodeClasse
+";
+
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('pdf'=>'', 'sql'=>$sql);
+			
+		$pdf = new PrintFinance($nbcot,$cotis);
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',"Rapport Financier"));
+
+		$pdf->AddPage();
+		$pdf->PrintLines($pdo);
+		$pdf->PrintTotal();
+
+		$file = '/Home/tmp/RapportFinancier_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().$file);
+		$pdf->Close();
+		
+		return array('pdf'=>$file, 'sql'=>$sql);
+	}
+
 }
 
 
