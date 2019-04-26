@@ -24,7 +24,14 @@ class Header extends Root{
 
 
     function Header ($Type="") {
-		$proto = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+        if ( (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
+            (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') ||
+            (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
+            (! empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') ) {
+            $proto = 'https';
+        } else {
+            $proto = 'http';
+        }
 		$this->Url=$proto.'://'.Sys::$domain.'/';
 		$this->Title = $GLOBALS["Systeme"]->Titre;
 		$this->Description = $GLOBALS["Systeme"]->Description;
@@ -157,7 +164,7 @@ class Header extends Root{
 
 	function getTab() {
 		$Result="";
-		if (sizeof($this->Tab)) {
+		if (is_array($this->Tab) && sizeof($this->Tab)) {
 			foreach ($this->Tab as $Key) {
 				$Result.="$Key\r\n";
 			}
@@ -167,7 +174,7 @@ class Header extends Root{
 
 	function getLastTab() {
         $Result="";
-		if (sizeof($this->LastTab)) {
+		if (is_array($this->LastTab) && sizeof($this->LastTab)) {
 			foreach ($this->LastTab as $Key) {
 				$Result.="$Key\r\n";
 			}

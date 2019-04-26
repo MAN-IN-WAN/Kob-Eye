@@ -137,7 +137,14 @@ class Parc_Action extends genericClass{
         if(empty($this->DateCrea))
             $this->DateCrea = time();
 
+        if(empty($this->HeureFin))
+            $this->HeureFin = date('H:i:s',$this->DateCrea);
 
+        if(empty($this->Duree))
+            $this->Duree = 60;
+
+        if(empty($this->HeureDebut))
+            $this->HeureDebut = date('H:i:s',$this->DateCrea - $this->Duree);
 
         return parent::Verify();
     }

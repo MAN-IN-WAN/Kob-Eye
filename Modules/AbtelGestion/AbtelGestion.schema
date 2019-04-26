@@ -1,6 +1,8 @@
 <SCHEMA>
         <OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrat"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Contrat.class.php">
         </OBJECTCLASS>
+        <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="CLient"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Client.class.php">
+        </OBJECTCLASS>
         <OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Tache.class.php" className="AbtelTache">
         </OBJECTCLASS>
         <OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Action.class.php">

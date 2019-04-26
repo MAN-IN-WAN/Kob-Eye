@@ -493,7 +493,7 @@
 
 		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" description="Numero du ticket" list="1" form="1" fiche="1" gestion="1" listDescr="N° Ticket">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" unique="1" searchOrder="1" description="Numero du ticket" list="1" form="1" fiche="1" gestion="1" listDescr="N° Ticket">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" gestion="1" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
@@ -532,7 +532,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" logEvent="1" Description="Action des tickets" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" className="Parc_Action" Class="Modules/Parc/Class/Action.class.php">
-		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Numero du ticket" list="1" form="1" fiche="1" gestion="1" listDescr="N° Ticket">NumeroTicket</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" gestion="1" listDescr="Categorie" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
@@ -542,6 +542,7 @@
 		<PROPERTIES type="varchar"  description="Créneau horaire" form="1" fiche="1" gestion="1" listDescr="Créneau" values="1::Libre,2::Matin,3::Après-midi,4::Journée" default="1">Creneau</PROPERTIES>
 		<PROPERTIES type="time" description="Date de début" list="1" form="1" fiche="1" gestion="1" listDescr="Début">HeureDebut</PROPERTIES>
 		<PROPERTIES type="time" description="Date de fin" list="1" form="1" fiche="1" gestion="1" listDescr="Fin">HeureFin</PROPERTIES>
+		<PROPERTIES type="int" description="Duree (s)" form="1" fiche="1" gestion="1" listDescr="Duree (s)">Duree</PROPERTIES>
 		<PROPERTIES type="time" description="Temps de trajet" form="1" fiche="1" gestion="1" listDescr="Trajet">Trajet</PROPERTIES>
 		<PROPERTIES type="time" description="Temps de pause" form="1" fiche="1" gestion="1" listDescr="Pause">Pause</PROPERTIES>
 		<PROPERTIES type="varchar"  description="Contexte" form="1" fiche="1" gestion="1" listDescr="Contexte" values="1::Sur site (déplacement),2::Télémaintenance,3::Atelier ou bureau (pas de déplacement)," default="3">Contexte</PROPERTIES>
@@ -550,13 +551,13 @@
 		<PROPERTIES type="varchar" length="50" description="Code Client Abtel" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeContrat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Appel" form="1" fiche="1" values="1::Pas d'appel,2::Reçu,3::Emis" default="1">Appel</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" list="1" form="1" fiche="1" gestion="1" listDescr="Fichier">Fichier</PROPERTIES>
-
+		<PROPERTIES type="boolean" list="1" form="1" fiche="1" listDescr="Masqué" default="0">Masque</PROPERTIES>
 		<FKEY card="1,1" data="Ticket,Id" fiche="1" form="1" list="1" childrenHiddenSoft="1">TicketId</FKEY>
 		<FKEY card="0,1" module="Abtel" data="Contrat,Id" hasRole="PARC_TECHNICIEN">ContratId</FKEY>
 
 		<!--PROPERTIES type="varchar" description="Cadre" list="1" form="1" fiche="1" listDescr="Cadre contractuel" values="1::Sous contrat,2::Hors contrat,3::Gratuit" hasRole="PARC_TECHNICIEN">Cadre</PROPERTIES-->
 		<!--PROPERTIES type="varchar" description="Contact" fiche="1" listDescr="Contact client" hasRole="PARC_TECHNICIEN">Contact</PROPERTIES-->
-		<!--PROPERTIES type="time" description="Duree" form="1" fiche="1" listDescr="Duree">Duree</PROPERTIES-->
+
 		<!--PROPERTIES type="varchar" length="50" description="Code Projet Abtel" fiche="1" listDescr="Projet Abtel" hasRole="PARC_TECHNICIEN">CodeProjet</PROPERTIES-->
 		<!--FKEY card="0,1" data="Projet,Id" hasRole="PARC_TECHNICIEN">ProjetId</FKEY-->
 	</OBJECTCLASS>

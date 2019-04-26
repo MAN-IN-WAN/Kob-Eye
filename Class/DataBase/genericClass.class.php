@@ -82,7 +82,7 @@ class genericClass extends Root {
 			if ($Data == "S0")
 				return $this -> Id;
 			//Si on a un nombre precede d'un S, c'est donc forcement un SearchOrder:
-			$Data = substr($Data, 1, count($Data));
+			$Data = substr($Data, 1, strlen($Data));
 			$So = $this -> SearchOrder();
 			$Key = false;
 			if (sizeof($So)) {

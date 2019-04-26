@@ -1,47 +1,82 @@
 
 
-<section class="panel" id="actionSection" ng-if="displayFiche">
+<section class="panel" id="actionSectionForm" ng-if="displayFiche">
     <div class="panel-heading">
-        <h3>Actions</h3>
+        <h3>Créer une action</h3>
     </div>
     <div class="panel-body">
         <div>
             <div class="insertForm">
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="form-control-label" for="l0">Description</label>
-                        <small>
-                            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si vous avez besoin d'apporter des précision, renseignez les ici.</span></i>
-                        </small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div ui-ace="{useWrapMode : true,mode: 'html',onLoad: aceLoaded,onChange: aceChanged}" ng-model=" modalObj.Note" class="ace_editor" style="height: 150px;"></div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
-                        <label class="form-control-label" for="l0">Pièce(s) jointe(s)</label>
-                        <small>
-                            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
-                        </small>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-control-label" for="l0">Description</label>
+                                <small>
+                                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si vous avez besoin d'apporter des précision, renseignez les ici.</span></i>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <div ui-ace="{useWrapMode : true,mode: 'html',onLoad: aceLoaded,onChange: aceChanged}" ng-model=" modalObj.Note" class="ace_editor" style="height: 200px;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 form-group">
-                        <input type="text" class="form-control" placeholder="" id="input-ParcActionpj" ng-model="modalObj.Fichier">
-                        <label for="input-ParcActionpj-file" class="btn-warning fileLabel" title=" Choisissez un fichier "><i class="icmn-folder-upload2 fileLabelIcon"></i></label>
-                        <input id="input-ParcActionpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcActionpj', model:'modalObj.Fichier' }" ng-init="up_ParcActionpj = angular.copy(autoUploader)" uploader="up_ParcActionpj" style="display:none;" />
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-control-label" for="l0">Pièce(s) jointe(s)</label>
+                                <small>
+                                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" placeholder="" id="input-ParcActionpj" ng-model="modalObj.Fichier">
+                                <label for="input-ParcActionpj-file" class="btn-warning fileLabel" title=" Choisissez un fichier "><i class="icmn-folder-upload2 fileLabelIcon"></i></label>
+                                <input id="input-ParcActionpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcActionpj', model:'modalObj.Fichier' }" ng-init="up_ParcActionpj = angular.copy(autoUploader)" uploader="up_ParcActionpj" style="display:none;" />
+                            </div>
+                        </div>
+                        {% if isTech %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="form-control-label" for="l0">Durée</label>
+                                    <small>
+                                        <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <script type="text/javascript">
+                                        var prett = function(num){
+                                            return parseInt(num/60);
+                                        };
+                                    </script>
+                                    <input type="text" ion-range-slider stype="single" prettify="prett" min="0" max="14400" from="0" from_min="0" step="300" grid="true" grid_num="16" postfix=" mn" class="form-control" placeholder=""  id="input-ParcActionDuree" ng-model="modalObj.Duree" >
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div  class="row" style="text-align: center;    margin: 15px -16px;">
+                            <div class="col-md-12 form-group">
+                                <button type="button" class="btn btn-lg btn-primary" ng-class="{'disabled' : ( modalObj.Note == undefined || modalObj.Note.length == 0 ) && ( modalObj.Fichier == undefined || modalObj.Fichier.length == 0)}" ng-click="ParcActionmodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-            <p style="text-align: center;    margin: 15px;">
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : ( modalObj.Note == undefined || modalObj.Note.length == 0 ) && ( modalObj.Fichier == undefined || modalObj.Fichier.length == 0)}" ng-click="ParcActionmodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
-            </p>
         </div>
+    </div>
+</section>
+<section class="panel" id="actionSectionDisplay" ng-if="displayFiche">
+    <div class="panel-heading">
+        <h3>Actions réalisées</h3>
+    </div>
+    <div class="panel-body">
         <div>
-            <div abt-timeline="ParcAction" abt-tl-context="children" abt-tl-filter="" id="actions" abt-template="timelineParcAction.html" abt-side="getSide" abt-custom="editable"></div>
+            <div abt-timeline="ParcAction" abt-tl-context="children" abt-tl-filter="Masque=0" id="actions" abt-template="timelineParcAction.html" abt-side="getSide" abt-custom="editable"></div>
         </div>
     </div>
 </section>

@@ -1,8 +1,8 @@
 <?php
 
-class Action extends AbtelGestionBase {
-    protected $entity = 'actions';
-    protected $identifier = 'Id';
+class Client extends AbtelGestionBase {
+    protected $entity = 'clients';
+    protected $identifier = 'Code';
 
     public function Set($prop, $newValue){
         //Gestion du rtf
@@ -15,7 +15,7 @@ class Action extends AbtelGestionBase {
             $newValue = $desc;
         }
 
-        if($prop == "Fichier"){
+        /*if($prop == "Fichier"){
             if(!empty($newValue)){
                 $this->props['ACNOTE'] .= PHP_EOL.$newValue.PHP_EOL;
             }
@@ -35,14 +35,6 @@ class Action extends AbtelGestionBase {
             return true;
         }
 
-        if($prop == "CodeContrat"){
-            if(empty($newValue)){
-                $this->props['ACCADRE'] = 2;
-            } else {
-                $this->props['ACCADRE'] = 1;
-            }
-        }
-
         $sqlDate = array('DateCrea');
         if(in_array($prop,$sqlDate)){
             $newValue = date('Y-m-d',$newValue);
@@ -52,12 +44,13 @@ class Action extends AbtelGestionBase {
         if(in_array($prop,$sqlHeure)){
             $newValue = date('H:i:s',$newValue);
         }
+        */
 
         return parent::Set($prop, $newValue);
     }
 
 
-    public function Save(){
+    /*public function Save(){
         $ok = parent::Save();
 
         if(!$this->getOrigin() && empty ($this->props['IdGestion']) && empty($this->props['Id'])){
@@ -65,5 +58,6 @@ class Action extends AbtelGestionBase {
         }
 
         return $ok;
-    }
+    }*/
+
 }

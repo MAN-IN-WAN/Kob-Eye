@@ -31,13 +31,16 @@ class Ticket extends genericClass{
 
             $res = $this->requestGestion($url,$params,$method);
             $gok = !!$res['success'];
-            if(!$gok) return false;
+            if(!$gok) {
+                $this->addError(array('Message'=>'Problème de synchronisation'));
+            } else {
+                $propsRet = $res['data']['props'];
 
-            $propsRet = $res['data']['props'];
-
-            if(empty($this->Numero)){
-                $this->Numero = $propsRet['NumeroTicket'];
+                if(empty($this->Numero)){
+                    $this->Numero = $propsRet['NumeroTicket'];
+                }
             }
+
 
         }
 
@@ -305,6 +308,10 @@ class Ticket extends genericClass{
                     $tick->UserNext = '00';
             }
 
+            if(!empty($args['Titre'])){
+                $tick->Titre = $args['Titre'];
+            }
+
             if(!empty($args['pj'])){
                 $acts = array();
                 foreach($args['pj'] as $pj){
@@ -356,11 +363,11 @@ class Ticket extends genericClass{
                         'item' => null
                     )
                 );
-                return array(
+                /*return array(
                     'data' => 'Oups, une erreur s\'est produite !',
                     'errors' => $tick->Error,
                     'infos' => $info
-                );
+                );*/
             }
 
 

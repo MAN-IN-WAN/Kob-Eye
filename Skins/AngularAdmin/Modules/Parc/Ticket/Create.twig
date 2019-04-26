@@ -52,6 +52,19 @@
     </div>
     {% endif %}
 
+    {% if user.hasRole('PARC_TECHNICIEN,PARC_REVENDEUR') %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Titre</label>
+                <small>
+                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Titre du ticket</span></i>
+                </small>
+            </div>
+            <div class="col-md-6 form-group">
+                <input type="text" class="form-control" placeholder="" id="input-ParcActionTitre" ng-model="ParcTicketfunction.args.Titre">
+            </div>
+        </div>
+    {% endif %}
 
     <!-- Probleme -->
     <div class="row">

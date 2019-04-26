@@ -227,6 +227,7 @@ class User extends genericClass{
         parent::Set($Prop, $newValue);
 
         $Props = $this -> Proprietes(false, true);
+        if(!is_array($Props)) $Props = array();
         for ($i = 0; $i < sizeof($Props); $i++) {
             if ($Props[$i]["Nom"] == $Prop) {
                 if ($Props[$i]["Type"] == "password" ) {

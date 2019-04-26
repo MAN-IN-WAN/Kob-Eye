@@ -101,4 +101,10 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
         return serv;
     }
 
+    $scope.ParcActionFakedelete = function(item){
+        console.log('fakedel');
+        item.Masque = false;
+        ParcActionStore.saveData(item);
+    }
+
 });

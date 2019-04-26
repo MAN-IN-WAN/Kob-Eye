@@ -192,6 +192,8 @@ class Connection extends Root{
             http_response_code (200);
             echo (json_encode(array('success'=>'authentication_success','error'=>false,'auth_token'=>$this->SessId)));
 			$GLOBALS['Systeme']->Close();
+			$GLOBALS["Chrono"]->stop("TOTAL CONNEXION");
+			$GLOBALS['Systeme']->Log->log($GLOBALS['Chrono']->total());
 			die();
         }
 

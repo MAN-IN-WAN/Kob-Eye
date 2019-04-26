@@ -143,7 +143,7 @@ class AbtelGestionBase extends genericClass {
         } else{
             //Parc donc on requete la base de la gestion
             $req = $this->buildRequest($inf);
-            file_put_contents('/tmp/testsql',$req.PHP_EOL,8);
+            //file_put_contents('/tmp/testsql',$req.PHP_EOL,8);
             $q = $this->con_handle->query($req);
 
             if(count($this->parents)){
@@ -662,6 +662,87 @@ class AbtelGestionBase extends genericClass {
                     );
                 }
                 break;
+            case 'Client':
+                if($this->getOrigin()){
+                    //Gestion donc on appelle l'api du parc
+                    $id='';
+                    /*if ($info['TypeSearch'] == 'Direct') {
+                        $obj = $this->getOneDbData('Parc', 'Ticket/NumeroTicket='.$info['LastId']);
+                        if($obj) $id = '/'.$obj->Id;
+                    }*/
+
+                    return array(
+                        'M'=>'AbtelGestion',
+                        'O'=>'Client',
+                        'Module' => 'Parc',
+                        'ObjectType' => 'Client',
+                        'Route' => 'gestion/client'.$id,
+                        'Where' => $where
+                    );
+                } else{
+                    //Parc donc on requete la base de la gestion
+                    return  array(
+                        'M'=>'AbtelGestion',
+                        'O'=>'Client',
+                        'Table' => 'tiers',
+                        'Where' => $where
+                    );
+                }
+                break;
+            case 'Contrat':
+                if($this->getOrigin()){
+                    //Gestion donc on appelle l'api du parc
+                    $id='';
+                    /*if ($info['TypeSearch'] == 'Direct') {
+                        $obj = $this->getOneDbData('Parc', 'Ticket/NumeroTicket='.$info['LastId']);
+                        if($obj) $id = '/'.$obj->Id;
+                    }*/
+
+                    return array(
+                        'M'=>'AbtelGestion',
+                        'O'=>'Contrat',
+                        'Module' => 'Abtel',
+                        'ObjectType' => 'Contrat',
+                        'Route' => 'gestion/contrar'.$id,
+                        'Where' => $where
+                    );
+                } else{
+                    //Parc donc on requete la base de la gestion
+                    return  array(
+                        'M'=>'AbtelGestion',
+                        'O'=>'Contrat',
+                        'Table' => 'contrats',
+                        'Where' => $where
+                    );
+                }
+                break;
+//            case 'LigneContrat':
+//                if($this->getOrigin()){
+//                    //Gestion donc on appelle l'api du parc
+//                    $id='';
+//                    /*if ($info['TypeSearch'] == 'Direct') {
+//                        $obj = $this->getOneDbData('Parc', 'Ticket/NumeroTicket='.$info['LastId']);
+//                        if($obj) $id = '/'.$obj->Id;
+//                    }*/
+//
+//                    return array(
+//                        'M'=>'AbtelGestion',
+//                        'O'=>'Entite',
+//                        'Module' => 'Abtel',
+//                        'ObjectType' => 'Entite',
+//                        'Route' => 'gestion/entite'.$id,
+//                        'Where' => $where
+//                    );
+//                } else{
+//                    //Parc donc on requete la base de la gestion
+//                    return  array(
+//                        'M'=>'AbtelGestion',
+//                        'O'=>'Entite',
+//                        'Table' => 'entites',
+//                        'Where' => $where
+//                    );
+//                }
+//                break;
         }
 
         return true;
