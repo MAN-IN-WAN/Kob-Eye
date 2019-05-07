@@ -99,7 +99,7 @@ class PrintPresence extends FPDF {
 				$s = '';
 				foreach($es as $e) {
 					if($s != '') $s .= ", ";
-					$s .= $e->Nom;
+					$s .= $e->Prenom.' '.$e->Nom;
 				}
 				$this->enseignants = $s;
 				$this->record = $l;

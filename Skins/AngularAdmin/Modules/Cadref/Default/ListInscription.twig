@@ -29,14 +29,14 @@
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1){% if public %}-(item.Reduction*1)-(item.Soutien*1){% endif %} }]}</span></td>
 				<td scope="row" class="cadref-td typefloat">
 					{% if tempContext %}
-						<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
+						<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px" ng-class="{'cadref-highlight': item.id*1==0&&item.Reduction*1!=0}"/>
 					{% else %}
 						<span class="label">{[{ item.Reduction }]}</span>
 					{% endif %}
 				</td>
 				<td scope="row" class="cadref-td typefloat">
 					{% if tempContext %}
-						<input type="text" class="form-control cadref-input-diff" ng-model="item.Soutien" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
+						<input type="text" class="form-control cadref-input-diff" ng-model="item.Soutien" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px" ng-class="{'cadref-highlight': item.id*1==0&&item.Soutien*1!=0}"/>
 					{% else %}
 						<span class="label">{[{ item.Soutien }]}</span>
 					{% endif %}				

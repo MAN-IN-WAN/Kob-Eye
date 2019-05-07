@@ -702,7 +702,8 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		$sql = "
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
-inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
+inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
+";
 
 		$id = $this->Id;
 		if(!$id) {
@@ -724,13 +725,15 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 			$fisc = $params['AttestFiscale'];
 			$where = " where a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
 			$antenne = isset($params['Antenne']) ? $params['Antenne'] : '';
-			if($antenne) {
+			$classe = isset($params['Classe']) ? $params['Classe'] : '';
+			if($antenne || $classe) {
 				$sql .= "
 left join `kob-Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
 left join `kob-Cadref-Classe` c on c.Id=i.ClasseId
 left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 ";
-				$where .= " and n.AntenneId=$antenne";
+				if($antenne) $where .= " and n.AntenneId=$antenne";
+				if($classe) $where .= " and c.CodeClasse like '$classe%'";
 			}
 			if($mode == 'print' && isset($params['NoMail']) && $params['NoMail'])
 				$where .= " and h.Mail not like '%@%'";
@@ -747,7 +750,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			}
 			else {
 				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
-				return array('pdf'=>$file);
+				return array('pdf'=>$file,'sql'=>$sql);
 			}
 		}
 		else {
