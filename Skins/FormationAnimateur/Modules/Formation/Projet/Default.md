@@ -134,28 +134,31 @@
             <div class="modal-body">
                 <div id="erreurPlace"></div>
                 <form class="form-horizontal" id="newSessionForm">
-<!--                    <div class="form-group">
+                    <div class="form-group">
                         <label for="inputRegion" class="col-sm-2 control-label">Région</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="inputRegion" placeholder="Sélectionnez une région" name="Region">
-                                [STORPROC Formation/Region|R]
+                                [STORPROC Formation/Projet/[!CurrentProjet::Id!]/InterRegion/*/Region|R]
                                 <option value="[!R::Id!]" [IF [!Pos!]=1]selected="selected"[/IF]>[!R::Nom!]</option>
                                 [/STORPROC]
                             </select>
                         </div>
-                    </div>-->
-                    <div class="form-group">
+                    </div>
+                    <!--<div class="form-group">
                         <label for="inputRegion" class="col-sm-2 control-label">Région</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="inputRegion" placeholder="Sélectionnez une session" name="Titre">
-                                <option value="Paris">Paris</option>
-                                <option value="Le mans">Le mans</option>
-                                <option value="Marne la vallée">Marne la vallée</option>
-                                <option value="Aix en provence">Aix en provence</option>
-                                <option value="Biarritz">Biarritz</option>
+                            <select class="form-control" id="inputRegion" placeholder="Sélectionnez une session" name="Region">
+                                <option value="48">Ouest</option>
+                                <option value="49">Nord-Ouest</option>
+                                <option value="50">Sud-Ouest</option>
+                                <option value="51">Grand Centre</option>
+                                <option value="52">Est</option>
+                                <option value="53">AuRA</option>
+                                <option value="54">Méditerranée</option>
+                                <option value="55">Île de France</option>
                             </select>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label for="inputFormation" class="col-sm-2 control-label">Formation</label>
                         <div class="col-sm-10">

@@ -370,6 +370,15 @@ class FormationSession extends genericClass {
         return Sys::getData('Formation','TypeReponse');
     }
     /**
+     * getRegions
+     * Renvoie les Questions du projet de la session en cours.
+     */
+    function getRegions() {
+        //recuperation du projet
+        $p = $this->getProjet();
+        return  $p->getChildren('InterRegion/*/Region');
+    }
+    /**
      * saveResult
      * Sauvegarde des réponse en fonction d'une session d'une equipe et des id de question Id
      * @equipe  int numéro d'equipe
