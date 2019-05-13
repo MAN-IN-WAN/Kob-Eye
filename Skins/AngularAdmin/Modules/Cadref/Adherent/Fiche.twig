@@ -23,7 +23,7 @@
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
-						<div class="col-md-8" >
+						<div {% if Create %}class="col-md-12"{% else %}class="col-md-8"{% endif %} >
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Numéro") }}
@@ -156,10 +156,10 @@
 										<div class="col-md-7">
 											<div class="row">
 												<div class="col-md-3" style="padding-right:0">
-													<input type="text" class="form-control cadref-input" ng-model="{{ o }}.SituationIdLabel" ng-change="situationChange({{ o }},'Situation')" onkeyup="this.value = this.value.toUpperCase();"/>
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.SituationIdLabel" ng-change="situationChange({{ o }},'Situation')" onkeyup="this.value = this.value.toUpperCase();"/>
 												</div>
 												<div class="col-md-9" style="padding-left:0">
-													<select class="form-control cadref-input" ng-model="{{ o }}.SituationId" tabindex="-1" ng-change="situationSelect({{ o }},'Situation')">
+													<select class="form-control cadref-input-diff" ng-model="{{ o }}.SituationId" tabindex="-1" ng-change="situationSelect({{ o }},'Situation')">
 														<option value="0"></option>
 														{% for v,k in fields.SituationId.query %}
 															<option value="{{ v }}">{{ k }}</option>
@@ -178,10 +178,10 @@
 										<div class="col-md-7">
 											<div class="row">
 												<div class="col-md-3" style="padding-right:0">
-													<input type="text" class="form-control cadref-input" ng-model="{{ o }}.ProfessionIdLabel" ng-change="situationChange({{ o }},'Profession')" onkeyup="this.value = this.value.toUpperCase();"/>
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.ProfessionIdLabel" ng-change="situationChange({{ o }},'Profession')" onkeyup="this.value = this.value.toUpperCase();"/>
 												</div>
 												<div class="col-md-9" style="padding-left:0">
-													<select class="form-control cadref-input" ng-model="{{ o }}.ProfessionId" tabindex="-1" ng-change="situationSelect({{ o }},'Profession')">
+													<select class="form-control cadref-input-diff" ng-model="{{ o }}.ProfessionId" tabindex="-1" ng-change="situationSelect({{ o }},'Profession')">
 														<option value="0"></option>
 														{% for v,k in fields.ProfessionId.query %}
 															<option value="{{ v }}">{{ k }}</option>
@@ -307,7 +307,8 @@
 								</div>
 							</div>
 						</div>
-						{# block right #}                    
+						{# block right #}    
+						{% if Create==0 %}
 						<div class="col-md-4">
 							<section class="panel" ng-if="{{ o }}.id">
 								<table>
@@ -381,6 +382,7 @@
 								</div>
 							</section>
 						</div>
+						{% endif %}
 					</div>
 					<div class="row" ng-if="obj.id">
 						{# inscriptions #}

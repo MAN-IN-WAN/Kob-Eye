@@ -14,7 +14,42 @@ class Enseignant extends genericClass {
 		return parent::Delete();
 	}
 
-	function SendMessage($params) {
+	public function SendMessage($params) {
+		if(!isset($params['step'])) $params['step'] = 0;
+		switch($params['step']) {
+			case 0:
+				return array(
+					'step'=>1,
+					'template'=>'sendMessage',
+					'args'=>array(),
+					'callNext'=>array(
+						'nom'=>'SendMessage',
+						'title'=>'Message suite',
+						'args'=>array('civilite'=>$s),
+						'needConfirm'=>false
+					)
+				);
+			case 1:
+				if($params['Msg']['sendMode'] == 'mail') {
+					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['Body'] .= Cadref::MailSignature();
+					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
+					$ret = Cadref::SendMessage($params['Msg']);
+				}
+				else {
+					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
+				}
+				return array(
+					'data'=>'Message envoyé',
+					'params'=>$params['Msg'],
+					'success'=>true,
+					'callNext'=>false
+				);
+		}
+	}
+
+	
+	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;
 		$id = $this->Id;
 		$mode = $params['sendMode'];

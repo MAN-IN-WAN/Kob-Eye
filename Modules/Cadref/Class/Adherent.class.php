@@ -702,7 +702,8 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		$sql = "
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
-inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
+inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
+";
 
 		$id = $this->Id;
 		if(!$id) {
@@ -724,13 +725,15 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 			$fisc = $params['AttestFiscale'];
 			$where = " where a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
 			$antenne = isset($params['Antenne']) ? $params['Antenne'] : '';
-			if($antenne) {
+			$classe = isset($params['Classe']) ? $params['Classe'] : '';
+			if($antenne || $classe) {
 				$sql .= "
 left join `kob-Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
 left join `kob-Cadref-Classe` c on c.Id=i.ClasseId
 left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 ";
-				$where .= " and n.AntenneId=$antenne";
+				if($antenne) $where .= " and n.AntenneId=$antenne";
+				if($classe) $where .= " and c.CodeClasse like '$classe%'";
 			}
 			if($mode == 'print' && isset($params['NoMail']) && $params['NoMail'])
 				$where .= " and h.Mail not like '%@%'";
@@ -747,7 +750,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			}
 			else {
 				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
-				return array('pdf'=>$file);
+				return array('pdf'=>$file,'sql'=>$sql);
 			}
 		}
 		else {
@@ -920,7 +923,6 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 						'needConfirm'=>false
 					)
 				);
-				break;
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail']);
@@ -937,11 +939,10 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 					'success'=>true,
 					'callNext'=>false
 				);
-				break;
 		}
 	}
 
-	function SendMessage2($params) {
+	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;
 		$id = $this->Id;
 		$mode = $params['sendMode'];
@@ -1260,5 +1261,46 @@ where ce.Visite=:cid";
 		$this->SaveAnnee($data, 1);
 	}
 	
+
+	function PrintRecapitulatif($params) {
+		require_once ('PrintRecapitulatif.class.php');
+
+		$annee = Cadref::$Annee;
+//		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
+//		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
+
+		$sql = "
+select a.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Cotisation,a.NotesAnnuelles,
+i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
+from `##_Cadref-AdherentAnnee` a
+inner join `##_Cadref-Adherent` e on e.Id=a.AdherentId
+left join `##_Cadref-Inscription` i on i.AdherentId=e.Id
+left join `##_Cadref-Classe` c on c.Id=i.ClasseId 
+left join `##_Cadref-Niveau` n on n.Id=c.NiveauId 
+left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+where i.Annee='$annee' and (a.Cotisation>0 or a.Cours>0 or a.Reglement>0 or a.Differe>0)
+";
+		if(isset($params['NonSolde']) && $params['NonSolde'])
+			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe-a.Regularisation<>0 or a.Cotisation=0)";		
+		$sql .= " order by e.Nom,e.Prenom,i.CodeClasse";
+		
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+
+		$pdf = new PrintRecapitulatif();
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
+
+		$pdf->AddPage();
+		$pdf->PrintLines($pdo);
+		$pdf->PrintTotal();
+
+		$file = '/Home/tmp/Recapitulatif_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().$file);
+		$pdf->Close();
+		
+		return array('pdf'=>$file, 'sql'=>$sql);
+	}
 
 }

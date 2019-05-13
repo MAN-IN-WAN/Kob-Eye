@@ -128,7 +128,7 @@
 		<PROPERTIES type="varchar" length="5" category="Planning" list="5" form="10" fiche="10" listDescr="Début" description="Début">CycleDebut</PROPERTIES>
 		<PROPERTIES type="varchar" length="5" category="Planning" list="6" form="11" fiche="11" listDescr="Fin" description="Fin">CycleFin</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Planning" form="12" fiche="12" description="Nombre de séances">Seances</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Planning" values="0::Hebdomadaire,1::Dates" form="13" fiche="13" description="Programmation">Programmation</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="0" category="Planning" values="0::Hebdomadaire,1::Dates" form="13" fiche="13" description="Programmation">Programmation</PROPERTIES>
 		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>
 
 		<PROPERTIES type="int" default="0" category="Inscriptions" list="4" form="15" fiche="15" description="Places">Places</PROPERTIES>

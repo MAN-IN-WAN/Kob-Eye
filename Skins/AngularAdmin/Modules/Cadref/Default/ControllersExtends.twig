@@ -1,6 +1,6 @@
 {% if not noExtend %}
 	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, $log,
-		{{ ident }}Store, CadrefAttachementStore) {
+		{{ ident }}Store, CadrefAttachementStore, CadrefSituationStore, CadrefProfessionStore) {
 
 		// hook sur modalSave pour afficher la fiche crée
 		var currentUrl = $window.location.href;
@@ -90,6 +90,34 @@
 				$scope.modalObj.Ville = v.substr(0, p-7);
 			}
 		}
+		
+		// situation & profession
+		$scope.CadrefSituation = $rootScope.createStore(CadrefSituationStore, 'default');
+		CadrefSituationStore.getData(1, 'default');
+		$scope.CadrefProfession = $rootScope.createStore(CadrefProfessionStore, 'default');
+		CadrefProfessionStore.getData(1, 'default');
+		$scope.situationChange = function(obj, field) {
+			var data = $scope['Cadref'+field].data;
+			var val = obj[field+'IdLabel'].toUpperCase();
+			for(var n in data) {
+				if(data[n].label == val) {
+					obj[field+'Id'] = data[n].id;
+					return;
+				}
+			}
+			obj[field+'Id'] = 0;
+		}
+		$scope.situationSelect = function(obj, field) {
+			var data = $scope['Cadref'+field].data;
+			for(var n in data) {
+				if(data[n].id == obj[field+'Id']) {
+					obj[field+'IdLabel'] = data[n].label;
+					return;
+				}
+			}
+			obj[field+'IdLabel'] = '';
+		}
+		
 		{% endif %}
 
 		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
@@ -317,8 +345,9 @@
 		CadrefProfessionStore.getData(1, 'default');
 		$scope.situationChange = function(obj, field) {
 			var data = $scope['Cadref'+field].data;
+			var val = obj[field+'IdLabel'].toUpperCase();
 			for(var n in data) {
-				if(data[n].label == obj[field+'IdLabel']) {
+				if(data[n].label == val) {
 					obj[field+'Id'] = data[n].id;
 					return;
 				}
@@ -623,8 +652,8 @@
             },300);
 //			c.noEvent = false;
 		}
-        $scope.$watch('CadrefClasse.filter', function() { console.log('aaaaa'); classeFilter(0); });
-        $scope.$watch('CadrefClasse.filter2', function() { console.log('aaaaabb'); classeFilter(1); });
+        $scope.$watch('CadrefClasse.filter', function() { classeFilter(0); });
+        $scope.$watch('CadrefClasse.filter2', function() { classeFilter(1); });
 
 		// efface le contenu du filtre
 		$scope.classeClearFilters = function() {
@@ -1098,6 +1127,7 @@
 		// prix modifié
 		$scope.visiteUpdate = function(item) {
 			item.updated = true;
+			$scope.CadrefVisite.Visit.updated = true;
 		}
 		
 		// ajoute une visite
