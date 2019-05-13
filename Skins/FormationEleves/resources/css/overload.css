@@ -1,0 +1,144 @@
+
+.x-form-fieldset .x-field:last-child{border-bottom: 1px solid #ddd !important;}
+.x-field.triblock{margin-bottom:0 !important;}
+.x-toolbar-dark{
+    background-image: -webkit-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
+    background-image: -moz-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
+    background-image: -o-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
+    background-image: -ms-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
+    background-color: #388e6b !important;}
+
+.filler{
+    margin-top:75px;
+}
+.filler-desc{
+    padding:15px;
+    background-color: #fff;
+}
+.filler-image img{
+    margin-top: 15px;
+    width:100px;
+}
+/* 3 critères dont un obligatoire*/
+.labelVert{color:#fff; background-color:#7eb105; font-size:1.9em !important;}
+.labelRouge{color:#fff; background-color:#e00606;font-size:1.9em !important;}
+/*Plus moins*/
+.bgLine:after{
+    content:' ';
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 20px;
+    margin-top: -10px;
+    background-color: #ccc;
+    z-index: -1;
+}
+.flexContainer > .x-inner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.x-form-fieldset .x-field.plusmoins{
+    width: 20%;
+    display: inline-block;
+    min-height: auto;
+    border: none !important;
+}
+.plusmoins div:not(.plusmoinslabel){
+    display: none;
+}
+.x-form-fieldset .x-form-label.plusmoinslabel{
+    text-align: center;
+    padding: 2px;
+    border-top:none;
+    border-radius: 0;
+}
+.x-field-required .x-form-label.plusmoinslabel:after{
+    display: none;
+}
+.x-form-fieldset .x-form-label.plusmoinslabel.active{
+    background-color: #ccc;
+}
+.x-field-required .x-form-label.plusmoinslabel span{
+    font-size: 1em;
+}
+
+/*Muliples pourcentages*/
+.x-form-label.multipercentlabel{
+    color: inherit !important;;
+}
+
+
+/* Graph score */
+.x-form-fieldset .x-field.graphscoreradio{
+    width: 20%;
+    display: inline-block;
+    min-height: auto;
+    border: none !important;
+}
+.graphscoreradio div:not(.graphscoreradiolabel){
+    display: none;
+}
+.x-form-fieldset .x-form-label.graphscoreradiolabel{
+    text-align: center;
+    padding: 2px;
+    border-top:none;
+    border-radius: 0;
+}
+.x-field-required .x-form-label.graphscoreradiolabel:after{
+    display: none;
+}
+.x-form-fieldset .x-form-label.graphscoreradiolabel.active span{
+    background-color: #ccc;
+}
+.x-form-fieldset .x-form-label.graphscoreradiolabel span{
+    font-size: 1em;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    margin: auto;
+    border-radius: 40px;
+}
+
+.x-form-fieldset.graphscore-fieldset .x-form-fieldset-inner{
+    border-color: inherit;
+}
+/* Cercle score */
+.x-form-fieldset .x-field.cerclescoreradio{
+    width: 20%;
+    display: inline-block;
+    min-height: auto;
+    border: none !important;
+}
+.cerclescoreradio div:not(.cerclescoreradiolabel){
+    display: none;
+}
+.x-form-fieldset .x-form-label.cerclescoreradiolabel{
+    text-align: center;
+    padding: 2px;
+    border-top:none;
+    border-radius: 0;
+}
+.x-field-required .x-form-label.cerclescoreradiolabel:after{
+    display: none;
+}
+.x-form-fieldset .x-form-label.cerclescoreradiolabel.active span{
+    background-color: #ccc;
+}
+.x-form-fieldset .x-form-label.cerclescoreradiolabel span{
+    font-size: 1em;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    margin: auto;
+    border-radius: 40px;
+}
+
+.x-form-fieldset.cerclescore-fieldset .x-form-fieldset-inner{
+    border-color: inherit;
+}
+
