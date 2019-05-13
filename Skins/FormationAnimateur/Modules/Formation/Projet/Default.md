@@ -144,7 +144,7 @@
                             </select>
                         </div>
                     </div>-->
-<div class="form-group">
+                    <div class="form-group">
                         <label for="inputRegion" class="col-sm-2 control-label">Région</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="inputRegion" placeholder="Sélectionnez une session" name="Titre">

@@ -19,22 +19,25 @@
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Question" driver="mysql" AccessPoint="1" Description="Question" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Question.class.php">
-        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" length="250" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
         <PROPERTIES type="image" category="Intitulé" mobile="1">Image</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireGlobal</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireInterRegion</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireRegion</PROPERTIES>
+        <PROPERTIES type="text" category="Paramètres supplementaires" mobile="1">Parametres</PROPERTIES>
         <!--<PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé">TypeReponse</PROPERTIES>-->
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/TypeQuestion.class.php">
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
-        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" length="250" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="int" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas oui du booléen" mobile="1">AfficheOui</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas non du booléen" mobile="1">AfficheNon</PROPERTIES>
+        <PROPERTIES type="text" category="Paramètres supplementaires" mobile="1">Parametres</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="4" category="Paramètres supplementaires" description="Defini si l'on doit duplique l'input pour l'ensemble des participants" mobile="1">MultiPart</PROPERTIES>
         <FKEY card="1,1" data="Question,Id" category="Intitulé" description="Question parente" mobile="1">QuestionId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeQuestionValeur" driver="mysql" Description="Sélection: valeur" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
