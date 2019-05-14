@@ -148,10 +148,10 @@
         //Cas OUi / Non
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
         [IF [!NbR!]>0]
-            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
             [!Nb1:=[!Nb1:/[!NbR!]!]!]
             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|Nb2]
+            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!="1"|Nb2]
             [!Nb2:=[!Nb2:/[!NbR!]!]!]
             [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
             <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>

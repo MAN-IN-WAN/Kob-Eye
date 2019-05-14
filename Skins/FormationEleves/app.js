@@ -29040,7 +29040,7 @@ Ext.cmd.derive('eleve.view.Wait', Ext.Panel, {config:{title:'Chargement des donn
   if (eleve.utils.Config.getCurrentQuestion() == 1) {
     this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eBienvenue\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verrouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
   } else {
-    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eRetournez à JuSt Mat\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verrouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
+    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eRetournez au JuSt Mat\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verrouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
   }
 }}}}, 0, ['loading'], ['component', 'container', 'panel', 'loading'], {'component':true, 'container':true, 'panel':true, 'loading':true}, ['widget.loading'], 0, [eleve.view, 'Wait'], 0);
 Ext.cmd.derive('eleve.view.Loading', Ext.Panel, {config:{title:'Chargement des données', items:[{docked:'top', xtype:'titlebar', title:eleve.utils.Config.getAppTitle()}, {width:'100%', style:'top: 45%;text-align: center;position:absolute;z-index:1', action:'loadingText', html:'\x3ch1\x3eChargement ...\x3c/h1\x3e'}]}}, 0, ['loading'], ['component', 'container', 'panel', 'loading'], {'component':true, 'container':true, 'panel':true, 'loading':true}, ['widget.loading'], 0, [eleve.view, 'Loading'], 0);
@@ -29086,8 +29086,8 @@ Ext.cmd.derive('eleve.view.Question', Ext.Panel, {config:{title:'Carte Pédagogi
 }}, {ui:'decline', text:'Êtes-vous sûr ?     NON', handler:function() {
   this.up('[xtype\x3dquestion]').down('[action\x3dscrollableContainer]').getScrollable().getScroller().scrollTo(0, 0, true);
   this.up('[action\x3dpanneauConfirm]').hide();
-}}]}, {xtype:'panel', style:'margin: 0 20px;', action:'scrollableContainer', height:'100%', scrollable:true, items:[{action:'catHistory', style:'overflow:hidden;margin: 20px;', html:''}, {xtype:'panel', height:'100px', hidden:true, scrollable:true, style:'margin-top: 10px;text-align:center;', action:'questionImage', html:''}, {style:'margin-top: 20px;', action:'questionTitle', html:''}, {action:'questionContainer'}, {xtype:'button', action:'nextButton', text:'Veuillez confirmer', ui:'decline'}]}]}, 
-setRecord:function(record) {
+}}]}, {xtype:'panel', style:'margin: 0 20px;', action:'scrollableContainer', height:'100%', scrollable:true, items:[{action:'catHistory', style:'overflow:hidden;margin: 20px;', html:''}, {xtype:'panel', height:'100px', hidden:true, scrollable:true, style:'margin-top: 10px;text-align:center;', action:'questionImage', cls:'questionImage', html:''}, {style:'margin-top: 20px;', action:'questionTitle', html:''}, {action:'questionContainer'}, {xtype:'button', action:'nextButton', text:'Veuillez confirmer', 
+ui:'decline'}]}]}, setRecord:function(record) {
   this._record = record;
   this.resetView();
   this.down('[xtype\x3dtitlebar]').setTitle(eleve.utils.Config.getApplicationName());
@@ -29146,7 +29146,6 @@ setRecord:function(record) {
             temp.hidden = true;
           }
           me.down('[action\x3dquestionContainer]').add(temp);
-          Ext.getCmp('texte-' + item.get('id')).focus();
           break;
         case '4':
           if (item.get('Nom')) {
