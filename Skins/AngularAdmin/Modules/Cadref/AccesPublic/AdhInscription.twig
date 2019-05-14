@@ -102,10 +102,16 @@
 						</div>
 						<div class="row" ng-if="inscriptionObj.Updated">
 							<div class="col-md-2">
-								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ inscriptionObj.Montant }]}</label>
+							<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ inscriptionObj.Montant }]}</label>
 							</div>
 							<div class="col-md-2">
-								<button type="button" class="btn btn-info" ng-click="inscriptionConfirm()">Confirmer l'inscription</button>
+							<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ inscriptionObj.Cotisation*1>0 ? '€ '+inscriptionObj.Cotisation : 'Déjà payée' }]}</label>
+							</div>
+							<div class="col-md-2">
+							<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ inscriptionObj.Total }]}</label>
+							</div>
+							<div class="col-md-2">
+							<button type="button" class="btn btn-info" ng-click="inscriptionConfirme()">Confirmer l'inscription</button>
 							</div>
 						</div>
 					</section>
