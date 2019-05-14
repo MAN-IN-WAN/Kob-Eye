@@ -126,7 +126,7 @@ class Cadref extends Module {
 			$u = genericClass::createInstance('Systeme', 'User');
 			$u->addParent($g);
 			$u->Login = $num;
-			$u->Mail = $a->Mail ?: $num.'@cadref.com';
+			$u->Mail = $num.'@cadref.com';
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}

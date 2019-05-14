@@ -563,27 +563,14 @@ order by a.Nom, a.Prenom";
 			$pdf->Output(getcwd().'/'.$file);
 			$pdf->Close();
 		} else {
-			require_once('Class/Lib/pdfb/fpdf_fpdi/PDF_label.php');
-
-			$f = array('paper-size'=>'A4',
-				'metric'=>'mm',
-				'marginLeft'=>0,
-				'marginTop'=>8.5,
-				'NX'=>2,
-				'NY'=>8,
-				'SpaceX'=>0,
-				'SpaceY'=>0,
-				'width'=>105,
-				'height'=>37.125,
-				'font-size'=>9);
-			$pdf = new PDF_label($f);
+			require_once ('PrintLabels.class.php');
+			$pdf = new PrintLabels();
 			$pdf->SetAuthor("Cadref");
 			$pdf->SetTitle('Etiquettes adherents');
 
 			$pdf->AddPage();
 			foreach($pdo as $l) {
-				$s = $l['Nom'].'  '.$l['Prenom']."\n".$l['Adresse1']."\n".$l['Adresse2']."\n".$l['CP']."  ".$l['Ville'];
-				$pdf->Add_Label(iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $s));
+				$pdf->AddLabel($l);
 			}
 
 			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHis').'.pdf';

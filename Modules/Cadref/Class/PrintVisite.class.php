@@ -4,9 +4,9 @@ require_once('Class/Lib/pdfb/fpdf_fpdi/fpdf.php');
 
 class PrintVisite extends FPDF {
 	
-	private $left = 20;
+	private $left = 5;
 	private $pageWidth;
-	private $lineHeight = 6.5;
+	private $lineHeight = 6;
 	private $head;
 	private $width;
 	private $posy;
@@ -21,26 +21,26 @@ class PrintVisite extends FPDF {
 	
 	
 	function PrintVisite($mode) {
-		parent::__construct($mode == 2 ? 'P' : 'L', 'mm', 'A4');
+		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 		
 		$this->mode = $mode;
 		$this->head = array(
 			array('','N° Carte','Nom','Réglé','Départ','Présent','Observations'),
-			array('','N° Carte','Nom','Départ','Présent','Observations'),
+			array('','N° Carte','Nom','Départ','Présent'),
 			array('','N° Carte','Nom','Prix','Dép.','Téléphone','Téléphone','Mail'));
 		$this->width = array(
-			array(9,22,83,15,72,18,48),
-			array(9,22,98,72,18,48),
+			array(7,18,80,13,20,18,40),
+			array(7,18,80,72,18),
 			array(5,13,51,7,8,21,21,51,22));
 		if($mode == 2) {
-			$this->left = 5; 
 			$this->lineHeight = 5;
 		}
 		$this->pageWidth = 0;
 		foreach($this->width[$mode] as $w) $this->pageWidth += $w;
 
 		$this->titre = "Visites Guidées CADREF";
+		
 	}
 	
 	private function cv($txt) {
@@ -49,17 +49,17 @@ class PrintVisite extends FPDF {
 
 	function Header() {
 		$y = 5;
-		$this->SetFont('Arial','B',$mode == 2 ? 12 : 14);
+		$this->SetFont('Arial','B',12);
 		$this->SetXY($this->left, $y);
 		$this->Cell($this->pageWidth, 8, $this->cv($this->titre), 0, 0, 'C');
 		$y += 8;
 		
-		$this->SetFont('Arial','B',$mode == 2 ? 10 : 12);
+		$this->SetFont('Arial','B',$mode == 2 ? 10 : 11);
 		$this->SetXY($this->left, $y);
 		$this->Cell($this->pageWidth-30, $this->lineHeight, $this->cv($this->record['Libelle']), 'LT', 0, 'L');
 		$this->Cell(30, $this->lineHeight, date('d/m/Y', $this->record['DateVisite']), 'LRT', 0, 'R');
 		$y += $this->lineHeight;
-		$this->SetFont('Arial','',$mode == 2 ? 10 : 12);
+		$this->SetFont('Arial','',$mode == 2 ? 10 : 11);
 		$this->SetXY($this->left, $y);
 		$this->Cell(30, $this->lineHeight, $this->record['Visite'], 'LTB', 0, 'L');
 		$this->Cell($this->pageWidth-60, $this->lineHeight, $this->cv($this->enseignants), 'LTB', 0, 'L');
@@ -67,7 +67,7 @@ class PrintVisite extends FPDF {
 		$this->Cell(30, $this->lineHeight, 'Page '.$this->lpage, 'LRTB', 0, 'R');
 		$y += 10;
 		
-		$this->SetFont('Arial','',$this->mode == 2 ? 9 : 12);
+		$this->SetFont('Arial','',$this->mode == 2 ? 9 : 11);
 		$this->SetXY($this->left, $y);
 		$n = count($this->width[$this->mode]);
 		for($i = 0; $i < $n; $i++) {
@@ -126,7 +126,7 @@ class PrintVisite extends FPDF {
 		
 		$this->SetXY($this->left, $this->posy);
 		$this->compteur++;
-		$this->SetFont('Arial','',$mode == 2 ? 9 : 12);
+		$this->SetFont('Arial','',$mode == 2 ? 9 : 11);
 		$this->Cell($this->width[$mode][0], $this->lineHeight, $this->compteur, 'LRT', 0, 'C');
 		$this->Cell($this->width[$mode][1], $this->lineHeight, $l['Numero'], 'RT', 0, 'C');
 		$this->Cell($this->width[$mode][2], $this->lineHeight, $this->cv($l['Nom'].' '.$l['Prenom']), 'RT', 0, 'L');
@@ -140,7 +140,7 @@ class PrintVisite extends FPDF {
 			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Mail'], 'RT', 0, 'L');			
 		}
 		else {
-			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $this->cv(trim($l['HeureDepart'].'  '.$l['LibelleL'])), 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $this->cv(trim($l['HeureDepart'].'  '.($mode==0 ? $l['Lieu'] : $l['LibelleL']))), 'RT', 0, 'L');
 			$this->Cell($this->width[$mode][$n++], $this->lineHeight, '', 'RT', 0, 'L');
 		}
 		$s = $l['Notes'];

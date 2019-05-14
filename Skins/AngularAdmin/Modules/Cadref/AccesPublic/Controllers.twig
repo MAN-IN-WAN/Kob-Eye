@@ -428,7 +428,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
-	$scope.inscriptionObj = {Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[]};
+	$scope.inscriptionObj = {Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
  	$scope.reservationObj = {Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
 	$scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
@@ -577,6 +577,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		t[t.length] = o;
 		
 		i.Montant = i.Montant*1+(o.Prix*1-o.Reduction*1);
+		if($scope.obj.Cotisation*1 == 0)
+			i.Cotisation = $scope.CotisationAnnuelle;
+		i.Total = i.Montant*1+i.Cotisation*1;
 		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
 		i.Updated = true;
 	}
