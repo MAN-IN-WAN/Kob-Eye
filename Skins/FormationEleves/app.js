@@ -29038,9 +29038,9 @@ Ext.cmd.derive('eleve.controller.Equipe', Ext.app.Controller, {config:{viewCache
 }}, 0, 0, 0, 0, 0, 0, [eleve.controller, 'Equipe'], 0);
 Ext.cmd.derive('eleve.view.Wait', Ext.Panel, {config:{title:'Chargement des données', items:[{docked:'top', xtype:'titlebar', title:eleve.utils.Config.getAppTitle()}, {html:'\x3ci class\x3d"fa fa-users fa-6"\x3e\x3c/i\x3e', style:'position:absolute; z-index:1; top:35%; left:50%;', action:'mapMarker'}, {width:'100%', style:'position:absolute;top:35%;z-index:1;text-align: center;', action:'loadingText', html:''}], listeners:{painted:function() {
   if (eleve.utils.Config.getCurrentQuestion() == 1) {
-    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eBienvenue\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
+    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eBienvenue\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verrouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
   } else {
-    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eRetournez à JuSt Mat\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
+    this.down('[action\x3dloadingText]').setHtml('\x3ch1\x3eRetournez à JuSt Mat\x3c/h1\x3e\x3cdiv class\x3d"filler"\x3e\x3cp class\x3d"filler-desc"\x3eL\'étape est actuellement verrouillée. Lorsqu\'elle sera débloquée par votre animateur la transition se fera automatiquement. \x3cbr\x3e Il n\'est pas nécessaire de rafraîchir la page.\x3c/p\x3e\x3cp class\x3d"filler-image"\x3e\x3cimg src\x3d"resources/img/spinner.gif"\x3e\x3c/pclass\x3e\x3c/div\x3e');
   }
 }}}}, 0, ['loading'], ['component', 'container', 'panel', 'loading'], {'component':true, 'container':true, 'panel':true, 'loading':true}, ['widget.loading'], 0, [eleve.view, 'Wait'], 0);
 Ext.cmd.derive('eleve.view.Loading', Ext.Panel, {config:{title:'Chargement des données', items:[{docked:'top', xtype:'titlebar', title:eleve.utils.Config.getAppTitle()}, {width:'100%', style:'top: 45%;text-align: center;position:absolute;z-index:1', action:'loadingText', html:'\x3ch1\x3eChargement ...\x3c/h1\x3e'}]}}, 0, ['loading'], ['component', 'container', 'panel', 'loading'], {'component':true, 'container':true, 'panel':true, 'loading':true}, ['widget.loading'], 0, [eleve.view, 'Loading'], 0);
@@ -29132,7 +29132,11 @@ setRecord:function(record) {
           me.down('[action\x3dquestionContainer]').add({xtype:'sliderfield', maxValue:5, labelAlign:'top', id:'echelle-' + item.get('id'), label:item.get('Nom'), html:'\x3ctable width\x3d"100%"\x3e\x3ctr\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e1\x3c/td\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e2\x3c/td\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e3\x3c/td\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e4\x3c/td\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e5\x3c/td\x3e\x3ctd width\x3d"14%" align\x3d"center"\x3e6\x3c/td\x3e\x3c/tr\x3e\x3c/table\x3e'});
           break;
         case '3':
+          var params = item.get('Parametres');
           var temp = {xtype:'textareafield', labelAlign:'top', id:'texte-' + item.get('id'), label:item.get('Nom')};
+          if (params != null && params.Couleur != undefined) {
+            temp.style = {border:'3px solid ' + params.Couleur};
+          }
           if (item.get('AfficheOui')) {
             temp.action = 'AfficheOui';
             temp.hidden = true;

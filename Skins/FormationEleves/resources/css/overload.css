@@ -67,7 +67,7 @@
 
 /*Muliples pourcentages*/
 .x-form-label.multipercentlabel{
-    color: inherit !important;;
+    color: inherit !important;
 }
 
 
@@ -140,5 +140,6 @@
 
 .x-form-fieldset.cerclescore-fieldset .x-form-fieldset-inner{
     border-color: inherit;
+    border-width: 3px;
 }
 
