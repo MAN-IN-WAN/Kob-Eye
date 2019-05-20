@@ -6,7 +6,7 @@ class Parc_Client extends genericClass {
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
-	 * @return	void
+	 * @return	bool
 	 */
 	public function Save( $synchro = true ) {
         //ajout auto du revendeur
@@ -41,6 +41,23 @@ class Parc_Client extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = false ) {
+        if(!empty($this->CodeGestion)){
+            $yets = Sys::getData('Parc','Client/CodeGestion='.$this->CodeGestion);
+            foreach($yets as $yet){
+                if($yet && $yet->Id != $this->Id){
+                    $this->AddError(
+                        Array(
+                            "Message"=>"__LA_VALEUR_DU_CHAMP__ CodeGestion __ALREADY_EXISTS__",
+                            "Prop"=> "CodeGestion"
+                        )
+                    );
+                    $this->_isVerified = false;
+                    return false;
+                }
+            }
+
+        }
+
         if (empty($this->NomLDAP)) {
             $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
         }

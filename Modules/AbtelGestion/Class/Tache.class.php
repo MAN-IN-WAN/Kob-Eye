@@ -31,6 +31,13 @@ class AbtelTache extends AbtelGestionBase {
             }
         }
 
+        if( $prop == 'CodeClient' && $newValue == 'ABT_0'){
+            $newValue = '0';
+        }
+        if( $prop == 'TACLIENT' && $newValue == '0'){
+            $newValue = 'ABT_0';
+        }
+
         if($prop == "CodeContrat" && !$this->getOrigin()){
             if(empty($newValue)){
                 $this->props['TACADRE'] = 2;
