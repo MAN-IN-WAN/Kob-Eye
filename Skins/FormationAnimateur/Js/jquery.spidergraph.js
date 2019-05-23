@@ -478,6 +478,7 @@
     }   
 
     function drawFixedData( $sg, canvas ) {
+        var settings = $sg.data('spidergraph').settings;
         var context = canvas.getContext("2d");
         var data = $sg.data('spidergraph');
     
@@ -486,7 +487,11 @@
         for ( var i in data.fixeddata ) {
         
             layerdata = data.fixeddata[i];
-            drawDataSet( $sg, canvas, layerdata );
+            if(settings.axisValuesType != 2) {
+                drawDataSet($sg, canvas, layerdata);
+            } else {
+                drawDataSetCircles($sg, canvas, layerdata);
+            }
         
         }
     }

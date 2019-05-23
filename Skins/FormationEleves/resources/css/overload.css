@@ -1,12 +1,12 @@
 
 .x-form-fieldset .x-field:last-child{border-bottom: 1px solid #ddd !important;}
 .x-field.triblock{margin-bottom:0 !important;}
-.x-toolbar-dark{
+/*.x-toolbar-dark{
     background-image: -webkit-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
     background-image: -moz-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
     background-image: -o-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
     background-image: -ms-linear-gradient(top, #42b18a,rgb(102, 218, 177) 2%,#388e6b) !important;
-    background-color: #388e6b !important;}
+    background-color: #388e6b !important;}*/
 
 .filler{
     margin-top:75px;
@@ -19,6 +19,11 @@
     margin-top: 15px;
     width:100px;
 }
+
+.questionImage img{
+    height: 100px;
+}
+
 /* 3 critères dont un obligatoire*/
 .labelVert{color:#fff; background-color:#7eb105; font-size:1.9em !important;}
 .labelRouge{color:#fff; background-color:#e00606;font-size:1.9em !important;}
