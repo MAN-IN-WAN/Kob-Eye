@@ -128,7 +128,7 @@
 		<PROPERTIES type="varchar" length="5" category="Planning" list="5" form="10" fiche="10" listDescr="Début" description="Début">CycleDebut</PROPERTIES>
 		<PROPERTIES type="varchar" length="5" category="Planning" list="6" form="11" fiche="11" listDescr="Fin" description="Fin">CycleFin</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Planning" form="12" fiche="12" description="Nombre de séances">Seances</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Planning" values="0::Hebdomadaire,1::Dates" form="13" fiche="13" description="Programmation">Programmation</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="0" category="Planning" values="0::Hebdomadaire,1::Dates" form="13" fiche="13" description="Programmation">Programmation</PROPERTIES>
 		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>
 
 		<PROPERTIES type="int" default="0" category="Inscriptions" list="4" form="15" fiche="15" description="Places">Places</PROPERTIES>
@@ -501,7 +501,7 @@
 	</OBJECTCLASS>
 
 
-	<OBJECTCLASS title="Reservation" driver="mysql" order="Numero" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
+	<OBJECTCLASS title="Reservation" driver="mysql" order="Adherent2.Nom,Visite1.DateVisite" orderType="ASC,ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" list="1" form="1" fiche="1" description="Adhérent" >AdherentId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Visite,Id" category="Description" list="1" form="1" fiche="1" description="Visite" >VisiteId</FKEY>
 		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="0" category="Description" list="1" form="1" fiche="1" description="Numéro">Numero</PROPERTIES>
@@ -566,5 +566,16 @@
 		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Libellé">Valeur</PROPERTIES>
 		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" description="Texte">Texte</PROPERTIES>
 	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Cadref/Class/TypePaiement.class.php" plugin="1" cache="1">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES description="Compte client" type="varchar" length="16" >CompteComptable</PROPERTIES>
+        <PROPERTIES Order="2" description="Information choix du paiement" type="bbcode"  special="multi">Information</PROPERTIES>
+		<PROPERTIES Order="3" description="Description finalisation achat" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES Order="4" description="Logo" type="file">Logo</PROPERTIES>
+		<PROPERTIES Order="5" description="Actif" type="boolean" default="1">Actif</PROPERTIES>
+		<PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	
 
 </SCHEMA>

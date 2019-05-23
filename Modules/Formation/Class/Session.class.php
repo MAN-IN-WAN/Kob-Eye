@@ -193,6 +193,7 @@ class FormationSession extends genericClass {
      * Retourne la question courante pour une session
      */
     function getCurrentQuestion ($num) {
+        $next = null;
         //Verification de l'existence de l'equipe dans la base de donnée
         $t = Sys::getOneData('Formation', 'Session/'.$this->Id.'/Equipe/Numero='.$num);
         //calcul de la dernière réponse
@@ -202,6 +203,17 @@ class FormationSession extends genericClass {
             $tq = Sys::getOneData('Formation', 'TypeQuestion/Reponse/' . $r->Id);
             //récupération de la question
             $q = Sys::getOneData('Formation', 'Question/TypeQuestion/' . $tq->Id);
+            if(!empty($q->Parametres)){
+                $params = json_decode($q->Parametres,true);
+                if(!empty($params['goto'])){
+                    if(is_array($params['goto']) && !empty($params['goto'][$r->Valeur] )){
+                        $next = $params['goto'][$r->Valeur];
+                    } elseif ( !is_array( $params['goto'] )){
+                        $next = $params['goto'];
+                    }
+                }
+            }
+            if($next) return $next;
             return $q->Ordre + 1;
         }else return 1;
 
@@ -279,6 +291,57 @@ class FormationSession extends genericClass {
         $p = $this->getProjet();
         return $p->getChildren('Categorie/*/Question');
     }
+
+    /**
+     * getOrderedQuestions
+     * Renvoie les Questions du projet ordonnées en fonction des catégories parentes.
+
+    function getOrderedQuestions() {
+        //recuperation du projet
+        $p = $this->getProjet();
+        $questions = array();
+        $cats = $p->getChildren('Categorie');
+        $this->recursiveGetQuestion($cats,$questions);
+        array_walk($questions,function(&$q,$k){
+            $q->Ordre = $k+1;
+        });
+
+        return $questions;
+    }
+    //trie les cats suivant leur ordre puis recupère les question de manière ordonnée
+    function recursiveGetQuestion($cats,&$questions){
+        usort($cats,function($a,$b){
+            $a = $a->Ordre;
+            $b = $b->Ordre;
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a < $b) ? -1 : 1;
+        });
+
+        foreach($cats as $cat){
+            $qs = $cat->getChildren('Question');
+            if($qs){
+                usort($qs,function($a,$b){
+                    $a = $a->Ordre;
+                    $b = $b->Ordre;
+                    if ($a == $b) {
+                        return 0;
+                    }
+                    return ($a < $b) ? -1 : 1;
+                });
+                foreach($qs as $q){
+                    $questions[] = $q;
+                }
+            }
+            $sCats = $cat->getChildren('Categorie');
+            if($sCats){
+                $this->recursiveGetQuestion($sCats,$questions);
+            }
+        }
+    }*/
+
+
     /**
      * getTypeQuestions
      * Renvoie les Questions du projet de la session en cours.
@@ -307,11 +370,21 @@ class FormationSession extends genericClass {
         return Sys::getData('Formation','TypeReponse');
     }
     /**
+     * getRegions
+     * Renvoie les Questions du projet de la session en cours.
+     */
+    function getRegions() {
+        //recuperation du projet
+        $p = $this->getProjet();
+        return  $p->getChildren('InterRegion/*/Region');
+    }
+    /**
      * saveResult
      * Sauvegarde des réponse en fonction d'une session d'une equipe et des id de question Id
      * @equipe  int numéro d'equipe
      */
     function saveResult($equipe) {
+        $next = null;
         //vérificaiton de la validité de l'equipe
         $eq = $this->getChildren('Equipe/Numero='.$equipe);
         if (sizeof($eq)) {
@@ -335,8 +408,21 @@ class FormationSession extends genericClass {
                     $rep->addParent('Formation/Equipe/'.$eq->Id);
                     $rep->addParent('Formation/TypeQuestion/'.$question_id);
                     $rep->Save();
+
+                    $question = Sys::getOneData('Formation','Question/TypeQuestion/'.$question_id);
+                    if(!empty($question->Parametres)){
+                        $params = json_decode($question->Parametres,true);
+                        if(!empty($params['goto'])){
+                            if(is_array($params['goto']) && !empty($params['goto'][$valeur] )){
+                                $next = $params['goto'][$valeur];
+                            } elseif ( !is_array( $params['goto'] )){
+                                $next = $params['goto'];
+                            }
+                        }
+                    }
                 }
             }
+            if($next) return $next;
             return true;
         }
     }

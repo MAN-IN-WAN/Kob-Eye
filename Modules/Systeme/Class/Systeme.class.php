@@ -222,6 +222,17 @@ class Systeme extends Module {
             $t->TaskFunction = 'clearEvents';
             $t->Save();
         }
+        $t = Sys::getCount('Systeme','ScheduledTask/Titre=Envoi de mails');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Envoi de mails';
+            $t->Enabled = 1;
+            $t->TaskModule = 'Systeme';
+            $t->TaskObject = 'MailQueue';
+            $t->TaskFunction = 'SendMails';
+            $t->Save();
+        }
         //execution des taches
         $t = Sys::getCount('Systeme','ScheduledTask/Titre=SYSTEME:Execute tasks');
         if (!$t) {

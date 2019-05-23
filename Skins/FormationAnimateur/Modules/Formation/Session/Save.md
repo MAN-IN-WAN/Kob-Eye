@@ -17,9 +17,9 @@
 [METHOD S|addParent]
     [PARAM][!F!][/PARAM]
 [/METHOD]
-//[METHOD S|addParent]
-//    [PARAM][!R!][/PARAM]
-//[/METHOD]
+[METHOD S|addParent]
+    [PARAM][!R!][/PARAM]
+[/METHOD]
 
 [IF [!S::Verify()!]&&[!Error!]=]
         [METHOD S|Save][/METHOD]

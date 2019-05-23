@@ -57,7 +57,11 @@ class Cadref extends Module {
 		$telr = '';
 		$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+//		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		if($tel) {
+			$telr = preg_replace('/[^0-9]/', '', $tel);
+			$telr = substr($telr,0,2).'.'.substr($telr,2,2).'.'.substr($telr,4,2).'.'.substr($telr,6,2).'.'.substr($telr,8,2);
+		}
 		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
 		if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
 
@@ -67,7 +71,8 @@ class Cadref extends Module {
 		if($mail) $w1 .= "Mail='$mail'";
 		if($telr) {
 			if($w1) $w1 .= " or ";
-			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+//			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+			$w1 .= "Telephone1 = '$telr' or Telephone2 = '$telr'";
 		}
 		$sql = "select Numero,Nom,Prenom,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -121,7 +126,7 @@ class Cadref extends Module {
 			$u = genericClass::createInstance('Systeme', 'User');
 			$u->addParent($g);
 			$u->Login = $num;
-			$u->Mail = $a->Mail ?: $num.'@cadref.com';
+			$u->Mail = $num.'@cadref.com';
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}

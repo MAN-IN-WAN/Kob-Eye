@@ -31,7 +31,7 @@ where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or
 order by sex, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
 			$s = $p['sex'];
@@ -43,7 +43,7 @@ order by sex, i.Antenne";
 
 		// profession
 		$sql = "
-select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId,'ZZZZ') as prof, p.Libelle
+select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId or h.ProfessionId is null,'ZZZZ') as prof, p.Libelle
 from `##_Cadref-Inscription` i 
 inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
 left join `##_Cadref-Profession` p on p.Id=h.ProfessionId
@@ -51,30 +51,51 @@ where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or
 order by prof, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
 			$lib = $p['prof'] != 'ZZZZ' ? $p['Libelle'] : 'Non renseigné';
 			$stats->Sum(1, $p['prof'], $lib, $col, 1);
 		}
 		
-		// cursus
+		// Situation
 		$sql = "
-select distinct i.Numero, i.Antenne, ifnull(h.CursusId,'ZZZZ') as curs, c.Libelle
+select distinct i.Numero, i.Antenne, ifnull(h.SituationId,'ZZZZ') as situ, c.Libelle
 from `##_Cadref-Inscription` i 
 inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
-left join `##_Cadref-Cursus` c on c.Id=h.CursusId
+left join `##_Cadref-Situation` c on c.Id=h.SituationId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
-order by curs, i.Antenne";
+order by situ, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
-			$lib = $p['curs'] != 'ZZZZ' ? $p['Libelle'] : 'Non renseigné';
-			$stats->Sum(2, $p['curs'], $lib, $col, 1);
+			$lib = $p['situ'] != 'ZZZZ' ? $p['Libelle'] : 'Non renseigné';
+			$stats->Sum(2, $p['situ'], $lib, $col, 1);
 		}
-	
+
+		// origine
+		$sql = "
+select distinct i.Numero, i.Antenne, if(h.Origine='' or h.Origine is null,'Z',h.Origine) as orig
+from `##_Cadref-Inscription` i 
+inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
+where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
+order by orig, i.Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			switch($p['orig']) {
+				case 'I': $lib = 'Internet'; break;
+				case 'P': $lib = 'Publicité'; break;
+				case 'R': $lib = 'Recommandation'; break;
+				case 'Z': $lib = 'Non renseigné'; break;
+			}
+			$stats->Sum(3, $p['orig'], $lib, $col, 1);
+		}
+		
 		// age
 		$sql = "
 select distinct i.Numero, i.Antenne, if(h.Naissance is null or h.Naissance='','0000',h.Naissance) as nais
@@ -84,7 +105,7 @@ where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or
 order by nais desc, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		$annee = Cadref::$Annee;
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
@@ -124,7 +145,7 @@ order by nais desc, i.Antenne";
 				}
 				
 			}
-			$stats->Sum(3, $s, $lib, $col, 1);
+			$stats->Sum(4, $s, $lib, $col, 1);
 		}
 
 		// nombre de cours
@@ -136,10 +157,10 @@ group by i.Numero, i.Antenne
 order by cours, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
-			$stats->Sum(4, $p['cours'], $p['cours'].' cours', $col, 1);
+			$stats->Sum(5, $p['cours'], $p['cours'].' cours', $col, 1);
 		}
 
 		// villes
@@ -152,7 +173,7 @@ order by h.Ville, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 $zzz=$sql;
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return array('sql'=>$sql);;
+		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
 			if(substr($p['cp'], 0 , 2) != '30') {
@@ -163,7 +184,7 @@ $zzz=$sql;
 				$code = $p['cp'];
 				$lib = $p['cp'].' : '.$p['Ville'];
 			}
-			$stats->Sum(5, $code, $lib, $col, 1);
+			$stats->Sum(6, $code, $lib, $col, 1);
 		}
 		
 		// disciplines
@@ -180,7 +201,7 @@ order by disc, i.Antenne";
 		if(! $pdo) return array('sql'=>$sql);;
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
-			$stats->Sum(6, $p['disc'], $p['disc'].' : '.$p['lib'], $col, 1);
+			$stats->Sum(7, $p['disc'], $p['disc'].' : '.$p['lib'], $col, 1);
 		}
 
 		

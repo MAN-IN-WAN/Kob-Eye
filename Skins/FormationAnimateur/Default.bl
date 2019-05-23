@@ -13,6 +13,7 @@
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
 [HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap-slider.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.spidergraph.js[/HEADER]
 [HEADER]
 <meta name="viewport" content="width=device-width, initial-scale=1">
 [/HEADER]

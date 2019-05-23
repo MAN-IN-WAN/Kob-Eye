@@ -133,13 +133,19 @@
 						$('#Valider').attr('value', 'Continuer');
 						$('#saisie').hide();
 						$('#affiche').show();
+						$('#msg').removeClass('alert-danger');
+						$('#msg').addClass('alert-success');
 					}
 					if(resp.ValidForm == "3") {
 						$('#Valider').hide();
 						$('#Annuler').text('Retour');
 					}
 					$('#ValidForm').val(resp.ValidForm);
-				} 
+				}
+				else {
+					$('#msg').removeClass('alert-success');
+					$('#msg').addClass('alert-danger');
+				}
 				$('#msg').html(resp.message);
 				$('#msg').show();
 				$('.spin-mask').removeClass('actif').spin(false);

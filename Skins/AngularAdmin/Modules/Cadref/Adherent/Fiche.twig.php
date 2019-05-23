@@ -72,7 +72,7 @@ $vars['annees'] = $tmp;
 // liste des classes
 $tmp = array('0'=>'');
 $cls = Sys::getData('Cadref','Classe/Annee='.$annee);
-foreach($cls as $cl) $tmp[] = $cl->CodeClasse;
+foreach($cls as $cl) $tmp[$cl->Id] = $cl->CodeClasse;
 $vars['classes'] = $tmp;
 // liste des antennes
 $tmp = array('0'=>'');

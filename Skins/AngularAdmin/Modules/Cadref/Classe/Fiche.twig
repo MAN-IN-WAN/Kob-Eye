@@ -15,6 +15,7 @@
         </li>
     </ul>
     <!-- Default Panel -->
+	<form name="CadrefContent">
     <section class="panel">
         <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
@@ -117,7 +118,7 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td class="cadref-td-inscr">{{ fquery(f.JourId, o, 'width:100px') }}</td>
+													<td class="cadref-td-inscr">{{ fquery(f.JourId, o, 'width:100px', '') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.HeureDebut, o, false, 'dd:dd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.HeureFin, o, false, 'dd:dd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.CycleDebut, o, false, 'dd/dd', 'width:80px') }}</td>
@@ -130,6 +131,7 @@
 									</section>
 								</div>
 							</div>
+							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Lieu") }}
@@ -203,6 +205,7 @@
 									</section>
 								</div>
 							</div>
+							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Enseignants") }}
@@ -228,7 +231,7 @@
 
 						</div>
 						{# block right #}                    
-						<div class="col-md-4">
+						<div class="col-md-4" ng-if="{{ o }}.id">
 							<div class="row">
 								{{ label('Dates de cours') }}
 							</div>
@@ -259,5 +262,6 @@
 			</div>
 		</div>
 	</section>
+	</form>
 </div>
 

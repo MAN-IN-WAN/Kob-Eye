@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-xs-9">
                                 <div class="huge">Question [!D::Numero!]</div>
-                                <div>[!D::Titre!]</div>
-                                <div>[!TQ::Titre!]</div>
+                                <div>[IF [!Q::Prefixe!]!=]<em><b>- [!Q::Prefixe!] -</b></em> [/IF][!D::Titre!] </div>
+                                <div>>> [!TQ::Nom!]</div>
                             </div>
                         </div>
                     </div>

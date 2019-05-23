@@ -24,7 +24,7 @@
 </div>
 
 <div class="row">
-    [STORPROC Formation/Projet|S]
+    [STORPROC Formation/Projet|S|0|100|Id|ASC]
     <div class="col-lg-3 col-md-6">
         <a href="/Projets/[!S::Id!]">
             <div class="panel panel-success">
