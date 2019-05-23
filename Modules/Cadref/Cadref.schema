@@ -567,4 +567,15 @@
 		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" description="Texte">Texte</PROPERTIES>
 	</OBJECTCLASS>
 
+	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Cadref/Class/TypePaiement.class.php" plugin="1" cache="1">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES description="Compte client" type="varchar" length="16" >CompteComptable</PROPERTIES>
+        <PROPERTIES Order="2" description="Information choix du paiement" type="bbcode"  special="multi">Information</PROPERTIES>
+		<PROPERTIES Order="3" description="Description finalisation achat" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES Order="4" description="Logo" type="file">Logo</PROPERTIES>
+		<PROPERTIES Order="5" description="Actif" type="boolean" default="1">Actif</PROPERTIES>
+		<PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	
+
 </SCHEMA>

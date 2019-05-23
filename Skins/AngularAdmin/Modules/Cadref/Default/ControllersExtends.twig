@@ -222,7 +222,7 @@
 //***********************
 	
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
-		$rootScope, $routeParams, $http, $log,
+		$rootScope, $routeParams, $http, $log, 
 		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 
 		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore, CadrefDepartStore, CadrefAttachementStore,
 		CadrefSituationStore, CadrefProfessionStore) {
@@ -244,6 +244,19 @@
             }
         },100,50);	
 		
+		// controle les modifications dans les fiches
+		$scope.$on('$routeChangeStart', function(event, next, current) {
+			if($scope.CadrefContent && $scope.CadrefContent.$dirty) {
+				var ok = confirm("Données modifiées.\nVoulez-vous continuer ?");
+				if(! ok) {
+					$('body').removeClass('cui-page-loading-state');
+					NProgress.done();
+					event.preventDefault();
+					return;
+				}
+			}
+		});
+
 		
 		// donne le focus
 		$scope.takeFocus = function(id) {
@@ -1263,7 +1276,7 @@
 		
 		{% if objecttype == 'Section' %}
 		//--------------------------------------
-		// DISCIPLINE
+		// SECTION
 		//--------------------------------------		
 		$scope.sectionInfo = function() {
 			$scope.obj.LibelleS = $scope.obj.Libelle;
@@ -1281,7 +1294,6 @@
 				}
 			);
 		}
-
 		{% endif %}
 		
 		
