@@ -8,6 +8,13 @@ class Tache extends genericClass{
         //on rafraichit les infos
         if ($this->Demarre&&!$force) return true;
 
+        /*if ($force){
+            $this->Demarre = false;
+            $this->Termine = false;
+            $this->Erreur = false;
+            $this->ThreadId = '';
+        }*/
+
         if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) return true;
         $this->ThreadId = getmypid();
         parent::Save();
@@ -30,10 +37,13 @@ class Tache extends genericClass{
                     try {
                         $out = $obj->{$this->TaskFunction}($this);
                         $this->addRetour($out);
-                        $this->Termine = true;
+                        if ($out)
+                            $this->Termine = true;
+                        else
+                            $this->Erreur = true;
                         parent::Save();
-                    }catch (Exception $e){
-                        $this->addRetour('ERROR: '.$e->getMessage());
+                    }catch (Throwable $e){
+                        $this->addRetour('ERROR: '.$e->getMessage().' ligne: '.$e->getLine().' code: '.$e->getCode().' file: '.$e->getFile().' trace: '.$e->getTraceAsString());
                         $this->Erreur = true;
                         parent::Save();
                     }
@@ -41,8 +51,8 @@ class Tache extends genericClass{
                     //execution statique
                     try {
                         call_user_func($this->TaskObject.'::'.$this->TaskFunction,$this);
-                    }catch (Exception $e){
-                        $this->addRetour('ERROR: '.$e->getMessage());
+                    }catch (Throwable $e){
+                        $this->addRetour('ERROR: '.$e->getMessage().' ligne: '.$e->getLine().' code: '.$e->getCode().' file: '.$e->getFile().' trace: '.$e->getTraceAsString());
                         $this->Erreur = true;
                     }
                     $this->Termine = true;
@@ -119,7 +129,17 @@ class Tache extends genericClass{
         }
         return parent::Delete();
     }
-
+    /**
+     * Reset
+     * Reset all datas
+     */
+    public function Reset() {
+        $this->Termine=0;
+        $this->Demarre=0;
+        $this->Erreur=0;
+        $this->ThreadId='';
+        return $this->Save();
+    }
 
     /**
      * createActivity

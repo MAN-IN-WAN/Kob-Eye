@@ -1,5 +1,5 @@
 
-app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  SystemeActivityStore, AbtelBackupBackupStoreStore, AbtelBackupEsxVmStore) {
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  SystemeActivityStore, AbtelBackupStateStore, AbtelBackupBorgRepoStore) {
     //------------------------------------------//
     //                 ANCHORS
     //------------------------------------------//
@@ -69,8 +69,7 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //      BackupStore
     //
     //Init du store
-    $scope.AbtelBackupBackupStoreStore = AbtelBackupBackupStoreStore;
-    $scope.AbtelBackupBackupStoreStore.setFilters('Titre=Sauvegarde Locale','dash');
+    $scope.AbtelBackupStateStore = AbtelBackupStateStore;
 
     $scope.pie = {};
     //traitement des données pour générer le chart
@@ -86,22 +85,23 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         return Mo + units[pow];
     }
     var refreshSizes = function(){
-        var data = $scope.AbtelBackupBackupStoreStore.data['dash'][0];
+        var data = $scope.AbtelBackupStateStore.data['dash'][0];
         if(!data) return false;
-        var size = parseInt(data.Size);
         var nfsSize = parseInt(data.NfsSize);
         var borgSize = parseInt(data.BorgSize);
-        var freeSize = size-nfsSize-borgSize;
-        $scope.pie.data = [nfsSize,borgSize,freeSize];
+        var nasSize = parseInt(data.NasSize);
+        var restoreSize = parseInt(data.RestoreSize);
+        var freeSize = parseInt(data.FreeSize);
+        $scope.pie.data = [nfsSize,borgSize,nasSize,restoreSize,freeSize];
         if($scope.pie.labels) return true;
 
-        //$scope.pie.labels = ['Nfs '+humanReadable(nfsSize),'Backup '+humanReadable(borgSize),'Disponible '+humanReadable(freeSize)];
-        $scope.pie.labels = ['Nfs','Backup','Disponible'];
+        //$scope.pie.labels = ['Clone '+humanReadable(nfsSize),'Backup '+humanReadable(borgSize),'NAS '+humanReadable(nasSize),'Restore '+humanReadable(restoreSize),'Disponible '+humanReadable(freeSize)];
+        $scope.pie.labels = ['Clone','Backup','Nas','Restore','Disponible'];
 
         $scope.pie.dsOverride ={
             data: $scope.pie.data,
-            backgroundColor: ['#f39834','#fb434a','#46be8a'],
-            hoverBackgroundColor: ['#e38824','#eb333a','#36ae7a'],
+            backgroundColor: ['#f39834','#fb434a','#01a8fe','#7f56c1','#46be8a'],
+            hoverBackgroundColor: ['#e38824','#eb333a','#01a8fe','#7f56c1','#36ae7a'],
         };
 
         $scope.pie.options = {
@@ -118,10 +118,9 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         };
         return true;
     }
-    $scope.AbtelBackupBackupStoreStore.getData(1,'dash').then(refreshSizes);
 
-    $rootScope.$on('AbtelBackupBackupStoreStore',function (ev,data){
-        if(data.type == 'edit' && data.data.Titre=='Sauvegarde Locale'){
+    $rootScope.$on('AbtelBackupStateStore',function (ev,data){
+        if(data.type == 'add'){
             refreshSizes(true);
         }
     });
@@ -134,25 +133,23 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //      EsxVm
     //
     //Init du store
-    $scope.AbtelBackupEsxVmStore = AbtelBackupEsxVmStore;
-    $scope.AbtelBackupEsxVmStore.setFilters('BackupSize>0','dash');
+    $scope.AbtelBackupBorgRepoStore = AbtelBackupBorgRepoStore;
+    $scope.AbtelBackupBorgRepoStore.setFilters('Size>0','dash');
 
     $scope.bar = {};
     var numberWithCommas = function(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
     var refreshSizesBar = function(){
-        var data = $scope.AbtelBackupEsxVmStore.data['dash'];
+        var data = $scope.AbtelBackupBorgRepoStore.data['dash'];
         if(!data.length) return false;
 
-        var datasetVM = [];
         var datasetBorg = [];
         for (var n in data){
-            datasetVM.push(parseInt(data[n].Size));
-            datasetBorg.push(parseInt(data[n].BackupSize));
+            datasetBorg.push(parseInt(data[n].Size));
         }
 
-        $scope.bar.data = [datasetVM,datasetBorg];
+        $scope.bar.data = [datasetBorg];
         if($scope.bar.labels) return true;
 
         $scope.bar.labels = [];
@@ -168,14 +165,6 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
                 borderColor:'#d37814',
                 stack: 1,
                 xAxisID: 'Xaxis1'
-            },
-            {
-                label:'Taille Vm',
-                backgroundColor: 'rgba(70,190,138,0.5)',
-                hoverBackgroundColor: 'rgba(54,174,122,0.8',
-                borderColor:'#26bc6a',
-                stack: 1,
-                xAxisID: 'Xaxis2'
             }
         ];
 
@@ -207,6 +196,7 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
                     gridLines: {
                         offsetGridLines: true
                     },
+                    label: 'Go',
                     offset:true,
                     display: false
                 }],
@@ -229,74 +219,184 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         $scope.myCharts[chart.chart.canvas.id] = chart;
     });
 
-    $scope.AbtelBackupEsxVmStore.getData(1,'dash').then(refreshSizesBar)
-
-
-
-    $rootScope.$on('AbtelBackupEsxVmStore',function (ev,data){
-        if(data.type == 'edit'){
+    $rootScope.$on('AbtelBackupBorgRepoStore',function (ev,data){
+        if(data.type == 'edit' || data.type == 'add'){
             refreshSizesBar(true);
         }
     });
 
+    //call data and init bar
+    $scope.AbtelBackupBorgRepoStore.getData(1,'dash').then(refreshSizesBar)
 
-    //
-    //      BandWidth
-    //
-    $scope.line = {};
 
-    $scope.line.data = [Array.apply(null, Array(60)).map(Number.prototype.valueOf,0),Array.apply(null, Array(60)).map(Number.prototype.valueOf,0)];
+    //---------------------//
+    //      BandWidth      //
+    //---------------------//
+    var refreshBandwidthBar = function(){
+        var data = $scope.AbtelBackupStateStore.data['dash'];
+console.info('bandwidth init',data,data.length);
+        //if(!data.length) return false;
 
-    var min = -60;
-    $scope.line.labels = Array.apply(null, Array(60)).map(function(a){
-        min++;
-        return min+' sec.';
-    });
-
-    $scope.line.series = ['Total Upload','Total Download'];
-
-    $scope.line.dsOverride =[
-        {
-            yAxisID: 'Yaxis1',
-            borderColor: 'rgba(70,190,138,0.5)',
-            backgroundColor: 'rgba(255,255,255,0)',
-            fill: false
-        },
-        {
-            borderColor: 'rgba(70,190,138,0.5)',
-            backgroundColor: 'rgba(255,255,255,0)',
-            borderDash: [5,4],
-            fill: false
+        var datasetRX = [];
+        var datasetTX = [];
+        for (var n in data){
+            datasetRX.push(parseInt(data[n].RX));
+            datasetTX.push(parseInt(data[n].TX));
         }
-    ];
 
-    $scope.line.options = {
-        scales: {
-            yAxes: [
-                {
-                    id: 'Yaxis1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left'
+
+        /*$scope.line = {};
+        $scope.line.data = [datasetRX,datasetTX];
+        if($scope.line.labels) return true;
+
+        $scope.line.labels = ['Download','Upload'];
+
+        $scope.line.data = [Array.apply(null, Array(60)).map(Number.prototype.valueOf,0),Array.apply(null, Array(60)).map(Number.prototype.valueOf,0)];
+
+        var min = -60;
+        $scope.line.labels = Array.apply(null, Array(60)).map(function(a){
+            min++;
+            return min+' sec.';
+        });
+
+        $scope.line.series = ['Total Upload','Total Download'];
+
+        $scope.line.dsOverride =[
+            {
+                yAxisID: 'Yaxis1',
+                borderColor: 'rgba(70,190,138,0.5)',
+                backgroundColor: 'rgba(255,255,255,0)',
+                fill: false
+            },
+            {
+                borderColor: 'rgba(70,190,138,0.5)',
+                backgroundColor: 'rgba(255,255,255,0)',
+                borderDash: [5,4],
+                fill: false
+            }
+        ];
+
+        $scope.line.options = {
+            scales: {
+                yAxes: [
+                    {
+                        id: 'Yaxis1',
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
+                ]
+            }
+        };*/
+        var colors = {
+            _primary: '#01a8fe',
+            _default: '#acb7bf',
+            _success: '#46be8a',
+            _danger: '#fb434a',
+            _warning: '#f39834'
+        };
+
+        $scope.bandwidth = [
+            ['Download'],
+            ['Upload'],
+            ['Cpu'],
+            ['Ram'],
+            ['Io']
+        ];
+
+        console.log('>>> chart bandwidth init');
+        $scope.bandwidthChart = c3.generate({
+            bindto: '#chart-bandwidth',
+            data: {
+                columns: $scope.bandwidth,
+                axes: {
+                    Download: 'y',
+                    Upload: 'y',
+                    Cpu: 'y2',
+                    Ram: 'y2',
+                    Io: 'y2'
+                },
+                types: {
+                    Download: 'area-spline',
+                    Upload: 'area-spline',
+                    Cpu: 'spline',
+                    Ram: 'spline',
+                    Io: 'spline'
                 }
-            ]
+            },
+            axis: {
+                y: {
+                    show: true,
+                    label: {
+                        text: 'Kb/Sec',
+                        position: 'outer-middle'
+                    },
+                    tick: {
+                        format: d3.format("kbs,") // ADD
+                    }
+                },
+                y2: {
+                    show: true,
+                    label: {
+                        text: 'Pourcentage %',
+                        position: 'outer-middle'
+                    },
+                    tick: {
+                        format: d3.format("%,") // ADD
+                    }
+                }
+            },
+            color: {
+                pattern: [colors._primary, colors._success,colors._warning,colors._default,colors._danger,]
+            }
+        });
+        return true;
+    }
+    var updateBandwidth = function(){
+        var dots = $scope.AbtelBackupStateStore.data['dash'];
+        var dot = dots[dots.length-1];
+        //Download
+        if ($scope.bandwidth[0].length>60){
+            $scope.bandwidth[0].splice(1,1);
         }
-    };
+        $scope.bandwidth[0].push(dot['RX']);
+        //Upload
+        if ($scope.bandwidth[1].length>60){
+            $scope.bandwidth[1].splice(1,1);
+        }
+        $scope.bandwidth[1].push(dot['TX']);
+        //Cpu
+        if ($scope.bandwidth[2].length>60){
+            $scope.bandwidth[2].splice(1,1);
+        }
+        $scope.bandwidth[2].push(dot['CpuUsage'].split('.')[0]/100);
+        //Ram
+        if ($scope.bandwidth[3].length>60){
+        $scope.bandwidth[3].splice(1,1);
+        }
+        $scope.bandwidth[3].push(dot['RamUsage'].split('.')[0]/100);
+        //Io
+        if ($scope.bandwidth[4].length>60){
+            $scope.bandwidth[4].splice(1,1);
+        }
+        $scope.bandwidth[4].push(dot['IOUsage'].split('.')[0]/100);
 
-    $rootScope.$on('BandWidth',function (ev,data){
-        var dots = data.data;
-        console.log('dots',dots);
+        //Update charts
+        $scope.bandwidthChart.load({
+            columns: $scope.bandwidth
+        });
+        console.log('>>> update bandwidth',$scope.bandwidth, dot,dots);
+    }
 
-        var update = $interval(function(){
-            var dot = dots.shift();
-            if(dots.length < 1) $interval.cancel(update);
-            $scope.line.data[0].shift();
-            $scope.line.data[0].push(dot[dot.length-1][dot[dot.length-1].length-2]);
+    //init bar bandwidth
+    $scope.AbtelBackupStateStore.getData(1,'dash').then(refreshSizes).then(refreshBandwidthBar);
 
-            $scope.line.data[1].shift();
-            $scope.line.data[1].push(dot[dot.length-1][dot[dot.length-1].length-1]);
-        },1000);
 
+    $rootScope.$on('AbtelBackupStateStore',function (ev,data){
+        if(data.type == 'add' ){
+            updateBandwidth();
+        }
     });
+
 
 });

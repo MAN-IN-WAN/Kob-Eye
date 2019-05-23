@@ -101,6 +101,14 @@ class Host extends genericClass
 
         return true;
     }
+
+    /**
+     * @return bool
+     * softSave
+     */
+    public function softSave(){
+        return parent::Save();
+    }
     /**
      * getMasterServer
      * Recupere le serveur maître
@@ -1186,6 +1194,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         if (!isset($params['fromHost'])) {
             //création de l'hébergement
             $host = Sys::getOneData('Parc', 'Host/' . $this->Id);
+            $infra = Sys::getOneData('Parc', 'Infra/Host/' . $this->Id);
             $name = (isset($params['targetHost']) && !empty($params['targetHost'])) ? $params['targetHost'] : $host->Nom . ' (Copie)';
             $client = $host->getOneParent('Client');
             $server = (isset($params['targetServer']) && $params['targetServer'] > 0) ? Sys::getOneData('Parc', 'Server/' . $params['targetServer']) : $host->getOneParent('Server');
@@ -1203,6 +1212,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             unset($host->NomLDAP);
             $host->addParent($client);
             $host->addParent($server);
+            if ($infra)$host->addParent($infra);
             $host->Nom = $name;
             try {
                 if (!$host->Save()) {
@@ -1293,6 +1303,34 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         foreach ($aps as $ap)
             $ap->emptyProxyCacheTask();
         return true;
+    }
+
+    /**
+     * @return Object
+     * getServer
+     */
+    public function getServer() {
+        $serv = Sys::getOneData('Parc','Server/Host/'.$this->Id,0,1,'','','','',true);
+        return $serv;
+    }
+
+    public function getSize(){
+        $server = $this->getServer();
+        $cmd='du -s /home/'.$this->NomLDAP.'  | cut -f1';
+        $this->DiskSpace = $server->remoteExec($cmd);
+        //mise à jour quota
+        if ($this->Quota<=10000) $this->Quota=5*1024*1024;
+        $this->DiskQuota = round(($this->DiskSpace / $this->Quota) *100);
+
+        //mise à jour des tailles de bdd
+        $bdds = $this->getChildren('Bdd');
+        foreach ($bdds as $bdd){
+            //echo $bdd->Nom.' size: '.$bdd->getSize();
+            $bdd->getSize();
+        }
+
+        $this->softSave();
+        return $this->DiskSpace;
     }
 
 }

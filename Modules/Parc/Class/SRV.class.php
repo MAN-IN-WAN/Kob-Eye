@@ -134,7 +134,7 @@ class SRV extends genericClass {
 	private function buildEntry( $new = true ) {
 		$entry = array();
 		$pre = substr($this->Nom, 0, 4);
-		if($pre != 'SRV:') $this->Nom = 'SRV:' . $this->Nom;
+		if($pre != 'SRV:') $this->Nom = 'SRV:' . $this->Service.'.'.$this->Protocole;
 		$entry['cn'] = $this->Nom;
 		$entry['dnscname'] = $this->Target;
 		$entry['dnsdomainname'] = $this->Service.'.'.$this->Protocole;

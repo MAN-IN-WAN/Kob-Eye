@@ -52,6 +52,7 @@ class Systeme extends Module {
      * Execution des taches
      */
     public  function executeTasks() {
+        //reconnexion sql
         $start = time();
         Sys::autocommitTransaction();
         while(time()<$start+240){
@@ -66,7 +67,7 @@ class Systeme extends Module {
                 try {
                     echo "Execute task ".$t->getFirstSearchOrder()." - ".$t->Id."\r\n";
                     $t->Execute($t);
-                }catch (Exception $e){
+                }catch (Throwable $e){
                     $t->Erreur = true;
                     $t->Save();
                     $t->createActivity('Erreur Fatale: '.$e->getMessage());
@@ -361,17 +362,37 @@ class Systeme extends Module {
         $minute = intval(date('i',$d));
         $month = intval(date('m',$d));
         $monthday = date('j',$d);
-        $tasks = Sys::getData('Systeme','ScheduledTask/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
+        $tasks = Sys::getData('Systeme','ScheduledTask/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)',0,100);
+        echo 'thread parent '.posix_getpid()."\n";
         foreach ($tasks as $t) {
-            if ($t->TaskId>0){
-                //execution objet
-                $obj = Sys::getOneData($t->TaskModule,$t->TaskObject.'/'.$t->TaskId);
-                $obj->{$t->TaskFunction}();
-            }else{
-                //execution statique
-                call_user_func($t->TaskObject.'::'.$t->TaskFunction);
-            }
+            echo "Execute $t->Titre \n";
+            $pid = pcntl_fork();
 
+            if ( $pid == -1 ) {
+                // Fork failed
+                exit(1);
+            } else if ( $pid ) {
+                // We are the parent
+                // Can no longer use $db because it will be closed by the child
+                // Instead, make a new MySQL connection for ourselves to work with
+                $GLOBALS['Systeme']->connectSQL(true);
+            } else {
+                echo 'début du thread '.posix_getpid()."\n";
+                $GLOBALS['Systeme']->connectSQL(true);
+                // We are the child
+                // Do something with the inherited connection here
+                // It will get closed upon exit
+                if ($t->TaskId>0){
+                    //execution objet
+                    $obj = Sys::getOneData($t->TaskModule,$t->TaskObject.'/'.$t->TaskId);
+                    $obj->{$t->TaskFunction}();
+                }else{
+                    //execution statique
+                    call_user_func($t->TaskObject.'::'.$t->TaskFunction);
+                }
+                echo 'fin du thread '.posix_getpid()."\n";
+                exit(0);
+            }
         }
     }
 }

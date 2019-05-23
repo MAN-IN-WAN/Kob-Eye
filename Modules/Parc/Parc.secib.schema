@@ -562,7 +562,7 @@
 		<PROPERTIES type="varchar" description="Nom technique de l'instance (génération automatique si vide)" form="1" fiche="1" unique="1" listDescr="Nom technique" default="">InstanceNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
 		<!--<PROPERTIES type="text" description="Autres sous domaines (séparés par des retours chariots)" listDescr="Autres Domaines" searchOrder="12" form="1" fiche="1">ServerAlias</PROPERTIES>-->
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" list="1" form="1" fiche="1" values="dev::Développement,master::Master,prodhotfix::ProdHotfix,prodinterne::ProdInterne,prodipad::ProdIpad,prod::Production,prodpilote::ProdPilote" listDescr="Type" default="dev" >Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" list="1" form="1" fiche="1" values="dev::Développement,master::Master,prodhotfix::ProdHotfix,prodinterne::ProdInterne,prodipad::ProdIpad,prod::Production,prodpilote::ProdPilote,demosecib::DemoSecib,preprodipad::PréProdIpad,preprodouilaw::PréProdOuiLaw,prodouilaw::ProdOuiLaw" listDescr="Type" default="dev" >Type</PROPERTIES>
 		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
@@ -626,7 +626,7 @@
 	<OBJECTCLASS title="VersionLogiciel" driver="mysql" Description="Version des applicatifs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/VersionLogiciel.class.php" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif"  query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">Version</PROPERTIES>
-		<PROPERTIES type="varchar" description="Type" values="dev::Développement,master::Master,prodhotfix::ProdHotfix,prodinterne::ProdInterne,prodipad::ProdIpad,prod::Production,prodpilote::ProdPilote" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type" values="dev::Développement,master::Master,prodhotfix::ProdHotfix,prodinterne::ProdInterne,prodipad::ProdIpad,prod::Production,prodpilote::ProdPilote,demosecib::DemoSecib,preprodipad::PréProdIpad,preprodouilaw::PréProdOuiLaw,prodouilaw::ProdOuiLaw" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" listDescr=""  form="1" fiche="1">Fichier</PROPERTIES>
 		<PROPERTIES type="text" description="SQL intialisation (dump)" subtype="sql" form="1" fiche="1">SQLInit</PROPERTIES>
 		<PROPERTIES type="varchar" description="Url Git" form="1" fiche="1">GitUrl</PROPERTIES>

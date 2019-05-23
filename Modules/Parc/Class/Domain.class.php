@@ -11,14 +11,25 @@ class Domain extends genericClass {
 	 */
 	public function Save( $synchro = true ) {
 		$first = ($this->Id == 0);
+        $old = Sys::getOneData('Parc','Apache/'.$this->Id);
+        //test de modification du ApacheServerName
+        if ($this->Id &&$old->Url!=$this->Url){
+            $this->addError(array("Message"=>"Impossible de modifier le nom de domaine de la zone. Si c'est nécessaire, veuillez la supprimer et la recréer."));
+            return false;
+        }
+
 		parent::Save();
 		// Forcer la vérification
 		$this->Verify( $synchro );
+
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
-			if ($this->updateOnSave)
-				$this->AutoGenSubDomains();
+			if ($this->updateOnSave) {
+                $this->updateOnSave = false;
+                parent::Save();
+                $this->AutoGenSubDomains();
+            }
 			//mise à jour des serveur dns
             $pxs = Sys::getData('Parc','Server/Dns=1');
             foreach ($pxs as $px) {

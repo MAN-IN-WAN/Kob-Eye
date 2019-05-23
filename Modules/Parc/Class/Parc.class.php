@@ -384,11 +384,10 @@ class Parc extends Module{
      */
     public  function createCheckState($task=null) {
         echo "check State\r\n";
-        $nb = Sys::getCount('Parc','Instance/Enabled=1&Type=prod');
+        $nb = Sys::getCount('Parc','Instance/Enabled=1');
         $it = abs($nb/100)+1;
-        //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
         for ($i=0;$i<=$it;$i++) {
-            $aps = Sys::getData('Parc', 'Instance/Enabled=1&Type=prod', $i*100, 100);
+            $aps = Sys::getData('Parc', 'Instance/Enabled=1', $i*100, 100);
             //pour chaque instance on crée une tache pour vérifier l'etat
             foreach ($aps as $a) {
                 if ($a->createCheckStateTask()) echo "--> checkState $a->Nom \r\n";

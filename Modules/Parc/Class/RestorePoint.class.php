@@ -132,11 +132,15 @@ class RestorePoint extends genericClass{
         $bdds = $host->getChildren('Bdd');
         $apachesrv = $host->getOneParent('Server');
         $inst = $host->getOneChild('Instance');
+        if ($this->Mounted) {
+            $this->addError(array('Message'=>'Impossible de monter ce point de restauration, il est déjà monté'));
+            return false;
+        }
         try {
             //Préparation du backup
             $act = $task->createActivity('Création du dossier backup-'.$this->Identifiant, 'Info');
             //creation du dossier
-            $cmd = 'mkdir /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant;
+            $cmd = 'if [ ! -d "/home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'" ] then mkdir /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'; fi';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails(print_r($out,true));
@@ -150,7 +154,7 @@ class RestorePoint extends genericClass{
             $act->Terminate(true);
 
             $act = $task->createActivity('Montage du point de restauration en lecture seule', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && sudo -u '.$host->NomLDAP.' borg mount backup::'.$this->Identifiant.' backup-'.$this->Identifiant;
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && sudo -E -u '.$host->NomLDAP.' borg mount backup::'.$this->Identifiant.' backup-'.$this->Identifiant;
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
@@ -160,13 +164,76 @@ class RestorePoint extends genericClass{
             $this->Mounted = true;
             parent::Save();
             return true;
-        }catch (Exception $e){
+        }catch (Throwable $e){
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
             throw new Exception($e->getMessage());
-        }catch (Error $e){
+        }
+    }
+    /**
+     * createUnMountTask
+     * Création d'une tache de montage
+     */
+    public function createUnMountTask($orig=null) {
+        $host = $this->getOneParent('Host');
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Démontage de la sauvegarde de l\'hébergement ' . $host->Nom.' au point de restauration '.$this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'RestorePoint';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'unmount';
+        $task->TaskType = 'edit';
+        $task->TaskCode = 'BACKUP_MOUNT';
+        $task->addParent($host);
+        $inst = $host->getOneChild('Instance');
+        if ($inst)
+            $task->addParent($inst);
+        $task->addParent($host->getOneParent('Server'));
+        if (is_object($orig)) $task->addParent($orig);
+        $task->Save();
+        return array("task" => $task);
+    }
+    /**
+     * unmount
+     * Démonte un point de montage
+     * @param Object Tache
+     */
+    public function unmount($task){
+        $host = $this->getOneParent('Host');
+        $bdds = $host->getChildren('Bdd');
+        $apachesrv = $host->getOneParent('Server');
+        $inst = $host->getOneChild('Instance');
+        if (!$this->Mounted) {
+            $this->addError(array('Message'=>'Impossible de démonter ce point de restauration, il n\'est pas monté'));
+            return false;
+        }
+        try {
+
+            $act = $task->createActivity('Démontage du point de restauration en lecture seule', 'Info');
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && sudo -E -u '.$host->NomLDAP.' borg umount backup-'.$this->Identifiant;
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+
+            //Préparation du backup
+            $act = $task->createActivity('Suppression du dossier backup-'.$this->Identifiant, 'Info');
+            //creation du dossier
+            $cmd = 'rmdir /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant;
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails(print_r($out,true));
+            $act->Terminate(true);
+            //definition en point de montage
+            $this->Mounted = false;
+            parent::Save();
+            return true;
+        }catch (Throwable $e){
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
+            $this->Mounted = false;
+            parent::Save();
             throw new Exception($e->getMessage());
         }
     }

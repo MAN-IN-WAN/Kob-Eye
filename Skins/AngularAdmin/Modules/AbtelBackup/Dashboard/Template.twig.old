@@ -3,60 +3,16 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-primary">
-                    <a class="widget-body" href="#/vm/esxjobs" >
-                        <div class="widget-body-inner">
-                            <h5 class="text-uppercase">Jobs VmWare</h5>
-                            <i class="counter-icon icmn-stack"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbVmWareJob }}"></span>
-                            </span>
+            <div class="col-md-12">
+                <div class="widget widget-two widgetTop" style="height: auto;">
+                    <div class="bandWidth">
+                        <div class="widget-header">
+                            Utilisation de la <strong>bande passante</strong>
                         </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-success">
-                    <a class="widget-body" href="#/share/windowjob" >
-                        <div class="widget-body-inner">
-                            <h5 class="text-uppercase">Jobs Partages Fichiers</h5>
-                            <i class="counter-icon icmn-windows8"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbSambaJob }}"></span>
-                            </span>
+                        <div class="widget-body clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
+                            <canvas class="chart-line" chart-data="line.data" chart-labels="line.labels" chart-dataset-override="line.dsOverride" chart-options="line.options" chart-series="line.series" id="chart-line" width="1000" height="250"></canvas>
                         </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-warning">
-                    <a class="widget-body" href="#/hyperv/hyperjob" >
-                        <div class="widget-body-inner">
-                            <h5 class="text-uppercase">Jobs HyperV</h5>
-                            <i class="counter-icon icmn-windows"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbHyperVJob }}"></span>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-danger">
-                    <a class="widget-body" href="#/remote/sync" >
-                        <div class="widget-body-inner">
-                            <h5 class="text-uppercase">Jobs Externalisation</h5>
-                            <i class="counter-icon icmn-upload2"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbRemoteJob }}"></span>
-                            </span>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,36 +24,21 @@
                             Utilisation de l'<strong>espace disque</strong> global
                         </div>
                         <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
-                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="385" height="280"></canvas>
+                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-9">
+            <div class="col-xl-6">
                 <div class="widget widget-two widgetTop">
                     <div class="usageCompare">
                         <div class="widget-header">
-                            Utilisation de l'<strong>espace disque</strong> par dépôt
+                            Utilisation de l'<strong>espace disque</strong> par VM
                         </div>
                         <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
                             {#<div class="custom-scroll jspScrollable" >#}
-                            <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="100%" height="280"></canvas>
+                                <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="400" height="350"></canvas>
                             {#</div>#}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="widget widget-two widgetTop" style="height: auto;">
-                    <div class="bandWidth">
-                        <div class="widget-header">
-                            Utilisation de la <strong>bande passante</strong>
-                        </div>
-                        <div class="widget-body clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
-                            <!--<canvas class="chart-line" chart-data="line.data" chart-labels="line.labels" chart-dataset-override="line.dsOverride" chart-options="line.options" chart-series="line.series" id="chart-line" width="1000" height="250"></canvas>-->
-                            <div id="chart-bandwidth"></div>
                         </div>
                     </div>
                 </div>
@@ -159,9 +100,9 @@
 
         ///////////////////////////////////////////////////////////
         // COUNTERS
-        $('.counter-init').countTo({
+        /*$('.counter-init').countTo({
             speed: 1500
-        });
+        });*/
 
         ///////////////////////////////////////////////////////////
         // ADJUSTABLE TEXTAREA

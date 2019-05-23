@@ -1,0 +1,1 @@
+[OBJ Parc|Apache|Apache][!Apache::getDomainIp([!domain!])!]

@@ -464,7 +464,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}elseif (!$new){
-			//$entry['apacheOptions'] = Array('Require all granted');
+			$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -703,18 +703,20 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
      *
      */
     public function getDomainsToCheck() {
-        $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1');
+        $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1',0,10,'','','','',true);
         $domains = explode("\n",str_replace("\r","",$this->ApacheServerAlias));
         $domains[] = $this->ApacheServerName;
         $out = array();
         foreach ($domains as $domain) {
             if (empty(trim($domain))) continue;
+            $except = false;
             foreach ($exceptionDomains as $ed){
                 //test des exceptions
-                if (strpos($domain,$ed->Url) === false){
-                    array_push($out,$domain);
+                if (strpos($domain,$ed->Url) !== false){
+                    $except = true;
                 }
             }
+            if (!$except)array_push($out,$domain);
         }
         return implode(' ',$out);
     }
@@ -731,21 +733,23 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
         }
         return $out;
     }
-    public function getDomainIp($domain){
+    public static function getDomainIp($domain){
         require_once 'Net/DNS2.php';
         if (!class_exists('Net_DNS2_Resolver')){
-            $this->addError(array("Message"=>"La librairie Net_DNS2 n'est pas disponible. Veuillez l'installer avec la commande suivante: 'pear install NET/DNS2'"));
+            die("La librairie Net_DNS2 n'est pas disponible. Veuillez l'installer avec la commande suivante: 'pear install NET/DNS2'");
             return false;
         }
-        $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
+        $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8','8.8.4.4'),
+                'use_tcp' => false,
+                'timeout' => 20 ));
         try {
             $t = $resolver->query($domain, 'A');
         }catch (Exception $e){
-            $this->addWarning(array("Message"=>"Timeout DNS : ".$e->getMessage()));
+            die("Timeout DNS : ".$e->getMessage());
             return '';
         }
         if (sizeof($t->answer))
-            return $t->answer[0]->address;
+            return $t->answer[sizeof($t->answer)-1]->address;
         else return false;
     }
     /**
@@ -797,7 +801,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
         }
         //on vérifie l'ip du domaine principal
         $act = $task->createActivity('Recherche de l\'ip pour le domaine '.$first);
-        $ip = $this->getDomainIp($first);
+        $ip = Apache::getDomainIp($first);
         $act->addDetails(print_r($ip,true));
         if ($ip){
             $act = $task->createActivity('Recherche du proxy pour l\'ip '.$ip);
