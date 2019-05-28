@@ -17,7 +17,7 @@ class Bdd extends genericClass {
             $host = Sys::getOneData('Parc','Host/Bdd/'.$this->Id,null,null,null,null,null, null,true);
             if (!$host){
                 $this->addError(array('Message'=>'Impossible de trouver un hote associé'));
-                parent::Delete();
+                //parent::Delete();
                 return false;
             }
             $infra = $host->getInfra();
@@ -150,6 +150,30 @@ class Bdd extends genericClass {
         $chaine = preg_replace('`[\/]`', '-', trim($chaine));
 
         return $chaine;
+    }
+    /**
+     * getSize
+     * Définit la taille des bases de données
+     */
+    public function getSize() {
+        $sql = 'SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 AS "Size" FROM information_schema.TABLES WHERE table_schema="'.$this->Nom.'" GROUP BY table_schema';
+        $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
+        if (!is_object($serv)) return false;
+        try {
+            $dbGuac = new PDO('mysql:host=' . $serv->InternalIP . ';dbname=information_schema', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac->query("SET AUTOCOMMIT=1");
+            $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $q = $dbGuac->query($sql);
+            $result = $q->fetchALL(PDO::FETCH_ASSOC);
+            if (isset($result[0]))
+                $this->Size = $result[0]['Size'];
+            else $this->Size = 0;
+            parent::Save();
+            return $this->Size;
+        }catch (Exception $e){
+            die('ERROR: '.$e->getMessage());
+        }
     }
 
 }

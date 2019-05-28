@@ -338,7 +338,7 @@
         <PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7"  form="1">TaskFunction</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
         <PROPERTIES type="varchar"  fiche="1" form="1" description="Identifiant du thread en cours">ThreadId</PROPERTIES>
-        <PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
+        <PROPERTIES type="progress" list="1" fiche="1" listDescr="Progression">Progression</PROPERTIES>
         <!-- Parc -->
         <!--<FKEY card="0,1" data="Instance,Id" fiche="1" form="1" module="Parc" parentDescription="Instance" link="1">InstanceId</FKEY>
         <FKEY card="0,1" data="Host,Id" fiche="1" module="Parc" form="1" parentDescription="Hébergement" link="1">HostId</FKEY>
@@ -373,7 +373,7 @@
         <FKEY data="Tache,Id" form="1" fiche="1" card="0,1" popup="1" >TacheId</FKEY>
     </OBJECTCLASS>
 
-	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="Mail Queue" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
+	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="MailQueue" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
 		<PROPERTIES type="varchar" searchOrder="1">From</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2">To</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2">Cc</PROPERTIES>

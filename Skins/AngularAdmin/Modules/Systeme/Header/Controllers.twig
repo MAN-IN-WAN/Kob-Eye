@@ -862,6 +862,12 @@
                 $scope[toto].store.getData(1,context);
             }
         }
+        $scope.displaySelect = function(){
+            for(var i in $scope.{{ c.identifier }}.selected){
+                if($scope.{{ c.identifier }}.selected[i]) return true;
+            }
+            return false;
+        }
 
         //acces aux stores parents
         {% for parent in c.parentelements %}

@@ -19,6 +19,9 @@ class BorgRepo extends genericClass {
         if ($new){
             //creation du depot
             return $this->createDepot();
+        }else{
+            //update size
+            $this->updateSize();
         }
         return true;
     }
@@ -46,5 +49,14 @@ class BorgRepo extends genericClass {
             return false;
         }
         return true;
+    }
+    public function updateSize() {
+        try {
+            $this->Size = AbtelBackup::getSize($this->Path);
+            parent::Save();
+        }catch (Exception $e) {
+            $this->addError(array('Message'=>'Impossible de créer le dépôt  Borg '.$this->Path.'. Cmd: '.$cmd.' Détail: '.$e->getMessage()));
+            return false;
+        }
     }
 }

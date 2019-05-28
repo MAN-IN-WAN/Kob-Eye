@@ -6,6 +6,10 @@
 		<FILTER name="Projets terminée" color="primary"><![CDATA[Status>4]]></FILTER>
 		<FILTER name="Projets à planifier (Brouillon)" color="secondary"><![CDATA[Status=1]]></FILTER>
 		<FILTER name="Projets de suivi uniquement" color="secondary"><![CDATA[SuiviUniquement=1]]></FILTER>
+		<INTERFACES name="fiche_tab">
+			<FORM type="Template" urlPrefix="/Projets/Projet/" urlSuffix="/Gantt.htm" title="Tableau de Gantt">Infos</FORM>
+		</INTERFACES>
+
 		<FKEY card="1,1" module="Parc" data="Client,Id" list="1" form="1" fiche="1" description="Client" listDescr="Client">ClientId</FKEY>
 		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" form="1" fiche="1" description="Titre" formLabel="1">Nom</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="2" category="Descriptif" description="Date de départ souhaitée"  form="1" fiche="1" listDescr="Départ">DateDepart</PROPERTIES>

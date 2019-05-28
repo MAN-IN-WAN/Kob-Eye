@@ -1073,6 +1073,7 @@ class ObjectClass extends Root{
 	 function getGlobalType($Type){
 		switch (strtolower($Type)){
 			case "pourcent":
+			case "progress":
 			case "price":
 			case "float":
 				$Type="float";

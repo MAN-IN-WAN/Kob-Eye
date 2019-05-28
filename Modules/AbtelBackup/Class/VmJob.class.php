@@ -14,6 +14,16 @@ class VmJob extends Job {
                             100
                         );
 
+    /**
+     * Save
+     * Surcharge de la fonction Save
+     */
+    public function Save() {
+        //on vérfiei que la compression est désactivée pour activer la fonction PageFile
+        if ($this->PageFile) $this->Compression=false;
+        return parent::Save();
+    }
+
 
     public static function execute() {
         //intialisation des dates
@@ -205,9 +215,14 @@ class VmJob extends Job {
 
                 //compression
                 if (intval($this->Step)<=4){
-                    unset($act);
-                    $act = $task->createActivity($v->Titre.' > Compression vmjob','Exec',$pSpan[3]);
-                    $act = $this->compressJob($v,$act);
+                    if ($this->Compression) {
+                        unset($act);
+                        $act = $task->createActivity($v->Titre . ' > Compression vmjob', 'Exec', $pSpan[3]);
+                        $act = $this->compressJob($v, $act);
+                    }elseif($this->PageFile){
+                        $act = $task->createActivity($v->Titre . ' > Supression PageFile / HiberFile', 'Exec', $pSpan[3]);
+                        $act = $this->removePageFileFromVm($v, $act);
+                    }
                 }
 
                 //déduplication
@@ -228,11 +243,31 @@ class VmJob extends Job {
                 $this->Running = false;
                 $this->Errors = true;
                 parent::Save();
-                return;
+                return false;
             }
         }
         //opération terminée
         $this->resetState();
+
+        ///tache de retention
+        $this->createRetentionTask();
+        return true;
+    }
+    /**
+     * createRetentionTask
+     * Création de la tache de retention
+     */
+    public function createRetentionTask() {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Rotation job machine virtuelle :' . $this->Titre.'. rotation du '.date('d/m/Y H:i:s');
+        $task->TaskModule = 'AbtelBackup';
+        $task->TaskObject = 'VmJob';
+        $task->TaskType = 'backup';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'rotate';
+        $task->addParent($this);
+        $task->Save();
     }
 
     /**
@@ -366,10 +401,20 @@ VM_STARTUP_ORDER=
      */
     private function deduplicateJob($v,$borg,$act){
         $this->setStep(5); //'Déduplication'
-        AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
+        $act->addDetails($v->Titre.' Redéfinition des droits '.$borg->Path);
         //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
         AbtelBackup::localExec('sudo chown -R backup:backup '.$borg->Path.''); //On s'assure que les fichiers borg ne soient pas en root
-        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre.'.tar');
+        $act->addDetails($v->Titre.' Suppression du borg lock '.$borg->Path);
+        AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
+        $act->addDetails($v->Titre.' Redéfinition des droits de la vm'.$borg->Path);
+        AbtelBackup::localExec("sudo chmod -R 705 '/backup/nfs/".$v->Titre."'"); //On s'assure que les fichiers borg ne soient pas en root
+        if ($this->Compression) {
+            $act->addDetails($v->Titre.' Calcul de la taille du fichier '.'/backup/nfs/' . $v->Titre . '.tar');
+            $total = AbtelBackup::getSize('/backup/nfs/' . $v->Titre . '.tar');
+        }else{
+            $act->addDetails($v->Titre.' Calcul de la taille du dossier '.'/backup/nfs/' . $v->Titre);
+            $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
+        }
         $act->addDetails($v->Titre.' ---> TOTAL (Mo):'.$total);
         $act->addDetails($v->Titre.' ---> déduplication de la vm');
         //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
@@ -381,7 +426,12 @@ VM_STARTUP_ORDER=
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
-        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'", $act, $total,null);
+        if ($this->Compression)
+            $cmd = "export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'";
+        else $cmd = "export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre."'";
+        $act->addDetails($cmd);
+        $det = AbtelBackup::localExec($cmd, $act, $total,null);
+
 
         //Recup taille pour graphique/progression
         $v->BackupSize = AbtelBackup::getSize($borg->Path);
@@ -390,9 +440,11 @@ VM_STARTUP_ORDER=
         //création du point de restauration
         $v->createRestorePoint($point,$det);
         $act->setProgression(100);
-        $act->addDetails($v->Titre.' ---> suppression archive');
-        //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
-        AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
+        if ($this->Compression) {
+            $act->addDetails($v->Titre . ' ---> suppression archive');
+            //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
+            AbtelBackup::localExec("if [ -f '/backup/nfs/" . $v->Titre . ".tar' ]; then sudo rm -f /backup/nfs/" . $v->Titre . ".tar; fi");
+        }
         return $act;
     }
     /**
@@ -407,4 +459,196 @@ VM_STARTUP_ORDER=
         parent::Save();
     }
 
+    /**
+     * rotate
+     * Rotation des backups
+     */
+    public function rotate($task) {
+        $act = $task->createActivity(' > Demarrage de la rotation du Job Vm : '.$this->Titre.' ('.$this->Id.')','Info');
+        $act->Terminate();
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+
+        //pour chaque vm
+        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
+
+        foreach ($vms as $v){
+            $act = $task->createActivity(' > Rotation de la VM : '.$v->Titre.' ('.$v->Id.')','Info');
+            $act->Terminate();
+            $esx = $v->getOneParent('Esx');
+            $borg = $v->getOneParent('BorgRepo');
+            try {
+                $act->addDetails($v->Titre.' Redéfinition des droits '.$borg->Path);
+                //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
+                AbtelBackup::localExec('sudo chown -R backup:backup '.$borg->Path.''); //On s'assure que les fichiers borg ne soient pas en root
+                $act->addDetails($v->Titre.' Suppression du borg lock '.$borg->Path);
+                AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
+
+                //Recup taille pour graphique/progression
+                $v->BackupSize = AbtelBackup::getSize($borg->Path);
+                $v->Save();
+                $prs = Sys::getData('AbtelBackup','EsxVm/'.$v->Id.'/RestorePoint/tmsCreate<'.(time()-(86400*intval($this->Retention))));
+                foreach ($prs as $pr){
+                    $pr->Delete();
+                }
+
+                //rotation du dépot pour nettoyer
+                #TODO désactiver à terme ...
+                $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg prune -v --list --keep-within=".$this->Retention."d  ".$borg->Path."", $act);
+                $act->addDetails($det);
+
+                $act->setProgression(100);
+                $act = $task->createActivity(' > Rotation Terminée : suppression de '.sizeof($prs).' version(s)','Info');
+                $act->Terminate(true);
+                return true;
+            }catch (Exception $e){
+                if(!$act) $act = $task->createActivity($v->Titre.' > Exception: Step '.$this->Step,'Info');
+                $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
+                $act->Terminate(false);
+                //opération terminée
+                $this->Running = false;
+                $this->Errors = true;
+                parent::Save();
+                return;
+            }
+        }
+    }
+    /**
+     * createRemovePageFileTask
+     * Création de la tache permettant de
+     */
+    public function createRemovePageFileTask() {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Retrait des fichiers de pagination :' . $this->Titre.'. '.date('d/m/Y H:i:s');
+        $task->TaskModule = 'AbtelBackup';
+        $task->TaskObject = 'VmJob';
+        $task->TaskType = 'backup';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'removePageFile';
+        $task->addParent($this);
+        $task->Save();
+        return array('task'=>$task);
+    }
+
+    /**
+     * removePageFile
+     * Suppression des fichiers de pagination
+     */
+    public function removePageFile($task){
+        $act = $task->createActivity(' > Suppression des fichiers pagefile hyberfile : '.$this->Titre.' ('.$this->Id.')','Info');
+        $act->Terminate();
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+
+        //pour chaque vm
+        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
+        try {
+            foreach ($vms as $v) {
+                $act = $task->createActivity(' > Traitement de la VM : ' . $v->Titre . ' (' . $v->Id . ')');
+                if (!$this->removePageFileFromVm($v,$act)) continue;
+            }
+            return true;
+        }catch (Throwable $e){
+            $act->addDetails('ERREUR => '.$e->getMessage().' ligne: '.$e->getLine().' code: '.$e->getCode().' file: '.$e->getFile().' trace: '.$e->getTraceAsString());
+            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
+     * removePageFileFromVm
+     * Supprime les fichiers page des vms
+     */
+    public function removePageFileFromVm($v,$act){
+        $this->setStep(4); //'Compression / Suppression Pagefile'
+        $loop_number = 0;
+        //vérification de la présence d'un clone
+        if (!file_exists('/backup/nfs/' . $v->Titre)) {
+            $act->addDetails('Le clone de la vm n\'est pas présent');
+            $act->Terminate(false);
+            return false;
+        }
+        //recherche des vmdks disques
+        $clone_path = "/backup/nfs/".$v->Titre."/".$v->Titre."-A/";
+        $cmd = 'sudo ls "' . $clone_path . '" | grep vmdk';
+        $act->addDetails('Exec cmd: '.$cmd);
+        $files = AbtelBackup::localExec($cmd);
+        $files = explode("\n", $files);
+        $act->addDetails(print_r($files, true));
+        $act->Terminate(true);
+        //on demonte les montages précédents
+        //AbtelBackup::localExec('sudo dmsetup remove_all && sleep 5');
+        //pour chaque fichier, on monte toutes les partitions
+        foreach ($files as $f) {
+            //si le nom est vide on conitune
+            $f = trim($f);
+            if (empty($f)) continue;
+            //on vérifie que le fichier en soit pas juste u nfichier texte
+            $type = AbtelBackup::localExec('sudo file "' . $clone_path . $f . '" | sed \'s/\([^:]*\): \(\.*\)/\2/\'');
+            $act->addDetails('||'.$f.'||');
+            if (trim($type) != "ASCII text") {
+                //alors on monte le disque
+                //$act = $task->createActivity(' > Montage du disque ' . $f, 'Info');
+                $act->addDetails('disque -> '.$f);
+                $type=explode(';',$type);
+                foreach ($type as $t) {
+                    $act->addDetails('       -> '.$t);
+                }
+                $act->addDetails('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
+                try {
+                    $mount = AbtelBackup::localExec('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
+                }catch (Exception $e){
+                    $act->addDetails($e->getMessage());
+                    try {
+                        $mount = AbtelBackup::localExec('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
+                    }catch (Exception $e){
+                        $act->addDetails($e->getMessage());
+                    }
+                }
+                //on liste les partitions
+                $act->addDetails('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
+                $parts = AbtelBackup::localExec('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
+                $parts = explode("\n",$parts);
+                $act->addDetails(print_r($parts,true));
+                $act->Terminate(true);
+                try {
+                    AbtelBackup::localExec('sudo partx -va /dev/loop' . $loop_number);
+                }catch (Exception $e){
+                    $act->addDEtails($e->getMessage());
+                }
+                foreach ($parts as $p){
+                    if (empty($p))continue;
+                    //$act = $task->createActivity(' >> Montage de la partition '.$p.' du disque ' . $f, 'Info');
+                    //création des points de montage
+                    $act->addDetails('if [ ! -d "' . $clone_path . 'part'.$p.'" ]; then sudo mkdir "' . $clone_path . 'part'.$p.'"; fi');
+                    AbtelBackup::localExec('if [ ! -d "' . $clone_path . 'part'.$p.'" ]; then sudo mkdir "' . $clone_path . 'part'.$p.'"; fi');
+                    //Montage des partitions
+                    $act->addDetails('sudo mount /dev/loop'.$loop_number.'p'.$p.' "'.$clone_path.'part'.$p.'"');
+                    AbtelBackup::localExec('sudo mount /dev/loop'.$loop_number.'p'.$p.' "'.$clone_path.'part'.$p.'"');
+                    //Suppression des fichiers
+                    if (file_exists($clone_path.'part'.$p.'/pagefile.sys')) {
+                        $act->addDetails('Suppression du fichier "'.$clone_path.'part'.$p.'/pagefile.sys"');
+                        AbtelBackup::localExec('sudo rm -f "' . $clone_path . 'part'.$p.'/pagefile.sys"');
+                    }
+                    if (file_exists($clone_path.'part1/hiberfil.sys')) {
+                        $act->addDetails('Suppression du fichier "'.$clone_path.'part'.$p.'/hiberfil.sys"');
+                        AbtelBackup::localExec('sudo rm -f "' . $clone_path . 'part'.$p.'/hiberfil.sys"');
+                    }
+                    //Demontage et suppression des points de montage
+                    $act->addDetails('sudo umount "'.$clone_path.'part'.$p.'" && sudo rmdir "'.$clone_path.'part'.$p.'"');
+                    AbtelBackup::localExec('sudo umount "'.$clone_path.'part'.$p.'" && sudo rmdir "'.$clone_path.'part'.$p.'"');
+                    $act->Terminate(true);
+                }
+
+            }else{
+                $act->addDetails('type '.$f.' -> |'.$type.'|');
+            }
+        }
+
+        //$act = $task->createActivity(' >> Réinitialisation des points de montage', 'Info');
+        $act->addDetails('sudo dmsetup remove_all');
+        AbtelBackup::localExec('sudo dmsetup remove_all');
+        $etat = AbtelBackup::localExec('sudo df -h');
+        $act->addDetails($etat);
+        $act->Terminate(true);
+        return true;
+    }
 }

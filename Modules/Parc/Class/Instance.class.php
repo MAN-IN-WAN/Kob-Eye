@@ -425,6 +425,7 @@ class Instance extends genericClass{
     public function checkState($task=null) {
         $task->DateDebut =time();
         $host = $this->getOneParent('Host');
+        $apserver = $host->getServer();
         $aps = $host->getChildren('Apache/Actif=1');
         $start = microtime(true);
 
@@ -502,6 +503,7 @@ class Instance extends genericClass{
                         if (!in_array($domain, $certdomains)) {
                             Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, false);
                         } else Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, true);
+
                     }
                     $act->addDetails('Exécution en '.floatval((microtime(true)-$time)).' secondes');
                     $act->Terminate(true);
@@ -510,6 +512,59 @@ class Instance extends genericClass{
                 }
             }
         }
+
+        //relevé de la nature de l'instance (forfait mutu ou dédié)
+        $act = $task->createActivity('Evaluation du type de contrat');
+        $inf = $host->getInfra();
+        if (!$inf||!$inf->Default){
+            //alors hébergement dédié
+            $act->addDetails('--> Libre');
+            $this->Produit = 'free';
+        }else $act->addDetails('--> Payant');
+        $act->Terminate(true);
+
+        $act = $task->createActivity('Mesure de l\'espace disque');
+        //Vérification de l'espace disque
+        switch ($this->Produit){
+            case 'base':
+                $host->Quota = 5*1024*1024;
+                break;
+            case 'expert':
+                $host->Quota = 20*1024*1024;
+                break;
+            case 'free':
+            case 'out':
+                $host->Quota = 50*1024*1024;
+                break;
+        }
+        $this->DiskSpace = $host->getSize();
+        $act->addDetails('--> '.$this->DiskSpace);
+        $act->Terminate(true);
+        if ($this->Produit!='free'&&!$this->Locked) {
+            $act = $task->createActivity('Définition du forfait');
+            if ($this->DiskSpace < 5 * 1024 * 1024 && $this->Plugin != 'Prestashop' && $this->Plugin != 'Symfony') $this->Produit = 'base';
+            if (($this->DiskSpace > 5 * 1024 * 1024 && $this->DiskSpace < 20 * 1024 * 1024) || $this->Plugin == 'Prestashop' || $this->Plugin == 'Symfony') $this->Produit = 'expert';
+            if ($this->DiskSpace > 20 * 1024 * 1024) $this->Produit = 'out';
+        }
+        //Mise à jour du quota
+        switch ($this->Produit){
+            case 'base':
+                $this->DiskQuota = ($this->DiskSpace / (5*1024*1024)) *100;
+                break;
+            case 'expert':
+                $this->DiskQuota = ($this->DiskSpace / (20*1024*1024)) *100;
+                break;
+            case 'free':
+            case 'out':
+                $this->DiskQuota = ($this->DiskSpace / (50*1024*1024)) *100;
+                break;
+        }
+        $this->DiskQuota = round($this->DiskQuota);
+        $act->addDetails('--> '.$this->Produit);
+        $act->addDetails('--> '.$this->DiskQuota);
+        $act->Terminate(true);
+        $this->softSave();
+
         $act = $task->createActivity('Execution de la tache plugin');
         $time = microtime(true);
         $plugin = $this->getPlugin();

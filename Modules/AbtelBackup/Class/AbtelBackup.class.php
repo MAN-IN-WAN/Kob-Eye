@@ -71,7 +71,7 @@ class AbtelBackup extends Module{
         if (!$t) {
             //creation du groupe public
             $t = genericClass::createInstance('Systeme', 'ScheduledTask');
-            $t->Titre = 'Moniteur BandWidth';
+            $t->Titre = 'Moniteur systeme';
             $t->Enabled = 1;
             $t->TaskModule = 'AbtelBackup';
             $t->TaskObject = 'AbtelBackup';
@@ -113,15 +113,15 @@ class AbtelBackup extends Module{
             $t->TaskFunction = 'execute';
             $t->Save();
         }
-        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=BackupStore&TaskFunction=getDiskUsage');
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=HyperJob&TaskFunction=execute');
         if (!$t) {
             //creation du groupe public
             $t = genericClass::createInstance('Systeme', 'ScheduledTask');
-            $t->Titre = 'Recalcul espace disque toutes les minutes';
+            $t->Titre = 'Execution AbtelBackup HyperJob toutes les minutes';
             $t->Enabled = 1;
             $t->TaskModule = 'AbtelBackup';
-            $t->TaskObject = 'BackupStore';
-            $t->TaskFunction = 'getDiskUsage';
+            $t->TaskObject = 'HyperJob';
+            $t->TaskFunction = 'execute';
             $t->Save();
         }
 
@@ -247,10 +247,10 @@ class AbtelBackup extends Module{
         preg_match('/[0-9]+$/', $complete_output, $matches);
 
         // return exit status and intended output
-        if( $matches[0] !== "0" && !$stderr) {
+        if(  isset($matches[0]) && $matches[0] !== "0" && !$stderr) {
             throw new RuntimeException( $complete_output, (int)$matches[0] );
         }
-        return str_replace("Exit status : " . $matches[0], '', $complete_output);
+        return str_replace("Exit status : " . ((isset($matches[0]))?$matches[0]:0), '', $complete_output);
     }
 
     static public function getPid($prog){
@@ -304,13 +304,15 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo chown backup:backup /backup/restore');
         AbtelBackup::localExec('if [ ! -d /backup/samba ]; then sudo mkdir /backup/samba; fi');
         AbtelBackup::localExec('sudo chown backup:backup /backup/samba');
+        AbtelBackup::localExec('if [ ! -d /backup/nas]; then sudo mkdir /backup/nas; fi');
+        AbtelBackup::localExec('sudo chown backup:backup /backup/nas');
         AbtelBackup::localExec('sudo chown backup:backup /backup');
         //redemarrge des services
         AbtelBackup::localExec('sudo systemctl restart nfs-server');
         return true;
     }
     static function getSize($path){
-        return AbtelBackup::localExec("du -sBM \"$path\" | sed 's/[^0-9]*//g'");
+        return AbtelBackup::localExec('sudo du -sBM "'.$path.'" | sed "s/^\([0-9]\+\).*/\1/g"');
     }
     /**
      * sync
@@ -327,56 +329,52 @@ class AbtelBackup extends Module{
         return AbtelBackup::localExec($cmd,$act,0,null,$progData);
     }
 
+    /**
+     * getBandWidthCron
+     * Recolte les informations systeme et stocke les statistiques en base de donnée
+     */
     static function getBandWidthCron(){
-        try{
-            $ret = AbtelBackup::localExec('cd /var/www/html/Modules/AbtelBackup/Cron && sh /var/www/html/Modules/AbtelBackup/Cron/nethogs.sh');
-            $ret = preg_replace('/\s+/', '',$ret);
-
-            if(file_exists($ret)){
-                $str = file_get_contents($ret);
-
-                $tics = explode('Refreshing:',$str);
-                array_shift($tics);
-                //array_splice($tics,0,10); //Enleve les 10 premiers tics pour eviter les erreurs du au demarrage laborieux de nethogs
-                array_walk($tics,function(&$i){
-                    $i = trim($i);
-                    $temp = explode(PHP_EOL,$i);
-                    array_walk($temp,function(&$j){
-                        $j = preg_split('/\t+/',$j);
-                    });
-                    $i = $temp;
-                    $total = array( 'Total',0,0);
-                    foreach ($i as $proc){
-                        $total[1] += $proc[1];
-                        $total[2] += $proc[2];
-                    }
-                    $i[] = $total;
-                });
-
-
-                //file_put_contents('toto',print_r($tics,true),8);
-
-                $ev = genericClass::createInstance('Systeme','Event');
-                $ev->EventType = 'BandWidth';
-                $ev->Titre = 'BandWidth Update';
-                $ev->EventModule = 'AbtelBackup';
-                $ev->EventObjectClass = 'AbtelBackup';
-                $ev->EventId = 123;
-                $ev->UserId = 0;
-                $ev->Data = json_encode($tics);
-                $ev->Save();
-
-            } else{
-                //file_put_contents('toto','nooooooooo '.$ret.PHP_EOL,8);
+        $start = time();
+        Sys::autocommitTransaction();
+        //enregistrement des tailles
+        $FreeSize = intval(AbtelBackup::localExec('df -BM --output=avail /backup | tail -n 1')); //pour passe en ko virer -BG
+        $NfsSize = intval(AbtelBackup::getSize('/backup/nfs'));
+        $BorgSize = intval(AbtelBackup::getSize('/backup/borg'));
+        $NasSize = intval(AbtelBackup::getSize('/backup/nas'));
+        $RestoreSize = intval(AbtelBackup::getSize('/backup/restore'));
+        //prépare le sar pour une prochaine execution
+        while(time()<$start+60){
+            //CPU
+            $cpu = AbtelBackup::localExec('grep \'cpu \' /proc/stat | awk \'{usage=($2+$4)*100/($2+$4+$5)} END {print usage}\'');
+            //RAM
+            //free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }
+            $ram = AbtelBackup::localExec('free -m | awk \'NR==2{printf "%.2f", $3*100/$2 }\'');
+            //IO
+            try {
+                $cmd = 'nohup sar 1 1| tail -n2 | head -n 1 | awk \'{ print $NF}\' | sed -e \'s/,/./\' | awk \'{print 100-$NF}\' > '.getcwd().'/Modules/AbtelBackup/Cron/sar.tmp';
+                AbtelBackup::localExec($cmd);
+            }catch (Exception $e){
             }
-
-        } catch (Exception $e){
-//            file_put_contents('toto','+++++++++++++++++++'.PHP_EOL,8);
-//            file_put_contents('toto',print_r($e,true),8);
-//            file_put_contents('toto','+++++++++++++++++++'.PHP_EOL,8);
+            $io = AbtelBackup::localExec('cat '.getcwd().'/Modules/AbtelBackup/Cron/sar.tmp');
+            //NETWORK
+            $network = AbtelBackup::localExec('sh '.getcwd().'/Modules/AbtelBackup/Cron/bandwidth.sh');
+            $network = explode('|',$network);
+            //enregistrement des valeurs
+            $s = genericClass::createInstance('AbtelBackup','State');
+            $s->FreeSize = $FreeSize;
+            $s->NfsSize = $NfsSize;
+            $s->BorgSize = $BorgSize;
+            $s->NasSize = $NasSize;
+            $s->RestoreSize = $RestoreSize;
+            $s->CpuUsage = $cpu;
+            $s->RamUsage = $ram;
+            $s->IOUsage = $io;
+            $s->RX = $network[1];
+            $s->TX = $network[0];
+            $s->Save();
         }
-
-
-
+        //suppression des données supérieurs à 3j
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'AbtelBackup-State` WHERE tmsCreate<'.(time()-(86400*10)).';');
+        return true;
     }
 }

@@ -27,7 +27,7 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                <a  href="javascript: void(0);" ng-if="displaySelect();" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                <a  href="javascript: void(0);" ng-if="displaySelect('{{ context }}');" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
                 Supprimer la sélection
                 </a>
                 {% endif %}
@@ -287,7 +287,11 @@
                     {% if  field.query %}
                     <span class="label label-primary">{[{ item.{{ field.name }}Label }]}</span>
                     {% else %}
-                    <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+                        {% if field.subtype == "bytes" %}
+                            <span class="label label-secondary">{[{ item.{{ field.name }} }]} Ko</span>
+                        {% else %}
+                            <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+                        {% endif %}
                     {% endif %}
                 {% elseif field.type == "fkey" and field.card == "short" %}
                     {% if field.link %}
@@ -302,11 +306,14 @@
                 {% elseif field.type == "progress" %}
                     <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
                     <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
-                    <uib-progress ng-if="item.{{ field.name }} < 100">
+                    <uib-progress ng-if="item.{{ field.name }} > 0 && item.{{ field.name }} < 50">
+                        <uib-bar value="item.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                    </uib-progress>
+                    <uib-progress ng-if="item.{{ field.name }} < 100 && item.{{ field.name }} >= 50">
                         <uib-bar value="item.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
                     </uib-progress>
                     <uib-progress ng-if="item.{{ field.name }} >= 100">
-                        <uib-bar value="item.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                        <uib-bar value="item.{{ field.name }}" type="danger" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
                     </uib-progress>
 
                 {% elseif field.type == "boolean" %}
