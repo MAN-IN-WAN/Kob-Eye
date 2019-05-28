@@ -1,0 +1,184 @@
+<SCHEMA>
+	<OBJECTCLASS title="Organisation" driver="mysql" AccessPoint="1" master="1" Description="Structures culturelles et sportives"  Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" generateUrl="1"  Class="Modules/Reservation/Class/Organisation.class.php" searchType="plaintext" Operations="add,edit,delete,ExportMail::RESAS_ADMIN">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1"  Description="Imprimer Etiquette" default="0">Etiq</PROPERTIES>
+		<PROPERTIES type="image" list="1" fiche="1" form="1"  searchOrder="4">Logo</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Adresse</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Code Postal">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region/1949/Departement/*/Ville::Nom" Description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region::Nom" Description="Région">Region</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2" query="Geographie/Pays/6/Region/1949/Departement::Nom" Description="Département">Departement</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" Description="Téléphone">Tel</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Fax</PROPERTIES>
+		<PROPERTIES type="mailto" fiche="1" form="1" >Mail</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1" default="0" Description="Envoyer les rapports par mail automatiquement ?">EnvoiMail</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" >Commentaire</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/TypeOrganisation::Nom" Description="Type de structure culturelle">TypeOrganisation</PROPERTIES>
+		<PROPERTIES type="ref" fiche="1" form="1" queryRef="Systeme/Group" adminOnly="1">NumeroGroupe</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des E-mails">ExportMail</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="Structures sociales"   Icon="/Skins/AdminV2/Img/IconAqua/Mail4.png" generateUrl="1" Class="Modules/Reservation/Class/Client.class.php" searchType="plaintext" Operations="add,edit,delete,ImprimeDoc,ExportMail::RESAS_ADMIN">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1" Description="Imprimer Etiquette" default="0">Etiq</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/Type::Nom" Description="Type de structure">TypeStructure</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/Reseau::Nom" Description="Réseau">Reseau</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Adresse</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Code Postal">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region/1949/Departement/226/Ville::Nom" Description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region::Nom" Description="Région">Region</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region/1949/Departement::Nom"  Description="Département">Departement</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" Description="Téléphone">Tel</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Fax</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Mail</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
+		<PROPERTIES type="image" list="1" fiche="1" form="1" >Logo</PROPERTIES>
+		<PROPERTIES type="date" fiche="1" Description="Date Dernier Contact" Adminonly="1"  searchOrder="2">DateDernierContact</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Type de public suivi">TypePublicSuivi</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Type d'actions menées">TypeAction</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Nombre de personnes suivies">PersonSuivi</PROPERTIES>
+		<PROPERTIES type="ref" fiche="1" form="1" queryRef="Systeme/Group" searchOrder="4" adminOnly="1">NumeroGroupe</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Imprimer les documents">ImprimeDoc</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des E-mails">ExportMail</FUNCTION>
+		<FKEY card="0,n" data="Organisation,Id"  action="Link" Description="StructuresExclues">ClientsExclu</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeOrganisation" driver="mysql" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" value="1::Sociales,2::Culturelles" searchOrder="2" adminOnly="1" hidden="1">Table</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Type" driver="mysql" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" value="1::Sociales,2::Culturelles" searchOrder="2" adminOnly="1" hidden="1">Table</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reseau" driver="mysql" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Spectacle" driver="mysql" AccessPoint="1" Description="Spectacles"   Icon="/Skins/AdminV2/Img/IconAqua/Calendar.png" generateUrl="1" Class="Modules/Reservation/Class/Spectacle.class.php" searchType="plaintext" Operations="add,edit,delete,genererLotEvenement::RESAS_ADMIN,Dupliquer">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre du spectacle">Nom</PROPERTIES>
+		<PROPERTIES type="image" list="1" fiche="1" form="1" searchOrder="2">Logo</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Reservation/Genre::Nom" searchOrder="3" Description="Genre du spectacle">Genre</PROPERTIES>
+		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date spectacle" Adminonly="1"  searchOrder="4" auto="1" >DateDebut</PROPERTIES>
+		<PROPERTIES type="date" fiche="1" form="1" Description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="Adulte,Adulte et adolescent,Enfant,Tout public" searchOrder="5" Description="Type de public">TypePublic</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" searchOrder="6" Description="Places disponibles">Disponibilite</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
+		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de Fin" Adminonly="1" auto="1" >DateFin</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Durée en minutes">Duree</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Type de sortie">TypeSortie</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" Description="Communiquer sur ce spectacle" default="0">AlaUne</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Utiliser la contremarque" values="0::Pas d'impression du tout,1::Contremarque normale,2::Impression ticket mais pas une contremarque" default="1">TypeContreMarque</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Texte Contremarque" >Contremarque</PROPERTIES>
+		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Présentation">Presentation</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Video en iframe" >Video</PROPERTIES>
+		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Résumé">Resume</PROPERTIES>
+		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Information de réservation">InformationReservation</PROPERTIES>
+		<PROPERTIES type="metat" fiche="1" form="1" category="Referencement">Title</PROPERTIES>
+		<PROPERTIES type="metad"  fiche="1" form="1" category="Referencement">Description</PROPERTIES>
+		<FKEY card="1,1" data="Organisation,Id">OrganisationId</FKEY>
+<!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
+		<FUNCTION title="Générer un lot d'evenements">genererLotEvenement</FUNCTION>
+		<FUNCTION title="Dupliquer">Dupliquer</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Genre" driver="mysql" Dico="1" generateUrl="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeSortie" driver="mysql" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Intervenant" driver="mysql" Operations="add,edit,delete">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="3">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1">Fonction</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" >Role</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Artiste" driver="mysql">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fonction" driver="mysql" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservation.class.php" searchType="plaintext">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="3" Description="Référence">Reference</PROPERTIES>
+		<PROPERTIES type="int" list="1" fiche="1" form="1" searchOrder="2" Description="Nombre de places">NbPlace</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="1" Description="Titre du spectacle">TitreSpectacle</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Information de réservation">InformationReservation</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1" Description="Utiliser la contremarque" default="1">TypeContreMarque</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1" Description="Impression de la contremarque" default="0">Imprimer</PROPERTIES>
+		<FKEY card="1,1" data="Client,Id" action="Link">ClientId</FKEY>
+		<FKEY card="0,n" data="Evenement,Id"  action="Link">EvenementId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Personne" driver="mysql" Operations="add,edit,delete">
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2" obligatoire="1">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" obligatoire="1" values="Homme,Femme">Sexe</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" obligatoire="1" values="0-7,8-13,14-26,27-40,41-60,60+">Age</PROPERTIES>
+        <PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0">Accompagnateur</PROPERTIES>
+        <PROPERTIES type="boolean" fiche="1" form="1" default="0">RSA</PROPERTIES>
+		<FKEY card="1,n" data="Reservations,Id">ReservationId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Evenement" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add,edit,delete,EnvoyerMail,ExporterPersonne">
+		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de cloture des réservations" searchOrder="1" >DateCloture</PROPERTIES>
+		<PROPERTIES type="date" list="1" fiche="1" form="1" obligatoire="1" Description="Date de début"  searchOrder="3" >DateDebut</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1"  Description="Titre du spectacle" >Nom</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" auto="1" Description="Code Postal">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" auto="1" Description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="date" fiche="1" form="1" obligatoire="1" Description="Date de Fin" >DateFin</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" auto="1" Description="Validité de l'évènement" default="1">Valide</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Salle,Id">SalleId</FKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Envoyer E-mails">EnvoyerMail</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des personnes inscrites">ExporterPersonne</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Salle" driver="mysql" Description="Salles" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" generateUrl="1" searchType="plaintext" >
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Libellé">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Adresse</PROPERTIES>
+		<PROPERTIES type="int" fiche="1" form="1" Description="Code Postal">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Ville::Nom" Description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" Description="Téléphone">TelInfo</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Téléphone">TelResa</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" Description="Transport en commun">Transport</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Fax</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Mail</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="-1,0,1" default="-1" description="Handi ( -1:Non précisé | 0 Non accessible | 1 Accessible )">Handi</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="-1,0,1" default="-1" description="HandiVisuel ( -1:Non précisé | 0 Non accessible | 1 Accessible )">HandiVisuel</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="-1,0,1" default="-1" description="HandiAuditif ( -1:Non précisé | 0 Non accessible | 1 Accessible )">HandiAuditif</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="-1,0,1" default="-1" description="HandiMental ( -1:Non précisé | 0 Non accessible | 1 Accessible )">HandiMental</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" >Commentaires</PROPERTIES>
+		<PROPERTIES type="image" list="1" fiche="1" form="1" >Logo</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fichier" driver="mysql">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="file" searchOrder="2">URL</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Image" driver="mysql" Display="Media">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
+		<PROPERTIES type="image" list="1" fiche="1" form="1" searchOrder="3">URL</PROPERTIES>
+		<PROPERTIES type="ObjectClass" module="Galerie" target="Fichier">DossierImage</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" >Mini</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Son" driver="mysql">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" >URL</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Video" driver="mysql">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" >URL</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="EvenementMail" driver="mysql" Description="Mails envoyés" AccessPoint="1" Class="Modules/Reservation/Class/EvenementMail.class.php"  searchType="plaintext">
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0" searchOrder="2" Description="Envoyé">Envoye</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Message</PROPERTIES>
+		<PROPERTIES type="txt" list="1" fiche="1" form="1" searchOrder="1" Description="Nom spectacle">Description</PROPERTIES>
+		<FKEY card="1,1" data="Evenement,Id">EvenementId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

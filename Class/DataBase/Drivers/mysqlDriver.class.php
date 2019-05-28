@@ -38,7 +38,7 @@ class mysqlDriver extends ObjectClass{
 		//Creation de la requete à partir du tableau
 		$sql  = sqlFunctions::createSql("SELECT",$Data,$this,$Select);
 		$Results=mysqlDriver::executeSql($this,$sql,"SELECT");
-		$Results =  (sizeof($Results)!=0) ? $this->analyzeSearch($Results,"") : Array();
+		$Results =  (is_array($Results) && sizeof($Results)!=0) ? $this->analyzeSearch($Results,"") : Array();
 		return $Results;
 	}
 

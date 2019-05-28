@@ -732,7 +732,7 @@ class ObjectClass extends Root{
 	*/
 	public function addAssociation($As){
 		//Check if association already exists
-		if (!in_array($As,$this->Associations)){
+		if (!in_array($As,$this->Associations,true)){
 			$this->Associations[] = $As;
 		}
 	}

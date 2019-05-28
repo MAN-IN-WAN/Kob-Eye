@@ -27,14 +27,15 @@
     $vars['toReturn']['args'] = array();
 
     //Fonction de chargement des fichier template pour retrocompat/wizardstyle
-    $loadTemp = function($blinfo,$path) use (&$vars){
+    $loadTemp = function($blinfo,$path,$tab) use (&$vars){
         //Suppression de l'extension
         $file = $blinfo;
         $blinfo = explode('.',$blinfo);
         $ext = array_pop($blinfo);
-        $blinfo = implode('.',$blinfo);
+/*        $blinfo = implode('.',$blinfo);
         $blinfo = explode('Modules/',$blinfo);
-        $blinfo = end($blinfo);
+        $blinfo = end($blinfo);*/
+        $blinfo = implode('/',$tab);
 
         if($ext == 'md'){ //Si c'est un md on a déjà tout interprété
             $params = '?Query='.$path;
@@ -66,7 +67,7 @@
         $blinfo = Bloc::getInterface($tab[0], $tab[1], $tab[2]);
         if($blinfo &&  (!strpos($blinfo,'Default.md') && !strpos($blinfo,'Default.twig'))) {
             //Si retrocompat on affiche
-            $loadTemp($blinfo,$path);
+            $loadTemp($blinfo,$path,$tab);
         } else {
             //Si pas de retro compat on vérifie que l'objet ai une method portant ce nom
             if($info['TypeSearch'] == 'Indirect' || ($info['TypeSearch'] = 'Direct' && empty($info['LastId']))){
@@ -91,7 +92,7 @@
                         $tabNext[2] = $temp['template'];
                         $blinfoNext = Bloc::getInterface($tabNext[0], $tabNext[1], $tabNext[2]);
                         if($blinfoNext &&  (!strpos($blinfoNext,'Default.md') && !strpos($blinfoNext,'Default.twig'))) {
-                            $loadTemp($blinfoNext,$path);
+                            $loadTemp($blinfoNext,$path,$tabNext);
 							if(isset($temp['step']))
 								$vars['toReturn']['data'].='<input type="hidden" ng-init="'.$info['Module'].$info['ObjectType'].'function.args.step='.$temp['step'].'">';
                         } else{

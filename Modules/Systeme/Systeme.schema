@@ -373,7 +373,7 @@
         <FKEY data="Tache,Id" form="1" fiche="1" card="0,1" popup="1" >TacheId</FKEY>
     </OBJECTCLASS>
 
-	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="Rôles" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
+	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="Mail Queue" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
 		<PROPERTIES type="varchar" searchOrder="1">From</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2">To</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2">Cc</PROPERTIES>
