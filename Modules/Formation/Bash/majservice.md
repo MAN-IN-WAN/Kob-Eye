@@ -36,7 +36,7 @@ case "$1" in
             log_end_msg $?
 
             log_begin_msg "Mise à jour du boitier"
-            wget -O /root/maj.sh "http://erdf.e-p.consulting/maj.sh"
+            wget -O /root/maj.sh "http://edf.e-p.consulting/maj.sh"
             chmod +x /root/maj.sh
             /bin/sh /root/maj.sh
             log_end_msg $?

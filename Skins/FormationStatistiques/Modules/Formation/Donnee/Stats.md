@@ -726,7 +726,7 @@
         [!q::traiterTypeReponse(13,[!S::Id!],[!CD::TypeQuestionId!])!]
     [/CASE]
     [DEFAULT]
-        <p>Cas inconnu</p>
+        <p>Aucune donnée à afficher</p>
     [/DEFAULT]
 [/SWITCH]
 <script>

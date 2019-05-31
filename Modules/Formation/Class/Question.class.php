@@ -46,11 +46,11 @@ class Question extends genericClass{
                 }
 
                 $vals = array();
-                foreach($data as $v){
-                    $vals[] = json_decode($v->Valeur);
+                foreach($data as $k=>$v){
+                    $vals[$k] = json_decode($v->Valeur,true);
                 }
                 $qty = count($vals);
-                $init = array_fill(0,count($vals[0]),0);
+                $init = array_fill(0,count($titles),0);
 
                 $res = array_reduce($vals,function($carry,$item){
                     for($n =0;$n < count($carry); $n++ ){

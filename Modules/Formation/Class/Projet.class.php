@@ -162,7 +162,7 @@ class Projet extends genericClass {
 
         $context  = stream_context_create( $options );
 
-        $result = file_get_contents( 'http://erdf.e-p.consulting/Formation/Projet/'.$this->Id.'/getJson.htm', false, $context );
+        $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Projet/'.$this->Id.'/getJson.htm', false, $context );
         $response = json_decode( $result );
         if ($response->success){
             return "OK à jour";
@@ -248,7 +248,7 @@ class Projet extends genericClass {
                 $ma->Nom = $m->nom;
                 $ma->Fichier = $m->fichier;
                 if (!file_exists($m->fichier))
-                    file_put_contents($m->fichier, file_get_contents("http://erdf.e-p.consulting/".$m->fichier));
+                    file_put_contents($m->fichier, file_get_contents("http://edf.e-p.consulting/".$m->fichier));
                 $ma->Largeur = $m->largeur;
                 $ma->Hauteur = $m->hauteur;
                 $ma->Save();
@@ -276,7 +276,7 @@ class Projet extends genericClass {
                 $fi->Type = $f->type;
                 $fi->Fichier = $f->fichier;
                 if (!file_exists($f->fichier))
-                    file_put_contents($f->fichier, file_get_contents("http://erdf.e-p.consulting/".$f->fichier));
+                    file_put_contents($f->fichier, file_get_contents("http://edf.e-p.consulting/".$f->fichier));
                 $fi->Save();
             }
             foreach ($json->regions as $r) {

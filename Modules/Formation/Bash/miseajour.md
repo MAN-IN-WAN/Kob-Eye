@@ -39,7 +39,7 @@ if [ $online -eq 0 ]; then
     /usr/bin/php cron.php app.deploiement.pro Formation/Projet/2/Synchro.cron >> $FLAGFILE
 
     #Execution d'un fichier distant en bash au cas ou
-    wget -O /root/maj.sh "http://erdf.e-p.consulting/maj.sh"
+    wget -O /root/maj.sh "http://edf.e-p.consulting/maj.sh"
     chmod +x /root/maj.sh
     /bin/sh /root/maj.sh
 else

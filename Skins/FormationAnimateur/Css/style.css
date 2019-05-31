@@ -681,3 +681,8 @@ SLIDER
     position: absolute;
     top: 150px;
 }
+
+/*form equipe animateur*/
+#formTable.form-horizontal .control-label{
+    text-align: left;
+}
