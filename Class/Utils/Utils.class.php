@@ -139,8 +139,15 @@ class Utils {
 	}
 	static function jsonDecode($P){
 		$P = implode(",",$P);
-		return json_decode($P);
+		return json_decode($P,true);
 	}
+    static function jsonEncode($P){
+	    if(!is_string($P[0]))
+            return json_encode($P[0]);
+
+        $P = implode(",",$P);
+        return json_encode($P,true);
+    }
 	static function  Calc_Reduction($P){
 		// 1 - type de renvoi : Pourcentage, float
 		// 2- nb de decimales
