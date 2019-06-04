@@ -1,0 +1,2 @@
+Nom;Prenom;Sexe;Age;Accompagnateur;RSA [STORPROC [!Link!]|E][STORPROC [!Link!]/Reservations|R][STORPROC [!Link!]/Reservations/[!R::Id!]/Personne|P]
+[!P::Nom!];[!P::Prenom!];[!P::Sexe!];[!P::Age!];[!P::Accompagnateur!];[!P::RSA!];[/STORPROC][/STORPROC][/STORPROC]

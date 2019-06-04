@@ -1,0 +1,437 @@
+
+    {% if funcTempVars.step is same as(0) %} {# Choix du type d'evenement à créer #}
+
+        <h3>Génération d'évenements pour le spectacle : <span style="color:#006fb4;font-size:18px;">{{ spec.Nom }}</span></h3>
+        <p>Quel type d'évènement souhaitez vous générer ?</p>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Évènements durant toute une journée</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="radio" class="form-control" value="1" ng-model="ReservationSpectaclefunction.args.type">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Évènements mensuels (du premier au dernier jours du mois)</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="radio" class="form-control" value="2" ng-model="ReservationSpectaclefunction.args.type">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Évènements sur plusieurs jours récurrents sur la même semaine</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="radio" class="form-control" value="3" ng-model="ReservationSpectaclefunction.args.type">
+                </div>
+            </div>
+        </div>
+
+    {% elseif funcTempVars.step == 1 %}{# événements qui durent toute une journée #}
+        <h3>Évènements durant toute une journée</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Nombre d'évènements</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="text" class="form-control" ng-model="ReservationSpectaclefunction.args.nbEvt">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Date de debut du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group datepicker-only-init">
+                        <input id="dateDebut" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateDebut" />
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Heure de début du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group timepicker-only-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une heure" ng-model="ReservationSpectaclefunction.args.heureDebut" />
+                        <span class="input-group-addon">
+                            <i class="icmn-clock"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Heure de fin du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group timepicker-only-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une heure" ng-model="ReservationSpectaclefunction.args.heureFin" />
+                        <span class="input-group-addon">
+                            <i class="icmn-clock"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-control-label" for="l0">Jours d'ouverture de la salle</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt1">Lundi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt1" class="form-control" ng-init="ReservationSpectaclefunction.args.joursEvt = {'1':true,'2':true,'3':true,'4':true,'5':true,'6':true,'7':true};" ng-model="ReservationSpectaclefunction.args.joursEvt[1]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt2">Mardi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt2" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[2]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt3">Mercredi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt3" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[3]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt4">Jeudi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt4" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[4]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt5">Vendredi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt5" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[5]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt6">Samedi</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt6" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[6]">
+                </div>
+            </div>
+            <div class="col-md-1" style="text-align:center;">
+                <label for="jourEvt7">Dimanche</label>
+                <div class="form-group" >
+                    <input type="checkbox" id="jourEvt7" class="form-control" ng-model="ReservationSpectaclefunction.args.joursEvt[7]">
+                </div>
+            </div>
+        </div>
+    {% elseif funcTempVars.step == 2 %}{# Choix du type d'evenement à créer #}
+        <h3>Évènements mensuels (du premier au dernier jours du mois)</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Nombre de mois</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="text" class="form-control" ng-model="ReservationSpectaclefunction.args.nbMois">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Date & Heure de debut du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group datetimepicker-init">
+                        <input id="dateDebut" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateDebut" />
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Date & Heure de fin du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group datetimepicker-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateFin" />
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    {% elseif funcTempVars.step == 3 %}{# Choix du type d'evenement à créer #}
+        <h3>Évènements sur plusieurs jours récurrents sur la même semaine</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Nombre d'évènements</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="text" class="form-control" ng-model="ReservationSpectaclefunction.args.nbEvt">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Date & Heure de debut du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group datetimepicker-init">
+                        <input id="dateDebut" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateDebut" />
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Date & Heure de fin du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group datetimepicker-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateFin" />
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not funcTempVars.step is same as(0) %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Nombre de places mises à disposition par évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="text" class="form-control" ng-model="ReservationSpectaclefunction.args.nbPlcEvt">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Clôture des réservations à j - x de la date de fin de l'évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <input type="text" class="form-control" ng-model="ReservationSpectaclefunction.args.clotureX">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Horaire fin réservation ( hh:mm )</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <label class="input-group timepicker-only-init">
+                    <input type="text" class="form-control" placeholder="Sélectionnez une heure" ng-model="ReservationSpectaclefunction.args.clotureHM" />
+                    <span class="input-group-addon">
+                            <i class="icmn-clock"></i>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Salle</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <div custom-select="a.id as a.label for a in getSelectData('ReservationSalleStore',$searchTerm)" custom-select-options="{ 'async': true, 'filter':''}" ng-model="ReservationSpectaclefunction.args.salle" class="form-control" ng-title="Salle"></div>
+                </div>
+            </div>
+        </div>
+    {% endif  %}
+
+
+    <script>
+        $('.datepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format : 'DD/MM/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('.timepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format : 'HH:mm',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('.datetimepicker-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+
+        //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+        $(".datepicker-only-init").on("dp.change", function() {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $(".timepicker-only-init").on("dp.change", function() {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $(".datetimepicker-init").on("dp.change", function() {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+    </script>
+
+    {# <div>
+        Cette fonction vous permet de créer :<br />
+        <ul>
+            <li>des événements qui durent toute une journée:
+                <ul>
+                    <li>> Il vous faut cocher les jours de semaine pour lesquels vous voulez créer des évènements.</li>
+                    <li>> On créera "x" évènements sur un jour en ne les créant que pour les jours de la semaine cochés.</li>
+                </ul>
+            </li>
+            <li>des événements mensuels (du premier au dernier jours du mois).
+                <ul>
+                    <li>> Il suffit de mettre un jour de début et un jour de fin et cocher Mois </li>
+                    <li>> Le premier évenement sera créé de la date de début jusqu'à la fin du mois en cours</li>
+                    <li>> Les autres évenements seront créés du premier au dernier jours des mois </li>
+                    <li>> On ne tient pas compte des jours de semaines cochés</li>
+                </ul>
+            </li>
+            <li>des événements sur plusieurs jours récurrents sur la même semaine
+                <ul>
+                    <li>> Créer un évenement qui va du mardi au jeudi par exemple pendant 10 semaines</li>
+                    <li>> On va créer 10 événements du mardi au jeudi</li>
+                    <li>> Ne peut fonctionner que pour des évenements avec des jours consécutifs</li>
+                    <li>> On ne tient pas compte des jours de semaines cochés</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <table border="1" >
+        <tr>
+            <td style="text-align:center;width:15px;">Nombre<br />d'évènements</td>
+            <td style="text-align:center;">Date<br />Premier évènement<br/> et heure de début</td>
+            <td style="text-align:center;">Date fin<br />premier évènement<br/> et heure de fin</td>
+            <td style="text-align:center;">Nombre de places<br />mis à disposition<br/>par évenement</td>
+            <td style="text-align:center;">Clôture des réservations<br /> à j - x de la date de fin<br /> de l'évènement </td>
+            <td style="text-align:center;">Horaire <br /> fin réservation<br /> hh:mm</td>
+            <td style="text-align:center;">
+                Salle
+                <div style="font-style:italic;font-size:10px;display:block;">Résultats limités à 10, au delà veuillez affiner votre recherche<br /> vous pouvez saisir plusieurs mot<br/>ex: theatre montpellier ou musee sete...</div>
+            </td>
+            <td style="text-align:center;">
+                Evenement Mensuel à créer
+            </td>
+            <td style="text-align:center;">
+                Jours d'ouverture de la salle
+                <div style="font-style:italic;font-size:10px;display:block;">N'ont pris en compte en cas de création d'évènement qui dure sur plusieurs jours</div>
+                //<div style="font-style:italic;font-size:10px;display:block;">ex: création d'un évenement ou l'on met à disposition 10places par semaine<br/> et qui dure 10 semaines<br/>ex: on créé un évenement qui va du lundi xx/xx/xx au vendredi xx/xx/xx et on demande 10 répétitions<br /> création</div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="text-align:center;width:15px;vertical-align:middle;"><input id="NbEve" type="text" value="[!NbEve!]" name="NbEve" size="3" style="text-align:right;"></td>
+            <td style="text-align:center;width:15px;vertical-align:middle;">
+                <input id="start" class="ncalendar" type="text" value="[!start!]" name="start" size="11" >
+            </td>
+            <td style="text-align:center;width:15px;vertical-align:middle;">
+                <input id="stop" class="ncalendar" type="text" value="[!stop!]" name="stop" size="11" >
+                <script type="text/javascript">
+                   // new DatePicker('.ncalendar', { pickerClass: 'datepicker_vista', timePicker:true, format:'Y-m-d H:i:s', allowEmpty: true });
+                </script>
+            </td>
+            <td style="text-align:center;width:15px;vertical-align:middle;"><input id="NbPlaces" type="text" value="[!NbPlaces!]" name="NbPlaces" size="3" style="text-align:center;"></td>
+            <td  style="text-align:center;width:15px;vertical-align:middle;"><input id="[IF [!cloResa!]!=][!cloResa!][ELSE]1[/IF]" type="text" value="[!cloResa!]" name="cloResa" size="3" style="text-align:center;"></td>
+            <td style="text-align:center;vertical-align:middle;">
+                <input id="cloHResa" type="text" value="[IF [!cloHResa!]!=][!cloHResa!][ELSE]08[/IF]" name="cloHResa"  size="2" style="text-align:center;">
+                <span> : </span>
+                <span><input id="cloMResa" type="text" value="[IF [!cloMResa!]!=][!cloMResa!][ELSE]00[/IF]" name="cloMResa"  size="2" style="text-align:center;"></span>
+            </td>
+            <td style="text-align:center;width:35px;vertical-align:middle;">
+                <input id="Salle" type="text" value="[!Salle!]" name="Salle" autocomplete="off" >
+                <div class="ACRelative_Salle"></div>
+                <script type="text/javascript">autoCompleteField('Salle', 'Reservation/Salle','', 'Id','Nom', null,null,null,20);</script>
+            </td>
+            <td style="text-align:center;width:35px;vertical-align:middle;">
+                Mois <input id="Mois" type="checkbox" value="1" name="Mois" >
+            </td>
+            <td style="text-align:center;width:300px;vertical-align:middle;">
+                <table>
+                    <tr><td>Lundi</td><td><input id="Lundi" type="checkbox" value="1" name="Lundi"  checked></td><td>Mardi</td><td><input id="Mardi" type="checkbox" value="1" name="Mardi" checked></td><td>Mercredi</td><td><input id="Mercredi" type="checkbox" value="1" name="Mercredi"checked></td></tr>
+                    <tr><td>Jeudi</td><td><input id="Jeudi" type="checkbox" value="1" name="Jeudi" checked></td><td>Vendredi</td><td><input id="Vendredi" type="checkbox" value="1" name="Vendredi" checked></td><td>Samedi</td><td><input id="Samedi" type="checkbox" value="1" name="Samedi" checked></td></tr>
+                    <tr><td>Dimanche</td><td><input id="Dimanche" type="checkbox" value="1" name="Dimanche" checked></td></tr>
+                </table>
+            </td>
+            <td align="center"><button type="submit">OK</button></td>
+        </tr>
+    </table> #}

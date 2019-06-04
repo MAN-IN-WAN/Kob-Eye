@@ -249,6 +249,7 @@
     [CASE 3]
         //<h1>Réponses texte.</h1>
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|NbR]
+        [IF [!NbR!]>0]
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#keywords" aria-controls="keywords" role="tab" data-toggle="tab">Mots clefs</a></li>
             <li role="presentation"><a href="#2words" aria-controls="2words" role="tab" data-toggle="tab">Expressions de 2 mots</a></li>
@@ -341,6 +342,9 @@
                 });
             })
         </script>
+        [ELSE]
+            Aucune donnée.
+        [/IF]
     [/CASE]
     [CASE 4]
         //Cas OUi / Non
@@ -560,6 +564,7 @@
     [CASE 5]
         //Cas Sélection
 [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+[IF [!NbR!] > 0]
         <canvas id="myChart" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
         <script>
@@ -622,6 +627,9 @@
              });
 
         </script>
+[ELSE]
+    Aucune données.
+[/IF]
     [/CASE]
     [CASE 6]
         [!qty:=0!]
@@ -726,7 +734,7 @@
         [!q::traiterTypeReponse(13,[!S::Id!],[!CD::TypeQuestionId!])!]
     [/CASE]
     [DEFAULT]
-        <p>Cas inconnu</p>
+        <p>Aucune donnée à afficher</p>
     [/DEFAULT]
 [/SWITCH]
 <script>

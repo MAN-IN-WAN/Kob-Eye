@@ -147,11 +147,15 @@
     [CASE 4]
         //Cas OUi / Non
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+        ++[!NbR!]++
+
         [IF [!NbR!]>0]
             [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
+--[!Nb1!]--
             [!Nb1:=[!Nb1:/[!NbR!]!]!]
             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!="1"|Nb2]
+            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!="1"&Valeur!=1|Nb2]
+**[!Nb2!]**
             [!Nb2:=[!Nb2:/[!NbR!]!]!]
             [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
             <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
@@ -213,6 +217,8 @@
         //Cas Sélection
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
         [IF [!NbR!]>0]
+
+
             <canvas id="myChart" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
             <script>
@@ -221,24 +227,26 @@
                 var ctx = $("#myChart").get(0).getContext("2d");
                 var data = {
                     labels: [[STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]"[!TQV::Valeur!]"[IF [!Pos!]!=[!NbResult!]],[/IF][/STORPROC]],
-                datasets: [
-                    {
-                        label: "[!TQV::Valeur!]",
-                        fillColor: "rgba(151,187,205,0.5)",
-                        strokeColor: "rgba(151,187,205,0.8)",
-                        highlightFill: "rgba(151,187,205,0.75)",
-                        highlightStroke: "rgba(151,187,205,1)",
-                        data: [
-                            [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
-                [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!TQV::Id!]|Nb1]
-                 [!Nb1:=[!Nb1:/[!NbR!]!]!]
-                 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-                 [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
-                 [/STORPROC]
-
-                 ]
-                 }
-                 ]
+                    datasets: [
+                        {
+                            label: "[!TQV::Valeur!]",
+                            fillColor: "rgba(151,187,205,0.5)",
+                            strokeColor: "rgba(151,187,205,0.8)",
+                            highlightFill: "rgba(151,187,205,0.75)",
+                            highlightStroke: "rgba(151,187,205,1)",
+                            data: [
+                                [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
+                                    [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!TQV::Id!]|NbT1]
+                                    [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|NbT2]
+                                    [!Nb1:=[!NbT1!]!]
+                                    [!Nb1+=[!NbT2!]!]
+                                    [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                                    [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                                    [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
+                                [/STORPROC]
+                            ]
+                        }
+                     ]
                  };
                  var myNewChart = new Chart(ctx).Bar(data, {
                  scaleBeginAtZero : true,

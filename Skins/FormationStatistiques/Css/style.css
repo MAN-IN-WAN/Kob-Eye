@@ -352,3 +352,43 @@ a.active .panel-heading{
 .cloudtag{
     min-height: 500px;
 }
+
+/* DISPLAY DATA */
+
+/* plusmoins */
+.plusmoinswrapper{
+    margin-bottom: 15px;
+    height: 22px;
+    position: relative;
+}
+.plusmoinswrapper .colorBar{
+    border: 1px solid;
+    height: 100%;
+    background-color: #ddd;
+}
+.plusmoinswrapper .symbBar{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.plusmoinswrapper .symbBar span{
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    border: 1px solid #000;
+}
+
+/* spidergraph */
+.spidergraphcontainer {
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    top: 150px;
+}
+
+/*form equipe animateur*/
+#formTable.form-horizontal .control-label{
+    text-align: left;
+}

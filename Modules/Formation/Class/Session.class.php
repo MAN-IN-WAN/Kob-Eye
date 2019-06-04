@@ -444,7 +444,7 @@ class FormationSession extends genericClass {
             );
 
             $context  = stream_context_create( $options );
-            $result = file_get_contents( 'http://erdf.e-p.consulting/Formation/Boitier/getNumero.htm', false, $context );
+            $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Boitier/getNumero.json', false, $context );
             $response = json_decode( $result );
             if ($response->success){
                 //réception du numéro
@@ -509,7 +509,7 @@ class FormationSession extends genericClass {
         );
 
         $context  = stream_context_create( $options );
-        $result = file_get_contents( 'http://erdf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
+        $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
         $response = json_decode( $result );
         if (isset($response->success)&&$response->success){
             $this->Synchro = 1;

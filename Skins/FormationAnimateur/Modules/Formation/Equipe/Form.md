@@ -13,8 +13,23 @@
     [/IF]
     [STORPROC Formation/Session/[!Sess::Id!]/Donnee|D]
         [STORPROC Formation/TypeQuestion/Donnee/[!D::Id!]|TQ|0|1][/STORPROC]
+        [!tVal:=!]
+        [!R::Valeur:=!]
         [IF [!I::TypeSearch!]=Direct]
             [STORPROC Formation/Equipe/[!I::LastId!]/Reponse/TypeQuestion.TypeQuestionId([!TQ::Id!])|R][/STORPROC]
+
+            [!tVal:=[!Utils::jsonDecode([!R::Valeur!])!]!]
+            [IF [!tVal!]!=]
+                [!R::Valeur:=[!tVal!]!]
+            [/IF]
+            [IF [!R::Valeur!]=""]
+                [!R::Valeur:=!]
+            [/IF]
+        [/IF]
+        [!Q:= [!TQ::getOneParent(Question)!]!]
+
+        [IF [!Q::Prefixe!]!=]
+            <h2>[!Q::Prefixe!]</h2>
         [/IF]
         [SWITCH [!D::TypeReponse!]|=]
             [CASE 1] //Jauge
@@ -63,11 +78,29 @@
                     <div class="col-sm-4">
                         <select class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]">
                                 <option value="">...</option>
+                            [!legend:=0!]
                             [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
-                                <option value="[!TQV::Id!]" [IF [!R::Valeur!]=[!TQV::Id!]]selected="selected"[/IF]>[!TQV::Valeur!]</option>
+                                <option value="[!TQV::Id!]" [IF [!R::Valeur!]=[!TQV::Id!]]selected="selected"[/IF]>
+                                    [!TQV::Valeur!]
+                                    [IF [!TQV::Image!]!=][!legend:=1!][/IF]
+                                </option>
                             [/STORPROC]
                         </select>
                     </div>
+                    [IF [!legend!]=1]
+                    <div class="row">
+                        <h5 class="col-md-12">Valeurs:</h5>
+                        <ul class="col-md-12">
+                            [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
+                            <li class="col-md-4"> [!TQV::Valeur!]
+                                [IF [!TQV::Image!]!=]
+                                : <img src="/[!TQV::Image!]">
+                                [/IF]
+                            </li>
+                            [/STORPROC]
+                        </ul>
+                    </div>
+                    [/IF]
                 </div>
             [/CASE]
             [CASE 6] //Pourcentage
@@ -82,12 +115,135 @@
                 <div class="form-group">
                     <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
                     <div class="col-sm-12">
-                        [!vals:=[!Utils::unserialize([!R::Valeur!])!]!]
+                        [!vals:=[!R::Valeur!]!]
                         <input type="text" class="form-control" id="donn-[!D::Numero!]-1" name="donn-[!D::Numero!][0]" value="[!vals::0!]">
                         <input type="text" class="form-control" id="donn-[!D::Numero!]-2" name="donn-[!D::Numero!][1]" value="[IF [!vals::1!]!=0][!vals::1!][/IF]">
                         <input type="text" class="form-control" id="donn-[!D::Numero!]-3" name="donn-[!D::Numero!][2]" value="[IF [!vals::2!]!=0][!vals::2!][/IF]">
                     </div>
                 </div>
+            [/CASE]
+            [CASE 8] //Cercle score
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    [!vals:=[!R::Valeur!]!]
+                    [!params:=[!Utils::jsonDecode([!TQ::Parametres!])!]!]
+                    [STORPROC [!params::Titres!]|T]
+                        [!tt:=[!Pos!]!]
+                        [!tt-=1!]
+                        <h5>[!T!]</h5>
+                        [STORPROC [!params::Max!]]
+                            [IF [!Pos!]<[!params::Min!]]
+                            [ELSE]
+                                [!Pos!] <input type="radio" name="donn-[!D::Numero!][[!tt!]]" id="donn-[!D::Numero!][!tt!][!Pos!]" value="[!Pos!]" [IF [!vals::[!tt!]!]=[!Pos!]]checked[/IF]>
+                            [/IF]
+                        [/STORPROC]
+                    [/STORPROC]
+                </div>
+            </div>
+            [/CASE]
+            [CASE 9] //plus ou moins
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    [!vals:=[!R::Valeur!]!]
+                    [!params:=[!Utils::jsonDecode([!TQ::Parametres!])!]!]
+                    [STORPROC [!params::Titres!]|T]
+                        [!tt:=[!Pos!]!]
+                        [!tt-=1!]
+                        <h5>[!T!]</h5>
+                        [!dVals:=[!Array::newArray()!]!]
+                        [!dVals:=[!Array::push([!dVals!],--)!]!]
+                        [!dVals:=[!Array::push([!dVals!],-)!]!]
+                        [!dVals:=[!Array::push([!dVals!],=)!]!]
+                        [!dVals:=[!Array::push([!dVals!],+)!]!]
+                        [!dVals:=[!Array::push([!dVals!],++)!]!]
+                        [STORPROC 5]
+                            [!tt2:=[!Pos!]!]
+                            [!tt2-=1!]
+                            [!dVals::[!tt2!]!] <input type="radio" name="donn-[!D::Numero!][[!tt!]]" id="donn-[!D::Numero!][!tt!][!Pos!]" value="[!tt2!]" [IF [!vals::[!tt!]!]=[!tt2!]]checked[/IF]>
+                        [/STORPROC]
+                    [/STORPROC]
+                </div>
+            </div>
+            [/CASE]
+            [CASE 10] //graphscore
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    [!vals:=[!R::Valeur!]!]
+                    [!params:=[!Utils::jsonDecode([!TQ::Parametres!])!]!]
+                    <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                    <div class="col-sm-12">
+                        [!vals:=[!R::Valeur!]!]
+                        [!params:=[!Utils::jsonDecode([!TQ::Parametres!])!]!]
+                        [!nbTq:=1!]
+                        [IF [!TQ::MultiPart!]]
+                            [!nbTq:=4!]
+                        [/IF]
+                        [STORPROC [!nbTq!]]
+                            [!tt:=[!Pos!]!]
+                            [!tt-=1!]
+                            [IF [!TQ::MultiPart!]]
+                                <h4><b>Participant [!Pos!]</b></h4>
+                            [/IF]
+                            [STORPROC [!params::Titres!]|T]
+                                [!tt2:=[!Pos!]!]
+                                [!tt2-=1!]
+                                [!vs:=[!vals::[!tt!]!]!]
+                                <h5>[!T!]</h5>
+                                [STORPROC [!params::Max!]]
+                                    [IF [!Pos!]<[!params::Min!]]
+                                    [ELSE]
+                                        [!Pos!] <input type="radio" name="donn-[!D::Numero!][[!tt!]][[!tt2!]]" id="donn-[!D::Numero!][!tt!][!Pos!]" value="[!Pos!]" [IF [!vs::[!tt2!]!]=[!Pos!]]checked[/IF]>
+                                    [/IF]
+                                [/STORPROC]
+                            [/STORPROC]
+                        [/STORPROC]
+                    </div>
+                </div>
+            </div>
+            [/CASE]
+            [CASE 11] //stickers
+                //unused
+            [/CASE]
+            [CASE 12] //Triple pourcentage
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    [!vals:=[!R::Valeur!]!]
+                    [!nbTq:=1!]
+                    [IF [!TQ::MultiPart!]]
+                        [!nbTq:=4!]
+                    [/IF]
+                    [!params:=[!Utils::jsonDecode([!TQ::Parametres!])!]!]
+                    [STORPROC [!nbTq!]]
+                        [!tt:=[!Pos!]!]
+                        [!tt-=1!]
+                        [IF [!TQ::MultiPart!]]
+                            <h4><b>Participant [!Pos!]</b></h4>
+                        [/IF]
+                        [STORPROC [!params::Titres!]|T]
+                            [!tt2:=[!Pos!]!]
+                            [!tt2-=1!]
+                            [!vs:=[!vals::[!tt!]!]!]
+                            [!T!] <input type="text" class="form-control" id="donn-[!D::Numero!]-1" name="donn-[!D::Numero!][[!tt!]][[!tt2!]]" value="[!vs::[!tt2!]!]" style="width:60px;display: inline-block; margin-left: 15px;">%<br/>
+                        [/STORPROC]
+                    [/STORPROC]
+                </div>
+            </div>
+            [/CASE]
+            [CASE 13] //Multiselect
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    <ul>
+                    [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
+                        <li class="col-md-4"><input type="checkbox" name="donn-[!D::Numero!][]" id="donn-[!D::Numero!][!Pos!]" value="[!TQV::Id!]" [STORPROC [!R::Valeur!]|V][IF [!V!]=[!TQV::Id!]]checked[/IF][/STORPROC]> [!TQV::Valeur!]</li>
+                    [/STORPROC]
+                    </ul>
+                </div>
+            </div>
             [/CASE]
         [/SWITCH]
     [/STORPROC]

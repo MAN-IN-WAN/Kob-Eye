@@ -603,10 +603,11 @@ class Module extends Root{
             die($e->getMessage());
 		}
 		//On ajoute les informations de la requete
+		if(!is_array($Tab)) $Tab = array();
 		for ($i=0,$c=sizeof($Tab);$i<$c;$i++) {
-			if (sizeof($Tab[$i]))$Tab[$i]["QueryType"] = $TabQuery[0]["Type"];
-			if (sizeof($Tab[$i]))$Tab[$i]["Query"] = $Query; //$TabQuery[0]["Query"];
-			if (sizeof($Tab[$i]))$Tab[$i]["Module"] = $this->Nom; //$TabQuery[$TabQuery[0]["Out"]]["Module"];*/
+			if (is_array($Tab[$i]) && sizeof($Tab[$i]))$Tab[$i]["QueryType"] = $TabQuery[0]["Type"];
+			if (is_array($Tab[$i]) && sizeof($Tab[$i]))$Tab[$i]["Query"] = $Query; //$TabQuery[0]["Query"];
+			if (is_array($Tab[$i]) && sizeof($Tab[$i]))$Tab[$i]["Module"] = $this->Nom; //$TabQuery[$TabQuery[0]["Out"]]["Module"];*/
 		}
 		return $Tab;
 	}

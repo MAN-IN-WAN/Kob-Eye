@@ -137,7 +137,7 @@ class Header extends Root{
 	}
 
 	function isNotInTab($Data) {
-		if (count($this->Tab)>0) {
+		if (is_array($this->Tab) && count($this->Tab)>0) {
 			foreach ($this->Tab as $Key) {
 				if ($Key==$Data) return false;
 			}

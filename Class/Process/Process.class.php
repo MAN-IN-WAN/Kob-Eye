@@ -650,7 +650,7 @@ class Process extends Root{
 	static function searchAndReplaceVars($Data,$DebBeacon="[!",$FinBeacon="!]") {
         $TempResult ='';
 		$EndResult="";
-		if (is_array($Data)) return $Data;
+		if (is_array($Data) || is_object($Data)) return $Data;
 		//On ecarte le debut de la chaine jusqu a la balise
  		$TempData = explode($FinBeacon,$Data);
 		if (sizeof($TempData)>1){
