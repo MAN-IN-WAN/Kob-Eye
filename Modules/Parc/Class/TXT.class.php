@@ -89,7 +89,7 @@ class TXT extends genericClass {
         //Vérification de la longueur du champ texte
         if (strlen($this->Dnstxt)>255&&!preg_match('#\(.*\)#',$this->Dnstxt)){
             $pos=0;
-            $out='(';
+            $out='("';
             while (strlen($this->Dnstxt)>$pos) {
                 $length=255;
                 //recherche de l'espace, sauf si dernier troncon
@@ -99,7 +99,7 @@ class TXT extends genericClass {
                 $out .= (!$pos?'':'" "'). substr($this->Dnstxt, $pos, $length);
                 $pos += $length;
             }
-            $out.=')';
+            $out.='")';
             $this->Dnstxt = $out;
         }
 		if(parent::Verify()) {

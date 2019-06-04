@@ -11,10 +11,10 @@ class Domain extends genericClass {
 	 */
 	public function Save( $synchro = true ) {
 		$first = ($this->Id == 0);
-        $old = Sys::getOneData('Parc','Apache/'.$this->Id);
+        $old = Sys::getOneData('Parc','Domain/'.$this->Id);
         //test de modification du ApacheServerName
         if ($this->Id &&$old->Url!=$this->Url){
-            $this->addError(array("Message"=>"Impossible de modifier le nom de domaine de la zone. Si c'est nécessaire, veuillez la supprimer et la recréer."));
+            $this->addError(array("Message"=>"Impossible de modifier le nom de domaine de la zone. Si c'est nécessaire, veuillez la supprimer et la recréer".$old->Url."!=".$this->Url));
             return false;
         }
 

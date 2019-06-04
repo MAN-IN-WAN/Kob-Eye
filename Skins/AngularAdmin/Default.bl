@@ -219,6 +219,9 @@
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtResize/abtResize.css">
     <script src="Skins/AngularAdmin/assets/vendors/abtResize/abtResize.js"></script>
 
+    <!-- Apex Charts -->
+    <script src="/Tools/Js/ApexChart/apexcharts.js"></script>
+
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]

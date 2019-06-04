@@ -18,6 +18,7 @@
 		<FUNCTION title="Appareil Photo en mode veille">stopRecMode</FUNCTION>
 		<FUNCTION title="Prendre une photo">takePhoto</FUNCTION>
 		<FUNCTION title="Configurer l'appareil">setConfig</FUNCTION>
+		<RKEY data="Activity,Id" module="Systeme" fiche="1" card="0,1"  popup="1" >ApnId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Photo" driver="mysql" AccessPoint="0" logEvent="1" master="0" Description="Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LightBox/Class/Photo.class.php" Operations="delete">
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" list="1" fiche="1" form="1" listDescr="Titre">Titre</PROPERTIES>
@@ -36,19 +37,5 @@
 		<PROPERTIES searchOrder="3" description="LiveView" type="boolean" list="1" fiche="1" form="1" listDescr="LiveView">LiveView</PROPERTIES>
 		<FUNCTION title="Redéfinir le masque (depuis le fichier mask.png à la racine de la clef)">setMask</FUNCTION>
 		<FUNCTION title="Copier toute la session sur la clef usb">copySession</FUNCTION>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des apns"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/LightBox/Class/Activity.class.php" Operations="">
-		<FILTER name="Toutes les activités" color="warning" ></FILTER>
-		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
-		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
-		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Type d'activité" obligatoire="1" values="Exec,Info" default="Exec">Type</PROPERTIES>
-		<PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
-		<PROPERTIES type="raw" form="1" fiche="1">Details</PROPERTIES>
-		<FKEY data="Apn,Id" form="1" fiche="1" card="0,1"  popup="1" >ApnId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

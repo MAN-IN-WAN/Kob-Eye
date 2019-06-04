@@ -67,8 +67,9 @@
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> global
                         </div>
-                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
-                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="385" height="280"></canvas>
+                        <div class=" clearfix" style="overflow: hidden; height: 285px;position: relative;">
+                            <!--<canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="385" height="280"></canvas>-->
+                            <div id="chart-disk"></div>
                         </div>
                     </div>
                 </div>
@@ -79,31 +80,41 @@
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> par dépôt
                         </div>
-                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
-                            {#<div class="custom-scroll jspScrollable" >#}
-                            <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="100%" height="280"></canvas>
-                            {#</div>#}
+                        <div class=" clearfix" style="overflow: hidden; height: 285px;position: relative;">
+                            <!--<canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="100%" height="280"></canvas>-->
+                            <div id="chart-repo"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="widget widget-two widgetTop" style="height: auto;">
                     <div class="bandWidth">
                         <div class="widget-header">
                             Utilisation de la <strong>bande passante</strong>
                         </div>
-                        <div class="widget-body clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
-                            <!--<canvas class="chart-line" chart-data="line.data" chart-labels="line.labels" chart-dataset-override="line.dsOverride" chart-options="line.options" chart-series="line.series" id="chart-line" width="1000" height="250"></canvas>-->
+                        <div class=" clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
                             <div id="chart-bandwidth"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="widget widget-two widgetTop" style="height: auto;">
+                    <div class="system">
+                        <div class="widget-header">
+                            Visualisation de l'<strong>état système</strong>
+                        </div>
+                        <div class=" clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
+                            <div id="chart-system"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
+<!--        <div class="row">
             <div class="col-xl-12">
                 <div class="widget widget-two">
                     <div class="widget-header">
@@ -147,7 +158,7 @@
                 <div abt-timeline="SystemeActivityStore" abt-tl-context="timeline" abt-tl-filter=""></div>
             </div>
         </div>
-
+-->
     <!-- End Dashboard -->
 
 </div>

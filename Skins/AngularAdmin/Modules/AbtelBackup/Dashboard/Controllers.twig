@@ -1,12 +1,11 @@
-
-app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  SystemeActivityStore, AbtelBackupStateStore, AbtelBackupBorgRepoStore) {
+app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $scope, $rootScope, SystemeActivityStore, AbtelBackupStateStore, AbtelBackupBorgRepoStore) {
     //------------------------------------------//
     //                 ANCHORS
     //------------------------------------------//
     $anchorScroll.yOffset = 50;
     $anchorScroll();
 
-    $scope.gotoAnchor = function(x) {
+    $scope.gotoAnchor = function (x) {
         var newHash = x;
         if ($location.hash() !== newHash) {
             // set the $location.hash to `newHash` and
@@ -18,7 +17,27 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
             $anchorScroll();
         }
     };
+    var colors = {
+        _primary: '#008FFB',
+        _secondary: '#3F51B5',
+        _default: '	#C4BBAF',
+        _success: '#00E396',
+        _danger: '#FF4560',
+        _warning: '#FEB019',
+        _io: '#775DD0'
+    };
 
+    var humanReadable = function (Mo) {
+        var units = new Array('Mo', 'Go', 'To', 'Po');
+
+        var pow = 0;
+        while (Mo > 1024) {
+            Mo /= 1024;
+            pow++;
+        }
+        Mo = Mo.toFixed(2)
+        return Mo +' '+ units[pow];
+    }
 
     //------------------------------------------//
     //                 STORES                   //
@@ -29,11 +48,11 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //Init du store
     $scope.SystemeActivityStore = SystemeActivityStore;
     // Utile seulement a cause de la template d'affichage commun avec la listchildren
-    var now = Math.floor(Date.now()/1000);
+    var now = Math.floor(Date.now() / 1000);
     var seuil = now - 86400;
 
-    $scope.SystemeActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
-    $scope.SystemeActivityStore.getData(1,'dash');
+    $scope.SystemeActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>' + seuil, 'dash');
+    $scope.SystemeActivityStore.getData(1, 'dash');
     $scope.AbtelBackupActivity = {
         data: SystemeActivityStore.data.dash,
         store: SystemeActivityStore,
@@ -45,24 +64,24 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         }
     }
 
-    $rootScope.$on('SystemeActivityStore',function (ev,data){
-        switch (data.type){
+    $rootScope.$on('SystemeActivityStore', function (ev, data) {
+        switch (data.type) {
             case 'add':
-                $scope.SystemeActivityStore.addOneData(data.id,data.data,'dash');
+                $scope.SystemeActivityStore.addOneData(data.id, data.data, 'dash');
                 break;
         }
     });
 
-    var refresh = $interval(function(){
-        var now = Math.floor(Date.now()/1000);
+    var refresh = $interval(function () {
+        var now = Math.floor(Date.now() / 1000);
         var seuil = now - 86400;
-        for(var n in $scope.SystemeActivityStore.data['dash']){
+        for (var n in $scope.SystemeActivityStore.data['dash']) {
             var StData = $scope.SystemeActivityStore.data['dash'][n];
-            if(StData.tmsEdit < seuil) {
-                $scope.SystemeActivityStore.deleteOneData(StData.id,'dash',true);
+            if (StData.tmsEdit < seuil) {
+                $scope.SystemeActivityStore.deleteOneData(StData.id, 'dash', true);
             }
         }
-    },5000);
+    }, 5000);
 
 
     //
@@ -70,63 +89,100 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //
     //Init du store
     $scope.AbtelBackupStateStore = AbtelBackupStateStore;
-
     $scope.pie = {};
     //traitement des données pour générer le chart
-    var humanReadable = function(Mo){
-        var units = new Array('Mo','Go','To','Po');
 
-        var pow = 0;
-        while(Mo > 1024){
-            Mo /= 1024;
-            pow++;
-        }
-        Mo = Mo.toFixed(2)
-        return Mo + units[pow];
-    }
-    var refreshSizes = function(){
+    var refreshSizes = function () {
         var data = $scope.AbtelBackupStateStore.data['dash'][0];
-        if(!data) return false;
+        if (!data) return false;
         var nfsSize = parseInt(data.NfsSize);
         var borgSize = parseInt(data.BorgSize);
         var nasSize = parseInt(data.NasSize);
         var restoreSize = parseInt(data.RestoreSize);
-        var freeSize = parseInt(data.FreeSize);
-        $scope.pie.data = [nfsSize,borgSize,nasSize,restoreSize,freeSize];
-        if($scope.pie.labels) return true;
+        var freeSize = data.FreeSize;
+        var total = nfsSize + borgSize + nasSize + restoreSize + freeSize;
+        $scope.diskChartData = [(nfsSize/total)*100, (borgSize/total)*100, (nasSize/total)*100, (restoreSize/total)*100, (freeSize/total)*100];
+        if ($scope.diskChart) {
+            //update valuies
+            $scope.diskChart.updateSeries($scope.diskChartData);
+            return true;
+        }
 
-        //$scope.pie.labels = ['Clone '+humanReadable(nfsSize),'Backup '+humanReadable(borgSize),'NAS '+humanReadable(nasSize),'Restore '+humanReadable(restoreSize),'Disponible '+humanReadable(freeSize)];
-        $scope.pie.labels = ['Clone','Backup','Nas','Restore','Disponible'];
+        var options = {
+            chart: {
+                height: 295,
+                type: 'radialBar'
 
-        $scope.pie.dsOverride ={
-            data: $scope.pie.data,
-            backgroundColor: ['#f39834','#fb434a','#01a8fe','#7f56c1','#46be8a'],
-            hoverBackgroundColor: ['#e38824','#eb333a','#01a8fe','#7f56c1','#36ae7a'],
-        };
+            },
+            plotOptions: {
+                radialBar: {
+                    offsetY: -10,
+                    startAngle: 0,
+                    endAngle: 270,
+                    hollow: {
+                        margin: 5,
+                        size: '30%',
+                        background: 'transparent',
+                        image: undefined,
+                    },
+                    dataLabels: {
+                        name: {
+                            show: false,
 
-        $scope.pie.options = {
-            legend: {display: true},
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
-                        //console.log(tooltipItems,data);
-                        //Return value for label
-                        return ' '+data.labels[tooltipItems.index]+' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]) ;
+                        },
+                        value: {
+                            show: false,
+                        }
                     }
                 }
-            }
-        };
+            },
+            colors: [colors._warning, colors._danger, colors._io,colors._primary,colors._success],
+            series: $scope.diskChartData,
+            labels: ['Clone', 'Backup', 'Nas', 'Restore', 'Disponible'],
+            legend: {
+                show: true,
+                floating: true,
+                fontSize: '10px',
+                position: 'left',
+                offsetX: 40,
+                offsetY: 0,
+                labels: {
+                    useSeriesColors: true,
+                },
+                formatter: function(seriesName, opts) {
+                    return seriesName + ":  " + humanReadable((opts.w.globals.series[opts.seriesIndex]*total)/100)
+                },
+                markers: {
+                    size: 0
+                },
+                itemMargin: {
+                    horizontal: 1,
+                }
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    legend: {
+                        show: false
+                    }
+                }
+            }]
+        }
+
+        $scope.diskChart = new ApexCharts(
+            document.querySelector("#chart-disk"),
+            options
+        );
+
+        $scope.diskChart.render();
         return true;
     }
 
-    $rootScope.$on('AbtelBackupStateStore',function (ev,data){
-        if(data.type == 'add'){
+    $rootScope.$on('AbtelBackupStateStore', function (ev, data) {
+        if (data.type == 'add') {
             refreshSizes(true);
         }
     });
-
-
-
 
 
     //
@@ -134,35 +190,130 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //
     //Init du store
     $scope.AbtelBackupBorgRepoStore = AbtelBackupBorgRepoStore;
-    $scope.AbtelBackupBorgRepoStore.setFilters('Size>0','dash');
+    $scope.AbtelBackupBorgRepoStore.setFilters('Size>0', 'dash');
 
     $scope.bar = {};
-    var numberWithCommas = function(x) {
+    var numberWithCommas = function (x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
-    var refreshSizesBar = function(){
+    var refreshSizesBar = function () {
         var data = $scope.AbtelBackupBorgRepoStore.data['dash'];
-        if(!data.length) return false;
+        if (!data.length) return false;
 
         var datasetBorg = [];
-        for (var n in data){
+        var labelBorg = [];
+        for (var n in data) {
             datasetBorg.push(parseInt(data[n].Size));
+            labelBorg.push(data[n].Titre);
         }
 
-        $scope.bar.data = [datasetBorg];
-        if($scope.bar.labels) return true;
+
+
+        var options = {
+            chart: {
+                height: 290,
+                type: 'bar',
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        position: 'top', // top, center, bottom
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return humanReadable(val);
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
+            },
+            series: [{
+                name: 'Repo',
+                data: datasetBorg
+            }],
+            xaxis: {
+                categories: labelBorg,
+                position: 'top',
+                labels: {
+                    offsetY: -18,
+
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                }
+            },
+            fill: {
+                gradient: {
+                    shade: 'light',
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    colorFrom: colors._primary,
+                    colorTo: colors._secondary,
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [50, 0, 100, 100]
+                },
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: false,
+                    formatter: function (val) {
+                        return humanReadable(val);
+                    }
+                }
+
+            }
+        }
+
+        $scope.repoChart = new ApexCharts(
+            document.querySelector("#chart-repo"),
+            options
+        );
+
+        $scope.repoChart.render();
+
+
+/*        $scope.bar.data = [datasetBorg];
+        if ($scope.bar.labels) return true;
 
         $scope.bar.labels = [];
         for (var n in data) {
             $scope.bar.labels.push(data[n].Titre);
         }
 
-        $scope.bar.dsOverride =[
+        $scope.bar.dsOverride = [
             {
-                label:'Taille Backup',
-                backgroundColor: 'rgba(243,152,52,0.5)',
-                hoverBackgroundColor: 'rgba(227,136,36,0.8)',
-                borderColor:'#d37814',
+                label: 'Taille Backup',
+                backgroundColor: colors._warning,
+                hoverBackgroundColor: colors._warning,
+                borderColor: colors._warning,
                 stack: 1,
                 xAxisID: 'Xaxis1'
             }
@@ -173,10 +324,10 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
             maintainAspectRatio: false,
             tooltips: {
                 callbacks: {
-                    label: function(tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
+                    label: function (tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
                         //console.log(tooltipItems,data);
                         //Return value for label
-                        return ' '+data.datasets[tooltipItems.datasetIndex].label+' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]) ;
+                        return ' ' + data.datasets[tooltipItems.datasetIndex].label + ' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]);
                     }
                 }
             },
@@ -186,7 +337,7 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
                     barThickness: 20,
                     categoryPercentage: 0.5,
                     id: 'Xaxis1'
-                },{
+                }, {
                     stacked: false,
                     barThickness: 40,
                     id: 'Xaxis2',
@@ -197,17 +348,19 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
                         offsetGridLines: true
                     },
                     label: 'Go',
-                    offset:true,
+                    offset: true,
                     display: false
                 }],
                 yAxes: [{
                     stacked: false,
                     ticks: {
-                        callback: function(value) { return numberWithCommas(value); },
+                        callback: function (value) {
+                            return numberWithCommas(value);
+                        },
                     },
                 }]
             }
-        };
+        };*/
         return true;
     }
     $scope.myCharts = {};
@@ -219,181 +372,359 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         $scope.myCharts[chart.chart.canvas.id] = chart;
     });
 
-    $rootScope.$on('AbtelBackupBorgRepoStore',function (ev,data){
-        if(data.type == 'edit' || data.type == 'add'){
+    $rootScope.$on('AbtelBackupBorgRepoStore', function (ev, data) {
+        if (data.type == 'edit' || data.type == 'add') {
             refreshSizesBar(true);
         }
     });
 
     //call data and init bar
-    $scope.AbtelBackupBorgRepoStore.getData(1,'dash').then(refreshSizesBar)
+    $scope.AbtelBackupBorgRepoStore.getData(1, 'dash').then(refreshSizesBar)
 
 
     //---------------------//
     //      BandWidth      //
     //---------------------//
-    var refreshBandwidthBar = function(){
+    $scope.bandwidth = {
+        RX:[],
+        TX:[],
+        Cpu:[],
+        Ram:[],
+        Io:[]
+    }
+    var refreshBandwidthBar = function () {
         var data = $scope.AbtelBackupStateStore.data['dash'];
-console.info('bandwidth init',data,data.length);
         //if(!data.length) return false;
 
-        var datasetRX = [];
-        var datasetTX = [];
-        for (var n in data){
-            datasetRX.push(parseInt(data[n].RX));
-            datasetTX.push(parseInt(data[n].TX));
+        for (var n = data.length-1; n--;n>=0) {
+            $scope.bandwidth.RX.push([data[n].tmsCreate*1000,data[n].RX]);
+            $scope.bandwidth.TX.push([data[n].tmsCreate*1000,data[n].TX]);
+            $scope.bandwidth.Cpu.push([data[n].tmsCreate*1000,data[n]['CpuUsage']]);
+            $scope.bandwidth.Ram.push([data[n].tmsCreate*1000,data[n]['RamUsage']]);
+            $scope.bandwidth.Io.push([data[n].tmsCreate*1000,data[n]['IOUsage']]);
         }
+        console.info('bandwidth init', $scope.bandwidth.RX,$scope.bandwidth.TX);
 
-
-        /*$scope.line = {};
-        $scope.line.data = [datasetRX,datasetTX];
-        if($scope.line.labels) return true;
-
-        $scope.line.labels = ['Download','Upload'];
-
-        $scope.line.data = [Array.apply(null, Array(60)).map(Number.prototype.valueOf,0),Array.apply(null, Array(60)).map(Number.prototype.valueOf,0)];
-
-        var min = -60;
-        $scope.line.labels = Array.apply(null, Array(60)).map(function(a){
-            min++;
-            return min+' sec.';
-        });
-
-        $scope.line.series = ['Total Upload','Total Download'];
-
-        $scope.line.dsOverride =[
-            {
-                yAxisID: 'Yaxis1',
-                borderColor: 'rgba(70,190,138,0.5)',
-                backgroundColor: 'rgba(255,255,255,0)',
-                fill: false
-            },
-            {
-                borderColor: 'rgba(70,190,138,0.5)',
-                backgroundColor: 'rgba(255,255,255,0)',
-                borderDash: [5,4],
-                fill: false
-            }
-        ];
-
-        $scope.line.options = {
-            scales: {
-                yAxes: [
+        $.getJSON('/Tools/Js/ApexChart/locales/fr.json', function(data) {
+            var fr = data;
+            var options = {
+                chart: {
+                    locales: [fr],
+                    defaultLocale: 'fr',
+                    height: 280,
+                    type: "line",
+                    stacked: true,
+                    animations: {
+                        enabled: true,
+                        easing: "linear",
+                        dynamicAnimation: {
+                            speed: 2000
+                        }
+                    },
+                    toolbar: {
+                        show: false,
+                        offsetY: -10
+                    },
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: "smooth",
+                    width: 2
+                },
+                grid: {
+                    padding: {
+                        left: 0,
+                        right: 0
+                    }
+                },
+                markers: {
+                    size: 0,
+                    hover: {
+                        size: 0
+                    }
+                },
+                fill: {
+                    opacity: [0.15,0.15,1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: 'light',
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                series: [
                     {
-                        id: 'Yaxis1',
-                        type: 'linear',
-                        display: true,
-                        position: 'left'
+                        name: "Download",
+                        data: $scope.bandwidth.RX,
+                        type: 'area',
+                        color: colors._success
+                    },
+                    {
+                        name: "Upload",
+                        type: 'area',
+                        data: $scope.bandwidth.TX,
+                        color: colors._primary
+                    },
+                    {
+                        name: "Cpu",
+                        type: 'line',
+                        data: $scope.bandwidth.Cpu,
+                        color: colors._danger
+                    },
+                    {
+                        name: "Ram",
+                        type: 'line',
+                        data: $scope.bandwidth.Ram,
+                        color: colors._warning
+                    },
+                    {
+                        name: "Io",
+                        type: 'line',
+                        data: $scope.bandwidth.Io,
+                        color: colors._io
+                    }
+                ],
+                xaxis: {
+                    type: "datetime",
+                    range: 120000,
+                    labels: {
+                        /**
+                         * Allows users to apply a custom formatter function to xaxis labels.
+                         *
+                         * @param { String } value - The default value generated
+                         * @param { Number } timestamp - In a datetime series, this is the raw timestamp
+                         * @param { index } index of the tick / currently executing iteration in xaxis labels array
+                         */
+                        formatter: function(value, timestamp, index) {
+                            return moment(new Date(timestamp)).format("HH:mm:ss")
+                        }
+                    }
+                },
+                yaxis: [
+                    {
+                        seriesName: 'Upload',
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: '#008FFB'
+                        },
+                        labels: {
+                            style: {
+                                color: '#008FFB',
+                            }
+                        },
+                        title: {
+                            text: "Bande passante kB/sec ",
+                            style: {
+                                color: '#008FFB',
+                            }
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        seriesName: 'Download',
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        seriesName: 'Cpu',
+                        opposite: true,
+                        min: 0,
+                        max:100,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: '#00E396'
+                        },
+                        labels: {
+                            style: {
+                                color: '#00E396',
+                            }
+                        },
+                        title: {
+                            text: "Pourcentage utilisation %",
+                            style: {
+                                color: '#00E396',
+                            }
+                        },
+                    },
+                    {
+                        seriesName: 'Ram',
+                        min: 0,
+                        max:100,
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
+
+                    },
+                    {
+                        seriesName: 'Io',
+                        min: 0,
+                        max:100,
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
+
                     }
                 ]
-            }
-        };*/
-        var colors = {
-            _primary: '#01a8fe',
-            _default: '#acb7bf',
-            _success: '#46be8a',
-            _danger: '#fb434a',
-            _warning: '#f39834'
-        };
-
-        $scope.bandwidth = [
-            ['Download'],
-            ['Upload'],
-            ['Cpu'],
-            ['Ram'],
-            ['Io']
-        ];
-
-        console.log('>>> chart bandwidth init');
-        $scope.bandwidthChart = c3.generate({
-            bindto: '#chart-bandwidth',
-            data: {
-                columns: $scope.bandwidth,
-                axes: {
-                    Download: 'y',
-                    Upload: 'y',
-                    Cpu: 'y2',
-                    Ram: 'y2',
-                    Io: 'y2'
-                },
-                types: {
-                    Download: 'area-spline',
-                    Upload: 'area-spline',
-                    Cpu: 'spline',
-                    Ram: 'spline',
-                    Io: 'spline'
-                }
-            },
-            axis: {
-                y: {
+                ,
+                legend: {
                     show: true,
-                    label: {
-                        text: 'Kb/Sec',
-                        position: 'outer-middle'
+                    floating: true,
+                    horizontalAlign: "center",
+                    onItemClick: {
+                        toggleDataSeries: false
                     },
-                    tick: {
-                        format: d3.format("kbs,") // ADD
+                    position: "top",
+                    offsetY: 0,
+                    offsetX: 0
+                }
+            };
+            $scope.bandwidthChart = new ApexCharts(
+                document.querySelector("#chart-bandwidth"),
+                options
+            );
+            $scope.bandwidthChart.render();
+
+
+            /***
+             * ETAT SYSTEME
+             */
+            var optionsSystem = {
+                chart: {
+                    height: 295,
+                    type: 'radialBar'
+
+                },
+                plotOptions: {
+                    radialBar: {
+                        offsetY: -10,
+                        startAngle: 0,
+                        endAngle: 270,
+                        hollow: {
+                            margin: 5,
+                            size: '30%',
+                            background: 'transparent',
+                            image: undefined,
+                        },
+                        dataLabels: {
+                            name: {
+                                show: false,
+
+                            },
+                            value: {
+                                show: false,
+                            }
+                        }
                     }
                 },
-                y2: {
+                colors: [colors._warning, colors._danger, colors._io],
+                series: [76,67,61],
+                labels: ['Cpu', 'Ram', 'Input/ Output'],
+                legend: {
                     show: true,
-                    label: {
-                        text: 'Pourcentage %',
-                        position: 'outer-middle'
+                    floating: true,
+                    fontSize: '10px',
+                    position: 'left',
+                    offsetX: 60,
+                    offsetY: 10,
+                    labels: {
+                        useSeriesColors: true,
                     },
-                    tick: {
-                        format: d3.format("%,") // ADD
+                    markers: {
+                        size: 0
+                    },
+                    formatter: function(seriesName, opts) {
+                        return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]+" %"
+                    },
+                    itemMargin: {
+                        horizontal: 1,
                     }
-                }
-            },
-            color: {
-                pattern: [colors._primary, colors._success,colors._warning,colors._default,colors._danger,]
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            show: false
+                        }
+                    }
+                }]
             }
+            $scope.systemChart = new ApexCharts(
+                document.querySelector("#chart-system"),
+                optionsSystem
+            );
+            $scope.systemChart.render();
         });
+
         return true;
     }
-    var updateBandwidth = function(){
+    var updateBandwidth = function () {
         var dots = $scope.AbtelBackupStateStore.data['dash'];
-        var dot = dots[dots.length-1];
+        var dot = dots[0];
         //Download
-        if ($scope.bandwidth[0].length>60){
-            $scope.bandwidth[0].splice(1,1);
-        }
-        $scope.bandwidth[0].push(dot['RX']);
+        $scope.bandwidth.RX.push([dot.tmsCreate*1000,dot['RX']]);
         //Upload
-        if ($scope.bandwidth[1].length>60){
-            $scope.bandwidth[1].splice(1,1);
-        }
-        $scope.bandwidth[1].push(dot['TX']);
+        $scope.bandwidth.TX.push([dot.tmsCreate*1000,dot['TX']]);
         //Cpu
-        if ($scope.bandwidth[2].length>60){
-            $scope.bandwidth[2].splice(1,1);
-        }
-        $scope.bandwidth[2].push(dot['CpuUsage'].split('.')[0]/100);
+        $scope.bandwidth.Cpu.push([dot.tmsCreate*1000,dot['CpuUsage']]);
         //Ram
-        if ($scope.bandwidth[3].length>60){
-        $scope.bandwidth[3].splice(1,1);
-        }
-        $scope.bandwidth[3].push(dot['RamUsage'].split('.')[0]/100);
+        $scope.bandwidth.Ram.push([dot.tmsCreate*1000,dot['RamUsage']]);
         //Io
-        if ($scope.bandwidth[4].length>60){
-            $scope.bandwidth[4].splice(1,1);
-        }
-        $scope.bandwidth[4].push(dot['IOUsage'].split('.')[0]/100);
+        $scope.bandwidth.Io.push([dot.tmsCreate*1000,dot['IOUsage']]);
 
         //Update charts
-        $scope.bandwidthChart.load({
-            columns: $scope.bandwidth
-        });
-        console.log('>>> update bandwidth',$scope.bandwidth, dot,dots);
+        $scope.bandwidthChart.updateSeries([
+            {
+                name: "Download",
+                data: $scope.bandwidth.RX
+            },
+            {
+                name: "Upload",
+                data: $scope.bandwidth.TX
+            },
+            {
+                name: "Cpu",
+                data: $scope.bandwidth.Cpu
+            },
+            {
+                name: "Ram",
+                data: $scope.bandwidth.Ram
+            },
+            {
+                name: "Io",
+                data: $scope.bandwidth.Io
+            }
+        ],true);
+        $scope.systemChart.updateSeries([
+            dot['CpuUsage'],dot['RamUsage'],dot['IOUsage']
+        ])
+        console.log('>>> update bandwidth', $scope.bandwidth, dot, dots);
     }
 
     //init bar bandwidth
-    $scope.AbtelBackupStateStore.getData(1,'dash').then(refreshSizes).then(refreshBandwidthBar);
+    $scope.AbtelBackupStateStore.getData(1, 'dash').then(refreshSizes).then(refreshBandwidthBar);
 
 
-    $rootScope.$on('AbtelBackupStateStore',function (ev,data){
-        if(data.type == 'add' ){
+    $rootScope.$on('AbtelBackupStateStore', function (ev, data) {
+        if (data.type == 'add') {
             updateBandwidth();
         }
     });

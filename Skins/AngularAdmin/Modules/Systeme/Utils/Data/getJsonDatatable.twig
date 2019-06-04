@@ -12,7 +12,9 @@
             "_tail":{{ row.isTail }},
             {% endif %}
             {#"_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}",#}
-            "create":"{{ row.tmsCreate | date('d/m/Y H:i') }}"
+            "create":"{{ row.tmsCreate | date('d/m/Y H:i') }}",
+            "tmsCreate":"{{ row.tmsCreate }}",
+            "tmsEdit":"{{ row.tmsEdit }}"
             {% for field in fields %}
                 {% if field.type == "boolean" %}
             ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}

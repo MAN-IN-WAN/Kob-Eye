@@ -345,7 +345,7 @@ class AbtelBackup extends Module{
         //prépare le sar pour une prochaine execution
         while(time()<$start+60){
             //CPU
-            $cpu = AbtelBackup::localExec('grep \'cpu \' /proc/stat | awk \'{usage=($2+$4)*100/($2+$4+$5)} END {print usage}\'');
+            $cpu = AbtelBackup::localExec('top -b -n1 | grep "Cpu(s)" | awk \'{print $2 + $4}\'');
             //RAM
             //free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }
             $ram = AbtelBackup::localExec('free -m | awk \'NR==2{printf "%.2f", $3*100/$2 }\'');
