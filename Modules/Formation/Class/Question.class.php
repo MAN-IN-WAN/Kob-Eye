@@ -31,8 +31,10 @@ class Question extends genericClass{
 
 
     static function traiterTypeReponse($tr,$session,$TypeQuestionId){
+        if(empty($session)) $session = '*';
         $html = '';
         $data = Sys::getData('Formation','Session/'.$session.'/Equipe/*/Reponse/TypeQuestionId='.$TypeQuestionId);
+        if(empty($data)) return 'Aucune donnée.';
         $tp = Sys::getOneData('Formation','TypeQuestion/'.$TypeQuestionId);
         switch($tr){
             case 8:
@@ -204,7 +206,7 @@ class Question extends genericClass{
 
                 $vals = array();
                 foreach($data as $v){
-                    $values = json_decode($v->Valeur);
+                    $values = json_decode($v->Valeur,true);
                     foreach ($values as $vs){
                         $vals[] = $vs;
                     }
@@ -219,7 +221,7 @@ class Question extends genericClass{
                     return $carry;
                 },$init);
                 $moy = array_map(function($a) use ($qty){
-                    return $a / $qty;
+                    return round($a / $qty,2);
                 },$res);
 
                 $pjs = '';
