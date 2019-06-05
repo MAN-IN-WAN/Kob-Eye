@@ -338,6 +338,86 @@ class Utils {
         }
         rmdir($dirPath);
     }
+    public static function unBBCode( $data){
+        $BBCode = Array();
+        $BBCode[] = Array("Name"=>"i","Class"=>"italic");
+        $BBCode[] = Array("Name"=>"b","Class"=>"bold");
+        $BBCode[] = Array("Name"=>"u","Class"=>"underline");
+        $BBCode[] = Array("Name"=>"s","Class"=>"underline");
+        $BBCode[] = Array("Name"=>"barre","Class"=>"strike");
+        $BBCode[] = Array("Name"=>"quote","Class"=>"quote");
+        $BBCode[] = Array("Name"=>"spoiler","Class"=>"spoiler");
+        $BBCode[] = Array("Name"=>"uppercase","Class"=>"uppercase");
+        $BBCode[] = Array("Name"=>"lowercase","Class"=>"lowercase");
+        for ($i=0;$i<count($BBCode);$i++){
+            $data = preg_replace('!\['.$BBCode[$i]["Name"].'\](.*?)\[/'.$BBCode[$i]["Name"].'\]!is', '<span class="bb_'.$BBCode[$i]["Class"].'">$1</span>', $data);
+        }
+        $BBCode = Array();
+        $BBCode[] = Array("Name"=>"i","Beacon"=>"em");
+        $BBCode[] = Array("Name"=>"b","Beacon"=>"strong");
+        for ($i=0;$i<count($BBCode);$i++){
+            $data = preg_replace('!\['.$BBCode[$i]["Name"].'\](.*?)\[/'.$BBCode[$i]["Name"].'\]!is', '<'.$BBCode[$i]["Beacon"].'>$1</'.$BBCode[$i]["Beacon"].'>', $data);
+        }
+        //Gestion des tables
+        $data = preg_replace('!\[table(.*?)](.*?)\[/table\]!is', '<table$1>$2</table>', $data);
+        $data = preg_replace('!\[tr(.*?)](.*?)\[/tr\]!is', '<tr$1>$2</tr>', $data);
+        $data = preg_replace('!\[td(.*?)](.*?)\[/td\]!is', '<td$1>$2</td>', $data);
+        $data = preg_replace('!\[thead(.*?)](.*?)\[/thead\]!is', '<thead$1>$2</thead>', $data);
+        $data = preg_replace('!\[tbody(.*?)](.*?)\[/tbody\]!is', '<tbody$1>$2</tbody>', $data);
+        $data = preg_replace('!\[p(.*?)](.*?)\[/p\]!is', '<p$1>$2</p>', $data);
+        //Gestion des balises url
+        #DEPRECATED
+        $url = "urlt";
+        $data = preg_replace('`\['.$url.'\=(.*?)\|(.*?)\](.*?)\[\/'.$url.'\]`s', '<a href="$2"  class="bb_a_url" title="$1">$3</a>', $data);
+        #DEPRECATED
+        $data = preg_replace('`\[url\=([^\]^\|]*?)\|([^\]^\|]*?)\|([^\]^\|]*?)\|([^\]^\|]*?)\](.*?)\[\/url\]`s', '<a href="$1" class="bb_a_url $4" title="$2" rel="$3" >$5</a>', $data);
+        $data = preg_replace('`\[url\=([^\]^\|]*?)\|([^\]^\|]*?)\|([^\]^\|]*?)\](.*?)\[\/url\]`s', '<a href="$1" class="bb_a_url" title="$2" rel="$3" >$4</a>', $data);
+        $data = preg_replace('`\[url\=([^\]^\|]*?)\|([^\]^\|]*?)\](.*?)\[\/url\]`s', '<a href="$1" class="bb_a_url" title="$2" >$3</a>', $data);
+        $data = preg_replace('`\[url\=([^\]^\|]*?)\](.*?)\[\/url\]`s', '<a href="$1" class="bb_a_url" >$2</a>', $data);
+        $data = preg_replace('`\['.$url.'\](.*?)\[\/'.$url.'\]`s', '<a href="$1" class="bb_a_url">$1</a>', $data);
+        $data = preg_replace('`\[url\](.*?)\[\/url\]`s', '<a href="$1" class="bb_a_url" target="_blank">$1</a>', $data);
+        //Gestion des balises img
+        $url = "img";
+        $data = preg_replace('`\['.$url.'\](.*?)\[\/'.$url.'\]`', '<a href="$1" class="mb" style="text-decoration:none;display:block;margin-top:15px;"><img src="$1" class="bb_img" alt=""/></a>', $data);
+        //Gestion des balises mail
+        $mail = "email";
+        $data = preg_replace('`\['.$mail.'=(.*?)\](.+?)\[\/'.$mail.'\]`', '<a class="bb_a_mail"  href="mailto:$1">$2</a>', $data);
+        $data = preg_replace('`\['.$mail.'\](.*?)\[\/'.$mail.'\]`', '<a class="bb_a_mail" href="mailto:$1">$1</a>', $data);
+        //Gestion des alignements
+        $data = preg_replace('`\[align=(.+?)\](.*?)\[\/align\]`s', '<span class="bb_align_$1>$2</span>', $data);
+        //Gestion des couleurs
+        $data = preg_replace('`\[color=(.+?)\](.*?)\[\/color\]`s', '<span class="bb_coloured"  style="color:$1">$2</span>', $data);
+        //Gestion des listes
+        /*						$data = preg_replace('!\[list\=square\](.*?)\[/list\]!is', '<ul class="bb_ul">$1</ul>', $data);
+                                $data = preg_replace('!\[list\=decimal\](.*?)\[/list\]!is', '<ol class="bb_ol">$1</ol>', $data);*/
+        //$data = preg_replace('!\[list\](.+?)\[/list\]!is', '<ul class="bb_ul">$1</ul>', $data);
+// 						$data = preg_replace('!\[numlist\](.*?)\[/numlist\]!is', '<ol class="bb_ol">$1</ol>', $data);
+        $data = preg_replace('!\[list.*?\]!is', '<ul class="bb_ul">', $data);
+        $data = preg_replace('!\[list\]!is', '<ul class="bb_ul">', $data);
+        $data = preg_replace('!\[/list\]!is', '</ul>', $data);
+        $data = preg_replace('!\[list\=square\]!is', '<ul class="bb_ul">', $data);
+//						$data = preg_replace('!\[item\](.*?)\[/item\]!is', '<li class="bb_li"><span>$1</span></li>', $data);
+        $data = preg_replace('#\[\*\](((?!\[\*\]|!\[\/list\]).)*)#is', '<li class="bb_li"><span>$1</span></li>', $data);
+        $data = preg_replace('!\[item\]!is', '<li class="bb_li"><span>', $data);
+        $data = preg_replace('!\[/item\]!is', '</span></li>', $data);
+        //Gestion de la taille des caractères
+        $data = preg_replace('`\[size=(.*?)\](.+?)\[\/size\]`s', '<span style="font-size:$1px;">$2</span>', $data);
+        //Gestion de la couleur de la police
+        //$data = preg_replace('`\[color=(.*?)\](.+?)\[\/color\]`s', '<span style="color:$1;">$2</span>', $data);
+        //Gestion du texte: en exposant
+        $data = preg_replace('`\[sup\](.*?)\[\/sup\]`', '<span style="vertical-align:80%;">$1</span>', $data);
+        //Gestion du texte: en indice
+        $data = preg_replace('`\[sub\](.*?)\[\/sub\]`', '<span style="vertical-align:sub;">$1</span>', $data);
+        //Gestion des titres
+        $data = preg_replace('`\[h1\](.*?)\[\/h1\]`', '<div class="bb_h1"><h1><span>$1</span></h1></div>', $data);
+        $data = preg_replace('`\[h2\](.*?)\[\/h2\]`', '<div class="bb_h2"><h2><span>$1</span></h2></div>', $data);
+        $data = preg_replace('`\[h3\](.*?)\[\/h3\]`', '<div class="bb_h3"><h3><span>$1</span></h3></div>', $data);
+// 						//$data = str_replace('&', '&amp;', $data); //EM 14032013
+        $data =nl2br($data);
+        //$data = $this->char($data);
+
+        return $data;
+    }
 
 }
 

@@ -436,11 +436,11 @@ class Spectacle extends genericClass {
 				$html = '<table border="1">
 							<tr>
 								<th> </th>
-								<th>Date Evenement</th>
-								<th>Date Fin Evenement</th>
-								<th>Date Fin Réservation</th>
-								<th>Salle</th>
-								<th>Places à dispo</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Réservation</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Salle</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Places à dispo</th>
 							</tr>';
 				for($n = 0; $n < $params['nbEvt']; $n++){
 					for($m = 1; $m <= 7; $m++ ){
@@ -465,18 +465,18 @@ class Spectacle extends genericClass {
 					$evt->Valide = 1;
 					$evt->addParent($this);
 					$evt->addParent($salle);
-					//$evt->Save();
+					$evt->Save();
 
 					//Preparation evt suivant:
 					$tmsDebut = $tmsNext;
 
 					$html .=  "<tr>
-								<th>". ($n + 1) ."</th>
-								<th>".$evt->DateDebut."</th>
-								<th>".$evt->DateFin."</th>
-								<th>".$evt->DateCloture."</th>
-								<th>".$salle->Nom."</th>
-								<th>".$evt->NbPlace."</th>
+								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
+								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
+								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
+								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".$salle->Nom."</td>
+								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
 							</tr>";
 				}
 				$html .= '</table>';
@@ -499,8 +499,54 @@ class Spectacle extends genericClass {
 				);
 				break;
 			case 5 :
-				print_r($params);
+				$debut = explode('/',$params['dateDebut']);
+				$debut = $debut[1].'/'. $debut[0].'/'. $debut[2];
+				$tmsDebut = strtotime($debut);
+				$salle= Sys::getOneData('Reservation','Salle/'.$params['salle']);
+				$html = '<table border="1">
+							<tr>
+								<th> </th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Réservation</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Salle</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Places à dispo</th>
+							</tr>';
+				for($n = 0; $n < $params['nbMois']; $n++){
 
+					$fin = date('Y/m/t',$tmsDebut);
+					$tmsFin = strtotime($fin);
+
+					$fin = date('d/m/Y',$tmsFin);
+					$debut = date('d/m/Y',$tmsDebut);//$tmsDEbut redefini a chaque boucle dont on reprends la date
+					$clo = $tmsFin - (86400*$params['clotureX']);
+
+					$evt = genericClass::createInstance('Reservation','Evenement');
+					$evt->DateDebut = $debut.' '.$params['heureDebut'];
+					$evt->DateFin = $fin.' '.$params['heureFin'];
+					$evt->DateCloture = date('d/m/Y',$clo).' '.$params['clotureHM'];
+					$evt->Nom = $this->Nom;
+					$evt->NbPlace = $params['nbPlcEvt'];
+					$evt->Valide = 1;
+					$evt->addParent($this);
+					$evt->addParent($salle);
+					$evt->Save();
+
+					//Preparation evt suivant:
+					$tmsDebut = $tmsFin+86400;
+
+					$html .=  "<tr>
+								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
+								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
+								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
+								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".$salle->Nom."</td>
+								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
+							</tr>";
+				}
+				$html .= '</table>';
+
+				return array ( 'data' => $html );
 				break;
 			//-------------------------------------------------------------------
 			case 3 ://Évènements sur plusieurs jours récurrents sur la même semaine
@@ -518,7 +564,58 @@ class Spectacle extends genericClass {
 				);
 				break;
 			case 6 :
-				print_r($params);
+
+				$debut = explode('/',$params['dateDebut']);
+				$debut = $debut[1].'/'. $debut[0].'/'. $debut[2];
+				$fin = explode('/',$params['dateFin']);
+				$fin = $fin[1].'/'. $fin[0].'/'. $fin[2];
+
+				$tmsDebut = strtotime($debut);
+				$tmsFin = strtotime($fin);
+
+				$salle= Sys::getOneData('Reservation','Salle/'.$params['salle']);
+				$html = '<table border="1">
+							<tr>
+								<th> </th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Evenement</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Date Fin Réservation</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Salle</th>
+								<th style=\'padding:5px 15px;text-align: center;\'>Places à dispo</th>
+							</tr>';
+				for($n = 0; $n < $params['nbEvt']; $n++){
+
+					$fin = date('d/m/Y H:i:s',$tmsFin);//$tmsDEbut redefini a chaque boucle dont on reprends la date
+					$debut = date('d/m/Y H:i:s',$tmsDebut);//$tmsDEbut redefini a chaque boucle dont on reprends la date
+					$clo = $tmsFin - (86400*$params['clotureX']);
+
+					$evt = genericClass::createInstance('Reservation','Evenement');
+					$evt->DateDebut = $debut.' '.$params['heureDebut'];
+					$evt->DateFin = $fin.' '.$params['heureFin'];
+					$evt->DateCloture = date('d/m/Y',$clo).' '.$params['clotureHM'];
+					$evt->Nom = $this->Nom;
+					$evt->NbPlace = $params['nbPlcEvt'];
+					$evt->Valide = 1;
+					$evt->addParent($this);
+					$evt->addParent($salle);
+					$evt->Save();
+
+					//Preparation evt suivant:
+					$tmsDebut = $tmsDebut+7*86400;
+					$tmsFin = $tmsFin+7*86400;
+
+					$html .=  "<tr>
+								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
+								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
+								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
+								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".$salle->Nom."</td>
+								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
+							</tr>";
+				}
+				$html .= '</table>';
+
+				return array ( 'data' => $html );
 
 				break;
 			//-------------------------------------------------------------------

@@ -163,12 +163,12 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="form-control-label" for="l0">Date & Heure de debut du premier évènement</label>
+                <label class="form-control-label" for="l0">Date de debut du premier évènement</label>
                 {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
             </div>
             <div class="col-md-6">
                 <div class="form-group" >
-                    <label class="input-group datetimepicker-init">
+                    <label class="input-group datepicker-only-init">
                         <input id="dateDebut" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateDebut" />
                         <span class="input-group-addon">
                             <i class="icmn-calendar"></i>
@@ -179,15 +179,31 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="form-control-label" for="l0">Date & Heure de fin du premier évènement</label>
+                <label class="form-control-label" for="l0">Heure de début du premier évènement</label>
                 {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
             </div>
             <div class="col-md-6">
                 <div class="form-group" >
-                    <label class="input-group datetimepicker-init">
-                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="ReservationSpectaclefunction.args.dateFin" />
+                    <label class="input-group timepicker-only-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une heure" ng-model="ReservationSpectaclefunction.args.heureDebut" />
                         <span class="input-group-addon">
-                            <i class="icmn-calendar"></i>
+                            <i class="icmn-clock"></i>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Heure de fin du premier évènement</label>
+                {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" >
+                    <label class="input-group timepicker-only-init">
+                        <input id="dateFin" type="text" class="form-control" placeholder="Sélectionnez une heure" ng-model="ReservationSpectaclefunction.args.heureFin" />
+                        <span class="input-group-addon">
+                            <i class="icmn-clock"></i>
                         </span>
                     </label>
                 </div>

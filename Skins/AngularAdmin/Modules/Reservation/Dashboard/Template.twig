@@ -1,0 +1,106 @@
+<div class="page-content-inner blabla">
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-primary">
+                    <a class="widget-body" href="#/" >
+                        <div class="widget-body-inner">
+                            <h5 class="text-uppercase" style="white-space: normal">Evènements à clore aujourd'hui:</h5>
+                            <i class="counter-icon icmn-stack"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init" >{[{ nextClosing }]}</span>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-success">
+                    <a class="widget-body" href="#/{{ Urls.spectacles }}" >
+                        <div class="widget-body-inner">
+                            <h5 class="text-uppercase" style="white-space: normal">Spectacles en cours:</h5>
+                            <i class="counter-icon icmn-windows8"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init" >{[{ spMonth }]}</span>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-warning">
+                    <a class="widget-body" href="#/{{ Urls.organisations }}" >
+                        <div class="widget-body-inner">
+                            <h5 class="text-uppercase" style="white-space: normal">Structures culturelles et sportives:</h5>
+                            <i class="counter-icon icmn-windows"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init">{[{ nbOrga }]}</span>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-danger">
+                    <a class="widget-body" href="#/{{ Urls.clients }}" >
+                        <div class="widget-body-inner">
+                            <h5 class="text-uppercase" style="white-space: normal">Structures sociales:</h5>
+                            <i class="counter-icon icmn-upload2"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init">{[{ nbCli }]}</span>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="widget widget-three ">
+                    <h3>Spectacles récents</h3>
+                    <div class="widget-body">
+                        {{ include(template_from_string(module('Systeme/Utils/List/Dashboard?Path=Reservation/Spectacle&templateContext=dash'))) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- End Dashboard -->
+
+</div>
+
+
+<!-- Page Scripts -->
+<script>
+    $(function() {
+
+        ///////////////////////////////////////////////////////////
+        // CUSTOM SCROLL
+        if (!cleanUI.hasTouch) {
+            $('.custom-scroll').each(function() {
+                $(this).jScrollPane({
+                    autoReinitialise: true,
+                    autoReinitialiseDelay: 100
+                });
+                var api = $(this).data('jsp'),
+                    throttleTimeout;
+                $(window).bind('resize', function() {
+                    if (!throttleTimeout) {
+                        throttleTimeout = setTimeout(function() {
+                            api.reinitialise();
+                            throttleTimeout = null;
+                        }, 50);
+                    }
+                });
+            });
+        }
+
+    });
+
+</script>
+<!-- End Page Scripts -->

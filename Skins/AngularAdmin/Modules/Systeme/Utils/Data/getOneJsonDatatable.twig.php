@@ -66,6 +66,9 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'label'}[] = $k->getFirstSearchOrder();
         }
     }
+    if ($f['type']=='bbcode'){
+        $vars['row']->{$f['name']} = Utils::unBBCode($vars['row']->{$f['name']});
+    }
     if ($f['type']=='rkey'){
         $kk = Sys::getData($f['objectModule'], $vars['Query'].'/'.$f['objectName']);
         $vars['row']->{$f['name']} = array();
