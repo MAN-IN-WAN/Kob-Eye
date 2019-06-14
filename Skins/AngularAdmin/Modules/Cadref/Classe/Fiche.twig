@@ -82,7 +82,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Classe") }}
@@ -97,7 +97,7 @@
 									{{ finput(f.Annee, o, true, '', 'width:50px') }}
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Horaires et cycle") }}
@@ -131,7 +131,7 @@
 									</section>
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Lieu") }}
@@ -145,7 +145,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Places") }}
@@ -205,7 +205,7 @@
 									</section>
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Enseignants") }}
@@ -219,7 +219,16 @@
 									</multiple-autocomplete>
 								</div>
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visible web") }}
+								</div>
+								<div class="col-md-10">
+									<switch class="cadref-switch-red" ng-model="{{ o }}.AccesWeb"></switch>
+								</div>
+							</div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Notes") }}
@@ -235,7 +244,7 @@
 							<div class="row">
 								{{ label('Dates de cours') }}
 							</div>
-							<div class="row" style="height:10px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="panel-body cadref-no-padding">
 									<ng-include src="'/{{ CurrentUrl }}/0/ClasseDate/ListClasseDate.htm'"></ng-include>

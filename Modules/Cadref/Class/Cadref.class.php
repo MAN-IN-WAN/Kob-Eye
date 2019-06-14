@@ -74,7 +74,7 @@ class Cadref extends Module {
 //			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 			$w1 .= "Telephone1 = '$telr' or Telephone2 = '$telr'";
 		}
-		$sql = "select Numero,Nom,Prenom,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
+		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -83,6 +83,10 @@ class Cadref extends Module {
 				$r['Numero'] = $p['Numero'];
 				$r['Nom'] = $p['Nom'];
 				$r['Prenom'] = $p['Prenom'];
+				$a = $p['Adresse1'];
+				$r['Adresse'] = substr($a, 0, 10);
+				if(strlen($a) > 10) $r['Adresse'] .= '...';
+				if(strlen($a) > 16) $r['Adresse'] .= substr($a, -3, 3);
 				$r['Ville'] = $p['Ville'];
 				$s = $p['Mail'];
 				if($mail && $mail == $s) $r['Mail'] = $s;
@@ -685,7 +689,7 @@ where ce.Classe=$cid
 			$smsrequest["sms"] = $params['Message'];
 			
 			try {
-				$ret = $api_instance->sendSms($smsrequest);
+				$api_instance->sendSms($smsrequest);
 			} catch (Exception $e) {
 				klog::l('CADREF ISendPro Exception :',print_r($e->getResponseObject(),1));
 			}

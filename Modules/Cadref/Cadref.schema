@@ -134,6 +134,7 @@
 		<PROPERTIES type="int" default="0" category="Inscriptions" list="4" form="15" fiche="15" description="Places">Places</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Inscriptions" auto="1" readOnly="1" list="4" form="16" fiche="16" description="Inscrits">Inscrits</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Inscriptions" auto="1" readOnly="1" list="4" form="17" fiche="17" description="Attentes">Attentes</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Description" form="25" fiche="25" description="Accès Web">AccesWeb</PROPERTIES>
 
 		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="18" fiche="18" description="Prix">Prix</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="19" fiche="19" description="Réduction 1">Reduction1</PROPERTIES>
