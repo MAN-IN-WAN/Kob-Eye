@@ -1,0 +1,34 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj.Last = '';
+	$scope.obj.Annee = '';
+	$scope.obj.Cotisation = 0;
+	$scope.obj.Reduction = 0;
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.createAnnee = function() {
+		if(confirm("Voulez-vous créer l'année "+$scope.obj.Annee+"\nCotisation : "+$scope.obj.Cotisation+"\nRéduction : "+$scope.obj.Reduction)) {
+			$('.page-content-inner').spin();
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+			ajax.success(function(data) {
+				$('.page-content-inner').spin(false);
+			}).error(function() {
+				$('.page-content-inner').spin(false);
+			});
+		}
+	}
+});

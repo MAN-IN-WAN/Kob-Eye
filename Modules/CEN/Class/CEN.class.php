@@ -23,7 +23,12 @@ class CEN extends Module {
 				$dics = Sys::getData('CEN', 'Dictionnaire');
 				$ret = array();
 				foreach($dics as $d) $ret[$d->Id] = $d->Nom;
-				return array('dictionaries'=>$ret);
+				$sel = isset($_SESSION['Dictionaries']) ? $_SESSION['Dictionaries'] : false;
+				return array('dictionaries'=>$ret,'selected'=>$sel);
+				
+			case 'select':
+				$_SESSION['Dictionaries'] = $args['selected'];
+				return array('selected'=>$_SESSION['Dictionaries']);
 				
 			case 'list':
 				return $gdn->GetList($args);
@@ -43,7 +48,15 @@ class CEN extends Module {
 				
 			case 'comm':
 				$gdn->initFromId($args['id']);
-				return array('text'=>$gdn->Commentaires);
+				$com = $gdn->Commentaires;
+				$com = preg_replace('/ *\/\/ */', '<br />', $com);
+				$pos = strpos($com, '§ ');
+				while($pos !== false) {
+					$com = preg_replace('/§ /', '<i>', $com, 1);
+					$com = preg_replace('/ §/', '</i>', $com, 1);
+					$pos = strpos($com, '§ ');
+				}
+				return array('text'=>$com);
 				
 			case 'norm':
 				break;

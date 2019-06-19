@@ -231,6 +231,13 @@
 		{% endif %}
 
 		{% if objecttype == 'Classe' %}
+		$scope.ClasseAnnee = '{{ Annee }}';
+		$scope.classeAnneeChange = function() {
+			var f = '';
+			if($scope.ClasseAnnee) f = 'Annee='+$scope.ClasseAnnee;
+			$scope.CadrefClassesetOptionsFilters(f,'default');
+		}
+		
 		var lasttimeout = false;
 		// wait for CadrefClasse to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefClasse', function() {

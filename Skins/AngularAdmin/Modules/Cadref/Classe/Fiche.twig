@@ -32,7 +32,7 @@
 											{{ fkey(f.AntenneId, 'obj') }}
 										</div>
 										<div class="col-md-10">
-											{{ finput(f.LibelleA, 'obj', true) }}
+											{{ finput(f.LibelleA, 'obj') }}
 										</div>
 									</div>
 								</div>
@@ -94,8 +94,13 @@
 									{{ label("Année") }}
 								</div>
 								<div class="col-md-1">
-									{{ finput(f.Annee, o, true, '', 'width:50px') }}
-								</div>
+									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px">
+										{% for v,c in annees %}
+											<option value="{{ v }}">{{ v }}</option>
+										{% endfor %}
+									</select>
+									{#									{{ finput(f.Annee, o, true, '', 'width:50px') }}
+#}								</div>
 							</div>
 							<div class="row" style="height:5px"></div>
 							<div class="row">
@@ -141,7 +146,7 @@
 										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId}" 
 										 ng-model="{{ o }}.LieuLieuId"
 										 class="form-control cadref-input" 
-										 ng-title="{{ o }}.LieuLieuIdlabel+'  -  '+{{ o }}.LibelleL">
+										 ng-title="{{ o }}.LieuLieuIdlabel{#+'  -  '+{{ o }}.LibelleL#}">
 									</div>
 								</div>
 							</div>

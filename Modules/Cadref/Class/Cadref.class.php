@@ -719,6 +719,6 @@ where ce.Classe=$cid
 		}
 	}
 	
-
+	
 
 }

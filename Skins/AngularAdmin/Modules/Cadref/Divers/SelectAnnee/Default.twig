@@ -1,4 +1,4 @@
-{# fiche sendAlert #}
+{# fiche SelectAnnee #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 <div class="page-content-inner">
     <section class="panel">
@@ -16,28 +16,22 @@
 							<div class="row">
 								<div class="col-xl-8">
 									<div class="row">
-										<div class="col-md-1">
-											{{ label("Titre") }}
-										</div>
-										<div class="col-md-6">
-									        <input type="text" class="form-control cadref-input" ng-model="obj.Titre"/>
-										</div>
-									</div>
-									<div class="row" style="height:10px"></div>
-									<div class="row">
-										<div class="col-md-1">
-											{{ label("Texte") }}
-										</div>
-										<div class="col-md-6">
-											<textarea class="form-control cadref-input" style="width:100%;min-height:50px;white-space:pre-wrap;" ng-model="obj.Texte"></textarea>
-										</div>
-									</div>
-									<div class="row" style="height:10px"></div>
-									<div class="row">
-										<div class="col-md-1">
-										</div>
 										<div class="col-md-2">
-											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="sendAlert()">Envoyer</button>
+											{{ label("Annee en cours") }}
+										</div>
+										<div class="col-md-1">
+											<select id="ClasseAnnee" class="form-control cadref-input" ng-model="obj.Annee" style="width:74px">
+												{% for v,c in annees %}
+													<option value="{{ v }}" {% if c %}selected="true"{% endif %}>{{ v }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:20px"></div>
+
+									<div class="row">
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="selectAnnee()">Sélectionner l'année</button>
 										</div>
 									</div>
 								</div>                            

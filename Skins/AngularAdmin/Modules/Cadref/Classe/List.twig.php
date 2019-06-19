@@ -83,6 +83,13 @@ foreach ($childs as $child){
     }
 }
 
+$tmp = array();
+$ans = Sys::getData('Cadref', 'Annee');
+foreach($ans as $an) {
+	$tmp[$an->Annee] = $an->EnCours;
+}
+$vars['annees'] = $tmp;
+
 $t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
 $vars['hideBtn'] = array(
 	'selection' => strpos($t, 'selection') !== false,

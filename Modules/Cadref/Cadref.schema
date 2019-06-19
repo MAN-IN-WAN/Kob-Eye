@@ -1,7 +1,10 @@
 <SCHEMA>
-	<OBJECTCLASS title="Annee" driver="mysql" order="Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Années scolaire" hidden="1" Operations="add,edit" Dico="1">
+	<OBJECTCLASS title="Annee" driver="mysql" order="Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Années scolaire" hidden="1" Operations="add,edit,SelectAnnee" Dico="1"  Class="Modules/Cadref/Class/Annee.class.php">
+		<FUNCTION title="Selection">SelectAnnee</FUNCTION>
+
 		<PROPERTIES type="varchar" length="4" searchOrder="1" obligatoire="1" unique="1" category="Description" description="Année de début">Annee</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" description="Réduction">Reduction</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Année en cours">EnCours</PROPERTIES>
 	</OBJECTCLASS>
 
@@ -108,13 +111,16 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Classe" driver="mysql" order="CodeClasse" orderType="ASC" master="0" logEvent="1" AccessPoint="1" Icon="[None]" Description="Classes" Operations="addChildren,edit" Dico="0" Class="Modules/Cadref/Class/Classe.class.php">
+<!--
         <FILTER name="Année en cours" color="success">Annee=[!AnneeEnCours!]</FILTER>
         <FILTER name="Toutes les années" color="warning" ></FILTER>
+-->
+
 		<FKEY card="0,1" module="Cadref" data="Antenne,Id" category="Description" list="1" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Section,Id" category="Description" form="2" fiche="2" description="Section">SectionId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Discipline,Id" category="Description" form="3" fiche="3" description="Discipline">DisciplineId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Niveau,Id" category="Description" form="4" fiche="4" description="Niveau">NiveauId</FKEY>
-		<PROPERTIES type="varchar" length="11" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code" description="Code">CodeClasse</PROPERTIES>
+		<PROPERTIES type="varchar" length="11" searchOrder="1" auto="1" category="Description" list="1" listDescr="Code" description="Code">CodeClasse</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" auto="1" category="Description" description="Antenne">Antenne</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Discipline">Discipline</PROPERTIES>

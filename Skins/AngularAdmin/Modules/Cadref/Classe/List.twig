@@ -1,13 +1,19 @@
 {% if not headless %}
 	<div class="nav-tabs-horizontal margin-bottom-20">
-		<ul class="nav nav-tabs" role="tablist">
+		<select id="ClasseAnnee" class="form-control cadref-input" ng-model="ClasseAnnee" style="width:74px" ng-change="classeAnneeChange()">
+			<option value=""></option>
+			{% for v,c in annees %}
+				<option value="{{ v }}" {% if c %}selected="true"{% endif %}>{{ v }}</option>
+			{% endfor %}
+		</select>
+{#		<ul class="nav nav-tabs" role="tablist">
 			{% for filter in filters %}
 				<li class="nav-item">
 					<a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
 				</li>
 			{% endfor %}
 		</ul>
-	</div>
+#}	</div>
 	<div class="form-group row">
 		<div class="col-lg-5 col-md-12">
 			<div class="input-group list-search">
