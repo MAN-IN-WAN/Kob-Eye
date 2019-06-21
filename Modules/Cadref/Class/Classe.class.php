@@ -3,10 +3,11 @@ class Classe extends genericClass {
 	
 	function Save() {
 		$annee = Cadref::$Annee;
-		if(!empty($this->Annee) && $this->Annee != $annee) {
-			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
-			return false;			
-		}
+		
+//		if(!empty($this->Annee) && $this->Annee < $annee) {
+//			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
+//			return false;			
+//		}
 		$id = $this->Id;
 		if(! $id) {
 			$n = $this->getOneParent('Niveau');
@@ -21,12 +22,13 @@ class Classe extends genericClass {
 			$p = $n->getOneParent('Discipline');
 			$this->addParent($p);
 			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
-			$this->Annee = $annee;
+			if(empty($this->Annee)) $this->Annee = $annee;
 		}
-		$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
-		$this->Inscrits = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=0&Supprime=0');
-		$this->Attachements = Sys::getCount('Cadref','Classe/'.$this->Id.'/Attachement');
-
+		else {
+			$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
+			$this->Inscrits = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=0&Supprime=0');
+			$this->Attachements = Sys::getCount('Cadref','Classe/'.$this->Id.'/Attachement');
+		}
 		return parent::Save();
 	}
 	
@@ -45,6 +47,7 @@ class Classe extends genericClass {
 		$l = $this->getOneParent('Lieu');
 		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
 	}
+	 
 	
 	function NextDate() {
 		$id = $this->Id;

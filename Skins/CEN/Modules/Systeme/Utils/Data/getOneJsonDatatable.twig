@@ -1,0 +1,29 @@
+{
+    "id":"{{ row.Id }}",
+    "label": "{{ row.label }}"
+    ,"_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }} <br> modifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}"
+    {% for field in fields %}
+        {% if field.type == "boolean" %}
+            ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0  }}
+        {% elseif field.type == "fkey" and field.card=='short' %}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) }}
+            ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+        {% elseif field.type == "fkey" and field.card=='long' %}
+            ,"{{ field.objectName }}{{ field.name }}": [{% for k in attribute(row,field.name) %}{% if loop.index0 > 0 %},{% endif %} {{ k }} {% endfor %}]
+            ,"{{ field.objectName }}{{ field.name }}label": [{% for k in attribute(row,field.name~'label') %}{% if loop.index0 > 0 %},{% endif %} "{{ k }}"{% endfor %}]
+        {% elseif field.type == "rkey" %}
+            ,"{{ field.objectName }}{{ field.name }}": [
+                {% for r in attribute(row,field.name) %}
+                    {% if loop.index0 > 0 %},{% endif %}"{{ r }}"
+                {% endfor %}
+            ]
+        {% else %}
+            {% if field.Values|length >0 %}
+                ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+            {% elseif field.query|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+            {% endif %}
+            ,"{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw}}
+        {% endif %}
+    {% endfor %}
+}

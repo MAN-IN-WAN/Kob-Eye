@@ -78,6 +78,14 @@
 				<h3>Certaines informations peuvent être tronquées pour des raisons de confidentialité.</h3>
 				<div class="row">
 					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="CadrefAdresse1" name="CadrefAdresse1" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Ville</label>
 					</div>
 					<div class="col-md-8">
@@ -127,6 +135,7 @@
 						$('#CadrefNumero1').val(resp.data.Numero);
 						$('#CadrefNom1').val(resp.data.Nom);
 						$('#CadrefPrenom1').val(resp.data.Prenom);
+						$('#CadrefAdresse1').val(resp.data.Adresse);
 						$('#CadrefVille1').val(resp.data.Ville);
 						$('#CadrefMail1').val(resp.data.Mail);
 						$('#CadrefTel1').val(resp.data.Tel);

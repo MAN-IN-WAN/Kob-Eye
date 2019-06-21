@@ -41,7 +41,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 		if (args == undefined) args = [];
 		if (explodeArgs == undefined) explodeArgs = true;
-
 		var {{ identifier }}method = {
 			name: name,
 			query: '{{ module }}/{{ objecttype }}/'+obj.id,
@@ -606,7 +605,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	
 	// affiche / cache le panneau d'e reservation
 	$scope.reservationSelect = function(mode) {
-		$scope.reservationGetData('visite','');
+		if(mode) $scope.reservationGetData('visite','');
 		$scope.reservationObj.Select = mode;
 	}
 	

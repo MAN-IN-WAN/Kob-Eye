@@ -59,6 +59,7 @@
 											<thead>
 												<tr>
 													<th title="Id" class="list-col-th-id" hidden>ID</th>
+													<th class="cadref-th" style="width:34px"></th>
 													<th class="cadref-th">Libellé</th>
 													<th class="cadref-th">Antenne</th>
 													<th class="cadref-th">Heures</th>
@@ -72,6 +73,9 @@
 											<tbody>
 												<tr ng-repeat="item in inscriptionObj.ClasseItems">
 													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+													<td  class="table-action cadref-td-btn" style="width:34px">
+														<span class="btn-abt cadref-btn-add btn-success" ng-click="inscriptionAjoute(item)" title="Inscrire"></span>
+													</td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
