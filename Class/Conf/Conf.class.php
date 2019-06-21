@@ -95,7 +95,8 @@ class Conf extends Root{
 		}
 		//On declare les constantes
 		if (is_array($this->Consts))foreach ($this->Consts as $K=>$C){
-			define($K,$C);
+		    if (!defined($K))
+			    define($K,$C);
 		}
 	}
 	function writeCacheFile($Data,$Url) {

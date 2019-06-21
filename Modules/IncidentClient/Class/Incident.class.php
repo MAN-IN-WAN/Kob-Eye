@@ -118,5 +118,7 @@ class Incident extends genericClass  {
 
         return count($this->Error) ? 0 : 1;
     }
-
+    public function Cloture() {
+        $thi
+    }
 }

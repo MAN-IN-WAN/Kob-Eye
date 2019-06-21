@@ -263,7 +263,7 @@ class VmJob extends Job {
         $task->Nom = 'Rotation job machine virtuelle :' . $this->Titre.'. rotation du '.date('d/m/Y H:i:s');
         $task->TaskModule = 'AbtelBackup';
         $task->TaskObject = 'VmJob';
-        $task->TaskType = 'backup';
+        $task->TaskType = 'rotate';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'rotate';
         $task->addParent($this);

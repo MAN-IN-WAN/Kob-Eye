@@ -1,0 +1,102 @@
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroFiche.twig" import  fiche_properties %}
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/List/MacroList.twig" import  list_activity %}
+<section >
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Les dernières éxécutions</h3>
+        </div>
+        <div class="col-md-8">
+            <div class="container">
+                <div class='col-md-2'>
+                    <h4><b>Période:</b></h4>
+                </div>
+                <div class='col-md-4'>
+                    <div class="form-group">
+                        <label class="input-group datetimepicker-init">
+                            <input id="input-ganttfrom" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="gantt.frompicker"/>
+                            <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                        </label>
+                    </div>
+                </div>
+                <div class='col-md-4'>
+                    <div class="form-group">
+                        <label class="input-group datetimepicker-init">
+                            <input id="input-ganttto" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="gantt.topicker"/>
+                            <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                        </label>
+                    </div>
+                </div>
+                <div class='col-md-2'>
+                    <button class="btn btn-info" name="validperiod" value="Valider" ng-click="changeDatePeriod()">Valider</button>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('.datetimepicker-init').datetimepicker({
+                        widgetPositioning: {
+                            horizontal: 'left'
+                        },
+                        locale: 'fr',
+                        icons: {
+                            time: "fa fa-clock-o",
+                            date: "fa fa-calendar",
+                            up: "fa fa-arrow-up",
+                            down: "fa fa-arrow-down"
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="container-content" ng-show="false">
+        <div class="container-fluid">
+            <div class="row top-buffer">
+                <div class="col-md-12">
+                    <i class="fa fa-cog fa-spin"></i> Chargement des données ...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-content" ng-cloak="true" style="margin-bottom:20px;">
+        <div class="container-fluid">
+            <div class="row top-buffer">
+                <div class="col-md-12">
+
+                    <div gantt api="registerApi" headers="['month', 'day']" data="gantt.data" from-date = "gantt.fromdate" to-date = "gantt.todate">
+                        <gantt-table />
+                        <gantt-tooltips></gantt-tooltips>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3>Tâche {[{ taskobj.Nom }]}</h3>
+    <div class="container-content" ng-if="!showtask">
+        <div class="container-fluid">
+            <div class="row top-buffer">
+                <div class="col-md-12">
+                    <i class="fa fa-cog fa-spin"></i> Chargement des données ...
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-content" ng-if="showtask">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <div class="panel-body">
+                            {{  fiche_properties(fichefields,categories,CurrentUrl,'taskobj') }}
+                            {{ list_activity('SystemeActivity','children') }}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

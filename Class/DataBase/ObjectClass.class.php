@@ -439,8 +439,13 @@ class ObjectClass extends Root{
 	 * @void
 	 */
 	private function addCategory($opts,$inner=false){
+		if ($opts["title"] == 'none'){
+			$name='Informations';
+		}else{
+			$name = $opts["title"];
+		}
 		//configuration de la category
-		$c = (isset($this->Categories[$opts["title"]]))?$this->Categories[$opts["title"]]:Array();
+		$c = (isset($this->Categories[$name]))?$this->Categories[$name]:Array();
 		$c["elements"] = (isset($c["elements"])&&sizeof($c["elements"]))?$c["elements"]:Array();
 		$ak = array_keys($opts);
 		foreach ($ak as $a)if ($a!="title") $c[$a] = $opts[$a];
@@ -457,7 +462,7 @@ class ObjectClass extends Root{
                 $c["elements"][] = $inner;
 		}
 		//enregistrement
-		$this->Categories[$opts["title"]] = $c;
+		$this->Categories[$name] = $c;
 	}
 	/**
 	 * getCategories

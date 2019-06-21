@@ -23,6 +23,7 @@ class Job extends genericClass {
             $task->TaskObject = static::$KEObj;
             $task->TaskId = $j->Id;
             $task->TaskFunction = 'run';
+            $task->TaskType = 'backup';
             $task->addParent($j);
             $task->Save();
         }

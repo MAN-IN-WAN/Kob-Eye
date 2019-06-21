@@ -10,7 +10,9 @@ class Utils {
 		return (isset($P[0])&&is_array($P[0]));
 	}
 	static function  parseInt($P) {
-		return intval($P[0]);
+	    $val = implode(',',$P);
+        preg_match( '#([0-9]+)#', trim($val), $o );
+        return $o[1];
 	}
 	static function  getLines($P) {
 		return nl2br($P[0]);

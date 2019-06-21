@@ -11,6 +11,8 @@
 [HEADER JS]Tools/Js/Jquery/jquery.knob.min.js[/HEADER]
 [HEADER JS]Tools/Js/JqCloud/dist/jqcloud.min.js[/HEADER]
 [HEADER CSS]Tools/Js/JqCloud/dist/jqcloud.min.css[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.spidergraph.js[/HEADER]
+
 [HEADER]
 <meta name="viewport" content="width=device-width, initial-scale=1">
 [/HEADER]

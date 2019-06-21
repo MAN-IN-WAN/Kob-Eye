@@ -625,8 +625,6 @@ class Sys extends Root{
 			case "html":
 			default:
 // 				$this->Log->log("INIT START -> ".$this->Lien);
-				if (file_exists("stats.php"))include_once("stats.php");
-				elseif (file_exists("../stats/stats.php"))include_once("../stats/stats.php");
 				header("Content-type: text/html; charset=".CHARSET_CODE."");
 				$this->Header = new Header();
 				//Sauf le cas d un fichier html dans la skin ou Home

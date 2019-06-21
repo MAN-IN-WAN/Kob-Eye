@@ -1,6 +1,5 @@
 <?php
-session_write_close();
-$info = Info::getInfos($vars['Query']);
+$info = Info::getInfos('Systeme/Tache');
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 //$vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
@@ -19,7 +18,6 @@ foreach ($vars['fichefields'] as $k=>$f){
 $vars['fields'] = $vars['fichefields'];
 
 
-$vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
@@ -68,12 +66,12 @@ $vars["ChildrenElements"] = array();
 foreach ($childs as $child){
     if (
         //test role
-         ((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&
-         //test hidden
-        !isset($child['childrenHidden'])&&!isset($child['hidden']))
-         //test admin
-         || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin))
-            array_push($vars["ChildrenElements"],$child);
+        ((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&
+            //test hidden
+            !isset($child['childrenHidden'])&&!isset($child['hidden']))
+        //test admin
+        || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin))
+        array_push($vars["ChildrenElements"],$child);
 }
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
@@ -84,5 +82,3 @@ else $vars['CurrentUrl'] = $vars['Query'];
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
-
-?>

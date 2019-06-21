@@ -151,8 +151,8 @@
 		<PROPERTIES type="varchar" searchOrder="3" list="1" listDescr="Service" description="Service (pensez à ajouter le '_' si nécessaire) ex: _sip" form="1">Service</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" listDescr="Protocole" description="Protocole (Pensez à ajouter le '_' si nécessaire) ex: _tcp)" form="1">Protocole</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" listDescr="Port" form="1">Port</PROPERTIES>
-		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Poids" form="1">Poids</PROPERTIES>
-		<PROPERTIES type="varchar" values="100,200,300" default="100" list="1" listDescr="Prio." form="1">Priorite</PROPERTIES>
+		<PROPERTIES type="varchar" values="0,1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Poids" form="1">Poids</PROPERTIES>
+		<PROPERTIES type="varchar" values="0,100,200,300" default="100" list="1" listDescr="Prio." form="1">Priorite</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" listDescr="TTL" form="1" default="3600" >TTL</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -242,7 +242,7 @@
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1"  hasRole="PARC_TECHNICIEN">Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
@@ -289,10 +289,11 @@
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Clef " default="">SslCertificateKey</PROPERTIES>
 		<PROPERTIES category="Configuration" type="datetime" fiche="1" form="1" description="SSL Date d'expiration">SslExpiration</PROPERTIES>
 		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" description="Domaine principal">SslMainDomain</PROPERTIES>
-		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique">ApacheConfig</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique" hasRole="PARC_TECHNICIEN">ApacheConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activation du cache de proxy">ProxyCache</PROPERTIES>
-		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTP">ProxyConfig</PROPERTIES>
-		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTPS">ProxyConfigSsl</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTP" hasRole="PARC_TECHNICIEN">ProxyConfig</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTPS" hasRole="PARC_TECHNICIEN">ProxyConfigSsl</PROPERTIES>
+		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Redirection vers https">RedirectSsl</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activation du cache de proxy pagespeed">ProxyPageSpeed</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy pagespeed">ProxyPageSpeedConfig</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
@@ -348,7 +349,7 @@
 			<FORM type="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
 		</INTERFACES>
 		<INTERFACES name="list">
-			<FORM type="extlink" child="DeviceConnexion" property="GuacamoleUrl" title="Type">Connexions</FORM>
+			<FORM type="extlink" child="DeviceConnexion" property="GuacamoleUrl" title="Type" fiche="1" >Connexions</FORM>
 		</INTERFACES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="2" fiche="1" form="1" listDescr="Nom machine" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="8" obligatoire="0" list="8" fiche="1" listDescr="IP Publique" description="IP Publique">PublicIP</PROPERTIES>
@@ -439,12 +440,12 @@
 		<FILTER name="Compte en BUS" color="primary"><![CDATA[Suppression!!&COS=MAIL_BUS]]></FILTER>
 		<FILTER name="Compte en POP" color="secondary"><![CDATA[Suppression!!&COS=MAIL_POP]]></FILTER>
         <FILTER name="Compte en attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
-		<FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
+		<FUNCTION title="Se connecter au webmail" hasRole="PARC_TECHNICIEN">connectWebmail</FUNCTION>
         <FUNCTION title="Rétablir / Re-activer">unDel</FUNCTION>
         <FUNCTION title="Forcer suppression locale" needConfirm="1">forceDel</FUNCTION>
 		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse Email" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
-		<PROPERTIES type="password" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
+		<PROPERTIES type="password" description="Mot de passe"  form="1" fiche="1" >Pass</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="Classe de service" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
 		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>

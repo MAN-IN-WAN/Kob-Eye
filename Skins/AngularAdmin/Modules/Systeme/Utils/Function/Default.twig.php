@@ -132,7 +132,7 @@
                     $vars['toReturn']['data'] = $temp;
                 }
 
-                if(isset($vars['toReturn']['errors'])){
+                if(isset($vars['toReturn']['errors'])&&sizeof($vars['toReturn']['errors'])){
                     $vars['toReturn']['success'] = false;
                 } else {
                     $vars['toReturn']['success'] = true;

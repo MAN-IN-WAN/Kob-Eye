@@ -585,6 +585,8 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Guid du cabinet" form="1" fiche="1"  listDescr="Guid">Guid</PROPERTIES>
 		<PROPERTIES type="varchar" description="Langue" listDescr="Langue" default="fr"  form="1" fiche="1">Langue</PROPERTIES>
 		<PROPERTIES type="varchar" description="URLWopi" listDescr="UrlWopi"   form="1" fiche="1">UrlWopi</PROPERTIES>
+		<PROPERTIES type="varchar" description="URL E-Barreau" listDescr="URLEBarreau"   form="1" fiche="1" default="https://e-barreau.secib.fr/">URLEBarreau</PROPERTIES>
+		<PROPERTIES type="varchar" description="URL Merlin" listDescr="URLMerlin"   form="1" fiche="1" default="https://secibmerlinfinal.azurewebsites.net">URLMerlin</PROPERTIES>
 		<PROPERTIES type="int" description="Type d'Application" listDescr="Type d'application" list="1" fiche="1" form="1" query="Parc/TypeApplication::Id::Nom" default="1">TypeApplication</PROPERTIES>
 		<!-- /SECIB -->
 

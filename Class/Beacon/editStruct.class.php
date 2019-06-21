@@ -23,6 +23,8 @@ class editStruct extends Beacon {
 					case '404' :
 						$GLOBALS["Systeme"]->redirectionErreur404();
 					break;
+                    case 'OVERWRITE' :
+                        if (is_object($GLOBALS["Systeme"]->Header))$GLOBALS["Systeme"]->Header->overwriteHeader = true;
 					default:
 						if (is_object($GLOBALS["Systeme"]->Header))$GLOBALS["Systeme"]->Header->Add($this->getString(),"");
 					break;

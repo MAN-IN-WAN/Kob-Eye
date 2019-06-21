@@ -16,7 +16,7 @@
 [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!FILTER_REGION!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!Utils::random([!NbR:-10!])!]|12]
     [IF [!Utils::parseInt([!R::Valeur!])!]!=[!R::Valeur!]]
     <div class="well">
-        [!R::Valeur!]
+        [!Utils::JsonDecode([!R::Valeur!])!]
     </div>
     [/IF]
 [/STORPROC]

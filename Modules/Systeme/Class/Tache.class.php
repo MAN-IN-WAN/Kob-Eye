@@ -17,6 +17,7 @@ class Tache extends genericClass{
 
         if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) return true;
         $this->ThreadId = getmypid();
+        $this->DateDebut = time();
         parent::Save();
 
         sleep(1);
@@ -24,6 +25,7 @@ class Tache extends genericClass{
         Sys::$Modules['Systeme'] -> Db -> clearLiteCache();
         $upd = Sys::getOneData('Systeme','Tache/'.$this->Id);
         if($upd->ThreadId != $this->ThreadId) return true;
+
 
         switch ($this->Type) {
 
@@ -37,9 +39,10 @@ class Tache extends genericClass{
                     try {
                         $out = $obj->{$this->TaskFunction}($this);
                         $this->addRetour($out);
-                        if ($out)
+                        if ($out) {
+                            $this->Progression = 100;
                             $this->Termine = true;
-                        else
+                        }else
                             $this->Erreur = true;
                         parent::Save();
                     }catch (Throwable $e){
@@ -51,6 +54,7 @@ class Tache extends genericClass{
                     //execution statique
                     try {
                         call_user_func($this->TaskObject.'::'.$this->TaskFunction,$this);
+                        $this->Progression = 100;
                     }catch (Throwable $e){
                         $this->addRetour('ERROR: '.$e->getMessage().' ligne: '.$e->getLine().' code: '.$e->getCode().' file: '.$e->getFile().' trace: '.$e->getTraceAsString());
                         $this->Erreur = true;
@@ -93,6 +97,8 @@ class Tache extends genericClass{
                 parent::Save();
                 break;*/
         }
+        $this->DateFin=time();
+        parent::Save();
         return true;
     }
 

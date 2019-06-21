@@ -1,0 +1,164 @@
+/** VARCHAR **/
+{% macro fvarchar(field, obj) %}
+    {% if field.Values %}
+        <select class="form-control" ng-model="{{ obj }}.{{ field.name }}" disabled="disabled">
+            {% for v,k in field.Values %}
+                <option value="{{ v }}" >{{ k }}</option>
+            {% endfor %}
+        </select>
+    {% elseif field.query %}
+        <span class="btn btn-warning btn-xs" >{[{ {{ obj }}.{{ field.name }}Label }]}</span>
+    {% else %}
+        <span  ng-bind-html="{{ obj }}.{{ field.name }}"></span>
+    {% endif %}
+{% endmacro %}
+
+/** HIDDEN **/
+{% macro fhidden(field, obj) %}
+    <input type="hidden" ng-model="{{ obj }}.{{ field.name }}"/>
+{% endmacro %}
+
+/** LABEL **/
+{% macro label(text) %}
+    <label class="form-control-label label" style="line-height:1">{{ text }}</label>
+{% endmacro %}
+
+/** LABEL HELPER **/
+{% macro flabel(field) %}
+    <label class="form-control-label cadref-label" style="line-height:1">{{ field.description }}</label>
+    {% if field.help %}
+        <small>
+            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+        </small>
+    {% endif %}
+{% endmacro %}
+
+/** FKEY SHORT **/
+{%  macro fkeyshort(field,obj) %}
+    {% if field.link %}
+        <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ {{ obj }}.{{ field.objectName }}{{ field.name }} }]}">{[{ {{ obj }}.{{ field.objectName }}{{ field.name }}label }]}</a>
+    {% else  %}
+        <span ng-if="{{ obj }}.{{ field.objectName }}{{ field.name }}">{[{ {{ obj }}.{{ field.objectName }}{{ field.name }}label }]}</span>
+    {% endif %}
+{% endmacro %}
+
+/** FKEY LONG **/
+{%  macro fkeylong(field,obj) %}
+    <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in {{ obj }}.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
+{% endmacro %}
+
+/** BOOLEAN **/
+{% macro fboolean(field,obj) %}
+    {% if field.special == "reverse" %}
+        <span class="label label-success" ng-if="!{{ obj }}.{{ field.name }}"><i class="fa fa-check"></i></span>
+        <span class="label label-danger" ng-if="{{ obj }}.{{ field.name }}"><i class="fa fa-times"></i></span>
+    {% else %}
+        <span class="label label-success" ng-if="{{ obj }}.{{ field.name }}"><i class="fa fa-check"></i></span>
+        <span class="label label-danger" ng-if="!{{ obj }}.{{ field.name }}"><i class="fa fa-times"></i></span>
+    {% endif %}
+{% endmacro %}
+
+/** INT **/
+{% macro fint(field,obj) %}
+    {% if field.Values %}
+        <select class="form-control" ng-model="{{ obj }}.{{ field.name }}" disabled="disabled">
+            {% for v,k in field.Values %}
+                <option value="{{ v }}">{{ k }}</option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <span class="label label-primary">{[{ {{ obj }}.{{ field.name }} }]}</span>
+    {% endif %}
+{% endmacro %}
+
+/** EXTLINK **/
+{% macro fextlink(field,obj) %}
+    {% if field.Values %}
+        <select class="form-control" ng-model="{{ obj }}.{{ field.name }}" disabled="disabled">
+            {% for v,k in field.Values %}
+                <option value="{{ v }}">{{ k }}</option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <span class="label label-primary">{[{ {{ obj }}.{{ field.name }} }]}</span>
+    {% endif %}
+{% endmacro %}
+
+/** FLOAT **/
+{% macro ffloat(field,obj) %}
+    <span class="label label-warning">{[{ {{ obj }}.{{ field.name }}| currency:"" }]}</span>
+{% endmacro %}
+
+/** PLUGIN **/
+{% macro fplugin(field,obj) %}
+    <span  class="label label-danger" ng-bind-html="{{ obj }}.{{ field.name }}"></span>
+{% endmacro %}
+
+/** FILE **/
+{% macro ffile(field,obj) %}
+    <a  class="fileLink btn btn-small btn-danger" href="{[{ {{ obj }}.{{ field.name }} }]}" title="{[{ {{ obj }}.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+{% endmacro %}
+
+/** IMAGE **/
+{% macro fimage(field,obj) %}
+    <img class="img-responsive" src="{[{ {{ obj }}.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="{{ obj }}.{{ field.name }} "/>
+    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!{{ obj }}.{{ field.name }} "/>
+{% endmacro %}
+
+/** PRICE **/
+{% macro fprice(field,obj) %}
+    <span class="label label-warning">{[{ {{ obj }}.{{ field.name }} | currency:"" }]} €</span>
+{% endmacro %}
+
+/** PROGRESS **/
+{% macro fprogress(field,obj) %}
+    <div class="row">
+        <div class="col-md-2 detail-label">
+            <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+        </div>
+        <div class="col-md-10 detail-value">
+            <uib-progress class="big" ng-if="{{ obj }}.{{ field.name }} >= 100">
+                <uib-bar value="{{ obj }}.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="{{ obj }}.{{ field.name }} < 5">{[{ {{ obj }}.{{ field.name }} }]}%</span></uib-bar>
+            </uib-progress>
+            <uib-progress class="big" ng-if="{{ obj }}.{{ field.name }} < 100">
+                <uib-bar value="{{ obj }}.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="{{ obj }}.{{ field.name }} < 5">{[{ {{ obj }}.{{ field.name }} }]}%</span></uib-bar>
+            </uib-progress>
+            <!--
+                            <progress class="progress progress-danger progress-striped progress-animated big" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
+                            <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>-->
+        </div>
+    </div>
+{% endmacro %}
+
+
+/** TEXT **/
+{% macro ftext(field,obj) %}
+    {% if field.type == "raw" or field.type == "text" %}
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-control-label" for="l0">{{ field.description }}</label>
+                <small>{{ field.help }}</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <pre ng-bind-html="{{ obj }}.{{ field.name }}"></pre>
+                <!--                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
+                                <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor" readonly="true"></div>-->
+            </div>
+        </div>
+    {% elseif field.type == "html" or field.type == "bbcode" %}
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-control-label" for="l0">{{ field.description }}</label>
+                <small>{{ field.help }}</small>
+            </div>
+        </div>
+        <div class="row">
+            <!--<div class="col-md-12">
+                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor"  readonly="true"></div>
+                        </div>-->
+            <div ng-bind-html="{{ obj }}.{{ field.name }}"></div>
+        </div>
+    {% endif %}
+{% endmacro %}

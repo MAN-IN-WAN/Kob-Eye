@@ -104,29 +104,6 @@ class Instance extends genericClass{
             parent::Save();
         }
 
-        //Check des domaine (CAS SECIB)
-        $dom = $this->getParents('Domain');
-        if (is_array($dom) && sizeof($dom)) {
-            $defaulturl = false;
-            $otherurls = array();
-            foreach ($dom as $d) {
-                //vérification des sous domaines
-                $www = $d->getOneChild('Subdomain/Url=' . $this->InstanceNom);
-                if (!$www) {
-                    //création du A
-                    $www = genericClass::createInstance('Parc', 'Subdomain');
-                    $www->Url = $this->SousDomaine;
-                    $www->IP = $proxysrv->IP;
-                } else {
-                    $www->IP = $proxysrv->IP;
-                }
-                $www->addParent($d);
-                $www->Save();
-                if (!$defaulturl) $defaulturl = $this->SousDomaine . '.' . $d->Url;
-                else $otherurls[] = $this->SousDomaine . '.' . $d->Url;
-            }
-        }
-
         //Check de l'hébergement
         try {
             $heb = $this->getOneParent('Host');
