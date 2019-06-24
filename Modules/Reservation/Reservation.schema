@@ -61,7 +61,7 @@
 		<PROPERTIES type="date" fiche="1" form="1" Description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="Adulte,Adulte et adolescent,Enfant,Tout public" searchOrder="5" Description="Type de public">TypePublic</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" searchOrder="6" Description="Places disponibles">Disponibilite</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de Fin" Adminonly="1" auto="1" >DateFin</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Durée en minutes">Duree</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
@@ -99,7 +99,7 @@
 	<OBJECTCLASS title="Fonction" driver="mysql" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservation.class.php" searchType="plaintext">
+	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservations.class.php" searchType="plaintext">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="3" Description="Référence">Reference</PROPERTIES>
 		<PROPERTIES type="int" list="1" fiche="1" form="1" searchOrder="2" Description="Nombre de places">NbPlace</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="1" Description="Titre du spectacle">TitreSpectacle</PROPERTIES>

@@ -44,72 +44,114 @@ $api_token = $ret['auth_token'];
 $cpt = count($clis);
 if ($cpt) {
     $cptr = 0;
+    $pids = array();
+    $statuses = array();
     foreach ($clis as $c) {
         $cptr++;
         echo date('H:i:s',time() - $tmsStart).' > ******** '.$cptr.' / '.$cpt.' : '.$c['Code'].' ********'.PHP_EOL;
-        $props = array();
-        foreach($cFields as $cf){
-            if(!empty($c[$cf]) || $c[$cf] === '0')
-                $props[$cf] = $c[$cf];
-        }
+        switch ($pid = pcntl_fork()) {
+            case -1:
+                echo date('H:i:s',time() - $tmsStart).' > Erreur lors de la création du process pour le client '.$c['Code'].PHP_EOL;
+                file_put_contents('/tmp/erreurclient',$c['Code'].PHP_EOL,8);
+                // @fail
+                break;
+            case 0:
+                // @child: Include() misbehaving code here
 
-        $url = 'http://api.gestion.abtel.fr/gestion/client';
-        $method = 'POST';
+                $props = array();
+                foreach($cFields as $cf){
+                    if(!empty($c[$cf]) || $c[$cf] === '0')
+                        $props[$cf] = $c[$cf];
+                }
+
+                $url = 'http://api.gestion.abtel.fr/gestion/client';
+                $method = 'POST';
 
 
-        curl_setopt($curl_handle, CURLOPT_URL, $url);
-        curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, $method);
-        $data = json_encode(array('API_KEY' => $apiKey, 'AUTH_TOKEN' => $api_token, "params" => array('data' => $props)));
-        curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data))
-        );
-        $rettemp = curl_exec($curl_handle);
-        $ret = json_decode($rettemp, true);
-        if($ret && $ret['success']){
-            echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' créé avec succès'.PHP_EOL;
-        }else{
-            $err = true;
-            if($ret && $ret["error_description"]){
-                foreach($ret["error_description"] as $err){
-                    if($err['Prop'] == 'Code' && strpos($err['Message'],"__ALREADY_EXISTS__")){ //Cas ou le client exsite déjà
-                        echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' déjà existant, mise à jour.'.PHP_EOL;
-                        $url = 'http://api.gestion.abtel.fr/gestion/client/'.rawurlencode($c['Code']);
-                        $method = 'PATCH';
-                        curl_setopt($curl_handle, CURLOPT_URL, $url);
-                        curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, $method);
-                        $data = json_encode(array('API_KEY' => $apiKey, 'AUTH_TOKEN' => $api_token, "params" => array('data' => $props)));
-                        curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data);
-                        curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
-                                'Content-Type: application/json',
-                                'Content-Length: ' . strlen($data))
-                        );
-                        $rettemp = curl_exec($curl_handle);
-                        $ret2 = json_decode($rettemp, true);
-                        if($ret2 && $ret2['success']){
-                            echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' mis à jour avec succès'.PHP_EOL;
-                            $err = false;
-                        } else {
-                            $ret = $ret2;
+                curl_setopt($curl_handle, CURLOPT_URL, $url);
+                curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, $method);
+                $data = json_encode(array('API_KEY' => $apiKey, 'AUTH_TOKEN' => $api_token, "params" => array('data' => $props)));
+                curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen($data))
+                );
+                $rettemp = curl_exec($curl_handle);
+                $ret = json_decode($rettemp, true);
+                if($ret && $ret['success']){
+                    echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' créé avec succès'.PHP_EOL;
+                }else{
+                    $err = true;
+                    if($ret && $ret["error_description"]){
+                        foreach($ret["error_description"] as $err){
+                            if($err['Prop'] == 'Code' && strpos($err['Message'],"__ALREADY_EXISTS__")){ //Cas ou le client exsite déjà
+                                echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' déjà existant, mise à jour.'.PHP_EOL;
+                                $url = 'http://api.gestion.abtel.fr/gestion/client/'.rawurlencode($c['Code']);
+                                $method = 'PATCH';
+                                curl_setopt($curl_handle, CURLOPT_URL, $url);
+                                curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, $method);
+                                $data = json_encode(array('API_KEY' => $apiKey, 'AUTH_TOKEN' => $api_token, "params" => array('data' => $props)));
+                                curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data);
+                                curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
+                                        'Content-Type: application/json',
+                                        'Content-Length: ' . strlen($data))
+                                );
+                                $rettemp = curl_exec($curl_handle);
+                                $ret2 = json_decode($rettemp, true);
+                                if($ret2 && $ret2['success']){
+                                    echo date('H:i:s',time() - $tmsStart).' > Client '.$c['Code'].' mis à jour avec succès'.PHP_EOL;
+                                    $err = false;
+                                } else {
+                                    $ret = $ret2;
+                                }
+                                break;
+                            }
                         }
-                        break;
+                    }
+                    if($err){
+                        echo date('H:i:s',time() - $tmsStart).' > Erreur lors de la création du client '.$c['Code'].PHP_EOL;
+                        file_put_contents('/tmp/erreurclient',$c['Code'].PHP_EOL,8);
+                        print_r($url); echo PHP_EOL;
+                        print_r($data); echo PHP_EOL;
+                        print_r($ret);
+                        echo PHP_EOL;
                     }
                 }
-            }
-            if($err){
-                echo date('H:i:s',time() - $tmsStart).' > Erreur lors de la création du client '.$c['Code'].PHP_EOL;
-                file_put_contents('/tmp/erreurclient',$c['Code'].PHP_EOL,8);
-                print_r($url); echo PHP_EOL;
-                print_r($data); echo PHP_EOL;
-                print_r($ret);
-                echo PHP_EOL;
-            }
+                exit;
+                break;
+
+            default:
+                $pids[$pid] = true;
+                $statuses[$pid] = null;
+
+                // @parent
+                break;
         }
 
-
-
+        $wt = 0;
+        while(count($pids) >= 500){
+            $wt++;
+            echo $wt;
+            sleep(1);
+            while ($dPid = pcntl_waitpid(-1,$statuses[$pid],WNOHANG)){
+                //echo 'Fin : '.$dPid;
+                unset($pids[$dPid]);
+            }
+        }
     }
+
+    $wt = 0;
+    while(count($pids) > 0){
+        $wt++;
+        echo $wt;
+        sleep(1);
+        while ($dPid = pcntl_waitpid(-1,$statuses[$pid],WNOHANG)){
+            if($dPid == -1) break;
+            //echo 'Fin : '.$dPid.PHP_EOL;
+            unset($pids[$dPid]);
+        }
+    }
+
 }
 
 

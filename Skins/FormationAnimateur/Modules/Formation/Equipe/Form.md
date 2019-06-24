@@ -68,7 +68,7 @@
                     <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!]  <strong>[!TQ::Nom!]</strong></label>
                     <div class="col-sm-4">
                         Oui <input type="radio" name="donn-[!D::Numero!]" id="donn-[!D::Numero!]" value="1" [IF [!R::Valeur!]=1]checked[/IF]>
-                        Non <input type="radio" name="donn-[!D::Numero!]" id="donn-[!D::Numero!]" value="0" [IF [!R::Valeur!]=0]checked[/IF]>
+                        Non <input type="radio" name="donn-[!D::Numero!]" id="donn-[!D::Numero!]" value="0" [IF [!R::Valeur!]!=1]checked[/IF]>
                     </div>
                 </div>
             [/CASE]

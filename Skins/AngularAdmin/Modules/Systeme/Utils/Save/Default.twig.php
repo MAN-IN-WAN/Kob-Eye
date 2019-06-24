@@ -79,7 +79,7 @@ if ($o->Verify()) {
         elseif ($f['type']=='date'){
             //transformation des timestamps en format js
             $values->{$f['name']} = $o->{$f['name']}>0 ? date('d/m/Y',$o->{$f['name']}) : '';
-        }elseif ($f['type']=='rkey') {
+        }elseif ($f['type']=='rkey' && isset($values->{$f["objectName"].$f["name"]})) {
             $o->resetChilds($f['objectName']);
             if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){
                 $o->AddChild($f['objectName'], $v);
