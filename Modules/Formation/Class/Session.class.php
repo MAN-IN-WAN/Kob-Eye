@@ -50,10 +50,11 @@ class FormationSession extends genericClass {
 
         //si il y avait un probleme alors on resynchronise
         if ($dirty){
+            return 'ERREUR';
             $this->Synchro = false;
             genericClass::Save();
         }
-
+        return 'OK';
     }
     /**
      * initDonnee
@@ -462,7 +463,7 @@ class FormationSession extends genericClass {
     public function Synchro() {
         $this->checkReponse();
         $boitier = $this->getBoitier();
-        if (!is_object($boitier)) return;
+        if (!is_object($boitier)) return 'PAS DE BOITIER';
         $projet = $this->getParents('Projet');
         $projet = $projet[0];
         $region = $this->getParents('Region');
@@ -511,9 +512,15 @@ class FormationSession extends genericClass {
         $context  = stream_context_create( $options );
         $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
         $response = json_decode( $result );
-        if (isset($response->success)&&$response->success){
+        if (false){//isset($response->success)&&$response->success){
             $this->Synchro = 1;
+            print_r($response);
             $this->Save();
+            return 'OK';
+        }else {
+            print_r($response);
+            print_r($data);
+            return 'ERREUR';
         }
     }
 
@@ -526,6 +533,7 @@ class FormationSession extends genericClass {
         $tmpjson = file_get_contents('php://input');
         try {
             $json = json_decode ($tmpjson);
+            //return print_r($json,true);
             //recherche de la session
             $sess = Sys::getOneData('Formation', 'Session/Date='.$json->date);
             if (is_object($sess)){
@@ -575,6 +583,7 @@ class FormationSession extends genericClass {
      */
     public function textToJson($text) {
         $text = str_replace('"', '\"',$text);
+        $text = str_replace("\u0", '',$text);
         $text = str_replace("\n", ' ',$text);
         $text = str_replace("\r", '',$text);
         $text = str_replace("\t", '',$text);

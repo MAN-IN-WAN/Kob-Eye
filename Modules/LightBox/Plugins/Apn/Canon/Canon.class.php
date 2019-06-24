@@ -452,7 +452,7 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
         //curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         $result = curl_exec($ch);
         //$this->addLog('API response: '.$result);

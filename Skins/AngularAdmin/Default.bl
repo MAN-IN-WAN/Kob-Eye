@@ -247,7 +247,13 @@
 	[IF [!Sys::User::hasRole(CADREF_ADMIN)!]||[!Sys::User::hasRole(CADREF_ADH)!]||[!Sys::User::hasRole(CADREF_ENS)!]]
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Css/cadref.css">
 	[/IF]
-	
+
+	<!-- Angular Gantt -->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/ResizeSensor.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/ElementQueries.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/angular-gantt.js"></script>
+    <link rel="stylesheet" href="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/angular-gantt.css"/>
+
 
 
 

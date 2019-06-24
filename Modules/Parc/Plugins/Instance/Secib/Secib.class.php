@@ -23,6 +23,14 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
      * Initialisation du plugin
      */
     public function postInit(){
+        $pref='';
+        $infra = $this->_obj->getInfra();
+        if($infra){
+            $pref= 'Infra/'.$infra->Id.'/';
+        }
+
+        $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
+
         $host = $this->_obj->getOneParent('Host');
         $host->PHPVersion = '7.0.10';
         $host->Save();
@@ -33,6 +41,57 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
 
         $this->_obj->PHPVersion = '7.0.10';
         $this->_obj->softSave();
+
+        //Check des domaine (CAS SECIB)
+        $dom = $this->_obj->getParents('Domain');
+        if (is_array($dom) && sizeof($dom)) {
+            $defaulturl = false;
+            $otherurls = array();
+            foreach ($dom as $d) {
+                //vérification des sous domaines
+                $www = $d->getOneChild('Subdomain/Url=' . $this->_obj->InstanceNom);
+                if (!$www) {
+                    //création du A
+                    $www = genericClass::createInstance('Parc', 'Subdomain');
+                    $www->Url = $this->_obj->InstanceNom;
+                    $www->IP = $proxysrv->IP;
+                } else {
+                    $www->IP = $proxysrv->IP;
+                }
+                $www->addParent($d);
+                $www->Save();
+                $otherurls[] = $this->_obj->InstanceNom . '.' . $d->Url;
+            }
+        }
+
+        $domains = '';
+        $apaches  = $host->getChildren('Apache');
+        foreach ($apaches as $apache) {
+            //mise à jour de la base de donnée des domaines
+            $domains .= $apache->ApacheServerName . ' ' . $apache->ApacheServerAlias;
+        }
+        $domains = explode(' ', $domains);
+
+        //vérification des configuration apaches
+        $dirty = false;
+        foreach ($otherurls as $ou){
+            $exists = false;
+            foreach ($domains as $d){
+                if ($d==$ou) $exists = true;
+            }
+            if (!$exists){
+                //il faut jouater le domaine en serverAlias d'un des apaches
+                $apache->ApacheServerAlias.="\n".$ou;
+                $dirty = true;
+            }
+        }
+        if ($dirty){
+            //apache modifié
+            $apache->ApacheServerAlias = trim($apache->ApacheServerAlias);
+            $apache->Save();
+            //lancement d'une reinstallation
+            $this->createUpdateTask();
+        }
     }
     /**
      * createInstallTask
@@ -70,7 +129,7 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         }
 
         $bdd = $host->getOneChild('Bdd');
-        $apache = $host->getOneChild('Apache');
+        $apaches = $host->getChildren('Apache');
 
         $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $db->query("SET AUTOCOMMIT=1");
@@ -108,8 +167,11 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         $db->query("SET AUTOCOMMIT=1");
         $db->query("SET FOREIGN_KEY_CHECKS=0");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        //mise à jour de la base de donnée des domaines
-        $domains = $apache->ApacheServerName . ' ' . $apache->ApacheServerAlias;
+        $domains = '';
+        foreach ($apaches as $apache) {
+            //mise à jour de la base de donnée des domaines
+            $domains .= $apache->ApacheServerName . ' ' . $apache->ApacheServerAlias;
+        }
         $domains = explode(' ', $domains);
 
         $act->addDetails($SQLInit);
@@ -120,11 +182,11 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         $act->addDetails('TRUNCATE secibweb_webservice');
         $db->query('TRUNCATE secibweb_domaine');
         $act->addDetails('TRUNCATE secibweb_domaine');
-        $sql = 'INSERT INTO `secibweb_domaine` (`dom_domaine`, `dom_ws_id`, `dom_lg`, `dom_actif`, `dom_crea_date`, `dom_crea_user_id`, `dom_modif_date`, `dom_modif_user_id`, `dom_ta_id`, `dom_url_wopi`) VALUES';
+        $sql = 'INSERT INTO `secibweb_domaine` (`dom_domaine`, `dom_ws_id`, `dom_lg`, `dom_actif`, `dom_crea_date`, `dom_crea_user_id`, `dom_modif_date`, `dom_modif_user_id`, `dom_ta_id`, `dom_url_wopi`, `dom_url_ebarreau`, `dom_url_merlin`) VALUES';
         $flag = false;
         foreach ($domains as $d) {
             if ($flag) $sql .= ',';
-            $sql .= '(\'' . $d . '\', 1, \''.$this->_obj->Langue.'\', 1, \'' . date('Y-m-d') . ' 10:58:00\', 0, \'' . date('Y-m-d') . ' 10:58:00\', 0, '.$this->_obj->TypeApplication.',\''.$this->_obj->UrlWopi.'\')';
+            $sql .= '(\'' . $d . '\', 1, \''.$this->_obj->Langue.'\', 1, \'' . date('Y-m-d') . ' 10:58:00\', 0, \'' . date('Y-m-d') . ' 10:58:00\', 0, '.$this->_obj->TypeApplication.',\''.$this->_obj->UrlWopi.'\',\''.$this->_obj->URLEBarreau.'\',\''.$this->_obj->URLMerlin.'\')';
             $flag = true;
         }
         $act->addDetails($sql);

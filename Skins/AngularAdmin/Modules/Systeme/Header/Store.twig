@@ -6,7 +6,7 @@
             pageLoaded = {},
             sort = {},
             total = {},
-            pageLength = 15,
+            pageLength = [],
             errors = [],
             timer = {},
             query = {},
@@ -86,6 +86,7 @@
             busy[context] = 0;
             sort[context] = [];
             toRefresh[context] = 0;
+            pageLength[context] = 15;
             resetFilters(context);
             currentPage[context] = 1;
             resetQuery(context);
@@ -124,14 +125,14 @@
             return query[context];
         }
         function setPageLength(pl,context = 'default') {
-            if (pageLength==pl)return false;
+            if (getPageLength(context)==pl)return false;
             console.log(context+' >> {{ st.identifier }} >> pageLength > '+pl);
-            pageLength = pl;
+            pageLength[context] = pl;
             pageLoaded[context]--;
-            setPage(1,context);
+            //setPage(1,context);
         }
-        function getPageLength() {
-            return pageLength;
+        function getPageLength(context = 'default') {
+            return pageLength[context];
         }
         function getTotal(context = 'default') {
             return total[context];
@@ -237,26 +238,32 @@
             if (filter==filters[context]) return;
             var tmp = {
                 global: '',
-                options:[]
+                options:[],
+                keys: []
             }
             //test des égalités
-            if (!filter.match(/[=><!]{1,2}/g)){
+            if (!filter.match(/[=><!]{1,2}/g)&&!filter.match(/[^\.]*\.[^\.]*\(.*\)/g)){
                 //cas global
                 tmp.global = filter;
             }else{
                 var fi = filter.split('&');
                 for (var i in fi){
-                    if (!fi[i].match(/[=><!]{1,2}/g)){
+                    if (!fi[i].match(/[=><!\(\)]{1,2}/g)&&!fi[i].match(/[^\.]*\.[^\.]*\(.*\)/g)){
                         //cas global
-                        tmp.global = filter;
+                        tmp.global = fi[i];
                     }else{
                         //cas option
-                        var opt = fi[i].match(/^(.*?)([=><!]{1,2}?)(.*?)$/);
-                        tmp.options.push({
-                            name: opt[1],
-                            operator: opt[2],
-                            value: opt[3],
-                        });
+                        if (fi[i].match(/[=><!]{1,2}/g)){
+                            var opt = fi[i].match(/^(.*?)([=><!]{1,2}?)(.*?)$/);
+                            tmp.options.push({
+                                name: opt[1],
+                                operator: opt[2],
+                                value: opt[3],
+                            });
+                        }
+                        if (fi[i].match(/[^\.]*\.[^\.]*\(.*\)/g)){
+                            tmp.keys.push(fi[i]);
+                        }
                     }
                 }
             }
@@ -270,10 +277,13 @@
         function getQueryFilter(context = 'default') {
             if (!filters[context]) return '';
             var query = '';
-            if (filters[context].global)
+            if (filters[context].global.length>0)
                 query += '~'+filters[context].global;
             for (var i in filters[context].options) {
                 query+='&'+filters[context].options[i].name+filters[context].options[i].operator+filters[context].options[i].value;
+            }
+            for (var i in filters[context].keys) {
+                query+='&'+filters[context].keys[i];
             }
             console.log(context+' > {{ st.identifier }} > getQueryFilter ',query);
             return query;
@@ -623,8 +633,8 @@
                         {
                             params: {
                                 filters: tmpfilters,
-                                offset: (page-1)*pageLength,
-                                limit: pageLength,
+                                offset: (page-1)*getPageLength(context),
+                                limit: getPageLength(context),
                                 context: context,
                                 sort: JSON.stringify(tmpsort)
                             },

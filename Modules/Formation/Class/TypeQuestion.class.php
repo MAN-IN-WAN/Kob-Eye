@@ -2,22 +2,22 @@
 class TypeQuestion extends genericClass {
     var $_params = Array(
         'min_word_length' => 4,
-        'min_word_occur' => 2,
+        'min_word_occur' => 1,
 
         'min_2words_length' => 2,
         'min_2words_phrase_length' => 2,
-        'min_2words_phrase_occur' => 2,
+        'min_2words_phrase_occur' => 1,
 
         'min_3words_length' => 2,
         'min_3words_phrase_length' => 5,
-        'min_3words_phrase_occur' => 2
+        'min_3words_phrase_occur' => 1
     );
     public function getAllAnswers() {
         if (isset($this->_txt)) return $this->_txt;
         $txt='';
         $reps = Sys::getData('Formation', 'TypeQuestion/'.$this->Id.'/Reponse');
         foreach ($reps as $r){
-            $txt.=$r->Valeur.' ';
+            $txt.=json_decode($r->Valeur).' ';
         }
         $this->_txt = $txt;
         return $txt;

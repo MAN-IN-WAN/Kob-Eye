@@ -1,6 +1,6 @@
-.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginFormation/Img/LogoEpDCG.jpg') top right no-repeat; }
+/*.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginFormation/Img/LogoEpDCG.jpg') top right no-repeat; }*/
 /*.modal-header {border-radius: 5px;padding: 0; height: 145px; background: url('/Skins/LoginBootstrap/Img/Degrade.jpg') top repeat-x; }*/
-.modal-header-logo {border-radius: 5px;height: 145px; background: url('/Skins/LoginFormation/Img/logo-hercules.png') top left no-repeat; }
+.modal-header-logo {border-radius: 5px;height: 145px; background: url('/Skins/LoginFormation/Img/logo.png') top left no-repeat; }
 .modal-footer {   border-top: 0px; }
 
 @media screen and (min-width: 768px) {

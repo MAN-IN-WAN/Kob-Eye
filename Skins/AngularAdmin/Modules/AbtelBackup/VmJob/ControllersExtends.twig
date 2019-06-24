@@ -1,0 +1,162 @@
+app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,SystemeTacheStore,SystemeActivityStore) {
+    var dateformat =  'DD/MM/YYYY HH:mm';
+    $scope.gantt = {};
+    $scope.gantt.from = moment().subtract(30, 'day').startOf('day').unix();
+    $scope.gantt.fromdate = moment.unix($scope.gantt.from);
+    $scope.gantt.frompicker = moment.unix($scope.gantt.from).format(dateformat);
+    $scope.gantt.to = moment().endOf('day').unix();
+    $scope.gantt.todate = moment.unix($scope.gantt.to);
+    $scope.gantt.topicker = moment.unix($scope.gantt.to).endOf('day').format(dateformat);
+
+
+    /**
+     * register Api
+     * @param api
+     */
+    $scope.registerApi = function(api) {
+        $scope.gantt.api = api;
+        api.core.on.ready($scope, function () {
+            // Call API methods and register events.
+            $scope.refreshGantt();
+            $scope.gantt.api.data.on.change($scope, function (newData, OldData) {
+                $scope.gantt.api.side.setWidth(undefined);
+            });
+        });
+        api.directives.on.new($scope, function(dName, dScope, dElement, dAttrs, dController) {
+            if (dName === 'ganttTask') {
+                dElement.bind('click', function(event) {
+                    console.info('task-click: ',dScope.task.model);
+                    $scope.selectTask(dScope.task.model.origid);
+                });
+            }
+        });
+    }
+
+    /**
+     * storeSettings
+     * Definition des stores
+     */
+    $scope.storeSettings = function () {
+        SystemeTacheStore.initContext('gantt');
+        SystemeTacheStore.setPageLength(1000, 'gantt');
+        SystemeTacheStore.setFilters('VmJob.VmJobTacheId(' + $scope.obj.id + ')&DateDebut>'+$scope.gantt.from+'&DateDebut<'+$scope.gantt.to, 'gantt');
+    };
+    //execution
+    $scope.storeSettings();
+
+    /**
+     * refreshGantt
+     * Rafraichit le gantt et ses données
+     */
+    $scope.refreshGantt = function () {
+        SystemeTacheStore.getData(1,'gantt').then(function (data) {
+            //refresh gantt data
+            var out = formatData(data);
+            //console.error('>>>>>>>>>>>>>>>>>>>>',out);
+            /*$scope.gantt.api.data.clear();
+            $scope.gantt.api.data.load(out);
+            $scope.gantt.api.scroll.toDate(new Date($scope.gantt.from));*/
+
+            $scope.gantt.data = out;
+            /*$scope.gantt.api.toDate = $scope.gantt.to;
+            $scope.gantt.api.fromDate = $scope.gantt.from;*/
+            $scope.gantt.api.columns.clear();
+            $scope.gantt.api.columns.refresh();
+            $scope.gantt.api.columns.generate();
+            //refresh taskobj
+            for (var i in data) {
+                if (data[i].TaskType=='backup'||data[i].TaskType=='rotation'){
+                    $scope.selectTask(data[i].id);
+                    break;
+                }
+            }
+        },function (err) {
+
+        });
+    }
+
+    /**
+     * formatData
+     * Reformate les données pour le gantt
+     * @param data
+     * @returns {[*,*]}
+     */
+    function formatData(data) {
+        Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+        var out = [{
+            name: 'Sauvegarde '+$scope.obj.label,
+            tasks: []
+        },{
+            name: 'Rotation '+$scope.obj.label,
+            tasks: []
+        }];
+        for (var i in data){
+            if (data[i].TaskType == 'backup')
+                out[0].tasks.push({
+                    name: data[i].label+" | Résultat: "+((data[i].Termine)?'success':'erreur'),
+                    from: new Date(moment(data[i].DateDebut,dateformat)),
+                    to:  new Date(moment(data[i].DateFin,dateformat)),
+                    color: (data[i].Termine)?'#46be8a':'#fb434a',
+                    origid: data[i].id
+                });
+            else if (data[i].TaskType == 'rotate') out[1].tasks.push({
+                name: data[i].label+" | Résultat: "+((data[i].Termine)?'success':'erreur'),
+                from: new Date(moment(data[i].DateDebut,dateformat)),
+                to:  new Date(moment(data[i].DateFin,dateformat)),
+                color: (data[i].Termine)?'#f39834':'#6f42c1',
+                origid: data[i].id
+            });
+        }
+        return out;
+    }
+
+    /***
+     * show task
+     */
+    $scope.taskobj = null;
+    $scope.showtask = false;
+    /**
+     * changeDatePeriod
+     * Redinit les dates pour l"encradement des taches du gantt
+     */
+    $scope.changeDatePeriod = function () {
+        //console.log('gantt >> BEFORE change date period ',$scope.gantt.frompicker,$scope.gantt.topicker);
+        $scope.gantt.from = moment($scope.gantt.frompicker,dateformat).unix();
+        $scope.gantt.to = moment($scope.gantt.topicker,dateformat).unix();
+        $scope.gantt.todate = moment.unix($scope.gantt.to);
+        $scope.gantt.fromdate = moment.unix($scope.gantt.from);
+        console.log('gantt >> change date period ',$scope.gantt.from,$scope.gantt.to,$scope.gantt.frompicker,$scope.gantt.topicker);
+        $scope.storeSettings();
+        $scope.refreshGantt();
+    }
+
+    $scope.SystemeActivity = {
+        data: SystemeActivityStore.data.children,
+        store: SystemeActivityStore,
+        filter: '',
+        pageLength: SystemeActivityStore.getPageLength('children'),
+        currentPage: SystemeActivityStore.currentPage.children,
+        itemsPerPage: SystemeActivityStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+
+    /**
+     * sele"ctTask
+     * Selection d'une tache
+     * @param id
+     */
+    $scope.selectTask = function (id){
+        $scope.showtask = false;
+        SystemeTacheStore.getOneData(id,'gantt').then(function (data) {
+            $scope.taskobj = data;
+            $scope.showtask = true;
+            //FORMULAIRE CHILDREN
+            /*$scope.SystemeActivity.store.setFilters('Tache.TacheId(' + $scope.taskobj.id + ')', 'children');
+            $scope.SystemeActivity.store.getData(1, 'children');*/
+        });
+    }
+
+
+});

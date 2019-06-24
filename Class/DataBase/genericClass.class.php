@@ -572,6 +572,7 @@ class genericClass extends Root {
                     foreach ($attr as $A)if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) $ok = true;
                     if ($ok){
                         if ($flat){
+                            $Elem['category'] = $CatName;
                             $O[] = $Elem;
                         }else{
                             if (!isset($O[$CatName])) {

@@ -1,7 +1,5 @@
 [STORPROC [!Query!]|I|0|1]
-    [STORPROC IncidentClient/ParametresEtat/Cloture=1|P|0|1]
-        [!I::addParent(IncidentClient/ParametresEtat/[!P::Id!])!]
-    [/STORPROC]
+    [METHOD I|addParent][PARAM]IncidentClient/ParametresEtat/5[/PARAM][/METHOD]
     [IF [!I::Save()!]]
         <div class="alert alert-success">Votre incident est clôturé</div>
     [ELSE]

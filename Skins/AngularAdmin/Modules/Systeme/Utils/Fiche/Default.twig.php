@@ -36,6 +36,25 @@ foreach($vars['operation'] as $k=>$op){
         $vars['operation'][$k] = $ok;
     }
 }
+/**
+ * fields by categories
+ */
+$ocats = $o->getCategories();
+$cats = array();
+foreach ($ocats as $k=>$cat){
+    $fields = [];
+    foreach ($vars['fichefields'] as $field){
+        if ($field['category']==$cat){
+            array_push($fields,$field);
+        }
+    }
+    if (sizeof($fields)){
+        $cats[$cat] = $fields;
+    }
+}
+$vars['categories'] = $cats;
+
+
 $vars['functions'] = $o->getFunctions();
 foreach($vars['functions'] as $k=>$f){
     if(empty($vars['operation'][$f['Nom']]))

@@ -113,7 +113,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->SetFont('Arial','B',10);
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['Numero']);
-		$s = $l['Nom'].' '.$l['Prenom'];
+		$s = $this->cv($l['Nom'].' '.$l['Prenom']);
 		$this->Cell($this->width[1], 4.5, $s);
 		$this->posy += 4.5;
 		

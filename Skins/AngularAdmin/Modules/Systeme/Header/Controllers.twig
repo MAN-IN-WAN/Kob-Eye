@@ -33,7 +33,7 @@
                     })(),
                     filterQuery: store.getQueryFilter(context),
                     currentPage: store.currentPage[context],
-                    pageLength: store.getPageLength(),
+                    pageLength: store.getPageLength(context),
                     itemsPerPage: store.itemsPerPage,
                     selected: {
                         selectall: false
@@ -181,10 +181,13 @@
         });
 
         $scope.displaySelect = function(){
-            for(var i in $scope.{{ c.identifier }}.selected){
-                if($scope.{{ c.identifier }}.selected[i]) return true;
+            if ($scope.{{ c.identifier }}){
+                for(var i in $scope.{{ c.identifier }}.selected){
+                    if($scope.{{ c.identifier }}.selected[i]) return true;
+                }
+                return false;
             }
-            return false;
+        return false;
         }
 
         //call function
@@ -616,6 +619,8 @@
         $scope.$watch('{{ c.identifier }}.pageLength', function() {
             console.log('pageLength',$scope.{{ c.identifier }}.pageLength);
             {{ c.identifier }}Store.setPageLength($scope.{{ c.identifier }}.pageLength,'default');
+            {{ c.identifier }}Store.getData(1,'default');
+            //$scope.{{ c.identifier }}.currentPage = 1;
         });
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
             {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
@@ -841,7 +846,7 @@
                     })(),
                     filterQuery: store.getQueryFilter(context),
                     currentPage: store.currentPage[context],
-                    pageLength: store.getPageLength(),
+                    pageLength: store.getPageLength(context),
                     itemsPerPage: store.itemsPerPage,
                     selected: {
                         selectall: false
@@ -863,8 +868,11 @@
             }
         }
         $scope.displaySelect = function(){
-            for(var i in $scope.{{ c.identifier }}.selected){
-                if($scope.{{ c.identifier }}.selected[i]) return true;
+            if ($scope.{{ c.identifier }}){
+
+                for(var i in $scope.{{ c.identifier }}.selected){
+                    if($scope.{{ c.identifier }}.selected[i]) return true;
+                }
             }
             return false;
         }
@@ -1154,7 +1162,7 @@
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('children'),
                     currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.children,
                     itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                     selected: {
@@ -1169,7 +1177,7 @@
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('select'),
                     currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
                     itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                     selected: {
@@ -1212,7 +1220,7 @@
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.link,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('select'),
                     currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
                     itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                     selected: {
@@ -1245,6 +1253,7 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.pageLength', function() {
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength,'link');
                     $scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage = 1;
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
                 });
 
 
@@ -1508,7 +1517,9 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.pageLength', function() {
                     console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}.pageLength);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}.pageLength,'children');
-                $scope.{{ child.objectModule }}{{ child.objectName }}.currentPage = 1;
+                    $scope.{{ child.objectModule }}{{ child.objectName }}.currentPage = 1;
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children');
+
                 });
 
                 //ADD

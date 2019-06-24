@@ -1,0 +1,104 @@
+
+{% macro fiche_properties(fichefields,categories,CurrentUrl,obj) %}
+    {% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroTypes.twig" import  fvarchar,flabel, fhidden, label, fkeyshort, fkeylong,fboolean,fint,fextlink,ffloat,fplugin,ffile,fimage,fprice,fprogress,ftext %}
+
+    <div class="">
+        <div class="nav-tabs-vertical"  style="overflow: hidden;margin-bottom: 20px;">
+            <ul class="nav nav-tabs" role="tablist">
+                {% for cat,fields in categories %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab"
+                           data-target="#{{ cat }}" role="tab">{{ cat }}</a>
+                    </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript: void(0);" data-toggle="tab"
+                       data-target="#details" role="tab">Détails</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                {% for cat,fields in categories %}
+                <div class="tab-pane {% if loop.first %}active{% endif %}" role="tabpanel" id="{{ cat }}">
+                    {% set flag = 0 %}
+                    {% for field in fields if field.type != "progress" and field.type != "pluginconfig" and field.type != "raw" and field.type != "html" and field.type != "text" and field.type != "bbcode" and field.type != "rkey" %}
+                        {% if flag == 0 %}
+                            <div class="row" style="overflow:hidden">
+                        {% endif %}
+                        <div class="col-md-12 col-lg-6">
+                            <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
+                                <div class="col-md-5 detail-label">
+                                    <label class="form-control-label"for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                                </div>
+                                <div class="col-md-7 detail-value">
+                                    {% if field.type == "price" %}
+                                        {{ fprice(field,obj) }}
+                                    {% elseif field.type == "image" %}
+                                        {{ fimage(field,obj) }}
+                                    {% elseif field.type == "file" %}
+                                        {{ ffile(field,obj) }}
+                                    {% elseif field.type == "plugin" %}
+                                        {{ fplugin(field,obj) }}
+                                    {% elseif field.type == "float" %}
+                                        {{ ffloat(field,obj) }}
+                                    {% elseif field.type == "extlink" %}
+                                        {{ fextlink(field,obj) }}
+                                    {% elseif field.type == "int" %}
+                                        {{ fint(field,obj) }}
+                                    {% elseif field.type == "boolean" %}
+                                        {{ fboolean(field,obj) }}
+                                    {% elseif field.type == "fkey" and field.card == "long" %}
+                                        {{ fkeylong(field,obj) }}
+                                    {% elseif field.type == "fkey" and field.card == "short" %}
+                                        {{ fkeyshort(field,obj) }}
+                                    {% else %}
+                                        {{ fvarchar(field,obj) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if flag == 1 %}
+                            </div>
+                        {% endif %}
+                        {% if flag == 0 %}
+                            {% set flag = 1 %}
+                        {% else %}
+                            {% set flag = 0 %}
+                        {% endif %}
+                    {% endfor %}
+                    {#le cas ou ca termine sur un imper#}
+                    {% if flag == 1 %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="tab-pane " role="tabpanel" id="details">
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label"><label class="form-control-label"
+                                                              for="l0">Détails</label></div>
+                    <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+                </div>
+            </div>
+        </div>
+        <div class="fiche-pane">
+        {% for field in fichefields %}
+            {% if field.type == "progress" %}
+                {{ fprogress(field,obj) }}
+            {% elseif field.type == "raw" or field.type == "text" or field.type == "html" or field.type == "bbcode" %}
+                {{ ftext(field,obj) }}
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+    <!-- RKEY INLINE -->
+    {% for field in fichefields if (field.type == "rkey") and field.inline == 1 %}
+        <div class="row  ficheField">
+            <div class="col-md-12">
+                <h4>{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}
+                    ({[{ {{ field.objectModule }}{{ field.objectName }}.store.total.children }]})</h4>
+                <ng-include src="'/{{ CurrentUrl }}/0/{{ field.objectName }}/ListFiche.htm'"
+                            ng-if="show"></ng-include>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

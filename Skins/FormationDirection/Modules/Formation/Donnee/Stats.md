@@ -20,7 +20,7 @@
         [!SUM:=0!]
         [!COUNT:=0!]
         [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
-            [!SUM+=[!R::Valeur!]!]
+            [!SUM+=[!Utils::parseInt([!R::Valeur!])!]!]
             [!COUNT+=1!]
         [/STORPROC]
         [IF [!COUNT!]>0]
@@ -233,10 +233,10 @@
     [CASE 4]
         //Cas OUi / Non
 [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|Nb2]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=1&Valeur!="1"|Nb2]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
         <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
@@ -311,7 +311,7 @@
                     highlightStroke: "rgba(151,187,205,1)",
                     data: [
                         [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
-                            [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!TQV::Id!]|Nb1]
+                            [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|Nb1]
                              [!Nb1:=[!Nb1:/[!NbR!]!]!]
                              [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                              [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
@@ -356,5 +356,121 @@
              });
 
         </script>
+        <br/><br/>
+        <p><b>Liste des valeurs:</b></p>
+        <ul>
+            [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
+            <li>
+                [!TQV::Valeur!][IF [!TQV::Image!]!=] : <img src="/[!TQV::Image!]" title="[!TQV::Valeur!]" alt="[!TQV::Valeur!]">[/IF]
+            </li>
+            [/STORPROC]
+        </ul>
+
     [/CASE]
+    [CASE 6]
+        [!qty:=0!]
+        [!sum:=0!]
+        [!res:=100!]
+        [STORPROC Formation/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+            [!qty+=1!]
+            [!sum+=[!Utils::parseInt([!R::Valeur!])!]!]
+        [/STORPROC]
+        [!moy:=[!sum!]!]
+        [!moy/=[!qty!]!]
+        [!res-=[!moy!]!]
+
+        <div class="well">
+            <p>[!moy!] %</p>
+        </div>
+        <canvas id="myChart" width="500" height="500" style="width: 55%;margin-left: 12%"></canvas>
+
+        <script>
+
+            // Get context with jQuery - using jQuery's .get() method.
+            var ctx = $("#myChart").get(0).getContext("2d");
+            var data = [{
+                value: [!moy!],
+                color:"#F7464A",
+                highlight: "#FF5A5E",
+                label: "[!TQ::Nom!]"
+            },{
+                value: [!res!],
+                color:"#c0c0c0",
+                highlight: "#7e7e7e",
+                label: "Autre"
+            }];
+
+
+            var myNewChart = new Chart(ctx).Pie(data, {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 0, // This is 0 for Pie charts
+
+                //Number - Amount of animation steps
+                animationSteps : 100,
+
+                //String - Animation easing effect
+                animationEasing : "easeOutBounce",
+
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+
+            });
+
+
+        </script>
+
+    [/CASE]
+    [CASE 7]
+        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [IF [!R::Valeur!]]
+            [!val:=[!Utils::unserialize([!R::Valeur!])!]!]
+            <div class="well">
+                [STORPROC [!val!]|v]
+                <p>[!v!]</p>
+                [/STORPROC]
+            </div>
+        [/IF]
+        [/STORPROC]
+    [/CASE]
+    [CASE 8]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(8,[!S::Id!],[!CD::TypeQuestionId!])!]
+    [/CASE]
+    [CASE 9]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(9,[!S::Id!],[!CD::TypeQuestionId!])!]
+    [/CASE]
+    [CASE 10]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(10,[!S::Id!],[!CD::TypeQuestionId!])!]
+    [/CASE]
+    [CASE 11]
+        <p>11</p>
+    [/CASE]
+    [CASE 12]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(12,[!S::Id!],[!CD::TypeQuestionId!])!]
+    [/CASE]
+    [CASE 13]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(13,[!S::Id!],[!CD::TypeQuestionId!])!]
+    [/CASE]
+    [DEFAULT]
+        <p>Cas inconnu [!CD::TypeReponse!]</p>
+    [/DEFAULT]
 [/SWITCH]

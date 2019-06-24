@@ -30,9 +30,10 @@ class Question extends genericClass{
 
 
 
-    static function traiterTypeReponse($tr,$session,$TypeQuestionId){
+    static function traiterTypeReponse($tr,$session,$TypeQuestionId,$suffix='',$region=''){
         if(empty($session)) $session = '*';
         $html = '';
+        if (!empty($region)) $session = 'Region.Region('.$region.')';
         $data = Sys::getData('Formation','Session/'.$session.'/Equipe/*/Reponse/TypeQuestionId='.$TypeQuestionId);
         if(empty($data)) return 'Aucune donnée.';
         $tp = Sys::getOneData('Formation','TypeQuestion/'.$TypeQuestionId);
@@ -67,12 +68,12 @@ class Question extends genericClass{
                 $values = json_encode($moy);
                 $titres =json_encode($titles);
 
-                $html = '<div id="spidergraphcontainer" class="spidergraphcontainer"></div>
+                $html = '<div id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" class="spidergraphcontainer"></div>
                     
                     <script>
                     $(document).ready( function() {
                     
-                        $(\'#spidergraphcontainer\').spidergraph({
+                        $(\'#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'\').spidergraph({
                             \'fields\': '.$titres.',
                             \'gridcolor\': \'rgba(20,20,20,1)\',
                             '.$color.'
@@ -82,7 +83,7 @@ class Question extends genericClass{
                             \'axisValuesType\':2,
                             \'gridBackground\':\''.$bgColor.'\'
                         });
-                         $(\'#spidergraphcontainer\').spidergraph(\'addlayer\', {
+                         $(\'#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'\').spidergraph(\'addlayer\', {
                             \'strokecolor\': \'rgba(230,104,0,0.8)\',
                             \'fillcolor\': \'rgba(230,104,0,0.6)\',
                             \'data\': '.$values.',
@@ -169,12 +170,12 @@ class Question extends genericClass{
                 $titres =json_encode($titles);
                 $incr = $params['Max'] - $params['Min'];
 
-                $html = '<div id="spidergraphcontainer" class="spidergraphcontainer"></div>
+                $html = '<div id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" class="spidergraphcontainer"></div>
                     
                     <script>
                     $(document).ready( function() {
                     
-                        $(\'#spidergraphcontainer\').spidergraph({
+                        $(\'#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'\').spidergraph({
                             \'fields\': '.$titres.',
                             \'gridcolor\': \'rgba(20,20,20,1)\',
                             \'increments\':'.$incr.',
@@ -182,7 +183,7 @@ class Question extends genericClass{
                             \'minrad\':0,
                             \'axisValuesType\':1
                         });
-                         $(\'#spidergraphcontainer\').spidergraph(\'addlayer\', {
+                         $(\'#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'\').spidergraph(\'addlayer\', {
                             \'strokecolor\': \'rgba(230,104,0,0.8)\',
                             \'fillcolor\': \'rgba(230,104,0,0.6)\',
                             \'data\': '.$values.',
@@ -234,11 +235,11 @@ class Question extends genericClass{
                 }
                 $pjs = trim($pjs,',');
 
-                $html .= '  <canvas id="myChart" width="500" height="500" style="width: 55%;margin-left: 12%"></canvas>
+                $html .= '  <canvas id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" width="500" height="500" style="width: 55%;margin-left: 12%"></canvas>
                     
                             <script>
                                 // Get context with jQuery - using jQuery\'s .get() method.
-                                var ctx = $("#myChart").get(0).getContext("2d");
+                                var ctx = $("#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'").get(0).getContext("2d");
                                 var data = ['.$pjs.'];
                     
                     
@@ -304,12 +305,12 @@ class Question extends genericClass{
                 );
                         //print_r($ds);
         $html .= '
-                <canvas id="myChart" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
+                <canvas id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
                 <script>
             
                         // Get context with jQuery - using jQuery\'s .get() method.
-                        var ctx = $("#myChart").get(0).getContext("2d");
+                        var ctx = $("#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'").get(0).getContext("2d");
                         var data = {
                             labels: '.json_encode($labels).',
                             datasets: ['.json_encode($ds).']

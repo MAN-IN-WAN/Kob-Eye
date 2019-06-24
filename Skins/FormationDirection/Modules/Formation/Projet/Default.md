@@ -26,7 +26,7 @@
                     </ul>
                 [/IF]
                 <div class="col-lg-12">
-                    <div class="panel">
+                    <div class="panel [IF [!Q::Dimension!]!=][!Q::Dimension!][/IF]">
                         <a id="question-[!D::Id!]"
                            [IF [!Sys::User::isRole(GLOBAL)!]]
                            data-src="/Projets/[!P::Id!]/Session/*/Donnee/[!D::Id!]/Stats.htm"
@@ -45,7 +45,7 @@
                                     <i class="fa fa-map-marker fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9">
-                                    <div class="huge">Question [!D::Numero!]</div>
+                                    <div class="huge">Question [!D::Numero!] [IF [!Q::Dimension!]!=]- [!Q::Dimension!][/IF]</div>
                                     <div>[!D::Titre!]</div>
                                     <strong>[!TQ::Nom!]</strong>
                                 </div>

@@ -1,35 +1,45 @@
 <SCHEMA>
-        <OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrat"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Contrat.class.php">
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="CLient"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Client.class.php">
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Tache.class.php" className="AbtelTache">
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Action.class.php">
-            <FKEY card="1,n" data="Tache,NumeroTicket">TacheNumeroTicket</FKEY>
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Entite" driver="mysql" AccessPoint="1" Description="Entité"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
-        </OBJECTCLASS>
-        <OBJECTCLASS title="TypeChamp" driver="mysql" AccessPoint="1" Description="Type de champs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Champ" driver="mysql" AccessPoint="1" Description="Champ"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
-            <PROPERTIES type="varchar" searchOrder="1" query="AbtelGestion/TypeChamp::Nom" form="1" list="1" fiche="1">Type</PROPERTIES>
-            <PROPERTIES type="boolean" form="1" fiche="1">Obligatoire</PROPERTIES>
-            <PROPERTIES type="boolean" form="1" fiche="1">Auto</PROPERTIES>
-            <PROPERTIES type="varchar" form="1" fiche="1">DefaultValue</PROPERTIES>
-            <PROPERTIES type="int" form="1" fiche="1">Longueur</PROPERTIES>
-            <PROPERTIES type="text" form="1" list="1" fiche="1">Designation</PROPERTIES>
-            <PROPERTIES type="varchar" searchOrder="1" list="1"  form="1" fiche="1">NomDistant</PROPERTIES>
-            <PROPERTIES type="text" searchOrder="1" list="1"  form="1" fiche="1">Note</PROPERTIES>
-            <FKEY card="1,1" data="Entite,Id">EntiteId</FKEY>
-        </OBJECTCLASS>
-        <OBJECTCLASS title="Option" driver="mysql" AccessPoint="1" Description="Option"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Libelle</PROPERTIES>
-            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Valeur</PROPERTIES>
-            <PROPERTIES type="int" searchOrder="1" form="1" list="1" fiche="1">Position</PROPERTIES>
-            <FKEY card="1,1" data="Champ,Id">ChampId</FKEY>
-        </OBJECTCLASS>
+	<OBJECTCLASS title="Dictionnaire" driver="mysql" AccessPoint="1" Description="Dictionnaire"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Dictionnaire.class.php">
+		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" searchOrder="2" category="Description" form="2" list="2" fiche="2">Nom</PROPERTIES>
+		<PROPERTIES type="int" default="0" auto="1" category="Description" form="3" list="3" fiche="3">Entrees</PROPERTIES>
+		<PROPERTIES type="file" category="Description" form="4" fiche="4" description="Chemin d'accès">FilePath</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">PresentationEs</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">PresentationFr</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">PresentationEN</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Presentation" driver="mysql" AccessPoint="1" Description="Presentation"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Presentation.class.php">
+		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">TexteEs</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">TexteFr</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">TexteEn</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="GDN" driver="mysql" AccessPoint="1" Description="GDN"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/GDN.class.php">
+		<FKEY card="1,1" module="CEN" data="Dictionnaire,Id" form="1" fiche="1" >DictionnaireId</FKEY>
+		<PROPERTIES type="varchar" length="60" searchOrder="3" form="1" list="1" fiche="1">Paleo</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" searchOrder="1" form="1" list="1" fiche="1">Norma_1</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" searchOrder="4" form="1" list="1" fiche="1">Norma_2</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" searchOrder="5" form="1" list="1" fiche="1">Norma_3</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" form="1" list="1" fiche="1">Morpho</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" form="1" list="1" fiche="1">Phono</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" form="1" list="1" fiche="1">Prefixes</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" form="1" list="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" form="1" list="1" fiche="1">Analyse</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" form="1" list="1" fiche="1">Formes</PROPERTIES>
+		<PROPERTIES type="varchar" length="300" searchOrder="2" form="1" list="1" fiche="1">Trad_1</PROPERTIES>
+		<PROPERTIES type="varchar" length="300" searchOrder="6" form="1" list="1" fiche="1">Trad_2</PROPERTIES>
+		<PROPERTIES type="text" form="1" list="1" fiche="1">Commentaires</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" form="1" list="1" fiche="1">Folio</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" form="1" list="1" fiche="1">Colonne</PROPERTIES>
+		<PROPERTIES type="text" form="1" list="1" fiche="1">Notes</PROPERTIES>
+		<PROPERTIES type="text" form="1" list="1" fiche="1">Tout_ensemble</PROPERTIES>
+
+		<VIEW title="GDNList" default="1">
+			<OBJECTCLASS title="GDN" select="Norma_1,Trad_2,Commentaires" filters="">
+				<JOIN type="outer" module="CEN" title="Dictionnaire" on="DictionnaireId" target="Id">
+					<PROPERTIES type="varchar" list="2" form="4" fiche="4" alias="Source">Nom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
 </SCHEMA>

@@ -27,7 +27,7 @@
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireInterRegion</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireRegion</PROPERTIES>
         <PROPERTIES type="text" category="Paramètres supplementaires" mobile="1">Parametres</PROPERTIES>
-        <!--<PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé">TypeReponse</PROPERTIES>-->
+        <PROPERTIES type="varchar" length="200" searchOrder="1" values="Coacher,Piloter,Leader,Particuliers,Affaires" category="Intitulé">Dimension</PROPERTIES>
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/TypeQuestion.class.php">

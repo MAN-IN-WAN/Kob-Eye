@@ -484,9 +484,16 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 		}
 
 		//ALias Config
+        if (!$new)
+            $entry['apacheconfigalias'] = array();
         if (!empty($this->ApacheConfig))
             $entry['apacheconfigalias'] = $this->ApacheConfig;
-        else if (!$new) $entry['apacheconfigalias'] = Array();
+        if ($this->RedirectSsl)
+            $entry['apacheconfigalias'] = $this->ApacheConfig."
+RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
+
 
         //Proxy config
 		if ($this->ProxyCache){

@@ -21,6 +21,7 @@ class Header extends Root{
     var $ForceDescription = false;
     var $ForceKeywords = false;
     var $ForceImage = false;
+    var $overwriteHeader = false;
 
 
     function Header ($Type="") {
@@ -250,42 +251,48 @@ class Header extends Root{
         $this->setMeta();
 
 		//					<html ' . (empty($browser) ? '': 'class="'.$browser.'"') .'>
-			$this->Content = '<!DOCTYPE HTML>
-							<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
-							<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
-							<!--[if IE 8]>    <html class="no-js lt-ie9 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
-							<!--[if IE 9]>    <html class="no-js lt-ie10 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
-							<!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="fr-FR" '.$this->Html.'> <!--<![endif]-->
-							<head>
-							<title>'.$this->Title.'</title>
-							<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET_CODE.'" />
-							<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-							<meta name="description" content="'.$this->Description.'"/>
-							<meta name="keywords" content="'.$this->Keywords.'"/>
-							<meta name="robots" content="index,follow"/>
-							<meta name="rating" content="general"/>
-							<meta name="twitter:card" content="summary">
-							
-							<!--<meta name="twitter:site" content="">-->
-							<meta name="twitter:title" content="'.$this->Title.'">
-							<meta name="twitter:description" content="'.$this->Description.'">
-							<!--<meta name="twitter:creator" content="">-->
-						
-							<meta property="og:title" content="'.$this->Title.'" />
-							<meta property="og:type" content="article" />
-							<meta property="og:url" content="'.'http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien.'" />';
-			if (!empty($this->Image)){
-				$this->Content .='
-							<meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
-							<link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
-							<meta name="twitter:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg"> ';
-			}
-							
-			$this->Content .='
-							<meta property="og:description" content="'.$this->Description.'" />
-							<meta property="og:site_name" content="'.Sys::$domain.'" />
-							
-			';
+        $this->Content = '';
+        if (!$this->overwriteHeader) {
+            $this->Content .= '<!DOCTYPE HTML>
+                            <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+                            <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+                            <!--[if IE 8]>    <html class="no-js lt-ie9 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+                            <!--[if IE 9]>    <html class="no-js lt-ie10 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+                            <!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="fr-FR" '.$this->Html.'> <!--<![endif]-->
+                            <head>
+                            <title>'.$this->Title.'</title>
+                            <meta http-equiv="Content-Type" content="text/html; charset='.CHARSET_CODE.'" />
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                            <meta name="description" content="'.$this->Description.'"/>
+                            <meta name="keywords" content="'.$this->Keywords.'"/>
+                            <meta name="robots" content="index,follow"/>
+                            <meta name="rating" content="general"/>
+                            <meta name="twitter:card" content="summary">
+
+                            <!--<meta name="twitter:site" content="">-->
+                            <meta name="twitter:title" content="'.$this->Title.'">
+                            <meta name="twitter:description" content="'.$this->Description.'">
+                            <!--<meta name="twitter:creator" content="">-->
+
+                            <meta property="og:title" content="'.$this->Title.'" />
+                            <meta property="og:type" content="article" />
+                            <meta property="og:url" content="'.'http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien.'" />';
+        }else {
+            $this->Content .= $this->getTab();
+            $this->Content .= $this->getLastTab();
+        }
+        if (!empty($this->Image)){
+            $this->Content .='
+                        <meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
+                        <link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
+                        <meta name="twitter:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg"> ';
+        }
+
+        $this->Content .='
+                        <meta property="og:description" content="'.$this->Description.'" />
+                        <meta property="og:site_name" content="'.Sys::$domain.'" />
+                        
+        ';
 
 		if ($this->Type=="print"){
 			$this->Content .= '<link type="text/css" rel="stylesheet" href="/Skins/'.Sys::$User->Skin.'/Css/print.css" />
@@ -321,8 +328,10 @@ class Header extends Root{
 ';
 			}
 		}
-		$this->Content .= $this->getTab();
-		$this->Content .= $this->getLastTab();
+		if (!$this->overwriteHeader) {
+            $this->Content .= $this->getTab();
+            $this->Content .= $this->getLastTab();
+        }
 		if (DEBUG_DISPLAY) $this->Content.=KError::displayHeader();
 		$this->Content .='</head>
 ';

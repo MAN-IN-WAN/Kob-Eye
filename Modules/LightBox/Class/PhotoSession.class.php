@@ -13,6 +13,7 @@ class PhotoSession extends genericClass{
             $sess = genericClass::createInstance('LightBox','PhotoSession');
             $sess->Titre = "Session automatique - ".date('d/m/Y H:i:s');
             $sess->Current = true;
+            $sess->LiveView = true;
             $sess->Save();
         }
         return $sess;

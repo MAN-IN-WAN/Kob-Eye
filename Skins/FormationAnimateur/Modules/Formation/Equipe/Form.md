@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[!R::Valeur!]">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[!Utils::parseInt([!R::Valeur!])!]">
                     </div>
                 </div>
                 <script>

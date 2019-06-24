@@ -1006,7 +1006,7 @@ inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
-where d0.WebDisciplineId=$disId and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
+where d0.WebDisciplineId=$disId and n.AccesWeb=1 and c.AccesWeb=1 and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
 			case 'inscription':

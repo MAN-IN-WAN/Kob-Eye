@@ -1,0 +1,35 @@
+/** VARCHAR **/
+{% macro fvarchar(field, obj) %}
+    {% if field.Values %}
+        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+            {% for v,k in field.Values %}
+                <option value="{{ v }}" >{{ k }}</option>
+            {% endfor %}
+        </select>
+    {% elseif field.query %}
+        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
+    {% else %}
+        <span  ng-bind-html="obj.{{ field.name }}"></span>
+    {% endif %}
+{% endmacro %}
+
+/** HIDDEN **/
+{% macro fhidden(field, obj) %}
+    <input type="hidden" ng-model="{{ obj }}.{{ field.name }}"/>
+{% endmacro %}
+
+/** LABEL **/
+{% macro label(text) %}
+    <label class="form-control-label label" style="line-height:1">{{ text }}</label>
+{% endmacro %}
+
+/** LABEL HELPER **/
+{% macro flabel(field) %}
+    <label class="form-control-label cadref-label" style="line-height:1">{{ field.description }}</label>
+    {% if field.help %}
+        <small>
+            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+        </small>
+    {% endif %}
+{% endmacro %}
+
