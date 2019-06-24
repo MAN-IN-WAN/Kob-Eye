@@ -93,11 +93,7 @@
     <div class="tab-content">
         {% if Interfaces.fiche_tab %}
             <div class="tab-pane active" id="tabInfosSite" role="tabpanel">
-                <section class="panel">
-                    <div class="panel-body">
-                        <div ng-include="'{{ Interfaces.fiche_tab.Infos.urlPrefix }}'+ obj.id +'{{ Interfaces.fiche_tab.Infos.urlSuffix }}'"></div>
-                    </div>
-                </section>
+                <div ng-include="'{{ Interfaces.fiche_tab.Infos.urlPrefix }}'+ obj.id +'{{ Interfaces.fiche_tab.Infos.urlSuffix }}'"></div>
             </div>
         {% endif %}
         {% for child in ChildrenElements if not child.childrenHiddenSoft and child.inline != 1 %}

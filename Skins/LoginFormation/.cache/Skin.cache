@@ -1,0 +1,40 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:6:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:46:"/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:52:"/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:44:"/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;s:378:"
+
+
+
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-header-logo"></div>
+                </div>
+            </div>
+            ";i:4;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:1:{i:0;a:1:{i:0;s:157:"
+            <div class="alert alert-danger">
+                Une erreur est survenue... Veuillez vérifier vos identifiants.
+            </div>
+            ";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:15:"[!Zob!]=Valider";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;s:1115:"
+            <div class="modal-body">
+                <form class="form col-md-12 center-block" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="login" class="form-control input-lg" placeholder="Nom d'utilisateur">
+                    </div>
+                    <div class="form-group">
+                        <input type="password"  name="pass" class="form-control input-lg" placeholder="Mot de passe">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" name="Zob" value="Valider">
+<!--                        <span class="pull-right"><a href="#">S'enregs</a></span><span><a href="#">Need help?</a></span>-->
+                    </div>
+                </form>
+            </div>
+<!--            <div class="modal-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-danger" data-dismiss="modal" href="/" aria-hidden="true">Annuler</a>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}

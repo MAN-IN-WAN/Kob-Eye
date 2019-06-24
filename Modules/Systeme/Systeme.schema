@@ -322,6 +322,9 @@
         <FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
         <FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
         <FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
+		<INTERFACES name="fiche_middle">
+			<FORM type="Template" urlPrefix="/Systeme/Tache/" urlSuffix="/Histo.htm" title="Historique d'éxécution">Template</FORM>
+		</INTERFACES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
