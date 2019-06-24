@@ -71,33 +71,3 @@
         </div>
     </div>
 </section>
-<div class="triangle up" id="task-triangleup"></div>
-<section class="panel inverse">
-    <div class="panel-heading">
-        <h3>Tâche {[{ taskobj.Nom }]}</h3>
-    </div>
-    <div class="panel-body" ng-if="!showtask">
-        <div class="container-fluid">
-            <div class="row top-buffer">
-                <div class="col-md-12">
-                    <i class="fa fa-cog fa-spin"></i> Chargement des données ...
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="panel-body" ng-if="showtask">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <section class="panel">
-                        <div class="panel-body">
-                            {{  fiche_properties(fichefields,categories,CurrentUrl,'taskobj') }}
-                            {{ list_activity('SystemeActivity','children') }}
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="panel-footer"></div>
-</section>
