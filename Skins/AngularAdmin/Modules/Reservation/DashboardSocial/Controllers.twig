@@ -1,0 +1,97 @@
+app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $scope, $rootScope, ReservationOrganisationStore, ReservationClientStore, ReservationSpectacleStore, ReservationReservationsStore,   ReservationEvenementStore) {
+    //------------------------------------------//
+    //                 ANCHORS
+    //------------------------------------------//
+    $anchorScroll.yOffset = 50;
+    $anchorScroll();
+
+    $scope.gotoAnchor = function (x) {
+        var newHash = x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+    var colors = {
+        _primary: '#008FFB',
+        _secondary: '#3F51B5',
+        _default: '	#C4BBAF',
+        _success: '#00E396',
+        _danger: '#FF4560',
+        _warning: '#FEB019',
+        _io: '#775DD0'
+    };
+
+
+    //------------------------------------------//
+    //                 STORES                   //
+    //------------------------------------------//
+    //Init des stores
+
+    $scope.ReservationOrganisationStore = ReservationOrganisationStore;
+    $scope.ReservationClientStore = ReservationClientStore;
+    $scope.ReservationSpectacleStore = ReservationSpectacleStore;
+    $scope.ReservationReservationsStore = ReservationReservationsStore;
+    $scope.ReservationEvenementStore = ReservationEvenementStore;
+
+    //$scope.ReservationSpectacleStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>' + seuil, 'dash');
+    $scope.ReservationSpectacleStore.getData(1, 'dash');
+    $scope.ReservationSpectacle = {
+        data: ReservationSpectacleStore.data.dash,
+        store: ReservationSpectacleStore,
+        filter: ReservationSpectacleStore.filter.dash,
+        currentPage: ReservationSpectacleStore.currentPage.dash,
+        itemsPerPage: ReservationSpectacleStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+    var ceSoir = new Date();
+    ceSoir.setHours(23,59,59,999);
+    ceSoir = ceSoir.getTime()/1000 - ceSoir.getTimezoneOffset()*60;
+    ceSoir = Math.floor(ceSoir);
+    var now = new Date();
+    now = now.getTime()/1000 - now.getTimezoneOffset()*60;
+    now = Math.floor(now);
+
+    $scope.nextClosing = 0;
+    $scope.spMonth = 0;
+    $scope.nbOrga = 0;
+    $scope.nbCli = 0;
+
+    $scope.ReservationClientStore.getCount().then(function(data){
+        $scope.nbCli = data;
+    });
+    $scope.ReservationEvenementStore.getCount('DateCloture>'+now+'&DateCloture<'+ceSoir).then(function(data){
+        $scope.nextClosing = data;
+    });
+    $scope.ReservationSpectacleStore.getCount('DateDebut<'+now+'&DateFin>'+now).then().then(function(data){
+        $scope.spMonth = data;
+    });
+    $scope.ReservationOrganisationStore.getCount().then(function(data){
+        $scope.nbOrga = data;
+    });
+
+    $interval(function(){
+        $scope.ReservationClientStore.getCount().then(function(data){
+            $scope.nbCli = data;
+        });
+        $scope.ReservationEvenementStore.getCount('DateCloture>'+now+'&DateCloture<'+ceSoir).then(function(data){
+            $scope.nextClosing = data;
+        });
+        $scope.ReservationSpectacleStore.getCount('DateDebut<'+now+'&DateFin>'+now).then().then(function(data){
+            $scope.spMonth = data;
+        });
+        $scope.ReservationOrganisationStore.getCount().then(function(data){
+            $scope.nbOrga = data;
+        });
+    },10000);
+
+});
+
+

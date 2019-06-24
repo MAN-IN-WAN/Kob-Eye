@@ -3078,4 +3078,35 @@ class genericClass extends Root {
     public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
         return Sys::getOneData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
     }
+
+    public function getAllLoadedModules(){
+	     $modList = array();
+	     foreach(Sys::$Modules as $m){
+	         $modList[] = $m->Nom;
+         }
+         sort($modList);
+	     return $modList;
+    }
+    public function getAllLoadedObjects(){
+        $objList = array();
+        foreach(Sys::$Modules as $m){
+            $objs = $m->Db->IndexObjectClass;
+            foreach($objs as $obj){
+                if(empty($objList[$obj])) {
+                    $len = 20;
+                    $len -= strlen($obj);
+                    $fill = '   ';
+                    for($n = 0; $n < $len; $n++ ){
+                        $fill .= '-';
+                    }
+
+                    $objList[$obj] = $obj.$fill.'> '.strtoupper($m->Nom);
+                } else {
+                    $objList[$obj] .= ", ".strtoupper($m->Nom);
+                }
+            }
+        }
+        ksort($objList);
+        return $objList;
+    }
 }

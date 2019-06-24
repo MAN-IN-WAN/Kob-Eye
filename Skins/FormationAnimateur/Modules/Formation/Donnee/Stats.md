@@ -136,7 +136,7 @@
     [/CASE]
     [CASE 3]
         //<h1>Réponses texte.</h1>
-        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=""|R]
         [IF [!R::Valeur!]]
             <div class="well">
                 <p>[!Utils::jsonDecode([!R::Valeur!])!]</p>
@@ -147,15 +147,11 @@
     [CASE 4]
         //Cas OUi / Non
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
-        ++[!NbR!]++
-
         [IF [!NbR!]>0]
             [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
---[!Nb1!]--
             [!Nb1:=[!Nb1:/[!NbR!]!]!]
             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!="1"&Valeur!=1|Nb2]
-**[!Nb2!]**
+            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!="1"&Valeur!=1&Valeur!=""|Nb2]
             [!Nb2:=[!Nb2:/[!NbR!]!]!]
             [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
             <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
