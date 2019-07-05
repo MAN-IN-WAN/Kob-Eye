@@ -774,8 +774,6 @@
 
             $scope[identifier].store.refresh(context);
         }
-
-
         /*******
         * TREE
         *******/
@@ -911,6 +909,18 @@
                 }
             });
         {% endfor %}
+
+
+        /**
+        * getObj
+        * Retourne l'objets de la tache courante.
+        * @returns {Array}
+        */
+        $scope.getObj = function () {
+            console.log('controller >> getOBJ ', $scope.obj);
+            return $scope.obj;
+        }
+
 
         //récupération des données du store.
         $scope.currentStore = {{ c.identifier }}Store;

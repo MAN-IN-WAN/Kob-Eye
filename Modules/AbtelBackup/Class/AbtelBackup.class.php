@@ -280,13 +280,7 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo rm /backup/restore/* -Rf');
         //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
         //vidage des tables
-        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
-
-        //Remise en place du Store par defaut
-        $s = genericClass::createInstance('AbtelBackup','BackupStore');
-        $s->Titre = 'Sauvegarde Locale';
-        $s->Type = 'Local';
-        $s->Save();
+        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-HyperJob`;TRUNCATE `kob-AbtelBackup-HyperJobHypervVmJobId`;TRUNCATE `kob-AbtelBackup-Hyperv`;TRUNCATE `kob-AbtelBackup-HypervVm`;TRUNCATE `kob-AbtelBackup-HypervVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RemoteJob-Interval`;TRUNCATE `kob-AbtelBackup-RemoteJobBorgRepoId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaDevice`;TRUNCATE `kob-AbtelBackup-SambaDevicePartages`;TRUNCATE `kob-AbtelBackup-SambaDeviceRestorePointSambaDeviceId`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaJobSambaShareId`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-State`;TRUNCATE `kob-AbtelBackup-VmJob`;TRUNCATE `kob-AbtelBackup-VmJobEsxVmJobId`;TRUNCATE `kob-AbtelBackup-VmJobVmJobId`;TRUNCATE `kob-AbtelBackup-VmJob`;TRUNCATE `kob-Systeme-Activity`;TRUNCATE `kob-Systeme-Tache`;TRUNCATE `kob-AbtelBackup-VmJob`;');
 
         //Recalcul espace disque
         BackupStore::getDiskUsage();
@@ -322,7 +316,7 @@ class AbtelBackup extends Module{
      * @return mixed
      */
     public static function sync( $path,$dest,$user,$ip,$bw = '5000',$act = null,$progData=null){
-        $cmd = 'rsync -az --info=progress2 -e " ssh -o StrictHostKeychecking=no -i /var/www/html/.ssh/id_'.$ip.'" --bwlimit='.$bw.' '.$path.' '.$user.'@'.$ip.':/home/'.$user.'/'.$dest;
+        $cmd = 'rsync -az --delete --info=progress2 -e " ssh -o StrictHostKeychecking=no -i /var/www/html/.ssh/id_'.$ip.'" --bwlimit='.$bw.' '.$path.' '.$user.'@'.$ip.':/home/'.$user.'/'.$dest;
         if ($act){
             $act->addDetails('CMD: '.$cmd);
         }
@@ -374,7 +368,7 @@ class AbtelBackup extends Module{
             $s->Save();
         }
         //suppression des données supérieurs à 3j
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'AbtelBackup-State` WHERE tmsCreate<'.(time()-(86400*10)).';');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'AbtelBackup-State` WHERE tmsCreate<'.(time()-(86400*3)).';');
         return true;
     }
 }

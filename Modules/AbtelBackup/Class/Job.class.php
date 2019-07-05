@@ -72,4 +72,30 @@ class Job extends genericClass {
     protected function addProgression($nb){
         $this->Progression += ($nb/$this->TotalProgression)*100;
     }
+    /**
+     * saveStats
+     * Sauvegarde les statistiques dans la tache
+     */
+    public function saveStats($task) {
+        $act = $task->createActivity('Enregistrement des statistiques');
+        $stats = Sys::getData('AbtelBackup','State/tmsCreate>='.$task->DateDebut.'&tmsCreate<='.time(),0,1000000);
+        $out = array(
+            "RX"=> array(),
+            "TX"=> array(),
+            "Io"=> array(),
+            "Cpu"=> array(),
+            "Ram"=> array()
+        );
+        foreach ($stats as $s){
+            array_push($out['RX'],array($s->tmsCreate*1000,$s->RX));
+            array_push($out['TX'],array($s->tmsCreate*1000,$s->TX));
+            array_push($out['Io'],array($s->tmsCreate*1000,$s->IOUsage));
+            array_push($out['Cpu'],array($s->tmsCreate*1000,$s->CpuUsage));
+            array_push($out['Ram'],array($s->tmsCreate*1000,$s->RamUsage));
+        }
+        $task->Graph = json_encode($out);
+        //$act->addDetails($task->Graph);
+        $act->Terminate(true);
+        $task->Save();
+    }
 }

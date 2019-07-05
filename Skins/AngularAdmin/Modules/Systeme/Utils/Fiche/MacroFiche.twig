@@ -1,5 +1,5 @@
 
-{% macro fiche_properties(fichefields,categories,CurrentUrl,obj) %}
+{% macro fiche_properties(fichefields,categories,CurrentUrl,obj,Interfaces) %}
     {% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroTypes.twig" import  fvarchar,flabel, fhidden, label, fkeyshort, fkeylong,fboolean,fint,fextlink,ffloat,fplugin,ffile,fimage,fprice,fprogress,ftext %}
 
     <div class="">
@@ -21,7 +21,7 @@
                 {% for cat,fields in categories %}
                 <div class="tab-pane {% if loop.first %}active{% endif %}" role="tabpanel" id="{{ cat }}"  style="min-height:{{ height }}px">
                     {% set flag = 0 %}
-                    {% for field in fields if field.type != "progress" and field.type != "pluginconfig" and field.type != "rkey" %}
+                    {% for field in fields if field.type != "progress" and field.type != "pluginconfig" and field.type != "rkey" and field.type != "graph" %}
                         {% if flag == 0 %}
                             <div class="row" style="overflow:hidden">
                         {% endif %}
@@ -89,17 +89,29 @@
             {% endif %}
         {% endfor %}
         </div>
-    </div>
-    </div>
-    <!-- RKEY INLINE -->
-    {% for field in fichefields if (field.type == "rkey") and field.inline == 1 %}
-        <div class="row  ficheField">
-            <div class="col-md-12">
-                <h4>{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}
-                    ({[{ {{ field.objectModule }}{{ field.objectName }}.store.total.children }]})</h4>
-                <ng-include src="'/{{ CurrentUrl }}/0/{{ field.objectName }}/ListFiche.htm'"
-                            ng-if="show"></ng-include>
-            </div>
+        <!-- RKEY INLINE -->
+        <div class="fiche-pane">
+            {% for field in fichefields if (field.type == "rkey") and field.inline == 1 %}
+                <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
+                    <div class="col-md-2 detail-label">
+                        <label class="form-control-label"for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}
+                            ({[{ {{ field.objectModule }}{{ field.objectName }}.store.total.children }]})</label>
+                    </div>
+                    <div class="col-md-10 detail-value">
+                        <ng-include src="'/{{ CurrentUrl }}/0/{{ field.objectName }}/ListFiche.htm'"
+                                    ng-if="show"></ng-include>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+        {% if Interfaces.fiche_middle %}
+            {% for name,int in Interfaces.fiche_middle %}
+                {% if int.type == 'Template' %}
+                    {{ include(template_from_string(module(int.url~'?obj='~obj))) }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    </div>
 {% endmacro %}

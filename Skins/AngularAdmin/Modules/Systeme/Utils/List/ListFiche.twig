@@ -3,30 +3,17 @@
     <table class="table table-hover nowrap" id="{{ identifier }}-table">
         <thead>
         <tr>
-            <th width="30" title="Ch" class="list-col-th-dark">
-                <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
-            </th>
-            <th title="Id" ng-click="triggerSort($event,'{{ identifier }}','Id','{{ context }}')" class="sortable list-col-th-id">ID</th>
-            {% for field in fields %}
+            {% for field in fields| slice(0,7) %}
                 <th title="{{ field.name }}" {% if field.type != "fkey" and field.type != "rkey" %}ng-click="triggerSort($event,'{{ identifier }}','{{ field.name }}','{{ context }}')" class="sortable"{% endif %}>{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
             {% endfor %}
             {% for interface in Interfaces.column %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
-            {#<th width="220">Détails</th>#}
-            <th width="160">Actions</th>
         </tr>
         </thead>
         <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
         <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-            <td  class="list-col-td-dark">
-                <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
-            </td>
-            <td class="list-col-td-id">
-                <!--<span class="label label-warning">{[{ item.id }]}</span>-->
-                {[{ item.id }]}
-            </td>
-            {% for field in fields %}
+            {% for field in fields | slice(0,7) %}
                 <td scope="row" class="type{{ field.type }}" {% if field.type == "fkey" and field.card == "short" %}ng-style="item.{{ field.objectName }}{{ field.name }}color ? {'background-color':  item.{{ field.objectName }}{{ field.name }}color} : {'background-color':'transparent' } "{% endif %}>
                     {% if field.type == "price" or field.type == "float" %}
                         <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
@@ -108,40 +95,6 @@
                     </td>
                 {% endif %}
             {% endfor %}
-            {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
-            <td  class="table-action">
-                <div style="height: 32px;width: 160px">
-                    {% if not Type == "Tail" %}
-                        <a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
-                    {% endif %}
-                    {% if operation.edit %}
-                        <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
-                    {% endif %}
-                    {% if operation.delete %}
-                        <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)" title="Supprimer"></a>
-                    {% endif %}
-                    {% if functions|length >0 %}
-                        {% set  fs = false %}
-                        {% for fu in functions %}
-                            {% if attribute(operation,fu.Nom) %}
-                                {% set  fs = true %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if fs %}
-                            <div style="vertical-align: top;" uib-dropdown>
-                                <button type="button" class="btn-abt btn-abt-func " uib-dropdown-toggle title="Fonctions"></button>
-                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                                    {% for fu in functions %}
-                                        {% if attribute(operation,fu.Nom) %}
-                                            <a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </td>
         </tr>
         </tbody>
         <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">

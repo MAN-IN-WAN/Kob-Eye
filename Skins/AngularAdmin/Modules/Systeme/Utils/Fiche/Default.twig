@@ -54,15 +54,12 @@
                     <ng-map center="41,-87" zoom="6"></ng-map>
                 </div>
             {% endif %}
-            {{  fiche_properties(fichefields,categories,CurrentUrl,'obj') }}
+            {{  fiche_properties(fichefields,categories,CurrentUrl,'obj',Interfaces) }}
         </div>
     <!-- End child Panel -->
     </section>
     <!-- End Default Panel -->
 
-{% if Interfaces.fiche_middle %}
-    {{ include(template_from_string(module(Interfaces.fiche_middle.Template.url))) }}
-{% endif %}
 
 <!-- Child Panel -->
 <div class="nav-tabs-horizontal" ng-if="displayFiche">

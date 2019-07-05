@@ -1096,7 +1096,8 @@ class ObjectClass extends Root{
 			case "raw":
 			case "text":
 			case "bbcode":
-			case "html":
+            case "html":
+            case "graph":
 			case "bin":
 				$Type="text";
 			break;

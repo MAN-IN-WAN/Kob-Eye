@@ -323,7 +323,7 @@
         <FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
         <FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
 		<INTERFACES name="fiche_middle">
-			<FORM type="Template" urlPrefix="/Systeme/Tache/" urlSuffix="/Histo.htm" title="Historique d'éxécution">Template</FORM>
+			<FORM type="Template" url="Systeme/Tache/Histo" title="Historique d'éxécution">Template</FORM>
 		</INTERFACES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
@@ -342,7 +342,8 @@
         <PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7"  form="1">TaskFunction</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
         <PROPERTIES type="varchar"  fiche="1" form="1" description="Identifiant du thread en cours">ThreadId</PROPERTIES>
-        <PROPERTIES type="progress" list="1" fiche="1" listDescr="Progression">Progression</PROPERTIES>
+		<PROPERTIES type="progress" list="1" fiche="1" listDescr="Progression">Progression</PROPERTIES>
+		<PROPERTIES type="graph" fiche="1" listDescr="Données graphique">Graph</PROPERTIES>
         <!-- Parc -->
         <!--<FKEY card="0,1" data="Instance,Id" fiche="1" form="1" module="Parc" parentDescription="Instance" link="1">InstanceId</FKEY>
         <FKEY card="0,1" data="Host,Id" fiche="1" module="Parc" form="1" parentDescription="Hébergement" link="1">HostId</FKEY>

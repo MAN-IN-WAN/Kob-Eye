@@ -53,7 +53,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
         SystemeTacheStore.getData(1,'gantt').then(function (data) {
             //refresh gantt data
             var out = formatData(data);
-            //console.error('>>>>>>>>>>>>>>>>>>>>',out);
+            //console.error('gantt >>>>>>>>>>>>>>>>>>>>',out);
             /*$scope.gantt.api.data.clear();
             $scope.gantt.api.data.load(out);
             $scope.gantt.api.scroll.toDate(new Date($scope.gantt.from));*/
@@ -95,14 +95,14 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
         for (var i in data){
             if (data[i].TaskType == 'backup')
                 out[0].tasks.push({
-                    name: data[i].label+" | Résultat: "+((data[i].Erreur)?'success':'erreur'),
+                    name: data[i].label+" | Résultat: "+((!data[i].Erreur)?'success':'erreur'),
                     from: new Date(moment(data[i].DateDebut,dateformat)),
                     to:  new Date(moment(data[i].DateFin,dateformat)),
                     color: (!data[i].Erreur)?'#46be8a':'#fb434a',
                     origid: data[i].id
                 });
             else if (data[i].TaskType == 'rotate') out[1].tasks.push({
-                name: data[i].label+" | Résultat: "+((data[i].Erreur)?'success':'erreur'),
+                name: data[i].label+" | Résultat: "+((!data[i].Erreur)?'success':'erreur'),
                 from: new Date(moment(data[i].DateDebut,dateformat)),
                 to:  new Date(moment(data[i].DateFin,dateformat)),
                 color: (!data[i].Erreur)?'#01a8fe':'#f39834',
@@ -145,7 +145,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
     }
 
     /**
-     * sele"ctTask
+     * selectTask
      * Selection d'une tache
      * @param id
      */
@@ -154,11 +154,34 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
         SystemeTacheStore.getOneData(id,'gantt').then(function (data) {
             $scope.taskobj = data;
             $scope.showtask = true;
+            $scope.$broadcast('refreshFicheData');
             //FORMULAIRE CHILDREN
             /*$scope.SystemeActivity.store.setFilters('Tache.TacheId(' + $scope.taskobj.id + ')', 'children');
             $scope.SystemeActivity.store.getData(1, 'children');*/
         });
     }
 
+    /**
+     * getObjId
+     * Retourne l'id de la tache courante.
+     * @returns {Array}
+     */
+    $scope.getObj = function () {
+        console.log('gantt >> getOBJ ', $scope.taskobj);
+        return $scope.taskobj;
+    }
 
+    /**
+     * Initialisation des ecouteurs pour changement en direct
+     */
+    $rootScope.$on('SystemeTacheStore',function (ev,data){
+        switch (data.type){
+            case 'edit':
+            case 'delete':
+            case 'add':
+                $scope.storeSettings();
+                $scope.refreshGantt();
+                break;
+        }
+    });
 });
