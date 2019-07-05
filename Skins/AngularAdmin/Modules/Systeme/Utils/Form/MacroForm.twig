@@ -1,0 +1,85 @@
+
+
+{% macro form_properties(formfields,scopeObj) %}
+
+    {% import "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroTypes.twig" as form %}
+
+    {% for field in formfields %}
+        {% if field.type != "rkey" and field.type != "pluginconfig" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long" and field.type != "metat"  and field.type != "metad" and field.type != "metak" %}
+            <div class="row {% if field.hidden %}hidden{% endif %}">
+                <div class="col-md-6">
+                    {{ form.formLabel(field, 'input_'~field.name) }}
+                    {% if field.help %}
+                        <small>
+                            {{ form.formHelper(field) }}
+                        </small>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'has-danger': {{ scopeObj }}.fieldErrors.length && {{ scopeObj }}.fieldErrors.indexOf('{{ field.name }}') !== -1}">
+                        {% if field.type == "date" or field.type == "datetime" %}
+                            {{ form.formDate(field,scopeObj,'input_'~field.name,'Sélectionnez une date') }}
+                        {% elseif field.type == "time" %}
+                            {{ form.formDate(field,scopeObj,'input_'~field.name,'Sélectionnez une heure') }}
+                        {% elseif field.type == "fkey" and field.card == "short" %}
+                            {{ form.formCustomSelect(field,scopeObj,field.objectModule~field.objectName~'Store','input_'~field.name) }}
+                        {% elseif field.type == "boolean" %}
+                            {{ form.formSwitch(field,scopeObj,'input_'~field.name) }}
+                        {% elseif field.type == "password" %}
+                            {{ form.formPassword(field,scopeObj,'input_'~field.name) }}
+                        {% elseif field.type == "progress" %}
+                            {% set opts = {
+                                'min': 5,
+                                'max': 95,
+                                'postfix': ' j'
+                            } %}
+                            {{ form.formProgress(field,scopeObj,'input_'~field.name,opts) }}
+                        {% elseif field.type == "file" or  field.type == "image" %}
+                            {{ form.formUpload(field,scopeObj,Module,ObjectType,'input_'~field.name) }}
+                        {% elseif field.type == "color" %}
+                            {{ form.formColor(field,scopeObj,'input_'~field.name) }}
+                            {#{% elseif field.type == "plugin" %}
+                                <select class="form-control" ng-model="{{ scopeObj }}.{{ field.name }}" >
+                                    {% for v,k in field.query %}
+                                        <option value="{{ v }}">{{ k }}</option>
+                                    {% endfor %}
+                                </select>#}
+                        {% elseif field.type == "pluginconfig" %}
+                            {# TODO #}
+                        {% else %}
+                            {{ form.formDefault(field,scopeObj,'input_'~field.name) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% elseif (field.type == "fkey" and field.card == "long") or field.type == "rkey" or field.type == "text" or field.type == "raw" or field.type == "templateconfig" or field.type == "metat" or field.type == "metad" or field.type == "metak" or  field.type == "html" or field.type == "bbcode" %}
+            <div class="row {% if field.hidden %}hidden{% endif %}">
+                <div class="col-md-12">
+                    {{ form.formLabel(field, 'input_'~field.name) }}
+                    {% if field.help %}
+                        <small>
+                            {{ form.formHelper(field) }}
+                        </small>
+                    {% endif %}
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" ng-class="{'has-danger': {{ scopeObj }}.fieldErrors.length && {{ scopeObj }}.fieldErrors.indexOf('{{ field.name }}') !== -1}">
+                        {% if field.type == "fkey" and field.card == "long" %}
+                            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name~'&FieldKey='~field.name~'&ParentObject='~ObjectType))) }}</div>
+                        {% elseif field.type == "rkey" %}
+                            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
+                        {% elseif field.type == "text" or field.type == "raw" or field.type == "templateconfig" or field.type == "metat" or field.type == "metad" or field.type == "metak" %}
+                            {{ form.formAce(field,scopeObj,'input_'~field.name) }}
+                            {% if  field.type == "metat" or field.type == "metad" or field.type == "metak" %}
+                                {{ form.formCharCount(field,scopeObj) }}
+                            {% endif %}
+                        {% elseif field.type == "html" or field.type == "bbcode" %}
+                            {{ form.formCke(field,scopeObj,'input_'~field.name) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endmacro %}

@@ -1,0 +1,136 @@
+<section class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Titre</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Nom != ''"  ng-bind-html="Orga.Nom"></span>
+                        <span ng-if="Orga.Nom == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Imprimer Etiquette</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span class="label label-success" ng-if="Orga.Etiq"><i class="fa fa-check"></i></span>
+                        <span class="label label-danger" ng-if="!Orga.Etiq"><i class="fa fa-times"></i></span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Code Postal</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.CodPos != ''"  ng-bind-html="Orga.CodPos"></span>
+                        <span ng-if="Orga.CodPos == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Région</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Region != ''"  ng-bind-html="Orga.Region"></span>
+                        <span ng-if="Orga.Region == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Téléphone</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Tel != ''"  ng-bind-html="Orga.Tel"></span>
+                        <span ng-if="Orga.Tel == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Mail</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Mail != ''"  ng-bind-html="Orga.Mail"></span>
+                        <span ng-if="Orga.Mail == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Site internet</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.SiteWeb != ''"  ><a href="{[{ Orga.SiteWeb }]}" target="_blank">{[{ Orga.SiteWeb }]}</a></span>
+                        <span ng-if="Orga.SiteWeb == ''"  >N.C.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Url</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Url != ''"  ng-bind-html="Orga.Url"></span>
+                        <span ng-if="Orga.Url == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Adresse</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Adresse != ''"  ng-bind-html="Orga.Adresse"></span>
+                        <span ng-if="Orga.Adresse == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Ville</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Ville != ''"  ng-bind-html="Orga.Ville"></span>
+                        <span ng-if="Orga.Ville == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Département</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Departement != ''"  ng-bind-html="Orga.Departement"></span>
+                        <span ng-if="Orga.Departement == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Fax</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Fax != ''"  ng-bind-html="Orga.Fax"></span>
+                        <span ng-if="Orga.Fax == ''"  >N.C.</span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Envoyer les rapports par mail automatiquement</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span class="label label-success" ng-if="Orga.EnvoiMail"><i class="fa fa-check"></i></span>
+                        <span class="label label-danger" ng-if="!Orga.EnvoiMail"><i class="fa fa-times"></i></span>
+                    </div>
+                </div>
+                <div class="row  ficheField">
+                    <div class="col-md-5 detail-label">
+                        <label class="form-control-label"for="l0">Type de structure culturelle</label>
+                    </div>
+                    <div class="col-md-7 detail-value">
+                        <span ng-if="Orga.Url != ''"  ng-bind-html="Orga.Url"></span>
+                        <span ng-if="Orga.Url == ''"  >N.C.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,35 +1,203 @@
-/** VARCHAR **/
-{% macro fvarchar(field, obj) %}
+/** LABEL **/
+{% macro formLabel(field,for) %}
+    <label class="form-control-label label" {% if not (for is empty) %}for="{{ for }}"{% endif %}>{{ field.description }}</label>
+{% endmacro %}
+
+/** LABEL HELPER **/
+{% macro formHelper(field) %}
+    <small>
+        <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+    </small>
+{% endmacro %}
+
+/** HIDDEN **/
+{% macro formHidden(field, obj) %}
+    <input type="hidden" ng-model="{{ obj }}.{{ field.name }}"/>
+{% endmacro %}
+
+/** CHARACTER COUNT **/
+{% macro formCharCount(field, obj) %}
+    <div class="col-md-12 charCount">
+        <span >{[{ {{ obj }}.{{ field.name }}.length }]}</span> caractères.
+    </div>
+{% endmacro %}
+
+/** INPUT TEXT / URL /SELECT / SLIDERGO **/
+{% macro formDefault(field, obj, id, placeholder) %}
     {% if field.Values %}
-        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
             {% for v,k in field.Values %}
                 <option value="{{ v }}" >{{ k }}</option>
             {% endfor %}
         </select>
     {% elseif field.query %}
-        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
+        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+            {% for v,k in field.query %}
+                <option value="{{ v }}">{{ k }}</option>
+            {% endfor %}
+        </select>
+    {% elseif field.subtype == "sliderGo" %}
+        <script type="text/javascript">
+            var prett_{{ field.name }} = function(num){
+                return num/1024;
+            };
+        </script>
+        <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} ion-range-slider stype="single" prettify="prett_{{ field.name }}" min="0" max="204800" from="{{ obj }}.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" ng-init="{{ obj }}.{{ field.name }} = {{ obj }}.{{ field.name }} > 1024 ? {{ obj }}.{{ field.name }}:1024"  ng-model="{{ obj }}.{{ field.name }}" >
     {% else %}
-        <span  ng-bind-html="obj.{{ field.name }}"></span>
+        {% if field.name == "Url" %}
+            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control urlInput" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+        {% else %}
+            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
-/** HIDDEN **/
-{% macro fhidden(field, obj) %}
-    <input type="hidden" ng-model="{{ obj }}.{{ field.name }}"/>
+/** DATE / DATETIME / TIME**/
+{% macro formDate(field,obj,id,placeholder) %}
+    {% if field.type == 'date' %}
+        {% set cls = "datepicker-only-init" %}
+        {% set format = "d/m/Y" %}
+        {% set icon = 'calendar' %}
+    {% elseif field.type == 'datetime' %}
+        {% set cls = "datetimepicker-init" %}
+        {% set format = "d/m/Y H:i" %}
+        {% set icon = 'calendar' %}
+    {% else %}
+        {% set cls = "timepicker-only-init" %}
+        {% set format = "H:i" %}
+        {% set icon = 'clock' %}
+    {% endif %}
+    <label class="input-group {{ cls }}">
+        <input type="text"  {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" {% if field.now %}ng-init="{{ obj }}.{{ field.name }} = '{{ "now"|date(format) }}'"{% endif %}/>
+        <span class="input-group-addon">
+            <i class="icmn-{{ icon }}"></i>
+        </span>
+    </label>
 {% endmacro %}
 
-/** LABEL **/
-{% macro label(text) %}
-    <label class="form-control-label label" style="line-height:1">{{ text }}</label>
+
+/** CUSTOM SELECT **/
+{% macro formCustomSelect(field,obj,store,id) %}
+    <div {% if not (id is empty) %}id="{{ id }}"{% endif %} custom-select="a.id as a.label for a in getSelectData('{{ store }}',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="{{ obj }}.{{ field.objectName }}{{ field.name }}" class="form-control" ng-title="{{ obj }}.{{ field.objectName }}{{ field.name }}label"></div>
 {% endmacro %}
 
-/** LABEL HELPER **/
-{% macro flabel(field) %}
-    <label class="form-control-label cadref-label" style="line-height:1">{{ field.description }}</label>
-    {% if field.help %}
-        <small>
-            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
-        </small>
+/** SWITCH BOOLEAN **/
+{% macro formSwitch(field,obj,id) %}
+    <switch {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" class="green"></switch>
+{% endmacro %}
+
+/** PASSWORD **/
+{% macro formPassword(field,obj,id) %}
+    {% if not (id is empty) %}
+        <script>
+            function pwdToggle{{ id }}(btn){
+                $(btn).toggleClass('active');
+                var input = $('#{{ id }}');
+                var type = input.attr('type');
+                if(type=="password"){
+                    type= 'text';
+                }else{
+                    type= 'password';
+                }
+                input.attr('type',type);
+            }
+
+        </script>
+        <div class="input-group">
+            <input id="{{ id }}" type="password" class="form-control" ng-model="{{ obj }}.{{ field.name }}" >
+            <span class="input-group-addon" onclick="pwdToggle{{ id }}(this);">
+                <i class="icmn-key"></i>
+            </span>
+        </div>
+    {% else %}
+        <input type="password" class="form-control" ng-model="{{ obj }}.{{ field.name }}" >
+    {% endif %}
+
+
+{% endmacro %}
+
+/** PROGRESS **/
+{% macro formProgress(field,obj,id,ops) %}
+    {% set defaultOps = {
+        'min': 0,
+        'max': 100,
+        'from_min': 0,
+        'step': 5,
+        'grid': true,
+        'grid_num': 10,
+        'postfix': ' %'
+    } %}
+    {% if ops is empty %}
+        {% set ops = defaultOps %}
+    {% else %}
+        {% set ops = defaultOps|merge(ops) %}
+    {% endif %}
+    <input {% if not (id is empty) %}id="{{ id }}"{% endif %} type="text" ion-range-slider stype="single" min="{{ ops.min }}" max="{{ ops.max }}" from="{{ obj }}.{{ field.name }}" from_min="{{ ops.from_min }}" step="{{ ops.step }}" grid="{{ ops.grid }}" grid_num="{{ ops.grid_num }}" postfix="{{ ops.postfix }}" class="form-control" ng-model="{{ obj }}.{{ field.name }}" >
+{% endmacro %}
+
+/** FILE UPLOAD **/
+{% macro formUpload(field,obj,Module,ObjectType,id) %}
+    {# TODO : Filters - Img Only / prohibit php... #}
+
+    {% if id is empty %}
+        {% set id ='id_'~date(Uu) %}
+    {% endif %}
+    {% if field.type == "image"  %}
+        {% set txt = 'Choisissez une image' %}
+    {% else %}
+        {% set txt = 'Choisissez un fichier' %}
+    {% endif %}
+
+    <input type="text" class="form-control" id="{{ id }}" ng-model="{{ obj }}.{{ field.name }}">
+    <label for="{{ id }}-file" class="btn-warning file-btn btn" title="{{ txt }}" ><i class="icmn-folder-upload2 "></i></label>
+    <input id="{{ id }}-file"
+           type="file"
+           nv-file-select
+           options="{
+                        alias:'FileData',
+                        formData:[
+                                    { 'Module':'{{ Module }}' },
+                                    { 'Obj' : '{{ ObjectType }}' }
+                                  ],
+                        removeAfterUpload: true ,
+                        inputId: '{{ id }}',
+                        model:'{{ obj }}.{{ field.name }}'
+                        {% if field.auto %},autoUpload:true{% endif %}
+                    }"
+           ng-init="up_{{ ObjectType }}{{ field.name }} = angular.copy({% if field.auto %}autoUploader{% else %}uploader{% endif %})"
+           uploader="up_{{ ObjectType }}{{ field.name }}"
+           style="display:none;" />
+    {% if not field.auto %}
+        <ul class="file_uploader_display">
+            <li ng-repeat="item in up_{{ ObjectType }}{{ field.name }}.queue" class="file_uploader_display_item">
+                <div class="row">
+                    <div class="col-md-9">
+                        Name: <span ng-bind="item.file.name"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <button ng-click="item.upload()" class="btn btn-success btn-left" title="Envoyer"><i class="icmn-file-upload "></i></button>
+                        <button ng-click="item.remove()" class="btn btn-danger btn-right" Title="Annuler"><i class="icmn-bin "></i></button>
+                    </div>
+                </div>
+
+
+            </li>
+        </ul>
     {% endif %}
 {% endmacro %}
 
+/** COLOR PICKER **/
+{% macro formColor(field,obj,id) %}
+    <input {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control" colorpicker="hex" colorpicker-close-on-select type="text" ng-model="{{ obj }}.{{ field.name }}" />
+    <span class="color_display" style="background-color: {[{ {{ obj }}.{{ field.name }} }]}"></span>
+{% endmacro %}
+
+/** ACE **/
+{% macro formAce(field,obj,id) %}
+    <div {% if not (id is empty) %}id="{{ id }}"{% endif %} ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded,onChange: aceChanged}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor"></div>
+{% endmacro %}
+
+/** CKEDITOR **/
+{% macro formCke(field,obj,id) %}
+    <textarea {% if not (id is empty) %}id="{{ id }}"{% endif %} ckeditor="options" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="{{ obj }}.{{ field.name }}" ng-trim="false"></textarea>
+{% endmacro %}

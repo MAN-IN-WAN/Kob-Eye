@@ -34,4 +34,22 @@ $vars["Module"] = $info["Module"];
 $vars['ObjectType'] = $info['ObjectType'];
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
-?>
+
+
+/**
+* fields by categories
+*/
+$ocats = $o->getCategories();
+$cats = array();
+foreach ($ocats as $k=>$cat){
+    $fields = [];
+    foreach ($vars['formfields'] as $field){
+        if ($field['category']==$cat){
+            array_push($fields,$field);
+        }
+    }
+    if (sizeof($fields)){
+        $cats[$cat] = $fields;
+    }
+}
+$vars['categories'] = $cats;

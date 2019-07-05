@@ -1,3 +1,136 @@
+.formCatsFrise{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 15px;
+    flex-wrap: wrap;
+}
+.formCatsFriseElem{
+    position: relative;
+    flex-grow: 1;
+}
+.formCatsFriseElem + .formCatsFriseElem:before{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    content: ' ';
+    height: 20px;
+    width: 20px;
+    border: 10px solid transparent;
+    border-left: 10px solid #e5e5e5;
+}
+.formCatsFriseElem.active a{
+    color: #fff;
+    background-color: #01a8fe;
+    border-radius: 3px;
+    padding: 5px;
+    font-weight: 600;
+}
+
+.formCatWrapper{
+    position: relative;
+}
+.formCatContainer{
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+    display: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.formCatContainer.before{
+    position: absolute;
+    top: 0;
+    left: 0px;
+    right: 0px;
+    padding: 0 15px;
+    display: block;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.formCatContainer.active{
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.formCatContainer.after{
+    position: absolute;
+    top: 0;
+    left: 0px;
+    right: 0px;
+    padding: 0 15px;
+    display: block;
+    opacity: 0;
+    -webkit-transition: all0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+
+input.form-control.error,
+select.form-control.error {
+    border: 2px solid #f39834;
+    background-color: #FFC8596b;
+}
+
+.input-group-addon.active{
+    background-color: #01a8fe;
+    border-color: #01a8fe;
+    color: #fff;
+}
+
+.btn.file-btn.btn-warning{
+    width: 38px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0 3px 3px 0;
+    box-shadow: none;
+}
+.file_uploader_display{
+    padding-left: 20px;
+}
+.file_uploader_display_item{
+    margin-top: 5px;
+    list-style-type:none;
+}
+.file_uploader_display_item:before{
+    content: ' ';
+    position: absolute;
+    width: 20px;
+    height: 40px;
+    border: 20px solid transparent;
+    border-left: 10px solid #01a8fe;
+    left: 0;
+
+}
+
+/* Checkbox oui non*/
+.yesno .btn.btn-default-outline{
+    background-color: #fb434a;
+    color: #fff;
+}
+.yesno .btn.btn-default-outline.active{
+    background-color: #46be8a;
+}
+
 
 .hidden{
     display: none;
@@ -79,6 +212,8 @@ progress.progress.progress-danger:after{
     color: #fb434a;
 }
 .disabled{
+    cursor: not-allowed;
+    opacity: .65;
     pointer-events: none;
 }
 
@@ -482,9 +617,12 @@ SPINNER
 
 .color_display{
     display: block;
-    width: 30px;
-    height: 20px;
-    margin: auto;
+    width: 100px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0 3px 3px 0;
+    height: 100%;
 }
 .img_display{
     display: block;

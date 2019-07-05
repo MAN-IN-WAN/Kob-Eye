@@ -1,0 +1,13 @@
+app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http, ReservationOrganisationStore) {
+    $scope.PadStore = ReservationOrganisationStore;
+    $scope.PadStore.initContext('Padre');
+    $scope.PadStore.setQuery('Reservation/Organisation/Spectacle/'+$scope.obj.id,'Padre');
+    $scope.PadStore.getData(1,'Padre').then(function(data){
+        var temp = data[0];
+        $scope.PadStore.getOneData(temp.id,'Padre',false).then(function(data){
+            $scope.Orga = data;
+        });
+    });
+
+
+});

@@ -85,7 +85,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/jquery-typeahead/dist/jquery.typeahead.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/autosize/dist/autosize.min.js"></script>
-    <script src="Skins/AngularAdmin/assets/vendors/bootstrap-show-password/bootstrap-show-password.min.js"></script>
+<!--    <script src="Skins/AngularAdmin/assets/vendors/bootstrap-show-password/bootstrap-show-password.min.js"></script>-->
     <script src="Skins/AngularAdmin/assets/vendors/moment/min/moment.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/moment/locale/fr.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>

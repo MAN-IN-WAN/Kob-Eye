@@ -740,6 +740,11 @@ app.filter('unescape', function() {
         else return '';
     };
 });
+app.filter('unsafe', ['$sce', function ($sce) {
+    return function (input) {
+        return $sce.trustAsHtml(input);
+    }
+}]);
 
 app.directive('compile', ['$compile', function ($compile) {
     return function(scope, element, attrs) {

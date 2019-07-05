@@ -19,7 +19,7 @@ foreach ($vars['fichefields'] as $k=>$f){
 $vars['fields'] = $vars['fichefields'];
 
 
-$vars['formfields'] = $o->getElementsByAttribute('form','',true);
+//$vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
@@ -85,4 +85,3 @@ else $vars['CurrentUrl'] = $vars['Query'];
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
 
-?>

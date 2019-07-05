@@ -118,5 +118,139 @@ class Evenement extends genericClass {
 		}
 		return $Em->Message;
 	}
+
+	public function Reserver($params){
+		$step = !empty($params['step'])? $params['step']:0;
+
+		switch($step){
+			case 2:
+				//CHeck que tout est renseigné :
+				$errFields = array();
+				foreach ($params as $k=>$p){
+					if(is_array($p)){
+						foreach($p as $k2=>$v){
+							if($v === null){
+								if(empty($errFields[$k])) $errFields[$k] = array();
+								$errFields[$k][$k2] = true;
+							}
+						}
+					}else{
+						if($p === null) $errFields[$k];
+					}
+				}
+				if(!empty($errFields)){
+//					print_r($params);
+//					print_r($errFields);
+					return array(
+						'template' => 'Resas',
+						'step' => 2,
+						'callNext' => array(
+							'nom'=> 'Reserver',
+							'title'=> 'Réserver une date',
+							'needConfirm' => false,
+							'item' => null
+						),
+						'funcTempVars' => array(
+							'step'=> 1,
+							'error'=>true,
+							'errFields'=>$errFields,
+							'vals'=>$params,
+							'nbPlaces' => $params['nbPlaces']
+						)
+					);
+				} else{
+					$nbPLaces = (int) $params['nbPlaces'];
+					if( $nbPLaces > $this->NbPlace  || $nbPLaces <= 0){
+						return array(
+							'template' => 'Resas',
+							'step' => 1,
+							'callNext' => array(
+								'nom'=> 'Reserver',
+								'title'=> 'Réserver une date',
+								'needConfirm' => false,
+								'item' => null
+							),
+							'funcTempVars' => array(
+								'step'=> 0,
+								'error'=>true
+							)
+						);
+					}else{
+						$sp = $this->getOneParent('Spectacle');
+						$grp = Sys::$User->Groups[0];
+						$cli = Sys::getOneData('Reservation','Client/NumeroGroupe='.$grp->Id);
+						$reservation = genericClass::createInstance('Reservation','Reservations');
+						$reservation->addParent($this);
+						$reservation->addParent($cli);
+						$reservation->Save();
+						for($n = 1; $n <= $nbPLaces; $n++){
+							$pers = Sys::getOneData('Reservation','Personne/Nom='.$params['nom'][$n].'&Prenom='.$params['prenom'][$n]);
+							if(!$pers)
+								$pers = genericClass::createInstance('Reservation','Personne');
+							$pers->Nom = $params['nom'][$n];
+							$pers->Prenom = $params['prenom'][$n];
+							$pers->Sexe = $params['sexe'][$n];
+							$pers->Age = $params['age'][$n];
+							$pers->Accompagnateur = $params['accomp'][$n];
+							$pers->RSA = $params['rsa'][$n];
+							$pers->addParent($reservation);
+							$pers->Save();
+						}
+						$reservation->Save();
+						return 'Réservation effectuée avec succès';
+					}
+				}
+
+			case 1:
+				$nbPLaces = (int) $params['nbPlaces'];
+				if( $nbPLaces > $this->NbPlace  || $nbPLaces <= 0){
+					return array(
+						'template' => 'Resas',
+						'step' => 1,
+						'callNext' => array(
+							'nom'=> 'Reserver',
+							'title'=> 'Réserver une date',
+							'needConfirm' => false,
+							'item' => null
+						),
+						'funcTempVars' => array(
+							'step'=> 0,
+							'error'=>true
+						)
+					);
+				} else {
+					return array(
+						'template' => 'Resas',
+						'step' => 2,
+						'callNext' => array(
+							'nom'=> 'Reserver',
+							'title'=> 'Réserver une date',
+							'needConfirm' => false,
+							'item' => null
+						),
+						'funcTempVars' => array(
+							'nbPlaces' => $params['nbPlaces'],
+							'step'=> $step
+						)
+					);
+				}
+				return 'followup';
+			break;
+			default:
+				return array(
+					'template' => 'Resas',
+					'step' => 1,
+					'callNext' => array(
+						'nom'=> 'Reserver',
+						'title'=> 'Réserver une date',
+						'needConfirm' => false,
+						'item' => null
+					),
+					'funcTempVars' => array(
+						'step'=> $step
+					)
+				);
+		}
+	}
 }
 ?>

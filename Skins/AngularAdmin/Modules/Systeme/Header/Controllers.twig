@@ -1324,7 +1324,7 @@
                 });
 
                 //CALL FUNCTION
-                 $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm){
+                 $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm,follow){
                      if(needConfirm != undefined && needConfirm){
                          swal({
                              title: "Êtes vous sûr de vouloir effectuer cette action ?",

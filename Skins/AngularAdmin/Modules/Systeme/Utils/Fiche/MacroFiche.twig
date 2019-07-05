@@ -16,11 +16,12 @@
                        data-target="#details" role="tab">Détails</a>
                 </li>
             </ul>
+            {% set height = (categories|length + 1)*42 %}
             <div class="tab-content">
                 {% for cat,fields in categories %}
-                <div class="tab-pane {% if loop.first %}active{% endif %}" role="tabpanel" id="{{ cat }}">
+                <div class="tab-pane {% if loop.first %}active{% endif %}" role="tabpanel" id="{{ cat }}"  style="min-height:{{ height }}px">
                     {% set flag = 0 %}
-                    {% for field in fields if field.type != "progress" and field.type != "pluginconfig" and field.type != "raw" and field.type != "html" and field.type != "text" and field.type != "bbcode" and field.type != "rkey" %}
+                    {% for field in fields if field.type != "progress" and field.type != "pluginconfig" and field.type != "rkey" %}
                         {% if flag == 0 %}
                             <div class="row" style="overflow:hidden">
                         {% endif %}
@@ -50,6 +51,8 @@
                                         {{ fkeylong(field,obj) }}
                                     {% elseif field.type == "fkey" and field.card == "short" %}
                                         {{ fkeyshort(field,obj) }}
+                                    {% elseif field.type == "raw" or field.type == "text" or field.type == "html" or field.type == "bbcode" %}
+                                        {{ ftext(field,obj) }}
                                     {% else %}
                                         {{ fvarchar(field,obj) }}
                                     {% endif %}
@@ -71,7 +74,7 @@
                 {% endif %}
             </div>
             {% endfor %}
-            <div class="tab-pane " role="tabpanel" id="details">
+            <div class="tab-pane " role="tabpanel" id="details"  style="min-height:{{ height }}px">
                 <div class="row  ficheField">
                     <div class="col-md-5 detail-label"><label class="form-control-label"
                                                               for="l0">Détails</label></div>
@@ -83,8 +86,6 @@
         {% for field in fichefields %}
             {% if field.type == "progress" %}
                 {{ fprogress(field,obj) }}
-            {% elseif field.type == "raw" or field.type == "text" or field.type == "html" or field.type == "bbcode" %}
-                {{ ftext(field,obj) }}
             {% endif %}
         {% endfor %}
         </div>

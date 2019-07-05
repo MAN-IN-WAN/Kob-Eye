@@ -53,7 +53,7 @@
 	<OBJECTCLASS title="Reseau" driver="mysql" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Spectacle" driver="mysql" AccessPoint="1" Description="Spectacles"   Icon="/Skins/AdminV2/Img/IconAqua/Calendar.png" generateUrl="1" Class="Modules/Reservation/Class/Spectacle.class.php" searchType="plaintext" Operations="add,edit,delete,genererLotEvenement::RESAS_ADMIN,Dupliquer">
+	<OBJECTCLASS title="Spectacle" driver="mysql" AccessPoint="1" Description="Spectacles"   Icon="/Skins/AdminV2/Img/IconAqua/Calendar.png" generateUrl="1" Class="Modules/Reservation/Class/Spectacle.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,genererLotEvenement::RESAS_ADMIN,Dupliquer::RESAS_ADMIN">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre du spectacle">Nom</PROPERTIES>
 		<PROPERTIES type="image" list="1" fiche="1" form="1" searchOrder="2">Logo</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Reservation/Genre::Nom" searchOrder="3" Description="Genre du spectacle">Genre</PROPERTIES>
@@ -75,6 +75,12 @@
 		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Information de réservation">InformationReservation</PROPERTIES>
 		<PROPERTIES type="metat" fiche="1" form="1" category="Referencement">Title</PROPERTIES>
 		<PROPERTIES type="metad"  fiche="1" form="1" category="Referencement">Description</PROPERTIES>
+		<INTERFACES name="fiche_middle">
+			<FORM type="Template" url="Reservation/Spectacle/Events" title="Dates et disponibilités du spectacle">Template</FORM>
+		</INTERFACES>
+		<INTERFACES name="fiche_tab">
+			<FORM type="Template" urlPrefix="/Reservation/Spectacle/" urlSuffix="/Orga.htm" title="Structure culturelle organisatrice">Infos</FORM>
+		</INTERFACES>
 		<FKEY card="1,1" data="Organisation,Id">OrganisationId</FKEY>
 <!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
 		<FUNCTION title="Générer un lot d'evenements">genererLotEvenement</FUNCTION>
@@ -91,7 +97,7 @@
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1">Fonction</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" >Role</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Spectacle,Id" hasRole="RESAS_ADMIN">SpectacleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Artiste" driver="mysql">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
@@ -99,7 +105,7 @@
 	<OBJECTCLASS title="Fonction" driver="mysql" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservations.class.php" searchType="plaintext">
+	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservations.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="3" Description="Référence">Reference</PROPERTIES>
 		<PROPERTIES type="int" list="1" fiche="1" form="1" searchOrder="2" Description="Nombre de places">NbPlace</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="1" Description="Titre du spectacle">TitreSpectacle</PROPERTIES>
@@ -109,7 +115,7 @@
 		<FKEY card="1,1" data="Client,Id" action="Link">ClientId</FKEY>
 		<FKEY card="0,n" data="Evenement,Id"  action="Link">EvenementId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Personne" driver="mysql" Operations="add,edit,delete">
+	<OBJECTCLASS title="Personne" driver="mysql" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN" hideSelect="1">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" obligatoire="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2" obligatoire="1">Prenom</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" obligatoire="1" values="Homme,Femme">Sexe</PROPERTIES>
@@ -118,17 +124,18 @@
         <PROPERTIES type="boolean" fiche="1" form="1" default="0">RSA</PROPERTIES>
 		<FKEY card="1,n" data="Reservations,Id">ReservationId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Evenement" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add,edit,delete,EnvoyerMail,ExporterPersonne">
-		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de cloture des réservations" searchOrder="1" >DateCloture</PROPERTIES>
-		<PROPERTIES type="date" list="1" fiche="1" form="1" obligatoire="1" Description="Date de début"  searchOrder="3" >DateDebut</PROPERTIES>
+	<OBJECTCLASS title="Evenement"  logEvent="1" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,EnvoyerMail::RESAS_ADMIN,ExporterPersonne::RESAS_ADMIN,Reserver" hideSelect="1">
+		<PROPERTIES type="datetime" list="3" fiche="1" form="1" listDescr="Date de cloture des réservations" Description="Date de cloture des réservations" searchOrder="1" >DateCloture</PROPERTIES>
+		<PROPERTIES type="datetime" list="2" fiche="1" form="1" obligatoire="1" listDescr="Date de l'événement" Description="Date de début"  searchOrder="3" >DateDebut</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1"  Description="Titre du spectacle" >Nom</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" auto="1" Description="Code Postal">CodPos</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" auto="1" Description="Ville">Ville</PROPERTIES>
-		<PROPERTIES type="date" fiche="1" form="1" obligatoire="1" Description="Date de Fin" >DateFin</PROPERTIES>
-		<PROPERTIES type="int" fiche="1" form="1" Description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
-		<PROPERTIES type="boolean" list="1" fiche="1" form="1" auto="1" Description="Validité de l'évènement" default="1">Valide</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<PROPERTIES type="datetime" fiche="1" form="1" obligatoire="1" Description="Date de Fin" >DateFin</PROPERTIES>
+		<PROPERTIES type="int" list="1" fiche="1" form="1" listDescr="Places disponnibles" Description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
+		<PROPERTIES type="boolean"  fiche="1" form="1" auto="1" Description="Validité de l'évènement" default="1">Valide</PROPERTIES>
+		<FKEY card="1,1" data="Spectacle,Id" childrenHiddenSoft="1">SpectacleId</FKEY>
 		<FKEY card="1,1" data="Salle,Id">SalleId</FKEY>
+		<FUNCTION title="Réserver">Reserver</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Envoyer E-mails">EnvoyerMail</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des personnes inscrites">ExporterPersonne</FUNCTION>
 	</OBJECTCLASS>
@@ -153,7 +160,7 @@
 	<OBJECTCLASS title="Fichier" driver="mysql">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
 		<PROPERTIES type="file" searchOrder="2">URL</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Spectacle,Id" hasRole="RESAS_ADMIN">SpectacleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Image" driver="mysql" Display="Media">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
@@ -161,24 +168,24 @@
 		<PROPERTIES type="image" list="1" fiche="1" form="1" searchOrder="3">URL</PROPERTIES>
 		<PROPERTIES type="ObjectClass" module="Galerie" target="Fichier">DossierImage</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" >Mini</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Spectacle,Id" hasRole="RESAS_ADMIN">SpectacleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Son" driver="mysql">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
 		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" >URL</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Spectacle,Id" hasRole="RESAS_ADMIN">SpectacleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Video" driver="mysql">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
 		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" >URL</PROPERTIES>
-		<FKEY card="1,1" data="Spectacle,Id">SpectacleId</FKEY>
+		<FKEY card="1,1" data="Spectacle,Id" hasRole="RESAS_ADMIN">SpectacleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EvenementMail" driver="mysql" Description="Mails envoyés" AccessPoint="1" Class="Modules/Reservation/Class/EvenementMail.class.php"  searchType="plaintext">
 		<PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0" searchOrder="2" Description="Envoyé">Envoye</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" >Message</PROPERTIES>
 		<PROPERTIES type="txt" list="1" fiche="1" form="1" searchOrder="1" Description="Nom spectacle">Description</PROPERTIES>
-		<FKEY card="1,1" data="Evenement,Id">EvenementId</FKEY>
+		<FKEY card="1,1" data="Evenement,Id" hasRole="RESAS_ADMIN">EvenementId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

@@ -1,171 +1,25 @@
-{% for field in formfields %}
-    {% if field.type != "rkey" and field.type != "pluginconfig" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long" and field.type != "metat"  and field.type != "metad" and field.type != "metak" %}
-    <div class="row {% if field.hidden %}hidden{% endif %}">
-        <div class="col-md-6">
-            <label class="form-control-label" for="l0">{{ field.description }}</label>
-            {% if field.help %}
-                <small>
-                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i>
-                </small>
-            {% endif %}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group" ng-class="{'has-danger': {{ scopeObj }}.fieldErrors.length && {{ scopeObj }}.fieldErrors.indexOf('{{ field.name }}') !== -1}">
-            {% if field.type == "date" %}
-                    <label class="input-group datepicker-only-init">
-                        <input id="input-{{ ObjectType }}{{ field.name }}" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ scopeObj }}.{{ field.name }}" {% if field.now %}ng-init="{{ scopeObj }}.{{ field.name }} = '{{ "now"|date("d/m/Y") }}'"{% endif %}/>
-                        <span class="input-group-addon">
-                            <i class="icmn-calendar"></i>
-                        </span>
-                    </label>
-            {% elseif field.type == "time" %}
-                <label class="input-group timepicker-only-init">
-                    <input id="input-{{ ObjectType }}{{ field.name }}" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ scopeObj }}.{{ field.name }}" {% if field.now %}ng-init="{{ scopeObj }}.{{ field.name }} = '{{ "now"|date("H:i") }}'"{% endif %}/>
-                    <span class="input-group-addon">
-                            <i class="icmn-clock"></i>
-                        </span>
-                </label>
-            {% elseif field.type == "datetime" %}
-                <label class="input-group datetimepicker-init">
-                    <input id="input-{{ ObjectType }}{{ field.name }}" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ scopeObj }}.{{ field.name }}" {% if field.now %}ng-init="{{ scopeObj }}.{{ field.name }} = '{{ "now"|date("d/m/Y H:i") }}'"{% endif %}/>
-                    <span class="input-group-addon">
-                            <i class="icmn-calendar"></i>
-                        </span>
-                </label>
-            {% elseif field.type == "fkey" and field.card == "short" %}
-                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="{{ scopeObj }}.{{ field.objectName }}{{ field.name }}" class="form-control" ng-title="{{ scopeObj }}.{{ field.objectName }}{{ field.name }}label"></div>
-<!--                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="{{ scopeObj }}.{{ field.name }}" class="form-control" ng-title="{{ scopeObj }}.{{ field.name }}label"></div>-->
-            {% elseif field.type == "plugin" %}
-                <select class="form-control" ng-model="{{ scopeObj }}.{{ field.name }}" >
-                    {% for v,k in field.query %}
-                        <option value="{{ v }}">{{ k }}</option>
-                    {% endfor %}
-                </select>
-            {% elseif field.type == "pluginconfig" %}
-                {# TODO #}
-            {% elseif field.type == "boolean" %}
-                <switch id="enabled" name="enabled" ng-model="{{ scopeObj }}.{{ field.name }}" class="green"></switch>
-            {% elseif field.type == "password" %}
-                <input type="password" class="form-control" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" data-toggle="input-{{ field.name }}">
-            {% elseif field.type == "progress" %}
-                <input type="text" ion-range-slider stype="single" min="0" max="100" from="{{ scopeObj }}.{{ field.name }}" from_min="0" step="5" grid="true" grid_num="10" postfix=" %" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" >
-            {% elseif field.type == "file" %}
-                <input type="text" class="form-control" placeholder="" id="input-{{ ObjectType }}{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}">
-                <label for="input-{{ ObjectType }}{{ field.name }}-file" class="clickable"> Choisissez un fichier </label>
-                <input id="input-{{ ObjectType }}{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true, inputId: 'input-{{ ObjectType }}{{ field.name }}', model:'{{ scopeObj }}.{{ field.name }}' }" ng-init="up_{{ ObjectType }}{{ field.name }} = angular.copy({% if field.auto %}autoUploader{% else %}uploader{% endif %})" uploader="up_{{ ObjectType }}{{ field.name }}" style="display:none;" /><br/>
-                {% if not field.auto %}
-                    <ul id="toto">
-                        <li ng-repeat="item in up_{{ ObjectType }}{{ field.name }}.queue">
-                            Name: <span ng-bind="item.file.name"></span><br/>
-                            <button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
-                            <button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>
-                        </li>
-                    </ul>
-                {% endif %}
-            {% elseif field.type == "image" %}
-                <input type="text" class="form-control" placeholder="" id="input-{{ ObjectType }}{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}">
-                <label for="input-{{ ObjectType }}{{ field.name }}-file" class="clickable"> Choisissez une image </label>
-                <input id="input-{{ ObjectType }}{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true ,inputId: 'input-{{ ObjectType }}{{ field.name }}', model:'{{ scopeObj }}.{{ field.name }}' {% if field.auto %},autoUpload:true{% endif %} }" ng-init="up_{{ ObjectType }}{{ field.name }} = angular.copy({% if field.auto %}autoUploader{% else %}uploader{% endif %})" uploader="up_{{ ObjectType }}{{ field.name }}" style="display:none;" /><br/>
-                {% if not field.auto %}
-                    <ul>
-                        <li ng-repeat="item in up_{{ ObjectType }}{{ field.name }}.queue">
-                            Name: <span ng-bind="item.file.name"></span><br/>
-                            <button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
-                            <button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>
-                        </li>
-                    </ul>
-                {% endif %}
-            {% elseif field.type == "color" %}
-                <input colorpicker="hex" colorpicker-close-on-select type="text" ng-model="{{ scopeObj }}.{{ field.name }}" />
-                <span class="color_display" style="background-color: {[{ {{ scopeObj }}.{{ field.name }} }]}"></span>
-            {% else %}
-                {% if field.query %}
-                    <select class="form-control" ng-model="{{ scopeObj }}.{{ field.name }}" >
-                        {% for v,k in field.query %}
-                            <option value="{{ v }}">{{ k }}</option>
-                        {% endfor %}
-                    </select>
-                {% elseif field.Values %}
-                    <select class="form-control" ng-model="{{ scopeObj }}.{{ field.name }}" >
-                        {% for v,k in field.Values %}
-                            <option value="{{ v }}">{{ k }}</option>
-                        {% endfor %}
-                    </select>
-                {% elseif field.subtype == "sliderGo" %}
-                    <script type="text/javascript">
-                        var prett = function(num){
-                            return num/1024;
-                        };
-                    </script>
-                    <input type="text" ion-range-slider stype="single" prettify="prett" min="0" max="204800" from="{{ scopeObj }}.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" ng-init="{{ scopeObj }}.{{ field.name }} = {{ scopeObj }}.{{ field.name }} > 1024 ? {{ scopeObj }}.{{ field.name }}:1024" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" >
-                {% else %}
-                    {% if field.name == "Url" %}
-                    <input type="text" class="form-control urlInput" placeholder="" ng-model="{{ scopeObj }}.{{ field.name }}">
-                    {% else %}
-                    <input type="text" class="form-control" placeholder="" ng-model="{{ scopeObj }}.{{ field.name }}">
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-            </div>
-        </div>
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroForm.twig" import  form_properties %}
+{% if categories|length > 1 %}
+    <div class="formCatsFrise row">
+        {% for cat,fields in categories %}
+            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
+                <a href="#" class="formCatsFriseLink">{{ cat }}</a>
+            </span>
+        {% endfor %}
     </div>
-    {% elseif field.type == "fkey" and field.card == "long" %}
-        <div class="row">
-            <div class="col-md-12">
-                <label class="form-control-label" for="l0">{{ field.description }}</label>
-                <small>{{ field.help }}</small>
-            </div>
+{% endif %}
+<div class="formCats" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    <div class="formCatWrapper">
+    {% for cat,fields in categories %}
+        <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}" class="formCatContainer {% if loop.first %}active{% endif %}">
+{#            <h3>{{ cat }}</h3>#}
+            {{  form_properties(fields,scopeObj) }}
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name~'&FieldKey='~field.name~'&ParentObject='~ObjectType))) }}</div>
-            </div>
-        </div>
-    {% elseif field.type == "rkey" %}
-    <div class="row">
-        <div class="col-md-12">
-            <label class="form-control-label" for="l0">{{ field.description }}</label>
-            <small>{{ field.help }}</small>
-        </div>
+    {% endfor %}
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
-        </div>
-    </div>
-    {% elseif field.type == "text" or field.type == "raw" or field.type == "templateconfig" or field.type == "metat" or field.type == "metad" or field.type == "metak" %}
-    <div class="row">
-        <div class="col-md-12">
-            <label class="form-control-label" for="l0">{{ field.description }}</label>
-            <small>{{ field.help }}</small>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded,onChange: aceChanged}" ng-model="{{ scopeObj }}.{{ field.name }}" class="ace_editor"></div>
-            <!--<textarea  ckeditor="ckLite" contenteditable="false" style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="{{ scopeObj }}.{{ field.name }}" ng-trim="false"></textarea>-->
-        </div>
-        {% if  field.type == "metat" or field.type == "metad" or field.type == "metak" %}
-        <div class="col-md-12 charCount">
-            <span >{[{ {{ scopeObj }}.{{ field.name }}.length }]}</span> caractères.
-        </div>
-        {% endif %}
-    </div>
-    {% elseif field.type == "html" or field.type == "bbcode" %}
-    <div class="row">
-        <div class="col-md-12">
-            <label class="form-control-label" for="l0">{{ field.description }}</label>
-            <small>{{ field.help }}</small>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-        <textarea ckeditor="options" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="{{ scopeObj }}.{{ field.name }}" ng-trim="false"></textarea>
-        </div>
-    </div>
-    {% endif %}
-{% endfor %}
+</div>
 <script>
+    //Gestion des dates
     $('.datepicker-only-init').datetimepicker({
         widgetPositioning: {
             horizontal: 'left'
@@ -205,10 +59,6 @@
         }
     });
 
-
-    $('.urlInput').on('keyup',function(){
-       $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g,''));
-    });
     //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
     $(".datepicker-only-init").on("dp.change", function() {
         var input = $(this).children('input').eq(0);
@@ -225,4 +75,131 @@
         input.trigger('change');
         input.trigger('input');
     });
+
+    //Gestion des urls
+    $('.urlInput').on('keyup',function(){
+        $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g,''));
+    });
+
+    {% if categories|length > 1 %}
+        var modal = $('.formCats').closest('.modal');
+        modal.off('shown.bs.modal');
+        modal.on('shown.bs.modal',function(){
+            var par = $(this).find('.formCatWrapper');
+            par.css('height',par.height());
+             var temp = $('<div class="formNav">\n' +
+                 '           <button class="btn btn-warning catNav formPrev pull-left disabled">Précedent</button>\n' +
+                 '           <button class="btn btn-warning catNav formNext pull-right">Suivant</button>\n' +
+                 '    </div>');
+             modal.find('.modal-footer').prepend(temp);
+
+            //Gestion de la navigation
+            $('.formPrev').off('click');
+            $('.formPrev').on('click',function(){
+                var par = $(this).closest('.modal').find('.formCats');
+                var active = par.find('.formCatContainer.active');
+                var index = active.data('cat');
+
+                displayCat(active[0], index-1);
+
+                //Gestion de la frise
+                var frise = par.siblings('.formCatsFrise');
+                frise.children().removeClass('active');
+                var link = frise.find('span[data-cat='+(index-1)+']');
+                link.addClass('active');
+
+            });
+            $('.formNext').off('click');
+            $('.formNext').on('click',function(){
+                var par = $(this).closest('.modal').find('.formCats');
+                var active = par.find('.formCatContainer.active');
+                var index = active.data('cat');
+
+                displayCat(active[0], index+1);
+
+                //Gestion de la frise
+                var frise = par.siblings('.formCatsFrise');
+                frise.children().removeClass('active');
+                var link = frise.find('span[data-cat="'+(index+1)+'"]');
+                console.log('span[data-cat="'+(index+1)+'"]',link);
+                link.addClass('active');
+
+            });
+
+        });
+
+
+
+
+
+        function animateHeight(next,parent,button,index){
+            var cats = parent.find('.formCatContainer');
+            var links = parent.closest('.modal').find('.formCatsFriseElem');
+            var len = cats.length;
+            parent.animate({height:next},300,'swing',function(){
+                if(index != 0 && index != (len-1))
+                    $(button).removeClass('disabled');
+                var other = $(button).siblings('.catNav');
+                console.log(other);
+                other.removeClass('disabled');
+                links.removeClass('disabled');
+                return true;
+            })
+        }
+
+
+        //Gestion des clics sur la frise
+        $('.formCatsFrise a').off('click');
+        $('.formCatsFrise a').on('click',function(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            if($(this).parent().hasClass('active'))
+                return false;
+            var sibs = $(this).closest('.formCatsFrise').find('a.formCatsFriseLink');
+            sibs.parent().removeClass('active');
+
+            var next = $(this).parent().data('cat');
+            console.log(next);
+            displayCat(this,next);
+
+            $(this).parent().addClass('active');
+
+        });
+
+        function displayCat(node, next){
+            console.log(node,next);
+            var par = $(node).closest('.modal');
+            var curActive = par.find('.formCatContainer.active');
+            var nextActive = par.find('.formCatContainer[data-cat="'+next+'"]');
+            var buttons = par.find('.formNav button');
+            var links = $(node).closest('.modal').find('.formCatsFriseElem');
+            var cats = par.find('.formCatContainer');
+            var wrap = par.find('.formCatWrapper');
+
+            links.addClass('disabled');
+            buttons.addClass('disabled');
+
+
+            if(curActive.data('cat') > next){
+                var wayNew = 'before';
+                var wayold = 'after';
+                var bNode = buttons.filter('.formPrev')[0];
+            }else{
+                var wayNew = 'after';
+                var wayold = 'before';
+                var bNode = buttons.filter('.formNext')[0];
+            }
+            cats.removeClass('before');
+            cats.removeClass('after');
+
+            nextActive.addClass(wayNew);
+            var nextHeight = nextActive[0].scrollHeight;
+            nextActive.addClass('active').removeClass(wayNew);
+            curActive.addClass(wayold).removeClass('active');
+
+            animateHeight(nextHeight,wrap,bNode,next);
+
+        }
+    {% endif %}
 </script>

@@ -1,0 +1,124 @@
+{% if funcTempVars.step is same as(0) %}
+    {# errors #}
+    {% if funcTempVars.error %}<p class="error">Une erreur est survenue, veuillez vérifier votre saisie et ré-essayer.</p>{% endif %}
+    {# /errors #}
+    <p>Il restait, lors de la génération de cette fenêtre <b style="color:{% if evt.nbPlace > 0 %}#55ff55{% else %}#ff5555{% endif %} ">{{ evt.NbPlace }}</b> place(s)</p>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Combien de places souhaitez-vous réserver ?</label>
+            {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <input type="text" class="form-control {% if funcTempVars.error %}error{% endif %}"  ng-model="ReservationEvenementfunction.args.nbPlaces" placeholder="1,2,3 ou plus ?">
+            </div>
+        </div>
+    </div>
+{% elseif funcTempVars.step == 1 %}
+    <input type="hidden"  ng-init="ReservationEvenementfunction.args.nbPlaces = {{ funcTempVars.nbPlaces }};" ng-model="ReservationEvenementfunction.args.nbPlaces">
+
+    {# errors #}
+    {% if funcTempVars.error %}
+        <p class="error">Une erreur est survenue, veuillez vérifier votre saisie et ré-essayer.</p>
+    {% endif %}
+    {# /errors #}
+    <p>Veuillez renseigner l'ensemble des champs.</p>
+    <ul style="padding-left: 20px;">
+    {% for i in 1..funcTempVars.nbPlaces %}
+       <li {% if not loop.last %}style="    border-bottom: 1px solid #dfdfdf;    margin-bottom: 15px;    padding-bottom: 15px;"{% endif %}>
+           <h4>Personne N° {{ i }}</h4>
+           <div class="row">
+               <div class="col-md-6">
+                   {# NOM #}
+                   <div class="row">
+                       <div class="col-md-4">
+                           <label class="form-control-label" for="l0">Nom</label>
+                           {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+                       </div>
+                       <div class="col-md-8">
+                           <div class="form-group" >
+                               <input type="text" class="form-control {% if attribute(funcTempVars.errFields.nom,i) is defined %}error{% endif %}" value="0" ng-init="ReservationEvenementfunction.args.nom[{{ i }}] = {% if not (attribute(funcTempVars.vals.nom,i) is empty) %}'{{ attribute(funcTempVars.vals.nom,i) }}' {% else %}null{% endif %};" ng-model="ReservationEvenementfunction.args.nom[{{ i }}]" placeholder="Nom ">
+                           </div>
+                       </div>
+                   </div>
+                   {# SEXE #}
+                   <div class="row">
+                       <div class="col-md-4">
+                           <label class="form-control-label" for="l0">Sexe</label>
+                       </div>
+                       <div class="col-md-8">
+                           <div class="form-group" >
+                               <select class="form-control {% if attribute(funcTempVars.errFields.sexe,i) is defined %}error{% endif %}" ng-init="ReservationEvenementfunction.args.sexe[{{ i }}] = {% if not (attribute(funcTempVars.vals.sexe,i) is empty) %}'{{ attribute(funcTempVars.vals.sexe,i) }}' {% else %}null{% endif %};" ng-model="ReservationEvenementfunction.args.sexe[{{ i }}]">
+                                   {% for opt in elems.Sexe.Values %}
+                                        <option value="{{ opt }}">{{ opt }}</option>
+                                   {% endfor %}
+                               </select>
+                           </div>
+                       </div>
+                   </div>
+                   {# ACCOMPAGNATEUR #}
+                   <div class="row">
+                       <div class="col-md-8">
+                           <label class="form-control-label" for="l0">Accompagnateur structure</label>
+                       </div>
+                       <div class="col-md-4">
+                           <div class="btn-group yesno" >
+                               <label class="btn btn-default-outline" for="accomp_{{ i }}" ng-class="{active:ReservationEvenementfunction.args.accomp[{{ i }}]==1}">
+                                   <input type="checkbox" id="accomp_{{ i }}" class="form-control {% if attribute(funcTempVars.errFields.accomp,i) is defined %}error{% endif %}" ng-init="ReservationEvenementfunction.args.accomp[{{ i }}] = {% if not (attribute(funcTempVars.vals.accomp,i) is empty) %}true{% else %}false{% endif %};" ng-model="ReservationEvenementfunction.args.accomp[{{ i }}]" ng-checked="ReservationEvenementfunction.args.accomp[{{ i }}] == 1">
+                                   <i class="fa fa-check" aria-hidden="true"></i>
+                               </label>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-6">
+                   {# PRENOM #}
+                   <div class="row">
+                       <div class="col-md-4">
+                           <label class="form-control-label" for="l0">Prenom</label>
+                           {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+                       </div>
+                       <div class="col-md-8">
+                           <div class="form-group" >
+                               <input type="text" class="form-control {% if attribute(funcTempVars.errFields.prenom,i) is defined %}error{% endif %}" value="0" ng-init="ReservationEvenementfunction.args.prenom[{{ i }}] = {% if not (attribute(funcTempVars.vals.prenom,i) is empty) %}'{{ attribute(funcTempVars.vals.prenom,i) }}' {% else %}null{% endif %};" ng-model="ReservationEvenementfunction.args.prenom[{{ i }}]" placeholder="Prénom ">
+                           </div>
+                       </div>
+                   </div>
+                   {# AGE #}
+                   <div class="row">
+                       <div class="col-md-4">
+                           <label class="form-control-label" for="l0">Age</label>
+                       </div>
+                       <div class="col-md-8">
+                           <div class="form-group" >
+                               <select class="form-control {% if attribute(funcTempVars.errFields.age,i) is defined %}error{% endif %}" ng-init="ReservationEvenementfunction.args.age[{{ i }}] = {% if not (attribute(funcTempVars.vals.age,i) is empty) %}'{{ attribute(funcTempVars.vals.age,i) }}' {% else %}null{% endif %};" ng-model="ReservationEvenementfunction.args.age[{{ i }}]">
+                                   {% for opt in elems.Age.Values %}
+                                       <option value="{{ opt }}">{{ opt }}</option>
+                                   {% endfor %}
+                               </select>
+                           </div>
+                       </div>
+                   </div>
+                   {# RSA #}
+                   <div class="row">
+                       <div class="col-md-8">
+                           <label class="form-control-label" for="l0">RSA et minima sociaux et ayant droit</label>
+                           {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+                       </div>
+                       <div class="col-md-4">
+                           <div class="btn-group yesno">
+                               <label class="btn btn-default-outline" for="rsa_{{ i }}" ng-class="{active:ReservationEvenementfunction.args.rsa[{{ i }}]==1}">
+                                   <input type="checkbox" id="rsa_{{ i }}" class="form-control {% if attribute(funcTempVars.errFields.rsa,i) is defined %}error{% endif %}" ng-init="ReservationEvenementfunction.args.rsa[{{ i }}] = {% if not (attribute(funcTempVars.vals.rsa,i) is empty) %}true{% else %}false{% endif %};" ng-model="ReservationEvenementfunction.args.rsa[{{ i }}]" ng-checked="ReservationEvenementfunction.args.rsa[{{ i }}] == 1">
+                                   <i class="fa fa-check" aria-hidden="true"></i>
+                               </label>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </li>
+    {% endfor %}
+    </ul>
+{% else %}
+bbbb
+{% endif %}

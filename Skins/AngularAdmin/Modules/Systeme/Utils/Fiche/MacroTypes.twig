@@ -158,7 +158,9 @@
             <!--<div class="col-md-12">
                             <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor"  readonly="true"></div>
                         </div>-->
-            <div ng-bind-html="{{ obj }}.{{ field.name }}"></div>
+            <div class="col-md-12">
+                <div ng-bind-html="{{ obj }}.{{ field.name }} | unsafe"></div>
+            </div>
         </div>
     {% endif %}
 {% endmacro %}
