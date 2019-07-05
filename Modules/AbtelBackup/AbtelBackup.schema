@@ -75,9 +75,12 @@
 		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="VmJob" logEvent="1"  AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/VmJob.class.php">
+        <FILTER name="Toutes les jobs" color="warning" ></FILTER>
+    <FILTER name="Les jobs actifs" color="success" >Enabled=1</FILTER>
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
 		<FUNCTION title="Retirer les fichier swaps">createRemovePageFileTask</FUNCTION>
+		<FUNCTION title="Lancer une tache de rotation">createRetentionTask</FUNCTION>
         <INTERFACES name="fiche_tab">
             <FORM type="Template" urlPrefix="/AbtelBackup/VmJob/" urlSuffix="/Histo.htm" title="Historique d'éxécution">Infos</FORM>
         </INTERFACES>
@@ -114,7 +117,7 @@
 		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1" listDescr="IP" obligatoire="1">IP</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1" form="1" listDescr="Actif" description="Actif">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="4" list="1" fiche="1"  listDescr="Statut" description="Connexion complête">Status</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" form="1" fiche="1" obligatoire="1" description="Domaine Microsoft">Domain</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" form="1" fiche="1" description="Domaine Microsoft">Domain</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" form="1" fiche="1" obligatoire="1" description="Nom d'utilisateur">Login</PROPERTIES>
 		<PROPERTIES type="varchar" form="1" fiche="1" obligatoire="1" description="Mot de passe">Password</PROPERTIES>
 		<RKEY data="SambaShare,Id" card="0,n" inline="1" fiche="1" list="1" description="Partages" popup="1">Partages</RKEY>

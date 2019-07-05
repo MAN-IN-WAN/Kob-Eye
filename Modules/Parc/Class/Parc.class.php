@@ -619,7 +619,7 @@ class Parc extends Module{
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         //suppression des activités vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Activity` WHERE tmsCreate<'.(time()-(3600*12)).';');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Activity` WHERE tmsCreate<'.(time()-(86400*4)).';');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
     }

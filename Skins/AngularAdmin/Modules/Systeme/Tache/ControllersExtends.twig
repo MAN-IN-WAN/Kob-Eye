@@ -1,77 +1,103 @@
-app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,SystemeTacheStore,SystemeActivityStore) {
-    var dateformat =  'DD/MM/YYYY HH:mm';
-    $scope.gantt = {};
-    $scope.gantt.from = moment().subtract(30, 'day').startOf('day').unix();
-    $scope.gantt.fromdate = moment.unix($scope.gantt.from);
-    $scope.gantt.frompicker = moment.unix($scope.gantt.from).format(dateformat);
-    $scope.gantt.to = moment().endOf('day').unix();
-    $scope.gantt.todate = moment.unix($scope.gantt.to);
-    $scope.gantt.topicker = moment.unix($scope.gantt.to).endOf('day').format(dateformat);
+app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,SystemeTacheStore,SystemeActivityStore) {
+    $scope.{{ identifier }}gantt = {};
+    function init(min,max){
+        var dateformat =  'DD/MM/YYYY HH:mm';
+        $scope.{{ identifier }}gantt.from = min;
+        $scope.{{ identifier }}gantt.fromdate = moment.unix($scope.{{ identifier }}gantt.from);
+        $scope.{{ identifier }}gantt.frompicker = moment.unix($scope.{{ identifier }}gantt.from).format(dateformat);
+        $scope.{{ identifier }}gantt.to = max;
+        $scope.{{ identifier }}gantt.todate = moment.unix($scope.{{ identifier }}gantt.to);
+        $scope.{{ identifier }}gantt.topicker = moment.unix($scope.{{ identifier }}gantt.to).format(dateformat);
+        console.log('gantt >> from:', $scope.{{ identifier }}gantt.fromdate,' to:', $scope.{{ identifier }}gantt.todate,'orig:',min,max);
+        $scope.{{ identifier }}options = {
+            fromDate:$scope.{{ identifier }}gantt.fromdate,
+            toDate:$scope.{{ identifier }}gantt.todate,
+            headers: ['day','hour','minute'],
+            viewScale: '5 minutes',
+            headersFormats: {
+                minute:'mm'
+            }
+        };
+    }
+    var colors= [
+        '#01a8fe',
+        '#46be8a',
+        '#E5AC0E',
+        '#f39834',
+/*        '#fb434a',*/
+/*        '#b70070',*/
+        '#563d7c',
+/*        '#744411',
+        '#747474',
+        '#000000'*/
+    ];
+    init(moment().subtract(1, 'hour').unix(),moment().unix());
 
-
+    //options
+    $scope.{{ identifier }}options = {
+    };
     /**
      * register Api
      * @param api
      */
-    $scope.registerApi = function(api) {
-        $scope.gantt.api = api;
+    $scope.{{ identifier }}registerApi = function(api) {
+        console.log('activity gantt >>> registerApi');
+        $scope.{{ identifier }}gantt.api = api;
         api.core.on.ready($scope, function () {
             // Call API methods and register events.
-            $scope.refreshGantt();
-            $scope.gantt.api.data.on.change($scope, function (newData, OldData) {
-                $scope.gantt.api.side.setWidth(undefined);
+            $scope.{{ identifier }}gantt.api.data.on.change($scope, function (newData, OldData) {
+                $scope.{{ identifier }}gantt.api.side.setWidth(undefined);
             });
         });
-        api.directives.on.new($scope, function(dName, dScope, dElement, dAttrs, dController) {
-            if (dName === 'ganttTask') {
-                dElement.bind('click', function(event) {
-                    console.info('task-click: ',dScope.task.model,'scroll to ',event.pageX-305);
-                    $scope.selectTask(dScope.task.model.origid);
-                    $('#task-triangleup').css('left',event.pageX-307);
-                });
-            }
-        });
+        setReady('comp');
     }
-
     /**
      * storeSettings
      * Definition des stores
      */
-    $scope.storeSettings = function () {
-        SystemeTacheStore.initContext('gantt');
-        SystemeTacheStore.setPageLength(1000, 'gantt');
-        SystemeTacheStore.setFilters('VmJob.VmJobTacheId(' + $scope.obj.id + ')&DateDebut>'+$scope.gantt.from+'&DateDebut<'+$scope.gantt.to, 'gantt');
+    $scope.{{ identifier }}storeSettings = function () {
+        console.log('activity gantt >>> storeSettings',$scope.obj);
+        SystemeActivityStore.initContext('gantt');
+        SystemeActivityStore.setPageLength(1000, 'gantt');
+        SystemeActivityStore.sort['gantt'] = ['Id','ASC'];
+        SystemeActivityStore.setFilters('Tache.TacheId(' + $scope.currentObj.id + ')','gantt');
+        setReady('obj');
     };
-    //execution
-    $scope.storeSettings();
+    $scope.currentObj = null;
+    var t = $interval(function () {
+        if ($scope.getObj().id>0&&$scope.getObj()._full){
+            $scope.currentObj = $scope.getObj();
+            $scope.{{ identifier }}storeSettings();
+            $interval.cancel(t);
+        }
+    },100,20);
 
+    /**
+     * setReady
+     */
+    var ganttcomp=false;
+    var ganttobj=false;
+    function setReady (type) {
+        if (type=='comp')ganttcomp = true;
+        if (type=='obj')ganttobj = true;
+        if (ganttcomp&&ganttobj){
+            $scope.{{ identifier }}refreshGantt();
+            renderGraph();
+            console.log('activity gantt >> everybody \'s ready');
+        }
+    }
     /**
      * refreshGantt
      * Rafraichit le gantt et ses données
      */
-    $scope.refreshGantt = function () {
-        SystemeTacheStore.getData(1,'gantt').then(function (data) {
+    $scope.{{ identifier }}refreshGantt = function () {
+        SystemeActivityStore.getData(1,'gantt').then(function (data) {
             //refresh gantt data
-            var out = formatData(data);
-            //console.error('>>>>>>>>>>>>>>>>>>>>',out);
-            /*$scope.gantt.api.data.clear();
-            $scope.gantt.api.data.load(out);
-            $scope.gantt.api.scroll.toDate(new Date($scope.gantt.from));*/
-
-            $scope.gantt.data = out;
-            /*$scope.gantt.api.toDate = $scope.gantt.to;
-            $scope.gantt.api.fromDate = $scope.gantt.from;*/
-            $scope.gantt.api.columns.clear();
-            $scope.gantt.api.columns.refresh();
-            $scope.gantt.api.columns.generate();
-            //refresh taskobj
-            for (var i in data) {
-                if (data[i].TaskType=='backup'||data[i].TaskType=='rotation'){
-                    $scope.selectTask(data[i].id);
-                    $('#task-triangleup').css('left',1477);
-                    break;
-                }
-            }
+            var out = {{ identifier }}formatData(data);
+            //console.log('gantt data >>>>>>>>>>>>>>>> ',out);
+            $scope.{{ identifier }}options.fromDate = $scope.{{ identifier }}gantt.fromdate;
+            $scope.{{ identifier }}options.toDate = $scope.{{ identifier }}gantt.todate,
+            $scope.{{ identifier }}gantt.data = out;
         },function (err) {
 
         });
@@ -83,82 +109,261 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
      * @param data
      * @returns {[*,*]}
      */
-    function formatData(data) {
-        Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
-        var out = [{
-            name: 'Sauvegarde '+$scope.obj.label,
-            tasks: []
-        },{
-            name: 'Rotation '+$scope.obj.label,
-            tasks: []
-        }];
+    function {{ identifier }}formatData(data) {
+        var out = [];
+        var min  = moment().unix();
+        var max = 0;
+        var prev,next,dep;
         for (var i in data){
-            if (data[i].TaskType == 'backup')
-                out[0].tasks.push({
-                    name: data[i].label+" | Résultat: "+((data[i].Erreur)?'success':'erreur'),
-                    from: new Date(moment(data[i].DateDebut,dateformat)),
-                    to:  new Date(moment(data[i].DateFin,dateformat)),
-                    color: (!data[i].Erreur)?'#46be8a':'#fb434a',
-                    origid: data[i].id
-                });
-            else if (data[i].TaskType == 'rotate') out[1].tasks.push({
-                name: data[i].label+" | Résultat: "+((data[i].Erreur)?'success':'erreur'),
-                from: new Date(moment(data[i].DateDebut,dateformat)),
-                to:  new Date(moment(data[i].DateFin,dateformat)),
-                color: (!data[i].Erreur)?'#01a8fe':'#f39834',
+            if (data[i].tmsCreate<min) min =data[i].tmsCreate;
+            if (data[i].tmsEdit>max) max =data[i].tmsEdit;
+            dep = [];
+            if (i>0) dep.push({from:'task-'+data[i-1].id});
+            if (data[i+1]) dep.push({to:'task-'+data[i+1].id});
+
+            out.push({
+                name: data[i].label,
+                tasks: [
+                    {
+                        name: data[i].label,
+                        from: moment.unix(data[i].tmsCreate),
+                        to:  moment.unix(data[i].tmsEdit),
+                        color: (!data[i].Errors)?colors[i%colors.length]:'#fb434a',
+                        origid: data[i].id,
+                        id: 'task-'+data[i].id,
+                        progress: data[i].Progression,
+                        dependencies: dep
+                    }
+                ],
                 origid: data[i].id
             });
         }
+        init(min,max);
         return out;
     }
 
-    /***
-     * show task
-     */
-    $scope.taskobj = null;
-    $scope.showtask = false;
     /**
-     * changeDatePeriod
-     * Redinit les dates pour l"encradement des taches du gantt
+     * Ecouteur dans le cas de changement de page
+     *
      */
-    $scope.changeDatePeriod = function () {
-        //console.log('gantt >> BEFORE change date period ',$scope.gantt.frompicker,$scope.gantt.topicker);
-        $scope.gantt.from = moment($scope.gantt.frompicker,dateformat).unix();
-        $scope.gantt.to = moment($scope.gantt.topicker,dateformat).unix();
-        $scope.gantt.todate = moment.unix($scope.gantt.to);
-        $scope.gantt.fromdate = moment.unix($scope.gantt.from);
-        console.log('gantt >> change date period ',$scope.gantt.from,$scope.gantt.to,$scope.gantt.frompicker,$scope.gantt.topicker);
-        $scope.storeSettings();
-        $scope.refreshGantt();
-    }
+    $scope.$on('refreshFicheData',function () {
+        console.log('gantt >> received event to change data');
+        $scope.currentObj = $scope.getObj();
+        $scope.{{ identifier }}storeSettings();
+    });
 
-    $scope.SystemeActivity = {
-        data: SystemeActivityStore.data.children,
-        store: SystemeActivityStore,
-        filter: '',
-        pageLength: SystemeActivityStore.getPageLength('children'),
-        currentPage: SystemeActivityStore.currentPage.children,
-        itemsPerPage: SystemeActivityStore.itemsPerPage,
-        selected: {
-            selectall: false
+    $scope.bandwidthChart = null;
+    /**
+     * Affichage du graphique
+     */
+    function renderGraph() {
+        if ($scope.bandwidthChart) {
+            console.info('gantt >> bandwidth destroy', $scope.bandwidthChart);
+            $scope.bandwidthChart.destroy();
+            $scope.bandwidthChart = null;
         }
-    }
+        if (!$scope.currentObj.Graph||!$scope.currentObj.Graph.length){
+            console.info('gantt >>bandwidth pas de graph', $scope.currentObj.Graph);
+            $scope.showGraph = false;
+            return false;
+        }
+        var bandwidth = JSON.parse($scope.currentObj.Graph);
+        console.info('gantt >> bandwidth init', bandwidth);
+        $scope.showGraph = true;
+        $.getJSON('/Tools/Js/ApexChart/locales/fr.json', function (data) {
+            var fr = data;
+            var options = {
+                chart: {
+                    locales: [fr],
+                    defaultLocale: 'fr',
+                    height: 280,
+                    type: "line",
+                    stacked: true,
+                    animations: {
+                        enabled: true,
+                        easing: "linear"
+                    },
+                    toolbar: {
+                        show: false,
+                        offsetY: -10
+                    },
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: "smooth",
+                    width: 2
+                },
+                grid: {
+                    padding: {
+                        left: 0,
+                        right: 0
+                    }
+                },
+                markers: {
+                    size: 0,
+                    hover: {
+                        size: 0
+                    }
+                },
+                fill: {
+                    opacity: [0.15, 0.15, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: 'light',
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                series: [
+                    {
+                        name: "Download",
+                        data: bandwidth.RX,
+                        type: 'area',
+                        color: colors._success
+                    },
+                    {
+                        name: "Upload",
+                        type: 'area',
+                        data: bandwidth.TX,
+                        color: colors._primary
+                    },
+                    {
+                        name: "Cpu",
+                        type: 'line',
+                        data: bandwidth.Cpu,
+                        color: colors._danger
+                    },
+                    {
+                        name: "Ram",
+                        type: 'line',
+                        data: bandwidth.Ram,
+                        color: colors._warning
+                    },
+                    {
+                        name: "Io",
+                        type: 'line',
+                        data: bandwidth.Io,
+                        color: colors._io
+                    }
+                ],
+                xaxis: {
+                    type: "datetime",
+/*                    range: 120000,*/
+                    labels: {
+                        /**
+                         * Allows users to apply a custom formatter function to xaxis labels.
+                         *
+                         * @param { String } value - The default value generated
+                         * @param { Number } timestamp - In a datetime series, this is the raw timestamp
+                         * @param { index } index of the tick / currently executing iteration in xaxis labels array
+                         */
+                        formatter: function (value, timestamp, index) {
+                            return moment(new Date(timestamp)).format("HH:mm:ss")
+                        }
+                    }
+                },
+                yaxis: [
+                    {
+                        seriesName: 'Upload',
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: '#008FFB'
+                        },
+                        labels: {
+                            style: {
+                                color: '#008FFB',
+                            }
+                        },
+                        title: {
+                            text: "Bande passante kB/sec ",
+                            style: {
+                                color: '#008FFB',
+                            }
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        seriesName: 'Download',
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        seriesName: 'Cpu',
+                        opposite: true,
+                        min: 0,
+                        max: 100,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: '#00E396'
+                        },
+                        labels: {
+                            style: {
+                                color: '#00E396',
+                            }
+                        },
+                        title: {
+                            text: "Pourcentage utilisation %",
+                            style: {
+                                color: '#00E396',
+                            }
+                        },
+                    },
+                    {
+                        seriesName: 'Ram',
+                        min: 0,
+                        max: 100,
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
 
-    /**
-     * sele"ctTask
-     * Selection d'une tache
-     * @param id
-     */
-    $scope.selectTask = function (id){
-        $scope.showtask = false;
-        SystemeTacheStore.getOneData(id,'gantt').then(function (data) {
-            $scope.taskobj = data;
-            $scope.showtask = true;
-            //FORMULAIRE CHILDREN
-            /*$scope.SystemeActivity.store.setFilters('Tache.TacheId(' + $scope.taskobj.id + ')', 'children');
-            $scope.SystemeActivity.store.getData(1, 'children');*/
+                    },
+                    {
+                        seriesName: 'Io',
+                        min: 0,
+                        max: 100,
+                        show: false,
+                        tooltip: {
+                            enabled: true
+                        }
+
+                    }
+                ]
+                ,
+                legend: {
+                    show: true,
+                    floating: true,
+                    horizontalAlign: "center",
+                    onItemClick: {
+                        toggleDataSeries: false
+                    },
+                    position: "top",
+                    offsetY: 0,
+                    offsetX: 0
+                }
+            };
+            $scope.bandwidthChart = new ApexCharts(
+                document.querySelector("#chart-bandwidth"),
+                options
+            );
+            $scope.bandwidthChart.render();
         });
     }
-
-
 });

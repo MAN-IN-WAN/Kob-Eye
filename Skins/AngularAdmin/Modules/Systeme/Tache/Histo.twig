@@ -1,72 +1,33 @@
-{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroFiche.twig" import  fiche_properties %}
-{% from "Skins/AngularAdmin/Modules/Systeme/Utils/List/MacroList.twig" import  list_activity %}
-<section class="panel">
-    <div class="panel-heading">
-        <div class="container pull-right">
-            <div class='col-md-2'>
-            </div>
-            <div class='col-md-4'>
-                <div class="form-group">
-                    <label class="input-group datetimepicker-init">
-                        <input id="input-ganttfrom" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="gantt.frompicker"/>
-                        <span class="input-group-addon">
-                        <i class="icmn-calendar"></i>
-                    </span>
-                    </label>
-                </div>
-            </div>
-            <div class='col-md-4'>
-                <div class="form-group">
-                    <label class="input-group datetimepicker-init">
-                        <input id="input-ganttto" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="gantt.topicker"/>
-                        <span class="input-group-addon">
-                        <i class="icmn-calendar"></i>
-                    </span>
-                    </label>
-                </div>
-            </div>
-            <div class='col-md-2'>
-                <button class="btn btn-info" name="validperiod" value="Valider" ng-click="changeDatePeriod()">Valider</button>
-            </div>
+<section class="fiche-pane " ng-controller="{{ identifier }}Ctrl" id="{{ identifier }}Node" >
+    <div class="row  ficheField  type_detail_exec">
+        <div class="col-md-2 detail-label">
+            <label class="form-control-label"for="l0">Détails de l'éxécution</label>
         </div>
-        <script type="text/javascript">
-            $(function () {
-                $('.datetimepicker-init').datetimepicker({
-                    widgetPositioning: {
-                        horizontal: 'left'
-                    },
-                    locale: 'fr',
-                    icons: {
-                        time: "fa fa-clock-o",
-                        date: "fa fa-calendar",
-                        up: "fa fa-arrow-up",
-                        down: "fa fa-arrow-down"
-                    }
-                });
-            });
-        </script>
-        <h3>Les dernières éxécutions</h3>
-    </div>
-    <div class="panel-body" ng-show="false">
-        <div class="container-fluid">
-            <div class="row top-buffer">
-                <div class="col-md-12">
-                    <i class="fa fa-cog fa-spin"></i> Chargement des données ...
-                </div>
+        <div class="col-md-10 detail-value" style="min-height: 150px">
+            <div ng-show="false"><i class="fa fa-cog fa-spin"></i> Chargement des données ...</div>
+            <div gantt api="{{ identifier }}registerApi" data="{{ identifier }}gantt.data" headers="{{ identifier }}options.headers" from-date="{{ identifier }}gantt.fromdate" to-date="{{ identifier }}gantt.todate" view-scale="{{ identifier }}options.viewScale" headers-formats="{{ identifier }}options.headersFormats" show-side = "false" max-height="600">
+                <gantt-tooltips></gantt-tooltips>
+                <gantt-dependencies enabled="true" read-only="true" js-plumb-defaults="{
+                                         Endpoint: ['Dot', {radius: 4}],
+EndpointStyle: {fillStyle: '#456', strokeStyle: '#456', lineWidth: 1},
+PaintStyle: {
+    strokeWidth: 1,
+    stroke: 'rgb(68, 85, 102)'
+},
+Connector: 'Flowchart',
+ConnectionOverlays: [['Arrow', {location: 1, length: 12, width: 12}]]
+                                         }"></gantt-dependencies>
+                <!--<gantt-progress enabled="true"></gantt-progress>-->
             </div>
         </div>
     </div>
-
-    <div class="panel-body" ng-cloak="true" style="margin-bottom:20px;">
-        <div class="container-fluid">
-            <div class="row top-buffer">
-                <div class="col-md-12">
-
-                    <div gantt api="registerApi" headers="['month', 'day']" data="gantt.data" from-date = "gantt.fromdate" to-date = "gantt.todate">
-                        <gantt-table />
-                        <gantt-tooltips></gantt-tooltips>
-                    </div>
-                </div>
+    <div class="row  ficheField  type_resources-sys" ng-if="showGraph">
+        <div class="col-md-2 detail-label">
+            <label class="form-control-label"for="l0">Utilisation des ressources</label>
+        </div>
+        <div class="col-md-10 detail-value" style="min-height: 150px">
+            <div class=" clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
+                <div id="chart-bandwidth"></div>
             </div>
         </div>
     </div>

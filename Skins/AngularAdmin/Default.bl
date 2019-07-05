@@ -248,6 +248,8 @@
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Css/cadref.css">
 	[/IF]
 
+    <!-- JsPlumb data visualisation -->
+    <script src="Tools/Js/jsplumb.min.js"/>
 	<!-- Angular Gantt -->
     <script src="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/ResizeSensor.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-gantt/dist/ElementQueries.js"></script>

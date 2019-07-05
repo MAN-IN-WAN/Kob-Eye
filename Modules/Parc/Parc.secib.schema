@@ -565,14 +565,14 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" list="1" form="1" fiche="1" values="dev::Développement,master::Master,prodhotfix::ProdHotfix,prodinterne::ProdInterne,prodipad::ProdIpad,prod::Production,prodpilote::ProdPilote,demosecib::DemoSecib,preprodipad::PréProdIpad,preprodouilaw::PréProdOuiLaw,prodouilaw::ProdOuiLaw" listDescr="Type" default="dev" >Type</PROPERTIES>
 		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
-		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
+		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
 		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" >BackupEnabled</PROPERTIES>
 		<PROPERTIES type="varchar" description="Domaine" searchOrder="3" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
-		<PROPERTIES type="varchar" description="Version" listDescr="Version"  list="1" fiche="1">CurrentVersion</PROPERTIES>
+		<PROPERTIES type="varchar" description="Version" listDescr="Version"  list="1" fiche="1" form="1">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="int" description="Status" searchOrder="2"  listDescr="Status"  list="1" fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)"  form="1" fiche="1">DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1" hideApi="1">HostId</FKEY>
-		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
+		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" >BddId</FKEY>
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1" hideApi="1">ClientId</FKEY>
 
 		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>

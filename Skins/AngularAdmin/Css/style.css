@@ -1508,3 +1508,39 @@ Choix des composants
 .gantt-task-content {
     cursor: pointer;
 }
+.gantt-task-content span > span{
+    color:white;
+    margin-top: -15px;
+    display: block;
+}
+
+.color1{
+    border-left: 35px solid #01a8fe;
+}
+.color2{
+    border-left: 35px solid #46be8a;
+}
+.color3{
+    border-left: 35px solid #E5AC0E;
+}
+.color4{
+    border-left: 35px solid #f39834;
+}
+.color5{
+    border-left: 35px solid #fb434a;
+}
+.color6{
+    border-left: 35px solid #b70070;
+}
+.color7{
+    border-left: 35px solid #563d7c;
+}
+.color8{
+    border-left: 35px solid #744411;
+}
+.color9{
+    border-left: 35px solid #747474;
+}
+.color10{
+    border-left: 35px solid #000000;
+}

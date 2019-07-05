@@ -488,6 +488,11 @@ class FormationSession extends genericClass {
                     $tq = $r->getParents('TypeQuestion');
                     if (sizeof($tq)) {
                         $tq = $tq[0];
+                        /*if ($e->Numero==1&&$tq->Id==60){
+                            echo $r->Valeur."---------------------\n";
+                            echo $this->textToJson($r->Valeur)."---------------------\n";
+                            die();
+                        }*/
                         $data .= $virgule2 . '{"typequestion": "' . $tq->Id . '", "valeur":"' . $this->textToJson($r->Valeur) . '"}';
                         $virgule2 = ',';
                     }
@@ -512,7 +517,8 @@ class FormationSession extends genericClass {
         $context  = stream_context_create( $options );
         $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
         $response = json_decode( $result );
-        if (false){//isset($response->success)&&$response->success){
+//        if (false){//isset($response->success)&&$response->success){
+        if (isset($response->success)&&$response->success){
             $this->Synchro = 1;
             print_r($response);
             $this->Save();
@@ -583,7 +589,8 @@ class FormationSession extends genericClass {
      */
     public function textToJson($text) {
         $text = str_replace('"', '\"',$text);
-        $text = str_replace("\u0", '',$text);
+        $text = str_replace('\\\\"', '\"',$text);
+        //$text = str_replace("\u0", '',$text);
         $text = str_replace("\n", ' ',$text);
         $text = str_replace("\r", '',$text);
         $text = str_replace("\t", '',$text);

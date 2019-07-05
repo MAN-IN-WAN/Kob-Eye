@@ -243,9 +243,12 @@ class VmJob extends Job {
                 $this->Running = false;
                 $this->Errors = true;
                 parent::Save();
+                $this->saveStats($task);
                 return false;
             }
         }
+        $this->saveStats($task);
+
         //opération terminée
         $this->resetState();
 
@@ -268,6 +271,7 @@ class VmJob extends Job {
         $task->TaskFunction = 'rotate';
         $task->addParent($this);
         $task->Save();
+        return array('task'=>$task);
     }
 
     /**
@@ -499,7 +503,6 @@ VM_STARTUP_ORDER=
                 $act->setProgression(100);
                 $act = $task->createActivity(' > Rotation Terminée : suppression de '.sizeof($prs).' version(s)','Info');
                 $act->Terminate(true);
-                return true;
             }catch (Exception $e){
                 if(!$act) $act = $task->createActivity($v->Titre.' > Exception: Step '.$this->Step,'Info');
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
@@ -508,9 +511,11 @@ VM_STARTUP_ORDER=
                 $this->Running = false;
                 $this->Errors = true;
                 parent::Save();
-                return;
+                continue;
             }
         }
+        $this->saveStats($task);
+        return true;
     }
     /**
      * createRemovePageFileTask
@@ -542,9 +547,9 @@ VM_STARTUP_ORDER=
         //pour chaque vm
         $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
         try {
-            foreach ($vms as $v) {
+            foreach ($vms as $k=>$v) {
                 $act = $task->createActivity(' > Traitement de la VM : ' . $v->Titre . ' (' . $v->Id . ')');
-                if (!$this->removePageFileFromVm($v,$act)) continue;
+                if (!$this->removePageFileFromVm($v,$act,$k)) continue;
             }
             return true;
         }catch (Throwable $e){
@@ -557,9 +562,8 @@ VM_STARTUP_ORDER=
      * removePageFileFromVm
      * Supprime les fichiers page des vms
      */
-    public function removePageFileFromVm($v,$act){
+    public function removePageFileFromVm($v,$act,$loop_number=0){
         $this->setStep(4); //'Compression / Suppression Pagefile'
-        $loop_number = 0;
         //vérification de la présence d'un clone
         if (!file_exists('/backup/nfs/' . $v->Titre)) {
             $act->addDetails('Le clone de la vm n\'est pas présent');
@@ -568,6 +572,7 @@ VM_STARTUP_ORDER=
         }
         //recherche des vmdks disques
         $clone_path = "/backup/nfs/".$v->Titre."/".$v->Titre."-A/";
+        $mount_path = "/tmp/";
         $cmd = 'sudo ls "' . $clone_path . '" | grep vmdk';
         $act->addDetails('Exec cmd: '.$cmd);
         $files = AbtelBackup::localExec($cmd);
@@ -586,6 +591,8 @@ VM_STARTUP_ORDER=
             $act->addDetails('||'.$f.'||');
             if (trim($type) != "ASCII text") {
                 //alors on monte le disque
+                $act->addDetails('sudo dmsetup remove_all');
+                AbtelBackup::localExec('sudo dmsetup remove_all');
                 //$act = $task->createActivity(' > Montage du disque ' . $f, 'Info');
                 $act->addDetails('disque -> '.$f);
                 $type=explode(';',$type);
@@ -595,49 +602,75 @@ VM_STARTUP_ORDER=
                 $act->addDetails('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
                 try {
                     $mount = AbtelBackup::localExec('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
+                    //on liste les partitions
+                    $act->addDetails('#1: sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
+                    $parts = AbtelBackup::localExec('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
                 }catch (Exception $e){
                     $act->addDetails($e->getMessage());
+                    //on liste les partitions
+                    $act->addDetails('#2: sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
+                    $parts = AbtelBackup::localExec('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
                     try {
                         $mount = AbtelBackup::localExec('sudo losetup /dev/loop' . $loop_number . ' "' . $clone_path . $f . '"');
+                        //on liste les partitions
+                        $act->addDetails('#3: sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
+                        $parts = AbtelBackup::localExec('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
                     }catch (Exception $e){
                         $act->addDetails($e->getMessage());
+                        $act->addDetails('<!> Impossible de traiter le disque '.$f);
+                        continue;
                     }
                 }
-                //on liste les partitions
-                $act->addDetails('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
-                $parts = AbtelBackup::localExec('sudo cfdisk -P s /dev/loop'.$loop_number.' | grep NTFS  | sed -e \'s/^ \([0-9]\).*/\1/\'');
                 $parts = explode("\n",$parts);
                 $act->addDetails(print_r($parts,true));
                 $act->Terminate(true);
                 try {
-                    AbtelBackup::localExec('sudo partx -va /dev/loop' . $loop_number);
+                    $act->addDetails('sudo partx -va /dev/loop' . $loop_number);
+                    $out = AbtelBackup::localExec('sudo partx -va /dev/loop' . $loop_number);
+                    $act->addDetails($out);
                 }catch (Exception $e){
                     $act->addDEtails($e->getMessage());
                 }
                 foreach ($parts as $p){
                     if (empty($p))continue;
-                    //$act = $task->createActivity(' >> Montage de la partition '.$p.' du disque ' . $f, 'Info');
-                    //création des points de montage
-                    $act->addDetails('if [ ! -d "' . $clone_path . 'part'.$p.'" ]; then sudo mkdir "' . $clone_path . 'part'.$p.'"; fi');
-                    AbtelBackup::localExec('if [ ! -d "' . $clone_path . 'part'.$p.'" ]; then sudo mkdir "' . $clone_path . 'part'.$p.'"; fi');
-                    //Montage des partitions
-                    $act->addDetails('sudo mount /dev/loop'.$loop_number.'p'.$p.' "'.$clone_path.'part'.$p.'"');
-                    AbtelBackup::localExec('sudo mount /dev/loop'.$loop_number.'p'.$p.' "'.$clone_path.'part'.$p.'"');
-                    //Suppression des fichiers
-                    if (file_exists($clone_path.'part'.$p.'/pagefile.sys')) {
-                        $act->addDetails('Suppression du fichier "'.$clone_path.'part'.$p.'/pagefile.sys"');
-                        AbtelBackup::localExec('sudo rm -f "' . $clone_path . 'part'.$p.'/pagefile.sys"');
+                    try {
+                        //$act = $task->createActivity(' >> Montage de la partition '.$p.' du disque ' . $f, 'Info');
+                        //création des points de montage
+                        $act->addDetails('if [ ! -d "' . $mount_path . 'part' . $p . '" ]; then sudo mkdir "' . $mount_path . 'part' . $p . '"; fi');
+                        AbtelBackup::localExec('if [ ! -d "' . $mount_path . 'part' . $p . '" ]; then sudo mkdir "' . $mount_path . 'part' . $p . '"; fi');
+                        try {
+                            //suppression du flag diry sur la partition
+                            $act->addDetails('sudo ntfsfix /dev/loop' . $loop_number . 'p' . $p . '');
+                            AbtelBackup::localExec('sudo ntfsfix /dev/loop\' . $loop_number . \'p\' . $p . \'\'');
+                            //Montage des partitions
+                            $act->addDetails('sudo mount /dev/loop' . $loop_number . 'p' . $p . ' "' . $mount_path . 'part' . $p . '" -t ntfs');
+                            AbtelBackup::localExec('sudo mount /dev/loop' . $loop_number . 'p' . $p . ' "' . $mount_path . 'part' . $p . '"  -t ntfs');
+                        } catch (Throwable $e) {
+                            $act->addDEtails($e->getMessage());
+                            continue;
+                        }
+                        //Suppression des fichiers
+                        if (file_exists($mount_path . 'part' . $p . '/pagefile.sys')) {
+                            $act->addDetails('Suppression du fichier "' . $mount_path . 'part' . $p . '/pagefile.sys"');
+                            AbtelBackup::localExec('sudo rm -f "' . $mount_path . 'part' . $p . '/pagefile.sys"');
+                        }
+                        if (file_exists($mount_path . 'part' . $p . '/hiberfil.sys')) {
+                            $act->addDetails('Suppression du fichier "' . $mount_path . 'part' . $p . '/hiberfil.sys"');
+                            AbtelBackup::localExec('sudo rm -f "' . $mount_path . 'part' . $p . '/hiberfil.sys"');
+                        }
+                        //Demontage et suppression des points de montage
+                        $act->addDetails('sudo umount "' . $mount_path . 'part' . $p . '" && sudo rmdir "' . $mount_path . 'part' . $p . '"');
+                        AbtelBackup::localExec('sudo umount "' . $mount_path . 'part' . $p . '" && sudo rmdir "' . $mount_path . 'part' . $p . '"');
+                        $act->Terminate(true);
+                    }catch (Throwable $e){
+                        $act->Terminate(false);
+                        //Demontage et suppression des points de montage
+                        $act->addDetails('sudo umount "' . $mount_path . 'part' . $p . '" && sudo rmdir "' . $mount_path . 'part' . $p . '"');
+                        AbtelBackup::localExec('sudo umount "' . $mount_path . 'part' . $p . '" && sudo rmdir "' . $mount_path . 'part' . $p . '"');
+                        $act->Terminate(true);
+                        continue;
                     }
-                    if (file_exists($clone_path.'part1/hiberfil.sys')) {
-                        $act->addDetails('Suppression du fichier "'.$clone_path.'part'.$p.'/hiberfil.sys"');
-                        AbtelBackup::localExec('sudo rm -f "' . $clone_path . 'part'.$p.'/hiberfil.sys"');
-                    }
-                    //Demontage et suppression des points de montage
-                    $act->addDetails('sudo umount "'.$clone_path.'part'.$p.'" && sudo rmdir "'.$clone_path.'part'.$p.'"');
-                    AbtelBackup::localExec('sudo umount "'.$clone_path.'part'.$p.'" && sudo rmdir "'.$clone_path.'part'.$p.'"');
-                    $act->Terminate(true);
                 }
-
             }else{
                 $act->addDetails('type '.$f.' -> |'.$type.'|');
             }
