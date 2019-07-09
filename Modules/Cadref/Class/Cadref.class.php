@@ -119,14 +119,14 @@ class Cadref extends Module {
 		return json_encode($data);
 	}
 
-		
-	private static function CreateUser($num, $confirm=false) {
-		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
+	public static function CreateUser($num, $confirm=false, $ensId=0) {
+		if($ensId) $a = Sys::getOneData('Cadref', 'Enseignant/'.$ensId);
+		else $a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
 		$u = Sys::getOneData('Systeme', 'User/Login='.$num);
 		$new = false;
 		if(! $u) {
 			$new = true;
-			$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+			$g = Sys::getOneData('Systeme', 'Group/Nom='.($ensId ? 'CADREF_ENS' : 'CADREF_ADH'));
 			$u = genericClass::createInstance('Systeme', 'User');
 			$u->addParent($g);
 			$u->Login = $num;
@@ -134,8 +134,8 @@ class Cadref extends Module {
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}
-		$p = self::GeneratePassword();
-		$u->Pass = '[md5]'.md5($p);
+		$pass = self::GeneratePassword();
+		$u->Pass = '[md5]'.md5($pass);
 		$u->Save();
 
 		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte utilisateur : ';
@@ -145,7 +145,7 @@ class Cadref extends Module {
 			$s = self::MailCivility($a);
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
 			$s .= "Vos paramètres de connection sont les suivants :<br /><br />";
-			$s .= "Code utilisateur (N° adhérent) : <strong>$num</strong><br />Mot de Passe : <strong>$p</strong><br /><br />";
+			$s .= "Code utilisateur : <strong>$num</strong><br />Mot de Passe : <strong>$pass</strong><br /><br />";
 			if($confirm) {
 				$s .= 'Avant de pouvoir vous inscrire à des cours ou à des visites guidées,<br />';
 				$s .= 'vous devrez compléter les informations dans la rubrique "Info personnelles".<br /><br />';

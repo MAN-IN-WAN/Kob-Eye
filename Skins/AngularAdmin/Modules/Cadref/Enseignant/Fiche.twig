@@ -119,6 +119,7 @@
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accsskey="g" title="Alt G" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" bg-if="{{ o }}.id && !{{ o }}.Compte" ng-click="enseignantUser(obj)">Utilisateur</button>
 				</div>
 			</div>
 		</div>

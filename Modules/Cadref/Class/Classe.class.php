@@ -23,6 +23,7 @@ class Classe extends genericClass {
 			$this->addParent($p);
 			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
 			if(empty($this->Annee)) $this->Annee = $annee;
+			//if(! $this->DateReduction1) $this->DateReduction1 = 
 		}
 		else {
 			$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
@@ -48,6 +49,15 @@ class Classe extends genericClass {
 		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
 	}
 	 
+	function ListClassSetSession($obj) {
+		$_SESSION['ListClasse'] = $obj['ClasseAnnee'];
+		return true;
+	}
+	function ListClassGetSession($obj) {
+		if(isset($_SESSION['ListClasse'])) $obj = $_SESSION['ListClasse'];
+		else $obj = false;
+		return $obj;
+	}
 	
 	function NextDate() {
 		$id = $this->Id;
