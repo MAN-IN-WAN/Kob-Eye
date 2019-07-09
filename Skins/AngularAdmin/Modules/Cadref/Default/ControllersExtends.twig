@@ -295,12 +295,21 @@
 
 		{% if objecttype == 'Classe' %}
 		$scope.ClasseAnnee = '{{ AnneeFiltre }}';
+		$scope.ClassePage = 0;
+
+		$(document).ready(function(){
+			$scope.ClassePage = CadrefClasseStore.getCurrentPage();
+			$timeout(function () {
+				$scope.ListClasseGetSession();
+			},200);
+		});
+
 		$scope.classeAnneeChange = function(mode) {
 			if((typeof CadrefClasseStore.setOptionsFilters) === 'undefined') return;
 			if(mode === undefined) mode = true;
 			var f = '';
 			if($scope.ClasseAnnee) f = 'Annee='+$scope.ClasseAnnee;
-			var p = CadrefClasseStore.getCurrentPage();
+			var p = $scope.ClassePage; //CadrefClasseStore.getCurrentPage();
             CadrefClasseStore.setOptionsFilters(f,'default',false);
             CadrefClasseStore.getData(p,'default');
 			if(mode) $scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
@@ -359,12 +368,6 @@
 				}
 			);
 		}
-
-		$(document).ready(function(){
-			$timeout(function () {
-				$scope.ListClasseGetSession();
-			},250);
-		});
 		{% endif %}
 		
 		
