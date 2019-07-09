@@ -56,15 +56,15 @@
 
 	<OBJECTCLASS title="WebSection" driver="mysql" order="Section" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Section Web" Operations="add,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebSection.class.php">
 		<PROPERTIES type="varchar" length="2" searchOrder="1" unique="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Section">WebSection</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="WebDiscipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline Web" Operations="addChildren,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebDiscipline.class.php">
 		<FKEY card="1,1" module="Cadref" data="WebSection,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">WebSectionId</FKEY>
-		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">WebDiscipline</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" searchOrder="1" category="Description" form="2" fiche="2" description="Discipline">WebDiscipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Section">WebSection</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
 
 		<VIEW title="DisciplineWebList" default="1">

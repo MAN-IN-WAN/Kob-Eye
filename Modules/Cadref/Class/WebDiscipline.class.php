@@ -7,5 +7,12 @@ class WebDiscipline extends genericClass {
 		$this->CodeDiscipline = $p->WebSection.$this->WebDiscipline;
 		return parent::Save();
 	}
+
+	function Delete() {
+		$rec = $this->getChildren('Discipline');
+		if(count($rec)) throw new Exception('Cette section ne peut être supprimée');
+
+		return parent::Delete();
+	}
 	
 }

@@ -338,10 +338,11 @@ class Adherent extends genericClass {
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
+				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
 				$adherent = false;
 
 
-				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S' || $visite != '') {
+				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S' || $visite != '' || $visiteAnnee) {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
@@ -358,9 +359,18 @@ class Adherent extends genericClass {
 				elseif($visite != '') {
 					$sql .= "
 from `##_Cadref-Adherent` e
-inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.VisiteId=$visite ";
+inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.VisiteId=$visite 
+left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					$rupture = 'S';
-					$contenu = 'A';
+					//$contenu = 'A';
+				}
+				elseif($visiteAnnee != '') {
+					$sql .= "
+from `##_Cadref-Adherent` e
+inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.Annee='$visiteAnnee' 
+left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
+					$rupture = 'S';
+					//$contenu = 'A';
 				}
 				else {
 					// adhérents inscrits
@@ -382,7 +392,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh != 'S' && $visite == '') {
+				if($typAdh != 'S' && $visite == '' && $visiteAnnee == '') {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
 					// type adherent
@@ -438,7 +448,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				//requete sql
 				if($whr != '') $sql .= "where ".substr($whr, 4);
 				if($adherent) {
-					if($contenu == 'Q') $sql .= "order by e.CP, e.Ville, e.Nom, e.Prenom ";
+					if($contenu == 'Q') $sql .= "order by e.Nom, e.Prenom ";  // e.CP, e.Ville, 
 					else $sql .= "order by e.Nom, e.Prenom ";
 				}
 				else {
@@ -548,7 +558,6 @@ order by a.Nom, a.Prenom";
 			fclose($f);
 			return array('csv'=>$file, 'sql'=>$sql);
 		}
-		
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
