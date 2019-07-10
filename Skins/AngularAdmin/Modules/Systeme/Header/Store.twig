@@ -612,13 +612,15 @@
                     });
                 }else{
                     //on annule la requete
+					console.log(context+' >> CANCEL > {{ key }} > getData >> page '+busy[context].page+' filter:'+busy[context].filter);
                     busy[context].promise.defer().resolve();
                     busy[context] = false;
+					resolve({{ st.identifier }}Store[context]);
                 }
             }
             return $q(function(resolve, reject) {
                 //console.trace();
-                console.log(context+' >> store > {{ key }} > getData >> page '+page+' / '+pageLoaded[context]);
+                console.log(context+' >> store > {{ key }} > getData >> page '+page+' / '+pageLoaded[context]+' filter:'+tmpfilters);
                 if (page!=pageLoaded[context]){
                     var canceler = $q.defer();
                     busy[context]={
@@ -640,6 +642,7 @@
                             },
                             timeout: canceler.promise
                         }).success(function(data) {
+							console.log(context+' >> store > {{ key }} > loaded success. page:'+busy[context].page+' filter:'+busy[context].filter,{{ st.identifier }}Store[context]);
                             busy[context]=false;
                             purgeStore(context);
                             pageLoaded[context] = page;
@@ -649,9 +652,11 @@
                                 if (!alreadyExists(data.data[i].id,context))
                                     {{ st.identifier }}Store[context].push(unescapeData(data.data[i]));
                             }
-                            console.log(context+' >> store > {{ key }} > loaded success ',{{ st.identifier }}Store[context]);
                             resolve({{ st.identifier }}Store[context]);
-                    });
+						}).error(function() {
+							console.log(context+' >> store > {{ key }} > ERROR');
+						}
+					);;
                 }else{
                     busy[context] = false;
                     resolve({{ st.identifier }}Store[context]);

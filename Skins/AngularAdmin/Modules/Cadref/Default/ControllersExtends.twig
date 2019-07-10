@@ -294,25 +294,36 @@
 		{% endif %}
 
 		{% if objecttype == 'Classe' %}
-		$scope.ClasseAnnee = '{{ AnneeFiltre }}';
 		$scope.ClassePage = 0;
-
+		$scope.ClasseAnnee = {{ Annee }}
+		
 		$(document).ready(function(){
+			// ignore le premier document ready
+			if(CadrefClasseStore.ListClasseReady == undefined || !CadrefClasseStore.ListClasseReady) {
+				CadrefClasseStore.ListClasseReady = true;
+				return;
+			}
+			CadrefClasseStore.ListClasseReady = false;
+
 			$scope.ClassePage = CadrefClasseStore.getCurrentPage();
+			if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
+			$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
+			
 			$timeout(function () {
-				$scope.ListClasseGetSession();
-			},200);
+				$scope.classeAnneeChange(false);
+				//$scope.ListClasseGetSession();
+			},30);
 		});
 
 		$scope.classeAnneeChange = function(mode) {
 			if((typeof CadrefClasseStore.setOptionsFilters) === 'undefined') return;
-			if(mode === undefined) mode = true;
-			var f = '';
-			if($scope.ClasseAnnee) f = 'Annee='+$scope.ClasseAnnee;
-			var p = $scope.ClassePage; //CadrefClasseStore.getCurrentPage();
-            CadrefClasseStore.setOptionsFilters(f,'default',false);
+			if(mode == undefined) mode = true;
+			var f = 'Annee='+$scope.ClasseAnnee;
+			var p = mode ? 1 : $scope.ClassePage;
+			console.log("CadrefClasseStore:"+f+":"+p);
+            CadrefClasseStore.setOptionsFilters(f,'default');
             CadrefClasseStore.getData(p,'default');
-			if(mode) $scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
+			if(mode) CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee; //$scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
 		}
 		
 		var lasttimeout = false;
