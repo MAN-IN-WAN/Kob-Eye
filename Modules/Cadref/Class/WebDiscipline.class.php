@@ -15,4 +15,9 @@ class WebDiscipline extends genericClass {
 		return parent::Delete();
 	}
 	
+	function GetFormInfo() {
+		$s = $this->getOneParent('WebSection');
+		return array('LibelleS'=>$s->Libelle);
+	}
+	
 }
