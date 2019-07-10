@@ -296,6 +296,10 @@
 		{% if objecttype == 'Classe' %}
 		$scope.ClassePage = 0;
 		$scope.ClasseAnnee = {{ Annee }}
+		$scope.ClassePage = CadrefClasseStore.getCurrentPage();
+		if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
+		$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
+		CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
 		
 		$(document).ready(function(){
 			// ignore le premier document ready
@@ -305,10 +309,6 @@
 			}
 			CadrefClasseStore.ListClasseReady = false;
 
-			$scope.ClassePage = CadrefClasseStore.getCurrentPage();
-			if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
-			$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
-			CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
 			
 			$timeout(function () {
 				$scope.classeAnneeChange(false);
