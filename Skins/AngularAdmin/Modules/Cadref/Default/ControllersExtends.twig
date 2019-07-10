@@ -308,11 +308,12 @@
 			$scope.ClassePage = CadrefClasseStore.getCurrentPage();
 			if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
 			$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
+			CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
 			
 			$timeout(function () {
 				$scope.classeAnneeChange(false);
 				//$scope.ListClasseGetSession();
-			},30);
+			},100);
 		});
 
 		$scope.classeAnneeChange = function(mode) {
@@ -321,7 +322,7 @@
 			var f = 'Annee='+$scope.ClasseAnnee;
 			var p = mode ? 1 : $scope.ClassePage;
 			console.log("CadrefClasseStore:"+f+":"+p);
-            CadrefClasseStore.setOptionsFilters(f,'default');
+            CadrefClasseStore.setGlobalFilter(f,'default'); //setOptionsFilters(f,'default');
             CadrefClasseStore.getData(p,'default');
 			if(mode) CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee; //$scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
 		}

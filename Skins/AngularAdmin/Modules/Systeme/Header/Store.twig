@@ -615,7 +615,6 @@
 					console.log(context+' >> CANCEL > {{ key }} > getData >> page '+busy[context].page+' filter:'+busy[context].filter);
                     busy[context].promise.defer().resolve();
                     busy[context] = false;
-					resolve({{ st.identifier }}Store[context]);
                 }
             }
             return $q(function(resolve, reject) {
@@ -642,6 +641,12 @@
                             },
                             timeout: canceler.promise
                         }).success(function(data) {
+							if(busy[context] == false) {
+								resolve({{ st.identifier }}Store[context]);
+								currentPage[context] = page;
+								console.log(context+' >> store > {{ key }} > CANCELED',{{ st.identifier }}Store[context]);
+								return;
+							}
 							console.log(context+' >> store > {{ key }} > loaded success. page:'+busy[context].page+' filter:'+busy[context].filter,{{ st.identifier }}Store[context]);
                             busy[context]=false;
                             purgeStore(context);
