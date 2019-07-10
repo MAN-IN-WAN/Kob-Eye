@@ -322,6 +322,7 @@
 			
 			$timeout(function () {
 				$scope.classeAnneeChange(false);
+				//$scope.ListeEnseignants();
 				//$scope.ListClasseGetSession();
 			},100);
 		});
@@ -336,6 +337,14 @@
             CadrefClasseStore.getData(p,'default');
 			if(mode) CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee; //$scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
 		}
+		
+		$scope.ListeEnseignants = function() {
+			var ajax = $scope.{{ ident }}callMethod({},'ListeEnseignants');
+			ajax.success(function(data) {
+				if(data.data) $scope.obj.Enseignants = data.data.Enseignants;
+			});
+		}
+		
 /*		
 		var lasttimeout = false;
 		// wait for CadrefClasse to be defined before setting a watch on filters
@@ -1507,6 +1516,7 @@
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
+					$scope.obj.Enseignants = data.data.Enseignants;
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1528,6 +1538,7 @@
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.obj.LibelleN = data.data.LibelleN;
 					$scope.obj.LibelleL = data.data.LibelleL;
+					$scope.obj.Enseignants = data.data.Enseignants;
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1540,7 +1551,7 @@
 		}
 
 		// pour multi-select
-		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
+		//$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		//-----------------
 		// CLASSEDATE

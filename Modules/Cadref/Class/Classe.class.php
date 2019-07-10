@@ -46,7 +46,17 @@ class Classe extends genericClass {
 		$d = $this->getOneParent('Discipline');
 		$n = $this->getOneParent('Niveau');
 		$l = $this->getOneParent('Lieu');
-		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '', 'Enseignants'=>$t);
+	}
+	
+	function ListeEnseignants() {
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('Enseignants'=>$t);
 	}
 	 
 	function ListClassSetSession($obj) {
