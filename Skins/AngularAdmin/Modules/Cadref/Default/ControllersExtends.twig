@@ -318,11 +318,13 @@
 			}
 			CadrefClasseStore.ListClasseReady = false;
 
+console.log('CadrefClasseStore document ready');
 			var busyWatch = $scope.$watch('CadrefClasseStore.busy.default', function() {
 				var getObj = $interval(function() {
 					if(CadrefClasseStore.busy.default == false) {
 						$interval.cancel(getObj);
 						busyWatch();
+console.log('CadrefClasseStore classeAnneeChange');
 						$scope.classeAnneeChange(false);
 					}
 				},100,100);
@@ -339,7 +341,7 @@
 			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
 			
 			var p = mode ? 1 : $scope.ClassePage;
-			//console.log("xxxxxxxxxxxxxxxxxxxxxxxCadrefClasseStore:"+f+":"+p,mode);
+			console.log("xxxxxxxxxxxxxxxxxxxxxxxCadrefClasseStore:"+f+":"+p,mode);
             CadrefClasseStore.setGlobalFilter(f,'default');
             CadrefClasseStore.getData(p,'default');
 			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
@@ -348,6 +350,7 @@
 		
 		var lasttimeout = false;
 		var ignoreNext = 0;
+		var ingoreFirst = 2;
 		// wait for CadrefClasse to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefClasse', function() {
 			if($scope.CadrefClasse != undefined && $scope.CadrefClasse.filter2 == undefined) {
@@ -358,6 +361,11 @@
 						ignoreNext = 0;
 						return;
 					}
+					if(ingoreFirst) {
+						ingoreFirst--;
+						return;
+					}
+					
 					if($scope.CadrefClasse.filter1 != CadrefClasseStore.Filter1) {
 						if($scope.CadrefClasse.filter2 != '') {
 							ignoreNext = 2;
