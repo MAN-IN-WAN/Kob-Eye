@@ -318,7 +318,7 @@
 			}
 			CadrefClasseStore.ListClasseReady = false;
 
-console.log('CadrefClasseStore document ready');
+			// attend que le getData par defaut soit terminé pour lancer un getData sur la bonne page 
 			var busyWatch = $scope.$watch('CadrefClasseStore.busy.default', function() {
 				var getObj = $interval(function() {
 					if(CadrefClasseStore.busy.default == false) {
