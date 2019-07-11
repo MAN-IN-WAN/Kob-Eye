@@ -23,9 +23,9 @@ class Classe extends genericClass {
 			$this->addParent($p);
 			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
 			if(empty($this->Annee)) $this->Annee = $annee;
-			$next = $annee+1;
+			$next = $this->Annee+1;
 			if(! $this->DateReduction1) $this->DateReduction1 = strtotime("$next-01-01");
-			if(! $this->DateReduction2) $this->DateReduction1 = strtotime("$next-03-01");
+			if(! $this->DateReduction2) $this->DateReduction2 = strtotime("$next-03-01");
 		}
 		else {
 			$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
