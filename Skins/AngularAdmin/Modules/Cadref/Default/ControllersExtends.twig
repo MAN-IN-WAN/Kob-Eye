@@ -454,6 +454,9 @@ console.log('CadrefClasseStore classeAnneeChange');
 				{% if objecttype == 'Niveau' %}$scope.niveauInfo();{% endif %}
 				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
 				{% if objecttype == 'Lieu' %}$scope.lieuInfo();{% endif %}
+				{% if objecttype == 'Visite' %}$scope.visiteInfo();{% endif %}
+				{% if objecttype == 'WebSection' %}$scope.webSectionInfo();{% endif %}
+				{% if objecttype == 'WebDiscipline' %}$scope.webDisciplineInfo();{% endif %}
             }
         },100,50);	
 		
@@ -1520,8 +1523,10 @@ console.log('CadrefClasseStore classeAnneeChange');
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(
 				function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleW = data.data.LibelleW;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(
 				function() {
@@ -1540,10 +1545,12 @@ console.log('CadrefClasseStore classeAnneeChange');
 			$scope.obj.LibelleN = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
-					$scope.obj.Enseignants = data.data.Enseignants;
+					$scope.Enseignants = data.data.Enseignants;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1559,12 +1566,14 @@ console.log('CadrefClasseStore classeAnneeChange');
 		$scope.classeInfo = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.obj.LibelleN = data.data.LibelleN;
 					$scope.obj.LibelleL = data.data.LibelleL;
-					$scope.obj.Enseignants = data.data.Enseignants;
+					$scope.Enseignants = data.data.Enseignants;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1575,9 +1584,6 @@ console.log('CadrefClasseStore classeAnneeChange');
 				CadrefClasseDateStore.refresh('children');
 			}, 500);
 		}
-
-		// pour multi-select
-		//$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		//-----------------
 		// CLASSEDATE
@@ -1660,6 +1666,18 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// VISITE RESERVATION
 		//--------------------------------------
 
+		$scope.visiteInfo = function() {
+			$scope.obj.LibelleD = $scope.obj.Libelle;
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(function(data) {
+				var d = $scope.CadrefContent.$dirty;
+				$scope.Enseignants = data.data.Enseignants;
+				$scope.CadrefContent.$dirty = d
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		
 		// impression
 		$scope.visitObj = {Guide:true, Chauffeur:false, Interne:false};
 		
@@ -1683,7 +1701,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		}
 		
 		// pour multi-select
-		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
+		//$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		$scope.localObj = {};
 		// hook sur CadrefReservationadd
@@ -1914,7 +1932,9 @@ console.log('CadrefClasseStore classeAnneeChange');
 		$scope.lieuInfo = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1927,7 +1947,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		//--------------------------------------
 		// SECTION
 		//--------------------------------------		
-		$scope.sectionInfo = function() {
+		$scope.webSectionInfo = function() {
 			$scope.obj.LibelleS = $scope.obj.Libelle;
 		}
 		
@@ -1950,18 +1970,16 @@ console.log('CadrefClasseStore classeAnneeChange');
 		//--------------------------------------
 		// DISCIPLINE
 		//--------------------------------------		
-		$scope.disciplineInfo = function() {
+		$scope.webDisciplineInfo = function() {
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
-			ajax.success(
-				function(data) {
-					$scope.obj.LibelleS = data.data.LibelleS;
-				}
-			).error(
-				function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
+			ajax.success(function(data) {
+				var d = $scope.CadrefContent.$dirty;
+				$scope.obj.LibelleS = data.data.LibelleS;
+				$scope.CadrefContent.$dirty = d
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
 		}
 		{% endif %}
 		
