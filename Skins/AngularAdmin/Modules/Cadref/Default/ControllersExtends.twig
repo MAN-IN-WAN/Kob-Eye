@@ -243,7 +243,7 @@
 		}
 		{% endif %}
 		
-		{% if objecttype in 'Classe,Discipline,Niveau,Section,WebSection,WebDiscipline' %}
+		{% if objecttype in 'Discipline,Niveau,Section,WebSection,WebDiscipline' %}
 		{% if objecttype == 'Discipline' %}
 			{% set codeName = 'CodeDiscipline' %}
 			{% set codeLength = 15 %}
@@ -253,9 +253,6 @@
 		{% elseif objecttype == 'Section' %}
 			{% set codeName = 'Section' %}
 			{% set codeLength = 8 %}
-		{% elseif objecttype == 'Classe' %}
-			{% set codeName = 'CodeClasse' %}
-			{% set codeLength = 11 %}
 		{% elseif objecttype == 'WebSection' %}
 			{% set codeName = 'WebSection' %}
 			{% set codeLength = 11 %}
@@ -303,13 +300,15 @@
 		});
 		{% endif %}
 
-		{% if objecttype == 'Classe' %}
-		$scope.ClassePage = 0;
-		$scope.ClasseAnnee = {{ Annee }}
+		
+		{% if objecttype == 'Classe' %}		
 		$scope.ClassePage = CadrefClasseStore.getCurrentPage();
 		if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
 		$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
 		CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
+		if(CadrefClasseStore.Filter1 == undefined) CadrefClasseStore.Filter1 = '';
+		if(CadrefClasseStore.Filter2 == undefined) CadrefClasseStore.Filter2 = '';
+
 		
 		$(document).ready(function(){
 			// ignore le premier document ready
@@ -319,63 +318,81 @@
 			}
 			CadrefClasseStore.ListClasseReady = false;
 
-			
-			$timeout(function () {
-				$scope.classeAnneeChange(false);
-				//$scope.ListeEnseignants();
-				//$scope.ListClasseGetSession();
-			},100);
+			var busyWatch = $scope.$watch('CadrefClasseStore.busy.default', function() {
+				var getObj = $interval(function() {
+					if(CadrefClasseStore.busy.default == false) {
+						$interval.cancel(getObj);
+						busyWatch();
+						$scope.classeAnneeChange(false);
+					}
+				},100,100);
+			});
 		});
 
 		$scope.classeAnneeChange = function(mode) {
-			if((typeof CadrefClasseStore.setOptionsFilters) === 'undefined') return;
+			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
 			if(mode == undefined) mode = true;
-			var f = 'Annee='+$scope.ClasseAnnee;
+			
+			var f = '';
+			if(CadrefClasseStore.Filter2 != '') f = 'CodeClasse~'+CadrefClasseStore.Filter2;
+			else if(CadrefClasseStore.Filter1 != '') f = CadrefClasseStore.Filter1;
+			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
+			
 			var p = mode ? 1 : $scope.ClassePage;
-			console.log("CadrefClasseStore:"+f+":"+p);
-            CadrefClasseStore.setGlobalFilter(f,'default'); //setOptionsFilters(f,'default');
+			//console.log("xxxxxxxxxxxxxxxxxxxxxxxCadrefClasseStore:"+f+":"+p,mode);
+            CadrefClasseStore.setGlobalFilter(f,'default');
             CadrefClasseStore.getData(p,'default');
-			if(mode) CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee; //$scope.{{ ident }}callMethod({ClasseAnnee: $scope.ClasseAnnee},'ListClassSetSession');
+			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
 		}
 		
-		$scope.ListeEnseignants = function() {
-			var ajax = $scope.{{ ident }}callMethod({},'ListeEnseignants');
-			ajax.success(function(data) {
-				if(data.data) $scope.obj.Enseignants = data.data.Enseignants;
-			});
-		}
 		
-/*		
 		var lasttimeout = false;
+		var ignoreNext = 0;
 		// wait for CadrefClasse to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefClasse', function() {
 			if($scope.CadrefClasse != undefined && $scope.CadrefClasse.filter2 == undefined) {
-				$scope.CadrefClasse.filter1 = '';
-				$scope.CadrefClasse.filter2 = '';
-				var f = CadrefClasseStore.getFilters('default',true).global;
-				if(f != '') {
-					if(f.substring(0, 11) == 'CodeClasse~') $scope.CadrefClasse.filter2 = f.substring(11);
-					else $scope.CadrefClasse.filter1 = f
-				}
+				$scope.CadrefClasse.filter1 = CadrefClasseStore.Filter1;
+				$scope.CadrefClasse.filter2 = CadrefClasseStore.Filter2;
 				$scope.$watch('CadrefClasse.filter1', function() {
-					if ($scope.CadrefClasse.filter1 != CadrefClasseStore.getFilters('default',true).global){
-						if (lasttimeout){
+					if(ignoreNext == 1) {
+						ignoreNext = 0;
+						return;
+					}
+					if($scope.CadrefClasse.filter1 != CadrefClasseStore.Filter1) {
+						if($scope.CadrefClasse.filter2 != '') {
+							ignoreNext = 2;
+							$scope.CadrefClasse.filter2 = '';
+						}
+						CadrefClasseStore.Filter1 = $scope.CadrefClasse.filter1;
+						
+						if(lasttimeout){
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1,'default');
+						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1+'&Annee='+$scope.ClasseAnnee,'default');
+
 						lasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
 					}
 				});
 				$scope.$watch('CadrefClasse.filter2', function() {
-					if ($scope.CadrefClasse.filter2 != CadrefClasseStore.getFilters('default',true).global){
+					if(ignoreNext == 2) {
+						ignoreNext = 0;
+						return;
+					}
+					if($scope.CadrefClasse.filter2 != CadrefClasseStore.filter2) {
+						if($scope.CadrefClasse.filter1 != '') {
+							ignoreNext = 1;
+							$scope.CadrefClasse.filter1 = '';
+						}
+						CadrefClasseStore.Filter2 = $scope.CadrefClasse.filter2;
+						
 						if (lasttimeout){
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2,'default');
+						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2+'&Annee='+$scope.ClasseAnnee,'default');
 						lasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
@@ -384,7 +401,7 @@
 				unwatch();
 			}
 		});
-
+/*
 		$scope.ListClasseGetSession = function() {
 			var args = {name: 'ListClasse'} ;
 			var ajax = $scope.{{ ident }}callMethod(args,'ListClassGetSession');
@@ -1519,9 +1536,8 @@
 					$scope.obj.Enseignants = data.data.Enseignants;
 				}
 			).error(function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
 		}
 		{% endif %}
 		

@@ -143,7 +143,7 @@
 								</div>
 								<div class="col-md-10">
 									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefLieuStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId}" 
+										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId+'&Type=L'}" 
 										 ng-model="{{ o }}.LieuLieuId"
 										 class="form-control cadref-input" 
 										 ng-title="{{ o }}.LieuLieuIdlabel{#+'  -  '+{{ o }}.LibelleL#}">

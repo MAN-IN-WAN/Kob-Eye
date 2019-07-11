@@ -641,7 +641,7 @@
                             },
                             timeout: canceler.promise
                         }).success(function(data) {
-							if(busy[context] == false) {
+							if(busy[context] === false) {
 								resolve({{ st.identifier }}Store[context]);
 								currentPage[context] = page;
 								console.log(context+' >> store > {{ key }} > CANCELED',{{ st.identifier }}Store[context]);
