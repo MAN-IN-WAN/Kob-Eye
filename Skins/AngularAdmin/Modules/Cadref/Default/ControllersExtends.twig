@@ -324,8 +324,10 @@ console.log('CadrefClasseStore document ready');
 					if(CadrefClasseStore.busy.default == false) {
 						$interval.cancel(getObj);
 						busyWatch();
+						$timeout(function() {
 console.log('CadrefClasseStore classeAnneeChange');
-						$scope.classeAnneeChange(false);
+							$scope.classeAnneeChange(false);
+						},100);
 					}
 				},100,100);
 			});
