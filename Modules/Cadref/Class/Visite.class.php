@@ -45,6 +45,13 @@ class Visite extends genericClass {
 		return parent::Delete();
 	}
 	
+	function GetFormInfo() {
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('Enseignants'=>$t);
+	}
+
 	function PrintVisite($obj) {
 		$annee = Cadref::$Annee;
 		$sql = "

@@ -234,7 +234,7 @@ from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-where i.Annee='$annee'
+where i.Annee='$annee' and i.Supprime=0 and i.Attente=0
 group by i.CodeClasse
 order by i.CodeClasse
 ";

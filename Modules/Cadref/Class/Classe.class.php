@@ -23,6 +23,9 @@ class Classe extends genericClass {
 			$this->addParent($p);
 			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
 			if(empty($this->Annee)) $this->Annee = $annee;
+			$next = $this->Annee+1;
+			if(! $this->DateReduction1) $this->DateReduction1 = strtotime("$next-01-01");
+			if(! $this->DateReduction2) $this->DateReduction2 = strtotime("$next-03-01");
 		}
 		else {
 			$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
@@ -31,7 +34,7 @@ class Classe extends genericClass {
 		}
 		return parent::Save();
 	}
-	
+			
 	function Delete() {
 		$rec = $this->getChildren('Inscription');
 		if(count($rec)) throw new Exception('Cette classe ne peut être supprimée');
@@ -45,9 +48,28 @@ class Classe extends genericClass {
 		$d = $this->getOneParent('Discipline');
 		$n = $this->getOneParent('Niveau');
 		$l = $this->getOneParent('Lieu');
-		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '', 'Enseignants'=>$t);
+	}
+	
+	function ListeEnseignants() {
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('Enseignants'=>$t);
 	}
 	 
+	function ListClassSetSession($obj) {
+		$_SESSION['ListClasse'] = $obj['ClasseAnnee'];
+		return true;
+	}
+	function ListClassGetSession($obj) {
+		if(isset($_SESSION['ListClasse'])) $obj = $_SESSION['ListClasse'];
+		else $obj = false;
+		return $obj;
+	}
 	
 	function NextDate() {
 		$id = $this->Id;

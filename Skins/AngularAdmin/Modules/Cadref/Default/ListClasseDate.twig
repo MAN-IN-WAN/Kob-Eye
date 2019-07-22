@@ -10,9 +10,9 @@
 						{{ label("Date du cours") }}
 					</div>
 					<div class="col-md-8" >
-						<label class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
+						<label id="pppp" class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
 							<input id="input-dateClasseObjDateCours" type="text" class="form-control cadref-input" ng-init="initDatePickerOnly()"
-								   placeholder="Date" ng-model="classeDateObj.DateCours"/>
+								   placeholder="Date" ng-model="classeDateObj.DateCours" ng-blur="classeDateAnnee()"/>
 							<span class="input-group-addon">
 								<i class="icmn-calendar"></i>
 							</span>

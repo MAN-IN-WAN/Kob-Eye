@@ -622,9 +622,16 @@
             {{ c.identifier }}Store.getData(1,'default');
             //$scope.{{ c.identifier }}.currentPage = 1;
         });
+		
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
-            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
+			if($scope.{{ c.identifier }}.currentPage != $scope.{{ c.identifier }}.store.currentPage.default) 
+	            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
         });
+        $scope.$watch('{{ c.identifier }}.store.currentPage.default', function() {
+			if($scope.{{ c.identifier }}.currentPage != $scope.{{ c.identifier }}.store.currentPage.default) 
+	            $scope.{{ c.identifier }}.currentPage = $scope.{{ c.identifier }}.store.currentPage.default;
+        });
+
         /**
         * PREDEFINED FILTERS
         */

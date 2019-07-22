@@ -47,7 +47,16 @@ class Enseignant extends genericClass {
 				);
 		}
 	}
-
+	
+	function CreateUser() {
+		$usr = 'ens'.strtolower($this->Code);
+		$o = Sys::getOneData('Systeme', 'User/Login='.$usr);
+		if($o) return array('msg'=>'User deja existant');
+		Cadref::CreateUser($usr, false, $this->Id);
+		$this->Compte = 1;
+		$this->Save();
+		return array('user'=>$usr);
+	}
 	
 	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;

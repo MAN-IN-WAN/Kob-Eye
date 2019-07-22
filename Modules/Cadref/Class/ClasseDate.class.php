@@ -2,7 +2,10 @@
 class ClasseDate extends genericClass {
 	
 	function Save() {
-		$this->Annee = Cadref::$Annee;
+		if(! $this->Annee) {
+			$cls = $this->GetOneParent('Classe');
+			$this->Annee = $cls->Annee;
+		}
 		return parent::Save();		
 	}
 

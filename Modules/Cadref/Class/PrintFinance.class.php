@@ -104,15 +104,15 @@ class PrintFinance extends FPDF {
 		$s = '';
 		if($nred2) $s = $l['red2']." ($nred2)";
 		$this->Cell($this->width[5], 4.5, $s, 0, 0, 'R');
-		$tot = $l['total'] - $red - $red2;
+		$tot = $l['total'] - $l['red'] - $l['red2'];
 		$this->Cell($this->width[5], 4.5, $tot, 0, 0, 'R');
 		$this->posy += 4.5;
 		
 		$this->cours++;
 		$this->inscrits += $l['inscrits'];
 		$this->prix += $l['Prix'];
-		$this->reduc += $red;
-		$this->reduc2 += $red2;
+		$this->reduc += $l['red'];
+		$this->reduc2 += $l['red2'];
 		$this->cumul += $tot;
 	} 
 

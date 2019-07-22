@@ -1,4 +1,4 @@
-{# fiche Niveau #}
+{# fiche Discipline #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean,fkey %} 
 {% set f=fields %}
 {% set o=Create ? 'modalObj' : 'obj' %}
@@ -26,35 +26,20 @@
 						<div class="col-md-7" >
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Antenne") }}
+									{{ label("Section web") }}
 								</div>
-								<div class="col-md-10" ng-if="!{{ o }}.id">
-									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefAntenneStore',$searchTerm)" 
+								<div class="col-md-10" ng-if="!{{ o }}.WebSectionWebSectionId">
+									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefWebSectionStore',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="{{ o }}.AntenneAntenneId" 
+										 ng-model="{{ o }}.SectionSectionId" 
 										 class="form-control" 
-										 ng-title="{{ o }}.AntenneAntenneIdlabel+'  -  '+{{ o }}.LibelleA">
+										 ng-title="{{ o }}.WebSectionWebSectionIdlabel+'  -  '+obj.LibelleS">
 									</div>
 								</div>
-								<div class="col-md-10" ng-if="{{ o }}.id">
+								<div class="col-md-10" ng-if="{{ o }}.WebSectionWebSectionId">
 									<div class="row">
 										<div class="col-md-2">
-											{{ fkey(f.AntenneId, o) }}
-										</div>
-										<div class="col-md-10">
-											{{ finput(f.LibelleA, 'obj', true) }}
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row" ng-if="show">
-								<div class="col-md-2">
-									{{ label("Section") }}
-								</div>
-								<div class="col-md-10">
-									<div class="row">
-										<div class="col-md-2">
-											{{ fkey(f.SectionId, 'obj') }}
+											{{ fkey(f.WebSectionId, o) }}
 										</div>
 										<div class="col-md-10">
 											{{ finput(f.LibelleS, 'obj', true) }}
@@ -62,32 +47,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Discipline") }}
-								</div>
-								<div class="col-md-10" ng-if="!{{ o }}.DisciplineDisciplineId">
-									<div custom-select="a.id as a.CodeDiscipline+'  -  '+a.Libelle for a in getSelectData('CadrefDisciplineStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="obj.DisciplineDisciplineId" 
-										 class="form-control" 
-										 ng-title="obj.SectionSectionIdlabel+'.'+obj.DisciplineDisciplineIdlabel+'  -  '+obj.LibelleD">
-									</div>
-								</div>
-								<div class="col-md-10" ng-if="{{ o }}.DisciplineDisciplineId">
-									<div class="row">
-										<div class="col-md-2">
-											{{ fkey(f.DisciplineId, o) }}
-										</div>
-										<div class="col-md-10">
-											{{ finput(f.LibelleD, 'obj', true) }}
-										</div>
-									</div>
-								</div>
-							</div>
 							<div class="row" style="height:10px"></div>
-							{{ flinput(f.Niveau, o, false, 'd', 'width:40px') }}
-							{{ flinput(f.Libelle, o, false) }}
+							{{ flinput(f.WebDiscipline, o, false, '@@', 'width:60px; text-transform:uppercase;', true) }}
+							{{ flinput(f.Libelle, o) }}
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
@@ -97,28 +59,10 @@
 									{{ ftext(f.Description, o, 'ckHtml') }}
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Visible web") }}
-								</div>
-								<div class="col-md-10">
-									<switch class="cadref-switch-red" ng-model="{{ o }}.AccesWeb"></switch>
-								</div>
-							</div>
 
 						</div>
 						{# block right #}                    
 						<div class="col-md-5">
-						</div>
-					</div>
-					<div class="row" ng-if="{{ o }}.id">
-						{# disciplines #}
-						<div class="col-md-12">
-							<section class="panel">
-								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=delete,selection,export'" ng-if="show"></ng-include>
-								</div>
-							</section>
 						</div>
 					</div>
 				</div>
@@ -129,8 +73,6 @@
 				</div>
 			</div>
 		</div>
-    </section>
+	</section>
 	</form>
 </div>
-
-

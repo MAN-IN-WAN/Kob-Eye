@@ -27,7 +27,10 @@ class Niveau extends genericClass {
 		$a = $this->getOneParent('Antenne');
 		$s = $this->getOneParent('Section');
 		$d = $this->getOneParent('Discipline');
-		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle);
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'Enseignants'=>$t);
 	}
 	
 

@@ -1,6 +1,5 @@
 <?php
-$vars['Annee'] = $annee = Cadref::$Annee;
-
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 if (isset($vars['Path']))
     $Path = $vars['Path'];
 else
@@ -83,13 +82,6 @@ foreach ($childs as $child){
     }
 }
 
-$tmp = array();
-$ans = Sys::getData('Cadref', 'Annee');
-foreach($ans as $an) {
-	$tmp[$an->Annee] = $an->EnCours;
-}
-$vars['annees'] = $tmp;
-
 $t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
 $vars['hideBtn'] = array(
 	'selection' => strpos($t, 'selection') !== false,
@@ -99,11 +91,5 @@ $vars['hideBtn'] = array(
 	'functions' => strpos($t, 'functions') !== false
 );
 $vars['showCheckboxes'] = false;
-$vars['hideModal'] = isset($_GET['hideModal']) ? $_GET['hideModal'] : '';
-
-//if(isset($_SESSION['ListClasse'])) $vars['AnneeFiltre'] = $_SESSION['ListClasse'];
-//else 
-	$vars['AnneeFiltre'] = $annee;
-
 
 ?>
