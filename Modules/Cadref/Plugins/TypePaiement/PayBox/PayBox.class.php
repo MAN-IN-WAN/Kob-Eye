@@ -82,7 +82,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		
 		//on renvoie le formulaire
 		return '
-		<form method="POST" onload="this." action="https://urlserveur.paybox.com/cgi/MYchoix_pagepaiement.cgi">
+		<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">

@@ -12,7 +12,7 @@ class GDN extends genericClass {
 			case 'all': $mode = "= '$word'"; break;
 			case 'any': $mode = "like '%$word%'"; break;
 		}
-
+		
 		$sql = "select distinct $field as word from `##_CEN-GDN` where $field $mode and substring($field,-1,1)<>'+' and DictionnaireId in ($dict) order by word limit 15";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -22,10 +22,12 @@ class GDN extends genericClass {
 	}
 
 	function GetGDN($args) {
-		$field = $args['nah'] == 'true' ? 'Norma_1' : 'Trad_2';
+		$nah = $args['nah'] == 'true';
+		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
-		if($args['norm'] == 'true') $word = $this->normalize($word);
+		if($nah && $args['norm'] == 'true') $word = $this->normalize($word);
 		$dict = $args['dic'];
+		$sort = $args['sort'] == 'false' ? 'Norma_1,Paleo,Trad_2' : 'Trad_2,Norma_1,Paleo';
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
@@ -38,7 +40,7 @@ class GDN extends genericClass {
 		foreach($pdo as $r) $count = $r['cnt'];
 		
 
-		$sql = "select Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId from `##_CEN-GDN` where $field $mode and DictionnaireId in ($dict) order by  $field,Paleo";
+		$sql = "select Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId from `##_CEN-GDN` where $field $mode and DictionnaireId in ($dict) order by  $sort";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$gdn = array();
@@ -76,10 +78,12 @@ class GDN extends genericClass {
 	}
 	
 	private function normalize($word) {
+		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
+			
 		$word = ' '.strtolower(trim($word)).' ';
 		
 		$os = array();
-		$file = fopen(__DIR__.'/Ort_prop.TXT', 'r');
+		$file = fopen($r->FilePath, 'r');
 		while(! feof($file)) {
 			$o = explode("\t", utf8_encode(fgets($file)));
 			if(count($o) < 4) continue;

@@ -515,6 +515,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 			{% endif %}
 		}
 		$scope.saveFicheCadref = function(id) {
+console.log($scope.obj);
             if(id) $scope.modalObj = $scope.obj;
 			$scope.modalSave($scope.{{ identifier }}callbakSaveFiche);
 			if($scope.CadrefContent) $scope.CadrefContent.$dirty = false;
@@ -1496,7 +1497,9 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// SECTION
 		//--------------------------------------		
 		$scope.sectionInfo = function() {
+			var d = $scope.CadrefContent.$dirty;
 			$scope.obj.LibelleS = $scope.obj.Libelle;
+			$scope.CadrefContent.$dirty = d
 		}
 		
 		$scope.testalert = function() {

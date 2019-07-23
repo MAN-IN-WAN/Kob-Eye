@@ -15,23 +15,23 @@ class CEN extends Module {
 
 
 	// liste d'entrées du GDN 
-	function GetGDN($args) {
-		
+	function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'dsel':
+				$_SESSION['dictionaries'] = $args['dic'];
+				return true;
+				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
-				$sel = isset($_SESSION['Dictionaries']) ? $_SESSION['Dictionaries'] : false;
 				$dicId= array();
 				$dic = array();
 				foreach($dics as $d) {
-					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+					$id = $d->Id;
+					$s = !$sel || strpos($sel,",$id,") ? 1 : 0;
+					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>$s);
 					$dicId[$d->Id] = $d->Nom;
 				}
-				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
-				
-			case 'select':
-				$_SESSION['Dictionaries'] = $args['selected'];
-				return array('selected'=>$_SESSION['Dictionaries']);
+				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic, 'select'=>isset($_SESSION['dictionaries']) ? $_SESSION['dictionaries'] : '');
 				
 			case 'list':
 				$gdn = genericClass::createInstance('CEN', 'GDN');
@@ -59,7 +59,4 @@ class CEN extends Module {
 				break;
 		}
 	}
-	
-
-	
 }

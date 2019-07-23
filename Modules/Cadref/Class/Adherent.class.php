@@ -1,6 +1,14 @@
 <?php
 
 class Adherent extends genericClass {
+	function GetGDN($args) {
+		if(isset($_SESSION['xxx'])) $t = $_SESSION['xxx'];
+		else $t = array();
+		$t[] = $args['aa'];
+		return $_SESSION['xxx'] = $t;
+	}
+	
+
 	function Save() {
 		$id = $this->Id;
 		$annee = Cadref::$Annee;
