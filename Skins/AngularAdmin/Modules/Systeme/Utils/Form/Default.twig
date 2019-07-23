@@ -1,21 +1,25 @@
 {% from "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroForm.twig" import  form_properties %}
-{% if categories|length > 1 %}
-    <div class="formCatsFrise row">
-        {% for cat,fields in categories %}
-            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
-                <a href="#" class="formCatsFriseLink">{{ cat }}</a>
-            </span>
-        {% endfor %}
-    </div>
-{% endif %}
-<div class="formCats" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
-    <div class="formCatWrapper">
-    {% for cat,fields in categories %}
-        <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}" class="formCatContainer {% if loop.first %}active{% endif %}">
-{#            <h3>{{ cat }}</h3>#}
-            {{  form_properties(fields,scopeObj) }}
+<div class="row">
+    {% if categories|length > 1 %}
+        <div class="formCatsFrise col-md-2">
+            {% for cat,fields in categories %}
+                <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
+                    <a href="#" class="formCatsFriseLink">{{ cat }}</a>
+                </span>
+            {% endfor %}
         </div>
-    {% endfor %}
+    <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% else %}
+    <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% endif %}
+        <div class="formCatWrapper">
+        {% for cat,fields in categories %}
+            <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}" class="formCatContainer {% if loop.first %}active{% endif %}">
+    {#            <h3>{{ cat }}</h3>#}
+                {{  form_properties(fields,scopeObj) }}
+            </div>
+        {% endfor %}
+        </div>
     </div>
 </div>
 <script>

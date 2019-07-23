@@ -5,9 +5,11 @@
 
 /** LABEL HELPER **/
 {% macro formHelper(field) %}
-    <small>
-        <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
-    </small>
+    <p class="formHelper">
+        <small>
+            <i class="icmn-question3"></i><span class="fieldHelp">{{ field.helpLang }}</span>
+        </small>
+    </p>
 {% endmacro %}
 
 /** HIDDEN **/
@@ -104,9 +106,9 @@
 
         </script>
         <div class="input-group">
-            <input id="{{ id }}" type="password" class="form-control" ng-model="{{ obj }}.{{ field.name }}" >
+            <input id="{{ id }}" type="password" class="form-control" ng-model="{{ obj }}.{{ field.name }}" autocomplete="new-password">
             <span class="input-group-addon" onclick="pwdToggle{{ id }}(this);">
-                <i class="icmn-key"></i>
+                <i class="icmn-eye"></i>
             </span>
         </div>
     {% else %}
