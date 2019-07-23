@@ -73,6 +73,21 @@
 													{% endfor %}
 												</select>
 											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Année de visite") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.VisiteAnnee" ng-init="obj.VisiteAnnee=''">
+															<option value=""></option>
+															{% for v,c in annees %}
+																<option value="{{ v }}">{{ v }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
 										<div class="row">

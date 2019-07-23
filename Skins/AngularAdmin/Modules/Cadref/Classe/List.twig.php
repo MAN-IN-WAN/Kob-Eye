@@ -1,5 +1,5 @@
 <?php
-$vars['Annee'] = Cadref::$Annee;
+$vars['Annee'] = $annee = Cadref::$Annee;
 
 if (isset($vars['Path']))
     $Path = $vars['Path'];
@@ -100,5 +100,10 @@ $vars['hideBtn'] = array(
 );
 $vars['showCheckboxes'] = false;
 $vars['hideModal'] = isset($_GET['hideModal']) ? $_GET['hideModal'] : '';
+
+//if(isset($_SESSION['ListClasse'])) $vars['AnneeFiltre'] = $_SESSION['ListClasse'];
+//else 
+	$vars['AnneeFiltre'] = $annee;
+
 
 ?>

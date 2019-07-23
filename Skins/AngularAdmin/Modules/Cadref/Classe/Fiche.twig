@@ -94,7 +94,7 @@
 									{{ label("Année") }}
 								</div>
 								<div class="col-md-1">
-									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px">
+									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
 										{% for v,c in annees %}
 											<option value="{{ v }}">{{ v }}</option>
 										{% endfor %}
@@ -124,10 +124,10 @@
 											<tbody>
 												<tr>
 													<td class="cadref-td-inscr">{{ fquery(f.JourId, o, 'width:100px', '') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.HeureDebut, o, false, 'dd:dd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.HeureFin, o, false, 'dd:dd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.CycleDebut, o, false, 'dd/dd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.CycleFin, o, false, 'dd/dd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.HeureDebut, o, false, '', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.HeureFin, o, false, '', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.CycleDebut, o, false, '', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.CycleFin, o, false, '', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Seances, o, false, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ fvalues(f.Programmation, o, 'width:100px') }}</td>
 												</tr>
@@ -143,7 +143,7 @@
 								</div>
 								<div class="col-md-10">
 									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefLieuStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId}" 
+										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+obj.AntenneAntenneId+'&Type=L'}" 
 										 ng-model="{{ o }}.LieuLieuId"
 										 class="form-control cadref-input" 
 										 ng-title="{{ o }}.LieuLieuIdlabel{#+'  -  '+{{ o }}.LibelleL#}">

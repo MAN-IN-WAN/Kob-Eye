@@ -33,12 +33,25 @@
 		// efface le contenu du filtre
 		$scope.clearFilter = function(id) {
 			$scope.{{ ident }}.filter = '';
-			if(id == 'CadrefAdherent' || id == 'CadrefClasse') {
+			var s = 'CadrefAdherent,CadrefClasse,CadrefDiscipline,CadrefNiveau,CadrefSection,CadrefWebSection,CadrefWebDiscipline';
+			if(s.indexOf(id) !== false) {
 				$scope.{{ ident }}.filter1 = '';
 				$scope.{{ ident }}.filter2 = '';
 				$('#search{{ ident }}2').focus();
 			}
 			else $('#search{{ ident }}').focus();
+		}
+
+		// appel de function kobeye avec retour objet
+		$scope.{{ ident }}callMethod = function(obj, name) {
+			var {{ ident }}method = {
+				name: name,
+				query: '{{ module }}/{{ objecttype }}',
+				args : obj,
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ ident }}method)});
 		}
 
 		{% if objecttype == 'Adherent' %}
@@ -229,45 +242,167 @@
 			);
 		}
 		{% endif %}
-
-		{% if objecttype == 'Classe' %}
-		$scope.ClasseAnnee = '{{ Annee }}';
-		$scope.classeAnneeChange = function() {
-			var f = '';
-			if($scope.ClasseAnnee) f = 'Annee='+$scope.ClasseAnnee;
-			$scope.CadrefClassesetOptionsFilters(f,'default');
-		}
 		
+		{% if objecttype in 'Discipline,Niveau,Section,WebSection,WebDiscipline' %}
+		{% if objecttype == 'Discipline' %}
+			{% set codeName = 'CodeDiscipline' %}
+			{% set codeLength = 15 %}
+		{% elseif objecttype == 'Niveau' %}
+			{% set codeName = 'CodeNiveau' %}
+			{% set codeLength = 11 %}
+		{% elseif objecttype == 'Section' %}
+			{% set codeName = 'Section' %}
+			{% set codeLength = 8 %}
+		{% elseif objecttype == 'WebSection' %}
+			{% set codeName = 'WebSection' %}
+			{% set codeLength = 11 %}
+		{% elseif objecttype == 'WebDiscipline' %}
+			{% set codeName = 'CodeDiscipline' %}
+			{% set codeLength = 15 %}
+		{% endif %}
 		var lasttimeout = false;
-		// wait for CadrefClasse to be defined before setting a watch on filters
-		var unwatch = $scope.$watch('CadrefClasse', function() {
-			if($scope.CadrefClasse != undefined && $scope.CadrefClasse.filter2 == undefined) {
-				$scope.CadrefClasse.filter1 = '';
-				$scope.CadrefClasse.filter2 = '';
-				var f = CadrefClasseStore.getFilters('default',true).global;
+		// wait for {{ ident }} to be defined before setting a watch on filters
+		var unwatch = $scope.$watch('{{ ident }}', function() {
+			if($scope.{{ ident }} != undefined && $scope.{{ ident }}.filter2 == undefined) {
+				$scope.{{ ident }}.filter1 = '';
+				$scope.{{ ident }}.filter2 = '';
+				var f = {{ ident }}Store.getFilters('default',true).global;
 				if(f != '') {
-					if(f.substring(0, 10) == 'CodeClasse~') $scope.CadrefClasse.filter2 = f.substring(10);
-					else $scope.CadrefClasse.filter1 = f
+					if(f.substring(0, {{ codeLength }}) == '{{ codeName }}~') $scope.{{ ident }}.filter2 = f.substring({{ codeLength }});
+					else $scope.{{ ident }}.filter1 = f
 				}
-				$scope.$watch('CadrefClasse.filter1', function() {
-					if ($scope.CadrefClasse.filter1 != CadrefClasseStore.getFilters('default',true).global){
+				$scope.$watch('{{ ident }}.filter1', function() {
+					if ($scope.{{ ident }}.filter1 != {{ ident }}Store.getFilters('default',true).global){
 						if (lasttimeout){
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1,'default');
+						{{ ident }}Store.setGlobalFilter($scope.{{ ident }}.filter1,'default');
+						lasttimeout = $timeout(function () {
+							{{ ident }}Store.getData(1,'default');
+						},250);
+					}
+				});
+				$scope.$watch('{{ ident }}.filter2', function() {
+					if ($scope.{{ ident }}.filter2 != {{ ident }}Store.getFilters('default',true).global){
+						if (lasttimeout){
+							$timeout.cancel(lasttimeout);
+							lasttimeout = false;
+						}
+						{{ ident }}Store.setGlobalFilter('{{ codeName }}~'+$scope.{{ ident }}.filter2,'default');
+						lasttimeout = $timeout(function () {
+							{{ ident }}Store.getData(1,'default');
+						},250);
+					}
+				});
+				unwatch();
+			}
+		});
+		{% endif %}
+
+		
+		{% if objecttype == 'Classe' %}		
+		$scope.ClassePage = CadrefClasseStore.getCurrentPage();
+		if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
+		$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
+		CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
+		if(CadrefClasseStore.Filter1 == undefined) CadrefClasseStore.Filter1 = '';
+		if(CadrefClasseStore.Filter2 == undefined) CadrefClasseStore.Filter2 = '';
+
+		
+		$(document).ready(function(){
+			// ignore le premier document ready
+			if(CadrefClasseStore.ListClasseReady == undefined || !CadrefClasseStore.ListClasseReady) {
+				CadrefClasseStore.ListClasseReady = true;
+				return;
+			}
+			CadrefClasseStore.ListClasseReady = false;
+
+			// attend que le getData par defaut soit terminé pour lancer un getData sur la bonne page 
+			var busyWatch = $scope.$watch('CadrefClasseStore.busy.default', function() {
+				var getObj = $interval(function() {
+					if(CadrefClasseStore.busy.default == false) {
+						$interval.cancel(getObj);
+						busyWatch();
+						$timeout(function() {
+console.log('CadrefClasseStore classeAnneeChange');
+							$scope.classeAnneeChange(false);
+						},100);
+					}
+				},100,100);
+			});
+		});
+
+		$scope.classeAnneeChange = function(mode) {
+			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
+			if(mode == undefined) mode = true;
+			
+			var f = '';
+			if(CadrefClasseStore.Filter2 != '') f = 'CodeClasse~'+CadrefClasseStore.Filter2;
+			else if(CadrefClasseStore.Filter1 != '') f = CadrefClasseStore.Filter1;
+			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
+			
+			var p = mode ? 1 : $scope.ClassePage;
+			console.log("xxxxxxxxxxxxxxxxxxxxxxxCadrefClasseStore:"+f+":"+p,mode);
+            CadrefClasseStore.setGlobalFilter(f,'default');
+            CadrefClasseStore.getData(p,'default');
+			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
+		}
+		
+		
+		var lasttimeout = false;
+		var ignoreNext = 0;
+		var ingoreFirst = 2;
+		// wait for CadrefClasse to be defined before setting a watch on filters
+		var unwatch = $scope.$watch('CadrefClasse', function() {
+			if($scope.CadrefClasse != undefined && $scope.CadrefClasse.filter2 == undefined) {
+				$scope.CadrefClasse.filter1 = CadrefClasseStore.Filter1;
+				$scope.CadrefClasse.filter2 = CadrefClasseStore.Filter2;
+				$scope.$watch('CadrefClasse.filter1', function() {
+					if(ignoreNext == 1) {
+						ignoreNext = 0;
+						return;
+					}
+					if(ingoreFirst) {
+						ingoreFirst--;
+						return;
+					}
+					
+					if($scope.CadrefClasse.filter1 != CadrefClasseStore.Filter1) {
+						if($scope.CadrefClasse.filter2 != '') {
+							ignoreNext = 2;
+							$scope.CadrefClasse.filter2 = '';
+						}
+						CadrefClasseStore.Filter1 = $scope.CadrefClasse.filter1;
+						
+						if(lasttimeout){
+							$timeout.cancel(lasttimeout);
+							lasttimeout = false;
+						}
+						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1+'&Annee='+$scope.ClasseAnnee,'default');
+
 						lasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
 					}
 				});
 				$scope.$watch('CadrefClasse.filter2', function() {
-					if ($scope.CadrefClasse.filter2 != CadrefClasseStore.getFilters('default',true).global){
+					if(ignoreNext == 2) {
+						ignoreNext = 0;
+						return;
+					}
+					if($scope.CadrefClasse.filter2 != CadrefClasseStore.filter2) {
+						if($scope.CadrefClasse.filter1 != '') {
+							ignoreNext = 1;
+							$scope.CadrefClasse.filter1 = '';
+						}
+						CadrefClasseStore.Filter2 = $scope.CadrefClasse.filter2;
+						
 						if (lasttimeout){
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2,'default');
+						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2+'&Annee='+$scope.ClasseAnnee,'default');
 						lasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
@@ -276,6 +411,22 @@
 				unwatch();
 			}
 		});
+/*
+		$scope.ListClasseGetSession = function() {
+			var args = {name: 'ListClasse'} ;
+			var ajax = $scope.{{ ident }}callMethod(args,'ListClassGetSession');
+			ajax.success(
+				function(data) {
+					if(data.data) $scope.ClasseAnnee = data.data;
+					$scope.classeAnneeChange(false);
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		}
+*/
 		{% endif %}
 		
 		
@@ -303,6 +454,9 @@
 				{% if objecttype == 'Niveau' %}$scope.niveauInfo();{% endif %}
 				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
 				{% if objecttype == 'Lieu' %}$scope.lieuInfo();{% endif %}
+				{% if objecttype == 'Visite' %}$scope.visiteInfo();{% endif %}
+				{% if objecttype == 'WebSection' %}$scope.webSectionInfo();{% endif %}
+				{% if objecttype == 'WebDiscipline' %}$scope.webDisciplineInfo();{% endif %}
             }
         },100,50);	
 		
@@ -1369,8 +1523,10 @@
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(
 				function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleW = data.data.LibelleW;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(
 				function() {
@@ -1389,14 +1545,16 @@
 			$scope.obj.LibelleN = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
+					$scope.Enseignants = data.data.Enseignants;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
 		}
 		{% endif %}
 		
@@ -1408,11 +1566,14 @@
 		$scope.classeInfo = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.obj.LibelleN = data.data.LibelleN;
 					$scope.obj.LibelleL = data.data.LibelleL;
+					$scope.Enseignants = data.data.Enseignants;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1423,9 +1584,6 @@
 				CadrefClasseDateStore.refresh('children');
 			}, 500);
 		}
-
-		// pour multi-select
-		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		//-----------------
 		// CLASSEDATE
@@ -1443,7 +1601,11 @@
 			var i = $scope.classeDateInfo;
 			var o = $scope.classeDateObj = CadrefClasseDateStore.getNewData();
 			o.ClasseClasseId = $scope.obj.id;
+			o.Annee = $scope.obj.Annee;
 			i.mode = 'add';
+			$timeout(function () {
+				$('#input-dateClasseObjDateCours').focus();
+			},100);
 		}
 
 		// modification classeDate
@@ -1453,6 +1615,9 @@
 			angular.copy(item, o);
 			o.ClasseClasseId = $scope.obj.id;
 			i.mode = 'edit';
+			$timeout(function () {
+				$('#input-dateClasseObjDateCours').focus();
+			},100);
 		}
 
 		// sauve classeDate
@@ -1465,6 +1630,14 @@
 			});
 		}
 
+		// fixe l'année
+		$scope.classeDateAnnee = function() {
+			var d = $scope.classeDateObj.DateCours;
+			var m = parseInt(d.substr(3, 4))
+			var y = parseInt($scope.classeDateObj.Annee)
+			$scope.classeDateObj.DateCours = d.substr(0, 6)+(m < 8 ? y+1 : y);
+		}
+		
 		// suppression classeDate
 		$scope.classeDateDelete = function(item) {
 			swal({
@@ -1493,6 +1666,18 @@
 		// VISITE RESERVATION
 		//--------------------------------------
 
+		$scope.visiteInfo = function() {
+			$scope.obj.LibelleD = $scope.obj.Libelle;
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(function(data) {
+				var d = $scope.CadrefContent.$dirty;
+				$scope.Enseignants = data.data.Enseignants;
+				$scope.CadrefContent.$dirty = d
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		
 		// impression
 		$scope.visitObj = {Guide:true, Chauffeur:false, Interne:false};
 		
@@ -1516,7 +1701,7 @@
 		}
 		
 		// pour multi-select
-		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
+		//$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		$scope.localObj = {};
 		// hook sur CadrefReservationadd
@@ -1665,6 +1850,11 @@
 	
 		
 		{% if objecttype == 'Enseignant' %}
+		$scope.enseignantUser = function() {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'CreateUser');
+		}
+		
+		
 		//-----------------
 		// ABSENCE
 		//-----------------
@@ -1742,7 +1932,9 @@
 		$scope.lieuInfo = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
+					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleA = data.data.LibelleA;
+					$scope.CadrefContent.$dirty = d
 				}
 			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1750,6 +1942,47 @@
 			);
 		}
 		{% endif %}
+
+		{% if objecttype == 'WebSection' %}
+		//--------------------------------------
+		// SECTION
+		//--------------------------------------		
+		$scope.webSectionInfo = function() {
+			$scope.obj.LibelleS = $scope.obj.Libelle;
+		}
+		
+		$scope.testalert = function() {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'testalert');
+			ajax.success(
+				function(data) {
+					console.log('store > {{ module }}/{{ objecttype }} > Method  ', data);
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		}
+		{% endif %}
+		
+		
+		{% if objecttype == 'WebDiscipline' %}
+		//--------------------------------------
+		// DISCIPLINE
+		//--------------------------------------		
+		$scope.webDisciplineInfo = function() {
+			$scope.obj.LibelleD = $scope.obj.Libelle;
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(function(data) {
+				var d = $scope.CadrefContent.$dirty;
+				$scope.obj.LibelleS = data.data.LibelleS;
+				$scope.CadrefContent.$dirty = d
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		{% endif %}
+		
 		
 
 	});

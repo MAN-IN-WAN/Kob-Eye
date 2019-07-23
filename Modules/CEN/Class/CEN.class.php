@@ -16,24 +16,29 @@ class CEN extends Module {
 
 	// liste d'entrées du GDN 
 	function GetGDN($args) {
-		$gdn = genericClass::createInstance('CEN', 'GDN');
 		
 		switch($args['mode']) {
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
-				$ret = array();
-				foreach($dics as $d) $ret[$d->Id] = $d->Nom;
 				$sel = isset($_SESSION['Dictionaries']) ? $_SESSION['Dictionaries'] : false;
-				return array('dictionaries'=>$ret,'selected'=>$sel);
+				$dicId= array();
+				$dic = array();
+				foreach($dics as $d) {
+					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+					$dicId[$d->Id] = $d->Nom;
+				}
+				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
 				
 			case 'select':
 				$_SESSION['Dictionaries'] = $args['selected'];
 				return array('selected'=>$_SESSION['Dictionaries']);
 				
 			case 'list':
+				$gdn = genericClass::createInstance('CEN', 'GDN');
 				return $gdn->GetList($args);
 				
 			case 'trad':
+				$gdn = genericClass::createInstance('CEN', 'GDN');
 				return $gdn->GetGDN($args);
 				
 			case 'pres':
@@ -47,16 +52,8 @@ class CEN extends Module {
 				return array('text'=>$pres);
 				
 			case 'comm':
-				$gdn->initFromId($args['id']);
-				$com = $gdn->Commentaires;
-				$com = preg_replace('/ *\/\/ */', '<br />', $com);
-				$pos = strpos($com, '§ ');
-				while($pos !== false) {
-					$com = preg_replace('/§ /', '<i>', $com, 1);
-					$com = preg_replace('/ §/', '</i>', $com, 1);
-					$pos = strpos($com, '§ ');
-				}
-				return array('text'=>$com);
+				$gdn = genericClass::createInstance('CEN', 'GDN');
+				return $gdn->GetComments($args);
 				
 			case 'norm':
 				break;

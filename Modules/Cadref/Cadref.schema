@@ -54,17 +54,17 @@
 		</VIEW>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="WebSection" driver="mysql" order="Section" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Section Web" Operations="add,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebSection.class.php">
-		<PROPERTIES type="varchar" length="2" searchOrder="1" unique="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Section">WebSection</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
+	<OBJECTCLASS title="WebSection" driver="mysql" order="WebSection" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Section web" Operations="add,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebSection.class.php">
+		<PROPERTIES type="varchar" length="2" searchOrder="1" unique="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Section web">WebSection</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="WebDiscipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline Web" Operations="addChildren,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebDiscipline.class.php">
-		<FKEY card="1,1" module="Cadref" data="WebSection,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">WebSectionId</FKEY>
-		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">WebDiscipline</PROPERTIES>
+	<OBJECTCLASS title="WebDiscipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline web" Operations="addChildren,edit,delete" Dico="0" Class="Modules/Cadref/Class/WebDiscipline.class.php">
+		<FKEY card="1,1" module="Cadref" data="WebSection,Id" category="Description" form="1" fiche="1" listDescr="Section web" description="Section">WebSectionId</FKEY>
+		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline web">WebDiscipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Section">WebSection</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
 
 		<VIEW title="DisciplineWebList" default="1">
@@ -210,6 +210,7 @@
 		<PROPERTIES type="boolean" default="0" category="Description" form="11" fiche="11" description="Délégué des enseignants">Delegue</PROPERTIES>
 		<PROPERTIES type="text" category="Contact" form="12" fiche="12" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" category="Description" form="13" fiche="13" description="Compte">Compte</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Absence" driver="mysql" order="DateDebut" orderType="ASC" logEvent="1" master="0" AccessPoint="0" Icon="[None]" Description="Absence" hidden="0" Operations="add,edit" Class="Modules/Cadref/Class/Absence.class.php">

@@ -40,6 +40,13 @@ if($vars['mode'] == 0) {
 	foreach($as as $a)
 		$tmp[$a->Id] = date('d/m', $a->DateVisite).' - '.$a->Libelle;
 	$vars['visites'] = $tmp;
+
+	$tmp = array();
+	$ans = Sys::getData('Cadref', 'Annee');
+	foreach($ans as $an) {
+		$tmp[$an->Annee] = $an->EnCours;
+	}
+	$vars['annees'] = $tmp;
 	
 	$tmp = array();
 	$as = Sys::getData('Cadref', 'Lieu');

@@ -42,4 +42,24 @@
 			</OBJECTCLASS>
 		</VIEW>
 	</OBJECTCLASS>
+<!--
+	<OBJECTCLASS title="Regle" driver="mysql" AccessPoint="1" Description="Règle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="file" category="Description" form="5" fiche="5" description="Fichier">FilePath</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Temoa" driver="mysql" AccessPoint="1" Description="Temoa"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Temoa.class.php">
+		<PROPERTIES type="varchar" length="60" searchOrder="2" category="Description" form="1" list="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">PresentationEs</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">PresentationFr</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">PresentationEN</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Texte" driver="mysql" AccessPoint="1" Description="Temoa"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Texte.class.php">
+		<FKEY card="1,1" module="CEN" data="Temoa,Id" form="1" fiche="1" >TemoaId</FKEY>
+		<PROPERTIES type="html" category="Description" form="5" fiche="5" >Nahuatl</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="6" fiche="6" >Trad1</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="7" fiche="7" >Trad2</PROPERTIES>
+		<PROPERTIES type="file" category="Description" form="5" fiche="5" >Image</PROPERTIES>
+	</OBJECTCLASS>
+-->
 </SCHEMA>

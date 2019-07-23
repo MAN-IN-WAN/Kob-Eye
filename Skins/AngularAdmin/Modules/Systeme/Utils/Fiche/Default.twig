@@ -198,6 +198,7 @@
     </div>
 
     {{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+    {{ include(template_from_string(module('Systeme/Utils/Modal/Focus?identifier='~identifier))) }}
 
     {% if ChildrenElements|length %}
         <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby=""

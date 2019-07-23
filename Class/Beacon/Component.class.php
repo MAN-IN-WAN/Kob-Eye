@@ -256,20 +256,21 @@ class Component extends Beacon{
 	/**
 	 * Retourne un composant avec sa config de base
 	 * @param	array	[0] => "Path du composant sous la forme Module/Component"
-	 * @return	array	Un objet Component
+	 * @return	object	Un objet Component
 	 */
 	public static function getInstance( $p ) {
         if(!is_array($p))$p = array($p);
 		$params = explode('/',$p[0]);
 		$path = dirname(dirname(dirname(__FILE__))).'/Modules/'.$params[0].'/Components/'.$params[1].'/Component.conf';
-		if(is_file($path)) :
-			$data = file_get_contents($path);
-			$cpt = new Component();
-			$cpt->setConfig($data);
-			return $cpt;
-		else :
-			echo 'ERREUR : Fichier de configuration introuvable !'; die;
-		endif;
+		if(is_file($path)) {
+            $data = file_get_contents($path);
+            $cpt = new Component();
+            $cpt->setConfig($data);
+            return $cpt;
+        } else {
+            print_r($path);
+            die('ERREUR : Fichier de configuration introuvable !') ;
+        }
 	}
 }
 ?>

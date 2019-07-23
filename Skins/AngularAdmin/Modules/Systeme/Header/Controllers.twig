@@ -622,9 +622,16 @@
             {{ c.identifier }}Store.getData(1,'default');
             //$scope.{{ c.identifier }}.currentPage = 1;
         });
+		
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
-            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
+			if($scope.{{ c.identifier }}.currentPage != $scope.{{ c.identifier }}.store.currentPage.default) 
+	            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
         });
+        $scope.$watch('{{ c.identifier }}.store.currentPage.default', function() {
+			if($scope.{{ c.identifier }}.currentPage != $scope.{{ c.identifier }}.store.currentPage.default) 
+	            $scope.{{ c.identifier }}.currentPage = $scope.{{ c.identifier }}.store.currentPage.default;
+        });
+
         /**
         * PREDEFINED FILTERS
         */
@@ -825,6 +832,9 @@
         }
         $scope.modalObj = {};
 
+        $scope.FocusValue = '';
+        $scope.FocusProperty = 'None';
+
         $scope.displayFiche =true;
        $scope.injectStore = function(toto,context, query){
             var store = $injector.get(toto+'Store');
@@ -873,6 +883,20 @@
                 }
             }
             return false;
+        }
+        $scope.modalFocus = function (prop,obj){
+            console.warn(prop,obj);
+            $('#modalFocus .modal-dialog').spin();
+            $("#modalFocus").modal();
+
+            var FocusValue = obj[prop];
+            var $iframe = $('#focusFrame');
+            $iframe.ready(function() {
+                $iframe.contents().find("body").append(FocusValue);
+            });
+            $scope.FocusProperty = prop;
+
+            $('#modalFocus .modal-dialog').spin(false);
         }
 
         //acces aux stores parents

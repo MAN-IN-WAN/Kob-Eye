@@ -6,7 +6,7 @@
 	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Catégories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" generateUrl="1">
 		<PROPERTIES type="titre" form="1" list="1" fiche="1" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
 		<PROPERTIES type="file" form="1" fiche="1" category="Informations">Icone</PROPERTIES>
-		<PROPERTIES type="text" form="1" fiche="1" special="multi" category="Informations">Description</PROPERTIES>
+		<PROPERTIES type="bbcode" form="1" fiche="1" special="multi" category="Informations">Description</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Nouvelle" driver="mysql" master="0" AccessPoint="1" Description="Actualités"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" generateUrl="1">
 		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" special="multi" form="1" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>

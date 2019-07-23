@@ -1,0 +1,52 @@
+{# fiche ImportNorm #}
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+										    <label class="form-control-label cadref-label" style="line-height:1">Fichier texte</label>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group" ng-class="{'has-danger': obj.fieldErrors.length &amp;&amp; obj.fieldErrors.indexOf('FilePath') !== -1}">
+												<input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" placeholder="" id="input-NormalisationFilePath" ng-model="obj.FilePath">
+												<label for="input-NormalisationFilePath-file" class="clickable"> Choisissez un fichier </label>
+												<input id="input-NormalisationFilePath-file" type="file" nv-file-select="" options="{ alias:'FileData',removeAfterUpload: true, inputId: 'input-NormalisationFilePath', model:'obj.FilePath' }" ng-init="up_NormalisationFilePath = angular.copy(uploader)" uploader="up_NormalisationFilePath" style="display:none;"><br>
+												<ul id="toto">
+													<li ng-repeat="item in up_NormalisationFilePath.queue">
+														Name: <span ng-bind="item.file.name"></span><br/>
+														<button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
+														<button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="row" style="height:20px"></div>
+
+									<div class="row">
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="import()">Importer</button>
+										</div>
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+

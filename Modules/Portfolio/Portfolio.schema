@@ -5,7 +5,7 @@
 		<PROPERTIES type="file" category="Informations">Icone</PROPERTIES>
 		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
 		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Clients" driver="mysql" AccessPoint="1" Description="Clients"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1">
 		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
@@ -13,6 +13,17 @@
 		<PROPERTIES type="file" category="Informations">Logo</PROPERTIES>
 		<PROPERTIES type="file" category="Informations">LogoNB</PROPERTIES>
 		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Partenaire" driver="mysql" AccessPoint="1" Description="Partenaires"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Principal">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Principal">Publier</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="2" category="Principal">Chapo</PROPERTIES>
+		<PROPERTIES type="file" category="Contenu">Icone</PROPERTIES>
+		<PROPERTIES type="file" category="Contenu">Photos</PROPERTIES>
+		<PROPERTIES type="titre" category="Contenu">Descriptif</PROPERTIES>
+		<PROPERTIES type="date" category="Contenu">DateCollaboration</PROPERTIES>
+		<PROPERTIES type="varchar" category="Contenu">SiteWeb</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Reference" driver="mysql" AccessPoint="1" Description="References"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1">
 		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>

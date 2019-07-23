@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>Ionic App</title>
 
-  <base href="/Skins/CEN/cen/www/" />
+  <base href="/" />
 
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="format-detection" content="telephone=no" />
@@ -20,6 +20,6 @@
 
 <body>
   <app-root></app-root>
-<script type="text/javascript" src="runtime.3884968447751a7a03b7.js"></script><script type="text/javascript" src="es2015-polyfills.2306969ab6640fe7476f.js" nomodule></script><script type="text/javascript" src="polyfills.1783961edf653265edc9.js"></script><script type="text/javascript" src="main.45ea39ba39c60a45ea97.js"></script></body>
+<script type="text/javascript" src="runtime.f24ae1450580f2f3d3e1.js"></script><script type="text/javascript" src="es2015-polyfills.2306969ab6640fe7476f.js" nomodule></script><script type="text/javascript" src="polyfills.1783961edf653265edc9.js"></script><script type="text/javascript" src="main.1c358e6fe7f3a6b54b75.js"></script></body>
 
 </html>
