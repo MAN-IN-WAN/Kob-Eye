@@ -147,6 +147,7 @@ class RemoteJob extends Job {
         }
         //opération terminée
         $this->resetState();
+        return true;
     }
 
     /**

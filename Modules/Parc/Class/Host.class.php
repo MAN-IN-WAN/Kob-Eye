@@ -383,7 +383,7 @@ class Host extends genericClass
         $task->TaskObject = 'Host';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'configHost';
-        $task->TaskType = 'installation';
+        $task->TaskType = 'install';
         $task->TaskCode = 'HOST_CONFIG';
         $task->addParent($this);
         $inst = $this->getOneChild('Instance');
@@ -441,6 +441,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $px->callLdap2Service();
             $act->Terminate();
         }
+        return true;
     }
     /**
      * sshKeyCheck
