@@ -254,7 +254,6 @@ progress.progress.progress-danger:after{
     padding: .375rem .75rem;
     margin-bottom: 0;
     word-break: break-word;
-
 }
 
 
@@ -289,6 +288,43 @@ progress.progress.progress-danger:after{
     flex-flow: row;
     align-items: center;
 }
+
+.showFocus,
+.showImgFocus{
+    cursor: zoom-in;
+}
+.showFocus:hover,
+.showImgFocus:hover:after{
+    color: #46be8a;
+}
+.showFocus em{
+    vertical-align: middle;
+}
+.showFocus i{
+    margin-left: 5px;
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.showImgFocus{
+    position: relative;
+}
+.showImgFocus:after{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    content: "\ecae";
+    font-family: 'icomoon-ultimate';
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -15px;
+    color: #fff;
+    font-size: 1.5em;
+    text-shadow: #000 2px 0px 3px;
+}
+
 
 
 #activity_list{

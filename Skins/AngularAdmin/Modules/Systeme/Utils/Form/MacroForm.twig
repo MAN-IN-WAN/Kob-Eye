@@ -28,11 +28,6 @@
                         {% elseif field.type == "password" %}
                             {{ form.formPassword(field,scopeObj,'input_'~field.name) }}
                         {% elseif field.type == "progress" %}
-                            {% set opts = {
-                                'min': 5,
-                                'max': 95,
-                                'postfix': ' j'
-                            } %}
                             {{ form.formProgress(field,scopeObj,'input_'~field.name,opts) }}
                         {% elseif field.type == "file" or  field.type == "image" %}
                             {{ form.formUpload(field,scopeObj,Module,ObjectType,'input_'~field.name) }}
