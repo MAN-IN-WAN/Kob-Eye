@@ -172,6 +172,7 @@ class SambaJob extends Job {
         }
         //opération terminée
         $this->resetState();
+        return true;
     }
 
     /**
