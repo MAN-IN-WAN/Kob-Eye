@@ -301,6 +301,47 @@ class CompteMail extends genericClass {
 	}
 
     /**
+     * Met à jour le mot de passe d'une adresse mail sur le serveur
+     * @return	mixed
+     */
+    public function updatePassword($params){
+        $step = isset($params['step'])?$params['step']:0;
+
+        switch($step){
+            case 1 :
+                $srv = $this->getKEServer();
+
+                if(!is_object($srv) || $srv->ObjectType != 'Server'){
+                    $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+                    return false;
+                }
+
+                $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+                $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+                $resPass = $zimbra->setPassword($this->IdMail, $params['password']);
+print_r($resPass);
+                return array(
+                    'data'=> 'Modification réalisée avec succès'
+                );
+                break;
+            default:
+                return array(
+                    'template' => 'ModifyPassword',
+                    'step' => 1,
+                    'callNext' => array(
+                        'nom'=> 'updatePassword',
+                        'title'=> 'Modification du mot de passe',
+                        'needConfirm' => true,
+                        'item' => 'obj'
+                    )
+                );
+        }
+
+    }
+
+
+    /**
      * Met à jour une adresse mail sur le serveur
      * @return	false
      */
@@ -379,10 +420,11 @@ class CompteMail extends genericClass {
             if($actuName != $this->Adresse)
                 $resName = $zimbra->renameAccount($this->IdMail, $this->Adresse);
 
-            if( isset($this->Pass) &&  $this->Pass != ''){
+            /*if( isset($this->Pass) &&  $this->Pass != ''){
                 //    $values['password'] = $this->Pass;
                 $resPass = $zimbra->setPassword($this->IdMail, $this->Pass);
-            }
+            }*/
+
             if( isset($this->Status) &&  $this->Status != ''){
                 $values['zimbraAccountStatus'] = $this->Status;
             }

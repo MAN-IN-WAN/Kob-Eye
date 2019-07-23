@@ -1825,12 +1825,17 @@ class ObjectClass extends Root{
 				$Par = $Obj['Parents'][$z];
 				$keyName = $this->findKey($Par['Fkey'],'parent',$Par['Module']);
 				$Association = $this->getKey($Par['Titre'],$keyName,'parent');
+				if (is_object($Association)) {
+					$prop = explode(',', $Association->data);
+					$prop = end($prop);
+					if (empty($prop)) $prop = 'Id';
+				}
 				if (is_object($Association)&& $Par["Action"] == 2  && $Association->isShort()&& $Association->isChild($this->titre)) {
 					//affectation de la valeur dans le tableau des proprietes
-					$Properties[$Association->titre] = $Par["Id"];
+					$Properties[$Association->titre] = $Par[$prop];
 				}elseif (is_object($Association)&& $Par["Action"] == 0  && $Association->isShort()&& $Association->isChild($this->titre)) {
 					//suppression d'une clef.
-					$this->EraseAssociation($Obj["Id"],$Association,$Par["Id"]);
+					$this->EraseAssociation($Obj["Id"],$Association,$Par[$prop]);
 				}
 			}
 		}
@@ -1845,8 +1850,12 @@ class ObjectClass extends Root{
 				$keyName = $this->findKey($Par['Fkey'],'parent',$Par['Module']);
 				$Association = $this->getKey($Par['Titre'],$keyName,'parent');
 				if (is_object($Association)){
+					$prop = explode(',',$Association->data);
+					$prop = end($prop);
+					if(empty($prop)) $prop = 'Id';
+
 					if ($Par["Action"]==0 && $Association->isLong()){
-						$this->EraseAssociation($Obj["Id"],$Association,$Par["Id"]);
+						$this->EraseAssociation($Obj["Id"],$Association,$Par[$prop]);
 					}elseif($Par["Action"] == 2  && $Association->isLong()){
 						$this->insertKey($Par,$Obj['Id'],$Association);
 					}

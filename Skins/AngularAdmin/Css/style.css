@@ -1,17 +1,23 @@
 .formCatsFrise{
     display: flex;
-    flex-direction: row;
-    text-align: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 15px;
+    flex-direction: column;
+    text-align: left;
     flex-wrap: wrap;
+    border-right: 1px solid #e5e5e5;
+    padding: 0 !important;
 }
 .formCatsFriseElem{
     position: relative;
     flex-grow: 1;
+    padding: 10px;
+    transition: all 200ms ease-in-out;
 }
-.formCatsFriseElem + .formCatsFriseElem:before{
+.formCatsFriseElem.active{
+    border-right: 3px solid #01a8fe;
+    padding: 10px 10px 10px 20px;
+    font-weight: 600;
+}
+/*.formCatsFriseElem + .formCatsFriseElem:before{
     position: absolute;
     top: 0px;
     left: 0px;
@@ -27,8 +33,7 @@
     border-radius: 3px;
     padding: 5px;
     font-weight: 600;
-}
-
+}*/
 .formCatWrapper{
     position: relative;
 }
@@ -51,6 +56,7 @@
     padding: 0 15px;
     display: block;
     opacity: 0;
+    visibility: hidden;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
@@ -76,6 +82,7 @@
     padding: 0 15px;
     display: block;
     opacity: 0;
+    visibility: hidden;
     -webkit-transition: all0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
@@ -254,7 +261,6 @@ progress.progress.progress-danger:after{
     padding: .375rem .75rem;
     margin-bottom: 0;
     word-break: break-word;
-
 }
 
 
@@ -289,6 +295,44 @@ progress.progress.progress-danger:after{
     flex-flow: row;
     align-items: center;
 }
+
+.showFocus,
+.showImgFocus{
+    cursor: zoom-in;
+}
+.showFocus:hover,
+.showImgFocus:hover:after{
+    color: #01a8fe;
+}
+.showFocus em{
+    vertical-align: middle;
+}
+.showFocus i{
+    margin-left: 5px;
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.showImgFocus{
+    position: relative;
+}
+.showImgFocus:after{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    content: "\ecae";
+    font-family: 'icomoon-ultimate';
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -15px;
+    color: #fff;
+    font-size: 1.5em;
+    text-shadow: #000 0px 0px 6px;
+    opacity: 0.7;
+}
+
 
 
 #activity_list{
@@ -1233,31 +1277,8 @@ Choix des composants
 
 
 /* Field Help */
-.help-wrapper{
-    position: relative;
+.formHelper i{
     color: #5e9dbc;
-}
-.help-wrapper .fieldHelp{
-    width: 0;
-    height: 0;
-    display: inline-block;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 20px;
-    background-color: #fff;
-    color: #000;
-}
-.help-wrapper:hover .fieldHelp,
-.help-wrapper.active .fieldHelp{
-    height: auto;
-    text-align: center;
-    font-size: 1.4em;
-    width: 600px;
-    max-height: 600px;
-    border: 1px dotted #27a725;
-    padding: 15px;
-    z-index: 600;
 }
 
 
@@ -1432,6 +1453,9 @@ Choix des composants
     margin-bottom: 15px;
 }
 /**MODAL**/
+.theme-dark .modal.modal-size-large .modal-dialog{
+    max-width: 1200px;
+}
 .modal-body {
     overflow: hidden;
     overflow: -webkit-paged-y !important;

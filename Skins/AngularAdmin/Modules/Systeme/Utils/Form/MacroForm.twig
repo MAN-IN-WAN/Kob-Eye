@@ -6,7 +6,7 @@
 
     {% for field in formfields %}
         {% if field.type != "rkey" and field.type != "pluginconfig" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long" and field.type != "metat"  and field.type != "metad" and field.type != "metak" %}
-            <div class="row {% if field.hidden %}hidden{% endif %}">
+            <div class="row {% if field.hidden %}hidden{% endif %}"  {% if field.formCondition %}ng-if="{{ include(template_from_string(field.formCondition)) }}"{% endif %}>
                 <div class="col-md-6">
                     {{ form.formLabel(field, 'input_'~field.name) }}
                     {% if field.help %}
@@ -28,11 +28,6 @@
                         {% elseif field.type == "password" %}
                             {{ form.formPassword(field,scopeObj,'input_'~field.name) }}
                         {% elseif field.type == "progress" %}
-                            {% set opts = {
-                                'min': 5,
-                                'max': 95,
-                                'postfix': ' j'
-                            } %}
                             {{ form.formProgress(field,scopeObj,'input_'~field.name,opts) }}
                         {% elseif field.type == "file" or  field.type == "image" %}
                             {{ form.formUpload(field,scopeObj,Module,ObjectType,'input_'~field.name) }}

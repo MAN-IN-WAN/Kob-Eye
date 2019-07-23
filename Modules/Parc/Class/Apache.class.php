@@ -98,8 +98,8 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 	public function enableSsl($force = false) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
-		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+86400){
-			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiration n'interviendra pas dans les prochaines 24 heures."));
+		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+(7*86400)){
+			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiration n'interviendra pas dans la prochaine semain."));
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache

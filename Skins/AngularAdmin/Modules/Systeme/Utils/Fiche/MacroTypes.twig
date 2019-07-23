@@ -27,9 +27,11 @@
 {% macro flabel(field) %}
     <label class="form-control-label cadref-label" style="line-height:1">{{ field.description }}</label>
     {% if field.help %}
-        <small>
-            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
-        </small>
+        <p class="formHelper">
+            <small>
+                <i class="icmn-question3"></i><span class="fieldHelp">{{ field.helpLang }}</span>
+            </small>
+        </p>
     {% endif %}
 {% endmacro %}
 
@@ -101,8 +103,10 @@
 
 /** IMAGE **/
 {% macro fimage(field,obj) %}
-    <img class="img-responsive" src="{[{ {{ obj }}.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="{{ obj }}.{{ field.name }} "/>
-    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!{{ obj }}.{{ field.name }} "/>
+    <p class="showImgFocus" ng-click="modalFocus('{{ field.name }}',{{ obj }},1);">
+        <img class="img-responsive" src="{[{ {{ obj }}.{{ field.name }} }]}.limit.250x40.jpg" alt="{{ field.listDescr }}" ng-if="{{ obj }}.{{ field.name }}"/>
+    </p>
+    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" alt="{{ field.listDescr }}" ng-if="!{{ obj }}.{{ field.name }} "/>
 {% endmacro %}
 
 /** PRICE **/
@@ -133,34 +137,13 @@
 
 /** TEXT **/
 {% macro ftext(field,obj) %}
-    {% if field.type == "raw" or field.type == "text" %}
-        <div class="row">
-            <div class="col-md-12">
-                <label class="form-control-label" for="l0">{{ field.description }}</label>
-                <small>{{ field.help }}</small>
-            </div>
+    {% if field.type == "raw" or field.type == "text" or field.type == "html" or field.type == "bbcode" %}
+        <div id="field_{{ field.name }}"  class="showFocus" ng-if="{{ obj }}.{{ field.name }} "ng-click="modalFocus('{{ field.name }}',{{ obj }})" >
+            <em>Voir le détail</em>
+            <i class="icmn-eye"></i>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <pre ng-bind-html="{{ obj }}.{{ field.name }}"></pre>
-                <!--                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
-                                <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor" readonly="true"></div>-->
-            </div>
-        </div>
-    {% elseif field.type == "html" or field.type == "bbcode" %}
-        <div class="row">
-            <div class="col-md-12">
-                <label class="form-control-label" for="l0">{{ field.description }}</label>
-                <small>{{ field.help }}</small>
-            </div>
-        </div>
-        <div class="row">
-            <!--<div class="col-md-12">
-                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor"  readonly="true"></div>
-                        </div>-->
-            <div class="col-md-12">
-                <div ng-bind-html="{{ obj }}.{{ field.name }} | unsafe"></div>
-            </div>
+        <div id="field_{{ field.name }}"  ng-if="!{{ obj }}.{{ field.name }}">
+            N.A.
         </div>
     {% endif %}
 {% endmacro %}

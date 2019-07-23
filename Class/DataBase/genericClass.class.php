@@ -1564,6 +1564,7 @@ class genericClass extends Root {
 	 *	0 SUPPRESSION
 	 */
 	public function addFkey($Module, $Class, $Nid, $Action = 2, $SpeFKey = "") {
+
 		//Ajoute une nvelle clef etrangere
 		if (empty($Nid))
 			return false;
@@ -1576,7 +1577,23 @@ class genericClass extends Root {
 		//extraction de la vue
 		if (isset($tmp[1]))$SpeFKey = $Class[1];
 		$Class = $Class[0];
-		$this -> Parents[] = Array("Module" => $Module, "Titre" => $Class, "Id" => $Nid, "Action" => $Action, "Fkey" => (empty($SpeFKey)) ? $Class : $SpeFKey);
+        $assocs = $this->getParentAssociations();
+        foreach($assocs as $ass){
+            if($ass->titre == $Class){
+                $prop = explode(',',$ass->data);
+                $prop = end($prop);
+                break;
+            }
+        }
+
+        $res = Array("Module" => $Module, "Titre" => $Class, "Id" => $Nid, "Action" => $Action, "Fkey" => (empty($SpeFKey)) ? $Class : $SpeFKey);
+        if($prop != 'Id'){
+            $par = Sys::getOneData($Module,$Class.'/'.$Nid);
+            if($par && !empty($par->{$prop}))
+                $res[$prop] = $par->{$prop};
+        }
+
+		$this -> Parents[] = $res;
 	}
 
 	/**

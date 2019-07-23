@@ -832,6 +832,9 @@
         }
         $scope.modalObj = {};
 
+        $scope.FocusValue = '';
+        $scope.FocusProperty = 'None';
+
         $scope.displayFiche =true;
        $scope.injectStore = function(toto,context, query){
             var store = $injector.get(toto+'Store');
@@ -880,6 +883,23 @@
                 }
             }
             return false;
+        }
+        $scope.modalFocus = function (prop,obj,img){
+            console.warn(prop,obj);
+            $('#modalFocus .modal-dialog').spin();
+            $("#modalFocus").modal();
+
+            var FocusValue = obj[prop];
+            if(img){
+                var FocusValue = '<div style="text-align:center;height: 100%;display: flex;align-items: center; justify-content: center;"><img src="/'+FocusValue+'" alt="'+prop+'" style="border: 1px solid #ddd;"/></div>';
+            }
+            var $iframe = $('#focusFrame');
+            $iframe.ready(function() {
+                $iframe.contents().find("body").html(FocusValue);
+            });
+            $scope.FocusProperty = prop;
+
+            $('#modalFocus .modal-dialog').spin(false);
         }
 
         //acces aux stores parents

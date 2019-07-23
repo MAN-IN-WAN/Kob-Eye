@@ -291,8 +291,13 @@
                         var src = document.getElementById('hiddenCode');
                         
                         var signature = src.innerHTML;
-                        
-                        $.post('/Abtel/Signature/Zimbra.json',{'signature':signature, 'action':'addSignature'},function(result){
+                        var mail = $('#formSigEmail').val();
+                        if(!mail) {
+                            console.log('Missing mail address !');
+                            return false;
+                        }
+
+                        $.post('/Abtel/Signature/Zimbra.json',{'mail':mail, 'signature':signature, 'action':'addSignature'},function(result){
                                 console.log(result);    
                         });
                         //return succeed;
