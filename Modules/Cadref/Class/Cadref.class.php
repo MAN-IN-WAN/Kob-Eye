@@ -39,7 +39,7 @@ class Cadref extends Module {
 				}
 				else $panier = "'$classe'";	
 				$_SESSION['panier'] = serialize($panier);
-				header('Location: http://admin.kba.local/#/adh_panier');
+				header('Location: https://gestion.cadref.com/#/adh_panier');
 			}
 		}
 	}
