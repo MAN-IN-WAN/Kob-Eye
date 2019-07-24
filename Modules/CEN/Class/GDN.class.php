@@ -27,7 +27,11 @@ class GDN extends genericClass {
 		$word = $args['word'];
 		if($nah && $args['norm'] == 'true') $word = $this->normalize($word);
 		$dict = $args['dic'];
-		$sort = $args['sort'] == 'false' ? 'Norma_1,Paleo,Trad_2' : 'Trad_2,Norma_1,Paleo';
+		switch($args['sort']) {
+			case 0: $sort = 'Norma_1,Paleo,Trad_2'; break;
+			case 1: $sort = 'Trad_2,Norma_1,Paleo'; break;
+			case 2: $sort = 'Nom,Norma_1,Paleo,Trad_2';
+		}
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
@@ -40,7 +44,11 @@ class GDN extends genericClass {
 		foreach($pdo as $r) $count = $r['cnt'];
 		
 
-		$sql = "select Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId from `##_CEN-GDN` where $field $mode and DictionnaireId in ($dict) order by  $sort";
+		$sql = "
+select g.Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId 
+from `##_CEN-GDN` g inner join `##_CEN-Dictionnaire` d on d.Id=g.DictionnaireId
+where $field $mode and DictionnaireId in ($dict)
+order by  $sort";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$gdn = array();
@@ -55,7 +63,7 @@ class GDN extends genericClass {
 			$list[] = array('id'=>$r['Id'],'paleo'=>$r['Paleo'],'trad'=>$r['Trad_2'],'comm'=>!empty($r['Commentaires']),'dic'=>$r['DictionnaireId']);
 		}
 		if(!empty($rup)) $gdn[] = array('norma'=>$rup, 'gdn'=>$list);
-		return array('gdn'=>$gdn, 'word'=>$word, 'count'=>$count);
+		return array('sql'=>$sql, 'gdn'=>$gdn, 'word'=>$word, 'count'=>$count);
 	}
 	
 	function GetComments($args) {

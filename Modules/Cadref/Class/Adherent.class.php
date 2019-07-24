@@ -971,6 +971,150 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$ret = Cadref::SendMessage($args);
 		return array('data'=>'Message envoyé','sql'=>$sql);
 	}
+	
+	
+	// renvoi un valeur numerique pour comparaison de dates 
+	private function cycleValeur($c, $debut) {
+		if($c == '') return $debut ? 0 : 19999;
+		$m = intval(substr($c, 3));
+		return ($m < 9 ? 10000 : 0)+$m*100+intval(substr($c, 0, 2)); 
+	}
+	
+	function GetPanier($remove) {
+		$adhId = $this->Id;
+		$annee = Cadref::$Annee;
+		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
+		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		
+		$data = array();
+		$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
+			'Jour'=>0,'HeureDebut'=>'','HeureFin'=>'','CycleDebut'=>'','CycleFin'=>'',
+			'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
+			'Disponibles'=>0,'note2'=>'','heures'=>0];
+		if($co->Cotisation)	{
+			$cot['Prix'] = $co->Cotisation;
+			$cot['classe'] = 'label-success';
+			$cot['note'] = 'Déjà réglée';
+			$cotis = 0;
+		} else {
+			$cot['Prix'] = $cotis = $an->Cotisation;
+			$cot['classe'] = 'label-warning';
+			$cot['note'] = 'à régler';
+		}
+		$data[] = $cot;
+		
+		$ids = isset($_SESSION['panier']) ? unserialize($_SESSION['panier']) : '';
+		if(!empty($ids) && !empty($remove)) {
+			$c = "'$remove'";
+			$p = strpos($ids, $c);
+			if($p !== false) {
+				$s = substr($ids, $p+9, 1);
+				if($s == ',') $c .= ',';
+				$ids = str_replace($c, '', $ids); 				
+			}
+			$_SESSION['panier'] = serialize($ids);			
+		}
+
+		$sql = "
+select c.Id as clsId, c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, 
+j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
+a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,
+i.Attente,i.Supprime,1 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles,
+from_unixtime(i.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
+from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
+from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription
+from `##_Cadref-Inscription` i
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d0 on d0.Id=n.DisciplineId
+inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
+left join `##_Cadref-Jour` j on j.Id=c.JourId
+where i.AdherentId=$adhId and i.Annee='$annee'
+order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+		foreach($pdo as $r) {
+			$r['classe'] = 'label-success';
+			$r['note'] = 'Déjà inscrit';
+			$r['note2'] = '';
+			$r['heures'] = 0;
+			$data[] = $r;
+			$c = "'".$r['CodeClasse']."'";
+			$p = strpos($ids, $c);
+			if($p !== false) {
+				$s = substr($ids, $p+9, 1);
+				if($s == ',') $c .= ',';
+				$ids = str_replace($c, '', $ids); 				
+			}
+		}
+		$_SESSION['panier'] = serialize($ids);
+		
+		$sql = "
+select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 
+j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
+if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles
+from `##_Cadref-Classe` c
+inner join `##_Cadref-Niveau` n on c.NiveauId=n.Id
+inner join `##_Cadref-Discipline` d on n.DisciplineId=d.Id
+inner join `##_Cadref-WebDiscipline` wd on d.WebDisciplineId=wd.Id
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
+left join `##_Cadref-Jour` j on j.Id=c.JourId
+where c.CodeClasse in ($ids) and c.Annee='$annee'
+order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+		$montant = 0;
+		foreach($pdo as $r) {
+			$r['classe'] = 'label-warning';
+			$r['note'] = 'Nouveau cours';
+			$jr = $r['Jour'];
+			$cyd = $this->cycleValeur($r['CycleDebut'], true);
+			$cyf = $this->cycleValeur($r['CycleFin'], false);
+			$hrd = $r['HeureDebut'];
+			$hrf = $r['HeureFin'];
+			$heures = 0;
+			foreach($data as $d) {
+				if(!$r['clsId']) continue;
+				$cd = $this->cycleValeur($d['CycleDebut'], true);
+				$cf = $this->cycleValeur($d['CycleFin'], false);
+				if($jr == $d['Jour'] && (($cf >= $cyd && $cf <= $cyf) || ($cd >= $cyd && $cd <= $cyf))) {
+					$hd = $d['HeureDebut'];
+					$hf = $d['HeureFin'];
+					if(($hf >= $hrd && $hf <= $hrf) || ($hd >= $hrd && $hd <= $hrf)) $heures = 1;
+				}			
+			}
+			$r['heures'] = $heures;
+			if($r['Disponibles'] <= 0) $r['note2'] =  'Plus de place disponible';
+			elseif($heures) $r['note2'] = "Chevauchement d'horaire";
+			else $r['note2'] = '';
+
+			$data[] = $r;
+			if($r['Disponibles'] > 0) $montant += $r['Prix']-$r['Reduction'];
+		}
+
+		$sql1 = "
+select e.Nom, e.Prenom 
+from `##_Cadref-ClasseEnseignants` ce
+inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
+where ce.Classe=:cid";
+		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql1);
+		foreach($data as $d) {
+			$pdo->execute(array(':cid'=>$d['clsId']));
+			$e = '';
+			foreach($pdo as $p) {
+				if($e) $e .= ', ';
+				$e .= trim($p['Prenom'].' '.$p['Nom']);
+			}
+			$r['Enseignants'] = $e;
+		}
+		
+		$total = $cotis+$montant;
+		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+	}
 
 	function GetCours($mode, $obj) {
 		$annee = Cadref::$Annee;

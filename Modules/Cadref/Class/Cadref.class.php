@@ -23,6 +23,25 @@ class Cadref extends Module {
 		self::$Cotisation = $annee->Cotisation;
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
+		
+		if(isset($_GET['classe'])) {
+			$_SESSION['classe'] = serialize($_GET['classe']);
+			$_SESSION['urlweb'] = serialize($_GET['urlweb']);
+		}
+		if(isset($_SESSION['classe'])) {
+			if (!Sys::$User->Public) {
+				$classe = unserialize($_SESSION['classe']);
+				unset($_SESSION['classe']);
+				$panier = '';
+				if(isset($_SESSION['panier'])) $panier = unserialize($_SESSION['panier']);
+				if(!empty($panier)) {
+					if(strpos($panier, "'$classe'") == false) $panier .= ",'$classe'";
+				}
+				else $panier = "'$classe'";	
+				$_SESSION['panier'] = serialize($panier);
+				header('Location: http://admin.kba.local/#/adh_panier');
+			}
+		}
 	}
 
 	public static function GetParametre($dom, $sdom, $par) {
