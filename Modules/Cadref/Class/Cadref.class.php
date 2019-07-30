@@ -25,7 +25,7 @@ class Cadref extends Module {
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
 
 		if(isset($_GET['classe'])) {
-			$_SESSION['classe'] = serialize($_GET['classe']);
+			$_SESSION['classe'] = serialize(strtoupper($_GET['classe']));
 			$_SESSION['urlweb'] = serialize($_GET['urlweb']);
 		}
 		if(isset($_SESSION['classe'])) {
@@ -40,7 +40,6 @@ class Cadref extends Module {
 				else $panier = "'$classe'";	
 				$_SESSION['panier'] = serialize($panier);
 				$h = $_SERVER['HTTP_ORIGIN'];
-				klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>$h");
 				header("Location: $h/#/adh_panier");
 			}
 		}
