@@ -23,7 +23,7 @@ class Cadref extends Module {
 		self::$Cotisation = $annee->Cotisation;
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
-		
+
 		if(isset($_GET['classe'])) {
 			$_SESSION['classe'] = serialize($_GET['classe']);
 			$_SESSION['urlweb'] = serialize($_GET['urlweb']);
@@ -39,11 +39,23 @@ class Cadref extends Module {
 				}
 				else $panier = "'$classe'";	
 				$_SESSION['panier'] = serialize($panier);
-				header('Location: https://gestion.cadref.com/#/adh_panier');
+				$h = $_SERVER['HTTP_ORIGIN'];
+				klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>$h");
+				header("Location: $h/#/adh_panier");
 			}
 		}
 	}
 
+	public static function GetPaiement($args) {
+		$p = genericClass::createInstance('Cadref', 'Paiement');
+		$p->Montant = 34.00;
+		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
+		$p->addParent($tp);
+		$p->Save();
+		$pl = $tp->getPlugin();
+		return $pl->getCodeHTML($p);
+	}
+	
 	public static function GetParametre($dom, $sdom, $par) {
 		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
 	}
@@ -175,7 +187,7 @@ class Cadref extends Module {
 				'Body'=>$s);
 			self::SendMessage($params);
 		}
-		$msg = "Code utilisateur: $num\nMote de passe: $p\n";
+		$msg = "Code utilisateur: $num\nMote de passe: $pass\n";
 		$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$msg);
 		self::SendSms($params);
 		return true;

@@ -34,12 +34,10 @@ class CEN extends Module {
 				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic, 'select'=>isset($_SESSION['dictionaries']) ? $_SESSION['dictionaries'] : '');
 				
 			case 'list':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetList($args);
+				return GDN::GetList($args);
 				
 			case 'trad':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetGDN($args);
+				return GDN::GetGDN($args);
 				
 			case 'pres':
 				$dic = genericClass::createInstance('CEN', 'Dictionnaire');
@@ -52,11 +50,16 @@ class CEN extends Module {
 				return array('text'=>$pres);
 				
 			case 'comm':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetComments($args);
+				return GDN::GetComments($args);
 				
 			case 'norm':
 				break;
+			
+			case 'temoa':
+				return Temoa::GetList($args);
 		}
 	}
+
+	
+	
 }

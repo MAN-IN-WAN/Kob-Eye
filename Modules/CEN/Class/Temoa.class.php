@@ -43,15 +43,32 @@ class Temoa extends genericClass {
 		} 
 	}
 	
-	// description d'une application
-	public static function GetPresentation($args) {
-		$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['code']);
-		switch($args['lang']) {
-			case 'es': $pres = $o->TexteEs; break;
-			case 'fr': $pres = $o->TexteFr; break;
-			case 'en': $pres = $o->TexteEn; break;
+	static function GetList($args) {
+		$corpus = $args['corpus'];
+		if($corpus == 'all') $corpus = '';
+		else $corpus = "and Temoa in ($corpus)";
+
+		$sql = "select Code,ZipFile from `##_CEN-Temoa` where 1 $corpus";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$corpus = '';
+		foreach($pdo as $p) {
+			$t = explode('/', $p['ZipFile']);
+			$c = $p['Code'];
+			$corpus .= getcwd()."/Home/$t[1]/CEN/Temoa/$c/$c.rtf;";
 		}
-		return array('presentation'=>$pres);
+		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+		//$corpus = "/home/paul/wks/kbabtel/kobeye/Home/2/CEN/Temoa/Cantares/Cantares.rtf;";
+		
+		$temoa = new temoa2\Temoa();
+		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+		$ret = $temoa->SetCorpus($corpus);
+
+		$temoa->AddArrow($args['word']);
+		if($temoa->Search());
+		$o = json_decode($temoa->GetTargetsJson());
+		unset($temoa);
+		return array("temoa"=>$o);				
 	}
 
 

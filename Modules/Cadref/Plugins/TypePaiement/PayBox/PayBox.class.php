@@ -91,10 +91,11 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_CMD" value="'.$PBX_CMD.'">
 			<input type="hidden" name="PBX_PORTEUR" value="'.$PBX_PORTEUR.'">
 			<input type="hidden" name="PBX_RETOUR" value="'.$PBX_RETOUR.'">
-			<input type="hidden" name="$PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
+			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
 			<input type="hidden" name="PBX_HASH" value="SHA512">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
+			<input type="hidden" name="PBX_ERRORCODETEST" value="00001">
 			<input type="submit" value="Envoyer">
 		</form>
 		';

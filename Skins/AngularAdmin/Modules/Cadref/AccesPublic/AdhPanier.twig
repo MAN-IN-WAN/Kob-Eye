@@ -1,6 +1,6 @@
 {# fiche panier adherent #}
 <div class="page-content-inner">
-	<h3>Panier</h3>
+	<h3>Nouvelles inscriptions</h3>
     <section class="panel">
         <div class="panel-body">
             <div class="row no-gutters">		
@@ -48,11 +48,11 @@
 							<div class="col-md-2">
 							<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
 							</div>
-							<div class="col-md-2" ng-if="panierObj.Total*1">
-							<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
-							</div>
 							<div class="col-md-2">
 							<button type="button" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
+							</div>
+							<div class="col-md-2" ng-if="panierObj.Total*1">
+							<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
 							</div>
 						</div>
 						<div class="row" ng-if="!panierObj.panierItems.length">
@@ -82,6 +82,7 @@
 						<label class="form-control-label cadref-label" ng-if="panierObj.Cotisation*1==0">Déjà réglée</label>
 					</div>
 				</div>
+				<div style="height:10px"></div>
 				<div class="row">
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label">Prix des cours</label>
@@ -90,12 +91,26 @@
 						<label class="form-control-label cadref-label">€ {[{ panierObj.Montant }]}</label>
 					</div>
 				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:5px;margin-top:15px"></div>
 				<div class="row">
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label">Montant à payer</label>
 					</div>
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label">€ {[{ panierObj.Total }]}</label>
+					</div>
+				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:25px;margin-top:5px"></div>
+				<div class="row">
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-success" ng-click="panierPayer()">Payer</button>
+					</div>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
 					</div>
 				</div>
 			</div>
