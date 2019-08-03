@@ -7,7 +7,7 @@ class GDN extends genericClass {
 		$word = $args['word'];
 		$field = $args['nah'] == 'true' ? 'Norma_1' : 'Trad_2';
 		$dict = $args['dic'];
-		if($dict == 'all') $dict = '';
+		if($dict == 'all' || $dict=='') $dict = '';
 		else $dict = "and DictionnaireId in ($dict)";
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
@@ -20,7 +20,7 @@ class GDN extends genericClass {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list);
+		return array('words'=>$list, 'sql'=>$sql);
 	}
 
 	static function GetGDN($args) {
@@ -69,8 +69,10 @@ order by  $sort";
 	}
 	
 	static function GetComments($args) {
-		$o = genericClass::createInstance('Cadref', 'GDN');
-		$o->initFromId($args['id']);
+		$o = Sys::getOneData('Cadref', 'GDN/'.$args['id']);
+//		$o = genericClass::createInstance('Cadref', 'GDN');
+klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",$o);
+//		$o->initFromId($args['id']);
 		$com = $o->Commentaires;
 		$com = preg_replace('/ *\/\/ */', '<br />', $com);
 		$pos = strpos($com, '§ ');

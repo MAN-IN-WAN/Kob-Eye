@@ -65,9 +65,15 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 
 		$temoa->AddArrow($args['word']);
-		if($temoa->Search());
-		$o = json_decode($temoa->GetTargetsJson());
+		if($temoa->Search()) {
+			klog::l(">>>>>>>>>>>>>>>>>>>>".$temoa->TargetCount());
+			klog::l(">>>>>>>>>>>>>>>>>>>>".$temoa->GetTargetText(1));
+			$s = $temoa->GetTargetsJson();
+			klog::l(">>>>>>>>>>>>>>>>>>>>$s");
+		}
 		unset($temoa);
+		$o = json_decode($s);
+		klog::l(">>>>>>>>>>>>>>>>>>>>", $o);
 		return array("temoa"=>$o);				
 	}
 

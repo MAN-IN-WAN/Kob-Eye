@@ -1,5 +1,6 @@
 <?php
 
+//require_once('Class/Lib/pdfb1/pdfb.php');
 require_once('Class/Lib/pdfb/fpdf_fpdi/fpdf.php');
 
 class PrintClasse extends FPDF {
@@ -51,6 +52,7 @@ class PrintClasse extends FPDF {
 	}
 
 	function Footer() {
+		$this->SetXY($this->left, $this->posy);
 	}
 	
 	

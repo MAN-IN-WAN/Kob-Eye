@@ -15,7 +15,7 @@ class CEN extends Module {
 
 
 	// liste d'entrées du GDN 
-	function GetGDN($args) {	
+	public static function GetGDN($args) {	
 		switch($args['mode']) {
 			case 'dsel':
 				$_SESSION['dictionaries'] = $args['dic'];
@@ -25,13 +25,14 @@ class CEN extends Module {
 				$dics = Sys::getData('CEN', 'Dictionnaire');
 				$dicId= array();
 				$dic = array();
+				$sel = isset($_SESSION['dictionaries']) ? $_SESSION['dictionaries'] : '';
 				foreach($dics as $d) {
 					$id = $d->Id;
-					$s = !$sel || strpos($sel,",$id,") ? 1 : 0;
+					$s = empty($sel) || strpos($sel,",$id,") ? 1 : 0;
 					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>$s);
 					$dicId[$d->Id] = $d->Nom;
 				}
-				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic, 'select'=>isset($_SESSION['dictionaries']) ? $_SESSION['dictionaries'] : '');
+				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic, 'select'=>$sel);
 				
 			case 'list':
 				return GDN::GetList($args);

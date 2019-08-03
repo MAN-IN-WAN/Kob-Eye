@@ -150,11 +150,11 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/FichePresence_'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/FichePresence_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file, 'sql'=>$sql);
+		return array('pdf'=>$file);
 	}
 
 	function PrintClasse($obj) {
@@ -184,7 +184,7 @@ order by c.CodeClasse";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file, 'sql'=>$sql);
+		return array('pdf'=>$file);
 	}
 	
 	
