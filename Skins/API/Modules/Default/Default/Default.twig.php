@@ -1,5 +1,5 @@
 <?php
-
+session_write_close();
 
 header("Content-type: text/json; charset=".CHARSET_CODE."");
 header("Accept-Ranges:bytes");
@@ -11,8 +11,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 $query = $GLOBALS['Systeme']->getRegVars('Query');
 $lien = $GLOBALS['Systeme']->getRegVars('Lien');
 
-$info = Info::getInfos($query);
+//Gestion specifiques pour le cas des / dans les identifiants
+$split= explode('/',$query);
+if(sizeof($split) == 3){
+    $split[2] = Utils::KEAddSlashes(rawurldecode($split[2]));
+    $query = implode('/',$split);
+}
 
+
+$info = Info::getInfos($query);
 
 if(strpos( $query,$lien) === 0 || $info['NbHisto'] > 2){
     sendResult(403,null,'Vous n\'avez pas le droit d\'acceder à cette ressource depuis cette route.');
@@ -70,16 +77,16 @@ switch($info['TypeSearch']){
                 //TODO
                 break;
             case 'POST':
-                sendResult(405);
+                sendResult(405,null,'POST Interface');
                 break;
             case 'PUT':
-                sendResult(405);
+                sendResult(405,null,'POST Interface');
                 break;
             case 'DELETE':
-                sendResult(405);
+                sendResult(405,null,'POST Interface');
                 break;
             case 'PATCH':
-                sendResult(405);
+                sendResult(405,null,'POST Interface');
                 break;
         }
         break;
@@ -138,9 +145,12 @@ switch($info['TypeSearch']){
                 $req = explode('/',$info['Query'],2);
                 $req = $req[1].'/';
                 if($info['Reflexive']) $req .= '*/';
+                $reqParams = '';
                 foreach($data as $k=>$d){
-                    $req .= '&'.$k.'='.$d;
+                    $reqParams .= '&'.$k.'='.Utils::KEAddSlashes($d);
                 }
+                $reqParams = trim($reqParams,'&');
+                $req .= $reqParams;
                 $total = $generic->getDbCount($info['Module'],$req);
                 $items = $generic->getDbData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
 
@@ -190,20 +200,21 @@ switch($info['TypeSearch']){
                 break;
             case 'PUT':
                 //TODO definir si l'on peut put un array de child
-                sendResult(405);
+                sendResult(405,null,'PUT Child');
                 break;
             case 'DELETE':
                 //TODO definir si l'on peut del un array de child
-                sendResult(405);
+                sendResult(405,null,'DELETE Child');
                 break;
             case 'PATCH':
                 //TODO definir si l'on peut patch un array de child
-                sendResult(405);
+                sendResult(405,null,'PATCH Child');
                 break;
         }
         break;
 
     case 'Direct':
+    case 'Multi':
         //Verif de la validité des datas envoyés
         $generic = genericClass::createInstance($info['Module'],$info['ObjectType']);
         $props = $generic->getElementsByAttribute('','',true);
@@ -253,9 +264,11 @@ switch($info['TypeSearch']){
         if($method != 'POST'){
             $req = explode('/',$info['Query'],2);
             $req = $req[1];
+            $reqParams = '';
             foreach($data as $k=>$d){
-                $req .= '&'.$k.'='.$d;
+                $reqParams .= '&'.$k.'='.Utils::KEAddSlashes($d);
             }
+            $req .= $reqParams;
             $item = $generic->getOneDbData($info['Module'],$req);
             if(!$item) {
                 sendResult(404);
@@ -271,7 +284,7 @@ switch($info['TypeSearch']){
                 break;
             case 'POST':
                 //TODO definir si l'on peut modif obj avec post
-                sendResult(405);
+                sendResult(405,null,'POST Direct');
                 break;
             case 'PUT':
                 //TODO définir si on autorise la creation d'objet en PUT

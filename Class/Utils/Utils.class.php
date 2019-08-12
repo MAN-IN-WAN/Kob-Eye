@@ -189,10 +189,10 @@ class Utils {
 	static function KEStripSlashes($P) {
 		if (is_array($P))$P=$P[0];
         $tmp =  str_replace('@!#!@', '/', $P);
-        $tmp = str_replace('@!##!@', '&', $tmp);
+        $tmp =  str_replace('@!##!@', '&', $tmp);
 		$tmp =  str_replace('@!###!@',' ', $tmp);
         $tmp =  str_replace('@!####!@','+', $tmp);
-		$tmp =  str_replace('@!#####!@','+', $tmp);
+		$tmp =  str_replace('@!#####!@','=', $tmp);
 		return $tmp;
 	}
 

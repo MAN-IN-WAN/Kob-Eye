@@ -121,7 +121,9 @@ class AbtelGestionBase extends genericClass {
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($data))
             );
+
             $ret = curl_exec($this->con_handle);
+            if(!$ret)  $ret = curl_exec($this->con_handle); //en cas de timeout
             //var_dump($ret);
             $ret = json_decode($ret,true);
             if(!$ret['success']) {
@@ -147,7 +149,7 @@ class AbtelGestionBase extends genericClass {
                 die (json_encode($ret));
             }
 
-            $res = $ret['pagination']['total'];
+            //$res = $ret['pagination']['total'];
         } else{
             //Parc donc on requete la base de la gestion
             $req = $this->buildRequest($inf);
@@ -243,7 +245,8 @@ class AbtelGestionBase extends genericClass {
                     'Content-Length: ' . strlen($data))
             );
 
-            $ret = json_decode(curl_exec($this->con_handle),true);
+            $ret = json_decode(curl_exec($this->con_handle),true); //en cas de timeout
+            if(!$ret)  $ret = json_decode(curl_exec($this->con_handle),true);
             $res = $ret['pagination']['total'];
         } else{
 	        //Parc donc on requete la base de la gestion
@@ -306,6 +309,7 @@ class AbtelGestionBase extends genericClass {
             );
 
             $ret = json_decode(curl_exec($this->con_handle),true);
+            if(!$ret)  $ret = json_decode(curl_exec($this->con_handle),true); // en cas de timeout
             $res = $ret['data'];
 
             if($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -388,7 +392,6 @@ class AbtelGestionBase extends genericClass {
 
         $inf = $this->reworkQuery($module.'/'.$query);
         $res = null;
-
         if($this->getOrigin()){
             //Gestion donc on appelle l'api du parc
             $url = self::PARCURL.'/'.$inf['Route'];
@@ -413,7 +416,9 @@ class AbtelGestionBase extends genericClass {
             );
 
             $ret = json_decode(curl_exec($this->con_handle),true);
+            if(!$ret)  $ret = json_decode(curl_exec($this->con_handle),true); //en cas de timeout
             $res = $ret['data'];
+            $ret = null;
 
             if($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $fields = $this->getQueryFields(0);
@@ -506,9 +511,10 @@ class AbtelGestionBase extends genericClass {
                 );
                 curl_setopt($this->con_handle, CURLOPT_FOLLOWLOCATION, true);
                 curl_setopt($this->con_handle, CURLOPT_SSL_VERIFYPEER, 0);
-
                 $ret = json_decode(curl_exec($this->con_handle),true);
+                if(!$ret)  $ret = json_decode(curl_exec($this->con_handle),true); // Retry en cas de timeout
                 $this->api_token = $ret['auth_token'];
+                $ret = null;
             }
             return 1; //Gestion
         }
@@ -544,6 +550,11 @@ class AbtelGestionBase extends genericClass {
      * @return array|bool
      */
     public function reworkQuery($query,$getId=false){
+        $split= explode('/',$query);
+        if(sizeof($split) == 3){
+            $split[2] = Utils::KEAddSlashes(rawurldecode($split[2]));
+            $query = implode('/',$split);
+        }
         $query = rawurldecode($query);
 
         $info = Info::getInfos($query);
@@ -692,7 +703,7 @@ class AbtelGestionBase extends genericClass {
                 if($this->getOrigin()){
                     //Gestion donc on appelle l'api du parc
                     $id='';
-                    if ($info['TypeSearch'] == 'Direct' && $getId) {
+                    if (($info['TypeSearch'] == 'Direct' || $info['TypeSearch'] == 'Multi') && $getId ) {
                         $q = explode('/',$query,2);
                         if($q[1] == 'Client/0') $q[1] = 'Client/ABT_0'; //Gestion du cas special codegestion = 0
                         $obj = $this->getOneDbData($q[0],$q[1]);

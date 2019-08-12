@@ -193,7 +193,7 @@ class Connection extends Root{
             echo (json_encode(array('success'=>'authentication_success','error'=>false,'auth_token'=>$this->SessId)));
 			$GLOBALS['Systeme']->Close();
 			$GLOBALS["Chrono"]->stop("TOTAL CONNEXION");
-			$GLOBALS['Systeme']->Log->log($GLOBALS['Chrono']->total());
+			//$GLOBALS['Systeme']->Log->log($GLOBALS['Chrono']->total());
 			die();
         }
 
@@ -257,6 +257,7 @@ class Connection extends Root{
 		if ($t) return true ;else  return false;
 	}
 	public function DetectToken(){
+
 	    $types= array(
 	    	'application/x-www-form-urlencoded',
             'application/json',
@@ -276,10 +277,12 @@ class Connection extends Root{
 
 
 		$apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
-	            if(!$apiKey){
+		if(!$apiKey){
             $data = json_decode(file_get_contents("php://input"));
             if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
         }
+		$GLOBALS["Systeme"]->Log->log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ",$data);
+
 		$exists = false;
 		if($apiKey)
             $exists = Sys::getOneData('Systeme','ApiKey/Key='.$apiKey);
@@ -323,6 +326,7 @@ class Connection extends Root{
 				$t=true;
 			}
 		}
+		$GLOBALS["Systeme"]->Log->log("ooooooooooooooooooooooooooooooooooooooooooooooooooo ". $t,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         return $t;
 	}
 
@@ -634,7 +638,9 @@ class Connection extends Root{
 			if ($this->SessId!=""){
 				//Recuperation d'une connexion prive
 				$query="Systeme/Connexion/Session=".$this->SessId;
+				$GLOBALS["Systeme"]->Log->log('QUERYyyyyyyyyyyyyyyyyyyyyy',$query);
                 $Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
+				$GLOBALS["Systeme"]->Log->log('RESULTSsssssssssssssssssssss',$Results);
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
 					$GLOBALS["Systeme"]->Log->log("RECUP CONNEXION ".$this->SessId);

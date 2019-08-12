@@ -42,7 +42,7 @@ class Parc_Client extends genericClass {
 	 */
 	public function Verify( $synchro = false ) {
         if(!empty($this->CodeGestion)){
-            $yets = Sys::getData('Parc','Client/CodeGestion='.$this->CodeGestion);
+            $yets = Sys::getData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($this->CodeGestion));
             foreach($yets as $yet){
                 if($yet && $yet->Id != $this->Id){
                     $this->AddError(
