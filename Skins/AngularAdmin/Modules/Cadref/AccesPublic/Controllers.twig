@@ -436,6 +436,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			$scope.adherentInfo();
 			$scope.inscriptionGetData('inscription', '');
 			$scope.reservationGetData('reservation', '');
+			$scope.getPanier('');
         });
     }
     $scope.initAdh();
@@ -484,6 +485,33 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+
+	//---------------------------
+	// gestion du panier
+	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Urlweb:''};
+	$scope.getPanier = async function(remove) { 
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[remove]);
+		$scope.panierObj.panierItems = data.data.data.data;
+		$scope.panierObj.Cotisation = data.data.data.cotis;
+		$scope.panierObj.Montant = data.data.data.montant;
+		$scope.panierObj.Total = data.data.data.total;
+		$scope.panierObj.Urlweb = data.data.data.urlweb;
+		$scope.$digest();
+	}
+	
+	$scope.panierSupprime = function(item) {
+		$scope.getPanier(item.CodeClasse);
+	}
+	
+	$scope.panierPoursuivre = function() {
+		window.location.href = $scope.panierObj.Urlweb;
+	}
+	
+	$scope.panierConfirme = function() {
+		$("#modal-panier").modal('toggle');
+	}
+	
+
 
 	//---------------------------
 	// gestion des inscriptions

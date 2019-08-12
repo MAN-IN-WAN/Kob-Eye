@@ -3,29 +3,37 @@
 class GDN extends genericClass {
 	
 	// liste de mots du GDN 
-	function GetList($args) {
+	static function GetList($args) {
 		$word = $args['word'];
 		$field = $args['nah'] == 'true' ? 'Norma_1' : 'Trad_2';
 		$dict = $args['dic'];
+		if($dict == 'all' || $dict=='') $dict = '';
+		else $dict = "and DictionnaireId in ($dict)";
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
 			case 'any': $mode = "like '%$word%'"; break;
 		}
-
-		$sql = "select distinct $field as word from `##_CEN-GDN` where $field $mode and substring($field,-1,1)<>'+' and DictionnaireId in ($dict) order by word limit 15";
+		
+		$sql = "select distinct $field as word from `##_CEN-GDN` where $field $mode and substring($field,-1,1)<>'+' $dict order by word limit 15";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list);
+		return array('words'=>$list, 'sql'=>$sql);
 	}
 
-	function GetGDN($args) {
-		$field = $args['nah'] == 'true' ? 'Norma_1' : 'Trad_2';
+	static function GetGDN($args) {
+		$nah = $args['nah'] == 'true';
+		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
-		if($args['norm'] == 'true') $word = $this->normalize($word);
+		if($nah && $args['norm'] == 'true') $word = self::normalize($word);
 		$dict = $args['dic'];
+		switch($args['sort']) {
+			case 0: $sort = 'Norma_1,Paleo,Trad_2'; break;
+			case 1: $sort = 'Trad_2,Norma_1,Paleo'; break;
+			case 2: $sort = 'Nom,Norma_1,Paleo,Trad_2';
+		}
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
@@ -38,7 +46,11 @@ class GDN extends genericClass {
 		foreach($pdo as $r) $count = $r['cnt'];
 		
 
-		$sql = "select Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId from `##_CEN-GDN` where $field $mode and DictionnaireId in ($dict) order by  $field,Paleo";
+		$sql = "
+select g.Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId 
+from `##_CEN-GDN` g inner join `##_CEN-Dictionnaire` d on d.Id=g.DictionnaireId
+where $field $mode and DictionnaireId in ($dict)
+order by  $sort";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$gdn = array();
@@ -56,9 +68,12 @@ class GDN extends genericClass {
 		return array('gdn'=>$gdn, 'word'=>$word, 'count'=>$count);
 	}
 	
-	function GetComments($args) {
-		$this->initFromId($args['id']);
-		$com = $this->Commentaires;
+	static function GetComments($args) {
+		$o = Sys::getOneData('Cadref', 'GDN/'.$args['id']);
+//		$o = genericClass::createInstance('Cadref', 'GDN');
+klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",$o);
+//		$o->initFromId($args['id']);
+		$com = $o->Commentaires;
 		$com = preg_replace('/ *\/\/ */', '<br />', $com);
 		$pos = strpos($com, '§ ');
 		while($pos !== false) {
@@ -75,11 +90,14 @@ class GDN extends genericClass {
 		return array('text'=>$com);				
 	}
 	
-	private function normalize($word) {
+	private static function normalize($word) {
+		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
+			
 		$word = ' '.strtolower(trim($word)).' ';
 		
 		$os = array();
-		$file = fopen(__DIR__.'/Ort_prop.TXT', 'r');
+		$file = fopen(getcwd().'/'.$r->FilePath, 'r');
+		if(!$file) return $word;
 		while(! feof($file)) {
 			$o = explode("\t", utf8_encode(fgets($file)));
 			if(count($o) < 4) continue;
@@ -87,7 +105,7 @@ class GDN extends genericClass {
 		}
 		fclose($file);
 		usort($os, 'sortOrtho');
-		
+
 		$ch = $word;
 		foreach($os as $o) {
 			$ch1 = $o[0];
@@ -96,14 +114,14 @@ class GDN extends genericClass {
 				case 'début.': $ch1 = ' '.$ch1; $ch2 = ' '.$ch2; break;
 				case 'fin.': $ch1 = $ch1.' '; $ch2 = $ch2.' '; break;
 			}
-			$numb = $this->replOrtho($ch, $ch1, $ch2);
+			$numb = self::replOrtho($ch, $ch1, $ch2);
 			$new = trim($ch);
 		}
 		return $new;
 	}
 	
 	
-	private function replOrtho(&$ch, $ch1, $ch2) {
+	private static function replOrtho(&$ch, $ch1, $ch2) {
 		$nb = 0;
 		$pos = strpos($ch, $ch1);
 		while($pos !== false) {

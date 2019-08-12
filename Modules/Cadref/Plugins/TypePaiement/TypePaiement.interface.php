@@ -9,7 +9,7 @@
 *********************************************/
 
 
-interface BoutiqueTypePaiementPlugin {
+interface CadrefTypePaiementPlugin {
 
 	/**
 	* initStatePaiement

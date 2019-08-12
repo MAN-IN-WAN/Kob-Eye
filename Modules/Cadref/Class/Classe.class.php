@@ -150,13 +150,43 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/FichePresence_'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/FichePresence_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file, 'sql'=>$sql);
+		return array('pdf'=>$file);
 	}
 
+	function PrintClasse($obj) {
+		require_once ('PrintClasse.class.php');
+
+		$annee = Cadref::$Annee;
+		$sql = "
+select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour
+from `##_Cadref-Classe` c
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-Jour` j on j.Id=c.JourId 
+where c.Annee='$annee'
+order by c.CodeClasse";
+
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return false;
+		
+		$pdf = new PrintClasse($annee);
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle('Liste des classe');
+
+		$pdf->PrintLines($pdo);
+
+		$file = 'Home/tmp/ListeClasse_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd() . '/' . $file);
+		$pdf->Close();
+
+		return array('pdf'=>$file);
+	}
+	
 	
 	function CheckAbsence($start, $end) {
 		$annee = Cadref::$Annee;

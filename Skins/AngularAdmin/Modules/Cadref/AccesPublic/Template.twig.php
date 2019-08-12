@@ -8,6 +8,7 @@ $menus = array(
 	'adh_documents/adh_carte'=>'AdhCarte',
 	'adh_documents/adh_attestation'=>'AdhAttestation',
 	'adh_message'=>'sendMessage',
+	'adh_panier'=>'AdhPanier',
 	'ens_informations'=>'EnsInfo',
 	'ens_absences'=>'EnsAbsence',
 	'ens_cours'=>'EnsCours',

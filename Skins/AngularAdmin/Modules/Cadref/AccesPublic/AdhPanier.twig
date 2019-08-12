@@ -1,0 +1,119 @@
+{# fiche panier adherent #}
+<div class="page-content-inner">
+	<h3>Nouvelles inscriptions</h3>
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">		
+                <div class="col-md-12">
+					<section class="panel">
+						<div class="panel-body">
+						<table class="table table-hover nowrap straight" id="Panier-table" width="100%" style="line-height:1" >
+							<thead>
+								<tr>
+									<th class="cadref-th" style="max-width:140px"></th>
+									<th class="cadref-th" style="width:30px"></th>
+									<th class="cadref-th">Libellé</th>
+									<th class="cadref-th">Antenne</th>
+									<th class="cadref-th">Horaires</th>
+									<th class="cadref-th">Période</th>
+									<th class="cadref-th">Prix</th>
+									<th class="cadref-th">Enseignant</th>
+									<th class="cadref-th"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in panierObj.panierItems"">
+									<td scope="row" class="cadref-td typeint"><span class="label {[{ item.classe }]}">{[{ item.note }]}</span></td>
+									<td scope="row" class="cadref-td typeint">
+										<span ng-if="(item.clsId*1) && item.Inscrit*1==0" class="btn-abt cadref-btn-del btn-danger" ng-click="panierSupprime(item)" title="Retirer du panier"></span>
+									</td>
+									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
+									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
+									<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures*1}">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
+									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</span></td>
+									<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
+									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
+									<td scope="row" class="cadref-td typeint"><span class="label label-danger">{[{ item.note2 }]}</span></td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						<div class="row" ng-if="panierObj.panierItems.length">
+							<div class="col-md-2">
+							<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ panierObj.Montant }]}</label>
+							</div>
+							<div class="col-md-2">
+							<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ panierObj.Cotisation*1>0 ? '€ '+panierObj.Cotisation : 'déjà réglée' }]}</label>
+							</div>
+							<div class="col-md-2">
+							<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
+							</div>
+							<div class="col-md-2">
+							<button type="button" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
+							</div>
+							<div class="col-md-2" ng-if="panierObj.Total*1">
+							<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
+							</div>
+						</div>
+						<div class="row" ng-if="!panierObj.panierItems.length">
+							<label class="form-control-label cadref-label">Le panier est vide.</label>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div class="modal fade modal-size-medium" id="modal-panier" role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+	<div class="modal-dialog cadref-modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+				<h4 class="modal-title">Confirmer les inscription</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Cotisation CADREF {{ Annees }}</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label" ng-if="panierObj.Cotisation*1">€ {[{ panierObj.Cotisation }]}</label>
+						<label class="form-control-label cadref-label" ng-if="panierObj.Cotisation*1==0">Déjà réglée</label>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Prix des cours</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Montant }]}</label>
+					</div>
+				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:5px;margin-top:15px"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Montant à payer</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Total }]}</label>
+					</div>
+				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:25px;margin-top:5px"></div>
+				<div class="row">
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-success" ng-click="panierPayer()">Payer</button>
+					</div>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+        </div>
+	</div>
+</div>
