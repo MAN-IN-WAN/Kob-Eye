@@ -4,7 +4,7 @@ $query = $vars['Query'];
 $inst = Sys::getOneData('Parc',$query);
 $vars['instance'] = $inst;
 //récupération des hosts
-$hosts = $inst->getParents('Host');
+$hosts = $inst->getChildren('Host');
 foreach ($hosts as $k=>$host){
     $host->apacheServer = Server::getServer($host->getMasterServer());
     $host->bdds = $host->getChildren('Bdd');

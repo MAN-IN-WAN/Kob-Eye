@@ -435,6 +435,7 @@ VM_STARTUP_ORDER=
         else $cmd = "export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre."'";
         $act->addDetails($cmd);
         $det = AbtelBackup::localExec($cmd, $act, $total,null);
+        $act->addDetails($det);
 
 
         //Recup taille pour graphique/progression

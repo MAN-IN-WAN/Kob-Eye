@@ -65,11 +65,22 @@
 <div class="nav-tabs-horizontal" ng-if="displayFiche">
     <ul class="nav nav-tabs" role="tablist">
         {% if Interfaces.fiche_tab %}
+            {% for name,int in Interfaces.fiche_tab %}
+                <li class="nav-item">
+                    <a class="nav-link {% if loop.first %}active{% endif %} " href="javascript: void(0);" data-toggle="tab"
+                       data-target="#tab{{ name }}" role="tab"><b>{{ int.title }}</b></a>
+                </li>
+            {% endfor %}
+        {% endif %}
+
+       {#
+       {% if Interfaces.fiche_tab %}
             <li class="nav-item">
                 <a class="nav-link active " href="javascript: void(0);" data-toggle="tab"
                    data-target="#tabInfosSite" role="tab"><b>{{ Interfaces.fiche_tab.Infos.title }}</b></a>
             </li>
         {% endif %}
+        #}
         {% for child in ChildrenElements if child.inline != 1 and not child.childrenHiddenSoft%}
             <li class="nav-item">
                 <a class="nav-link {% if loop.first and not Interfaces.fiche_tab %}active{% endif %}"
@@ -89,10 +100,19 @@
     </ul>
     <div class="tab-content">
         {% if Interfaces.fiche_tab %}
+            {% for name,int in Interfaces.fiche_tab %}
+                <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ name }}" role="tabpanel">
+                    <div ng-include="'{{ int.urlPrefix }}'+ obj.id +'{{ int.urlSuffix }}'"></div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {#
+        {% if Interfaces.fiche_tab %}
             <div class="tab-pane active" id="tabInfosSite" role="tabpanel">
                 <div ng-include="'{{ Interfaces.fiche_tab.Infos.urlPrefix }}'+ obj.id +'{{ Interfaces.fiche_tab.Infos.urlSuffix }}'"></div>
             </div>
         {% endif %}
+        #}
         {% for child in ChildrenElements if not child.childrenHiddenSoft and child.inline != 1 %}
             <div class="tab-pane {% if loop.first and not Interfaces.fiche_tab %}active{% endif %}"
                  id="tab{{ child.objectName }}" role="tabpanel">

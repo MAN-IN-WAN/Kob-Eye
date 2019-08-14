@@ -40,7 +40,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
         $task->TaskType = 'install';
         $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
@@ -52,7 +52,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function installSoftware($task){
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
@@ -167,7 +167,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
         $task->TaskFunction = 'updateSoftware';
         $task->TaskType = 'update';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
@@ -183,7 +183,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function updateSoftware($task){
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
@@ -227,7 +227,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-        $hos = $this->_obj->getOneParent('Host');
+        $hos = $this->_obj->getOneChild('Host');
         $srv = $hos->getOneParent('Server');
         $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/app/config/parameters.php');
         if (!empty($conf)){

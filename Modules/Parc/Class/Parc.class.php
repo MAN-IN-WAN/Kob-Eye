@@ -422,11 +422,11 @@ class Parc extends Module{
      */
     public  function createBackup($task=null) {
         echo "backup\r\n";
-        $nb = Sys::getCount('Parc','Host');
+        $nb = Sys::getCount('Parc','Host/BackupEnabled=1');
         $it = abs($nb/100)+1;
         //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
         for ($i=0;$i<=$it;$i++) {
-            $aps = Sys::getData('Parc', 'Host', $i*100, 100);
+            $aps = Sys::getData('Parc', 'Host/BackupEnabled=1', $i*100, 100);
             //pour chaque instance on crée une tache pour vérifier l'etat
             foreach ($aps as $a) {
                 if ($a->createBackupTask()) echo "--> backup $a->Nom \r\n";
@@ -452,6 +452,44 @@ class Parc extends Module{
         $task->TaskFunction = 'backup';
         $task->TaskType = 'maintenance';
         $task->TaskCode = 'BACKUP_CREATE';
+        $task->Save();
+    }
+    /**
+     * rotate
+     * Rotation des hébergements
+     */
+    public  function createRotation($task=null) {
+        echo "backup\r\n";
+        $nb = Sys::getCount('Parc','Host/BackupEnabled=1');
+        $it = abs($nb/100)+1;
+        //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
+        for ($i=0;$i<=$it;$i++) {
+            $aps = Sys::getData('Parc', 'Host/BackupEnabled=1', $i*100, 100);
+            //pour chaque instance on crée une tache pour vérifier l'etat
+            foreach ($aps as $a) {
+                if ($a->createRotateTask()) echo "--> rotate $a->Nom \r\n";
+                //else print_r($a->Error);
+            }
+        }
+        if ($task){
+            $task->Termine = true;
+            $task->Save();
+        }
+        return true;
+    }
+    public static function rotate($task = null){
+        $parc = Sys::getModule('Parc');
+        return $parc->createRotation($task);
+    }
+    public static function createRotateTask(){
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Lancement de la création des taches de rotation';
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Parc';
+        $task->TaskFunction = 'rotate';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_ROTATE';
         $task->Save();
     }
     /**
