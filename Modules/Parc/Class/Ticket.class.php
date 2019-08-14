@@ -108,7 +108,7 @@ class Ticket extends genericClass{
     public function Verify(){
 
         if(!empty($this->CodeClient)){
-            $cli = Sys::getOneData('Parc','Client/CodeGestion='.$this->CodeClient);
+            $cli = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($this->CodeClient));
             if(!$cli) {
                 $this->addError(array("Message"=>"Client introuvable dans la base du Parc"));
                 return false;
@@ -213,7 +213,7 @@ class Ticket extends genericClass{
             $cli = null;
 
             if(!empty($args['client'])){
-                $cli = Sys::getOneData('Abtel','Client/'.$args['client']);
+                $cli = Sys::getOneData('Abtel','Client/'.Utils::KEAddSlashes($args['client']));
             }else {
                 $cli = Process::GetTempVar('ParcClient');
             }
