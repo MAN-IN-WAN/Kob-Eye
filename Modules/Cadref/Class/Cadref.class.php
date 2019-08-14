@@ -47,9 +47,11 @@ class Cadref extends Module {
 
 	public static function GetPaiement($args) {
 		$p = genericClass::createInstance('Cadref', 'Paiement');
-		$p->Montant = 34.00;
+		$p->Montant = 1.00;
+		$ad = Sys::getOneData('Cadref', 'Adherent/11728');
 		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
 		$p->addParent($tp);
+		$p->addParent($ad);
 		$p->Save();
 		$pl = $tp->getPlugin();
 		return $pl->getCodeHTML($p);
@@ -57,6 +59,18 @@ class Cadref extends Module {
 	
 	public static function GetParametre($dom, $sdom, $par) {
 		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+	}
+	public static function SetParametre($dom, $sdom, $par, $val, $txt='') {
+		$p = Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+		if(!$p) {
+			$p = genericClass::createInstance('Cadref', 'Parametre');
+			$p->Domaine = $dom;
+			$p->SousDomaine = $sdom;
+			$p->Parametre = $par;
+		}
+		$p->Valeur = $val;
+		$p->Texte = $txt;
+		$p->Save();
 	}
 	
 	public static function CheckAdherent() {

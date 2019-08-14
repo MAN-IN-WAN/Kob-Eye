@@ -46,7 +46,7 @@ class Temoa extends genericClass {
 	static function GetList($args) {
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
-		else $corpus = "and Temoa in ($corpus)";
+		else $corpus = "and Id in ($corpus)";
 
 		$sql = "select Code,ZipFile from `##_CEN-Temoa` where 1 $corpus";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -58,24 +58,55 @@ class Temoa extends genericClass {
 			$corpus .= getcwd()."/Home/$t[1]/CEN/Temoa/$c/$c.rtf;";
 		}
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-		//$corpus = "/home/paul/wks/kbabtel/kobeye/Home/2/CEN/Temoa/Cantares/Cantares.rtf;";
-		
+
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$ret = $temoa->SetCorpus($corpus);
 
 		$temoa->AddArrow($args['word']);
-		if($temoa->Search()) {
-			klog::l(">>>>>>>>>>>>>>>>>>>>".$temoa->TargetCount());
-			klog::l(">>>>>>>>>>>>>>>>>>>>".$temoa->GetTargetText(1));
-			$s = $temoa->GetTargetsJson();
-			klog::l(">>>>>>>>>>>>>>>>>>>>$s");
-		}
+		if($temoa->Search()) $s = $temoa->GetTargetsJson();
 		unset($temoa);
-		$o = json_decode($s);
-		klog::l(">>>>>>>>>>>>>>>>>>>>", $o);
-		return array("temoa"=>$o);				
+		$o = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$words = count($o);
+		$occur = 0;
+		$docs = array();
+		foreach($o as $a) {
+			$docs[$a->doc] = '';
+			$occur += $a->count;
+		}
+		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
 	}
 
+	static function GetDocs() {
+		$docs = Sys::getData('CEN', 'Temoa');
+		$docId= array();
+		$doc = array();
+		foreach($docs as $d) {
+			$id = $d->Id;
+			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+			$docId[$d->Id] = $d->Nom;
+		}
+		return array('documentsId'=>$docId, 'documents'=>$doc);		
+	}
+	
+	static function getDocument($args) {
+		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+		$temoa = new temoa2\Temoa();
+		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+		$doc = $temoa->GetHTML($args['doc']);
+		
+		file_put_contents("/home/paul/tmp/a.html", $doc);
+		
+//		require_once ('Class/Lib/rtf-html-php.php');
+//		$doc= '';
+//		$reader = new RtfReader();
+//		$rtf = file_get_contents($args['doc']);
+//		$result = $reader->Parse($rtf);
+//		if($result) {
+//			$formatter = new RtfHtml();
+//			$doc = $formatter->Format($reader->root);
+//		}
+		return array('doc'=>utf8_encode($doc));
+	}
 
 }

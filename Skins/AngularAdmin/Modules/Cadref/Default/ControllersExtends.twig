@@ -739,6 +739,11 @@
 			);
 		}
 		
+		$scope.openDocuments = function(obj) {
+			var win = window.open('https://scan.cadref.com/member.php?nId='+obj.Numero, '_blank');
+			win.focus();			
+		}
+		
 		// attestation fiscale
 		$scope.selectAttestAnnee = function(obj) {
 			var annee = $scope.CadrefClasse.Attest.AttestAnnee;
