@@ -325,7 +325,6 @@
 						$interval.cancel(getObj);
 						busyWatch();
 						$timeout(function() {
-console.log('CadrefClasseStore classeAnneeChange');
 							$scope.classeAnneeChange(false);
 						},100);
 					}
@@ -343,7 +342,6 @@ console.log('CadrefClasseStore classeAnneeChange');
 			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
 			
 			var p = mode ? 1 : $scope.ClassePage;
-			console.log("xxxxxxxxxxxxxxxxxxxxxxxCadrefClasseStore:"+f+":"+p,mode);
             CadrefClasseStore.setGlobalFilter(f,'default');
             CadrefClasseStore.getData(p,'default');
 			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
@@ -470,6 +468,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 					event.preventDefault();
 					return;
 				}
+				$scope.CadrefContent.$dirty = false;
 			}
 		});
 
@@ -499,6 +498,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 				explodeArgs:explodeArgs,
 				tms : Date.now(),
 			};
+
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
 
@@ -515,9 +515,9 @@ console.log('CadrefClasseStore classeAnneeChange');
 			{% endif %}
 		}
 		$scope.saveFicheCadref = function(id) {
+			if($scope.CadrefContent) $scope.CadrefContent.$dirty = false;
             if(id) $scope.modalObj = $scope.obj;
 			$scope.modalSave($scope.{{ identifier }}callbakSaveFiche);
-			if($scope.CadrefContent) $scope.CadrefContent.$dirty = false;
 		}
 		
 
@@ -737,6 +737,11 @@ console.log('CadrefClasseStore classeAnneeChange');
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 				}
 			);
+		}
+		
+		$scope.openDocuments = function(obj) {
+			var win = window.open('https://scan.cadref.com/member.php?nId='+obj.Numero, '_blank');
+			win.focus();			
 		}
 		
 		// attestation fiscale
@@ -1496,6 +1501,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// SECTION
 		//--------------------------------------		
 		$scope.sectionInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleS = $scope.obj.Libelle;
 		}
 		
@@ -1519,6 +1525,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// DISCIPLINE
 		//--------------------------------------		
 		$scope.disciplineInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(
@@ -1542,6 +1549,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// NIVEAU
 		//--------------------------------------		
 		$scope.niveauInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleN = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
@@ -1564,6 +1572,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// CLASSE
 		//--------------------------------------		
 		$scope.classeInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
 					var d = $scope.CadrefContent.$dirty;
@@ -1667,6 +1676,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		//--------------------------------------
 
 		$scope.visiteInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
@@ -1930,6 +1940,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// Lieu
 		//--------------------------------------		
 		$scope.lieuInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
 					var d = $scope.CadrefContent.$dirty;
@@ -1971,6 +1982,7 @@ console.log('CadrefClasseStore classeAnneeChange');
 		// DISCIPLINE
 		//--------------------------------------		
 		$scope.webDisciplineInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {

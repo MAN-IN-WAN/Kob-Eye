@@ -5,7 +5,7 @@ class Inscription extends genericClass {
 	function Delete() {
 		throw new Exception('Une inscription ne peut être supprimée');
 	}
-
+	
 	function PrintStatistique($obj) {
 		require_once ('cadrefStat.class.php');
 		require_once ('PrintStatistique.class.php');

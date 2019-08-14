@@ -15,31 +15,30 @@ class CEN extends Module {
 
 
 	// liste d'entrées du GDN 
-	function GetGDN($args) {
-		
+	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'docs':
+				return Temoa::GetDocs();
+				
+			case 'doc':
+				return Temoa::getDocument($args);
+				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
-				$sel = isset($_SESSION['Dictionaries']) ? $_SESSION['Dictionaries'] : false;
 				$dicId= array();
 				$dic = array();
 				foreach($dics as $d) {
+					$id = $d->Id;
 					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
 					$dicId[$d->Id] = $d->Nom;
 				}
 				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
 				
-			case 'select':
-				$_SESSION['Dictionaries'] = $args['selected'];
-				return array('selected'=>$_SESSION['Dictionaries']);
-				
 			case 'list':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetList($args);
+				return GDN::GetList($args);
 				
 			case 'trad':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetGDN($args);
+				return GDN::GetGDN($args);
 				
 			case 'pres':
 				$dic = genericClass::createInstance('CEN', 'Dictionnaire');
@@ -52,14 +51,16 @@ class CEN extends Module {
 				return array('text'=>$pres);
 				
 			case 'comm':
-				$gdn = genericClass::createInstance('CEN', 'GDN');
-				return $gdn->GetComments($args);
+				return GDN::GetComments($args);
 				
 			case 'norm':
 				break;
+			
+			case 'temoa':
+				return Temoa::GetList($args);
 		}
 	}
-	
 
+	
 	
 }

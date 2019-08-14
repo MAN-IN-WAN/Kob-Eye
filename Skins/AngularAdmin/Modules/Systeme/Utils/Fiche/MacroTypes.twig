@@ -27,9 +27,11 @@
 {% macro flabel(field) %}
     <label class="form-control-label cadref-label" style="line-height:1">{{ field.description }}</label>
     {% if field.help %}
-        <small>
-            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
-        </small>
+        <p class="formHelper">
+            <small>
+                <i class="icmn-question3"></i><span class="fieldHelp">{{ field.helpLang }}</span>
+            </small>
+        </p>
     {% endif %}
 {% endmacro %}
 

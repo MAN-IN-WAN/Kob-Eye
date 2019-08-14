@@ -77,6 +77,11 @@
 										<div class="col-md-2">
 											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
 										</div>
+										{% if mode == 1 %}
+										<div class="col-md-2">
+											<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-click="prelevements()">Prélèvements</button>
+										</div>
+										{% endif %}
 									</div>
 								</div>                            
 							</div>

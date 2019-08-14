@@ -585,5 +585,14 @@
 		<PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	
+    <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Cadref/Class/Paiement.class.php">
+        <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
+        <PROPERTIES description="Detail" type="text"  special="multi" auto="1">Detail</PROPERTIES>
+        <PROPERTIES description="Référence Paiement" type="varchar" auto="0" length="30" list="3" listDescr="Référence">Reference</PROPERTIES>
+        <PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
+        <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
+        <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
+        <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
+    </OBJECTCLASS>
 
 </SCHEMA>

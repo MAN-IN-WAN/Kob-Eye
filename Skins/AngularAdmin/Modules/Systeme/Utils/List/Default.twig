@@ -257,7 +257,7 @@
     </div>
 </div>
 
-<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -295,7 +295,7 @@
     </div>
 </div>
 {{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
-<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

@@ -23,10 +23,54 @@ class Cadref extends Module {
 		self::$Cotisation = $annee->Cotisation;
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
+
+		if(isset($_GET['classe'])) {
+			$_SESSION['classe'] = serialize(strtoupper($_GET['classe']));
+			$_SESSION['urlweb'] = serialize($_GET['urlweb']);
+		}
+		if(isset($_SESSION['classe'])) {
+			if (!Sys::$User->Public) {
+				$classe = unserialize($_SESSION['classe']);
+				unset($_SESSION['classe']);
+				$panier = '';
+				if(isset($_SESSION['panier'])) $panier = unserialize($_SESSION['panier']);
+				if(!empty($panier)) {
+					if(strpos($panier, "'$classe'") == false) $panier .= ",'$classe'";
+				}
+				else $panier = "'$classe'";	
+				$_SESSION['panier'] = serialize($panier);
+				$h = $_SERVER['HTTP_ORIGIN'];
+				header("Location: $h/#/adh_panier");
+			}
+		}
 	}
 
+	public static function GetPaiement($args) {
+		$p = genericClass::createInstance('Cadref', 'Paiement');
+		$p->Montant = 1.00;
+		$ad = Sys::getOneData('Cadref', 'Adherent/11728');
+		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
+		$p->addParent($tp);
+		$p->addParent($ad);
+		$p->Save();
+		$pl = $tp->getPlugin();
+		return $pl->getCodeHTML($p);
+	}
+	
 	public static function GetParametre($dom, $sdom, $par) {
 		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+	}
+	public static function SetParametre($dom, $sdom, $par, $val, $txt='') {
+		$p = Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+		if(!$p) {
+			$p = genericClass::createInstance('Cadref', 'Parametre');
+			$p->Domaine = $dom;
+			$p->SousDomaine = $sdom;
+			$p->Parametre = $par;
+		}
+		$p->Valeur = $val;
+		$p->Texte = $txt;
+		$p->Save();
 	}
 	
 	public static function CheckAdherent() {
@@ -156,7 +200,7 @@ class Cadref extends Module {
 				'Body'=>$s);
 			self::SendMessage($params);
 		}
-		$msg = "Code utilisateur: $num\nMote de passe: $p\n";
+		$msg = "Code utilisateur: $num\nMote de passe: $pass\n";
 		$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$msg);
 		self::SendSms($params);
 		return true;
