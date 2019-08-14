@@ -592,6 +592,7 @@
         <PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
         <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
+        <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
     </OBJECTCLASS>
 
 </SCHEMA>

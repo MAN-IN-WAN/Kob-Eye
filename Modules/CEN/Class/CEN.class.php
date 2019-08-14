@@ -17,22 +17,22 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
-			case 'dsel':
-				$_SESSION['dictionaries'] = $args['dic'];
-				return true;
+			case 'docs':
+				return Temoa::GetDocs();
+				
+			case 'doc':
+				return Temoa::getDocument($args);
 				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
 				$dicId= array();
 				$dic = array();
-				$sel = isset($_SESSION['dictionaries']) ? $_SESSION['dictionaries'] : '';
 				foreach($dics as $d) {
 					$id = $d->Id;
-					$s = empty($sel) || strpos($sel,",$id,") ? 1 : 0;
-					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>$s);
+					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
 					$dicId[$d->Id] = $d->Nom;
 				}
-				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic, 'select'=>$sel);
+				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
 				
 			case 'list':
 				return GDN::GetList($args);

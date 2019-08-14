@@ -1012,7 +1012,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $this->_KEInfra = $this->getOneParent('Infra');
             if(!is_object($this->_KEInfra)) {
                 //si definit dans l'instance
-                if($inst = $this->getOneChild('Instance')){
+                if($inst = $this->getOneParent('Instance')){
                     $this->_KEInfra = $inst->getInfra();
                     $this->addParent($this->_KEInfra);
                 }else{
@@ -1097,7 +1097,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $task->TaskType = 'maintenance';
         $task->TaskCode = 'BACKUP_CREATE';
         $task->addParent($this);
-        $inst = $this->getOneChild('Instance');
+        $inst = $this->getOneParent('Instance');
         if ($inst)
             $task->addParent($inst);
         $task->addParent($this->getOneParent('Server'));
@@ -1115,7 +1115,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      */
     public function backup($task ){
         $host = $this;
-        $inst = $host->getOneChild('Instance');
+        $inst = $host->getOneParent('Instance');
         $restopoint = date('YmdHis');
         $restodate = date('d/m/Y à H:i:s');
         $task->DateDebut = time();
@@ -1125,8 +1125,6 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $rp->Titre = 'Sauvegarde date: '.$restodate;
         $rp->Identifiant = $restopoint;
         $rp->addParent($host);
-        if ($inst)
-            $rp->addParent($inst);
         $rp->Save();
         try {
             $result = $rp->backup($task);
@@ -1315,6 +1313,11 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         return $serv;
     }
 
+    /**
+     * getSize
+     * return size oh this host
+     * @return bool
+     */
     public function getSize(){
         $server = $this->getServer();
         $cmd='du -s /home/'.$this->NomLDAP.'  | cut -f1';
@@ -1333,433 +1336,103 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $this->softSave();
         return $this->DiskSpace;
     }
-
-}
-/**
- * Terminal
- * Class to interact with the user and the shell process.
- * @author Thiago Bocchile <tykoth@gmail.com>
- * @package xwiterm
- * @subpackage xwiterm-linux
- */
-
-class Terminal {
-
-
-    private $login;
-    private $password;
-
-    static $username;
-    static $commandsFile = "/tmp/comandos.txt";
-    static $totalCommands;
-    static $process;
-    static $status;
-    static $meta;
-
-    static $instance;
-
     /**
-     * Static function to simply autenticate users.
-     * Can be used for other purposes.
-     * @param string $login the linux username
-     * @param string $password password
-     * @access public
-     * @return bool - true if login and password is right
+     * createInstanceFromHost
+     * create instance from this host
      */
-    public static function autenticate($login, $password) {
-
-
-        self::$username = $login;
-        $process = new TerminalProcess("su " . escapeshellarg($login));
-        usleep(500000);
-        $process->put($password);
-        $process->put(chr(13));
-        usleep(500000);
-        return (bool) !$process->close();
-    }
-
-    /**
-     * Get the terminal title.
-     * @return string
-     */
-    public static function getTitle(){
-        if(!empty(self::$username)){
-            $process = new TerminalProcess("uname -n");
-            $title = self::$username."@".trim($process->get());
-            $process->close();
-            return $title;
-        } else {
-            return "not logged shell - how cold it be possible, uh?";
+    public function createInstanceFromHost($params = null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']) {
+            case 1:
+                //création instance
+                $inst = genericClass::createinstance('Parc','Instance');
+                $inst->Nom = $params['Nom'];
+                //sousdomaine
+                $ap = $this->getOneChild('Apache');
+                //config
+                $inst->SousDomaine = $ap->ApacheServerName;
+                $inst->PHPVersion = $this->PHPVersion;
+                $inst->InstanceNom = $this->Nom;
+                $inst->Password = $this->Password;
+                //client
+                $cli = $this->getOneParent('Client');
+                $inst->addParent($cli);
+                //infrastructure
+                $inf = $this->getOneParent('Infra');
+                $inst->addParent($inf);
+                //enregistrement
+                $this->addParent($inst);
+                $inst->softSave();
+                $inst->Save();
+                return true;
+                break;
+            default:
+                return array('template' => "createInstance", 'step' => 1, 'callNext' => array('nom' => 'createInstanceFromHost', 'title' => 'Enregistrement de la nouvelle instance'));
         }
     }
     /**
-     * Static function to "run" the terminal.
-     * It must be used at the end of all html output.
-     * @param string $login
-     * @param string $password
-     * @return bool - true if runs
+     * createRotateTask
+     * Creation de la tache de rotation
      */
-    public static function run($login, $password){
-        self::$instance = new self();
-        return self::$instance->open($login, $password);
-    }
-
-    /**
-     * Simple function to "post" a command in the commands file.
-     * @todo Another way to catch the commands, file is ugly.
-     * @param string $command
-     */
-    public static function postCommand($command){
-        file_put_contents(self::$commandsFile, $command."\n", FILE_APPEND);
-    }
-
-    /**
-     * Open the terminal process.
-     * @param string $login
-     * @param string $password
-     * @return bool - true if runs
-     */
-    private function open($login, $password) {
-        $this->login = $login;
-        $this->password = $password;
-
-        if(!is_writable(self::$commandsFile)){
-            $this->output("\r\nNeed permission to write in ".self::$commandsFile."\r\n");
+    public function createRotateTask($orig=null){
+        $nbt = Sys::getCount('Parc','Host/'.$this->Id.'/Tache/TaskCode=BACKUP_ROTATE&Termine=0&Erreur=0');
+        if ($nbt){
+            $this->addError(array('Message'=>'Une tache de rotation est déjà en cours.'));
             return false;
         }
+        if (!$this->BackupEnabled) return false;
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Rotation de l\'hébergement ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Host';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'rotate';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_ROTATE';
+        $task->addParent($this);
+        $inst = $this->getOneParent('Instance');
+        if ($inst)
+            $task->addParent($inst);
+        $task->addParent($this->getOneParent('Server'));
+        if (is_object($orig)) $task->addParent($orig);
+        $task->Save();
+        return array('task' => $task);
+    }
+    /**
+     * rotate
+     * Rotation des backups
+     */
+    public function rotate($task) {
+        if (!$this->BackupRetention>1000) return true;
+        $apachesrv = $this->getOneParent('Server');
+        $act = $task->createActivity(' > Rotation du de l\'hébergement: '.$this->Nom.' ('.$this->Id.')','Info');
+        $act->Terminate();
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
 
-        // Clean commands
-        file_put_contents(self::$commandsFile, "");
-        $this->startProcess();
+        //pour chaque vm
+        $rps = Sys::getData('Parc','Host/'.$this->Id.'/RestorePoint/tmsCreate<'.(time()-$this->BackupRetention));
 
-        do {
-            $out = self::$process->get();
-
-            // Detect "blocking" (wait for stdin)
-            if(sizeof($out) == 1 && ord($out) == 0) {
-                $this->listenCommand();
-            } else {
-                // Provisorio, meldels. (usuario www-data não tem controle de servico, dude!)
-                if(preg_match('/-su: no job control in this shell/', $out)) continue;
-                $this->output($out);
-            }
-            usleep(50000);
-            self::$status = self::$process->getStatus();
-            self::$meta = self::$process->metaData();
-        } while(self::$meta['eof'] === false);
+        foreach ($rps as $rp){
+            $act = $task->createActivity(' > Suppression du point de restauration: '.$rp->Titre.' ('.$rp->Id.')','Info');
+            $act->Terminate($rp->Delete());
+        }
+        try {
+            //execution du borg prune
+            $act = $task->createActivity(' > Execution du borg prune','Info');
+            $nd = $this->BackupRetention / 86400;
+            $nd = intval($nd);
+            $cmd = 'cd /home/' . $this->NomLDAP . '/backup && borg prune -v --list --keep-within=' . $nd . 'd . && chown ' . $this->NomLDAP . ':users /home/' . $host->NomLDAP . '/backup -R';
+            $act->addDetails($cmd);
+            $apachesrv->remoteExec($cmd);
+            $act->Terminate(true);
+        }catch (Eception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
         return true;
     }
 
-    /**
-     * Starts the terminal process
-     * Uses the class Process.
-     * @return true if runs
-     */
-    private function startProcess() {
-        $cmd = "sudo -S su - {$this->login}";
-        self::$process = new TerminalProcess($cmd);
-        //self::$process = new TerminalProcess("whoami");
-//        self::$process = new TerminalProcess("vi");
-        if(!self::$process->isResource()) {
-            throw new Exception("RESOURCE NOT AVAIBLE");
-            return false;
-        }
-        usleep(500000);
-        self::$process->getStatus();
-        self::$process->put($this->password);
-        self::$process->put(chr(13));
-        self::$process->get();
-        usleep(500000);
-        self::$status = self::$process->getStatus();
-        self::$meta = self::$process->metaData();
-    }
-
-    /**
-     * Simulates the terminal colors :)
-     * Format the input and returns as html with styles
-     * Function to be used with preg_replace.
-     * @param string $code
-     * @param string $value
-     * @return string - the html tag with style
-     */
-    private function consoleTag($code, $value){
-        $attrs = explode(";", $code);
-
-        if(sizeof($attrs) == 2 && intval($attrs[0]) > 10){
-            $attrs[2] = $attrs[1];
-            $attrs[1] = $attrs[0];
-
-        }
-
-        if(sizeof($attrs) == 2 && intval($attrs[0]) == 0 && intval($attrs[1]) == 0){
-            $attrs[0] = 0;
-            $attrs[1] = 37;
-        }
-        $text = array(
-            '0' => '',
-            '1' => 'font-weight:bold',
-            '3' => 'text-decoration:underline',
-            '5' => 'blink'
-        );
-        $colors = array(
-            '0' => 'black',
-            '1' => 'red',
-            '2' => '#89E234', // green
-            '3' => 'yellow',
-            '4' => '#729FCF', // blue
-            '5' => 'magenta',
-            '6' => 'cyan',
-            '7' => 'white'
-        );
-
-        $text_decoration = (isset($attrs[0]) && array_key_exists(intval($attrs[0]), $text)) ? $text[intval($attrs[0])] : $text[0];
-        $color = (isset($attrs[1]) && array_key_exists(intval($attrs[1])-30, $colors)) ? $colors[intval($attrs[1])-30] : $colors[0];
-        $style = sprintf("%s;color:%s;", $text_decoration, $color);
-        $style.= (isset($attrs[2]) && array_key_exists((intval($attrs[2])-40), $colors)) ? "background-color:".$colors[(intval($attrs[2])-40)] : '';
-        return "<tt style=\\\"$style\\\">$value</tt>";
-    }
-
-    /**
-     * "Hard" output.
-     * It's not a good practice to echo from class methods, so it's a provisory
-     * method.
-     * @param string $output
-     * @param bool $return - true to return the formatted output
-     * @param bool $html - true to format html
-     * @return mixed - if $return is true, returns the output
-     */
-    private function output($output, $return = false, $html = true) {
-
-        if(preg_match('/\x08/',$output)) return false;
-
-        $output = htmlentities($output);
-        $output = addslashes($output);
-
-        $output = explode("\n", $output);
-        $output = implode("</span><span>", $output);
-        $output = sprintf("<span>%s</span>", $output);
-        $output = preg_replace( "/\r\n|\r|\n/", '\n', $output);
-
-        // Removes the first occurrence (on ls)
-        $output = preg_replace('/\x1B\[0m(\x1B)/', "\x1B", $output);
-        // Add colors to default coloring sytem
-        $output = preg_replace('/\x1B\[([^m]+)m([^\x1B]+)\x1B\[0m/e', '$this->consoleTag(\'\\1\',\'\\2\')', $output);
-        $output = preg_replace('/\x1B\[([^m]+)m([^\x1B]+)\x1B\[m/e', '$this->consoleTag(\'\\1\',\'\\2\')', $output);
-        // Add colors to grep color system
-        $output = preg_replace('/\x1B\[([^m]+)m\x1B\[K([^\x1B]+)\x1B\[m\x1B\[K/e', '$this->consoleTag("\\1","\\2")', $output);
-
-        // Removes some dumb chars
-        $output = preg_replace('/\x1B\[m/', '', $output);
-        $output = preg_replace('/\x07/', '', $output);
-
-
-        if($return === false){
-            echo "<script>recebe(\"{$output}\");</script>\n"; flush();
-        } else {
-            return $output;
-        }
-    }
-
-    /**
-     * Formats the output to be used as command suggest (pressing TAB)
-     * @param string $output
-     * @return string
-     */
-    private function commandSuggest($output){
-        $output = preg_replace( "/\n|\r|\r\n/", '', $output);
-        $output = preg_replace('/'.chr(7).'/', '', $output);
-        return trim($output);
-    }
-
-    /**
-     * Listener for incoming commands
-     */
-    private function listenCommand() {
-
-        $commands = file(self::$commandsFile);
-
-        if(sizeof($commands) > self::$totalCommands) {
-            self::$totalCommands = sizeof($commands);
-            $command = $commands[self::$totalCommands-1];
-            $this->parse($command);
-        }
-    }
-
-    /**
-     * Parse the command
-     * @param string $command - incomming command from terminal
-     * @return void
-     */
-    private function parse($command) {
-
-
-        switch(trim($command)) {
-            case chr(3):
-                // SIGTERM
-                return $this->sendSigterm();
-                break;
-            case chr(4):
-                self::$process->put("exit");
-                self::$process->put(chr(13));
-                break;
-
-            case chr(26):
-                //STOP - experimental
-                return $this->sendSigstop();
-                break;
-            case 'fg':
-                return $this->sendFg();
-                break;
-
-            default:
-                // Checks for "TAB"
-                if(ord(substr($command,-2,1)) == 9){
-                    self::$process->put(trim($command).chr(9));
-                    usleep(500000);
-
-                    $out = self::$process->get();
-                    // Check if is a "RE-TAB"
-                    if(trim($command) == $this->commandSuggest($out)){
-                        self::$process->put(trim($command).chr(9).chr(9));
-                        self::$process->put(chr(21));
-                        $this->output(self::$process->get());
-                    } else {
-                        echo "<script>recebe(null, '".$this->commandSuggest($out)."')</script>\n"; flush();
-                    }
-                    self::$process->put(chr(21));
-                } else {
-                    self::$process->put(chr(21));
-                    self::$process->put(trim($command));
-                    self::$process->put(chr(13));
-                }
-
-                usleep(500000);
-                break;
-        }
-    }
-
-
-    /**
-     * Emulates the SIGTERM sending via CTRL-C
-     * @return void
-     */
-    private function sendSigterm() {
-        // SLAYER!!! GRRRRRRRRRR
-        // http://www.youtube.com/watch?v=VSoh3c7QVyw
-        $SLAYER = 'pid='.self::$status['pid'].
-            '; supid=`ps -o pid --no-heading --ppid $pid`;'.
-            'bashpid=`ps -o pid --no-heading --ppid $supid`;'.
-            'childs=`ps -o pid --no-heading --ppid $bashpid`;'.
-            'kill -9 $childs;';
-        $process = new TerminalProcess("su -c '{$SLAYER}' -l {$this->login}");
-        usleep(500000);
-        $process->put($this->password);
-        $process->put(chr(13));
-        usleep(500000);
-    }
-
-    /**
-     * Simulates the SIGSTOP sending via CTRL-Z
-     * @return void
-     */
-    private function sendSigstop() {
-        $SLAYER = 'pid='.self::$status['pid'].
-            '; supid=`ps -o pid --no-heading --ppid $pid`;'.
-            'bashpid=`ps -o pid --no-heading --ppid $supid`;'.
-            'childs=`ps -o pid --no-heading --ppid $bashpid`;'.
-            'kill -TSTP $childs;';
-        $process = new TerminalProcess("su -c '{$SLAYER}' -l {$this->login}");
-        usleep(500000);
-        $process->put($this->password);
-        $process->put(chr(13));
-        self::$process->put(chr(13));
-        usleep(500000);
-    }
-
-    /**
-     * Simulates the SIGCONT sending via 'fg'
-     */
-    private function sendFg() {
-        $SLAYER = 'pid='.self::$status['pid'].
-            '; supid=`ps -o pid --no-heading --ppid $pid`;'.
-            'bashpid=`ps -o pid --no-heading --ppid $supid`;'.
-            'childs=`ps -o pid --no-heading --ppid $bashpid`;'.
-            'kill -CONT $childs;';
-        $process = new TerminalProcess("su -c '{$SLAYER}' -l {$this->login}");
-        usleep(500000);
-        $process->put($this->password);
-        $process->put(chr(13));
-        self::$process->put(chr(13));
-        usleep(500000);
-    }
-
-
-}/**
- * Class to control the process.
- * @author Thiago Bocchile <tykoth@gmail.com>
- * @package xwiterm
- * @subpackage xwiterm-linux
- */
-class TerminalProcess {
-    public $pipes;
-    public $process;
-
-    public function __construct($command) {
-        return $this->open($command);
-    }
-
-    public function __destruct() {
-        return $this->close();
-    }
-
-    public function open($command) {
-        /*        $spec = array(
-                    array("pty"), // MAGIC - THE GATHERING!! MWAHAHAHAHA
-                    array("pty"),
-                    array("pty")
-                );*/
-        $spec = array(
-            array("pipe","r"), // MAGIC - THE GATHERING!! MWAHAHAHAHA
-            array("pipe","w"),
-            array("pipe","w")
-        );
-        $this->process = proc_open($command, $spec, $this->pipes);
-        $this->setBlocking(0);
-    }
-
-    public function isResource() {
-        return is_resource($this->process);
-    }
-    public function setBlocking($blocking = 1) {
-        return stream_set_blocking($this->pipes[1], $blocking);
-    }
-    public function getStatus() {
-        return proc_get_status($this->process);
-    }
-    public function get() {
-//		$out = fread($this->pipes[1], 128);
-//		$out = fgets($this->pipes[1]);
-        $out = stream_get_contents($this->pipes[1]);
-        return $out;
-    }
-
-    public function put($data) {
-//		fwrite($this->pipes[1], $data."\n");
-        fwrite($this->pipes[1], $data);
-//		fwrite($this->pipes[1], chr(13));
-        fflush($this->pipes[1]);
-//		return fwrite($this->pipes[1], $data);
-    }
-
-    public function close() {
-        if(is_resource($this->process)) {
-            fclose($this->pipes[0]);
-            fclose($this->pipes[1]);
-            fclose($this->pipes[2]);
-            return proc_close($this->process);
-        }
-    }
-    public function metaData() {
-        return stream_get_meta_data($this->pipes[1]);
-    }
 }

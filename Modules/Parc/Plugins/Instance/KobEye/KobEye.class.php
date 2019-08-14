@@ -62,7 +62,7 @@ class ParcInstanceKobEye extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-        $hos = $this->_obj->getOneParent('Host');
+        $hos = $this->_obj->getOneChild('Host');
         $srv = $hos->getOneParent('Server');
         $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/Conf/General.conf');
         if (!empty($conf)){

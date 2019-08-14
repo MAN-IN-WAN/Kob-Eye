@@ -68,6 +68,7 @@
     top: 0;
     left: 0;
     display: block;
+    visibility: visible;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
@@ -515,7 +516,7 @@ table tr td.typeraw span.ng-binding{
 .listWrap{
     position: relative;
     width: 100%;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .listWrap table {
     width: auto;

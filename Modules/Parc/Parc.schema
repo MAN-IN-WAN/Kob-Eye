@@ -238,7 +238,7 @@
 		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
 		<FUNCTION title="Configuration du serveur">createConfigTask</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
+	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN">
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -249,7 +249,6 @@
 		<PROPERTIES type="password" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" searchOrder="8" description="Haute disponibilité" fiche="1" list="1" form="1">HA</PROPERTIES>
 		<PROPERTIES type="int" default="0" searchOrder="10" description="Espace occupé (en Ko)" fiche="1" >DiskSpace</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="5000000" description="Quota (en Ko)" listDescr="Quota (en Ko)"  fiche="1">Quota</PROPERTIES>
@@ -261,10 +260,15 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
+		<CATEGORY title="Sauvegarde">
+			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
+			<PROPERTIES type="int" description="Durée de rétention" listDescr="Retention"  list="1" form="1" fiche="1" default="1209600" values="604800::7 jours,1209600::14 jours,2592000::30 jours,5184000::60 jours,7776000::90 jours,10368000::120 jours">BackupRetention</PROPERTIES>
+		</CATEGORY>
 		<FKEY card="1,n" data="Server,Id" link="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" >ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" fiche="1">InfraId</FKEY>
         <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
+        <FKEY card="0,1" data="Instance,Id" description="Instance" listDescr="Instance" fiche="1">InstanceId</FKEY>
         <FUNCTION title="Créer un backup">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
 		<FUNCTION title="Cloner cet hébergement">cloneHost</FUNCTION>
@@ -273,7 +277,9 @@
 		<FUNCTION title="Ajouter un serveur (active la haute-disponibilité)">addServerHostTask</FUNCTION>
 		<FUNCTION title="Supprimer un serveur (désactive la haute-disponibilité)">delServerHostTask</FUNCTION>
 		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
-		<FUNCTION title="Mettre à jour l'espace occupé">getSize</FUNCTION>
+        <FUNCTION title="Mettre à jour l'espace occupé">getSize</FUNCTION>
+        <FUNCTION title="Créer une instance depuis cet hébergement">createInstanceFromHost</FUNCTION>
+		<FUNCTION title="Lancer une rotation">createRotateTask</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -448,7 +454,7 @@
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse Email" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
 		<PROPERTIES type="password" description="Mot de passe" form="1" formCondition="{{ scopeObj }}.id == undefined || {{ scopeObj }}.id == '' || {{ scopeObj }}.id == 0">Pass</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="Classe de service" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
-		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
+		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Mo" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active::Active,maintenance::Maintenance,locked::Verrouillée,closed::Fermée,pending::En attente" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
@@ -627,33 +633,38 @@
 		<FILTER name="Forfaits Expert 20G" color="primary" ><![CDATA[Produit=expert]]></FILTER>
 		<INTERFACES name="fiche_tab">
 			<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Information.htm" title="Informations de configuration">Infos</FORM>
+			<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Hebergement.htm" title="Hébergements">Hébergements</FORM>
 		</INTERFACES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" description="Nom technique de l'instance (génération automatique si vide)" form="1" fiche="1" unique="1" listDescr="Nom technique" default="">InstanceNom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
-		<!--<PROPERTIES type="text" description="Autres sous domaines (séparés par des retours chariots)" listDescr="Autres Domaines" searchOrder="12" form="1" fiche="1">ServerAlias</PROPERTIES>-->
-		<PROPERTIES type="int" subtype="bytes" default="0" searchOrder="10" description="Espace occupé (en Ko)" fiche="1" listDescr="Taille">DiskSpace</PROPERTIES>
-		<PROPERTIES type="progress" subtype="bytes" default="0" searchOrder="10" description="Espace disque" fiche="1" list="1" form="1" listDescr="Hdd" listWidth="300">DiskQuota</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" form="1" fiche="1" values="dev::Développement (Pas de proxy),pre-prod::Pré-Production (Pas de proxy),prod::Production" listDescr="Type" default="dev"  hasRole="PARC_TECHNICIEN">Type</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="10" obligatoire="1" description="Produit" form="1" fiche="1" list="1" values="base::Base 5G,expert::Expert 20G,out::Hors Forfait,free::Libre" listDescr="Forfait" default="base"  >Produit</PROPERTIES>
-		<PROPERTIES type="boolean" description="Forfait bloqué" listDescr="Forf.Bloqué" list="1" form="1" fiche="1" help="Un forfait bloqué désactivera l'hébergement en cas de dépassement et désactive l'attribution automatique à un forfait supérieur.">Locked</PROPERTIES>
-		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
-		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
-		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
-		<PROPERTIES type="varchar" description="Domaine" searchOrder="3" listDescr="Domaine"  fiche="1">FullDomain</PROPERTIES>
-		<PROPERTIES type="varchar" description="Version" listDescr="Version" >CurrentVersion</PROPERTIES>
-		<PROPERTIES type="varchar" description="Status" searchOrder="2"  listDescr="Status"  fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
+		<CATEGORY title="Informations">
+			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="10" obligatoire="1" description="Produit" form="1" fiche="1" list="1" values="base::Base 5G,expert::Expert 20G,out::Hors Forfait,free::Libre" listDescr="Forfait" default="base"  >Produit</PROPERTIES>
+			<PROPERTIES type="boolean" description="Forfait bloqué" listDescr="Forf.Bloqué" list="1" form="1" fiche="1" help="Un forfait bloqué désactivera l'hébergement en cas de dépassement et désactive l'attribution automatique à un forfait supérieur.">Locked</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Configuration">
+			<PROPERTIES type="varchar" description="Nom technique de l'instance (génération automatique si vide)" form="1" fiche="1" unique="1" listDescr="Nom technique" default="" hasRole="PARC_TECHNICIEN">InstanceNom</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
+			<PROPERTIES type="int" subtype="bytes" default="0" searchOrder="10" description="Espace occupé (en Ko)" fiche="1" listDescr="Taille">DiskSpace</PROPERTIES>
+			<PROPERTIES type="progress" subtype="bytes" default="0" searchOrder="10" description="Espace disque" fiche="1" list="1" listDescr="Hdd" listWidth="300">DiskQuota</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" form="1" fiche="1" values="dev::Développement (Pas de proxy),pre-prod::Pré-Production (Pas de proxy),prod::Production" listDescr="Type" default="dev"  hasRole="PARC_TECHNICIEN">Type</PROPERTIES>
+			<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
+			<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
+			<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
+			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
+			<PROPERTIES type="varchar" description="Domaine" searchOrder="3" listDescr="Domaine"  fiche="1">FullDomain</PROPERTIES>
+			<PROPERTIES type="varchar" description="Version" listDescr="Version" >CurrentVersion</PROPERTIES>
+			<PROPERTIES type="varchar" description="Status" searchOrder="2"  listDescr="Status"  fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1" hasRole="PARC_TECHNICIEN">Status</PROPERTIES>
+			<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1"  hasRole="PARC_TECHNICIEN" >PHPVersion</PROPERTIES>
+			<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
+		</CATEGORY>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" >DomainId</FKEY>
-		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>
+		<!--<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>-->
+        <!-- UPDATE `parc-Parc-Host` h SET InstanceId = (select Id from `parc-Parc-Instance` where HostId=h.Id) -->
 		<!--<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>-->
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" fiche="1" >InfraId</FKEY>
         <RKEY card="0,n" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>
-        <PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1"  hasRole="PARC_TECHNICIEN" >PHPVersion</PROPERTIES>
-		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
 		<FUNCTION title="Activer le SSL">enableSsl</FUNCTION>
-		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
+		<FUNCTION title="Dupliquer cette instance">cloneInstance</FUNCTION>
 		<FUNCTION title="Verifier cette instance">createCheckStateTask</FUNCTION>
 		<FUNCTION title="Reinstaller le logiciel">createInstallTask</FUNCTION>
 		<FUNCTION title="Reconfigurer le CMS">rewriteConfig</FUNCTION>
@@ -718,8 +729,7 @@
 		<PROPERTIES type="varchar" description="Identifiant" list="1">Identifiant</PROPERTIES>
 		<PROPERTIES type="boolean" description="Resussite" list="1">Success</PROPERTIES>
 		<PROPERTIES type="boolean" description="Montage" list="1">Mounted</PROPERTIES>
-		<FKEY data="Instance,Id" card="0,n" inline="1" description="Instance">InstanceId</FKEY>
-		<FKEY data="Host,Id" card="0,n" inline="1" form="1" description="Hébergement">HostId</FKEY>
+		<FKEY data="Host,Id" card="0,n" form="1" description="Hébergement">HostId</FKEY>
 		<FUNCTION title="Restaurer en production" confirm="1">createRestoreTask</FUNCTION>
 		<FUNCTION title="Monter cette version dans un dossier temporaire accéssible en ftp" confirm="1">createMountTask</FUNCTION>
 		<FUNCTION title="Démonter cette version" confirm="1">createUnMountTask</FUNCTION>

@@ -5,9 +5,9 @@ class GDN extends genericClass {
 	// liste de mots du GDN 
 	static function GetList($args) {
 		$word = $args['word'];
-		$field = $args['nah'] == 'true' ? 'Norma_1' : 'Trad_2';
+		$field = $args['nah'] == 'true' ? 'Norma_1' : "if(Trad_2='',Trad_1,Trad_2)";
 		$dict = $args['dic'];
-		if($dict == 'all' || $dict=='') $dict = '';
+		if($dict == 'all' || $dict == '' || $dict == 'null') $dict = '';
 		else $dict = "and DictionnaireId in ($dict)";
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
@@ -29,10 +29,12 @@ class GDN extends genericClass {
 		$word = $args['word'];
 		if($nah && $args['norm'] == 'true') $word = self::normalize($word);
 		$dict = $args['dic'];
+		if($dict == 'all' || $dict == '' || $dict == 'null') $dict = '';
+		else $dict = "and DictionnaireId in ($dict)";
 		switch($args['sort']) {
-			case 0: $sort = 'Norma_1,Paleo,Trad_2'; break;
-			case 1: $sort = 'Trad_2,Norma_1,Paleo'; break;
-			case 2: $sort = 'Nom,Norma_1,Paleo,Trad_2';
+			case 0: $sort = 'Norma_1,Paleo,Trad_1'; break;
+			case 1: $sort = 'Trad_1,Norma_1,Paleo'; break;
+			case 2: $sort = 'Nom,Norma_1,Paleo,Trad_1';
 		}
 		switch($args['search']) {
 			case 'start': $mode = "like '$word%'"; break;
@@ -40,16 +42,16 @@ class GDN extends genericClass {
 			case 'any': $mode = "like '%$word%'"; break;
 		}
 		
-		$sql = "select count(*) as cnt from `##_CEN-GDN` where $field $mode and DictionnaireId in ($dict)";
+		$sql = "select count(*) as cnt from `##_CEN-GDN` where $field $mode $dict";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $r) $count = $r['cnt'];
 		
 
 		$sql = "
-select g.Id,Paleo,Norma_1,if(Trad_2='',Trad_1,Trad_2) as Trad_2,Commentaires,DictionnaireId 
+select g.Id,Paleo,Norma_1,if(Trad_1='',Trad_2,Trad_1) as Trad_2,Commentaires,DictionnaireId 
 from `##_CEN-GDN` g inner join `##_CEN-Dictionnaire` d on d.Id=g.DictionnaireId
-where $field $mode and DictionnaireId in ($dict)
+where $field $mode $dict
 order by  $sort";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -69,10 +71,7 @@ order by  $sort";
 	}
 	
 	static function GetComments($args) {
-		$o = Sys::getOneData('Cadref', 'GDN/'.$args['id']);
-//		$o = genericClass::createInstance('Cadref', 'GDN');
-klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",$o);
-//		$o->initFromId($args['id']);
+		$o = Sys::getOneData('CEN', 'GDN/'.$args['id']);
 		$com = $o->Commentaires;
 		$com = preg_replace('/ *\/\/ */', '<br />', $com);
 		$pos = strpos($com, '§ ');

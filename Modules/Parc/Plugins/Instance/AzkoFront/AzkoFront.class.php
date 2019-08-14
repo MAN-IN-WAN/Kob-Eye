@@ -24,7 +24,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      */
     public function postInit(){
         //modification du apache
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $apache = $host->getOneChild('Apache');
         $apache->DocumentRoot = '/home/'.$host->NomLDAP.'/www/azkocms/front/';
         $apache->ApacheConfig = 'Alias /skins /home/'.$host->NomLDAP.'/azkocms_skins/
@@ -53,7 +53,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
@@ -65,7 +65,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function installSoftware($task){
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
@@ -199,7 +199,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'updateSoftware';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
@@ -216,7 +216,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      * @return bool
      */
     public function updateSoftware($task){
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $apachesrv = $host->getOneParent('Server');
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoFront Type '.$this->_obj->Type);
@@ -295,7 +295,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      * checkState
      */
     public function checkState($task){
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $apachesrv = $host->getOneParent('Server');
         try {
             $GLOBALS['Chrono']->start('AZKOFRONT: checkState check mount');

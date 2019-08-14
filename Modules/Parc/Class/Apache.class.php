@@ -905,7 +905,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
         $act = $task->createActivity('Préparation de la commande certbot');
         //execution de la commande
         if ($valid && $incompleteDomain)
-            $prefixe = "/usr/src/certbot/certbot-auto --expand --webroot certonly --webroot-path /var/www/letsencrypt ";
+            $prefixe = "/usr/src/certbot/certbot-auto --expand -n --webroot certonly --webroot-path /var/www/letsencrypt ";
         else
             $prefixe = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt ";
         $cmd = '';

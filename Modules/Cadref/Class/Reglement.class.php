@@ -70,6 +70,225 @@ where ".$where;
 		
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
+	
+	private function formate($s, $tab) {
+		$i = 1;
+		foreach($tab as $t) {
+			$s = str_replace("%$i", $t, $s);
+			$i++;
+		}
+		return $s;
+	}
+	
+	private function sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
+		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN');
+		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC');
+		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS');
+		
+		$sql = "
+select count(*) as cnt,sum(round(r.Montant,2)) as tot
+from `##_Cadref-Reglement` r
+inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+klog::l($sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$nbre		= $p['cnt'];
+			$total		= $p['tot'];
+		}
+		if($nbre == 0) return '';
+
+		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN')->Valeur;
+		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC')->Valeur;
+		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS')->Valeur;
+		$nume = Cadref::GetParametre('BANQUE', 'COMPTE', 'PRELEVEMENT')->Valeur;
+		$nume++;
+		Cadref::GetParametre('BANQUE', 'COMPTE', 'PRELEVEMENT', $nume);
+
+		$tmp = date("Y-m-d");
+		$Sepa = $this->formate($cPrl2,[$nume.'00'.$nSeq,$nbre,$total,$cSeq,$tmp,$remet, str_replace(" ","",$iban),$bic,$ics]);
+
+		return $Sepa;
+	}
+
+	private function sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
+		$Sepa = '';
+		$sql = "
+select a.Numero,round(r.Montant,2),a.IBAN,a.BIC,a.RUM,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
+from `##_Cadref-Reglement` r
+inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+order by a.Nom,a.Prenom
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$nume = $p['Numero'];
+			$mont = $p['Montant'];
+			$iban = str_replace(' ','',$p['IBAN']);
+			$bic = $p['BIC'];
+			$rum = $p['RUM'];
+			$drum = $p['DateRUM'];
+			$nom = $p['Nom'];
+			$pren = $p['Prenom'];
+			$dreg = $p['DateReglement'];
+			$tmp = date('YmdHis',$dreg).'/'.$nume;
+			$tmp2 = date('Y-m-d', $dreg);
+			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$rum,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
+		}
+		return $Sepa;
+	}
+
+	function Prelevements($obj) {
+		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
+		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00'); 
+		$dfin->add(DateInterval::createFromDateString('1 month'));
+		$dfin->add(DateInterval::createFromDateString('1 second'));
+		$dfin = $dfin->getTimestamp();
+		
+		$cPrl0 = "
+<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<Document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02\">
+	<CstmrDrctDbtInitn>
+		<GrpHdr>
+			<MsgId>%1</MsgId>
+			<CreDtTm>%2</CreDtTm>
+			<NbOfTxs>%3</NbOfTxs>
+			<CtrlSum>%4</CtrlSum>
+			<InitgPty>
+				<Nm>%5</Nm>
+			</InitgPty>
+		</GrpHdr>
+";
+		$cPrl1 = "
+	</CstmrDrctDbtInitn>
+</Document>
+";
+		$cPrl2 = "
+		<PmtInf>
+			<PmtInfId>%1</PmtInfId>
+			<PmtMtd>DD</PmtMtd>
+			<NbOfTxs>%2</NbOfTxs>
+			<CtrlSum>%3</CtrlSum>
+			<PmtTpInf>
+				<SvcLvl>
+					<Cd>SEPA</Cd>
+				</SvcLvl>
+				<LclInstrm>
+					<Cd>CORE</Cd>
+				</LclInstrm>
+				<SeqTp>%4</SeqTp>
+			</PmtTpInf>
+			<ReqdColltnDt>%5</ReqdColltnDt>
+			<Cdtr>
+				<Nm>%6</Nm>
+			</Cdtr>
+			<CdtrAcct>
+				<Id>
+					<IBAN>%7</IBAN>
+				</Id>
+			</CdtrAcct>
+			<CdtrAgt>
+				<FinInstnId>
+					<BIC>%8</BIC>
+				</FinInstnId>
+			</CdtrAgt>
+			<ChrgBr>SLEV</ChrgBr>
+			<CdtrSchmeId>
+				<Id>
+					<PrvtId>
+						<Othr>
+							<Id>%9</Id>
+							<SchmeNm>
+								<Prtry>SEPA</Prtry>
+							</SchmeNm>
+						</Othr>
+					</PrvtId>
+				</Id>
+			</CdtrSchmeId>
+";
+		$cPrl3 = "
+			<DrctDbtTxInf>
+				<PmtId>
+					<InstrId>%1</InstrId>
+					<EndToEndId>REGLEMENT</EndToEndId>
+				</PmtId>
+				<InstdAmt Ccy=\"EUR\">%2</InstdAmt>
+				<DrctDbtTx>
+					<MndtRltdInf>
+						<MndtId>%3</MndtId>
+						<DtOfSgntr>%4</DtOfSgntr>
+					</MndtRltdInf>
+				</DrctDbtTx>
+				<DbtrAgt>
+					<FinInstnId>
+						<BIC>%5</BIC>
+					</FinInstnId>
+				</DbtrAgt>
+				<Dbtr>
+					<Nm>%6</Nm>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>%7</IBAN>
+					</Id>
+				</DbtrAcct>
+				<RmtInf>
+					<Ustrd>%8</Ustrd>
+				</RmtInf>
+			</DrctDbtTxInf>
+";
+		$cPrl4 = "
+		</PmtInf>
+";
+
+
+		// nombre et total general
+		$sql = "
+select count(*) as cnt,sum(round(Montant,2)) as tot
+from `##_Cadref-Reglement`
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$nbre = $p['cnt'];
+			$total = $p['tot'];
+		}
+
+		$time = time();
+		$remet = Cadref::GetParametre('BANQUE', 'COMPTE', 'REMETTANT')->Valeur;
+		$tmp = substr(date("d/m/Y H:i:s", $time).$remet,0,35);
+		$tmp1 = date("Y-m-jTh:i:s", $time);
+		$Sepa = $this->formate($cPrl0,[$tmp,$tmp1,$nbre,$total,$remet]);
+
+		$nSeq = 0;
+		$cSeq = "FRST";
+		$tmp = $this->sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
+		if(!empty($tmp)) {
+			$Sepa .= $tmp;
+			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $cPrl4;
+		}
+		$nSeq = 1;
+		$cSeq = "RCUR";
+		$tmp = $this->sepaPrl1($remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
+		if(!empty($tmp)) {
+			$Sepa .= $tmp;
+			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $cPrl4;
+		}
+
+		$Sepa .= $cPrl1;
+
+		// fichier sepa
+		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD.xml";
+		file_put_contents($file, $Sepa);
+		
+		return array('file'=>$file);
+	}
 
 	
 }
