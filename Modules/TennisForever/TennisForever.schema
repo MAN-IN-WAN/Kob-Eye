@@ -12,7 +12,9 @@
         <PROPERTIES Order="11" description="Mot de passe" type="varchar" length="100" obligatoire="1" form="1" client="1">Pass</PROPERTIES>
         <PROPERTIES Order="13" description="Date de Naissance (jj/mm/aaaa)" type="date" obligatoire="0" form="1" fiche="1" client="1">DateNaissance</PROPERTIES>
         <PROPERTIES Order="14" description="Société"   type="varchar" length="100" form="1" fiche="1">Societe</PROPERTIES>
-        <PROPERTIES Order="15" description="Avatar"    type="image" list="1" form="1" fiche="1">Avatar</PROPERTIES>
+        <PROPERTIES Order="15" description="Avatar"    type="image">Avatar</PROPERTIES>
+        <PROPERTIES Order="15" description="Social Club (TotalHeure)"    type="int" form="1" list="1" fiche="1">TotalHeure</PROPERTIES>
+        <PROPERTIES Order="15" description="Utilisation "    type="int" form="1" list="1" fiche="1">Utilisation</PROPERTIES>
         <PROPERTIES Order="16" description="Ce client est Actif"     type="boolean"   fiche="1" list="1" form="1">Actif</PROPERTIES>
         <PROPERTIES Order="16" description="Adresse email confirmée"     type="boolean" default="0" list="1" form="1" fiche="1">EmailConfirm</PROPERTIES>
         <PROPERTIES description="Notes"     type="text" form="1" fiche="1">Notes</PROPERTIES>

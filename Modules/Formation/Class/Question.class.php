@@ -109,7 +109,12 @@ class Question extends genericClass{
                     $vals[] = json_decode($v->Valeur);
                 }
                 $qty = count($vals);
-                $init = array_fill(0,count($vals[0]),0);
+                foreach ($vals as $v)
+                    if (is_array($v)) {
+                        $first = $v;
+                        break;
+                    }
+                $init = array_fill(0,count($first),0);
 
                 $res = array_reduce($vals,function($carry,$item){
                     for($n =0;$n < count($carry); $n++ ){
@@ -209,7 +214,9 @@ class Question extends genericClass{
                 foreach($data as $v){
                     $values = json_decode($v->Valeur,true);
                     foreach ($values as $vs){
-                        $vals[] = $vs;
+                        //verification de la saisie
+                        if (isset($vs[0])&&!empty($vs[0]))
+                            $vals[] = $vs;
                     }
                 }
                 $qty = count($vals);

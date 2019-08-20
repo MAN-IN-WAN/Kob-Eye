@@ -68,7 +68,7 @@
                             {% set flag = 0 %}
                         {% endif %}
                     {% endfor %}
-                    {#le cas ou ca termine sur un imper#}
+                    {#le cas ou ca termine sur un impair#}
                     {% if flag == 1 %}
                 </div>
                 {% endif %}
@@ -90,6 +90,11 @@
         {% endfor %}
         </div>
         <!-- RKEY INLINE -->
+        {% set rkeyinline = 0 %}
+        {% for field in fichefields if (field.type == "rkey") and field.inline == 1 %}
+            {% set rkeyinline = rkeyinline + 1 %}
+        {% endfor %}
+        {% if rkeyinline %}
         <div class="fiche-pane">
             {% for field in fichefields if (field.type == "rkey") and field.inline == 1 %}
                 <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
@@ -104,6 +109,7 @@
                 </div>
             {% endfor %}
         </div>
+        {% endif %}
         {% if Interfaces.fiche_middle %}
             {% for name,int in Interfaces.fiche_middle %}
                 {% if int.type == 'Template' %}

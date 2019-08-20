@@ -23,7 +23,7 @@ class Instance extends genericClass{
 
         //test de changement de mode
         if (!$new&&$old->Type!=$this->Type){
-            if ($this->Type='prod'){
+            if ($this->Type=='prod'){
                 //activation du cache proxy pour tous les vhosts
                 $this->enableProxyCache();
             }else{
@@ -60,9 +60,9 @@ class Instance extends genericClass{
         }
 
         //Verification du nom
-        if ($this->SousDomaine != Instance::checkName($this->SousDomaine)) {
+        if ($this->SousDomaine != Instance::checkDomainName($this->SousDomaine)) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            $this->addError(Array("Message" => 'Le sous-domaine de l\'instance ne doit pas contenir de caractère spéciaux. '.$this->SousDomaine.'!='.Instance::checkName($this->SousDomaine)));
+            $this->addError(Array("Message" => 'Le sous-domaine de l\'instance ne doit pas contenir de caractère spéciaux. '.$this->SousDomaine.'!='.Instance::checkDomainName($this->SousDomaine)));
             return false;
         }
 
@@ -106,7 +106,7 @@ class Instance extends genericClass{
 
         //Check de l'hébergement
         try {
-            $heb = $this->getOneParent('Host');
+            $heb = $this->getOneChild('Host');
             if (!$heb) {
                 //alors création de l'hébergement
                 $heb = genericClass::createInstance('Parc', 'Host');
@@ -119,12 +119,12 @@ class Instance extends genericClass{
                 $heb->addParent($apachesrv);
                 $heb->addParent($client);
                 $heb->addParent($infra);
+                $heb->addParent($this);
                 if (!$heb->Save()) {
                     $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
                     $this->Error = array_merge($this->Error, $heb->Error);
                     return false;
                 }
-                $this->addParent($heb);
             } else {
                 $heb->Production = true;
                 $heb->Password = $this->Password;
@@ -163,7 +163,7 @@ class Instance extends genericClass{
      * Activation du proxycache
      */
     private function enableProxyCache() {
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         $aps = $host->getChildren('Apache');
         foreach ($aps as $ap){
             $ap->ProxyCache = true;
@@ -174,7 +174,7 @@ class Instance extends genericClass{
      * Désactivation du proxycache
      */
     private function disableProxyCache() {
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         $aps = $host->getChildren('Apache');
         foreach ($aps as $ap){
             $ap->ProxyCache = false;
@@ -273,7 +273,7 @@ class Instance extends genericClass{
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'checkState';
         $task->addParent($this);
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         if (!$host) return false;
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
@@ -289,8 +289,8 @@ class Instance extends genericClass{
      */
     public function Delete(){
         //suppression hébergement
-        $host = $this->getOneParent('Host');
-        if ($host)
+        $hosts = $this->getChildren('Host');
+        foreach ($hosts as $host)
             $host->Delete();
         parent::Delete();
         return true;
@@ -334,7 +334,7 @@ class Instance extends genericClass{
      */
     public function enableSsl($force = false){
         //recherche du apache correspondant
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         $apache = $host->getOneChild('Apache');
         $out =  $apache->enableSsl($force,$this);
         $this->Error = $apache->Error;
@@ -384,6 +384,30 @@ class Instance extends genericClass{
         return $chaine;
     }
     /**
+     * checkDomainName
+     * Vérifie le nom de domaine
+     * @param $chaine
+     * @return mixed|string
+     */
+    static function checkDomainName($chaine) {
+        $chaine = strtolower($chaine);
+        $chaine=utf8_decode($chaine);
+        $chaine=stripslashes($chaine);
+        $chaine = preg_replace('`\s+`', '-', trim($chaine));
+        $chaine = str_replace("'", "-", $chaine);
+        $chaine = str_replace("&", "et", $chaine);
+        $chaine = str_replace('"', "-", $chaine);
+        $chaine = str_replace("?", "", $chaine);
+        $chaine = str_replace("!", "", $chaine);
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:_\;]`', '-', trim($chaine));
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+        $chaine = preg_replace('`[-]+`', '-', trim($chaine));
+        $chaine =  utf8_encode($chaine);
+        $chaine = preg_replace('`[\/]`', '-', trim($chaine));
+
+        return $chaine;
+    }
+    /**
      * checkSssl
      * @param $url
      */
@@ -401,7 +425,7 @@ class Instance extends genericClass{
      */
     public function checkState($task=null) {
         $task->DateDebut =time();
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         $apserver = $host->getServer();
         $aps = $host->getChildren('Apache/Actif=1');
         $start = microtime(true);
@@ -566,45 +590,15 @@ class Instance extends genericClass{
      * création d'un point de restauration
      */
     public function createBackupTask() {
-        $host = $this->getOneParent('Host');
+        $host = $this->getOneChild('Host');
         return $host->createBackupTask();
-    }
-
-    public function createApache($ssl=0,$proxycache=0){
-        $host = $this->getOneParent('Host');
-        if(!$host){
-            $pars = array();
-            foreach ($this->Parents as $p){
-                if($p['Titre'] == 'Host'){
-                    $pa = Sys::getOneData('Parc','Host/'.$p['Id'],0,1,null,null,null,null,true);
-                    $pars[] = $pa;
-                }
-
-            }
-            $host = $pars[0];
-        }
-
-
-        $apache = genericClass::createInstance('Parc','Apache');
-        $apache->Ssl = $ssl;
-        $apache->Proxycache = $proxycache;
-
-        $pref = $ssl ? ( $proxycache ? 'ssl-cache-' : 'ssl-') : ( $proxycache ? 'cache-' : '' );
-
-        $apache->ApacheServerName = $pref.$this->FullDomain;
-        $apache->DocumentRoot = $this->SousDomaine;
-        $apache->Actif = true;
-        $apache->addParent($host);
-        $apache->Save();
-
-        return $apache;
     }
     /**
      * emptyProxyCacheTask
      * Supprime le cache des serveurs proxy pour cet hébergement
      */
     public function emptyProxyCacheTask(){
-        $hosts = $this->getParents('Host');
+        $hosts = $this->getChildren('Host');
         foreach ($hosts as $host)
             $host->emptyProxyCacheTask();
 
@@ -613,5 +607,83 @@ class Instance extends genericClass{
         $this->createCheckStateTask();
         return true;
     }
-
+    /**
+     * cloneInstance
+     * Clonage d'une instance
+     */
+    public function cloneInstance($params = null) {
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
+            case 1:
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Clonage de l\'instance ' . $this->Nom.' vers l\'instance '. $params['targetHost'];
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Instance';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'exeClone';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'INSTANCE_CLONE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression du clonage');
+                break;
+            default:
+                return array('template'=>"Clone",'step'=>1,'callNext'=>array('nom'=>'cloneInstance','title'=>'Progression'));
+        }
+    }
+    /**
+     * clone
+     * Fonction de clonage d'hébergement
+     * @param task Task Object
+     */
+    public function exeClone($task){
+        //desérialisation des paramètres
+        $params = unserialize($task->TaskArgs);
+        if (!isset($params['fromHost'])) {
+            //création de l'instance
+            $instance = Sys::getOneData('Parc', 'Instance/' . $this->Id);
+            $name = (isset($params['targetInstance']) && !empty($params['targetInstance'])) ? $params['targetInstance'] : $instance->Nom . ' (Copie)';
+            $client = $instance->getOneParent('Client');
+            $infra = (isset($params['targetInfra']) && $params['targetInfra'] > 0) ? Sys::getOneData('Parc', 'Infra/' . $params['targetInfra']) : $this->getOneParent('Infra');
+            $act = $task->createActivity('Création de l\'instance ' . $params['targetInstance'] . ' sur l\'infrastructure ' . $infra->Nom);
+            //suppression des champs indesirables
+            unset($instance->Id);
+            unset($instance->tmsCreate);
+            unset($instance->userCreate);
+            unset($instance->tmsEdit);
+            unset($instance->userEdit);
+            unset($instance->InstanceNom);
+            unset($instance->Password);
+            $instance->addParent($client);
+            $instance->addParent($infra);
+            $instance->Nom = $name;
+            try {
+                if (!$instance->Save()) {
+                    foreach ($instance->Error as $err) {
+                        $actErr = $task->createActivity('Erreur lors de la création de l\'instance: ' . $err['Message']);
+                        $actErr->Terminate(false);
+                    }
+                    throw new Exception('Impossible de créer l\'instance');
+                }
+            } catch (Exception $e) {
+                $act->addDetails($e->getMessage());
+                $act->addDetails(print_r($instance, true));
+                $act->Terminate(false);
+                return false;
+            }
+            $srcHost = $this->getOneChild('Host');
+            $dstHost = $instance->getOneChild('Host');
+            $act->Terminate(true);
+            $params['fromHost'] = $srcHost->Id;
+            $params['toHost'] = $dstHost->Id;
+            $task->TaskArgs = serialize($params);
+            $task ->addParent($instance);
+            $task->Save();
+        }
+        //lancement de la synchronisation
+        return $srcHost->syncHost($task);
+    }
 }

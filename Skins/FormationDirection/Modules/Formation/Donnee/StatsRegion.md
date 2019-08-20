@@ -189,8 +189,8 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="random">
 
-                [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R|0|1000]
-                [IF [!R::Valeur!]]
+                [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestion.TypeQuestionId([!CD::TypeQuestionId!])|R|0|1000]
+                [IF [!R::Valeur!]!=]
                 <div class="well">
                     <p>[!Utils::JsonDecode([!R::Valeur!])!]</p>
                 </div>

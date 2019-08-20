@@ -53,7 +53,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'updateSoftware';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
@@ -72,7 +72,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
     public function updateSoftware($task){
         $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
         $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
-        $host = $this->_obj->getOneParent('Host');
+        $host = $this->_obj->getOneChild('Host');
         $bdd = $host->getOneChild('Bdd');
         $apache = $host->getOneChild('Apache');
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);
