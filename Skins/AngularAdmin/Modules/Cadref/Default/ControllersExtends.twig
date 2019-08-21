@@ -1644,6 +1644,7 @@ console.log({{ identifier }}method);
 		// copie classeDate
 		$scope.classeDateCopy = function() {
 			var i = $scope.classeDateInfo;
+			i.dirty = $scope.CadrefContent.$dirty
 			var o = $scope.classeDateObj = {};
 			o.CopyFrom = '';
 			o.id = $scope.obj.id;
@@ -1667,6 +1668,7 @@ console.log({{ identifier }}method);
 			var data = await $http.post('/Cadref/Classe/'+$scope.obj.id+'/Method.json',{"Func":JSON.stringify(params)});
 			$('#settings').spin(false);
 			$scope.classeDateInfo.mode = '';
+			$scope.CadrefContent.$dirty = $scope.classeDateInfo.dirty;
 			try { $scope.$digest(); } catch(ex) {}
 		}
 		
