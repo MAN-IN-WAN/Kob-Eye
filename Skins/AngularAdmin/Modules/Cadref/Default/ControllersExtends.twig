@@ -499,6 +499,7 @@
 				explodeArgs:explodeArgs,
 				tms : Date.now(),
 			};
+console.log({{ identifier }}method);
 
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
@@ -1640,6 +1641,35 @@
 			});
 		}
 
+		// copie classeDate
+		$scope.classeDateCopy = function() {
+			var i = $scope.classeDateInfo;
+			var o = $scope.classeDateObj = {};
+			o.CopyFrom = '';
+			o.id = $scope.obj.id;
+			o.Annee = $scope.obj.Annee;
+			i.mode = 'copy';
+			$timeout(function () {
+				$('#input-classeDateObjCopy').focus();
+			},100);
+		}
+
+		
+		$scope.classeDateCopyDates = async function() {
+			var params = {
+				name: 'CopyDates',
+				query: 'Cadref/Classe/'+$scope.obj.id,
+				args : $scope.classeDateObj,
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			$('#settings').spin();
+			var data = await $http.post('/Cadref/Classe/'+$scope.obj.id+'/Method.json',{"Func":JSON.stringify(params)});
+			$('#settings').spin(false);
+			$scope.classeDateInfo.mode = '';
+		}
+		
+		
 		// fixe l'année
 		$scope.classeDateAnnee = function() {
 			var d = $scope.classeDateObj.DateCours;
