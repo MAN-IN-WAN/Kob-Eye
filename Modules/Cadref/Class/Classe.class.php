@@ -207,6 +207,7 @@ order by c.CodeClasse";
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Liste des classe');
 
+		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
 
 		$file = 'Home/tmp/ListeClasse_'.date('YmdHis').'.pdf';
