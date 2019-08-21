@@ -1667,6 +1667,7 @@ console.log({{ identifier }}method);
 			var data = await $http.post('/Cadref/Classe/'+$scope.obj.id+'/Method.json',{"Func":JSON.stringify(params)});
 			$('#settings').spin(false);
 			$scope.classeDateInfo.mode = '';
+			try { $scope.$digest(); } catch(ex) {}
 		}
 		
 		
