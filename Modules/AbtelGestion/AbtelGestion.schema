@@ -10,7 +10,6 @@
         </OBJECTCLASS>
         <OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Action.class.php">
             <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Void</PROPERTIES>
-            <FKEY card="1,n" data="Tache,NumeroTicket">TacheNumeroTicket</FKEY>
         </OBJECTCLASS>
         <OBJECTCLASS title="Entite" driver="mysql" AccessPoint="1" Description="Entité"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
             <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>

@@ -52,7 +52,7 @@ class AbtelTache extends AbtelGestionBase {
             $reader->Parse($newValue);
             $formatter = new RtfHtml();
             $desc=$formatter->Format($reader->root);
-            $newValue = $desc;
+            $newValue = utf8_encode($desc);
         }
 
 

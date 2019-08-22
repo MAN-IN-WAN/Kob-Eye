@@ -29,6 +29,33 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
         }
         if(item.Auteur == '') item.Auteur = 'Abtel';
 
+        item = $scope.updateDateDebut(item);
+        return item;
+    }
+
+    // MAj de l'heure de début un poil bourrin à affiner.
+    $rootScope.$on('ParcActionStore',function (ev,data){
+        for(var n = 0; n < ParcActionStore.data.children.length;n++ ){
+            ParcActionStore.data.children[n] = $scope.updateDateDebut(ParcActionStore.data.children[n]);
+            $scope.ParcAction.data = ParcActionStore.data.children;
+        }
+    });
+
+
+    $scope.updateDateDebut = function(item){
+        var date = new Date;
+        var temp = item.DateCrea.split('/');
+        date.setFullYear(temp[2],temp[1],temp[0]);
+        temp = item.HeureDebut.split(':');
+        date.setHours(temp[0]);
+        date.setMinutes(temp[1]);
+        date.setSeconds(temp[2]);
+        date.setMilliseconds(0);
+        var ts = date.toLocaleString("fr-FR",{timeZone:"Europe/Paris"});
+        item.sort = date.getTime();
+
+        item.DateDebut = ts;
+
         return item;
     }
 

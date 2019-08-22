@@ -12,30 +12,30 @@ class Action extends AbtelGestionBase {
             $formatter = new RtfHtml();
             $desc=$formatter->Format($reader->root);
             $desc=strip_tags($desc);
-            $newValue = $desc;
+            $newValue = utf8_encode($desc);
         }
 
-        if($prop == "Fichier"){
+        if($prop == "Fichier" && !$this->getOrigin()){
             if(!empty($newValue)){
                 $this->props['ACNOTE'] .= PHP_EOL.$newValue.PHP_EOL;
             }
             return true;
         }
-        if($prop == "Note"){
+        if($prop == "Note" && !$this->getOrigin()){
             if(!empty($newValue)){
                 $this->props['ACNOTE'] .= $newValue;
             }
             return true;
         }
 
-        if($prop == "Duree"){
+        if($prop == "Duree" && !$this->getOrigin()){
             if(!empty($newValue)){
                 $this->props['ACDUREE'] = gmdate('Hi',$newValue);
             }
             return true;
         }
 
-        if($prop == "CodeContrat"){
+        if($prop == "CodeContrat" && !$this->getOrigin()){
             if(empty($newValue)){
                 $this->props['ACCADRE'] = 2;
             } else {
@@ -46,6 +46,11 @@ class Action extends AbtelGestionBase {
         $sqlDate = array('DateCrea');
         if(in_array($prop,$sqlDate)){
             $newValue = date('Y-m-d',$newValue);
+        }
+
+        if($prop == 'Id' && $this->getOrigin()){
+            $this->props['IdGestion'] = $newValue;
+            return true;
         }
 
         $sqlHeure = array('DateCloture','DateTermine'); //format 20190416101700
