@@ -110,6 +110,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function serveurAutoResponse($paiement, $commande) {
+klog::l('>>>>>>>>>>>>>>>>>',$_POST);
 		// Vérification signature
 		$signature = sha1(
 			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
@@ -131,7 +132,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 
 	public function retrouvePaiementEtape4s() {
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
-		if(isset($_GET['ident']) and !empty($_GET['iden'])) {
+		if(isset($_GET['ident']) and !empty($_GET['ident'])) {
 			$a = explode('-', $_GET['ident']);
 			return round($a[1]);
 		}

@@ -6,7 +6,7 @@ class Paiement extends genericClass
         return Sys::getOneData('Cadref', 'TypePaiement/Paiement/' . $this->Id);
     }
 
-    public function CheckPaiement($commande)
+    public function CheckPaiement()
     {
         if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
             return;
@@ -45,6 +45,7 @@ class Paiement extends genericClass
 			$adh = $this->getOneParent('Adherent');
 			$reg = genericClass::createInstance('Cadref', 'Reglement');
 			$reg->addParent($adh);
+			$reg->addParent($this);
 			$reg->Numero = $adh->Numero;
 			$reg->Annee = Cadref::$Annee;
 			$reg->Montant = $this->Montant;
