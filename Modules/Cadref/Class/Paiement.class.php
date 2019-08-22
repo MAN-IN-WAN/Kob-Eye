@@ -12,30 +12,24 @@ class Paiement extends genericClass
             return;
         }
 
-        // Récupération commande
-        $facture = $this->getFacture();
-        if ($facture == null) {
-            die("Impossible de trouver la commande correspondante.");
-        }
-
         // Récupération type de paiement
         $type = $this->getTypePaiement();
         if ($type == null) {
-            mail("enguer@enguer.com", "Le type de paiement n'est pas défini.", print_r($_POST, true));
+            mail("paul@abtel.fr", "CADREF : Le type de paiement n'est pas défini.", print_r($_POST, true));
             die("Le type de paiement n'est pas défini.");
         }
 
         // Chargement du plugin
         $plugin = $type->getPlugin();
         if ($plugin == null) {
-            mail("enguer@enguer.com", "Ce type de paiement ne peut être pris en charge.", print_r($_POST, true));
+            mail("paul@abtel.fr", "CADREF : Ce type de paiement ne peut être pris en charge.", print_r($_POST, true));
             die("Ce type de paiement ne peut être pris en charge.");
         }
 
         // Résultats de l'analyse par le plugin
-        $results = $plugin->serveurAutoResponse($this, $facture);
+        $results = $plugin->serveurAutoResponse($this);
         if ($results == null) {
-            mail("enguer@enguer.com", "Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
+            mail("paul@abtel.fr", "CADREF : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
             die("Le paiement n'a pas pu être contrôlé.");
         }
 
@@ -47,10 +41,18 @@ class Paiement extends genericClass
         $this->Save();
 
         if ($results['etat']=='1') {
-            //Mise à jour de la facture
-            $facture->Valide = 1;
-            $facture->Paye = 1;
-            $facture->Save();
+            //creation du règlement
+			$adh = $this->getOneParent('Adherent');
+			$reg = genericClass::createInstance('Cadref', 'Reglement');
+			$reg->addParent($adh);
+			$reg->Numero = $adh->Numero;
+			$reg->Annee = Cadref::$Annee;
+			$reg->Montant = $this->Montant;
+			$reg->ModeReglement = 'C';
+			$reg->Encaisse = 1;
+			$reg->Utilisateur = 'WEB';
+			$reg->Web = 1;
+            $reg->Save();
         }
     }
 }

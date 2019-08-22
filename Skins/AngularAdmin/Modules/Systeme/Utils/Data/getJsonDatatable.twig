@@ -7,7 +7,7 @@
             "id":"{{ row.Id }}",
             "creator":"{{ row.userCreate }}",
             "label":"{{ row.label }}",
-            "description":"{{ row.description |json_encode }}",
+            "description":{{ row.description |json_encode | raw }},
             {% if recursiv %}
             "_tail":{{ row.isTail }},
             {% endif %}

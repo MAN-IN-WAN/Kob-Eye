@@ -507,11 +507,18 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		window.location.href = $scope.panierObj.Urlweb;
 	}
 	
-	$scope.panierConfirme = function() {
+	$scope.panierConfirme = async function() {
+		//$('#settings').spin();
+	console.log('pppppppppppppppppp',$("#panierPayer"));	
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[$scope.panierObj.Total]);
+	console.log('pppppppppppppppppp',data.data.data);	
+		$("#panierPayer").html(data.data.data);
+	console.log('pppppppppppppppppp',$("#panierPayer"));	
+		//$('#settings').spin(false);
 		$("#modal-panier").modal('toggle');
 	}
 	
-	$scope.panierPayer = function() {
+	$scope.panierPayer = async function() {
 	}
 
 

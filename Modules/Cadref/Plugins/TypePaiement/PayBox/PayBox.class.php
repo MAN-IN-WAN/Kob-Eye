@@ -32,6 +32,9 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	 **/
 	public function getCodeHTML($paiement) {
 		$adh = $paiement->getOneParent('Adherent');
+		if($this->Params['MODEPRODUCTION']) $url = "https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+		else $url = "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+		
 		// Params
 		//mode d'appel
 		     $PBX_MODE        = '4';    //pour lancement paiement par exécution
@@ -48,7 +51,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		//informations paiement (appel)
 		     $PBX_TOTAL       = round($paiement->Montant * 100);
 		     $PBX_DEVISE      = '978';
-		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
+		     $PBX_CMD         = sprintf("%s-%d", $adh->Numero, $paiement->Id);
 		     $PBX_PORTEUR     = !empty($adh->Mail) ? $adh->Mail : $GLOBALS["Systeme"]->Conf->get("GENERAL::INFO::ADMIN_MAIL");
 		//informations nécessaires aux traitements (réponse)
 //		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
@@ -88,8 +91,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
-		return $msg.'<br>
-		<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		return '<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -102,12 +104,12 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_HASH" value="SHA512">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
-			<input type="submit" value="Envoyer">
+			<input type="submit" class="btn btn-success" value="Payer">
 		</form>
 		';
 	}
 
-	public function serveurAutoResponse( $paiement, $commande ) {
+	public function serveurAutoResponse( $paiement) {
 		// Vérification signature
 		$signature = sha1(
 			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 

@@ -972,6 +972,17 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$m = intval(substr($c, 3));
 		return ($m < 9 ? 10000 : 0)+$m*100+intval(substr($c, 0, 2)); 
 	}
+
+	public function GetPayment($montant) {
+		$p = genericClass::createInstance('Cadref', 'Paiement');
+		$p->Montant = $montant;
+		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
+		$p->addParent($tp);
+		$p->addParent($this);
+		$p->Save();
+		$pl = $tp->getPlugin();
+		return $pl->getCodeHTML($p);
+	}
 	
 	function GetPanier($remove) {
 		$adhId = $this->Id;

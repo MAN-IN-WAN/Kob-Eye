@@ -45,10 +45,16 @@ class Cadref extends Module {
 		}
 	}
 
-	public static function GetPaiement($args) {
+	public static function GetPayment($args) {
+		$id = $args['id'];
+		$mt = $args['montant'];
+		
+		$id = 11728;
+		$mt = 1.00;
+		
 		$p = genericClass::createInstance('Cadref', 'Paiement');
-		$p->Montant = 1.00;
-		$ad = Sys::getOneData('Cadref', 'Adherent/11728');
+		$p->Montant = $mt;
+		$ad = Sys::getOneData('Cadref', "Adherent/$id");
 		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
 		$p->addParent($tp);
 		$p->addParent($ad);
