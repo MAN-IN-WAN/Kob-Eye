@@ -55,7 +55,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		     $PBX_PORTEUR     = !empty($adh->Mail) ? $adh->Mail : $GLOBALS["Systeme"]->Conf->get("GENERAL::INFO::ADMIN_MAIL");
 		//informations nécessaires aux traitements (réponse)
 //		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
-		     $PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T";
+		     $PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T;status:E";
 		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5.');
 		     $PBX_REFUSE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_ANNULE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
@@ -110,24 +110,35 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function serveurAutoResponse($paiement, $commande) {
-klog::l('>>>>>>>>>>>>>>>>>',$_POST);
-		// Vérification signature
-		$signature = sha1(
-			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
-			$_POST['validation_mode'] . "+" . $_POST['capture_delay'] . "+" . $_POST['payment_config'] . "+" . $_POST['card_brand'] ."+" . 
-			$_POST['card_number'] . "+" . $_POST['amount'] . "+" . $_POST['currency'] ."+" . $_POST['auth_mode'] ."+" . $_POST['auth_result'] ."+" .
-			$_POST['auth_number'] ."+" . $_POST['warranty_result'] ."+" . $_POST['payment_certificate'] ."+" . $_POST['result'] ."+" . $_POST['hash'] . "+" . $this->Params["CERTIFICAT"]
-		);
-		if($signature != $_POST['signature']) {
-			return false;
-		}
+		$status = isset($_GET['status']) ? $_GET['status' ] : '';
+		$ident = isset($_GET['ident']) ? $_GET['ident' ] : '';
+		
+		if($status != '0000' || empty($ident)) return false;
+		$a = explode('-', $ident);
+		if(!isset($a[0]) || empty($a[0])) return false;
+		
+		$adh = $paiement->getOneParent('Adherent');
+		if(! $adh || $adh->Numero != $a[0]) return false;
+		
+		return array('etat'=>1, 'ref'=>$_GET['trans'], 'detail'=>$ident);
 
-		// Retourne le code d'état du paiement
-		$etat = ($_POST['result'] == '00') ? 1 : 2;
-		return array(
-			'etat' => $etat,
-			'ref' => $_POST['auth_number']
-		);
+//		// Vérification signature
+//		$signature = sha1(
+//			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
+//			$_POST['validation_mode'] . "+" . $_POST['capture_delay'] . "+" . $_POST['payment_config'] . "+" . $_POST['card_brand'] ."+" . 
+//			$_POST['card_number'] . "+" . $_POST['amount'] . "+" . $_POST['currency'] ."+" . $_POST['auth_mode'] ."+" . $_POST['auth_result'] ."+" .
+//			$_POST['auth_number'] ."+" . $_POST['warranty_result'] ."+" . $_POST['payment_certificate'] ."+" . $_POST['result'] ."+" . $_POST['hash'] . "+" . $this->Params["CERTIFICAT"]
+//		);
+//		if($signature != $_POST['signature']) {
+//			return false;
+//		}
+//
+//		// Retourne le code d'état du paiement
+//		$etat = ($_POST['result'] == '00') ? 1 : 2;
+//		return array(
+//			'etat' => $etat,
+//			'ref' => $_POST['auth_number']
+//		);
 	}
 
 	public function retrouvePaiementEtape4s() {

@@ -41,19 +41,8 @@ class Paiement extends genericClass
         $this->Save();
 
         if ($results['etat']=='1') {
-            //creation du règlement
 			$adh = $this->getOneParent('Adherent');
-			$reg = genericClass::createInstance('Cadref', 'Reglement');
-			$reg->addParent($adh);
-			$reg->addParent($this);
-			$reg->Numero = $adh->Numero;
-			$reg->Annee = Cadref::$Annee;
-			$reg->Montant = $this->Montant;
-			$reg->ModeReglement = 'C';
-			$reg->Encaisse = 1;
-			$reg->Utilisateur = 'WEB';
-			$reg->Web = 1;
-            $reg->Save();
+			$adh->WebInscription($this);
         }
     }
 }
