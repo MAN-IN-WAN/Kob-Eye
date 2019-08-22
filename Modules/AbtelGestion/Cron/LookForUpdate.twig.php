@@ -3,6 +3,13 @@ session_write_close();
 $tmsStart = time()+3600;
 
 $items = array(
+    "clients"=>array(
+        "parcName"=>"Clients",
+        "dateFile"=>"lastCheckCli.date",
+        "identifier"=>"Code",
+        "request"=> 'SELECT * FROM tiers WHERE ModifTms > \'__DATE__\' ORDER BY Code;',
+        "menu"=>'client'
+    ),
     "taches"=>array(
         "parcName"=>"Tickets",
         "dateFile"=>"lastCheckTask.date",
@@ -16,13 +23,6 @@ $items = array(
         "identifier"=>"Id",
         "request"=> 'SELECT * FROM actions WHERE ModifTms > \'__DATE__\' ORDER BY Id;',
         "menu"=>'action'
-    ),
-    "clients"=>array(
-        "parcName"=>"Clients",
-        "dateFile"=>"lastCheckCli.date",
-        "identifier"=>"Code",
-        "request"=> 'SELECT * FROM clients WHERE ModifTms > \'__DATE__\' ORDER BY Code;',
-        "menu"=>'client'
     )
 );
 
@@ -54,6 +54,8 @@ $curl_handle = null;
 $ret = null;
 
 foreach($items as $name=>$params){
+    echo '/***************************** '.strtoupper($name).' **********************************/'.PHP_EOL;
+
     //Recupération des champs
     $object = Sys::getOneData('AbtelGestion','Entite/Nom='.$name);
     $fields = $object->getChildren('Champ');
@@ -91,8 +93,8 @@ foreach($items as $name=>$params){
 
             switch ($pid = pcntl_fork()) {
                 case -1:
-                    echo date('H:i:s', time() - $tmsStart) . ' > Erreur lors de la création du process pour le client ' . $c['Code'] . PHP_EOL;
-                    file_put_contents('/tmp/erreurclient', $c['Code'] . PHP_EOL, 8);
+                    echo date('H:i:s', time() - $tmsStart) . ' > Erreur lors de la création du process pour l\'objet '. $o[$params['identifier']] . PHP_EOL;
+                    file_put_contents('/tmp/erreurclient', $o[$params['identifier']] . PHP_EOL , 8);
                     // @fail
                     break;
                 case 0:
@@ -107,7 +109,7 @@ foreach($items as $name=>$params){
                             $props[$of] = $o[$of];
                     }
 
-                    echo date('H:i:s',time() - $tmsStart).' > ******** '.$cptr.' / '.$cpt.' : '.$a['Id'].' ********'.PHP_EOL;
+                    echo date('H:i:s',time() - $tmsStart).' > ******** '.$cptr.' / '.$cpt.' : '.$o[$params['identifier']].' ********'.PHP_EOL;
                     $url = 'http://api.gestion.abtel.fr/gestion/'.$params['menu'];
                     $method = 'POST';
                     //Ouverture connection curl
@@ -177,6 +179,10 @@ foreach($items as $name=>$params){
                     $GLOBALS['Systeme']->connectSQL(true);
                     $pids[$pid] = true;
                     $statuses[$pid] = null;
+
+                    $sql_handle = new PDO('mysql:host=127.0.0.1;dbname=gestion', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+                    $sql_handle->query("SET AUTOCOMMIT=1");
+                    $sql_handle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                     // @parent
                     break;

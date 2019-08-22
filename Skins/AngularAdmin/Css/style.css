@@ -339,35 +339,35 @@ progress.progress.progress-danger:after{
 #activity_list{
     width:100%;
 }
-#activity_list .activity_title.success{
+#activity_list .activity_plus.success{
     /*background-color: rgba(70,190,138,0.4);!*HEx :#46be8a;*!*/
     border-left: 45px solid #46be8a;
 }
-#activity_list .activity_title.error{
+#activity_list .activity_plus.error{
     /*background-color: rgba(251,67,74,0.4);!*HEx :#fb434a;*!*/
     border-left: 45px solid #fb434a;
 }
-#activity_list .activity_title.info{
+#activity_list .activity_plus.info{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #01a8fe;
 }
-#activity_list .activity_title.info_error{
+#activity_list .activity_plus.info_error{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #fba8fe;
 }
-#activity_list .activity_title.running{
+#activity_list .activity_plus.running{
     /*background-color: rgba(172,183,191,0.4);!*HEx :#acb7bf;*!*/
     border-left: 45px solid #f39834;
 }
-#activity_list .activity_title.stopped{
+#activity_list .activity_plus.stopped{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #444;
 }
-#activity_list .activity_title.info_norm{
+#activity_list .activity_plus.info_norm{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #FFD96A;
 }
-#activity_list .activity_title{
+#activity_list .activity_plus{
 }
 #activity_list .activity_link{
     width: 70px;
@@ -384,6 +384,12 @@ progress.progress.progress-danger:after{
 #activity_list .activity_start{
     width:175px;
     text-align: center;
+}
+#activity_list .activity_start.sortable{
+    padding-right: 23px;
+}
+#activity_list .activity_start.sortable:after{
+    right: 30px;
 }
 #activity_list > tbody > tr{
     border-bottom:1px solid #eee;
@@ -431,11 +437,11 @@ progress.progress.progress-danger:after{
 #activity_list .actDetail pre p{
     margin-bottom: 0;
 }
-#activity_list .actInfo .activity_title{
+#activity_list .actInfo .activity_plus{
     position: relative;
 }
-#activity_list .actInfo.cursor .activity_title:before,
-#activity_list .actInfo .activity_title.cursor:before{
+#activity_list .actInfo.cursor .activity_plus:before,
+#activity_list .actInfo .activity_plus.cursor:before{
     content: "\f0fe";
     position: absolute;
     top: 12px;
@@ -443,8 +449,8 @@ progress.progress.progress-danger:after{
     color: #fff;
     font-family: FontAwesome;
 }
-#activity_list .showDetail .actInfo.cursor .activity_title:before,
-#activity_list .showDetail .actInfo .activity_title.cursor:before{
+#activity_list .showDetail .actInfo.cursor .activity_plus:before,
+#activity_list .showDetail .actInfo .activity_plus.cursor:before{
     content: "\f146";
 }
 #activity_list .showDetail pre{

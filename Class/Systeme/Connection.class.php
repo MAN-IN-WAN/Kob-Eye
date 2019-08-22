@@ -257,7 +257,6 @@ class Connection extends Root{
 		if ($t) return true ;else  return false;
 	}
 	public function DetectToken(){
-
 	    $types= array(
 	    	'application/x-www-form-urlencoded',
             'application/json',
@@ -281,8 +280,6 @@ class Connection extends Root{
             $data = json_decode(file_get_contents("php://input"));
             if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
         }
-		$GLOBALS["Systeme"]->Log->log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ",$data);
-
 		$exists = false;
 		if($apiKey)
             $exists = Sys::getOneData('Systeme','ApiKey/Key='.$apiKey);
@@ -326,7 +323,6 @@ class Connection extends Root{
 				$t=true;
 			}
 		}
-		$GLOBALS["Systeme"]->Log->log("ooooooooooooooooooooooooooooooooooooooooooooooooooo ". $t,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         return $t;
 	}
 
@@ -638,9 +634,7 @@ class Connection extends Root{
 			if ($this->SessId!=""){
 				//Recuperation d'une connexion prive
 				$query="Systeme/Connexion/Session=".$this->SessId;
-				$GLOBALS["Systeme"]->Log->log('QUERYyyyyyyyyyyyyyyyyyyyyy',$query);
                 $Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
-				$GLOBALS["Systeme"]->Log->log('RESULTSsssssssssssssssssssss',$Results);
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
 					$GLOBALS["Systeme"]->Log->log("RECUP CONNEXION ".$this->SessId);
@@ -745,7 +739,10 @@ class Connection extends Root{
                     $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=[md5]" . substr($this->pass, 0, -5));
                 }
                 $GLOBALS["Systeme"]->Log->log("DETECT USER >> PASSMD5 GET ".$Result[0]["Id"]);
-				if (!is_array($Result[0])) return false;
+				if (!is_array($Result[0])) {
+					$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX BAD PASSSWORD');
+					return false;
+				}
 				$User = genericClass::createInstance("Systeme",$Result[0]);
 				$User->Save();
 			}elseif (is_object(Sys::$User) && (!isset(Sys::$User->Public)||!Sys::$User->Public)){
@@ -788,6 +785,7 @@ class Connection extends Root{
 					//CONNEXION AD EXTERNAL + AUTO PROVISIONNING
 					if (!defined("EXTERNAL_AUTH_AD")||!EXTERNAL_AUTH_AD){
                         $GLOBALS["Systeme"]->Error->Set('Connexion','Veuillez vérifiez vos identifiants. Login et/ou mot de passe manquants ou érronés.',5);
+						$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX BAD IDENTIFIERS');
 						return false;
                     }
 					elseif (defined("EXTERNAL_AUTH_AD")){
@@ -861,6 +859,7 @@ class Connection extends Root{
 							} 
 						}else{
 							$GLOBALS["Systeme"]->Log->log("AD : USER ".$this->login." ".$this->clearpass." ".$this->pass." FAILED");
+							$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX AD FAIL');
 							return false;
 						} 
 					}
@@ -869,7 +868,10 @@ class Connection extends Root{
 					if (defined('EXTERNAL_AUTH_AD')&&EXTERNAL_AUTH_AD&&isset($User->ExternalAuth)&&$User->ExternalAuth&&isset($this->clearpass)&&!empty($this->clearpass)&&!$this->kerberosAuth){
 						//vérification du mot de passe
 						$adldap = $this->externalLdapConnect();
-						if (!$adldap->authenticate($this->login, $this->clearpass)) return false;
+						if (!$adldap->authenticate($this->login, $this->clearpass)) {
+							$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX LDAP FAIL');
+							return false;
+						}
 					}
 				}	
 			}
@@ -895,6 +897,7 @@ class Connection extends Root{
 				$this->destroyAuth();
 			}
 		}
+		$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX NO LOGIN PROVIDED');
 		return false;
 	}
 

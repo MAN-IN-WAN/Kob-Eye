@@ -245,24 +245,28 @@
             <th width="30" title="Ch" class="list-col-th-dark">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
             </th>
-            <th class="activity_start">Créé le</th>
+            <th class="activity_start sortable" ng-click="triggerSort($event,'{{ identifier }}','DateCrea','{{ context }}')" width="120">Créé le</th>
             <th class="activity_plus" width="45"></th>
-            <th class="activity_client" width="450">Client</th>
-            <th class="activity_title">Titre</th>
-            <th class="activity_progress">Etat</th>
+            <th class="activity_num sortable" width="100"  ng-click="triggerSort($event,'{{ identifier }}','Numero','{{ context }}')">N° Ticket</th>
+            <th class="activity_client " width="450">Client</th>
+            <th class="activity_title sortable"   ng-click="triggerSort($event,'{{ identifier }}','Titre','{{ context }}')">Titre</th>
+            <th class="activity_progress sortable"  ng-click="triggerSort($event,'{{ identifier }}','Etat','{{ context }}')">Etat</th>
             <th width="160">Actions</th>
         </tr>
-        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" ng-init="hover = false" ng-class="{showDetail:hover}">
-            <td class="actWrap" colspan="7">
+        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage.{{ context }}" pagination-id="{{ identifier }}-pagination" ng-init="hover = false">
+            <td class="actWrap" colspan="8">
                 <table class="actSub">
                     <tr class="actInfo">
                         <td  class="list-col-td-dark" width="30">
                             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[act.id]" name="{{ identifier }}" id="{[{ act.id }]}" />&nbsp;
                         </td>
-                        <td class="activity_start">
+                        <td class="activity_start" width="120">
                             {[{ act.DateCrea }]}
                         </td>
-                        <td class="activity_title"  ng-class="{info: act.Priorite == 1 ,info_norm: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
+                        <td class="activity_plus"  ng-class="{info: act.Priorite == 1 ,info_norm: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
+                        <td class="activity_num" width="100"><a href="#/{{ CurrentUrl }}/{[{ act.id }]}">
+                                <b>{[{ act.Numero }]}</b></a>
+                        </td>
                         <td class="activity_client" width="450"><a href="#/{{ CurrentUrl }}/{[{ act.id }]}">
                             <b>{[{ act.ClientClientIdlabel }]}</b></a>
                         </td>
@@ -303,7 +307,7 @@
                         </td>
                     </tr>
                     <tr class="actDetail" ng-if="act.Note">
-                        <td colspan="7" >
+                        <td colspan="8" >
                             <pre ng-bind-html="act.Note"></pre>
                         </td>
                     </tr>
