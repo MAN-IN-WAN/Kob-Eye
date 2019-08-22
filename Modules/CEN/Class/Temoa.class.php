@@ -64,8 +64,13 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 
 		$temoa->AddArrow($args['word']);
-		if($temoa->Search()) $s = $temoa->GetTargetsJson();
+		if($temoa->Search()) {
+klog::l("ok");
+			$s = $temoa->GetTargetsJson();
+		}
+		else klog::l("nok");
 		unset($temoa);
+klog::l("$corpus : $s");
 		$o = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$words = count($o);
 		$occur = 0;
@@ -94,19 +99,9 @@ class Temoa extends genericClass {
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$doc = $temoa->GetHTML($args['doc']);
-		
-		file_put_contents("/home/paul/tmp/a.html", $doc);
-		
-//		require_once ('Class/Lib/rtf-html-php.php');
-//		$doc= '';
-//		$reader = new RtfReader();
-//		$rtf = file_get_contents($args['doc']);
-//		$result = $reader->Parse($rtf);
-//		if($result) {
-//			$formatter = new RtfHtml();
-//			$doc = $formatter->Format($reader->root);
-//		}
-		return array('doc'=>utf8_encode($doc));
+		$s = $temoa->GetMarksJson();
+		$mrk = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		return array('doc'=>utf8_encode($doc), 'marks'=>$mrk);
 	}
 
 }

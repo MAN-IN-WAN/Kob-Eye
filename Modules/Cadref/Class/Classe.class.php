@@ -38,6 +38,9 @@ class Classe extends genericClass {
 	function Delete() {
 		$rec = $this->getChildren('Inscription');
 		if(count($rec)) throw new Exception('Cette classe ne peut être supprimée');
+		
+		$ds = $this->getChildren('ClasseDate');
+		foreach($ds as $d) $d->Delete();
 
 		return parent::Delete();
 	}
@@ -69,6 +72,32 @@ class Classe extends genericClass {
 		if(isset($_SESSION['ListClasse'])) $obj = $_SESSION['ListClasse'];
 		else $obj = false;
 		return $obj;
+	}
+	
+	function CopyDates($args) {
+		$annee = $args['Annee'];
+		$org = $args['CopyFrom'];
+		
+		$ds = $this->getChildren('ClasseDate');
+		foreach($ds as $d) $d->Delete();
+	
+		
+		$sql = "
+select d.DateCours
+from `##_Cadref-Classe` c 
+left join `##_Cadref-ClasseDate` d on c.Id=d.ClasseId
+where c.Annee='$annee' and c.CodeClasse='$org'
+order by d.DateCours";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$d = genericClass::createInstance('Cadref', 'ClasseDate');
+			$d->Annee = $annee;
+			$d->DateCours = $p['DateCours'];
+			$d->addParent($this);
+			$d->Save();
+		}
+		return array('args'=>$args, 'sql'=>$sql);
 	}
 	
 	function NextDate() {
@@ -178,6 +207,7 @@ order by c.CodeClasse";
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Liste des classe');
 
+		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
 
 		$file = 'Home/tmp/ListeClasse_'.date('YmdHis').'.pdf';

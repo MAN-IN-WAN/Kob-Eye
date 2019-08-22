@@ -51,7 +51,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
 		     $PBX_PORTEUR     = !empty($adh->Mail) ? $adh->Mail : $GLOBALS["Systeme"]->Conf->get("GENERAL::INFO::ADMIN_MAIL");
 		//informations nécessaires aux traitements (réponse)
-		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
+//		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
+		     $PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T";
 		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_REFUSE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_ANNULE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
@@ -74,15 +75,20 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		echo $html;
 		exit();*/
 		//return shell_exec( PAYBOX_LIB_DIR."/modulev2.cgi $PBX" );
+			 
+			 
 		
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
 		//on génère la clef HMAC
+		$msg = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT".
+				"&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR".
+				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME";
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
-		return '
+		return $msg.'<br>
 		<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
