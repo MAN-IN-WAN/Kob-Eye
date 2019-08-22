@@ -109,7 +109,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		';
 	}
 
-	public function serveurAutoResponse( $paiement) {
+	public function serveurAutoResponse($paiement, $commande) {
 		// Vérification signature
 		$signature = sha1(
 			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
@@ -134,7 +134,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		return false;
 	}
 
-	public function affichageEtape5( $paiement, $commande ) {
+	public function affichageEtape5($paiement, $commande) {
 		if($commande->Paye) return 'Votre inscription a été enregistrée sous le numéro '. $commande->RefCommande;
 		else return 'Une erreur est survenue lors du paiement de la commande '. $commande->RefCommande . '<br /> Vous pouvez contacter le support via ce <a href="/Contact">formulaire</a> en rappelant cette référence.';
 	}

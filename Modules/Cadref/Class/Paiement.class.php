@@ -6,7 +6,7 @@ class Paiement extends genericClass
         return Sys::getOneData('Cadref', 'TypePaiement/Paiement/' . $this->Id);
     }
 
-    public function CheckPaiement()
+    public function CheckPaiement($commande)
     {
         if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
             return;
@@ -27,7 +27,7 @@ class Paiement extends genericClass
         }
 
         // Résultats de l'analyse par le plugin
-        $results = $plugin->serveurAutoResponse($this);
+        $results = $plugin->serveurAutoResponse($this, $commande);
         if ($results == null) {
             mail("paul@abtel.fr", "CADREF : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
             die("Le paiement n'a pas pu être contrôlé.");
