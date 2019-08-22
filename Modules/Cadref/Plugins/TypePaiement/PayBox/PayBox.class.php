@@ -56,10 +56,10 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		//informations nécessaires aux traitements (réponse)
 //		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
 		     $PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T";
-		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
+		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5.');
 		     $PBX_REFUSE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_ANNULE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
-		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s');
+		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s.htm');
 		//page en cas d'erreur
 		     $PBX_ERREUR      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		//date
@@ -130,7 +130,11 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function retrouvePaiementEtape4s() {
-		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
+//		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
+		if(isset($_GET['ident']) and !empty($_GET['iden'])) {
+			$a = explode('-', $_GET['ident']);
+			return round($a[1]);
+		}
 		return false;
 	}
 
