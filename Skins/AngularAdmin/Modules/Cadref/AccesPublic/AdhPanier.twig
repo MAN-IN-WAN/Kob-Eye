@@ -25,7 +25,7 @@
 								<tr ng-repeat="item in panierObj.panierItems"">
 									<td scope="row" class="cadref-td typeint"><span class="label {[{ item.classe }]}">{[{ item.note }]}</span></td>
 									<td scope="row" class="cadref-td typeint">
-										<span ng-if="(item.clsId*1) && item.Inscrit*1==0" class="btn-abt cadref-btn-del btn-danger" ng-click="panierSupprime(item)" title="Retirer du panier"></span>
+										<span ng-if="(item.clsId*1) && item.Inscrit*1==0" class="btn-abt cadref-btn-del btn-danger" ng-click="panierSupprime(item)" title="Supprimer ce cours"></span>
 									</td>
 									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>

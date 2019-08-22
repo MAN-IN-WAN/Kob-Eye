@@ -208,7 +208,6 @@ class Adherent extends genericClass {
 			$o->Utilisateur = 'WEB';
 			$o->Web = 1;
 			$o->Save();
-	klog::l("xxxxxxxxxxxxxxxxxxxxxx INS",$o);
 
 			$cls->Save();
 		}
@@ -217,6 +216,7 @@ class Adherent extends genericClass {
 		if($saveAdh) $this->Save();
 		
 		$this->saveAnneeInscr($data);
+		$this->Save();
 	}
 
 	private function saveInscriptions($params, $saveAdh) {
