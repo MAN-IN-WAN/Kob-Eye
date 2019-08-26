@@ -47,7 +47,7 @@ class Ticket extends genericClass{
         $new = empty($this->Id);
         $ok = parent::Save();
         if( $ok  && $new){
-            AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'','',0,[],'PARC_TECHNICIEN','icmn-user3');
+            AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'Parc','Ticket',$this->Id,[],'PARC_TECHNICIEN','icmn-user3');
             return true;
         }
         return $ok;

@@ -240,7 +240,7 @@
 
 
 <div style="position:relative;">
-    <table id="activity_list">
+    <table id="activity_list" class="actions">
         <tr id="tableFixedHeader" class="activity-item" >
             <th width="30" title="Ch" class="list-col-th-dark">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
@@ -250,11 +250,12 @@
             <th class="activity_num sortable" width="100"  ng-click="triggerSort($event,'{{ identifier }}','Numero','{{ context }}')">N° Ticket</th>
             <th class="activity_client " width="450">Client</th>
             <th class="activity_title sortable"   ng-click="triggerSort($event,'{{ identifier }}','Titre','{{ context }}')">Titre</th>
+            <th class="activity_tech" width="40"   ng-click="triggerSort($event,'{{ identifier }}','UserNext','{{ context }}')">Tech</th>
             <th class="activity_progress sortable"  ng-click="triggerSort($event,'{{ identifier }}','Etat','{{ context }}')">Etat</th>
             <th width="160">Actions</th>
         </tr>
-        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage.{{ context }}" pagination-id="{{ identifier }}-pagination" ng-init="hover = false">
-            <td class="actWrap" colspan="8">
+        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage.{{ context }}" pagination-id="{{ identifier }}-pagination" ng-init="hover = false"  ng-class="{showDetail:hover}">
+            <td class="actWrap" colspan="9">
                 <table class="actSub">
                     <tr class="actInfo">
                         <td  class="list-col-td-dark" width="30">
@@ -263,7 +264,7 @@
                         <td class="activity_start" width="120">
                             {[{ act.DateCrea }]}
                         </td>
-                        <td class="activity_plus"  ng-class="{info: act.Priorite == 1 ,info_norm: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
+                        <td class="activity_plus"  ng-class="{info: act.Priorite == 1 ,info_norm: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:(act.Note.length > 0 && act.Note != '<p>')}" ng-click="(act.Note.length > 0 && act.Note != '<p>') ? (hover = !hover):null " width="45"></td>
                         <td class="activity_num" width="100"><a href="#/{{ CurrentUrl }}/{[{ act.id }]}">
                                 <b>{[{ act.Numero }]}</b></a>
                         </td>
@@ -271,6 +272,7 @@
                             <b>{[{ act.ClientClientIdlabel }]}</b></a>
                         </td>
                         <td class="activity_title" ><a href="#/{{ CurrentUrl }}/{[{ act.id }]}"><span ng-bind-html="act.Titre"></span></a></td>
+                        <td class="activity_tech" width="40" ng-bind-html="act.UserNext"></td>
                         <td class="activity_progress" style="text-align: center;"><span class="etatTicket" ng-class="'etat_'+act.Etat" ng-bind-html="act.EtatLabel"></span></td>
                         <td  class="table-action " width="160">
                             <div style="height: 32px;">
@@ -306,8 +308,8 @@
                             </div>
                         </td>
                     </tr>
-                    <tr class="actDetail" ng-if="act.Note">
-                        <td colspan="8" >
+                    <tr class="actDetail" ng-if="act.Note.length > 0 && act.Note != '<p>'">
+                        <td colspan="9" >
                             <pre ng-bind-html="act.Note"></pre>
                         </td>
                     </tr>

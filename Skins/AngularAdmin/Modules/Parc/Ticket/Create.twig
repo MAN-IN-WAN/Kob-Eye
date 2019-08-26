@@ -106,7 +106,7 @@
                 <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
             </small>
         </div>
-        <div class="col-md-6 form-group" style="text-align: center;">
+        <div class="col-md-6 form-group" style="text-align: center; height: 40px;">
             <input type="hidden" class="form-control" placeholder="" id="input-ParcTicketpj" ng-model="ParcTicketfunction.args.pj">
             <label for="input-ParcTicketpj-file" class="btn-warning file-btn btn" title=" Choisissez un fichier " style="width: 100%; margin: 0;"><i class="icmn-folder-upload2 "></i></label>
             <input id="input-ParcTicketpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcTicketpj', model:'ParcTicketfunction.args.pj' }" ng-init="up_ParcTicketpj = angular.copy(multiAutoUploader)" uploader="up_ParcTicketpj" style="display:none;" multiple/>
