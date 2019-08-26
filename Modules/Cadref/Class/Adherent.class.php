@@ -89,8 +89,6 @@ class Adherent extends genericClass {
 		$inscr = $params['Inscr'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
-klog::l("aaaaaaaaaaaaaa",$params);
-klog::l("aaaaaaaaaaaaaa",$data);
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -222,7 +220,7 @@ klog::l("aaaaaaaaaaaaaa",$data);
 		$this->Save();
 		
 		$pa = $this->getOneChild('Panier/Annee='.$annee);
-		$pa->Delete();
+		if($pa) $pa->Delete();
 	}
 
 	private function saveInscriptions($params, $saveAdh) {
@@ -1082,7 +1080,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 		else {
 			if($co) {
-				$cotis = $co->Cotisation;
+				$cotis = $co->Cotisation ? $co->Cotisation : $an->Cotisation;
 				$regul = $co->Regularisation;
 			}
 			else {

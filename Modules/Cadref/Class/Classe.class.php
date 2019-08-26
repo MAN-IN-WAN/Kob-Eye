@@ -204,7 +204,6 @@ order by c.CodeClasse";
 		if(! $pdo) return false;
 		
 		$file = 'Home/tmp/ListeClasse_'.date('YmdHis');
-klog::l(">>>>>>>>>>>>>>>>>$file",$obj);
 		if($obj['mode'] == 1) {
 			$f = fopen(getcwd().'/'.$file.'.csv', 'w');
 			foreach($pdo as $p) {
