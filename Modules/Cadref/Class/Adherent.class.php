@@ -62,7 +62,7 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
-			$a->Adhrent = $data->Adherent;
+			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
 			$a->NotesAnnuelles = $data->NotesAnnuelles;
@@ -89,6 +89,8 @@ class Adherent extends genericClass {
 		$inscr = $params['Inscr'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
+klog::l("aaaaaaaaaaaaaa",$params);
+klog::l("aaaaaaaaaaaaaa",$data);
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -180,7 +182,7 @@ class Adherent extends genericClass {
 		$reg->Encaisse = 1;
 		$reg->Utilisateur = 'WEB';
 		$reg->Web = 1;
-		$reg->Save();	
+		$reg->Save();
 	
 		$data = $this->GetPanier('inscribe');
 		foreach($data['data'] as $ins) {
@@ -215,8 +217,12 @@ class Adherent extends genericClass {
 		$this->Annee = $annee;
 		if($saveAdh) $this->Save();
 		
-		$this->saveAnneeInscr($data);
+		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul']));
+		$this->saveAnneeInscr($insc);
 		$this->Save();
+		
+		$pa = $this->getOneChild('Panier/Annee='.$annee);
+		$pa->Delete();
 	}
 
 	private function saveInscriptions($params, $saveAdh) {
@@ -347,6 +353,7 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
+		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
 
 		$pdf = new PrintCarte($this, $aan, $recto);
 		$pdf->SetAuthor("Cadref");
@@ -1041,9 +1048,20 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 	function GetPanier($action) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
+
+		$pa = $this->getOneChild('Panier/Annee='.$annee);
+		if(!$pa) {
+			$pa = genericClass::createInstance('Cadref', 'Panier');
+			$pa->Annee = $annee;
+			$pa->addParent($this);
+		}
+		$ids = $pa->Panier;
+		$sess = isset($_SESSION['panier']);
+		if($sess) $ids = unserialize($_SESSION['panier']);
+
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
 		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		
+
 		$data = array();
 		if($action != 'inscribe') {
 			$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
@@ -1051,21 +1069,28 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
 				'Disponibles'=>0,'note2'=>'','heures'=>0];
 			if($co && $co->Cotisation)	{
-				$cot['Prix'] = $co->Cotisation;
+				$cot['Prix'] = $cotis = $co->Cotisation;
 				$cot['classe'] = 'label-success';
 				$cot['note'] = 'Déjà réglée';
-				$cotis = 0;
-				$regul = $co->Regularisation;
 			} else {
 				$cot['Prix'] = $cotis = $an->Cotisation;
 				$cot['classe'] = 'label-warning';
-				$cot['note'] = 'à régler';
-				$regul = 0;
+				$cot['note'] = 'A régler';
 			}
 			$data[] = $cot;
+			$regul = $co ? $co->Regularisation : 0;
+		}
+		else {
+			if($co) {
+				$cotis = $co->Cotisation;
+				$regul = $co->Regularisation;
+			}
+			else {
+				$cotis = $an->Cotisation;
+				$regul = 0;
+			}
 		}
 		
-		$ids = isset($_SESSION['panier']) ? unserialize($_SESSION['panier']) : '';
 		if(!empty($ids) && $action == 'remove') {
 			$c = "'$remove'";
 			$p = strpos($ids, $c);
@@ -1074,7 +1099,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				if($s == ',') $c .= ',';
 				$ids = str_replace($c, '', $ids); 				
 			}
-			$_SESSION['panier'] = serialize($ids);			
+			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
 
 		$sql = "
@@ -1111,7 +1136,12 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				$ids = str_replace($c, '', $ids); 				
 			}
 		}
-		$_SESSION['panier'] = serialize($ids);
+		if($sess) {
+			$_SESSION['panier'] = serialize($ids);
+			$pa->Panier = $ids;
+			$pa->Save();
+		}
+			
 		
 		$sql = "
 select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 

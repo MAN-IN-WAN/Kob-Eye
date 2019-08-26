@@ -35,7 +35,7 @@ class Cadref extends Module {
 				$panier = '';
 				if(isset($_SESSION['panier'])) $panier = unserialize($_SESSION['panier']);
 				if(!empty($panier)) {
-					if(strpos($panier, "'$classe'") == false) $panier .= ",'$classe'";
+					if(strpos($panier, "'$classe'") === false) $panier .= ",'$classe'";
 				}
 				else $panier = "'$classe'";	
 				$_SESSION['panier'] = serialize($panier);

@@ -28,9 +28,11 @@ class Paiement extends genericClass
 
         // Résultats de l'analyse par le plugin
         $results = $plugin->serveurAutoResponse($this, $commande);
-        if ($results == null) {
-            mail("paul@abtel.fr", "CADREF : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
-            die("Le paiement n'a pas pu être contrôlé.");
+        if ($results['etat'] == 0) {
+			if($result['status'] == '0000') {
+				mail("paul@abtel.fr", "CADREF : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
+				die("Le paiement n'a pas pu être contrôlé.");
+			}
         }
 
         // Mise à jour de l'objet paiement
