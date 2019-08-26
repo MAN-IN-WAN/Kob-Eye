@@ -18,6 +18,7 @@ class Reglement extends genericClass {
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
 		$user = $obj['Utilisateur'];
+		if($user == 'Tous') $user = '';
 		$file = 'Home/tmp/';
 		switch($mode) {
 			case 0:
