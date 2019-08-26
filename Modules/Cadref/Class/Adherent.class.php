@@ -1504,7 +1504,7 @@ where ce.Visite=:cid";
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');
 
-		$annee = Cadref::$Annee;
+		$annee = $params['Annee'];
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 

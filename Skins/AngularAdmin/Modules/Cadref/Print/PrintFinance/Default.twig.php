@@ -8,5 +8,9 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
 }
 $vars['identifier'] = 'CadrefInscription';
 
+$tmp = array();
+$gs = Sys::getData('Cadref','Annee');
+foreach($gs as $g) $tmp[] = $g->Annee;
+$vars['annees'] = $tmp;
 
 

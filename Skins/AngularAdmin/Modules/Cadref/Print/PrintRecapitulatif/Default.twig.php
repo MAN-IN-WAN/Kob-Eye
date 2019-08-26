@@ -8,6 +8,12 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
 }
 $vars['identifier'] = 'CadrefAdherent';
 
-$vars['dateDebut'] = "01/08/".Cadref::$Annee;
+
+$tmp = array();
+$gs = Sys::getData('Cadref','Annee');
+foreach($gs as $g) $tmp[] = $g->Annee;
+$vars['annees'] = $tmp;
+
+
 
 
