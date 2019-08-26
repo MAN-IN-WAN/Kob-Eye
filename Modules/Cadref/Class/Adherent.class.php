@@ -164,6 +164,60 @@ class Adherent extends genericClass {
 				break;
 		}
 	}
+	
+	function WebInscription($paiement) {
+		$annee = Cadref::$Annee;
+
+		$reg = genericClass::createInstance('Cadref', 'Reglement');
+		$reg->addParent($paiement);
+		$reg->addParent($this);
+		$reg->Numero = $this->Numero;
+		$reg->Annee = $annee;
+		$reg->Montant = $paiement->Montant;
+		$reg->DateReglement = time();
+		$reg->ModeReglement = 'C';
+		$reg->Note = $paiement->Reference;
+		$reg->Encaisse = 1;
+		$reg->Utilisateur = 'WEB';
+		$reg->Web = 1;
+		$reg->Save();	
+	
+		$data = $this->GetPanier('inscribe');
+		foreach($data['data'] as $ins) {
+			$attente = 0;
+			$supprime = 0;
+
+			$o = genericClass::createInstance('Cadref', 'Inscription');
+			$cls = genericClass::createInstance('Cadref', 'Classe');
+			$cls->initFromId($ins['clsId']);
+
+			$o->addParent($this);
+			$o->addParent($cls);
+			$o->Annee = $annee;
+			$o->Numero = $this->Numero;
+			$o->CodeClasse = $ins['CodeClasse'];
+			$o->Antenne = substr($ins['CodeClasse'], 0, 1);
+			$o->Attente = 0;
+			$o->Supprime = 0;
+			$o->DateInscription = time();
+			$o->DateAttente = 0;
+			$o->DateSupprime = 0;
+			$o->Prix = $ins['Prix'];
+			$o->Reduction = $ins['Reduction'];
+			$o->Soutien = 0;
+			$o->Utilisateur = 'WEB';
+			$o->Web = 1;
+			$o->Save();
+
+			$cls->Save();
+		}
+		// adherent
+		$this->Annee = $annee;
+		if($saveAdh) $this->Save();
+		
+		$this->saveAnneeInscr($data);
+		$this->Save();
+	}
 
 	private function saveInscriptions($params, $saveAdh) {
 		$annee = Cadref::$Annee;
@@ -972,32 +1026,47 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$m = intval(substr($c, 3));
 		return ($m < 9 ? 10000 : 0)+$m*100+intval(substr($c, 0, 2)); 
 	}
+
+	public function GetPayment($montant) {
+		$p = genericClass::createInstance('Cadref', 'Paiement');
+		$p->Montant = $montant;
+		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
+		$p->addParent($tp);
+		$p->addParent($this);
+		$p->Save();
+		$pl = $tp->getPlugin();
+		return $pl->getCodeHTML($p);
+	}
 	
-	function GetPanier($remove) {
+	function GetPanier($action) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
 		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		
 		$data = array();
-		$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
-			'Jour'=>0,'HeureDebut'=>'','HeureFin'=>'','CycleDebut'=>'','CycleFin'=>'',
-			'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
-			'Disponibles'=>0,'note2'=>'','heures'=>0];
-		if($co->Cotisation)	{
-			$cot['Prix'] = $co->Cotisation;
-			$cot['classe'] = 'label-success';
-			$cot['note'] = 'Déjà réglée';
-			$cotis = 0;
-		} else {
-			$cot['Prix'] = $cotis = $an->Cotisation;
-			$cot['classe'] = 'label-warning';
-			$cot['note'] = 'à régler';
+		if($action != 'inscribe') {
+			$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
+				'Jour'=>0,'HeureDebut'=>'','HeureFin'=>'','CycleDebut'=>'','CycleFin'=>'',
+				'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
+				'Disponibles'=>0,'note2'=>'','heures'=>0];
+			if($co && $co->Cotisation)	{
+				$cot['Prix'] = $co->Cotisation;
+				$cot['classe'] = 'label-success';
+				$cot['note'] = 'Déjà réglée';
+				$cotis = 0;
+				$regul = $co->Regularisation;
+			} else {
+				$cot['Prix'] = $cotis = $an->Cotisation;
+				$cot['classe'] = 'label-warning';
+				$cot['note'] = 'à régler';
+				$regul = 0;
+			}
+			$data[] = $cot;
 		}
-		$data[] = $cot;
 		
 		$ids = isset($_SESSION['panier']) ? unserialize($_SESSION['panier']) : '';
-		if(!empty($ids) && !empty($remove)) {
+		if(!empty($ids) && $action == 'remove') {
 			$c = "'$remove'";
 			$p = strpos($ids, $c);
 			if($p !== false) {
@@ -1032,7 +1101,8 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			$r['note'] = 'Déjà inscrit';
 			$r['note2'] = '';
 			$r['heures'] = 0;
-			$data[] = $r;
+			if($action != 'inscribe') $data[] = $r;
+			
 			$c = "'".$r['CodeClasse']."'";
 			$p = strpos($ids, $c);
 			if($p !== false) {
@@ -1046,8 +1116,8 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$sql = "
 select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
-if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+if(c.DateReduction2 is not null and c.DateReduction2<=UNIX_TIMESTAMP(),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=UNIX_TIMESTAMP(),c.Reduction2,0)) as Reduction,
 0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on c.NiveauId=n.Id
@@ -1106,7 +1176,7 @@ where ce.Classe=:cid";
 		}
 		
 		$total = $cotis+$montant;
-		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
 
 	function GetCours($mode, $obj) {

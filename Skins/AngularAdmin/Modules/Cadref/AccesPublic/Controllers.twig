@@ -491,6 +491,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Urlweb:''};
 	$scope.getPanier = async function(remove) { 
 		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[remove]);
+console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx',data);
 		$scope.panierObj.panierItems = data.data.data.data;
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.Montant = data.data.data.montant;
@@ -507,12 +508,14 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		window.location.href = $scope.panierObj.Urlweb;
 	}
 	
-	$scope.panierConfirme = function() {
+	$scope.panierConfirme = async function() {
+		//$('#settings').spin();
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[$scope.panierObj.Total]);
+		$("#panierPayer").html(data.data.data);
+		//$('#settings').spin(false);
 		$("#modal-panier").modal('toggle');
 	}
 	
-	$scope.panierPayer = function() {
-	}
 
 
 	//---------------------------

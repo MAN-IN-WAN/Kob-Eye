@@ -1,2 +1,2 @@
 <?php
-echo Cadref::GetPaiement(array('Montant'=>34.00));
+echo Cadref::GetPayment(array('Montant'=>1.00));

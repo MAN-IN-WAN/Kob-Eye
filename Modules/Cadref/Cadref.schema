@@ -419,7 +419,7 @@
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" form="1" distDescr="Montant" description="Montant">Montant</PROPERTIES>
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Soutien" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
-		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces,V::Vacances,P::Prélèvement" list="3" form="1" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces,P::Prélèvement,V::Vacances" list="3" form="1" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" list="1" form="1" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="4" form="1" listDescr="Diff" description="Différé">Differe</PROPERTIES>
@@ -427,6 +427,7 @@
 		<PROPERTIES type="boolean" default="0" category="Description" list="6" form="1" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" form="1" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" description="Réglement web">Web</PROPERTIES>
+		<FKEY card="0,1" module="Cadref" data="Paiement,Id" category="Description" description="Paiement">PaiementId</FKEY>
 
 		<VIEW title="DiffereList" default="0">
 			<OBJECTCLASS title="Reglement" filters="">
