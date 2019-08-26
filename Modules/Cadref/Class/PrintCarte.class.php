@@ -21,7 +21,7 @@ class PrintCarte extends FPDF {
 		$this->aan = $adhAnnee;
 		$this->recto = $recto;
 		$this->head = array('Cours','Discipline','Horaires','Enseignant','Tarif');
-		$this->width = array(16,76,41,60,8);
+		$this->width = array(16,86,41,50,8);
 		$this->align = array('L','L','L','L','R');
 	}
 	
