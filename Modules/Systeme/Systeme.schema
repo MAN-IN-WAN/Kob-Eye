@@ -223,6 +223,8 @@
 					<PROPERTIES type="varchar" list="4" >Title</PROPERTIES>
 					<PROPERTIES type="varchar" list="5" >Tag</PROPERTIES>
 					<PROPERTIES type="int" list="7" >ObjectId</PROPERTIES>
+					<PROPERTIES type="int" list="7" >AlertModule</PROPERTIES>
+					<PROPERTIES type="int" list="7" >AlertObject</PROPERTIES>
 					<PROPERTIES type="varchar" list="6">Author</PROPERTIES>
 					<PROPERTIES type="int" list="8">UserId</PROPERTIES>
 					<JOIN type="outer" title="User" on="UserId" target="Id">

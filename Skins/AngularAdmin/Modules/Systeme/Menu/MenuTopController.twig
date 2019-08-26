@@ -1,0 +1,9 @@
+app.controller('MenuTopCtrl', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http) {
+    $scope.goToAlert = function(ev,item){
+        var urls = JSON.parse('{{ urls | raw }}');
+
+        var object = '/'+urls.Parc.Ticket+'/'+item.ObjectId;
+
+        $location.url(object);
+    }
+});

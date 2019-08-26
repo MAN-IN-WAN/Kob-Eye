@@ -372,6 +372,7 @@ progress.progress.progress-danger:after{
 #activity_list .activity_link{
     width: 70px;
 }
+
 #activity_list .activity_progress{
     width: 150px;
 }
@@ -380,6 +381,9 @@ progress.progress.progress-danger:after{
 }
 #activity_list .activity_progress > .progress{
     vertical-align: middle;
+}
+#activity_list.actions .activity_progress{
+    width: 110px;
 }
 #activity_list .activity_start{
     width:175px;
@@ -1467,6 +1471,13 @@ Choix des composants
     overflow: hidden;
     overflow: -webkit-paged-y !important;
 }
+.modal-body small{
+    display: block;
+    line-height: 80%;
+    margin-top: -7px;
+    margin-bottom: 3px;
+    opacity: 0.7;
+}
 
 .logo-centre {
 	margin: auto;
@@ -1600,8 +1611,12 @@ Choix des composants
  .notification-block .noItem{
      padding: 15px;
  }
-
-
+.notification-block .notification-empty{
+    color: #46BE8A;
+    font-size: 23px;
+    position: absolute;
+    top: 15px;
+}
 
  /**
  FICHE
