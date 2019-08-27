@@ -1,132 +1,135 @@
 {% from "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroForm.twig" import  form_properties %}
-<div class="row">
+<div class="row" id="{{ uuid }}">
     {% if categories|length > 1 %}
-        <div class="formCatsFrise col-md-2">
-            {% for cat,fields in categories %}
-                <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
+    <div class="formCatsFrise col-md-2">
+        {% for cat,fields in categories %}
+            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
                     <a href="#" class="formCatsFriseLink">{{ cat }}</a>
                 </span>
-            {% endfor %}
-        </div>
-    <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
-    {% else %}
-    <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
-    {% endif %}
-        <div class="formCatWrapper">
-        {% for cat,fields in categories %}
-            <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}" class="formCatContainer {% if loop.first %}active{% endif %}">
-    {#            <h3>{{ cat }}</h3>#}
-                {{  form_properties(fields,scopeObj) }}
-            </div>
         {% endfor %}
+    </div>
+    <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+        {% else %}
+        <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+            {% endif %}
+            <div class="formCatWrapper">
+                {% for cat,fields in categories %}
+                    <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"
+                         class="formCatContainer {% if loop.first %}active{% endif %}">
+                        {#            <h3>{{ cat }}</h3>#}
+                        {{ form_properties(fields,scopeObj) }}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
-<script>
-    //Gestion des dates
-    $('.datepicker-only-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        format : 'DD/MM/YYYY',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
-    $('.timepicker-only-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        format : 'HH:mm',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
-    $('.datetimepicker-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
+    <script>
+        //Gestion des dates
+        $('#{{ uuid }} .datepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .timepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'HH:mm',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .datetimepicker-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
 
-    //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-    $(".datepicker-only-init").on("dp.change", function() {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
-    $(".timepicker-only-init").on("dp.change", function() {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
-    $(".datetimepicker-init").on("dp.change", function() {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
+        //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+        $("#{{ uuid }} .datepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .timepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .datetimepicker-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
 
-    //Gestion des urls
-    $('.urlInput').on('keyup',function(){
-        $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g,''));
-    });
+        //Gestion des urls
+        $('#{{ uuid }} .urlInput').on('keyup', function () {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g, ''));
+        });
 
-    {% if categories|length > 1 %}
-        var modal = $('.formCats').closest('.modal');
+        {% if categories|length > 1 %}
+        var modal = $('#{{ uuid }} .formCats').closest('.modal');
+        console.error('#{{ uuid }} .formCats', modal);
         modal.off('shown.bs.modal');
-        modal.on('shown.bs.modal',function(){
+        modal.on('shown.bs.modal', function () {
             var par = $(this).find('.formCatWrapper');
-            par.css('height',par.height());
-             var temp = $('<div class="formNav">\n' +
-                 '           <button class="btn btn-warning catNav formPrev pull-left disabled">Précedent</button>\n' +
-                 '           <button class="btn btn-warning catNav formNext pull-right">Suivant</button>\n' +
-                 '    </div>');
-             modal.find('.modal-footer .formNav').remove();
-             modal.find('.modal-footer').prepend(temp);
+            par.css('height', par.height());
+            var temp = $('<div class="formNav">\n' +
+                '           <button class="btn btn-warning catNav formPrev pull-left disabled">Précedent</button>\n' +
+                '           <button class="btn btn-warning catNav formNext pull-right">Suivant</button>\n' +
+                '    </div>');
+
+            $(this).find('.modal-footer .formNav').remove();
+            $(this).find('.modal-footer').prepend(temp);
 
             //Gestion de la navigation
-            $('.formPrev').off('click');
-            $('.formPrev').on('click',function(){
+            $(this).find('.formPrev').off('click');
+            $(this).find('.formPrev').on('click', function () {
                 var par = $(this).closest('.modal').find('.formCats');
                 var active = par.find('.formCatContainer.active');
                 var index = active.data('cat');
 
-                displayCat(active[0], index-1);
+                displayCat(active[0], index - 1);
 
                 //Gestion de la frise
                 var frise = par.siblings('.formCatsFrise');
                 frise.children().removeClass('active');
-                var link = frise.find('span[data-cat='+(index-1)+']');
+                var link = frise.find('span[data-cat=' + (index - 1) + ']');
                 link.addClass('active');
 
             });
-            $('.formNext').off('click');
-            $('.formNext').on('click',function(){
+            $(this).find('.formNext').off('click');
+            $(this).find('.formNext').on('click', function () {
                 var par = $(this).closest('.modal').find('.formCats');
                 var active = par.find('.formCatContainer.active');
                 var index = active.data('cat');
 
-                displayCat(active[0], index+1);
+                displayCat(active[0], index + 1);
 
                 //Gestion de la frise
                 var frise = par.siblings('.formCatsFrise');
                 frise.children().removeClass('active');
-                var link = frise.find('span[data-cat="'+(index+1)+'"]');
-                console.log('span[data-cat="'+(index+1)+'"]',link);
+                var link = frise.find('span[data-cat="' + (index + 1) + '"]');
+                console.log('span[data-cat="' + (index + 1) + '"]', link);
                 link.addClass('active');
 
             });
@@ -134,15 +137,12 @@
         });
 
 
-
-
-
-        function animateHeight(next,parent,button,index){
+        function animateHeight(next, parent, button, index) {
             var cats = parent.find('.formCatContainer');
             var links = parent.closest('.modal').find('.formCatsFriseElem');
             var len = cats.length;
-            parent.animate({height:next},300,'swing',function(){
-                if(index != 0 && index != (len-1))
+            parent.animate({height: next}, 300, 'swing', function () {
+                if (index != 0 && index != (len - 1))
                     $(button).removeClass('disabled');
                 var other = $(button).siblings('.catNav');
                 console.log(other);
@@ -154,29 +154,29 @@
 
 
         //Gestion des clics sur la frise
-        $('.formCatsFrise a').off('click');
-        $('.formCatsFrise a').on('click',function(e){
+        $('#{{ uuid }} .formCatsFrise a').off('click');
+        $('#{{ uuid }} .formCatsFrise a').on('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
 
-            if($(this).parent().hasClass('active'))
+            if ($(this).parent().hasClass('active'))
                 return false;
             var sibs = $(this).closest('.formCatsFrise').find('a.formCatsFriseLink');
             sibs.parent().removeClass('active');
 
             var next = $(this).parent().data('cat');
             console.log(next);
-            displayCat(this,next);
+            displayCat(this, next);
 
             $(this).parent().addClass('active');
 
         });
 
-        function displayCat(node, next){
-            console.log(node,next);
+        function displayCat(node, next) {
+            console.log(node, next);
             var par = $(node).closest('.modal');
             var curActive = par.find('.formCatContainer.active');
-            var nextActive = par.find('.formCatContainer[data-cat="'+next+'"]');
+            var nextActive = par.find('.formCatContainer[data-cat="' + next + '"]');
             var buttons = par.find('.formNav button');
             var links = $(node).closest('.modal').find('.formCatsFriseElem');
             var cats = par.find('.formCatContainer');
@@ -186,11 +186,11 @@
             buttons.addClass('disabled');
 
 
-            if(curActive.data('cat') > next){
+            if (curActive.data('cat') > next) {
                 var wayNew = 'before';
                 var wayold = 'after';
                 var bNode = buttons.filter('.formPrev')[0];
-            }else{
+            } else {
                 var wayNew = 'after';
                 var wayold = 'before';
                 var bNode = buttons.filter('.formNext')[0];
@@ -203,8 +203,8 @@
             nextActive.addClass('active').removeClass(wayNew);
             curActive.addClass(wayold).removeClass('active');
 
-            animateHeight(nextHeight,wrap,bNode,next);
+            animateHeight(nextHeight, wrap, bNode, next);
 
         }
-    {% endif %}
-</script>
+        {% endif %}
+    </script>

@@ -53,3 +53,4 @@ foreach ($ocats as $k=>$cat){
     }
 }
 $vars['categories'] = $cats;
+$vars['uuid'] = uniqid('form_');
