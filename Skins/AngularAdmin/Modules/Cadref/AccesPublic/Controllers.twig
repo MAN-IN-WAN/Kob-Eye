@@ -476,7 +476,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[true]);
 		ajax.success(
 			function(data) {
-				$window.open(data.data.pdf,'_blank');
+				if(data.data.pdf == false) swal('Attention',"Vous n'êtes pas inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
 			}
 		).error(
 			function() {
@@ -491,7 +492,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Urlweb:''};
 	$scope.getPanier = async function(remove) { 
 		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[remove]);
-console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx',data);
 		$scope.panierObj.panierItems = data.data.data.data;
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.Montant = data.data.data.montant;

@@ -596,4 +596,10 @@
         <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
     </OBJECTCLASS>
 
+    <OBJECTCLASS title="Panier" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="4">Annee</PROPERTIES>
+        <PROPERTIES type="varchar" length="255">Panier</PROPERTIES>
+        <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
+    </OBJECTCLASS>
+
 </SCHEMA>

@@ -673,12 +673,17 @@ console.log({{ identifier }}method);
 		}
 		
 		// change l'année selectionnée
-		$scope.changeAnnee = function(annee) {
+		var anneeDirty;
+		$scope.anneeFocus = function() {
+			anneeDirty = $scope.CadrefContent.$dirty;
+		}
+		$scope.anneeChange = function() {
 			$scope.adherentInfo();
 			CadrefInscriptionStore.setFilters('Annee='+$scope.obj.AnneeSelect, 'children');
 			CadrefInscriptionStore.getData(1,'children');
 			CadrefReglementStore.setFilters('Annee='+$scope.obj.AnneeSelect, 'children');
 			CadrefReglementStore.getData(1,'children');
+			$scope.CadrefContent.$dirty = anneeDirty;
 		}
 
 		// solde adherent

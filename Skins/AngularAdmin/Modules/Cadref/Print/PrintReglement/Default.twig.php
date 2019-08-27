@@ -8,9 +8,11 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
 }
 $vars['identifier'] = 'CadrefReglement';
 
-$tmp = array(''=>'');
+$tmp = array();
 $gs = Sys::getData('Systeme','Group/Nom=CADREF_ADMIN/*/User');
 foreach($gs as $g) $tmp[] = $g->Initiales;
+$tmp[] = 'WEB';
+$tmp[] = "Tous";
 $vars['users'] = $tmp;
 $vars['initiales'] = Sys::$User->Initiales;
 

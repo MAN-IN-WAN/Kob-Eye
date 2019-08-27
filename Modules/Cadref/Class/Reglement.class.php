@@ -18,6 +18,7 @@ class Reglement extends genericClass {
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
 		$user = $obj['Utilisateur'];
+		if($user == 'Tous') $user = '';
 		$file = 'Home/tmp/';
 		switch($mode) {
 			case 0:
@@ -47,7 +48,7 @@ class Reglement extends genericClass {
 		$sql = "
 select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse
 from `##_Cadref-Reglement` r 
-inner join `##_Cadref-Adherent` h on h.Id=r.AdherentId
+left join `##_Cadref-Adherent` h on h.Id=r.AdherentId
 where ".$where;
 		$sql .= " and r.Supprime=0 ";	
 		if($user != '') $sql .= " and r.Utilisateur='$user' ";

@@ -191,7 +191,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$annee = Cadref::$Annee;
 		$sql = "
-select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour
+select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
@@ -203,6 +203,18 @@ order by c.CodeClasse";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return false;
 		
+		$file = 'Home/tmp/ListeClasse_'.date('YmdHis');
+		if($obj['mode'] == 1) {
+			$f = fopen(getcwd().'/'.$file.'.csv', 'w');
+			foreach($pdo as $p) {
+				$s = $p['CodeClasse']."\t".$p['LibelleD'].' '.$p['LibelleN']."\t";
+				$s .= $p['CycleDebut'].' '.$p['CycleFin']."\t".$p['Jour']."\t".$p['HeureDebut'].' '.$p['HeureFin']."\n";
+				fwrite($f, $s);
+			}
+			fclose($f);
+			return array('csv'=>$file.'.csv');
+		}
+		
 		$pdf = new PrintClasse($annee);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Liste des classe');
@@ -210,11 +222,10 @@ order by c.CodeClasse";
 		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/ListeClasse_'.date('YmdHis').'.pdf';
-		$pdf->Output(getcwd() . '/' . $file);
+		$pdf->Output(getcwd().'/'.$file.'.pdf');
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file.'.pdf');
 	}
 	
 	

@@ -112,15 +112,17 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	public function serveurAutoResponse($paiement, $commande) {
 		$status = isset($_GET['status']) ? $_GET['status' ] : '';
 		$ident = isset($_GET['ident']) ? $_GET['ident' ] : '';
+		$etat = 1;
 		
-		if($status != '0000' || empty($ident)) return false;
+		if($status != '0000' || empty($ident)) $etat = 0;;
 		$a = explode('-', $ident);
-		if(!isset($a[0]) || empty($a[0])) return false;
+		if(!isset($a[0]) || empty($a[0])) $etat = 0;
+		else {
+			$adh = $paiement->getOneParent('Adherent');
+			if(! $adh || $adh->Numero != $a[0]) $etat = 0;
+		}
 		
-		$adh = $paiement->getOneParent('Adherent');
-		if(! $adh || $adh->Numero != $a[0]) return false;
-		
-		return array('etat'=>1, 'ref'=>$_GET['trans'], 'detail'=>$ident);
+		return array('etat'=>1, 'ref'=>$_GET['trans'], 'detail'=>$ident, 'status'=>$status);
 
 //		// Vérification signature
 //		$signature = sha1(

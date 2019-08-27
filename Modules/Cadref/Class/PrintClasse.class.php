@@ -16,9 +16,9 @@ class PrintClasse extends FPDF {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
-		$this->head = array('Code','Libellé','Jour','Heures');
-		$this->width = array(22,90,20,30);
-		$this->align = array('L','L','L','L');
+		$this->head = array('Code','Libellé','Cycle','Jour','Heures');
+		$this->width = array(22,90,25,20,30);
+		$this->align = array('L','L','L','L','L');
 
 		$this->titre = "CADREF : Liste des classes $annee-".($annee+1);
 	}
@@ -64,8 +64,9 @@ class PrintClasse extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['CodeClasse']);
 		$this->Cell($this->width[1], 4.5, $this->cv($l['LibelleD'].' '.$l['LibelleN']));
-		$this->Cell($this->width[2], 4.5, $this->cv($l['Jour']));
-		$this->Cell($this->width[3], 4.5, $l['HeureDebut'].' - '.$l['HeureFin']);
+		$this->Cell($this->width[2], 4.5, $l['CycleDebut'].' '.$l['CycleFin']);
+		$this->Cell($this->width[3], 4.5, $this->cv($l['Jour']));
+		$this->Cell($this->width[4], 4.5, $l['HeureDebut'].' - '.$l['HeureFin']);
 		$this->posy += 4.5;
 	} 
 
