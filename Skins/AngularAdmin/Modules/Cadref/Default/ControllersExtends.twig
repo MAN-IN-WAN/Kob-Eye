@@ -499,8 +499,6 @@
 				explodeArgs:explodeArgs,
 				tms : Date.now(),
 			};
-console.log({{ identifier }}method);
-
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
 
@@ -929,6 +927,7 @@ console.log({{ identifier }}method);
 		$scope.CadrefClasse.Inscr = {};
 		$scope.CadrefClasse.Inscr.updated = false;
 		$scope.CadrefClasse.Inscr.nonSolde = false;
+		$scope.inscrOpened = false;
 
         $scope.openInscription = function(obj) {
 			$scope.modalObj = {};
@@ -958,11 +957,45 @@ console.log({{ identifier }}method);
 					if($('#inscriptionNext').length) $('#inscriptionNext').click();
 					else if($('#differeNext').length) $('#differeNext').click();
 				}
+			}).on("hide.bs.modal", function(event) {
+				if($scope.CadrefClasse.Inscr.updated) {
+					var ok = confirm("Données modifiées.\nVoulez-vous annuler les modifications ?");
+					if(! ok) {
+						$('body').removeClass('cui-page-loading-state');
+						NProgress.done();
+						event.preventDefault();
+						return;
+					}
+				}
+			}).on("hidden.bs.modal", function () {
+				$scope.inscrOpened = false;
+			});
+			$(".modal-header").on("mousedown", function(mousedownEvt) {
+				var $draggable = $(this);
+				var x = mousedownEvt.pageX - $draggable.offset().left,
+					y = mousedownEvt.pageY - $draggable.offset().top;
+				$("body").on("mousemove.draggable", function(mousemoveEvt) {
+					$draggable.closest(".modal-dialog").offset({
+						"left": mousemoveEvt.pageX - x,
+						"top": mousemoveEvt.pageY - y
+					});
+				});
+				$("body").one("mouseup", function() {
+					$("body").off("mousemove.draggable");
+				});
+				$draggable.closest(".modal").one("bs.modal.hide", function() {
+					$("body").off("mousemove.draggable");
+				});
 			});
 			$timeout(function() {
 				$('#searchCadrefClasse').focus();
 			}, 300);
+			$scope.inscrOpened = true;
         }
+		
+		$scope.closeInscription = function() {
+			angular.element($('#modalfunction-CadrefAdherent')).modal('hide');
+		}
 		
 		// controle le bontoun next
 		$scope.nextControle = function(mode) {

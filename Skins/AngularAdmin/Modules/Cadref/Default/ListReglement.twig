@@ -47,7 +47,7 @@
 						{{ label("Différé") }}
 					</div>
 					<div class="col-md-4">
-						<switch class="cadref-switch" ng-model="reglementObj.Differe"></switch>
+						<switch ng-model="reglementObj.Differe"></switch>
 					</div>
 				</div>
 				<div class="row">
@@ -80,7 +80,7 @@
 					<div class="col-md-12">
 						<a class="btn-abt cadref-btn-save btn-success" href="" ng-click="reglementSave()" title="Enregister"></a>
 						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="reglementCloseEdit()" title="Annuler"></a>
-						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="reglementObj.id" ng-click="reglementDelete(reglementObj)" style="float:right" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="reglementObj.id && !reglementObj.Encaisse" ng-click="reglementDelete(reglementObj)" style="float:right" title="Supprimer"></a>
 					</div>
 				</div>						
 			</div>
@@ -115,7 +115,7 @@
 					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe"></a>
 				</td>
 				<td scope="row" class="cadref-td typeboolean">                    
-					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Encaisse">E</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Encaisse">O</a>
 					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="!item.Encaisse && !item.Supprime">N</a>
 					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Supprime">S</a>
 				</td>

@@ -416,11 +416,12 @@
     </section>
 	</form>
 </div>
-<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" modal-movable role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+            <div class="modal-header" style="cursor:move">
+				<a class="btn-abt cadref-btn-close" href="" ng-if="!inscrOpened" data-dismiss="modal" title="Annuler"></a>
+				<a class="btn-abt cadref-btn-close" href="" ng-if="inscrOpened" ng-click="closeInscription()" title="Annuler"></a>
                 <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
             </div>
             <div class="modal-body">
