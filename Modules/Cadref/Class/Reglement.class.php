@@ -117,7 +117,7 @@ klog::l($sql);
 	private function sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
 		$Sepa = '';
 		$sql = "
-select a.Numero,round(r.Montant,2),a.IBAN,a.BIC,a.RUM,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
+select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
@@ -127,17 +127,16 @@ order by a.Nom,a.Prenom
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$nume = $p['Numero'];
-			$mont = $p['Montant'];
+			$mont = round($p['Montant'],0);
 			$iban = str_replace(' ','',$p['IBAN']);
 			$bic = $p['BIC'];
-			$rum = $p['RUM'];
 			$drum = $p['DateRUM'];
 			$nom = $p['Nom'];
 			$pren = $p['Prenom'];
 			$dreg = $p['DateReglement'];
 			$tmp = date('YmdHis',$dreg).'/'.$nume;
-			$tmp2 = date('Y-m-d', $dreg);
-			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$rum,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
+			$tmp2 = date('Y-m-d', $drum);
+			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$nume.'-'.$tmp2,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
 		}
 		return $Sepa;
 	}
@@ -149,8 +148,7 @@ order by a.Nom,a.Prenom
 		$dfin->add(DateInterval::createFromDateString('1 second'));
 		$dfin = $dfin->getTimestamp();
 		
-		$cPrl0 = "
-<?xml version=\"1.0\" encoding=\"utf-8\"?>
+		$cPrl0 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <Document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02\">
 	<CstmrDrctDbtInitn>
 		<GrpHdr>
@@ -262,7 +260,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$time = time();
 		$remet = Cadref::GetParametre('BANQUE', 'COMPTE', 'REMETTANT')->Valeur;
 		$tmp = substr(date("d/m/Y H:i:s", $time).$remet,0,35);
-		$tmp1 = date("Y-m-jTh:i:s", $time);
+		$tmp1 = date("Y-m-j\Th:i:s", $time);
 		$Sepa = $this->formate($cPrl0,[$tmp,$tmp1,$nbre,$total,$remet]);
 
 		$nSeq = 0;
@@ -285,7 +283,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD.xml";
+		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD";
 		file_put_contents($file, $Sepa);
 		
 		return array('file'=>$file);
