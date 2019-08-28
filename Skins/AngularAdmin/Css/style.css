@@ -1471,7 +1471,7 @@ Choix des composants
     overflow: hidden;
     overflow: -webkit-paged-y !important;
 }
-.modal-body small{
+.modal-body small  .help-wrapper{
     display: block;
     line-height: 80%;
     margin-top: -7px;

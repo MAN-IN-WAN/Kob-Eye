@@ -76,6 +76,9 @@
 		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde" list="1" form="1" fiche="1" listDescr="Saisie automatique">updateOnSave</PROPERTIES>
         <PROPERTIES type="int" searchOrder="3"  list="1" form="1" default="86400" listDescr="TTL">TTL</PROPERTIES>
         <PROPERTIES type="int" searchOrder="4"  list="1" form="1" default="60" listDescr="TTL Min">TTLMin</PROPERTIES>
+		<PROPERTIES type="boolean" description="Domaine secondaire dont on ne détient pas la zone" form="1" fiche="1" hasRole="PARC_TECHNICIEN">Secondaire</PROPERTIES>
+		<PROPERTIES type="boolean" description="Domaine dont on gère les mails" form="1" fiche="1" hasRole="PARC_TECHNICIEN">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" description="Domaine à rediriger sur MIB" form="1" fiche="1" hasRole="PARC_TECHNICIEN">MailFilter</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1" fiche="1">DNSSerial</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
