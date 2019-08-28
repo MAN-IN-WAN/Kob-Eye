@@ -957,6 +957,7 @@
 					if($('#inscriptionNext').length) $('#inscriptionNext').click();
 					else if($('#differeNext').length) $('#differeNext').click();
 				}
+			}).on("hide.bs.modal", function(event) {
 			}).on("hidden.bs.modal", function () {
 				$scope.inscrOpened = false;
 			});
@@ -984,10 +985,7 @@
         }
 		
 		$scope.closeInscription = function() {
-			if($scope.CadrefClasse.Inscr.updated) {
-				var ok = confirm("Données modifiées.\nVoulez-vous annuler les modifications ?");
-				if(ok) angular.element($('#modalfunction-CadrefAdherent')).modal('hide');
-			}
+			angular.element($('#modalfunction-CadrefAdherent')).modal('hide');
 		}
 		
 		// controle le bontoun next
