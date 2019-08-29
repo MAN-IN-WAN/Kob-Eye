@@ -207,8 +207,8 @@ order by c.CodeClasse";
 		if($obj['mode'] == 1) {
 			$f = fopen(getcwd().'/'.$file.'.csv', 'w');
 			foreach($pdo as $p) {
-				$s = $p['CodeClasse']."\t".$p['LibelleD'].' '.$p['LibelleN']."\t";
-				$s .= $p['CycleDebut'].' '.$p['CycleFin']."\t".$p['Jour']."\t".$p['HeureDebut'].' '.$p['HeureFin']."\n";
+				$s = $this->dblCotes($p['CodeClasse']).";".$this->dblCotes($p['LibelleD'].' '.$p['LibelleN']).";";
+				$s .= $this->dblCotes($p['CycleDebut'].' '.$p['CycleFin']).";".($p['Jour']).";".$this->dblCotes($p['HeureDebut'].' '.$p['HeureFin'])."\n";
 				fwrite($f, $s);
 			}
 			fclose($f);
@@ -226,6 +226,10 @@ order by c.CodeClasse";
 		$pdf->Close();
 
 		return array('pdf'=>$file.'.pdf');
+	}
+	
+	private function dblCotes($s) {
+		return '"'.str_replace('"', "\"", $s).'"';
 	}
 	
 	

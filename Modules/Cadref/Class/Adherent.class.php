@@ -607,8 +607,8 @@ order by a.Nom, a.Prenom";
 				$s = '"'.$a['Numero'].'";';
 				$s .= '"'.$a['Nom'].'";';
 				$s .= '"'.$a['Prenom'].'";';
-				$s .= '"'.$a['Adresse1'].'";';
-				$s .= '"'.$a['Adresse2'].'";';
+				$s .= $this->dblCotes(['Adresse1']).';';
+				$s .= $this->dblCotes($a['Adresse2']).';';
 				$s .= '"'.$a['CP'].'";';
 				$s .= '"'.$a['Ville'].'";';
 				$s .= '"'.$a['Telephone1'].'";';
@@ -618,8 +618,7 @@ order by a.Nom, a.Prenom";
 				if($obj['Rupture'] != 'S') {
 					$s .= ';';
 					$s .= '"'.$a['CodeClasse'].'";';
-					$s .= '"'.$a['LibelleD'].'";';
-					$s .= '"'.$a['LibelleN'].'";';
+					$s .= $this->dblCotes($a['LibelleD'].' '.$a['LibelleN']).';';
 					$s .= '"'.($a['Attente'] ? 'O' : 'N').'";';
 					$s .= '"'.($a['Attente'] ? date('d/m/Y H:i',$a['DateAttente']) : '').'"';
 				}
@@ -660,6 +659,11 @@ order by a.Nom, a.Prenom";
 
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
+	
+	private function dblCotes($s) {
+		return '"'.str_replace('"', "\"", $s).'"';
+	}
+
 
 	function PrintCertificat($params) {
 		$mode = isset($params['mode']) ? $params['mode'] : 'print';
