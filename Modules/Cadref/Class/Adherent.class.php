@@ -767,7 +767,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 
 	function PrintAttestation($params) {
 		$sql = "
-select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
+select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 ";
