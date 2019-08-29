@@ -6,7 +6,7 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
     $oc = $o->getObjectClass();
     $vars['CurrentMenu'] = ['Titre' =>$oc->Description ];
 }
-$vars['identifier'] = 'CadrefClasse';
+$vars['identifier'] = 'CadrefPresence';
 $vars['mois'] = array('Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Décembre');
 
 

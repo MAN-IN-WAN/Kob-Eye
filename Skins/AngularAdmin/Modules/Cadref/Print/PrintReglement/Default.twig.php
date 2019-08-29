@@ -19,3 +19,5 @@ $vars['initiales'] = Sys::$User->Initiales;
 $menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 $t = explode('/', Sys::$CurrentMenu->Url);
 $vars['mode'] = array_search($t[0].$t[1], $menus);
+
+$vars['modes'] = ['T'=>'Totaux', 'B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','V'=>'Virements','A'=>'Chèques vacances',''=>'Non affectés'];

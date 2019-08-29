@@ -385,6 +385,35 @@ class Adherent extends genericClass {
 		return array('pdf'=>$file);
 	}
 
+	function PrintSuivi() {
+		require_once ('PrintSuivi.class.php');
+
+		$annee = Cadref::$Annee;
+		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		$ins = $this->getChildren('Inscription/Annee='.$annee);
+		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
+
+		$pdf = new PrintSuivi($this, $aan);
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle('Suivi'.$this->Numero);
+
+		$pdf->AddPage();
+		$pdf->PrintLines($ins);
+
+		$file = 'Home/tmp/Suivi'.$this->Numero.'_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().'/'.$file);
+		$pdf->Close();
+		
+//		$p = Cadref::GetParametre('IMPRIMANTE', 'CARTE', Sys::$User->Login);
+//		if($p && $p->Valeur) {
+//			$s = "lp -d ".$p->Valeur." $file";
+//			shell_exec($s);
+//			return array('pdf'=>false);
+//		}
+		return array('pdf'=>$file);
+	}
+	
+	
 	function PrintAdherentSession($obj) {
 		if(isset($_SESSION['PrintAdherent'])) $obj = $_SESSION['PrintAdherent'];
 		else $obj = false;

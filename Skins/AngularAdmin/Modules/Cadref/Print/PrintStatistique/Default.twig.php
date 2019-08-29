@@ -6,7 +6,7 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
     $oc = $o->getObjectClass();
     $vars['CurrentMenu'] = ['Titre' =>$oc->Description ];
 }
-$vars['identifier'] = 'CadrefInscription';
+$vars['identifier'] = 'CadrefStat';
 
 $vars['dateDebut'] = "01/08/".Cadref::$Annee;
 

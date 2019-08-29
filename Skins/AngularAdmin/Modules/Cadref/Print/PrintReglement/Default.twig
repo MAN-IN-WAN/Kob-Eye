@@ -29,6 +29,31 @@
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Mode règlement") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.ModeReglement" ng-init="obj.ModeReglement='T'" style="width:160px">
+												{% for m,v in modes %}
+													<option value="{{ m }}">{{ v }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Ordre de tri") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.Ordre" ng-init="obj.Ordre='C'" style="width:160px">
+												<option value="C">Chronologique</option>
+												<option value="N">Nom Prénom</option>
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
 									{% if mode == 0 %}
 										<div class="row">
 											<div class="col-md-2">

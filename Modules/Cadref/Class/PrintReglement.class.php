@@ -13,24 +13,31 @@ class PrintReglement extends FPDF {
 	private $align;
 	private $width;
 	private $posy;
-	private $totaux = [0, 0, 0, 0];
+	private $rupture = '';
+	private $totrup = 0;
+	private $totgen = 0;
+	private $numrup = 0;
+	private $numgen = 0;
 	private $total = faux;
 	private $mode = 0;  // 0:reglement, 1:differes, 2:non encaisses
 	private $titre;
+	private $type;
+	private $modes = ['B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','V'=>'Virements','A'=>'Chèques vacances','X'=>'Non affectés'];
 	
 	
-	function PrintReglement($mode, $user, $debut, $fin) {
+	function PrintReglement($mode, $type, $user, $debut, $fin) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
-		$this->head = array('Util','Date','Chèque','Espèces','Carte','Prélèv','','Adhérent');
-		$this->width = array(10,20,19,19,19,19,3,110);
-		$this->align = array('L','L','R','R','R','R','L','L');
+		$this->head = array('Util','Date','Montant','','Adhérent','IBAN','BIC','Signature');
+		$this->width = array(10,18,19,2,80,40,20,20);
+		$this->align = array('L','L','R','L','L','L','L','L');
 
 		$this->mode = $mode;
 		$this->user = $user;
 		$this->debut = $debut;
 		$this->fin = $fin;
+		$this->type = $type;
 
 //		if($this->mode) {  // masque la colonne espèces
 //			$this->head[4] = '';
@@ -76,52 +83,66 @@ class PrintReglement extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 	}
 	
-	function PrintTotal() {
+	function PrintTotal($mode) {
 		$this->SetFont('Arial','B',10);
-		$this->SetXY($this->left, $this->posy+4);
-		$this->Cell($this->width[0], 4.5, '');
+		$this->SetXY($this->left, $this->posy+($mode ? 4 : 0));
+		$this->Cell($this->width[0], 4.5, $mode ? $this->numgen : $this->numrup, 0, 0, 'R');
 		$this->Cell($this->width[1], 4.5, '');
-		$this->Cell($this->width[2], 4.5, $this->totaux[0], 0, 0, 'R');
-		$this->Cell($this->width[3], 4.5, $this->totaux[1], 0, 0, 'R');
-		$this->Cell($this->width[4], 4.5, $this->totaux[2], 0, 0, 'R');
-		$this->Cell($this->width[5], 4.5, $this->totaux[3], 0, 0, 'R');
-		$this->Cell($this->width[6], 4.5, '');
-		$t = "Total Général : ".($this->totaux[0]+$this->totaux[1]+$this->totaux[2]+$this->totaux[3]);
-		$this->Cell($this->width[7], 4.5, $this->cv($t));
+		$this->Cell($this->width[2], 4.5, $mode ? $this->totgen : $this->totrup, 0, 0, 'R');
+		$this->Cell($this->width[3], 4.5, '');
+		if($mode) $t =  "Total Général";
+		else $t = "Total ".$this->modes[$this->rupture];
+		$this->Cell($this->width[4], 4.5, $this->cv($t));
+		$this->SetFont('Arial','',10);
 		$this->total = true;
+		$this->posy += 6;
 	}
 	
 	function PrintLines($regl) {
 		$this->SetFont('Arial','',10);
-		foreach($regl as $r) $this->printLine($r);
+		foreach($regl as $r) {
+			$m = $r['ModeReglement'];
+			if($m == '') $m = 'X';
+			if($m != $this->rupture) {
+				if($this->rupture) $this->PrintTotal(false);
+				$this->totrup = 0;
+				$this->numrup = 0;
+				$this->rupture = $m;
+
+				if($this->type != 'T') {
+					$this->SetFont('Arial','B',10);
+					$this->SetXY($this->left, $this->posy);
+					$this->Cell(60, 4.5, $this->cv($this->modes[$m]));
+					$this->SetFont('Arial','',10);
+					$this->posy += 4.5;
+				}
+			}
+			$f = (float)$r['Montant'];
+			$this->totrup += $f;
+			$this->totgen += $f;
+			$this->numrup++;
+			$this->numgen++;
+			if($this->type != 'T') $this->printLine($r);
+		}
+		$this->PrintTotal(false);
+		$this->PrintTotal(true);
 	}
 
 	private function printLine($l) {
-		$b = '';
-		$e = '';
-		$c = '';
-		$p = '';
 		$m = (float)$l['Montant'];
-		switch($l['ModeReglement']) {
-			case 'B': $b = $m; $this->totaux[0] += $m; break;
-			case 'E': $e = $m; $this->totaux[1] += $m; break;
-			case 'C': $c = $m; $this->totaux[2] += $m; break;
-			case 'P': $p = $m; $this->totaux[3] += $m; break;
-		}
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['Utilisateur']);
-		$this->Cell($this->width[1], 4.5, date('d/m/Y', $l['DateReglement']));
+		$this->Cell($this->width[1], 4.5, date('d/m/y', $l['DateReglement']));
 		if($l['Differe']) {
 			if($l['Encaisse']) $this->SetFont('Arial','I',10);
 			else $this->SetFont('Arial','B',10);
 		}
-		$this->Cell($this->width[2], 4.5, $b, 0, 0, 'R');
-		$this->Cell($this->width[3], 4.5, $e, 0, 0, 'R');
-		$this->Cell($this->width[4], 4.5, $c, 0, 0, 'R');
-		$this->Cell($this->width[5], 4.5, $p, 0, 0, 'R');
-		$this->SetFont('Arial','',10);
-		$this->Cell($this->width[6], 4.5, '');
-		$this->Cell($this->width[7], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
+		$this->Cell($this->width[2], 4.5, $m, 0, 0, 'R');
+		$this->Cell($this->width[3], 4.5, '');
+		$this->Cell($this->width[4], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
+		$this->Cell($this->width[5], 4.5, $l['IBAN']);
+		$this->Cell($this->width[6], 4.5, $l['BIC']);
+		$this->Cell($this->width[7], 4.5, $l['DateRUM'] ? date('d/m/y',$l['DateRUM']) : '');
 		$this->posy += 4.5;
 	} 
 

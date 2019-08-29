@@ -17,6 +17,9 @@ class Reglement extends genericClass {
 		$menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
+		$type = $obj['ModeReglement'];
+		$ordre = $obj['Ordre'];
+		
 		$user = $obj['Utilisateur'];
 		if($user == 'Tous') $user = '';
 		$file = 'Home/tmp/';
@@ -52,19 +55,25 @@ left join `##_Cadref-Adherent` h on h.Id=r.AdherentId
 where ".$where;
 		$sql .= " and r.Supprime=0 ";	
 		if($user != '') $sql .= " and r.Utilisateur='$user' ";
-		$sql .= " order by r.DateReglement, h.Nom, h.Prenom";
+		if($type != 'T') $sql .= " and r.ModeReglement='$type'";
+		
+		if($type == 'T') $sql .= " order by r.ModeReglement";
+		else {
+			if($ordre == 'C') $sql .= " order by r.DateReglement,h.Nom, h.Prenom";
+			else $sql .= " order by h.Nom, h.Prenom, r.DateReglement";
+		}
+
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 
-		$pdf = new PrintReglement($mode, $user, $obj['DateDebut'], $obj['DateFin']);
+		$pdf = new PrintReglement($mode, $type, $user, $obj['DateDebut'], $obj['DateFin']);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 
 		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
-		$pdf->PrintTotal();
 
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
