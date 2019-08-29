@@ -661,7 +661,7 @@ order by a.Nom, a.Prenom";
 	}
 	
 	private function dblCotes($s) {
-		return '"'.str_replace('"', "\"", $s).'"';
+		return '"'.iconv('UTF-8','ISO-8859-15//TRANSLIT',str_replace('"', "\"", $s)).'"';
 	}
 
 

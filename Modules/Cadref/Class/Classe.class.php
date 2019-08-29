@@ -229,10 +229,7 @@ order by c.CodeClasse";
 	}
 	
 	private function dblCotes($s) {
-		return '"'.$this->cv(str_replace('"', "\"", $s)).'"';
-	}
-	private function cv($txt) {
-		return iconv('UTF-8','ISO-8859-15//TRANSLIT',$txt);
+		return '"'.iconv('UTF-8','ISO-8859-15//TRANSLIT',str_replace('"', "\"", $s)).'"';
 	}
 
 	
