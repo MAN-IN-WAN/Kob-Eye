@@ -18,6 +18,7 @@
 				<th>Visites</th>
 				<th>Règlé</th>
 				<th>Différé</th>
+				<th>Dons</th>
 				<th>Régul.</th>
 				<th>Solde</th>
 				<th>Payé</th>
@@ -39,6 +40,7 @@
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.visit" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regle" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.diff" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.dons" ng-change="classeDons()" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regul" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Inscr.nonSolde}" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr">

@@ -74,11 +74,12 @@ class Adherent extends genericClass {
 			$this->Save();
 		}
 		$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
+		$a->Dons = $data->Dons ? $data->Dons : 0;
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation;
+		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation + $a->Dons;
 		$a->Save();
 
 		return true;
@@ -89,6 +90,7 @@ class Adherent extends genericClass {
 		$inscr = $params['Inscr'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
+		$data->Dons = $inscr['dons'];
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -215,7 +217,7 @@ class Adherent extends genericClass {
 		$this->Annee = $annee;
 		if($saveAdh) $this->Save();
 		
-		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul']));
+		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']));
 		$this->saveAnneeInscr($insc);
 		$this->Save();
 		
@@ -301,11 +303,20 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$reg = $params['Diff']['regl'];
 		foreach($reg as $r) {
-			if(!isset($r['updated']) || !$r['updated'] || !$r[paye]) continue;
+			if(!isset($r['updated']) || !$r['updated']) continue;
 
 			$o = genericClass::createInstance('Cadref', 'Reglement');
-			if($r['id']) $o->initFromId($r['id']);
-			else $o->addParent($this);
+			if($r['id']) {
+				$o->initFromId($r['id']);
+				if(!$r['paye']) {
+					$o->Delete();
+					continue;
+				}
+			}
+			else {
+				if(!$r['paye']) continue;
+				$o->addParent($this);
+			}
 
 			$m = $r['mois'];
 			$d = '15/'.(strlen($m) == 1 ? '0' : '').$m.'/'.($m >= 9 ? $annee : ($annee + 1));
@@ -1077,15 +1088,18 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			}
 			$data[] = $cot;
 			$regul = $co ? $co->Regularisation : 0;
+			$dons = $co ? $co->Dons : 0;
 		}
 		else {
 			if($co) {
 				$cotis = $co->Cotisation ? $co->Cotisation : $an->Cotisation;
 				$regul = $co->Regularisation;
+				$dons = $co->Dons;
 			}
 			else {
 				$cotis = $an->Cotisation;
 				$regul = 0;
+				$dons = 0;
 			}
 		}
 		
@@ -1204,7 +1218,7 @@ where ce.Classe=:cid";
 		}
 		
 		$total = $cotis+$montant;
-		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
 
 	function GetCours($mode, $obj) {
@@ -1497,6 +1511,7 @@ where ce.Visite=:cid";
 		$inscr = $params['Visit'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
+		$data->Dons = $inscr['dons'];
 		$this->SaveAnnee($data, 1);
 	}
 	
@@ -1505,11 +1520,13 @@ where ce.Visite=:cid";
 		require_once ('PrintRecapitulatif.class.php');
 
 		$annee = $params['Annee'];
+		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
+
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 
 		$sql = "
-select a.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Cotisation,a.NotesAnnuelles,
+select a.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
 i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` e on e.Id=a.AdherentId
@@ -1519,15 +1536,15 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 where i.Annee='$annee' and (a.Cotisation>0 or a.Cours>0 or a.Reglement>0 or a.Differe>0)
 ";
-		if(isset($params['NonSolde']) && $params['NonSolde'])
-			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe-a.Regularisation<>0 or a.Cotisation=0)";		
+		if($nsold)
+			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons<>0 or a.Cotisation=0)";		
 		$sql .= " order by e.Nom,e.Prenom,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 
-		$pdf = new PrintRecapitulatif();
+		$pdf = new PrintRecapitulatif($nsold);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 
