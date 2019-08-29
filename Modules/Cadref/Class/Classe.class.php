@@ -229,9 +229,12 @@ order by c.CodeClasse";
 	}
 	
 	private function dblCotes($s) {
-		return '"'.str_replace('"', "\"", $s).'"';
+		return '"'.$this->cv(str_replace('"', "\"", $s)).'"';
 	}
-	
+	private function cv($txt) {
+		return iconv('UTF-8','ISO-8859-15//TRANSLIT',$txt);
+	}
+
 	
 	function CheckAbsence($start, $end) {
 		$annee = Cadref::$Annee;
