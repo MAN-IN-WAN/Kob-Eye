@@ -5,11 +5,8 @@ require_once('Class/Lib/pdfb/fpdf_fpdi/fpdf.php');
 
 class PrintSuivi extends FPDF {
 	
-	private $adh;
-	private $aan;
 	private $posy;
 	private $left = 25;
-	private $count = 0;
 	
 	
 	function PrintSuivi() {
@@ -54,7 +51,7 @@ class PrintSuivi extends FPDF {
 		$s = "Je, soussignée Nathalie Faucher, Directrice du CADREF, atteste que :\n\n";
 		$s .= ($adh->Sexe == "F" ? "Madame " : ($adh->Sexe == "H" ? "Monsieur " : "")).trim($adh->Prenom.' '.$adh->Nom);
 		$s .= "\n\na suivi".($adh->Sexe == 'F' ? 'e' : '')." au cours de l'année $annee-".($annee+1);
-		$s .= $count > 1 ? " les cours suivants :" : " le cours suivant :";
+		$s .= count($ins) > 1 ? " les cours suivants :" : " le cours suivant :";
 		$this->MultiCell(180, 5, $this->cv($s));
 		
 		$this->posy = 140;
