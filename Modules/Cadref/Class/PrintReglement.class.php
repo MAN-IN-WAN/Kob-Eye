@@ -29,9 +29,9 @@ class PrintReglement extends FPDF {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
-		$this->head = array('Util','Date','Montant','','Adhérent','IBAN','BIC','Signature');
-		$this->width = array(10,18,19,2,80,40,20,20);
-		$this->align = array('L','L','R','L','L','L','L','L');
+		$this->head = array('Util','Date','Montant','','Adhérent','');
+		$this->width = array(10,18,19,2,110,40);
+		$this->align = array('L','L','R','L','L','L');
 
 		$this->mode = $mode;
 		$this->user = $user;
@@ -139,12 +139,14 @@ class PrintReglement extends FPDF {
 			else $this->SetFont('Arial','B',10);
 		}
 		$this->Cell($this->width[2], 4.5, $m, 0, 0, 'R');
+		$this->SetFont('Arial','',10);
 		$this->Cell($this->width[3], 4.5, '');
 		$this->Cell($this->width[4], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
-		$this->Cell($this->width[5], 4.5, $l['IBAN']);
-		$this->Cell($this->width[6], 4.5, $l['BIC']);
-		$this->Cell($this->width[7], 4.5, $l['DateRUM'] ? date('d/m/y',$l['DateRUM']) : '');
-		$this->SetFont('Arial','',10);
+		if($l['ModeReglement'] == 'P' && ($l['IBAN'] == '' || $l['BIC'] == '' || !$l['DateRUM'])) {
+			$this->SetTextColor(255,0,0);
+			$this->Cell($this->width[5], 4.5, 'IBAN manquant');
+			$this->SetTextColor(0);
+		}
 		$this->posy += 4.5;
 	} 
 
