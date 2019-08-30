@@ -49,7 +49,8 @@ class PrintReglement extends FPDF {
 			case 1: $this->titre .= "différés au ".$this->debut; break;
 			case 2: $this->titre .= "différés non encaissés au ".$this->debut; break;
 		}
-		$this->titre .= "  Utilisateur : ".$this->user;
+		if($type != 'T') $this->titre .= "  ".$this->modes[$type];
+		$this->titre .= "  (".$this->user.")";
 	}
 	
 	private function cv($txt) {
@@ -109,13 +110,13 @@ class PrintReglement extends FPDF {
 				$this->numrup = 0;
 				$this->rupture = $m;
 
-				if($this->type != 'T') {
-					$this->SetFont('Arial','B',10);
-					$this->SetXY($this->left, $this->posy);
-					$this->Cell(60, 4.5, $this->cv($this->modes[$m]));
-					$this->SetFont('Arial','',10);
-					$this->posy += 4.5;
-				}
+//				if($this->type != 'T') {
+//					$this->SetFont('Arial','B',10);
+//					$this->SetXY($this->left, $this->posy);
+//					$this->Cell(60, 4.5, $this->cv($this->modes[$m]));
+//					$this->SetFont('Arial','',10);
+//					$this->posy += 4.5;
+//				}
 			}
 			$f = (float)$r['Montant'];
 			$this->totrup += $f;
@@ -143,6 +144,7 @@ class PrintReglement extends FPDF {
 		$this->Cell($this->width[5], 4.5, $l['IBAN']);
 		$this->Cell($this->width[6], 4.5, $l['BIC']);
 		$this->Cell($this->width[7], 4.5, $l['DateRUM'] ? date('d/m/y',$l['DateRUM']) : '');
+		$this->SetFont('Arial','',10);
 		$this->posy += 4.5;
 	} 
 
