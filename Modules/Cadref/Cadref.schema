@@ -234,12 +234,13 @@
 
 
 
-	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
+	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,PrintSuivi,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
 		<FUNCTION title="Inscription">EditInscriptions</FUNCTION>
 		<FUNCTION title="Visite">EditReservations</FUNCTION>
 		<FUNCTION title="Carte">PrintCarte</FUNCTION>
 		<FUNCTION title="Attestation">PrintAttestation</FUNCTION>
 		<FUNCTION title="Cheque">PrintCheque</FUNCTION>
+		<FUNCTION title="Suivi">PrintSuivi</FUNCTION>
 		<FUNCTION title="Message">SendMessage</FUNCTION>
 
         <FILTER name="Toutes les années" color="warning" ></FILTER>

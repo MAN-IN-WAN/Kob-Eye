@@ -385,34 +385,6 @@ class Adherent extends genericClass {
 		return array('pdf'=>$file);
 	}
 
-	function PrintSuivi() {
-		require_once ('PrintSuivi.class.php');
-
-		$annee = Cadref::$Annee;
-		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		$ins = $this->getChildren('Inscription/Annee='.$annee);
-		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
-
-		$pdf = new PrintSuivi($this, $aan);
-		$pdf->SetAuthor("Cadref");
-		$pdf->SetTitle('Suivi'.$this->Numero);
-
-		$pdf->AddPage();
-		$pdf->PrintLines($ins);
-
-		$file = 'Home/tmp/Suivi'.$this->Numero.'_'.date('YmdHis').'.pdf';
-		$pdf->Output(getcwd().'/'.$file);
-		$pdf->Close();
-		
-//		$p = Cadref::GetParametre('IMPRIMANTE', 'CARTE', Sys::$User->Login);
-//		if($p && $p->Valeur) {
-//			$s = "lp -d ".$p->Valeur." $file";
-//			shell_exec($s);
-//			return array('pdf'=>false);
-//		}
-		return array('pdf'=>$file);
-	}
-	
 	
 	function PrintAdherentSession($obj) {
 		if(isset($_SESSION['PrintAdherent'])) $obj = $_SESSION['PrintAdherent'];
@@ -800,7 +772,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 
 	function PrintAttestation($params) {
 		$sql = "
-select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 ";
@@ -821,6 +793,7 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 				return array('message'=>'Tache lancée en arrière plan.');
 			}
 			
+			$type = $params['AttestSuivi'];
 			$annee = $params['AttestAnnee'];
 			$fisc = $params['AttestFiscale'];
 			$where = " where a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
@@ -828,9 +801,9 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 			$classe = isset($params['Classe']) ? $params['Classe'] : '';
 			if($antenne || $classe) {
 				$sql .= "
-left join `kob-Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
-left join `kob-Cadref-Classe` c on c.Id=i.ClasseId
-left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
+left join `##_Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
+left join `##_Cadref-Classe` c on c.Id=i.ClasseId
+left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 ";
 				if($antenne) $where .= " and n.AntenneId=$antenne";
 				if($classe) $where .= " and c.CodeClasse like '$classe%'";
@@ -868,10 +841,12 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					);
 					break;
 				case 1:
+					$suivi = $params['Attest']['AttestSuivi'];
 					$annee = $params['Attest']['AttestAnnee'];
 					$fisc = $params['Attest']['AttestFiscale'];
 					$mode = $params['Attest']['mode'];
-					$where = " where a.AdherentId=$id and a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
+					if(suivi) $where = " where a.AdherentId=$id and a.Annee='$annee'";
+					else $where = " where a.AdherentId=$id and a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
 					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
 					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 					if(!$pdo) return false;
@@ -879,11 +854,13 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					if(!$pdo->rowCount()) return array('step'=>2, 'data'=>'Pas de cotisation pour cette année.');
 
 					if($mode == 'mail') {
-						$this->sendAttestation($pdo, $annee, $fisc);
+						if($suivi) $this->sendSuivi($pdo, $annee);
+						else $this->sendAttestation($pdo, $annee, $fisc);
 						return array('step'=>2, 'data'=>'Message envoyé.');
 					}
 					
-					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
+					if($suivi) $file = $this->imprimeSuivi($pdo, $annee);
+					else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
 						'step'=>2,
 						'data'=>'<a id="displayAttestation" href="'.$file.'" target="_blank" ng-click="attestationAdherent(\''.$file.'\')">Attestation imprimée</a>',
@@ -923,6 +900,41 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		$bod .= Cadref::MailSignature();
 		foreach($pdo as $p) {
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
+			$b = Cadref::MailCivility($p).$bod;
+			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+			if(MSG_ADH) Cadref::SendMessage($args);
+		}
+	}
+
+	private function imprimeSuivi($list, $annee) {
+		require_once ('PrintSuivi.class.php');
+
+		$pdf = new PrintSuivi();
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle('Attestations de suivi de cours');
+		foreach($list as $l) {
+			$adh = Sys::getOneData('Cadref', 'Adherent/'.$l['Id']);
+			$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+			$ins = $this->getChildren('Inscription/Annee='.$annee);
+			if(!$aan || (!$aan->Cotisation && !count($ins))) continue;
+			$pdf->PrintPage($adh, $ins, $annee);
+		}
+
+		$file = 'Home/tmp/Suivi'.$num.'_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().'/'.$file);
+		$pdf->Close();
+
+		return $file;
+	}
+
+
+	private function sendSuivi($pdo, $annee) {
+		$an = $annee.'-'.($annee+1);
+		$sub = "CADREF : Attestation de suivi de cours";
+		$bod = "Veuillez trouver en pièce jointe l’attestation de suivi de cours $an .<br/><br />";
+		$bod .= Cadref::MailSignature();
+		foreach($pdo as $p) {
+			$file = $this->imprimeSuivi(array($p), $annee);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);

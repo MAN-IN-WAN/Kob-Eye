@@ -759,11 +759,12 @@
 		}
 		
 		// attestation fiscale
+		$scope.Attest = {AttestFisc:1, AttestSuivi:0};
 		$scope.selectAttestAnnee = function(obj) {
-			var annee = $scope.CadrefClasse.Attest.AttestAnnee;
+			var annee = $scope.Attest.AttestAnnee;
 			obj.fiscales = [annee];
 			obj.fiscales.push((Number(annee)+1).toString());
-			CadrefClasse.Attest.AttestFiscale = annee;
+			$scope.Attest.AttestFiscale = annee;
 		}
 		$scope.attestationAdherent = function(pdf) {
 			$window.open(pdf,'_blank');
@@ -775,6 +776,32 @@
 				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
 			},0);
 		}
+		$scope.selectAttestMode = function(mode) {
+			var o = $scope.Attest;
+			switch(mode) {
+				case 0: o.AttestSuivi = o.AttestFisc ? 0 : 1; break;
+				case 1: o.AttestFisc = o.AttestSuivi ? 0 : 1; break;
+			}
+		}
+
+
+{#		$scope.selectAttestAnnee = function(obj) {
+			var annee = $scope.CadrefClasse.Attest.AttestAnnee;
+			obj.fiscales = [annee];
+			obj.fiscales.push((Number(annee)+1).toString());
+			$scope.CadrefClasse.Attest.AttestFiscale = annee;
+		}
+		$scope.attestationAdherent = function(pdf) {
+			$window.open(pdf,'_blank');
+			return false;
+		}
+		$scope.displayAttestation = function() {
+			$timeout(function(){
+				angular.element($('#displayAttestation')).triggerHandler('click');
+				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
+			},0);
+		}
+#}
 
 		// cheque
 		$scope.chequeAdherent = function(pdf) {

@@ -413,7 +413,7 @@
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 					<button type="button" ng-disabled="checkDirty()" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="v" title="Alt V" ng-click="openReservation(obj)">Visites</button>
 					<button type="button" ng-disabled="checkDirty()" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
-					<button type="button" ng-disabled="checkDirty()" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestation fiscale','')">Attestation</button>
+					<button type="button" ng-disabled="checkDirty()" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestations','')">Attestations</button>
 					<button type="button" ng-disabled="checkDirty()" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>
 					<button type="button" ng-disabled="checkDirty()" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Documents</button>
 					{#<button type="button" class="btn btn-primary margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="printCertificat(obj)">Certificat</button>#}

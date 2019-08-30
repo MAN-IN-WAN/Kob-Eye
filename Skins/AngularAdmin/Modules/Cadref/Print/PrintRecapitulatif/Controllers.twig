@@ -6,8 +6,8 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	$scope.selectMode = function(mode) {
 		var o = $scope.obj;
 		switch(mode) {
-			case 0: o.NonSolde = false; break;
-			case 1: o.Tous = false; break;
+			case 0: o.NonSolde = !o.Tous; break;
+			case 1: o.Tous = !o.NonSolde; break;
 		}
 	}
 
