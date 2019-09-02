@@ -49,7 +49,7 @@ class Reglement extends genericClass {
 		}
 
 		$sql = "
-select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse
+select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse,h.IBAN,h.BIC,h.DateRUM
 from `##_Cadref-Reglement` r 
 left join `##_Cadref-Adherent` h on h.Id=r.AdherentId
 where ".$where;
