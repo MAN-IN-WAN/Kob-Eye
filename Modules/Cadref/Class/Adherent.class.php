@@ -340,7 +340,7 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$min = ($annee).'0630';
 		$dat = $this->DateCertificat;
-		if(!empty($dat) && date('Ymd', $dat) < $min) return true;
+		if($dat > 0 && date('Ymd', $dat) > $min) return true;
 
 		$cert = false;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
@@ -352,7 +352,7 @@ class Adherent extends genericClass {
 				break;
 			}
 		}
-		if($cert && (empty($dat) || date('Ymd', $dat) < $min)) return false;
+		if($cert && ($dat <= 0 || date('Ymd', $dat) < $min)) return false;
 		return true;
 	}
 
