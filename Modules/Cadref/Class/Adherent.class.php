@@ -841,7 +841,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 					);
 					break;
 				case 1:
-					$suivi = $params['Attest']['AttestSuivi'];
+					$suivi = $params['Attest']['AttestSuivi'] ? 1 : ($params['Attest']['AttestPaiement'] ? 2 : 0);
 					$annee = $params['Attest']['AttestAnnee'];
 					$fisc = $params['Attest']['AttestFiscale'];
 					$mode = $params['Attest']['mode'];
@@ -854,12 +854,12 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 					if(!$pdo->rowCount()) return array('step'=>2, 'data'=>'Pas de cotisation pour cette année.');
 
 					if($mode == 'mail') {
-						if($suivi) $this->sendSuivi($pdo, $annee);
+						if($suivi) $this->sendSuivi($suivi, $pdo, $annee);
 						else $this->sendAttestation($pdo, $annee, $fisc);
 						return array('step'=>2, 'data'=>'Message envoyé.');
 					}
 					
-					if($suivi) $file = $this->imprimeSuivi($pdo, $annee);
+					if($suivi) $file = $this->imprimeSuivi($suivi, $pdo, $annee);
 					else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
 						'step'=>2,
@@ -906,7 +906,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 		}
 	}
 
-	private function imprimeSuivi($list, $annee) {
+	private function imprimeSuivi($suivi, $list, $annee) {
 		require_once ('PrintSuivi.class.php');
 
 		$pdf = new PrintSuivi();
@@ -917,7 +917,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 			$ins = $this->getChildren('Inscription/Annee='.$annee);
 			if(!$aan || (!$aan->Cotisation && !count($ins))) continue;
-			$pdf->PrintPage($adh, $ins, $annee);
+			$pdf->PrintPage($suivi, $adh, $ins, $aan, $annee);
 		}
 
 		$file = 'Home/tmp/Suivi'.$num.'_'.date('YmdHis').'.pdf';
@@ -928,13 +928,13 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 	}
 
 
-	private function sendSuivi($pdo, $annee) {
+	private function sendSuivi($suivi, $pdo, $annee) {
 		$an = $annee.'-'.($annee+1);
 		$sub = "CADREF : Attestation de suivi de cours";
 		$bod = "Veuillez trouver en pièce jointe l’attestation de suivi de cours $an .<br/><br />";
 		$bod .= Cadref::MailSignature();
 		foreach($pdo as $p) {
-			$file = $this->imprimeSuivi(array($p), $annee);
+			$file = $this->imprimeSuivi($suivi, array($p), $annee);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);

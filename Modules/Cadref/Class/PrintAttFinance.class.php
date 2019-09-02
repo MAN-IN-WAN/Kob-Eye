@@ -21,7 +21,7 @@ class PrintSuivi extends FPDF {
 	function Footer() {}
 	
 
-	function PrintPage($mode, $adh, $ins, $aan, $annee) {
+	function PrintPage($adh, $ins, $annee) {
 		$this->AddPage();
 		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_noir.png';
 		$this->Image($img,25,19,26,30);
@@ -45,30 +45,18 @@ class PrintSuivi extends FPDF {
 
 		$this->SetFont('Arial','B',18);
 		$this->SetXY(0,90);
-		$s = "ATTESTATION DE ".($mode == 2 ? "PAIEMENT" : "SUIVI DE COURS");
-		$this->Cell(210, 6, $s, 0, 0, 'C');
+		$this->Cell(210, 6, 'ATTESTATION DE SUIVI DE COURS', 0, 0, 'C');
 		$this->SetFont('Arial','',12);
 		$this->SetXY(25,110);
-		$s = "Je, soussignée Nathalie Faucher, Directrice du CADREF, atteste ";
-		$s .= $mode == 2 ? "avoir reçcu de : \n\n" : "que :\n\n";
-		$s .= ($adh->Sexe == "F" ? "Madame " : ($adh->Sexe == "H" ? "Monsieur " : "")).trim($adh->Prenom.' '.$adh->Nom)."\n\n";
-		if($mode == 2) {
-			$cot = $aan->Cotisation;
-			$crs = $aan->Cours;
-			$tot = $cot+$crs;
-			$s .= "la somme de $tot Euros correspondant à :\n\n";
-			$s .= " -  Cotisation $annee-".($annee+1)." : $cot Euros\n\n";
-			$s .= " -  Inscription au".(count($ins) > 1 ? "x" : "")." cours : $crs Euros";
-		}
-		else {
-			$s .= "a suivi".($adh->Sexe == 'F' ? 'e' : '')." au cours de l'année $annee-".($annee+1);
-			$s .= count($ins) > 1 ? " les cours suivants :" : " le cours suivant :";
-		}
+		$s = "Je, soussignée Nathalie Faucher, Directrice du CADREF, atteste que :\n\n";
+		$s .= ($adh->Sexe == "F" ? "Madame " : ($adh->Sexe == "H" ? "Monsieur " : "")).trim($adh->Prenom.' '.$adh->Nom);
+		$s .= "\n\na suivi".($adh->Sexe == 'F' ? 'e' : '')." au cours de l'année $annee-".($annee+1);
+		$s .= count($ins) > 1 ? " les cours suivants :" : " le cours suivant :";
 		$this->MultiCell(180, 5, $this->cv($s));
 		
 		$this->posy = 140;
 		$this->SetFont('Arial','',12);
-		if($mode != 2) foreach($ins as $i) $this->printLine($i);
+		foreach($ins as $i) $this->printLine($i);
 		
 		$this->SetXY(110,297-50);
 		$this->Cell(210, 5, $this->cv('Fait à Nîmes, le ').date('d/m/Y'));
@@ -77,7 +65,7 @@ class PrintSuivi extends FPDF {
 	
 	private function printLine($l) {
 		$this->SetXY($this->left, $this->posy);
-		$s = ' -  '.$l->LibelleW.' '.$l->LibelleN;
+		$s = '-  '.$l->LibelleW.' '.$l->LibelleN;
 		$this->Cell(160, 5, $this->cv($s));
 		$this->posy += 8;
 	} 

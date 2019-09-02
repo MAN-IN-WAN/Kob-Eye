@@ -759,7 +759,7 @@
 		}
 		
 		// attestation fiscale
-		$scope.Attest = {AttestFisc:1, AttestSuivi:0};
+		$scope.Attest = {AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
 		$scope.selectAttestAnnee = function(obj) {
 			var annee = $scope.Attest.AttestAnnee;
 			obj.fiscales = [annee];
@@ -779,8 +779,9 @@
 		$scope.selectAttestMode = function(mode) {
 			var o = $scope.Attest;
 			switch(mode) {
-				case 0: o.AttestSuivi = o.AttestFisc ? 0 : 1; break;
-				case 1: o.AttestFisc = o.AttestSuivi ? 0 : 1; break;
+				case 0: o.AttestPaiement = o.AttestSuivi = o.AttestFisc ? 0 : 1; break;
+				case 1: o.AttestPaiement = o.AttestFisc = o.AttestSuivi ? 0 : 1; break;
+				case 2: o.AttestSuivi = o.AttestFisc = o.AttestPaiement ? 0 : 1; break;
 			}
 		}
 

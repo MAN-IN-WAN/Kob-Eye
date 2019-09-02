@@ -48,6 +48,15 @@
 									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
+											{{ label("Attestation de paiement") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="Attest.AttestPaiement" ng-change="selectAttestMode(2)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
 											{{ label("Année fiscale") }}
 										</div>
 										<div class="col-md-2">

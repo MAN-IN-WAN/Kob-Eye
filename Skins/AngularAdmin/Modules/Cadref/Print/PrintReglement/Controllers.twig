@@ -16,7 +16,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		};
 		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
-	
+		
 	$scope.printFunction = function(obj) {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
 		ajax.success(

@@ -104,7 +104,7 @@
 										</div>
 										{% if mode == 1 %}
 										<div class="col-md-2">
-											<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-click="prelevements()">Prélèvements</button>
+											<button type="button" ng-if="obj.ModeReglement=='P'" class="btn btn-info margin-inline cadref-btn-100" ng-click="prelevements()">Fichier SEPA</button>
 										</div>
 										{% endif %}
 									</div>
