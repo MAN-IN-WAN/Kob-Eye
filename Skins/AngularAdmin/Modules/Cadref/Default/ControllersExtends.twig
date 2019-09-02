@@ -510,7 +510,7 @@
             $scope.obj = data.data;
 			{% if objecttype == 'Adherent' %}
 				$scope.adherentInfo(); 
-				$scope.checkCertificat();
+				//$scope.checkCertificat();
 				$scope.checkIBAN();
 			{% endif %}
 		}
@@ -671,6 +671,7 @@
 					o.nonCotis = Number($scope.obj.Cotisation) == 0;
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
+					$scope.obj.certifInvalide = data.data.certifInvalide;
 				}
 			).error(
 				function() {
