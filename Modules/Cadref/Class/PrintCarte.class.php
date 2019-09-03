@@ -143,7 +143,8 @@ class PrintCarte extends FPDF {
 		$this->Cell($this->width[2], 5, $this->cv($s), 0, 0, $this->align[2]);
 		$this->Cell($this->width[3], 5, $this->cv($n), 0, 0, $this->align[3]);
 		$this->Cell($this->width[4], 5, $l->Prix, 0, 0, $this->align[4]);
-		$this->Cell($this->width[5], 5, $l->Reduction+$l->Soutien, 0, 0, $this->align[5]);
+		$r = $l->Reduction+$l->Soutien;
+		if($r) $this->Cell($this->width[5], 5, $r, 0, 0, $this->align[5]);
 		$this->posy += 4;
 	} 
 
