@@ -1252,16 +1252,18 @@ inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where ce.Classe=:cid";
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql1);
-		foreach($data as $d) {
-			$pdo->execute(array(':cid'=>$d['clsId']));
+		foreach($data as &$d) {
+			$id = $d['clsId'];
+			if(!$id) continue;
+			$pdo->execute(array(':cid'=>$id));
 			$e = '';
 			foreach($pdo as $p) {
 				if($e) $e .= ', ';
 				$e .= trim($p['Prenom'].' '.$p['Nom']);
 			}
-			$r['Enseignants'] = $e;
+			$d['Enseignants'] = $e;
 		}
-		
+
 		$total = $cotis+$montant;
 		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
