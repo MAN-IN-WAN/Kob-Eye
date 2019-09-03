@@ -12,7 +12,7 @@ class PrintCarte extends FPDF {
 	private $align;
 	private $head;
 	private $posy;
-	private $left = 5;
+	private $left = 3;
 	
 	
 	function PrintCarte($adherent, $adhAnnee, $recto=false) {
@@ -20,9 +20,9 @@ class PrintCarte extends FPDF {
 		$this->adh = $adherent;
 		$this->aan = $adhAnnee;
 		$this->recto = $recto;
-		$this->head = array('Cours','Discipline','Horaires','Enseignant','Tarif');
-		$this->width = array(16,86,41,50,8);
-		$this->align = array('L','L','L','L','R');
+		$this->head = array('Cours','Discipline','Horaires','Enseignant','Tarif','Réd.');
+		$this->width = array(16,80,41,50,8,8);
+		$this->align = array('L','L','L','L','R','R');
 	}
 	
 	private function cv($txt) {
@@ -142,7 +142,8 @@ class PrintCarte extends FPDF {
 		if($l->CycleDebut) $s .= ' ('.$l->CycleDebut.' '.$l->CycleFin.')';
 		$this->Cell($this->width[2], 5, $this->cv($s), 0, 0, $this->align[2]);
 		$this->Cell($this->width[3], 5, $this->cv($n), 0, 0, $this->align[3]);
-		$this->Cell($this->width[4], 5, $l->Prix-$l->Remise1-$l->Remise2, 0, 0, $this->align[4]);
+		$this->Cell($this->width[4], 5, $l->Prix, 0, 0, $this->align[4]);
+		$this->Cell($this->width[5], 5, $l->Reduction+$l->Soutien, 0, 0, $this->align[5]);
 		$this->posy += 4;
 	} 
 

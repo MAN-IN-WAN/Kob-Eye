@@ -87,7 +87,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		//on génère la clef HMAC
 		$msg = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT".
 				"&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR".
-				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME";
+				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME".
+				"&PBX_RUF1=GET";
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
@@ -103,6 +104,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
 			<input type="hidden" name="PBX_HASH" value="SHA512">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
+			<input type="hidden" name="PBX_RUF1" value="GET">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
 			<input type="submit" class="btn btn-success" value="Payer">
 		</form>

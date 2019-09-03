@@ -361,7 +361,7 @@ class Adherent extends genericClass {
 
 		$annee = Cadref::$Annee;
 		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		$ins = $this->getChildren('Inscription/Annee='.$annee);
+		$ins = $this->getChildren('Inscription/Annee='.$annee); //.'&Supprime=0&Attente=0');
 		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
 
 		$pdf = new PrintCarte($this, $aan, $recto);
@@ -1285,8 +1285,8 @@ where Libelle like '%$filter%'
 				$sql = "
 select distinct s.Id, s.Libelle
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-WebSection` s on s.Id=d.WebSectionId
 where d0.WebDisciplineId>0 and s.Libelle like '%$filter%'
@@ -1296,8 +1296,8 @@ order by s.Libelle";
 				$sql = "
 select distinct d.Id, d.Libelle
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.WebSectionId=$secId and d.Id=d0.WebDisciplineId
 where d0.WebDisciplineId>0 and d.Libelle like '%$filter%'
 order by d.Libelle";				
@@ -1312,12 +1312,12 @@ if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Redu
 if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
 0 as Soutien
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
-where d0.WebDisciplineId=$disId and n.AccesWeb=1 and c.AccesWeb=1 and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
+where d0.WebDisciplineId=$disId and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
 			case 'inscription':
