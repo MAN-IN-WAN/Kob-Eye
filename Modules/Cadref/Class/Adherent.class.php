@@ -361,7 +361,7 @@ class Adherent extends genericClass {
 
 		$annee = Cadref::$Annee;
 		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		$ins = $this->getChildren('Inscription/Annee='.$annee); //.'&Supprime=0&Attente=0');
+		$ins = $this->getChildren('Inscription/Annee='.$annee.'&Supprime=0&Attente=0');
 		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
 
 		$pdf = new PrintCarte($this, $aan, $recto);
