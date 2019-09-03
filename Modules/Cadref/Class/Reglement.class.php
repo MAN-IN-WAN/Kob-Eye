@@ -59,7 +59,7 @@ where ".$where;
 		
 		if($type == 'T') $sql .= " order by r.ModeReglement";
 		else {
-			if($ordre == 'C') $sql .= " order by r.DateReglement,h.Nom, h.Prenom";
+			if($ordre == 'C') $sql .= " order by r.Id,h.Nom, h.Prenom";
 			else $sql .= " order by h.Nom, h.Prenom, r.DateReglement";
 		}
 
