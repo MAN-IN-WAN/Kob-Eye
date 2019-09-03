@@ -184,7 +184,7 @@ class Adherent extends genericClass {
 		$reg->Web = 1;
 		$reg->Save();
 	
-		$data = $this->GetPanier('inscribe');
+		$data = $this->GetPanier('inscribe', '');
 		foreach($data['data'] as $ins) {
 			$attente = 0;
 			$supprime = 0;
@@ -1099,7 +1099,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		return $pl->getCodeHTML($p);
 	}
 	
-	function GetPanier($action) {
+	function GetPanier($action, $classe) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
 
@@ -1113,6 +1113,14 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$sess = isset($_SESSION['panier']);
 		if($sess) $ids = unserialize($_SESSION['panier']);
 
+		if(!empty($classe)) {
+			$sess = true;
+			if(!empty($ids)) {
+				if(strpos($ids, "'$classe'") === false) $ids .= ",'$classe'";
+			}
+			else $ids = "'$classe'";	
+		}
+		
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
 		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 
@@ -1123,11 +1131,12 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
 				'Disponibles'=>0,'note2'=>'','heures'=>0];
 			if($co && $co->Cotisation)	{
+				$cotisDue = 0;
 				$cot['Prix'] = $cotis = $co->Cotisation;
 				$cot['classe'] = 'label-success';
 				$cot['note'] = 'Déjà réglée';
 			} else {
-				$cot['Prix'] = $cotis = $an->Cotisation;
+				$cot['Prix'] = $cotis = $cotisDue = $an->Cotisation;
 				$cot['classe'] = 'label-warning';
 				$cot['note'] = 'A régler';
 			}
@@ -1137,19 +1146,20 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 		else {
 			if($co) {
+				$cotisDue = 0;
 				$cotis = $co->Cotisation ? $co->Cotisation : $an->Cotisation;
 				$regul = $co->Regularisation;
 				$dons = $co->Dons;
 			}
 			else {
-				$cotis = $an->Cotisation;
+				$cotis = $cotisDue = $an->Cotisation;
 				$regul = 0;
 				$dons = 0;
 			}
 		}
-		
-		if(!empty($ids) && $action == 'remove') {
-			$c = "'$remove'";
+
+		if(!empty($ids) && $action == 'remove' && !empty($classe)) {
+			$c = "'$classe'";
 			$p = strpos($ids, $c);
 			if($p !== false) {
 				$s = substr($ids, $p+9, 1);
@@ -1264,8 +1274,8 @@ where ce.Classe=:cid";
 			$d['Enseignants'] = $e;
 		}
 
-		$total = $cotis+$montant;
-		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+		$total = $cotisDue+$montant;
+		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
 
 	function GetCours($mode, $obj) {
@@ -1306,7 +1316,7 @@ order by d.Libelle";
 				break;
 			case 'classe':
 				$sql = "
-select distinct c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
+select distinct c.CodeClasse, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
