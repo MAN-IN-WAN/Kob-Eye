@@ -98,20 +98,14 @@ class Cadref extends Module {
 		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
 		$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
 		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
-		$tel = isset($_POST['CadrefTel']) ? $_POST['CadrefTel'] : '';
-		if((empty($num) && (empty($nom)) || empty($pnom)) || (empty($mail) && empty($tel))) {
-			$data['message'] = "Vous devez spécifier soit le numéro soit les nom et prénom<br />puis l'adresse mail ou le téléphone";
+		if((empty($num) && (empty($nom) || empty($pnom))) || empty($mail)) {
+			$data['message'] = "Vous devez spécifier soit le numéro soit les nom et prénom<br />puis l'adresse mail.";
 			return json_encode($data);
 		}
 		
 		$telr = '';
 		$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-//		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-		if($tel) {
-			$telr = preg_replace('/[^0-9]/', '', $tel);
-			$telr = substr($telr,0,2).'.'.substr($telr,2,2).'.'.substr($telr,4,2).'.'.substr($telr,6,2).'.'.substr($telr,8,2);
-		}
 		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
 		if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
 
@@ -119,11 +113,6 @@ class Cadref extends Module {
 		else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
 
 		if($mail) $w1 .= "Mail='$mail'";
-		if($telr) {
-			if($w1) $w1 .= " or ";
-//			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
-			$w1 .= "Telephone1 = '$telr' or Telephone2 = '$telr'";
-		}
 		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -145,15 +134,11 @@ class Cadref extends Module {
 					$r[Mail] = substr($t[0], 0, 2).'...'.substr($t[0], -1, 1).'@'.substr($t[1], 0, 2).'...'.substr($t[1], -2, 2);
 				}
 				$r['Tel'] = '';
-				if($tel) {
-					$t = preg_replace('/[^0-9]/', '', $tel);
-					if($t == preg_replace('/[^0-9]/', '', $p['Telephone1'])) $r['Tel'] = $p['Telephone1']; 
-					elseif($t == preg_replace('/[^0-9]/', '', $p['Telephone2'])) $r['Tel'] = $p['Telephone2']; 
-				}
-				if(!$r['Tel']) {
-					$t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
-					if($t) $r['Tel'] = '...'.substr($t, -4, 4);
-				}	
+				if(substr($p['Telephone1'],2) == '06' || substr($p['Telephone1'],2) == '07') $t = $p['Telephone1'];
+				if($t == '') if(substr($p['Telephone2'],2) == '06' || substr($p['Telephone2'],2) == '07') $t = $p['Telephone2'];
+				if($t == '') $t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
+				if($t) $r['Tel'] = '...'.substr($t, -4, 4);
+
 				$data['ValidForm'] = "2";
 				$data['data'] = $r;
 				break;
@@ -274,7 +259,7 @@ class Cadref extends Module {
 		$data = array('success'=>0);
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
 		$pre = isset($_POST['Prenom']) ? trim($_POST['Prenom']) : '';
-		$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
+		//$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
 		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
 		$conf = isset($_POST['MailConfirm']) ? trim($_POST['MailConfirm']) : '';
 		
@@ -288,21 +273,21 @@ class Cadref extends Module {
 		}
 		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
 		if(count($adh)) {
-			$data['message'] = 'Il existe déjà un adhérent avec cette adresse mail.';
+			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.\nUtiliser l'option \"Activer mon compte\"";
 			return json_encode($data);			
 		}
 		if($mail != $conf) {
 			$data['message'] = "L'adresse mail et la confirmation sont différentes.";
 			return json_encode($data);			
 		}
-		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo && $pdo->rowcount()) {
-			$data['message'] = 'Il existe déjà un adhérent avec ce numéro de téléphone.';
-			return json_encode($data);			
-		}
+//		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+//		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+//		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+//		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+//		if($pdo && $pdo->rowcount()) {
+//			$data['message'] = 'Il existe déjà un adhérent avec ce numéro de téléphone.';
+//			return json_encode($data);			
+//		}
 		
 		$nom = strtoupper($nom);
 		$pre = strtoupper(substr($pre, 0, 1)).strtolower(substr($pre, 1));
