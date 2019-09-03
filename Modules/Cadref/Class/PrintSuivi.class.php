@@ -7,6 +7,7 @@ class PrintSuivi extends FPDF {
 	
 	private $posy;
 	private $left = 25;
+	private $mode = false;
 	
 	
 	function PrintSuivi() {
@@ -22,6 +23,8 @@ class PrintSuivi extends FPDF {
 	
 
 	function PrintPage($mode, $adh, $ins, $aan, $annee) {
+		$this->mode = $mode == 2;
+		
 		$this->AddPage();
 		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_noir.png';
 		$this->Image($img,25,19,26,30);
@@ -45,14 +48,14 @@ class PrintSuivi extends FPDF {
 
 		$this->SetFont('Arial','B',18);
 		$this->SetXY(0,90);
-		$s = "ATTESTATION DE ".($mode == 2 ? "PAIEMENT" : "SUIVI DE COURS");
+		$s = "ATTESTATION DE ".($this->mode ? "PAIEMENT" : "SUIVI DE COURS");
 		$this->Cell(210, 6, $s, 0, 0, 'C');
 		$this->SetFont('Arial','',12);
 		$this->SetXY(25,110);
 		$s = "Je, soussignée Nathalie Faucher, Directrice du CADREF, atteste ";
-		$s .= $mode == 2 ? "avoir reçcu de : \n\n" : "que :\n\n";
+		$s .= $this->mode ? "avoir reçu de : \n\n" : "que :\n\n";
 		$s .= ($adh->Sexe == "F" ? "Madame " : ($adh->Sexe == "H" ? "Monsieur " : "")).trim($adh->Prenom.' '.$adh->Nom)."\n\n";
-		if($mode == 2) {
+		if($this->mode) {
 			$cot = $aan->Cotisation;
 			$crs = $aan->Cours;
 			$tot = $cot+$crs;
@@ -66,9 +69,9 @@ class PrintSuivi extends FPDF {
 		}
 		$this->MultiCell(180, 5, $this->cv($s));
 		
-		$this->posy = 140;
+		$this->posy = $this->mode ? 160 : 140;
 		$this->SetFont('Arial','',12);
-		if($mode != 2) foreach($ins as $i) $this->printLine($i);
+		foreach($ins as $i) $this->printLine($i);
 		
 		$this->SetXY(110,297-50);
 		$this->Cell(210, 5, $this->cv('Fait à Nîmes, le ').date('d/m/Y'));
@@ -76,8 +79,12 @@ class PrintSuivi extends FPDF {
 	}
 	
 	private function printLine($l) {
-		$this->SetXY($this->left, $this->posy);
+		if($this->mode) $this->SetFont('Arial','I',12);
+		else $this->SetFont('Arial','',12);
+		
+		$this->SetXY($this->left+($this->mode ? 10 : 0), $this->posy);
 		$s = ' -  '.$l->LibelleW.' '.$l->LibelleN;
+		if($this->mode) $s .= ' : '.($l->Prix-$l->Reduction-$l->Soutien).' Euros';
 		$this->Cell(160, 5, $this->cv($s));
 		$this->posy += 8;
 	} 
