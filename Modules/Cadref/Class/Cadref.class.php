@@ -274,7 +274,7 @@ class Cadref extends Module {
 		}
 		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
 		if(count($adh)) {
-			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br>Utiliser l'option \"Activer mon compte\"";
+			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br>Veuillez utiliser l'option \"Activer mon compte\"";
 			return json_encode($data);			
 		}
 		if($mail != $conf) {
@@ -284,19 +284,32 @@ class Cadref extends Module {
 		
 		$telr = preg_replace('/[^0-9]/', '', $tel);
 		if(strlen($telr) != 10) {
-			$data['message'] = "Le numero de téléphone est erroné.";
+			$data['message'] = "Le format du numero de téléphone est incorrect.";
 			return json_encode($data);			
 		}
 		$p = '([^0-9])*';
 		$telr = substr($telr, 0, 2).$p.substr($telr, 2, 2).$p.substr($telr, 4, 2).$p.substr($telr, 6, 2).$p.substr($telr, 8, 2);	
-		//$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
 		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
-			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br>Utiliser l'option \"Activer mon compte\"";
+			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br>Veuillez utiliser l'option \"Activer mon compte\"";
 			return json_encode($data);			
 		}
+		
+		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', strtoupper($nom));
+		if($pre) $prer = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', strtoupper($pre));
+		$sql = "select Id from `##_Cadref-Adherent` where upper(Nom) regexp '$nomr' and upper(Prenom) regexp '$prer'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo && $pdo->rowcount()) {
+			$s = "Il existe déjà un adhérent avec ce nom et ce prénom.<br>";
+			$s .= "Si vous n'avez jamais été adhérent veuillez contacter le CADREF au 04.66.36.99.44.<br>";
+			$s .= "Sinon veuiller utiliser l'option \"Activer mon compte\"";
+			$data['message'] = $s;
+			return json_encode($data);			
+		}
+
 		
 		$nom = strtoupper($nom);
 		$pre = strtoupper(substr($pre, 0, 1)).strtolower(substr($pre, 1));
