@@ -1,7 +1,6 @@
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
 
-	$scope.obj = {};
-	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj = {CurrentUrl:'{{ Url }}', AttestFisc:true, AttestSuivi:false};
 	
 	$scope.obj.AttestAnnee = '{{ Annee }}';	
 	$scope.selectAttestAnnee = function(obj) {
@@ -11,6 +10,14 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 	$scope.selectAttestAnnee($scope.obj);
 	
+	$scope.selectMode = function(mode) {
+		var o = $scope.obj;
+		switch(mode) {
+			case 0: o.AttestSuivi = !o.AttestFisc; break;
+			case 1: o.AttestFisc = !o.AttestSuivi; break;
+		}
+	}
+
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
 

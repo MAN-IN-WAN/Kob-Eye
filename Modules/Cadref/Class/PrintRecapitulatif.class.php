@@ -19,7 +19,7 @@ class PrintRecapitulatif extends FPDF {
 	private $cours = false;
 	
 	
-	function PrintRecapitulatif() {
+	function PrintRecapitulatif($nsold) {
 		parent::__construct('L', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
@@ -31,7 +31,8 @@ class PrintRecapitulatif extends FPDF {
 		$n = count($this->head);
 		for($i = 0; $i < $n; $i++) $this->largeur += $this->width[$i]; 
 
-		$this->titre = "CADREF : Récapitulatif Adhérents ";
+		$this->titre = "CADREF : Récapitulatif Adhérents";
+		if($nsold) $this->titre .= " (Non soldés)";
 	}
 	
 	private function cv($txt) {

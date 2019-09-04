@@ -6,7 +6,7 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
     $oc = $o->getObjectClass();
     $vars['CurrentMenu'] = ['Titre' =>$oc->Description ];
 }
-$vars['identifier'] = 'CadrefAdherent';
+$vars['identifier'] = 'CadrefCheque';
 
 $vars['objet'] = "Remboursement de cours";
 

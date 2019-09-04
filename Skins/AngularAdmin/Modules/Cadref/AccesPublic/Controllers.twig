@@ -490,10 +490,12 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//---------------------------
 	// gestion du panier
 	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Urlweb:''};
-	$scope.getPanier = async function(remove) { 
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[remove]);
+	$scope.getPanier = async function(action, classe) { 
+		if(classe == undefined) classe = '';
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[action, classe]);
 		$scope.panierObj.panierItems = data.data.data.data;
 		$scope.panierObj.Cotisation = data.data.data.cotis;
+		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
 		$scope.panierObj.Montant = data.data.data.montant;
 		$scope.panierObj.Total = data.data.data.total;
 		$scope.panierObj.Urlweb = data.data.data.urlweb;
@@ -501,7 +503,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	$scope.panierSupprime = function(item) {
-		$scope.getPanier(item.CodeClasse);
+		$scope.getPanier('remove', item.CodeClasse);
 	}
 	
 	$scope.panierPoursuivre = function() {
@@ -555,6 +557,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return (m < 9 ? 10000 : 0)+m*100+parseInt(c.substr(0, 2)); 
 	}
 	
+	$scope.inscriptionAjoutePanier = function(c) {
+		$scope.inscriptionObj.Select = 0;
+		$scope.getPanier('add', c.CodeClasse);
+	}
+
 	$scope.inscriptionAjoute = function(c) {
 		var i = $scope.inscriptionObj;
 		var t = i.InscriptionItems;

@@ -18,7 +18,7 @@
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures}">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar">

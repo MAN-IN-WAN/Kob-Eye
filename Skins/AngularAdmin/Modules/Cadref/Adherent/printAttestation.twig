@@ -19,8 +19,8 @@
 										<div class="col-md-2">
 											{{ label("Année de cotisation") }}
 										</div>
-										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="CadrefClasse.Attest.AttestAnnee" ng-change="selectAttestAnnee(obj)" ng-init="CadrefClasse.Attest.AttestAnnee='{{ attestLast }}';selectAttestAnnee(obj);">
+										<div class="col-md-3">
+											<select class="form-control cadref-input" ng-model="Attest.AttestAnnee" ng-change="selectAttestAnnee(obj)" ng-init="Attest.AttestAnnee='{{ attestFirst }}';selectAttestAnnee(obj);">
 												{% for k,v in attestAnnees %}
 													<option value="{{ k }}">{{ v }}</option>
 												{% endfor %}
@@ -30,10 +30,37 @@
 									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
+											{{ label("Attestation fiscale") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="Attest.AttestFisc" ng-change="selectAttestMode(0)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Suivi de cours") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="Attest.AttestSuivi" ng-change="selectAttestMode(1)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Attestation de paiement") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="Attest.AttestPaiement" ng-change="selectAttestMode(2)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
 											{{ label("Année fiscale") }}
 										</div>
 										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="CadrefClasse.Attest.AttestFiscale" ng-options="label for label in obj.fiscales">
+											<select class="form-control cadref-input" ng-model="Attest.AttestFiscale" ng-options="label for label in obj.fiscales">
 											</select>
 										</div>
 									</div>
@@ -41,10 +68,10 @@
 										<div class="col-md-2">
 										</div>
 										<div class="col-md-2">
-											<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefClasse.Attest.mode='print'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Imprimer</button>
+											<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefAdherentfunction.callNext" ng-click="Attest.mode='print'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Imprimer</button>
 										</div>
 										<div class="col-md-2">
-											<button type="button" class="btn ng-scope btn-primary margin-inline cadref-btn-100" ng-disabled="obj.Mail==''" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefClasse.Attest.mode='mail'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Message</button>
+											<button type="button" class="btn ng-scope btn-primary margin-inline cadref-btn-100" ng-disabled="obj.Mail==''" ng-if="CadrefAdherentfunction.callNext" ng-click="Attest.mode='mail'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Message</button>
 										</div>
 									</div>
 								</div>                            
@@ -55,5 +82,5 @@
 			</div>
     </section>
 </div>
-<input type="hidden" ng-init="CadrefAdherentfunction.args.Attest=CadrefClasse.Attest"/>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.Attest=Attest"/>
 

@@ -87,11 +87,12 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		//on génère la clef HMAC
 		$msg = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT".
 				"&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR".
-				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME";
+				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME".
+				"&PBX_RUF1=POST";
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
-		return '<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		return '<form method="POST" onload="this." action="https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -103,6 +104,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
 			<input type="hidden" name="PBX_HASH" value="SHA512">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
+			<input type="hidden" name="PBX_RUF1" value="POST">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
 			<input type="submit" class="btn btn-success" value="Payer">
 		</form>
@@ -110,8 +112,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function serveurAutoResponse($paiement, $commande) {
-		$status = isset($_GET['status']) ? $_GET['status' ] : '';
-		$ident = isset($_GET['ident']) ? $_GET['ident' ] : '';
+		$status = isset($_POST['status']) ? $_POST['status' ] : '';
+		$ident = isset($_POST['ident']) ? $_POST['ident' ] : '';
 		$etat = 1;
 		
 		if($status != '0000' || empty($ident)) $etat = 0;;
@@ -122,7 +124,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			if(! $adh || $adh->Numero != $a[0]) $etat = 0;
 		}
 		
-		return array('etat'=>1, 'ref'=>$_GET['trans'], 'detail'=>$ident, 'status'=>$status);
+		return array('etat'=>1, 'ref'=>$_POST['trans'], 'detail'=>$ident, 'status'=>$status);
 
 //		// Vérification signature
 //		$signature = sha1(
@@ -145,8 +147,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 
 	public function retrouvePaiementEtape4s() {
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
-		if(isset($_GET['ident']) and !empty($_GET['ident'])) {
-			$a = explode('-', $_GET['ident']);
+		if(isset($_POST['ident']) and !empty($_POST['ident'])) {
+			$a = explode('-', $_POST['ident']);
 			return round($a[1]);
 		}
 		return false;

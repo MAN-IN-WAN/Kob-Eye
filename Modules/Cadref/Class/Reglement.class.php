@@ -17,6 +17,9 @@ class Reglement extends genericClass {
 		$menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
+		$type = $obj['ModeReglement'];
+		$ordre = $obj['Ordre'];
+		
 		$user = $obj['Utilisateur'];
 		if($user == 'Tous') $user = '';
 		$file = 'Home/tmp/';
@@ -46,25 +49,31 @@ class Reglement extends genericClass {
 		}
 
 		$sql = "
-select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse
+select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse,h.IBAN,h.BIC,h.DateRUM
 from `##_Cadref-Reglement` r 
 left join `##_Cadref-Adherent` h on h.Id=r.AdherentId
 where ".$where;
 		$sql .= " and r.Supprime=0 ";	
 		if($user != '') $sql .= " and r.Utilisateur='$user' ";
-		$sql .= " order by r.DateReglement, h.Nom, h.Prenom";
+		if($type != 'T') $sql .= " and r.ModeReglement='$type'";
+		
+		if($type == 'T') $sql .= " order by r.ModeReglement";
+		else {
+			if($ordre == 'C') $sql .= " order by r.Id,h.Nom, h.Prenom";
+			else $sql .= " order by h.Nom, h.Prenom, r.DateReglement";
+		}
+
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 
-		$pdf = new PrintReglement($mode, $user, $obj['DateDebut'], $obj['DateFin']);
+		$pdf = new PrintReglement($mode, $type, $user, $obj['DateDebut'], $obj['DateFin']);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 
 		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
-		$pdf->PrintTotal();
 
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
@@ -117,7 +126,7 @@ klog::l($sql);
 	private function sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
 		$Sepa = '';
 		$sql = "
-select a.Numero,round(r.Montant,2),a.IBAN,a.BIC,a.RUM,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
+select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
@@ -127,17 +136,16 @@ order by a.Nom,a.Prenom
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$nume = $p['Numero'];
-			$mont = $p['Montant'];
+			$mont = round($p['Montant'],0);
 			$iban = str_replace(' ','',$p['IBAN']);
 			$bic = $p['BIC'];
-			$rum = $p['RUM'];
 			$drum = $p['DateRUM'];
 			$nom = $p['Nom'];
 			$pren = $p['Prenom'];
 			$dreg = $p['DateReglement'];
 			$tmp = date('YmdHis',$dreg).'/'.$nume;
-			$tmp2 = date('Y-m-d', $dreg);
-			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$rum,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
+			$tmp2 = date('Y-m-d', $drum);
+			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$nume.'-'.$tmp2,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
 		}
 		return $Sepa;
 	}
@@ -149,8 +157,7 @@ order by a.Nom,a.Prenom
 		$dfin->add(DateInterval::createFromDateString('1 second'));
 		$dfin = $dfin->getTimestamp();
 		
-		$cPrl0 = "
-<?xml version=\"1.0\" encoding=\"utf-8\"?>
+		$cPrl0 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <Document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02\">
 	<CstmrDrctDbtInitn>
 		<GrpHdr>
@@ -262,7 +269,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$time = time();
 		$remet = Cadref::GetParametre('BANQUE', 'COMPTE', 'REMETTANT')->Valeur;
 		$tmp = substr(date("d/m/Y H:i:s", $time).$remet,0,35);
-		$tmp1 = date("Y-m-jTh:i:s", $time);
+		$tmp1 = date("Y-m-j\Th:i:s", $time);
 		$Sepa = $this->formate($cPrl0,[$tmp,$tmp1,$nbre,$total,$remet]);
 
 		$nSeq = 0;
@@ -285,7 +292,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD.xml";
+		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD";
 		file_put_contents($file, $Sepa);
 		
 		return array('file'=>$file);

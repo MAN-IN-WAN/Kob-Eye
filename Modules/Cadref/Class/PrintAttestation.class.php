@@ -121,15 +121,19 @@ class PrintAttestation extends FPDF {
 		$this->SetX(-140);
 		$this->Cell(120,4.5,$s,0,0,'R');
 		
-		
+		$cot = $l['Cotisation'];
+		$don = $l['Dons'];
 		$s = "LE BÉNÉFICIAIRE reconnaît avoir reçu en titre de dons et versements ouvrant droit à réduction ";
-		$s .= "d'impôt pour l'année fiscale $this->anFisc (cotisation $this->anCotis), la somme de :";
+		$s .= "d'impôt pour l'année fiscale $this->anFisc (cotisation $this->anCotis";
+		if($don) $s .= " : $cot euros et dons $this->anCotis : $don euros)";
+		else $s .= ")";
+		$s .= ", la somme de :";
 		$this->SetFont('Arial','B',10);
 		$s = $this->cv($s);
 		$this->SetXY(20,181);
 		$this->MultiCell(170,4,$s);
 
-		$nuts = new nuts($l['Cotisation'], 'EUR');
+		$nuts = new nuts($cot+$don, 'EUR');
 		$text = strtoupper($nuts->convert("fr-FR"));
 		$nbre = strtoupper($nuts->getFormated(" ", ",", "fr-FR"));
 

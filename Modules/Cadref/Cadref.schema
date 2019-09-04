@@ -234,12 +234,13 @@
 
 
 
-	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
+	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,PrintSuivi,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
 		<FUNCTION title="Inscription">EditInscriptions</FUNCTION>
 		<FUNCTION title="Visite">EditReservations</FUNCTION>
 		<FUNCTION title="Carte">PrintCarte</FUNCTION>
 		<FUNCTION title="Attestation">PrintAttestation</FUNCTION>
 		<FUNCTION title="Cheque">PrintCheque</FUNCTION>
+		<FUNCTION title="Suivi">PrintSuivi</FUNCTION>
 		<FUNCTION title="Message">SendMessage</FUNCTION>
 
         <FILTER name="Toutes les années" color="warning" ></FILTER>
@@ -315,6 +316,7 @@
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Solde">Solde</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Fond de soutien">Soutien</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Dons">Dons</PROPERTIES>
 		<PROPERTIES type="text" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
