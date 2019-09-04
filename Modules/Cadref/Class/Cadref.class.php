@@ -281,7 +281,15 @@ class Cadref extends Module {
 			$data['message'] = "L'adresse mail et la confirmation sont différentes.";
 			return json_encode($data);			
 		}
-		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		
+		$telr = preg_replace('/[^0-9]/', '', $tel);
+		if(strlen($telr) != 10) {
+			$data['message'] = "Le numero de téléphone est erroné.";
+			return json_encode($data);			
+		}
+		$p = '([^0-9])*';
+		$telr = substr($telr, 0, 2).$p.substr($telr, 2, 2).$p.substr($telr, 4, 2).$p.substr($telr, 6, 2).$p.substr($telr, 8, 2);	
+		//$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
 		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -295,7 +303,9 @@ class Cadref extends Module {
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
 		$adh->Nom = $nom;
 		$adh->Prenom = $pre;
-		$adh->Telephone1 = $tel;
+		$p = '.';
+		$telr = preg_replace('/[^0-9]/', '', $tel);
+		$adh->Telephone1 = substr($telr, 0, 2).$p.substr($telr, 2, 2).$p.substr($telr, 4, 2).$p.substr($telr, 6, 2).$p.substr($telr, 8, 2);	
 		$adh->Mail = $mail;
 		$adh->Web = 1;
 		$adh->Save();
