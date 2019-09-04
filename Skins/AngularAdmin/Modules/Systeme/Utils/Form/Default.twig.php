@@ -39,18 +39,22 @@ $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
 /**
 * fields by categories
 */
-$ocats = $o->getCategories();
+$ocats = $o->getCategories(true);
 $cats = array();
 foreach ($ocats as $k=>$cat){
     $fields = [];
     foreach ($vars['formfields'] as $field){
-        if ($field['category']==$cat){
+        if ($field['category']==$k){
             array_push($fields,$field);
         }
     }
     if (sizeof($fields)){
-        $cats[$cat] = $fields;
+        $cats[$k]['fields'] = $fields;
     }
+    if (!empty($cat['formCondition'])){
+        $cats[$k]['condition'] = $cat['formCondition'];
+    }
+
 }
 $vars['categories'] = $cats;
 $vars['uuid'] = uniqid('form_');

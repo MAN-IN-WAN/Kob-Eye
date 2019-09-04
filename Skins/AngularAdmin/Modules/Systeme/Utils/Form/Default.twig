@@ -3,21 +3,21 @@
     {% if categories|length > 1 %}
     <div class="formCatsFrise col-md-2">
         {% for cat,fields in categories %}
-            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem {% if loop.first %}active{% endif %}">
+            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem" {% if fields.condition %}ng-class="{ 'hidden': !({{ include(template_from_string(fields.condition)) }}) }"{% endif %}>
                     <a href="#" class="formCatsFriseLink">{{ cat }}</a>
                 </span>
         {% endfor %}
     </div>
     <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
-        {% else %}
-        <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
-            {% endif %}
+    {% else %}
+    <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% endif %}
             <div class="formCatWrapper">
                 {% for cat,fields in categories %}
-                    <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"
-                         class="formCatContainer {% if loop.first %}active{% endif %}">
+                    <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"  {% if fields.condition %}ng-if="{{ include(template_from_string(fields.condition)) }}"{% endif %}
+                         class="formCatContainer{% if loop.first %} active{% endif %}">
                         {#            <h3>{{ cat }}</h3>#}
-                        {{ form_properties(fields,scopeObj) }}
+                        {{ form_properties(fields.fields,scopeObj) }}
                     </div>
                 {% endfor %}
             </div>
@@ -88,7 +88,7 @@
 
         {% if categories|length > 1 %}
         var modal = $('#{{ uuid }} .formCats').closest('.modal');
-        console.error('#{{ uuid }} .formCats', modal);
+        //console.error('#{{ uuid }} .formCats', modal);
         modal.off('shown.bs.modal');
         modal.on('shown.bs.modal', function () {
             var par = $(this).find('.formCatWrapper');
@@ -108,14 +108,7 @@
                 var active = par.find('.formCatContainer.active');
                 var index = active.data('cat');
 
-                displayCat(active[0], index - 1);
-
-                //Gestion de la frise
-                var frise = par.siblings('.formCatsFrise');
-                frise.children().removeClass('active');
-                var link = frise.find('span[data-cat=' + (index - 1) + ']');
-                link.addClass('active');
-
+                displayCat(active[0], index - 1,-1);
             });
             $(this).find('.formNext').off('click');
             $(this).find('.formNext').on('click', function () {
@@ -123,30 +116,54 @@
                 var active = par.find('.formCatContainer.active');
                 var index = active.data('cat');
 
-                displayCat(active[0], index + 1);
-
-                //Gestion de la frise
-                var frise = par.siblings('.formCatsFrise');
-                frise.children().removeClass('active');
-                var link = frise.find('span[data-cat="' + (index + 1) + '"]');
-                console.log('span[data-cat="' + (index + 1) + '"]', link);
-                link.addClass('active');
-
+                displayCat(active[0], index + 1,1);
             });
+
+            displayCat(par, 0,1);
+            var initCpt = modal.find('.formCatContainer').length;
+            setInterval(function(){
+                if(modal.find('.formCatContainer').length != initCpt){
+                    initCpt = modal.find('.formCatContainer').length;
+
+                    var par = modal.find('.formCats');
+                    var active = par.find('.formCatContainer.active');
+                    var index = active.data('cat');
+
+                    displayCat(active[0], index ,1);
+                }
+            },1000);
 
         });
 
 
-        function animateHeight(next, parent, button, index) {
-            var cats = parent.find('.formCatContainer');
+        function animateHeight(next, parent, index) {
             var links = parent.closest('.modal').find('.formCatsFriseElem');
-            var len = cats.length;
+            var divs = parent.closest('.modal').find('.formCatContainer');
+            var fi = null;
+            var li = null;
+            $.each(divs,function(k,v){
+                if(fi === null){
+                    fi = $(v).data('cat');
+                }
+                if(li === null){
+                    li = $(v).data('cat');
+                }
+
+                if(fi > $(v).data('cat')){
+                    fi = $(v).data('cat');
+                }
+                if(li < $(v).data('cat')){
+                    li = $(v).data('cat');
+                }
+            });
+            // console.log(fi,li);
+
             parent.animate({height: next}, 300, 'swing', function () {
-                if (index != 0 && index != (len - 1))
-                    $(button).removeClass('disabled');
-                var other = $(button).siblings('.catNav');
-                console.log(other);
-                other.removeClass('disabled');
+                if ( index < li)
+                    parent.closest('.modal').find('.formNext').removeClass('disabled');
+                if ( index > fi )
+                    parent.closest('.modal').find('.formPrev').removeClass('disabled');
+
                 links.removeClass('disabled');
                 return true;
             })
@@ -165,23 +182,33 @@
             sibs.parent().removeClass('active');
 
             var next = $(this).parent().data('cat');
-            console.log(next);
-            displayCat(this, next);
+            //console.log(next);
+            displayCat(this, next,0);
 
             $(this).parent().addClass('active');
 
         });
 
-        function displayCat(node, next) {
-            console.log(node, next);
+        function displayCat(node, next, dir) {
+            //console.log(next);
+            //console.log(node, next);
             var par = $(node).closest('.modal');
             var curActive = par.find('.formCatContainer.active');
             var nextActive = par.find('.formCatContainer[data-cat="' + next + '"]');
+            var count = 0;
+            while(!nextActive.length && count < 100){
+                count++;
+                //console.log(count);
+                next += dir;
+                nextActive = par.find('.formCatContainer[data-cat="' + next + '"]');
+            }
+            var nextHeight = nextActive[0].scrollHeight;
+            // console.log('XXXXXXXXXXXXXX',nextActive);
             var buttons = par.find('.formNav button');
             var links = $(node).closest('.modal').find('.formCatsFriseElem');
             var cats = par.find('.formCatContainer');
             var wrap = par.find('.formCatWrapper');
-
+            //console.log(next);
             links.addClass('disabled');
             buttons.addClass('disabled');
 
@@ -189,22 +216,30 @@
             if (curActive.data('cat') > next) {
                 var wayNew = 'before';
                 var wayold = 'after';
-                var bNode = buttons.filter('.formPrev')[0];
-            } else {
+            } else if(curActive.data('cat') < next) {
                 var wayNew = 'after';
                 var wayold = 'before';
-                var bNode = buttons.filter('.formNext')[0];
+            } else{
+                par.find('.formCatContainer').removeClass('active');
+                nextActive.addClass('active');
+                animateHeight(nextHeight, wrap, next);
+                return true;
             }
+
+            $.each(links,function(k,v){
+                $(v).removeClass('active');
+                if($(v).data('cat') == next) $(v).addClass('active');
+            });
+
             cats.removeClass('before');
             cats.removeClass('after');
 
             nextActive.addClass(wayNew);
-            var nextHeight = nextActive[0].scrollHeight;
             nextActive.addClass('active').removeClass(wayNew);
             curActive.addClass(wayold).removeClass('active');
 
-            animateHeight(nextHeight, wrap, bNode, next);
-
+            animateHeight(nextHeight, wrap, next);
+            return true;
         }
         {% endif %}
     </script>
