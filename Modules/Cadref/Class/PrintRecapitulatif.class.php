@@ -10,13 +10,15 @@ class PrintRecapitulatif extends FPDF {
 	private $width;
 	private $posy;
 	private $largeur = 0;
-	private $total = [0,0,0,0,0,0,0,0];
-	private $ttotal = [0,0,0,0,0,0,0,0];
+	private $total = [0,0,0,0,0,0,0,0,0];
+	private $ttotal = [0,0,0,0,0,0,0,0,0];
 	private $titre;
 	private $adherent = 0;
 	private $sansCotis = 0;
 	private $sansCours = 0;
 	private $cours = false;
+	private $nbDons = 0;
+	private $nbSoutien = 0;
 	
 	
 	function PrintRecapitulatif($nsold) {
@@ -25,9 +27,9 @@ class PrintRecapitulatif extends FPDF {
 
 		$this->nbcot = $nbcot;
 		$this->cotis = $cotis;
-		$this->head = array('','','Cours','Réduc','Soutien','Total','Cotis','Règlé','Différé','Régul','Solde');
-		$this->width = array(16,75,18,18,18,18,18,18,18,18,18);
-		$this->align = array('L','L','R','R','R','R','R','R','R','R','R');
+		$this->head = array('','','Cours','Réduc','Soutien','Total','Cotis','Dons','Règlé','Différé','Régul','Solde');
+		$this->width = array(16,75,18,18,18,18,18,18,18,18,18,18);
+		$this->align = array('L','L','R','R','R','R','R','R','R','R','R','R');
 		$n = count($this->head);
 		for($i = 0; $i < $n; $i++) $this->largeur += $this->width[$i]; 
 
@@ -74,7 +76,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, '');
 		$this->Cell($this->width[1], 4.5, $mode ? '' : 'Totaux', 0, 0, 'R');
-		for($i = 0; $i < 8; $i++) $this->Cell(18, 4.5, $t[$i], 0, 0, 'R');
+		for($i = 0; $i < 9; $i++) $this->Cell(18, 4.5, $t[$i], 0, 0, 'R');
 		$s = $t[3]+$t[4]-$t[5]-$t[6]-$t[7];
 		$this->Cell(18, 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
@@ -88,10 +90,14 @@ class PrintRecapitulatif extends FPDF {
 			$this->Cell(60, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
 			$this->Cell(60, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
 			$this->Cell(60, 4.5, $this->cv('Sans cours : ').$this->sansCours);
+			$this->posy += 4.5;
+			$this->SetXY($this->left, $this->posy);
+			$this->Cell(60, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
+			$this->Cell(60, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
 		}
 		else {
 			if(!$this->cours) $this->sansCours++;
-			for($i = 0; $i < 8; $i++) $this->ttotal[$i] += $this->total[$i];
+			for($i = 0; $i < 9; $i++) $this->ttotal[$i] += $this->total[$i];
 		}
 	}
 	
@@ -120,8 +126,9 @@ class PrintRecapitulatif extends FPDF {
 		
 		$this->adherent++;
 		if(!$l['Cotisation']) $this->sansCotis++;
+		if($l['Dons']) $this->nbDons++;
 		$this->cours = false;
-		$this->total = [0,0,0,0,$l['Cotisation'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
+		$this->total = [0,0,0,0,$l['Cotisation'],$l['Dons'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
 	}
 	private function printLine($l) {
 		$prx = $l['Prix'];
@@ -153,6 +160,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->posy += 4.5;
 		
 		if($l['CodeClasse']) $this->cours = true;
+		if($l['Soutien'] && !$sup) $this->nbSoutien++;
 	} 
 
 }

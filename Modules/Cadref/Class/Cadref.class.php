@@ -259,7 +259,7 @@ class Cadref extends Module {
 		$data = array('success'=>0);
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
 		$pre = isset($_POST['Prenom']) ? trim($_POST['Prenom']) : '';
-		//$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
+		$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
 		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
 		$conf = isset($_POST['MailConfirm']) ? trim($_POST['MailConfirm']) : '';
 		
@@ -273,21 +273,21 @@ class Cadref extends Module {
 		}
 		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
 		if(count($adh)) {
-			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.\nUtiliser l'option \"Activer mon compte\"";
+			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br>Utiliser l'option \"Activer mon compte\"";
 			return json_encode($data);			
 		}
 		if($mail != $conf) {
 			$data['message'] = "L'adresse mail et la confirmation sont différentes.";
 			return json_encode($data);			
 		}
-//		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-//		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
-//		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-//		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-//		if($pdo && $pdo->rowcount()) {
-//			$data['message'] = 'Il existe déjà un adhérent avec ce numéro de téléphone.';
-//			return json_encode($data);			
-//		}
+		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo && $pdo->rowcount()) {
+			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br>Utiliser l'option \"Activer mon compte\"";
+			return json_encode($data);			
+		}
 		
 		$nom = strtoupper($nom);
 		$pre = strtoupper(substr($pre, 0, 1)).strtolower(substr($pre, 1));
