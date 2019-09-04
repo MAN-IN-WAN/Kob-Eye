@@ -130,6 +130,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->cours = false;
 		$this->total = [0,0,0,0,$l['Cotisation'],$l['Dons'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
 	}
+	
 	private function printLine($l) {
 		$prx = $l['Prix'];
 		$red = $l['Reduction'];
