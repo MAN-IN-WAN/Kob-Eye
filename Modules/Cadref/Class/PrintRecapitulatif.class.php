@@ -77,7 +77,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->Cell($this->width[0], 4.5, '');
 		$this->Cell($this->width[1], 4.5, $mode ? '' : 'Totaux', 0, 0, 'R');
 		for($i = 0; $i < 9; $i++) $this->Cell(18, 4.5, $t[$i], 0, 0, 'R');
-		$s = $t[3]+$t[4]-$t[5]-$t[6]-$t[7];
+		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]-$t[8];
 		$this->Cell(18, 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
 		$this->SetXY($this->left, $this->posy);
@@ -90,8 +90,8 @@ class PrintRecapitulatif extends FPDF {
 			$this->Cell(60, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
 			$this->Cell(60, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
 			$this->Cell(60, 4.5, $this->cv('Sans cours : ').$this->sansCours);
-			$this->posy += 4.5;
-			$this->SetXY($this->left, $this->posy);
+			//$this->posy += 4.5;
+			//$this->SetXY($this->left, $this->posy);
 			$this->Cell(60, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
 			$this->Cell(60, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
 		}
