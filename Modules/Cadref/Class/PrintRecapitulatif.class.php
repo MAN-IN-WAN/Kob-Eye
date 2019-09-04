@@ -87,13 +87,13 @@ class PrintRecapitulatif extends FPDF {
 			$this->SetFont('Arial','',10);
 			$this->posy += 4.5;
 			$this->SetXY($this->left, $this->posy);
-			$this->Cell(60, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
-			$this->Cell(60, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
-			$this->Cell(60, 4.5, $this->cv('Sans cours : ').$this->sansCours);
+			$this->Cell(58, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
+			$this->Cell(58, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
+			$this->Cell(58, 4.5, $this->cv('Sans cours : ').$this->sansCours);
 			//$this->posy += 4.5;
 			//$this->SetXY($this->left, $this->posy);
-			$this->Cell(60, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
-			$this->Cell(60, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
+			$this->Cell(58, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
+			$this->Cell(58, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
 		}
 		else {
 			if(!$this->cours) $this->sansCours++;
