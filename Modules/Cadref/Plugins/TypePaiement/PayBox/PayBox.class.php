@@ -113,6 +113,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function serveurAutoResponse($paiement, $commande) {
+klog::l("PPPPPPPPPPPPPPPPPPPPP",$_POST);
+klog::l("GGGGGGGGGGGGGGGGGGGGG",$_GET);
 		$status = isset($_POST['status']) ? $_POST['status' ] : '';
 		$ident = isset($_POST['ident']) ? $_POST['ident' ] : '';
 		$etat = 1;
@@ -147,6 +149,8 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function retrouvePaiementEtape4s() {
+klog::l("PPPPPPPPPPPPPPPPPPPPP",$_POST);
+klog::l("GGGGGGGGGGGGGGGGGGGGG",$_GET);
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
 		if(isset($_POST['ident']) and !empty($_POST['ident'])) {
 			$a = explode('-', $_POST['ident']);
