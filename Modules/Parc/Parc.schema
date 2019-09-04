@@ -204,19 +204,19 @@
 			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" fiche="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Mail">
-			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1">defaultMailServer</PROPERTIES>
-			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1">defaultWebServer</PROPERTIES>
-			<PROPERTIES type="boolean" description="Serveur sql par défaut" form="1">defaultSqlServer</PROPERTIES>
+		<CATEGORY title="Mail" formCondition="{{ scopeObj }}.Mail == 1">
+			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1" >defaultMailServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1" >defaultWebServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur sql par défaut" form="1" >defaultSqlServer</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071">mailAdminPort</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Guacamole">
+		<CATEGORY title="Guacamole" formCondition="{{ scopeObj }}.Guacamole == 1">
 			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" form="1">guacAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin Guacamole: Pass BDD" form="1">guacAdminPassword</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Sql">
+		<CATEGORY title="Sql" formCondition="{{ scopeObj }}.Sql == 1">
 			<PROPERTIES type="varchar" description="User BDD" form="1">SqlUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
 		</CATEGORY>
@@ -468,6 +468,30 @@
         <PROPERTIES type="date" description="Marqué pour suppression le" fiche="1" canBeNull="1" listDescr="Marqué pour suppression le">Suppression</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
 		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+		<FKEY card="0,1" data="EmailProfile,Id" fiche="1" form="1" description="Profil Mail">EmailProfileId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="EmailProfile" driver="mysql" AccessPoint="0" Description="Profil de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png"  Class="Modules/Parc/Class/EmailProfile.class.php">
+		<FUNCTION title="Forcer activation des boites mail" needConfirm="1">forceActive</FUNCTION>
+		<FUNCTION title="Forcer dé-activation des boites mail" needConfirm="1">forceDesactive</FUNCTION>
+		<PROPERTIES category="Description" type="varchar" searchOrder="1" form="1" fiche="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES category="Description" type="boolean" searchOrder="2" listDescr="Activé" form="1" fiche="1" list="2">Enabled</PROPERTIES>
+		<PROPERTIES category="Description" type="boolean" searchOrder="2" listDescr="Droit à la deconnexion" default="1" form="1" fiche="1" list="2">DroitDeconnexion</PROPERTIES>
+		<!--<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Jour-mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>-->
+		<CATEGORY title="Droit à la déconnexion">
+			<PROPERTIES type="boolean" form="1" fiche="1" list="5" listDescr="Verouillé">Locked</PROPERTIES>
+			<PROPERTIES type="time" form="1" fiche="1" list="3" listDescr="Heure d'ouverture de la boite" default="8:00">HeureDebut</PROPERTIES>
+			<PROPERTIES type="time" form="1" fiche="1" list="4" listDescr="Heure de fermeture de la boite" default="18:00">HeureFin</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="1">Lundi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="1">Mardi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="1">Mercredi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="1">Jeudi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="1">Vendredi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="0">Samedi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" default="0">Dimanche</PROPERTIES>
+		</CATEGORY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailAlias" driver="mysql" Dico="1" Description="Alias de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailAlias.class.php" hideSelect="1">
 		<FUNCTION title="Forcer suppression locale" needConfirm="1">forceDel</FUNCTION>
@@ -742,6 +766,7 @@
 	<OBJECTCLASS title="Infra" driver="mysql" Description="Infrastructure / regroupement de serveurs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Nom</PROPERTIES>
 		<PROPERTIES type="boolean" description="Infrastructure par défaut" form="1" hasRole="PARC_TECHNICIEN" list="1">Default</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type d'Infra" list="1" form="1" fiche="1" listDescr="Type" default="Web" values="Web,Mail">Type</PROPERTIES>
 		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN" list="1">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Certificate" driver="mysql" Description="Certificats par défaut" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">

@@ -469,8 +469,11 @@ class ObjectClass extends Root{
 	 * recupère la liste des catégories
 	 * @return Array(String)
 	 */
-	public function getCategories() {
-		return array_keys($this->Categories);
+	public function getCategories($full = false) {
+		if(!$full)
+			return array_keys($this->Categories);
+
+		return $this->Categories;
 	}
 	/**
 	 * getCategory

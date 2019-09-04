@@ -1468,8 +1468,8 @@ Choix des composants
     max-width: 1200px;
 }
 .modal-body {
-    overflow: hidden;
-    overflow: -webkit-paged-y !important;
+   /* overflow: hidden;
+    overflow: -webkit-paged-y !important;*/
 }
 .modal-body small  .help-wrapper{
     display: block;
