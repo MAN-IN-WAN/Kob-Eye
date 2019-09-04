@@ -95,25 +95,26 @@ class Cadref extends Module {
 		}
 
 		$num = isset($_POST['CadrefNumero']) ? trim($_POST['CadrefNumero']) : '';
-		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
-		$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
+		//$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
+		//$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
 		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
-		if((empty($num) && (empty($nom) || empty($pnom))) || empty($mail)) {
-			$data['message'] = "Vous devez spécifier soit le numéro soit les nom et prénom<br />puis l'adresse mail.";
+		//if((empty($num) && (empty($nom) || empty($pnom))) || empty($mail)) {
+		if(empty($num) || empty($mail)) {
+			$data['message'] = "Vous devez spécifier soit le numéro d'adhérent l'adresse mail.";
 			return json_encode($data);
 		}
 		
 		$telr = '';
-		$nomr ='';
+		//$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
-		if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
+		//if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
+		//if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
 
-		if($num) $w = "Numero='$num'";
-		else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
+		//if($num) $w = "Numero='$num'";
+		//else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
 
 		if($mail) $w1 .= "Mail='$mail'";
-		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
+		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where Numero='$num' and Mail='$mail' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -137,7 +138,7 @@ class Cadref extends Module {
 				if(substr($p['Telephone1'],2) == '06' || substr($p['Telephone1'],2) == '07') $t = $p['Telephone1'];
 				if($t == '') if(substr($p['Telephone2'],2) == '06' || substr($p['Telephone2'],2) == '07') $t = $p['Telephone2'];
 				if($t == '') $t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
-				if($t) $r['Tel'] = '...'.substr($t, -4, 4);
+				if($t) $r['Tel'] = '...'.substr($t, -5, 5);
 
 				$data['ValidForm'] = "2";
 				$data['data'] = $r;
@@ -147,7 +148,7 @@ class Cadref extends Module {
 			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
 			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
 			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
-		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
+		} else $data['message'] = "Aucun adhérent ne correspond à ces critères.<br>Si vous ne parvenez pas à vous identifier veuillez contacter le CADREF au 04.66.36.99.44.";
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
@@ -329,7 +330,7 @@ class Cadref extends Module {
 		}
 		$a = Sys::getOneData('Cadref', 'Adherent/'.$info[0]);
 		if(!count($a) || $a->Mail != $info[1]) {
-			$data['message'] = "Une erreur c'est produite :\nVeuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Une erreur c'est produite.<br>Veuillez contacter le CADREF au 04.66.36.99.44.";
 			return json_encode($data);
 		}
 

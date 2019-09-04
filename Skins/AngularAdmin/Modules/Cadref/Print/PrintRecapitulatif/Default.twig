@@ -21,7 +21,7 @@
 											{{ label("Année") }}
 										</div>
 										<div class="col-md-10">
-											<select class="form-control cadref-input" ng-model="obj.Annee" style="width:80px">
+											<select class="form-control cadref-input" ng-model="obj.Annee" ng-init="obj.Annee='{{ Annee }}'" style="width:80px">
 												{% for u in annees %}
 													<option value="{{ u }}">{{ u }}</option>
 												{% endfor %}
