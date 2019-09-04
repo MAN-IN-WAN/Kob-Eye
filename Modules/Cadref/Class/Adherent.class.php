@@ -217,7 +217,7 @@ class Adherent extends genericClass {
 		$this->Annee = $annee;
 		if($saveAdh) $this->Save();
 		
-		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']));
+		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']+$data['donate']));
 		$this->saveAnneeInscr($insc);
 		$this->Save();
 		
@@ -1099,9 +1099,10 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		return $pl->getCodeHTML($p);
 	}
 	
-	function GetPanier($action, $classe) {
+	function GetPanier($action, $classe, $donation=-1) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
+		$donate = 0;
 
 		$pa = $this->getOneChild('Panier/Annee='.$annee);
 		if(!$pa) {
@@ -1110,6 +1111,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			$pa->addParent($this);
 		}
 		$ids = $pa->Panier;
+		$donate = $pa->Dons;
 		$sess = isset($_SESSION['panier']);
 		if($sess) $ids = unserialize($_SESSION['panier']);
 
@@ -1206,6 +1208,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		if($sess) {
 			$_SESSION['panier'] = serialize($ids);
 			$pa->Panier = $ids;
+			if($donation >= 0) $pa->Dons = $donate = $donation;
 			$pa->Save();
 		}
 			
@@ -1274,8 +1277,8 @@ where ce.Classe=:cid";
 			$d['Enseignants'] = $e;
 		}
 
-		$total = $cotisDue+$montant;
-		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+		$total = $cotisDue+$montant+$donate;
+		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
 
 	function GetCours($mode, $obj) {
@@ -1320,8 +1323,8 @@ select distinct c.CodeClasse, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
-if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,0)) as Reduction,
 0 as Soutien
 from `##_Cadref-Discipline` d0
 inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
