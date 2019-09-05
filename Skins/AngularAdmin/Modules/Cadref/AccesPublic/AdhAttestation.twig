@@ -7,10 +7,24 @@
             <div class="row no-gutters">
                 <div class="col-md-12">
 					<div class="row">
+						<div class="col-md-1">
+							    <label class="form-control-label cadref-label" style="line-height:1">Année de cotisation</label>
+						</div>
+						<div class="col-md-1">
+							<select class="form-control cadref-input" ng-model="AttestAnnee" ng-init="AttestAnnee='{{ first }}'">
+								{% for k,v in attestAnnees %}
+									<option value="{{ k }}">{{ v }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-1">
+						</div>
 						<div class="col-md-6">
-							Pas encore disponible
-{#							<button type="button" class="btn btn-success margin-inline " ng-click="adherentCarte('print')">Imprimer</button>
-#}						</div>
+							<button type="button" class="btn btn-success margin-inline " ng-click="adherentAttestation()">Imprimer</button>
+						</div>
 					</div>
 				</div>
 			</div>

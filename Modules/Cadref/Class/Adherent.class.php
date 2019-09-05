@@ -770,6 +770,22 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		return false;
 	}
 
+	function PrintAttestationPublic($annee) {
+		$id = $this->Id;
+		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		$fisc = date('Y', $an->DateCotisation);
+		$sql = "
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+from `##_Cadref-AdherentAnnee` a
+inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
+where a.AdherentId=$id and a.Annee='$annee'
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$file = $this->imprimeAttestation($pdo, $annee, $fisc, $this->Numero);
+		return array('pdf'=>$file, 'sql'=>$sql);
+	}
+
 	function PrintAttestation($params) {
 		$sql = "
 select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
@@ -1102,7 +1118,6 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 	function GetPanier($action, $classe, $donation=-1) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
-		$donate = 0;
 
 		$pa = $this->getOneChild('Panier/Annee='.$annee);
 		if(!$pa) {
@@ -1166,10 +1181,20 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			if($p !== false) {
 				$s = substr($ids, $p+9, 1);
 				if($s == ',') $c .= ',';
-				$ids = str_replace($c, '', $ids); 				
+				$ids = str_replace($c, '', $ids); 	
+				$s = substr($ids, -1, 1);
+				if($s == ',') $ids = substr($ids, 0, strlen($ids)-1);
 			}
 			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
+//		if($action == 'add') {
+//			$c = "'$classe'";
+//			$p = strpos($ids, $c);
+//			if($p !== false) {
+//				if($ids) $id .= ',';
+//				$ids .= $c;
+//			}			
+//		}
 
 		$sql = "
 select c.Id as clsId, c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, 

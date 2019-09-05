@@ -79,6 +79,9 @@ table tr td.cadref-td-diff {
 	padding: 8px 8px;
 	max-width: 6.5rem;
 }
+.cadref-btn {
+	margin-bottom: 2px;
+}
 .cadref-btn-wait:after {
     content: "\eb1f";
 }

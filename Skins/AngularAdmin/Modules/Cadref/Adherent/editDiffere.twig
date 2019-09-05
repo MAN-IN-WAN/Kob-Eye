@@ -42,6 +42,7 @@
 					<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ lig }}].mode" ng-init="CadrefClasse.Diff.regl[{{ lig }}].mode='{{ item.ModeReglement }}'" ng-readonly="{{ item.Encaisse }}" ng-change="diffChange({{ lig }})" {% if item.Encaisse %}tabindex="-1"{% endif %}>
 						<option value="B">Banque</option>
 						<option value="P">Prélèvement</option>
+						<option value="A">Vacances</option>
 						<option value="V">Virement</option>
 					</select>	
 				</td>

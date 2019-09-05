@@ -8,26 +8,26 @@
 
 					<div class="row" ng-if="!inscriptionObj.Select">
 						<div class="col-md-2">
-							<button type="button" class="btn btn-success" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
+							<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
 						</div>
 					</div>
 					<section class="panel" ng-if="inscriptionObj.Select">
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-md-1">
-									<label class="form-control-label cadref-label" style="line-height:1.1">Antenne</label>
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label" style="line-height:1.1">Antenne : Alès, Bagnols, Nîmes...</label>
 								</div>
 								<div class="col-md-4">
 									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('antenne',$searchTerm)" 
 										 custom-select-options="{'async': true, 'filter':''}" 
-										 ng-model="inscriptionObj.AntenneId" 
+										 ng-model="inscriptionObj.AntenneId"
 										 class="form-control">
 									</div>
 								</div>
 							</div>
 							<div class="row" ng-if="inscriptionObj.AntenneId">
-								<div class="col-md-1">
-									<label class="form-control-label cadref-label" style="line-height:1">Section</label>
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label" style="line-height:1">Section : Langue, Histoire, Activité physique... </label>
 								</div>
 								<div class="col-md-4">
 									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('section',$searchTerm)" 
@@ -39,8 +39,8 @@
 								</div>
 							</div>
 							<div class="row" ng-if="inscriptionObj.SectionId">
-								<div class="col-md-1">
-									<label class="form-control-label cadref-label" style="line-height:1">Discipline</label>
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label" style="line-height:1">Discipline : Anglais, Histoire de l'art, Yoga... </label>
 								</div>
 								<div class="col-md-4">
 									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('discipline',$searchTerm)" 
@@ -60,7 +60,7 @@
 											<thead>
 												<tr>
 													<th title="Id" class="list-col-th-id" hidden>ID</th>
-													<th class="cadref-th" style="width:34px"></th>
+													<th class="cadref-th"></th>
 													<th class="cadref-th">Libellé</th>
 													<th class="cadref-th">Antenne</th>
 													<th class="cadref-th">Heures</th>
@@ -74,18 +74,18 @@
 											<tbody>
 												<tr ng-repeat="item in inscriptionObj.ClasseItems">
 													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-													<td  class="table-action cadref-td-btn" style="width:34px">
-														<span class="btn-abt cadref-btn-add btn-success" ng-click="panierAjoute(item)" title="Inscrire"></span>
+													<td  class="cadref-td-btn">
+														<button type="button" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)">S'inscrire</button>
 													</td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
-													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
-													<td  class="table-action cadref-td-btn">
-														<span class="btn-abt cadref-btn-add btn-success" ng-click="panierAjoute(item)" title="Inscrire"></span>
+													<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleA }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label" style="font-weight:600">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label" style="font-weight:600" >{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
+													<td  class="cadref-td-btn">
+														<button type="button" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)" title="Inscrire">S'inscrire</button>
 													</td>
 												</tr>
 											</tbody>
@@ -96,7 +96,7 @@
 							<div style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler</button>
+									<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler la recherche</button>
 								</div>
 							</div>
 						</div>
@@ -120,17 +120,17 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in panierObj.panierItems"">
-									<td scope="row" class="cadref-td typeint"><span class="label {[{ item.classe }]}">{[{ item.note }]}</span></td>
-									<td scope="row" class="cadref-td typeint">
-										<span ng-if="(item.clsId*1) && item.Inscrit*1==0" class="btn-abt cadref-btn-del btn-danger" ng-click="panierSupprime(item)" title="Supprimer ce cours"></span>
+									<td scope="row" class="cadref-td"><span class="label {[{ item.classe }]}">{[{ item.note }]}</span></td>
+									<td scope="row" class="cadref-td">
+										<button type="button" class="btn cadref-btn btn-danger" ng-if="(item.clsId*1) && item.Inscrit*1==0" ng-click="panierSupprime(item)" title="Supprimer ce cours">Supprimer</button>
 									</td>
-									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
-									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
-									<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures*1}">{[{ item.clsId ? item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin : '' }]}</span></td>
-									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : (item.clsId ? "Toute l'année" : "") }]}</span></td>
-									<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
-									<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
-									<td scope="row" class="cadref-td typeint"><span class="label label-danger">{[{ item.note2 }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleA }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label" ng-class="{'label-danger': item.heures*1}">{[{ item.clsId ? item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin : '' }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : (item.clsId ? "Toute l'année" : "") }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label label-danger">{[{ item.note2 }]}</span></td>
 								</tr>
 							</tbody>
 						</table>
