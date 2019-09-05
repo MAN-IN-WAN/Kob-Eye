@@ -177,7 +177,7 @@ class Adherent extends genericClass {
 		$reg->Annee = $annee;
 		$reg->Montant = $paiement->Montant;
 		$reg->DateReglement = time();
-		$reg->ModeReglement = 'C';
+		$reg->ModeReglement = 'W';
 		$reg->Note = $paiement->Reference;
 		$reg->Encaisse = 1;
 		$reg->Utilisateur = 'WEB';
