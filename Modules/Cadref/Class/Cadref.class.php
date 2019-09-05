@@ -420,8 +420,6 @@ class Cadref extends Module {
 
 		$group = Sys::$User->getParents('Group')[0]->Nom;
 
-
-
 		$adh = false;
 		$adm = false;
 		if($group == 'CADREF_ADMIN') {
@@ -542,6 +540,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				}
 				$j = $p['JourId'] - 1;
 				$d = $start + ($j * 24 * 60 * 60);
+klog::l("$d $cd $cf");
 				while($d < $end) {
 					//$ok = true;
 					$ok = !($cd && ($d < $cd || $d > $cf));
@@ -576,7 +575,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				$events[] = self::calEvent($adh, $d, $p, $absences);
 			}
 		}
-
+klog::l(">>>>>>>>>>",$events);
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
