@@ -10,14 +10,6 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 	$scope.selectAttestAnnee($scope.obj);
 	
-	$scope.selectMode = function(mode) {
-		var o = $scope.obj;
-		switch(mode) {
-			case 0: o.AttestSuivi = !o.AttestFisc; break;
-			case 1: o.AttestFisc = !o.AttestSuivi; break;
-		}
-	}
-
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
 

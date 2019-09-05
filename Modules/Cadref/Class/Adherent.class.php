@@ -770,7 +770,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		return false;
 	}
 
-	function PrintAttestationPublic($annee) {
+	function PrintAttestationPublic($suivi, $annee) {
 		$id = $this->Id;
 		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$fisc = date('Y', $an->DateCotisation);
@@ -782,8 +782,9 @@ where a.AdherentId=$id and a.Annee='$annee'
 ";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		$file = $this->imprimeAttestation($pdo, $annee, $fisc, $this->Numero);
-		return array('pdf'=>$file, 'sql'=>$sql);
+		if($suivi) $file = $this->imprimeSuivi($suivi, $pdo, $annee);
+		else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $this->Numero);
+		return array('pdf'=>$file);
 	}
 
 	function PrintAttestation($params) {
@@ -1187,14 +1188,6 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			}
 			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
-//		if($action == 'add') {
-//			$c = "'$classe'";
-//			$p = strpos($ids, $c);
-//			if($p !== false) {
-//				if($ids) $id .= ',';
-//				$ids .= $c;
-//			}			
-//		}
 
 		$sql = "
 select c.Id as clsId, c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, 

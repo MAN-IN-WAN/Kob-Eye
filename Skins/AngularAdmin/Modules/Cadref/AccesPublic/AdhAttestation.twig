@@ -20,6 +20,33 @@
 					</div>
 					<div class="row" style="height:10px"></div>
 					<div class="row">
+						<div class="col-md-2">
+							{{ label("Attestation fiscale") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestFisc" ng-change="selectAttestMode(0)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-2">
+							{{ label("Suivi de cours") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestSuivi" ng-change="selectAttestMode(1)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-2">
+							{{ label("Attestation de paiement") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestPaiement" ng-change="selectAttestMode(2)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
 						<div class="col-md-1">
 						</div>
 						<div class="col-md-6">
