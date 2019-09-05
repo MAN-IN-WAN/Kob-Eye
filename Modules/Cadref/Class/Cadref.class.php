@@ -540,9 +540,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				}
 				$j = $p['JourId'] - 1;
 				$d = $start + ($j * 24 * 60 * 60);
-klog::l("$d $cd $cf");
 				while($d < $end) {
-					//$ok = true;
 					$ok = !($cd && ($d < $cd || $d > $cf));
 					if($ok) {
 						foreach($vacances as $v) {
@@ -550,13 +548,16 @@ klog::l("$d $cd $cf");
 								case 'D':
 									$w = date('N', $d);
 									$ok = !($v->day == $w && $d < $v->start);
+									//if(!$ok) klog::l(date('d/m/y',$d)." D $w $v->day $d $v->start");
 									break;
 								case 'F':
 									$w = date('N', $d);
 									$ok = !($v->day == $w && $d > $v->start);
+									//if(!$ok) klog::l(date('d/m/y',$d)." F $w $v->day $d $v->start");
 									break;
 								case 'V':
 									$ok = !($d >= $v->start && $d <= $v->end);
+									//if(!$ok) klog::l(date('d/m/y',$d)." V $d $v->start $v->end");
 									break;
 							}
 							if(!$ok) break;
@@ -575,7 +576,7 @@ klog::l("$d $cd $cf");
 				$events[] = self::calEvent($adh, $d, $p, $absences);
 			}
 		}
-klog::l(">>>>>>>>>>",$events);
+//klog::l(">>>>>>>>>>",$events);
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
