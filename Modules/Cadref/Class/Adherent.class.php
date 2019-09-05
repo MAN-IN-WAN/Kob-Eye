@@ -73,8 +73,10 @@ class Adherent extends genericClass {
 			$this->Cotisation = $data->Cotisation;
 			$this->Save();
 		}
-		$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
-		$a->Dons = $data->Dons ? $data->Dons : 0;
+		if($mode != 2) {
+			$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
+			$a->Dons = $data->Dons ? $data->Dons : 0;
+		}
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
