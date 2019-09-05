@@ -770,7 +770,10 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		return false;
 	}
 
-	function PrintAttestationPublic($suivi, $annee) {
+	function PrintAttestationPublic($params) {
+		$suivi = $params['AttestSuivi'] ? 1 : ($params['AttestPaiement'] ? 2 : 0);
+		$annee = $params['AttestAnnee'];
+
 		$id = $this->Id;
 		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$fisc = date('Y', $an->DateCotisation);
@@ -784,7 +787,7 @@ where a.AdherentId=$id and a.Annee='$annee'
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($suivi) $file = $this->imprimeSuivi($suivi, $pdo, $annee);
 		else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $this->Numero);
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'sql'=>$sql);
 	}
 
 	function PrintAttestation($params) {

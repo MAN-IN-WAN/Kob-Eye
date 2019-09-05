@@ -488,10 +488,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	// attestation fiscale
-	$scope.AttestAnnee = '{{ Annee }}';
-	$scope.AttestMode = 0;
+	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
 	$scope.adherentAttestation = function() {
-		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestationPublic',[$scope.AttestMode, $scope.AttestAnnee]);
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestationPublic',$scope.Attest,false);
 		ajax.success(
 			function(data) {
 				if(data.data.pdf == false) swal('Attention',"Vous n'êtes pas inscrit pour cette année.",'warning');
@@ -505,11 +504,19 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		);
 	}
 	$scope.selectAttestMode = function(mode) {
-		var o = $scope;
+		var o = $scope.Attest;
 		switch(mode) {
-			case 0: o.AttestPaiement = o.AttestSuivi = o.AttestFisc ? 0 : 1; break;
-			case 1: o.AttestPaiement = o.AttestFisc = o.AttestSuivi ? 0 : 1; break;
-			case 2: o.AttestSuivi = o.AttestFisc = o.AttestPaiement ? 0 : 1; break;
+		case 0: 
+			if(o.AttestFisc) { o.AttestPaiement = o.AttestSuivi = 0; }
+			else { o.AttestPaiement = 0; o.AttestSuivi = 1; }
+			break;
+		case 1: 
+			if(o.AttestSuivi) { o.AttestPaiement = o.AttestFisc = 0; }
+			else { o.AttestPaiement = 1; o.AttestFisc = 0; }
+			break;
+		case 2: 
+			if(o.AttestPaiement) { o.AttestFisc = o.AttestSuivi = 0; }
+			else { o.AttestFisc = 1; o.AttestSuivi = 0; }
 		}
 	}
 
