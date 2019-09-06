@@ -400,7 +400,8 @@ class Adherent extends genericClass {
 		$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 
-		$annee = Cadref::$Annee;
+		$annee = $obj['Annee'];
+		if(empty($annee)) $annee = Cadref::$Annee;
 		$sql = '';
 		$whr = '';
 
