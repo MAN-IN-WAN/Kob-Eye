@@ -1606,8 +1606,13 @@ where ce.Visite=:cid";
 		
 		$annee = $params['Annee'];
 		
-		$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
-		foreach($adhs as $adh) $adh->SaveAnnee(null, 3);
+		if($params['CalculSolde']) {
+			$aans = Sys::getData('Cadref','AdherentAnnee/Annee='.$annee);
+			foreach($aans as $aan) {
+				$adh = $aan->getOneParent('Adherent');
+				$adh->SaveAnnee(null, 3);
+			}
+		}
 
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
 
