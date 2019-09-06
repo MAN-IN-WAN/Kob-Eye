@@ -30,6 +30,7 @@ class Adherent extends genericClass {
 	// 0 => save adherent (appel par Adherent/Save.twig.php)
 	// 1 => save inscription ou reservation	
 	// 2 => save reglement (appel direct)
+	// 3 => recalcul cumuls
 	function SaveAnnee($data, $mode) {
 		$annee = Cadref::$Annee;
 		$cours = 0;
@@ -73,7 +74,7 @@ class Adherent extends genericClass {
 			$this->Cotisation = $data->Cotisation;
 			$this->Save();
 		}
-		if($mode != 2) {
+		if($mode == 0 || $mode == 1) {
 			$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
 			$a->Dons = $data->Dons ? $data->Dons : 0;
 		}
@@ -1602,8 +1603,12 @@ where ce.Visite=:cid";
 
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');
-
+		
 		$annee = $params['Annee'];
+		
+		$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
+		foreach($adhs as $adh) $adh->SaveAnnee(null, 3);
+
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
 
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 

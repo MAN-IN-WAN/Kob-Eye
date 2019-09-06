@@ -90,7 +90,7 @@ where ".$where;
 		return $s;
 	}
 	
-	private function sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
+	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
 		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN');
 		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC');
 		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS');
@@ -99,7 +99,7 @@ where ".$where;
 select count(*) as cnt,sum(round(r.Montant,2)) as tot
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user' and a.EtatRUM=$nSeq
 ";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 klog::l($sql);
@@ -123,13 +123,13 @@ klog::l($sql);
 		return $Sepa;
 	}
 
-	private function sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
+	private function sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
 		$Sepa = '';
 		$sql = "
 select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user' and a.EtatRUM=$nSeq
 order by a.Nom,a.Prenom
 ";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -151,6 +151,7 @@ order by a.Nom,a.Prenom
 	}
 
 	function Prelevements($obj) {
+		$user = $obj['Utilisateur'];
 		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
 		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00'); 
 		$dfin->add(DateInterval::createFromDateString('1 month'));
@@ -257,7 +258,7 @@ order by a.Nom,a.Prenom
 		$sql = "
 select count(*) as cnt,sum(round(Montant,2)) as tot
 from `##_Cadref-Reglement`
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user'
 ";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -274,25 +275,25 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 
 		$nSeq = 0;
 		$cSeq = "FRST";
-		$tmp = $this->sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
 			$Sepa .= $cPrl4;
 		}
 		$nSeq = 1;
 		$cSeq = "RCUR";
-		$tmp = $this->sepaPrl1($remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
 			$Sepa .= $cPrl4;
 		}
 
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD";
+		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD.txt";
 		file_put_contents($file, $Sepa);
 		
 		return array('file'=>$file);
