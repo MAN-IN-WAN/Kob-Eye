@@ -1651,7 +1651,7 @@ where a.Annee='$annee' and i.Annee='$annee' and (a.Cotisation>0 or a.Cours>0 or 
 ";
 		if($nsold)
 			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons<>0 or a.Cotisation=0)";		
-		$sql .= " order by e.Nom,e.Prenom,i.CodeClasse";
+		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
