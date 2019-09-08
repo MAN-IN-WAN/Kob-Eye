@@ -1626,9 +1626,9 @@ where ce.Visite=:cid";
 		$annee = $params['Annee'];
 		
 		if($params['CalculSolde']) {
-			$aans = Sys::getData('Cadref','AdherentAnnee/Annee='.$annee);
-			foreach($aans as $aan) {
-				$adh = $aan->getOneParent('Adherent');
+			$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
+			foreach($adhs as $adh) {
+				//$adh = $aan->getOneParent('Adherent');
 				$adh->SaveAnnee(null, 3);
 			}
 		}
