@@ -37,22 +37,41 @@ class Adherent extends genericClass {
 		$visit = 0;
 		$regle = 0;
 		$diffe = 0;
-		$ins = $this->getChildren('Inscription/Annee='.$annee);
-		foreach($ins as $in) {
-			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
+		$id = $this->Id;
+		
+		$sql = "select sum(Prix-Reduction-Soutien) as total from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) $cours = $p['total'];
+		$sql = "select sum(Prix-Reduction-Assurance) as total from `##_Cadref-Reservation` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) $visit = $p['total'];
+		$sql = "select sum(if(Differe=0 or Encaisse=1,Montant,0)) as total, sum(if(Differe=1 and Encaisse=0,Montant,0)) as differe from `##_Cadref-Reglement` where AdherentId=$id and Annee='$annee' and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$regle = $p['total'];
+			$diffe = $p['differe'];
 		}
-		$vis = $this->getChildren('Reservation/Annee='.$annee);
-		foreach($vis as $vi) {
-			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
-		}
-		$rgs = $this->getChildren('Reglement/Annee='.$annee);
-		foreach($rgs as $rg) {
-			if($rg->Supprime) continue;
-			if($rg->Differe) {
-				if($rg->Encaisse) $regle += $rg->Montant;
-				else $diffe += $rg->Montant;
-			} else $regle += $rg->Montant;
-		}
+		
+		
+//		$ins = $this->getChildren('Inscription/Annee='.$annee);
+//		foreach($ins as $in) {
+//			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
+//		}
+//		$vis = $this->getChildren('Reservation/Annee='.$annee);
+//		foreach($vis as $vi) {
+//			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
+//		}
+//		$rgs = $this->getChildren('Reglement/Annee='.$annee);
+//		foreach($rgs as $rg) {
+//			if($rg->Supprime) continue;
+//			if($rg->Differe) {
+//				if($rg->Encaisse) $regle += $rg->Montant;
+//				else $diffe += $rg->Montant;
+//			} else $regle += $rg->Montant;
+//		}
 
 		$a = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		if(!$a) {
