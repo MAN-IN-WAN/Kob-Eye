@@ -28,7 +28,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->nbcot = $nbcot;
 		$this->cotis = $cotis;
 		$this->head = array('','','Cours','Réduc','Soutien','Total','Cotis','Dons','Règlé','Différé','Régul','Solde');
-		$this->width = array(16,75,18,18,18,18,18,18,18,18,18,18);
+		$this->width = array(18,75,18,18,18,18,18,18,18,18,18,18);
 		$this->align = array('L','L','R','R','R','R','R','R','R','R','R','R');
 		$n = count($this->head);
 		for($i = 0; $i < $n; $i++) $this->largeur += $this->width[$i]; 
@@ -102,7 +102,7 @@ class PrintRecapitulatif extends FPDF {
 	}
 	
 	function PrintLines($regl) {
-		$rid = 0;
+		$rid = -1;
 		$this->SetFont('Arial','',10);
 		foreach($regl as $r) {
 			$id = $r['Id'];
