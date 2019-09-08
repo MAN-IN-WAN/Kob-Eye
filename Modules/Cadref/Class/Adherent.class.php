@@ -1642,7 +1642,7 @@ where ce.Visite=:cid";
 select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
 i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
 from `##_Cadref-AdherentAnnee` a
-inner join `##_Cadref-Adherent` e on e.Id=a.AdherentId
+left join `##_Cadref-Adherent` e on e.Id=a.AdherentId
 left join `##_Cadref-Inscription` i on i.AdherentId=e.Id
 left join `##_Cadref-Classe` c on c.Id=i.ClasseId 
 left join `##_Cadref-Niveau` n on n.Id=c.NiveauId 
