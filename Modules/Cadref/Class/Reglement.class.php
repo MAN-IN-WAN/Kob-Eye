@@ -14,6 +14,7 @@ class Reglement extends genericClass {
 	function PrintReglement($obj) {
 		require_once ('PrintReglement.class.php');
 
+		$annee  = Cadref::$Annee;
 		$menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
@@ -27,7 +28,7 @@ class Reglement extends genericClass {
 			case 0:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 				$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
-				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1)";
+				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1) and Annee='$annee'";
 				$title = 'Règlements '.$user.' '.$obj['DateDebut'].'-'.$obj['DateFin'];
 				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'_'.date('YmdHis').'.pdf';
 				break;
