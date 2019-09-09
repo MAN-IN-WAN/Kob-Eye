@@ -566,6 +566,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					if($ok) {
 						$events[] = self::calEvent($adh, $d, $p, $absences);
 					}
+klog::l("<<<<<<<<<<<<<<<<<<<".date('d/m/Y',$d));
 					$d += 7 * 24 * 60 * 60;
 klog::l(">>>>>>>>>>>>>>>>>>>".date('d/m/Y',$d));
 				}
