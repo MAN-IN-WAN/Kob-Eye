@@ -54,7 +54,7 @@ class Adherent extends genericClass {
 			$regle = $p['total'];
 			$diffe = $p['differe'];
 		}
-		
+klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>$regle $diffe $sql");		
 		
 //		$ins = $this->getChildren('Inscription/Annee='.$annee);
 //		foreach($ins as $in) {
