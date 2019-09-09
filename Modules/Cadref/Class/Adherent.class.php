@@ -39,22 +39,21 @@ class Adherent extends genericClass {
 		$diffe = 0;
 		$id = $this->Id;
 		
-		$sql = "select sum(Prix-Reduction-Soutien) as total from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = "select ifnull(sum(Prix-Reduction-Soutien),0) as total from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) $cours = $p['total'];
-		$sql = "select sum(Prix-Reduction-Assurance) as total from `##_Cadref-Reservation` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = "select ifnull(sum(Prix-Reduction-Assurance),0) as total from `##_Cadref-Reservation` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) $visit = $p['total'];
-		$sql = "select sum(if(Differe=0 or Encaisse=1,Montant,0)) as total, sum(if(Differe=1 and Encaisse=0,Montant,0)) as differe from `##_Cadref-Reglement` where AdherentId=$id and Annee='$annee' and Supprime=0";
+		$sql = "select ifnull(sum(if(Differe=0 or Encaisse=1,Montant,0)),0) as total, ifnull(sum(if(Differe=1 and Encaisse=0,Montant,0)),0) as differe from `##_Cadref-Reglement` where AdherentId=$id and Annee='$annee' and Supprime=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$regle = $p['total'];
 			$diffe = $p['differe'];
 		}
-klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>$regle $diffe $sql");		
 		
 //		$ins = $this->getChildren('Inscription/Annee='.$annee);
 //		foreach($ins as $in) {
