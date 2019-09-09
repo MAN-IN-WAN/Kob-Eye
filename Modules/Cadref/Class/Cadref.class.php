@@ -540,7 +540,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				}
 				$j = $p['JourId'] - 1;
 				$d = $start + ($j * 24 * 60 * 60);
-				while($d < $end) {
+				while($d <= $end) {
 					$ok = !($cd && ($d < $cd || $d > $cf));
 					if($ok) {
 						foreach($vacances as $v) {
@@ -567,6 +567,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 						$events[] = self::calEvent($adh, $d, $p, $absences);
 					}
 					$d += 7 * 24 * 60 * 60;
+klog::l(">>>>>>>>>>>>>>>>>>>".date('d/m/Y',$d));
 				}
 			}
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
