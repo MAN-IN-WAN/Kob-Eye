@@ -389,7 +389,7 @@ class Cadref extends Module {
 		$end = strtotime(str_replace('T', ' ', $args->end));
 
 		
-klog::l(">>>>>>>>>$args->start  $start");
+klog::l("+++++++++++++++++++++++++++++++++++++$args->start  $start");
 		$annee = self::$Annee;
 		$data = array();
 		$events = array();
