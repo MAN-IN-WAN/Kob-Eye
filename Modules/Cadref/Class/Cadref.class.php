@@ -385,11 +385,13 @@ class Cadref extends Module {
 
 	public static function GetCalendar($args) {
 		$args = json_decode(str_replace("\\", "", $args['args']));
-		$start = strtotime(str_replace('T', ' ', $args->start.' GMT'));
-		$end = strtotime(str_replace('T', ' ', $args->end.' GMT'));
+		$a = explode('T', $args->start);
+		$start = strtotime($a[0].' 00:00:0 GMT');
+		$a = explode('T', $args->end);
+		$end = strtotime($a[0].' 00:00:0 GMT');
 
 		
-klog::l("+++++++++++++++++++++++++++++++++++++$args->start  $start");
+klog::l("+++++++++++++++++++++++++++++++++++  $start  $end ".date('d/m/Y',$start));
 		$annee = self::$Annee;
 		$data = array();
 		$events = array();
