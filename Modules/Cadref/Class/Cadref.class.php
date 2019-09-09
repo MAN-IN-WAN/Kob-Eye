@@ -382,6 +382,11 @@ class Cadref extends Module {
 	public static function between($t, $start, $end) {
 		return $start <= $t && $t <= $end;
 	}
+	
+	private static function gmtTime($d) {
+		$dt = date('Y-m-d', $d+(2*60*60));
+		return strtotime($dt.' 00:00:00 GMT');
+	}
 
 	public static function GetCalendar($args) {
 		$args = json_decode(str_replace("\\", "", $args['args']));
@@ -390,8 +395,6 @@ class Cadref extends Module {
 		$a = explode('T', $args->end);
 		$end = strtotime($a[0].' 00:00:0 GMT');
 
-		
-klog::l("+++++++++++++++++++++++++++++++++++  $start  $end ".date('d/m/Y',$start));
 		$annee = self::$Annee;
 		$data = array();
 		$events = array();
@@ -403,8 +406,8 @@ klog::l("+++++++++++++++++++++++++++++++++++  $start  $end ".date('d/m/Y',$start
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$t = $p['Type'];
-			$d = $p['DateDebut'];
-			$f = $p['DateFin'] ? $p['DateFin'] : $d;
+			$d = self::gmtTime($p['DateDebut']);
+			$f = $p['DateFin'] ? self::gmtTime($p['DateFin']) : self::gmtTime($d);
 			if($t == 'V') {
 				$e = new stdClass();
 				$e->title = $p['Libelle'] ?: 'VACANCES';
@@ -509,8 +512,8 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql1);
 		foreach($pdo as $p) {
-			$d = $p['DateDebut'];
-			$f = $p['DateFin'] ? $p['DateFin'] : $d;
+			$d = self::gmtTime($p['DateDebut']);
+			$f = $p['DateFin'] ? self::gmtTime($p['DateFin']) : self::gmtTime($d);
 			$a = new stdClass();
 			$a->cid = $p['cid'];
 			$a->nom = trim($p['Prenom'].' '.$p['Nom']) ?: 'ENSEIGNANT';
@@ -536,10 +539,10 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				$cy = $p['CycleDebut'];
 				if($cy != '') {
 					$m = substr($cy, 3, 2);
-					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
 					$cy = $p['CycleFin'];
 					$m = substr($cy, 3, 2);
-					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
 					$cf += 86400 - 1;
 				}
 				$j = $p['JourId'] - 1;
@@ -552,16 +555,13 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 								case 'D':
 									$w = date('N', $d);
 									$ok = !($v->day == $w && $d < $v->start);
-									//if(!$ok) klog::l(date('d/m/y',$d)." D $w $v->day $d $v->start");
 									break;
 								case 'F':
 									$w = date('N', $d);
 									$ok = !($v->day == $w && $d > $v->start);
-									//if(!$ok) klog::l(date('d/m/y',$d)." F $w $v->day $d $v->start");
 									break;
 								case 'V':
 									$ok = !($d >= $v->start && $d <= $v->end);
-									//if(!$ok) klog::l(date('d/m/y',$d)." V $d $v->start $v->end");
 									break;
 							}
 							if(!$ok) break;
@@ -570,9 +570,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					if($ok) {
 						$events[] = self::calEvent($adh, $d, $p, $absences);
 					}
-klog::l("<<<<<<<<<<<<<<<<<<<$d  ".date('d/m/Y',$d));
 					$d += 7 * 24 * 60 * 60;
-klog::l(">>>>>>>>>>>>>>>>>>>$d  ".date('d/m/Y',$d));
 				}
 			}
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
@@ -582,7 +580,7 @@ klog::l(">>>>>>>>>>>>>>>>>>>$d  ".date('d/m/Y',$d));
 				$events[] = self::calEvent($adh, $d, $p, $absences);
 			}
 		}
-//klog::l(">>>>>>>>>>",$events);
+
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
