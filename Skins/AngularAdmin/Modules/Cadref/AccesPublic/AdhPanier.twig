@@ -5,12 +5,6 @@
         <div class="panel-body">
             <div class="row no-gutters">		
                 <div class="col-md-12">
-
-					<div class="row" ng-if="!inscriptionObj.Select">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
-						</div>
-					</div>
 					<section class="panel" ng-if="inscriptionObj.Select">
 						<div class="panel-body">
 							<div class="row">
@@ -135,6 +129,12 @@
 							</tbody>
 						</table>
 						</div>
+						<div class="row" ng-if="!inscriptionObj.Select">
+							<div class="col-md-2">
+								<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
+							</div>
+						</div>		
+						<div style="height:30px"></div>
 						<div class="row" ng-if="panierObj.Total*1">
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ panierObj.Montant }]}</label>
@@ -153,14 +153,17 @@
 								</div>
 							</div>
 							<div class="col-md-2">
-							<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
+								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
 							</div>
 							<div class="col-md-2">
-							<button type="button" ng-if="panierObj.Urlweb" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
+								<button type="button" ng-if="panierObj.Urlweb" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
 							</div>
 							<div class="col-md-2">
-							<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
+								<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
 							</div>
+						</div>
+						<div class="row" ng-if="panierObj.Total*1">
+							<label class="form-control-label cadref-label" style="color:gray">Rappel : Règlement non fractionnable pour les paiements en ligne</label>
 						</div>
 						<div class="row" ng-if="!panierObj.panierItems.length">
 							<label class="form-control-label cadref-label">Aucune inscription.</label>
@@ -217,6 +220,10 @@
 					</div>
 				</div>
 				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:25px;margin-top:5px"></div>
+				<div>
+					<label class="form-control-label cadref-label" style="color:gray">Rappel : Règlement non fractionnable pour les paiements en ligne</label>
+				</div>
+				<div style="height:20px"></div>
 				<div class="row">
 					<div class="col-md-2">
 					</div>
