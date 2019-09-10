@@ -556,8 +556,11 @@ class Sys extends Root{
                     print($data);
                 }
                 break;
-			case "SDD": if($this->Typ=="SDD") {
-					header('Content-type: application/octet-stream');
+				
+			case "prlv":
+				if($this->type=="prlv") {
+					header('Content-type: text/plain');
+					header("Accept-Ranges:bytes");
 				}
 			case "pdf":
 				if ($this->type=="pdf"){

@@ -298,7 +298,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".SDD";
+		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".prlv";
 		file_put_contents(getcwd().$file, $Sepa);
 		
 		return array('file'=>$file);
