@@ -1646,7 +1646,7 @@ left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee'
 left join `##_Cadref-Classe` c on c.Id=i.ClasseId 
 left join `##_Cadref-Niveau` n on n.Id=c.NiveauId 
 left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-where a.Annee='$annee'
+where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0)
 ";
 		if($nsold)
 			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons<>0 or a.Cotisation=0)";		

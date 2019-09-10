@@ -174,7 +174,7 @@ class Cadref extends Module {
 		$u->Pass = '[md5]'.md5($pass);
 		$u->Save();
 
-		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte utilisateur : ';
+		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
 		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,$s.$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 		
 		if(strpos($a->Mail, '@') > 0) {
