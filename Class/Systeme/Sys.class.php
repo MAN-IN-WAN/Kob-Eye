@@ -557,8 +557,7 @@ class Sys extends Root{
                 }
                 break;
 			case "SDD": if($this->Typ=="SDD") {
-					header('Content-type: application/plain');
-					header('X-Content-Type-Options: nosniff');
+					header('Content-type: application/gzip');
 				}
 			case "pdf":
 				if ($this->type=="pdf"){
