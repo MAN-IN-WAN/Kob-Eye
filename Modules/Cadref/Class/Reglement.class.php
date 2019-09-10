@@ -100,10 +100,11 @@ where ".$where;
 select count(*) as cnt,sum(round(r.Montant,2)) as tot
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user' and a.EtatRUM=$nSeq
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l($sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$nbre		= $p['cnt'];
@@ -130,9 +131,11 @@ klog::l($sql);
 select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user' and a.EtatRUM=$nSeq
-order by a.Nom,a.Prenom
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+		$sql .= " order by a.Nom,a.Prenom";
+
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -259,8 +262,9 @@ order by a.Nom,a.Prenom
 		$sql = "
 select count(*) as cnt,sum(round(Montant,2)) as tot
 from `##_Cadref-Reglement`
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Utilisateur='$user'
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
 ";
+		if($user != 'Tous') $sql .= " and Utilisateur='$user'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -294,8 +298,8 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD.txt";
-		file_put_contents($file, $Sepa);
+		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".SDD";
+		file_put_contents(getcwd().$file, $Sepa);
 		
 		return array('file'=>$file);
 	}
