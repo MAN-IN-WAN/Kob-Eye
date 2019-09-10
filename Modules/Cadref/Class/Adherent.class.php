@@ -1148,6 +1148,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$pa = $this->getOneChild('Panier/Annee='.$annee);
 		if(!$pa) {
 			$pa = genericClass::createInstance('Cadref', 'Panier');
+			$pa->Numero = $this->Numero;
 			$pa->Annee = $annee;
 			$pa->addParent($this);
 		}
