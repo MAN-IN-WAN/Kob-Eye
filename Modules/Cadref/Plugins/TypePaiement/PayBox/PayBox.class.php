@@ -147,6 +147,9 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function retrouvePaiementEtape4s() {
+		$s = date('Y-m-d H:i:s')."\nPOST---------------\n".print_r($_POST, true)."\nGET---------------\n".print_r($_GET, true)."\n\n";
+		file_put_contents(getcwd()."/Log/Paiement.log", $s, FILE_APPEND);
+		
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
 		if(isset($_POST['ident']) and !empty($_POST['ident'])) {
 			$a = explode('-', $_POST['ident']);

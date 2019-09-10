@@ -15,6 +15,7 @@ $tmp[] = 'WEB';
 $tmp[] = "Tous";
 $vars['users'] = $tmp;
 $vars['initiales'] = Sys::$User->Initiales;
+$vars['prelevement'] = Sys::$User->Initiales == 'NAT' || Sys::$User->Initiales == 'ADM' ? 1 : 0;
 
 $menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 $t = explode('/', Sys::$CurrentMenu->Url);

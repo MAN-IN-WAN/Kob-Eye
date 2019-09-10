@@ -304,5 +304,30 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		return array('file'=>$file);
 	}
 
+	function Encaissements($obj) {
+		$user = $obj['Utilisateur'];
+		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
+		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00'); 
+		$dfin->add(DateInterval::createFromDateString('1 month'));
+		$dfin->add(DateInterval::createFromDateString('1 second'));
+		$dfin = $dfin->getTimestamp();
+		$sql = "
+select a.id as adhId, r.Id as regId
+from `##_Cadref-Reglement` r
+inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$reg = Sys::getOneData('Cadref', 'Reglement/'.$p['regId']);
+			$reg->Encaisse = 1;
+			$reg->Save();
+			$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['adhId']);
+			$adh->EtatRUM = 1;
+			$adh->Save();
+		}
+		return true;
+	}
 	
 }
