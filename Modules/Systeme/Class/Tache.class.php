@@ -5,6 +5,14 @@ class Tache extends genericClass{
     public function Execute($force=false) {
         Sys::autocommitTransaction();
 
+        if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) {
+            //on vérifie que le thread est toujours la
+            if (Parc::isProcessAlive($this->ThreadId))
+                return true;
+            $this->Reset();
+            return $this->Execute();
+        }
+
         //on rafraichit les infos
         if ($this->Demarre&&!$force) return true;
 
@@ -15,7 +23,6 @@ class Tache extends genericClass{
             $this->ThreadId = '';
         }*/
 
-        if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) return true;
         $this->ThreadId = getmypid();
         $this->DateDebut = time();
         parent::Save();
@@ -144,6 +151,16 @@ class Tache extends genericClass{
         $this->Demarre=0;
         $this->Erreur=0;
         $this->ThreadId='';
+        return $this->Save();
+    }
+
+    /**
+     * Terminate
+     */
+    public function Terminate($end = false){
+        $this->Termine=$end;
+        $this->Erreur=!$end;
+        $this->Progression = 100;
         return $this->Save();
     }
 

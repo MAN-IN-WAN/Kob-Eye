@@ -1458,9 +1458,14 @@ Choix des composants
     max-width: 1200px;
 }
 .modal-body {
-    overflow: hidden;
-    overflow: -webkit-paged-y !important;
+/*    overflow: hidden;
+    height: fit-content;*/
 }
+.modal-dialog .modal-body {
+    display: table;
+    width: 100%;
+}
+
 
 .logo-centre {
 	margin: auto;

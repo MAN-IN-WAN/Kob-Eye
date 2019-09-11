@@ -1,14 +1,14 @@
 <SCHEMA>
 	<OBJECTCLASS title="Projet" driver="mysql" AccessPoint="1" searchType="plaintext"  master="0" Description="Projets"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="Projets_Projet" Class="Modules/Projets/Class/Projet.class.php">
-		<FILTER name="Tous les projets" ></FILTER>
 		<FILTER name="Projets actifs" color="success"><![CDATA[Status>1&Status<4]]></FILTER>
 		<FILTER name="Projets en retard" color="danger"><![CDATA[Status=4]]></FILTER>
 		<FILTER name="Projets terminée" color="primary"><![CDATA[Status>4]]></FILTER>
 		<FILTER name="Projets à planifier (Brouillon)" color="secondary"><![CDATA[Status=1]]></FILTER>
 		<FILTER name="Projets de suivi uniquement" color="secondary"><![CDATA[SuiviUniquement=1]]></FILTER>
-		<INTERFACES name="fiche_tab">
+		<FILTER name="Tous les projets" ></FILTER>
+		<!--<INTERFACES name="fiche_tab">
 			<FORM type="Template" urlPrefix="/Projets/Projet/" urlSuffix="/Gantt.htm" title="Tableau de Gantt">Infos</FORM>
-		</INTERFACES>
+		</INTERFACES>-->
 
 		<FKEY card="1,1" module="Parc" data="Client,Id" list="1" form="1" fiche="1" description="Client" listDescr="Client">ClientId</FKEY>
 		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" form="1" fiche="1" description="Titre" formLabel="1">Nom</PROPERTIES>
@@ -24,19 +24,19 @@
 		<PROPERTIES type="int" form="1" fiche="1" list="1" listDescr="Temps prévu" description="Temps prévu (en heure s'il vous plaît à raison de 7 heures par jour)">TempsPrevu</PROPERTIES>
 		<FKEY card="0,1" data="Status,Id" list="1" form="1" fiche="1" >Status</FKEY>
 		<FKEY card="1,1" module="Parc" data="Technicien,Id" form="1" fiche="1" description="Chef de projet" listDescr="Chef de projet">ChefProjet</FKEY>
+		<RKEY card="0,1" data="Ticket,Id" list="1" form="1" fiche="1" module="Parc" >ProjectId</RKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" master="0" Description="Taches"  Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" order="DateDebut" orderType="ASC">
+	<!--<OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" master="0" Description="Taches"  Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" order="DateDebut" orderType="ASC">
 		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" form="1" fiche="1" listWidth="200">Nom</PROPERTIES>
 		<PROPERTIES type="text" category="Descriptif" form="1" fiche="1">Description</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="2" category="Descriptif" list="1" form="1" fiche="1">DateDebut</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="2" category="Descriptif" list="1" form="1" fiche="1">DateFin</PROPERTIES>
 		<PROPERTIES type="progress" category="Descriptif" description="Etat d'avancement" hidden="1" listDescr="Progression" list="1" form="1" fiche="1">AvancementReel</PROPERTIES>
-		<!--<PROPERTIES category="Descriptif" type="int"	defaultValue="1" query="Projets/Status/Type=1::Id::Status"	default="1"	 list="1" form="1" fiche="1">Status</PROPERTIES>-->
 		<FKEY card="1,1" data="Projet,Id" list="1" form="1" fiche="1">ProjetId</FKEY>
 		<FKEY card="0,1" data="Competence,Id" list="1" form="1" fiche="1">CompetenceId</FKEY>
 		<FKEY card="0,1" data="Status,Id" list="1" form="1" fiche="1" >Status</FKEY>
 		<FKEY card="1,1" module="Parc" data="Technicien,Id" list="1" form="1" fiche="1" description="Chargé de production">Technicien</FKEY>
-	</OBJECTCLASS>
+	</OBJECTCLASS>-->
 	<OBJECTCLASS title="Competence" driver="mysql" AccessPoint="0" master="0" Dico="0" Description="Competences"  Icon="/Skins/AdminV2/Img/IconAqua/App.png">
 		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
 		<PROPERTIES type="price" searchOrder="2" category="Descriptif">TarifHoraire</PROPERTIES>

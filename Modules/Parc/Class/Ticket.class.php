@@ -106,6 +106,8 @@ class Ticket extends genericClass{
 
 
     public function Verify(){
+        //valeurs par défaut
+        $this->
 
         if(!empty($this->CodeClient)){
             $cli = Sys::getOneData('Parc','Client/CodeGestion='.$this->CodeClient);
@@ -123,6 +125,16 @@ class Ticket extends genericClass{
             } else{
                 $this->addParent($cli);
             }
+        }else {
+            //si le client est en parent de l'objet on récupère son code client
+            $par = $this->getOneParent('Client');
+            if($par){
+                $this->CodeClient = $par->CodeGestion;
+            } else{
+                $this->addError(array("Message"=>"Il faut associer un client à un ticket."));
+                return false;
+            }
+
         }
 
         return parent::Verify();

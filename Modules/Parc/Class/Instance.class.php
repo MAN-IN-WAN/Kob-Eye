@@ -344,6 +344,7 @@ class Instance extends genericClass{
      * Retourne le code http pour un domaine en particulier.
      */
     public static function getHttpCode($url,$https=false) {
+        $px = Sys::getOneData('Parc','Server/Proxy=1');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)");
@@ -353,6 +354,7 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_PROXY, $px->InternalIP.':'.(($https)?':443':':80'));
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;

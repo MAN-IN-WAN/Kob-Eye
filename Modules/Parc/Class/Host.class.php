@@ -349,7 +349,7 @@ class Host extends genericClass
                 if ($dstsrv->Id!=$mainsrv->Id) {
                     //Installation des fichiers
                     $act = $task->createActivity('Initialisation de la synchronisation sur le serveur ' . $dstsrv->Nom, 'Info');
-                    $cmd = 'rsync -e "ssh -o StrictHostKeyChecking=no" -avz root@' . $mainsrv->InternalIP . ':/home/' . $host->NomLDAP . ' /home/' ;
+                    $cmd = 'rsync -e "ssh -o StrictHostKeyChecking=no" -avz --exclude azkocms_medias --exclude azkocms_skins root@' . $mainsrv->InternalIP . ':/home/' . $host->NomLDAP . ' /home/' ;
                     $act->addDetails($cmd);
                     $out = $dstsrv->remoteExec($cmd);
                     $act->addDetails($out);
@@ -515,11 +515,12 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             else $domain = $force_domain;
 
             //test existence
-            $exists = Sys::getCount('Parc','Host/'.$this->Id.'/Apache/apacheServerName='.$pref.$this->NomLDAP.'.'.$dom->Url);
+            $apname = SubDomain::checkName($pref.$this->NomLDAP);
+            $exists = Sys::getCount('Parc','Host/'.$this->Id.'/Apache/apacheServerName='.$apname.'.'.$dom->Url);
             //if ($exists) continue;
             if ($exists) return false;
 
-            $apache->ApacheServerName = $pref.$this->NomLDAP.'.'.$dom->Url;
+            $apache->ApacheServerName = $apname.'.'.$dom->Url;
             $apache->DocumentRoot = 'www';
             $apache->Actif = true;
             $apache->addParent($this);
@@ -1320,7 +1321,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      */
     public function getSize(){
         $server = $this->getServer();
-        $cmd='du -s /home/'.$this->NomLDAP.'  | cut -f1';
+        $cmd='du -s /home/'.$this->NomLDAP.' --exclude=azkocms_medias --exclude=azkocms_skins  | cut -f1';
         $this->DiskSpace = $server->remoteExec($cmd);
         //mise à jour quota
         if ($this->Quota<=10000) $this->Quota=5*1024*1024;

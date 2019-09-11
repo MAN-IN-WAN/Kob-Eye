@@ -1587,7 +1587,7 @@ class genericClass extends Root {
         }
 
         $res = Array("Module" => $Module, "Titre" => $Class, "Id" => $Nid, "Action" => $Action, "Fkey" => (empty($SpeFKey)) ? $Class : $SpeFKey);
-        if($prop != 'Id'){
+        if(isset($prop) && $prop != 'Id'){
             $par = Sys::getOneData($Module,$Class.'/'.$Nid);
             if($par && !empty($par->{$prop}))
                 $res[$prop] = $par->{$prop};

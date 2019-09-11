@@ -49,7 +49,7 @@ class RestorePoint extends genericClass{
             $act = $task->createActivity('Suppression des dossiers', 'Info', $task);
             //analyse des dossiers à supprimer
             foreach ($folders as $folder) {
-                if (!in_array($folder,array('cgi-bin','backup','logs','stats','conf',''))){
+                if (!in_array($folder,array('cgi-bin','backup','logs','stats','conf','azkocms_medias','azkocms_skins'))){
                     $out = $apachesrv->remoteExec('rm -Rf /home/'.$host->NomLDAP.'/'.$folder);
                     $act->addDetails('Suppression du dossier '.$folder);
                     $act->addDetails($out);
@@ -140,14 +140,14 @@ class RestorePoint extends genericClass{
             //Préparation du backup
             $act = $task->createActivity('Création du dossier backup-'.$this->Identifiant, 'Info');
             //creation du dossier
-            $cmd = 'if [ ! -d "/home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'" ] then mkdir /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'; fi';
+            $cmd = 'if [ ! -d "/home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'" ]; then mkdir /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.'; fi';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails(print_r($out,true));
             $act->Terminate(true);
 
             $act = $task->createActivity('Modification des droits', 'Info');
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/backup-'.$this->Identifiant.' -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);

@@ -238,7 +238,7 @@
 		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
 		<FUNCTION title="Configuration du serveur">createConfigTask</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN">
+	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN,addServerHostTask::PARC_TECHNICIEN,delServerHostTask::PARC_TECHNICIEN,syncHostTask::PARC_TECHNICIEN">
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -494,40 +494,40 @@
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Ticket" logEvent="1" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php" Operations="closeTicket,delete::PARC_TECHNICIEN,edit::PARC_TECHNICIEN,export">
+	<OBJECTCLASS title="Ticket" logEvent="1" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php" Operations="closeTicket,delete::PARC_TECHNICIEN,edit::PARC_TECHNICIEN,export,add::PARC_TECHNICIEN">
 		<FUNCTION title="Creation de ticket" hidden="1">createTicket</FUNCTION>
 		<FUNCTION title="Cloture du ticket" >closeTicket</FUNCTION>
 
-		<FILTER name="Mes tickets" color="success" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&UserNext=[!ParcTechnicien::IdGestion!]]]></FILTER>
+		<FILTER name="Mes tickets" color="success" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&UserNext=[!ParcTechnicien::IdGestion!]&Categorie=OPE]]></FILTER>
 		<FILTER name="Backlog" color="info">Etat=10</FILTER>
 		<FILTER name="Bloquant" color="danger" ><![CDATA[Etat=10&Priorite=4]]></FILTER>
 		<FILTER name="Tous les tickets" color="secondary" ></FILTER>
 
 		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
-		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
-		<PROPERTIES type="varchar" unique="1" searchOrder="1" description="Numero du ticket" list="1" form="1" fiche="1" gestion="1" listDescr="N° Ticket">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" description="Source du ticket" list="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
+		<PROPERTIES type="varchar" unique="1" searchOrder="1" description="Numero du ticket" list="1" fiche="1" gestion="1" listDescr="N° Ticket">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" list="1" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" gestion="1" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Intitulé" list="1" form="1" fiche="1" gestion="1" listDescr="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" gestion="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN">DateEcheance</PROPERTIES>
+		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" gestion="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN" default="[!TMS::Now!]">DateEcheance</PROPERTIES>
 		<PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" gestion="1" listDescr="Etat" values="10::En cours,20::Terminé,30::A facturer,40::Clôturé,41::Abandonné">Etat</PROPERTIES>
 		<PROPERTIES type="boolean" list="1" form="1" fiche="1" listDescr="Prioritaire" hasRole="PARC_TECHNICIEN">Prioritaire</PROPERTIES>
 		<PROPERTIES type="text" description="Information complémentaires" fiche="1" form="1" list="1" gestion="1" listDescr="Retour">Note</PROPERTIES>
-		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" gestion="1" listDescr="Date de création">DateCrea</PROPERTIES>
-		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" gestion="1" listDescr="Créateur">UserCrea</PROPERTIES>
+		<PROPERTIES type="date" description="Date de création" list="1" fiche="1" gestion="1" listDescr="Date de création">DateCrea</PROPERTIES>
+		<PROPERTIES type="varchar" description="Intervenant original" list="0" fiche="1" gestion="1" listDescr="Créateur">UserCrea</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" description="Code contrat Abtel" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeContrat</PROPERTIES>
-		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" gestion="1" listDescr="Prochain">UserNext</PROPERTIES>
+		<PROPERTIES type="varchar" description="Affecté au technicien" list="1" fiche="1" form="1" gestion="1" listDescr="Prochain" query="Parc/Technicien::IdGestion::Nom">UserNext</PROPERTIES>
 		<PROPERTIES type="varchar" description="Urgence" list="1" form="1" fiche="1" gestion="1" listDescr="Priorité" values="1::Reportable,2::Normal,3::Perturbant,4::Bloquant" default="2" >Priorite</PROPERTIES>
-		<PROPERTIES type="date" description="Terminé le" form="1" fiche="1" gestion="1" listDescr="Terminé le">DateTermine</PROPERTIES>
-		<PROPERTIES type="varchar" description="Terminé par"  form="1" fiche="1" listDescr="Terminé par">UserTermine</PROPERTIES>
-		<PROPERTIES type="date" description="Cloturé le" form="1" fiche="1" gestion="1" listDescr="Terminé le">DateCloture</PROPERTIES>
-		<PROPERTIES type="varchar" description="Cloturé par"  form="1" fiche="1" gestion="1" listDescr="Terminé par">UserCloture</PROPERTIES>
+		<PROPERTIES type="date" description="Terminé le" fiche="1" gestion="1" listDescr="Terminé le">DateTermine</PROPERTIES>
+		<PROPERTIES type="varchar" description="Terminé par"  fiche="1" listDescr="Terminé par">UserTermine</PROPERTIES>
+		<PROPERTIES type="date" description="Cloturé le" fiche="1" gestion="1" listDescr="Terminé le">DateCloture</PROPERTIES>
+		<PROPERTIES type="varchar" description="Cloturé par"  fiche="1" gestion="1" listDescr="Terminé par">UserCloture</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" description="Id Contact Gestion" fiche="1" gestion="1" listDescr="Contact Client" hasRole="PARC_TECHNICIEN">IdContactGestion</PROPERTIES>
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
-		<FKEY card="1,1" data="Client,Id" list="1" form="1" fiche="1">ClientId</FKEY>
-		<FKEY card="0,1" module="Abtel" form="1" fiche="1" data="Contrat,Id" >ContratId</FKEY>
-		<FKEY card="0,1" data="Contact,Id" form="1" fiche="1">ContactId</FKEY>
+		<FKEY card="1,1" data="Client,Id" list="1" fiche="1" form="1" description="Client">ClientId</FKEY>
+		<FKEY card="0,1" module="Abtel" fiche="1" data="Contrat,Id" >ContratId</FKEY>
+		<FKEY card="0,1" data="Contact,Id" fiche="1">ContactId</FKEY>
 
 		<INTERFACES name="fiche_middle">
 			<FORM type="Template" url="Parc/Ticket/ActionTimeline" params="" title="Template à insérer">Template</FORM>
@@ -702,7 +702,7 @@
 	<OBJECTCLASS title="VersionLogiciel" driver="mysql" Description="Version des applicatifs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/VersionLogiciel.class.php" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack,KobEye,OwnCloud,Prestashop,Pydio,Symfony,Wordpress" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">Version</PROPERTIES>
-		<PROPERTIES type="varchar" description="Type" values="dev,pre-prod,prod" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type" values="dev,pre-prod,prod,depotlocal" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" listDescr="">Fichier</PROPERTIES>
 		<PROPERTIES type="text" description="SQL intialisation (dump)" subtype="sql">SQLInit</PROPERTIES>
 		<PROPERTIES type="text" description="SQL Mise à jour" subtype="sql">SQLPatch</PROPERTIES>
@@ -710,7 +710,10 @@
 		<PROPERTIES type="varchar" description="Branche Git" form="1" fiche="1" default="origin/master">GitBranche</PROPERTIES>
 		<PROPERTIES type="varchar" description="Revision Git" form="1" fiche="1">GitRevision</PROPERTIES>
 		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
-		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
+		<PROPERTIES type="text" description="Commentaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
+		<PROPERTIES type="text" description="Clef ssh" subtype="text" form="1" fiche="1">SshKey</PROPERTIES>
+		<PROPERTIES type="text" description="Config ssh" subtype="text" form="1" fiche="1">SshConfig</PROPERTIES>
+		<PROPERTIES type="boolean" description="Reinitialisation de la configuration Ssh" form="1" fiche="1" default="0">SshReset</PROPERTIES>
 
         <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">VersionLogicielTacheId</RKEY>
 
