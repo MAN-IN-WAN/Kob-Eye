@@ -1,6 +1,6 @@
 {# liste ClasseDate #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
-<div class="cadref-widget" ng-if="classeDateInfo.mode!=''">
+<div class="cadref-widget" ng-if="classeDateInfo.mode=='add'||classeDateInfo.mode=='edit'">
 	<div class="row">
 		<div style="height:10px"></div>
 		<div class="col-md-12">
@@ -38,8 +38,33 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div class="cadref-widget" ng-if="classeDateInfo.mode=='copy'">
+	<div class="row">
+		<div style="height:10px"></div>
+		<div class="col-md-12">
+			<div id="attach-edit">
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Copier les dates depuis") }}
+					</div>
+					<div class="col-md-4">
+						<input id="input-classeDateObjCopy" type="text" class="form-control cadref-input" ng-model="classeDateObj.CopyFrom" style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();"/>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="classeDateObj.CopyFrom!=''" ng-click="classeDateCopyDates()" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="classeDateCloseEdit()" title="Annuler"></a>
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
 
 </div>
+
 <div class="listWrap" ng-if="classeDateInfo.mode==''">
 	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
@@ -47,7 +72,10 @@
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th class="cadref-th">Date</th>
 				<th class="cadref-th">Note</th>
-				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="classeDateAdd()" title="Ajouter une date"></a></th>
+				<th class="cadref-th-btn">
+					<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="classeDateAdd()" title="Ajouter une date"></a>
+					<a class="btn-abt cadref-btn-copy btn-info" href="" ng-click="classeDateCopy()" title="Copier les dates"></a>
+				</th>
 			</tr>
 		</thead>
 		<tbody>

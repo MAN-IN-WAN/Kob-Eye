@@ -1,13 +1,13 @@
 {# printReglement #}
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
 
-	$scope.obj = {CurrentUrl:'{{ Url }}', Tous:false, NonSolde:true};
+	$scope.obj = {CurrentUrl:'{{ Url }}', Annee:'{{ Annee }}', Tous:false, NonSolde:true};
 	
 	$scope.selectMode = function(mode) {
 		var o = $scope.obj;
 		switch(mode) {
-			case 0: o.NonSolde = false; break;
-			case 1: o.Tous = false; break;
+			case 0: o.NonSolde = !o.Tous; break;
+			case 1: o.Tous = !o.NonSolde; break;
 		}
 	}
 

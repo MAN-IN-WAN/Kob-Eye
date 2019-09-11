@@ -6,8 +6,14 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
     $oc = $o->getObjectClass();
     $vars['CurrentMenu'] = ['Titre' =>$oc->Description ];
 }
-$vars['identifier'] = 'CadrefAdherent';
+$vars['identifier'] = 'CadrefRecap';
 
-$vars['dateDebut'] = "01/08/".Cadref::$Annee;
+
+$tmp = array();
+$gs = Sys::getData('Cadref','Annee');
+foreach($gs as $g) $tmp[] = $g->Annee;
+$vars['annees'] = $tmp;
+
+
 
 

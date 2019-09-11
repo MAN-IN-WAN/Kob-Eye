@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_DIR."Class/Lib/MailCleaner.class.php";
+
 class Domain extends genericClass {
 	var $_isVerified = false;
 	var $UpdateOnSave;
@@ -25,15 +27,35 @@ class Domain extends genericClass {
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
-			if ($this->updateOnSave) {
+			if ($this->updateOnSave && !$this->Secondaire) {
                 $this->updateOnSave = false;
                 parent::Save();
                 $this->AutoGenSubDomains();
             }
-			//mise à jour des serveur dns
-            $pxs = Sys::getData('Parc','Server/Dns=1');
-            foreach ($pxs as $px) {
-                $px->callLdap2Service();
+			if(!$this->Secondaire) {
+                //mise à jour des serveur dns
+                $pxs = Sys::getData('Parc', 'Server/Dns=1');
+                foreach ($pxs as $px) {
+                    $px->callLdap2Service();
+                }
+            }
+			if($this->Mail){
+			    if(!MailCleaner::domainExists($this->Url)) {
+                    if(!$res = MailCleaner::addDomain($this->Url)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (1)','Obj'=> $res ));
+                }
+
+			    //Si MIB
+                if($this->MailFilter) {
+                    $params = array("destination"=>"10.100.200.51");
+                    if(!$res = MailCleaner::editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2a)','Obj'=> $res ));
+                } else {
+                    $params = array("destination"=>"10.0.189.1,10.0.189.2,10.0.189.3");
+                    if(!$res = MailCleaner::editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2b)','Obj'=> $res ));
+                }
+
+			    if(!$this->Secondaire){
+			        //$this->CheckMXs(); //TODO: Fonction inexistante à l'heure actuelle
+                }
             }
         }
 		return true;
@@ -375,6 +397,8 @@ class Domain extends genericClass {
 		$out.= "</ul></li></ul>";
 		if (!$fromsave) echo $out;
 	}
+
+
 
 	function checkIntegrity() {
 		$error = 0;

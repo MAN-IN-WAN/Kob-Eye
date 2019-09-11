@@ -10,28 +10,31 @@ class PrintRecapitulatif extends FPDF {
 	private $width;
 	private $posy;
 	private $largeur = 0;
-	private $total = [0,0,0,0,0,0,0,0];
-	private $ttotal = [0,0,0,0,0,0,0,0];
+	private $total = [0,0,0,0,0,0,0,0,0];
+	private $ttotal = [0,0,0,0,0,0,0,0,0];
 	private $titre;
 	private $adherent = 0;
 	private $sansCotis = 0;
 	private $sansCours = 0;
 	private $cours = false;
+	private $nbDons = 0;
+	private $nbSoutien = 0;
 	
 	
-	function PrintRecapitulatif() {
+	function PrintRecapitulatif($nsold) {
 		parent::__construct('L', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
 		$this->nbcot = $nbcot;
 		$this->cotis = $cotis;
-		$this->head = array('','','Cours','Réduc','Soutien','Total','Cotis','Règlé','Différé','Régul','Solde');
-		$this->width = array(16,75,18,18,18,18,18,18,18,18,18);
-		$this->align = array('L','L','R','R','R','R','R','R','R','R','R');
+		$this->head = array('','','Cours','Réduc','Soutien','Total','Cotis','Dons','Règlé','Différé','Régul','Solde');
+		$this->width = array(18,75,18,18,18,18,18,18,18,18,18,18);
+		$this->align = array('L','L','R','R','R','R','R','R','R','R','R','R');
 		$n = count($this->head);
 		for($i = 0; $i < $n; $i++) $this->largeur += $this->width[$i]; 
 
-		$this->titre = "CADREF : Récapitulatif Adhérents ";
+		$this->titre = "CADREF : Récapitulatif Adhérents";
+		if($nsold) $this->titre .= " (Non soldés)";
 	}
 	
 	private function cv($txt) {
@@ -73,8 +76,8 @@ class PrintRecapitulatif extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, '');
 		$this->Cell($this->width[1], 4.5, $mode ? '' : 'Totaux', 0, 0, 'R');
-		for($i = 0; $i < 8; $i++) $this->Cell(18, 4.5, $t[$i], 0, 0, 'R');
-		$s = $t[3]+$t[4]-$t[5]-$t[6]-$t[7];
+		for($i = 0; $i < 9; $i++) $this->Cell(18, 4.5, $t[$i], 0, 0, 'R');
+		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]-$t[8];
 		$this->Cell(18, 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
 		$this->SetXY($this->left, $this->posy);
@@ -84,18 +87,22 @@ class PrintRecapitulatif extends FPDF {
 			$this->SetFont('Arial','',10);
 			$this->posy += 4.5;
 			$this->SetXY($this->left, $this->posy);
-			$this->Cell(60, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
-			$this->Cell(60, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
-			$this->Cell(60, 4.5, $this->cv('Sans cours : ').$this->sansCours);
+			$this->Cell(58, 4.5, $this->cv("Nombre d'adhérents : ").$this->adherent);
+			$this->Cell(58, 4.5, $this->cv('Sans cotisations : ').$this->sansCotis);
+			$this->Cell(58, 4.5, $this->cv('Sans cours : ').$this->sansCours);
+			//$this->posy += 4.5;
+			//$this->SetXY($this->left, $this->posy);
+			$this->Cell(58, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
+			$this->Cell(58, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
 		}
 		else {
 			if(!$this->cours) $this->sansCours++;
-			for($i = 0; $i < 8; $i++) $this->ttotal[$i] += $this->total[$i];
+			for($i = 0; $i < 9; $i++) $this->ttotal[$i] += $this->total[$i];
 		}
 	}
 	
 	function PrintLines($regl) {
-		$rid = 0;
+		$rid = -1;
 		$this->SetFont('Arial','',10);
 		foreach($regl as $r) {
 			$id = $r['Id'];
@@ -119,9 +126,11 @@ class PrintRecapitulatif extends FPDF {
 		
 		$this->adherent++;
 		if(!$l['Cotisation']) $this->sansCotis++;
+		if($l['Dons']) $this->nbDons++;
 		$this->cours = false;
-		$this->total = [0,0,0,0,$l['Cotisation'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
+		$this->total = [0,0,0,0,$l['Cotisation'],$l['Dons'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
 	}
+	
 	private function printLine($l) {
 		$prx = $l['Prix'];
 		$red = $l['Reduction'];
@@ -131,7 +140,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->SetFont('Arial',($sup ? 'I' : ''),10);
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['CodeClasse']);
-		$s = $this->cv(trim($l['libelleD'].' '.$l['libelleN']));
+		$s = $this->cv(trim($l['libelleD'].' '.$l['LibelleN']));
 		$this->Cell($this->width[1], 4.5, $s);
 		$this->Cell($this->width[2], 4.5, $prx ?: '', 0, 0, 'R');
 		$this->Cell($this->width[3], 4.5, $red ?: '', 0, 0, 'R');
@@ -152,6 +161,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->posy += 4.5;
 		
 		if($l['CodeClasse']) $this->cours = true;
+		if($l['Soutien'] && !$sup) $this->nbSoutien++;
 	} 
 
 }

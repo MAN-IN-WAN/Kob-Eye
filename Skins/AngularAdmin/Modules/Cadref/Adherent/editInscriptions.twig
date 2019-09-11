@@ -1,3 +1,4 @@
+<form name="CadrefContentIsncr" id="CadrefContentIsncr">
 <div>
 	<span class="cadref-ins-numero" ng-bind="modalObj.Numero"></span> <span class="cadref-ins-nom" ng-bind="modalObj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="modalObj.Prenom"></span>
 </div>
@@ -17,6 +18,7 @@
 				<th>Visites</th>
 				<th>Règlé</th>
 				<th>Différé</th>
+				<th>Dons</th>
 				<th>Régul.</th>
 				<th>Solde</th>
 				<th>Payé</th>
@@ -38,10 +40,11 @@
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.visit" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regle" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.diff" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.dons" ng-change="classeDons()" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regul" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Inscr.nonSolde}" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr">
-					<input type="text" id="inscrPaye" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.paye" ng-change="classePaye()" style="width:60px" />
+					<input type="text" id="inscrPaye" class="form-control cadref-input" ng-focus="selectAllContent($event)" onclick="this.select()" ng-model="CadrefClasse.Inscr.paye" ng-change="classePaye()" style="width:60px" />
 				</td>
 				<td class="cadref-td-inscr">
 					<select class="form-control cadref-input" ng-model="CadrefClasse.Inscr.mode" ng-change="nextControle(true)">
@@ -49,8 +52,6 @@
 						<option value="B">Banque</option>
 						<option value="C">Carte</option>
 						<option value="E">Espèces</option>
-						<option value="P">Prélèvement</option>
-						<option value="V">Vacances</option>
 					</select>	
 				</td>
 				<td class="cadref-td-inscr">
@@ -73,6 +74,7 @@
 
 	</table>
 </section>
+</form>
 <div class="row cadref-separ"></div>
 <div class="form-group row">
     <div class="col-lg-5 col-md-12">
@@ -89,7 +91,7 @@
 			</div>
 			<span class="input-group-btn">
 				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="classeClearFilters()"></a>
-                <a  href="javascript: void(0);" class="btn btn-success" accesskey="a" title="Alt A" ng-click="classeAjoute(null)" ng-disabled="addDisabled">Ajouter</a>
+                <a hidden href="javascript: void(0);" class="btn btn-success" accesskey="a" title="Alt A" ng-click="classeAjoute(null)" ng-disabled="addDisabled">Ajouter</a>
 			</span>
 		</div>
 	</div>

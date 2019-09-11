@@ -11,6 +11,7 @@ class Adherent extends genericClass {
 			$this->Numero = sprintf('%06d', intval($a->Numero) + 1);
 			$this->Inscription = $annee;
 		}
+		$this->Nom = strtoupper($this->Nom);
 		$this->NomPrenom = $this->Nom.' '.$this->Prenom;
 		$this->Utilisateur = Sys::$User->Initiales;
 		$this->DateModification = time();
@@ -23,35 +24,54 @@ class Adherent extends genericClass {
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
-			'Soutien'=>$s->Soutien);
+			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons);
 	}
 
 	// $mode :
 	// 0 => save adherent (appel par Adherent/Save.twig.php)
 	// 1 => save inscription ou reservation	
 	// 2 => save reglement (appel direct)
+	// 3 => recalcul cumuls
 	function SaveAnnee($data, $mode) {
 		$annee = Cadref::$Annee;
 		$cours = 0;
 		$visit = 0;
 		$regle = 0;
 		$diffe = 0;
-		$ins = $this->getChildren('Inscription/Annee='.$annee);
-		foreach($ins as $in) {
-			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
+		$id = $this->Id;
+		
+		$sql = "select ifnull(sum(Prix-Reduction-Soutien),0) as total from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) $cours = $p['total'];
+		$sql = "select ifnull(sum(Prix-Reduction-Assurance),0) as total from `##_Cadref-Reservation` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) $visit = $p['total'];
+		$sql = "select ifnull(sum(if(Differe=0 or Encaisse=1,Montant,0)),0) as total, ifnull(sum(if(Differe=1 and Encaisse=0,Montant,0)),0) as differe from `##_Cadref-Reglement` where AdherentId=$id and Annee='$annee' and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$regle = $p['total'];
+			$diffe = $p['differe'];
 		}
-		$vis = $this->getChildren('Reservation/Annee='.$annee);
-		foreach($vis as $vi) {
-			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
-		}
-		$rgs = $this->getChildren('Reglement/Annee='.$annee);
-		foreach($rgs as $rg) {
-			if($rg->Supprime) continue;
-			if($rg->Differe) {
-				if($rg->Encaisse) $regle += $rg->Montant;
-				else $diffe += $rg->Montant;
-			} else $regle += $rg->Montant;
-		}
+		
+//		$ins = $this->getChildren('Inscription/Annee='.$annee);
+//		foreach($ins as $in) {
+//			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
+//		}
+//		$vis = $this->getChildren('Reservation/Annee='.$annee);
+//		foreach($vis as $vi) {
+//			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
+//		}
+//		$rgs = $this->getChildren('Reglement/Annee='.$annee);
+//		foreach($rgs as $rg) {
+//			if($rg->Supprime) continue;
+//			if($rg->Differe) {
+//				if($rg->Encaisse) $regle += $rg->Montant;
+//				else $diffe += $rg->Montant;
+//			} else $regle += $rg->Montant;
+//		}
 
 		$a = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		if(!$a) {
@@ -62,7 +82,7 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
-			$a->Adhrent = $data->Adherent;
+			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
 			$a->NotesAnnuelles = $data->NotesAnnuelles;
@@ -73,12 +93,15 @@ class Adherent extends genericClass {
 			$this->Cotisation = $data->Cotisation;
 			$this->Save();
 		}
-		$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
+		if($mode == 0 || $mode == 1) {
+			$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
+			$a->Dons = $data->Dons ? $data->Dons : 0;
+		}
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation;
+		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation + $a->Dons;
 		$a->Save();
 
 		return true;
@@ -89,6 +112,7 @@ class Adherent extends genericClass {
 		$inscr = $params['Inscr'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
+		$data->Dons = $inscr['dons'];
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -163,6 +187,64 @@ class Adherent extends genericClass {
 				);
 				break;
 		}
+	}
+	
+	function WebInscription($paiement) {
+		$annee = Cadref::$Annee;
+
+		$reg = genericClass::createInstance('Cadref', 'Reglement');
+		$reg->addParent($paiement);
+		$reg->addParent($this);
+		$reg->Numero = $this->Numero;
+		$reg->Annee = $annee;
+		$reg->Montant = $paiement->Montant;
+		$reg->DateReglement = time();
+		$reg->ModeReglement = 'W';
+		$reg->Note = $paiement->Reference;
+		$reg->Encaisse = 1;
+		$reg->Utilisateur = 'WEB';
+		$reg->Web = 1;
+		$reg->Save();
+	
+		$data = $this->GetPanier('inscribe', '');
+		foreach($data['data'] as $ins) {
+			$attente = 0;
+			$supprime = 0;
+
+			$o = genericClass::createInstance('Cadref', 'Inscription');
+			$cls = genericClass::createInstance('Cadref', 'Classe');
+			$cls->initFromId($ins['clsId']);
+
+			$o->addParent($this);
+			$o->addParent($cls);
+			$o->Annee = $annee;
+			$o->Numero = $this->Numero;
+			$o->CodeClasse = $ins['CodeClasse'];
+			$o->Antenne = substr($ins['CodeClasse'], 0, 1);
+			$o->Attente = 0;
+			$o->Supprime = 0;
+			$o->DateInscription = time();
+			$o->DateAttente = 0;
+			$o->DateSupprime = 0;
+			$o->Prix = $ins['Prix'];
+			$o->Reduction = $ins['Reduction'];
+			$o->Soutien = 0;
+			$o->Utilisateur = 'WEB';
+			$o->Web = 1;
+			$o->Save();
+
+			$cls->Save();
+		}
+		// adherent
+		$this->Annee = $annee;
+		if($saveAdh) $this->Save();
+		
+		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']+$data['donate']));
+		$this->saveAnneeInscr($insc);
+		$this->Save();
+		
+		$pa = $this->getOneChild('Panier/Annee='.$annee);
+		if($pa) $pa->Delete();
 	}
 
 	private function saveInscriptions($params, $saveAdh) {
@@ -243,11 +325,20 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$reg = $params['Diff']['regl'];
 		foreach($reg as $r) {
-			if(!isset($r['updated']) || !$r['updated'] || !$r[paye]) continue;
+			if(!isset($r['updated']) || !$r['updated']) continue;
 
 			$o = genericClass::createInstance('Cadref', 'Reglement');
-			if($r['id']) $o->initFromId($r['id']);
-			else $o->addParent($this);
+			if($r['id']) {
+				$o->initFromId($r['id']);
+				if(!$r['paye']) {
+					$o->Delete();
+					continue;
+				}
+			}
+			else {
+				if(!$r['paye']) continue;
+				$o->addParent($this);
+			}
 
 			$m = $r['mois'];
 			$d = '15/'.(strlen($m) == 1 ? '0' : '').$m.'/'.($m >= 9 ? $annee : ($annee + 1));
@@ -271,7 +362,7 @@ class Adherent extends genericClass {
 		$annee = Cadref::$Annee;
 		$min = ($annee).'0630';
 		$dat = $this->DateCertificat;
-		if(!empty($dat) && date('Ymd', $dat) < $min) return true;
+		if($dat > 0 && date('Ymd', $dat) > $min) return true;
 
 		$cert = false;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
@@ -283,7 +374,7 @@ class Adherent extends genericClass {
 				break;
 			}
 		}
-		if($cert && (empty($dat) || date('Ymd', $dat) < $min)) return false;
+		if($cert && ($dat <= 0 || date('Ymd', $dat) < $min)) return false;
 		return true;
 	}
 
@@ -292,7 +383,8 @@ class Adherent extends genericClass {
 
 		$annee = Cadref::$Annee;
 		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		$ins = $this->getChildren('Inscription/Annee='.$annee);
+		$ins = $this->getChildren('Inscription/Annee='.$annee.'&Supprime=0&Attente=0');
+		if(!$aan || (!$aan->Cotisation && !count($ins))) return array('pdf'=>false);
 
 		$pdf = new PrintCarte($this, $aan, $recto);
 		$pdf->SetAuthor("Cadref");
@@ -315,6 +407,7 @@ class Adherent extends genericClass {
 		return array('pdf'=>$file);
 	}
 
+	
 	function PrintAdherentSession($obj) {
 		if(isset($_SESSION['PrintAdherent'])) $obj = $_SESSION['PrintAdherent'];
 		else $obj = false;
@@ -327,7 +420,8 @@ class Adherent extends genericClass {
 		$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 
-		$annee = Cadref::$Annee;
+		$annee = $obj['Annee'];
+		if(empty($annee)) $annee = Cadref::$Annee;
 		$sql = '';
 		$whr = '';
 
@@ -537,8 +631,8 @@ order by a.Nom, a.Prenom";
 				$s = '"'.$a['Numero'].'";';
 				$s .= '"'.$a['Nom'].'";';
 				$s .= '"'.$a['Prenom'].'";';
-				$s .= '"'.$a['Adresse1'].'";';
-				$s .= '"'.$a['Adresse2'].'";';
+				$s .= $this->dblCotes(['Adresse1']).';';
+				$s .= $this->dblCotes($a['Adresse2']).';';
 				$s .= '"'.$a['CP'].'";';
 				$s .= '"'.$a['Ville'].'";';
 				$s .= '"'.$a['Telephone1'].'";';
@@ -548,8 +642,7 @@ order by a.Nom, a.Prenom";
 				if($obj['Rupture'] != 'S') {
 					$s .= ';';
 					$s .= '"'.$a['CodeClasse'].'";';
-					$s .= '"'.$a['LibelleD'].'";';
-					$s .= '"'.$a['LibelleN'].'";';
+					$s .= $this->dblCotes($a['LibelleD'].' '.$a['LibelleN']).';';
 					$s .= '"'.($a['Attente'] ? 'O' : 'N').'";';
 					$s .= '"'.($a['Attente'] ? date('d/m/Y H:i',$a['DateAttente']) : '').'"';
 				}
@@ -590,6 +683,11 @@ order by a.Nom, a.Prenom";
 
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
+	
+	private function dblCotes($s) {
+		return '"'.iconv('UTF-8','ISO-8859-15//TRANSLIT',str_replace('"', "\"", $s)).'"';
+	}
+
 
 	function PrintCertificat($params) {
 		$mode = isset($params['mode']) ? $params['mode'] : 'print';
@@ -695,9 +793,29 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		return false;
 	}
 
+	function PrintAttestationPublic($params) {
+		$suivi = $params['AttestSuivi'] ? 1 : ($params['AttestPaiement'] ? 2 : 0);
+		$annee = $params['AttestAnnee'];
+
+		$id = $this->Id;
+		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		$fisc = date('Y', $an->DateCotisation);
+		$sql = "
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+from `##_Cadref-AdherentAnnee` a
+inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
+where a.AdherentId=$id and a.Annee='$annee'
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($suivi) $file = $this->imprimeSuivi($suivi, $pdo, $annee);
+		else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $this->Numero);
+		return array('pdf'=>$file, 'sql'=>$sql);
+	}
+
 	function PrintAttestation($params) {
 		$sql = "
-select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 ";
@@ -718,6 +836,7 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 				return array('message'=>'Tache lancée en arrière plan.');
 			}
 			
+			$type = $params['AttestSuivi'];
 			$annee = $params['AttestAnnee'];
 			$fisc = $params['AttestFiscale'];
 			$where = " where a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
@@ -725,9 +844,9 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 			$classe = isset($params['Classe']) ? $params['Classe'] : '';
 			if($antenne || $classe) {
 				$sql .= "
-left join `kob-Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
-left join `kob-Cadref-Classe` c on c.Id=i.ClasseId
-left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
+left join `##_Cadref-Inscription` i on i.AdherentId=h.Id and i.Annee='$annee'
+left join `##_Cadref-Classe` c on c.Id=i.ClasseId
+left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 ";
 				if($antenne) $where .= " and n.AntenneId=$antenne";
 				if($classe) $where .= " and c.CodeClasse like '$classe%'";
@@ -765,10 +884,12 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					);
 					break;
 				case 1:
+					$suivi = $params['Attest']['AttestSuivi'] ? 1 : ($params['Attest']['AttestPaiement'] ? 2 : 0);
 					$annee = $params['Attest']['AttestAnnee'];
 					$fisc = $params['Attest']['AttestFiscale'];
 					$mode = $params['Attest']['mode'];
-					$where = " where a.AdherentId=$id and a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
+					if(suivi) $where = " where a.AdherentId=$id and a.Annee='$annee'";
+					else $where = " where a.AdherentId=$id and a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
 					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
 					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 					if(!$pdo) return false;
@@ -776,11 +897,13 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					if(!$pdo->rowCount()) return array('step'=>2, 'data'=>'Pas de cotisation pour cette année.');
 
 					if($mode == 'mail') {
-						$this->sendAttestation($pdo, $annee, $fisc);
+						if($suivi) $this->sendSuivi($suivi, $pdo, $annee);
+						else $this->sendAttestation($pdo, $annee, $fisc);
 						return array('step'=>2, 'data'=>'Message envoyé.');
 					}
 					
-					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
+					if($suivi) $file = $this->imprimeSuivi($suivi, $pdo, $annee);
+					else $file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
 						'step'=>2,
 						'data'=>'<a id="displayAttestation" href="'.$file.'" target="_blank" ng-click="attestationAdherent(\''.$file.'\')">Attestation imprimée</a>',
@@ -820,6 +943,41 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		$bod .= Cadref::MailSignature();
 		foreach($pdo as $p) {
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
+			$b = Cadref::MailCivility($p).$bod;
+			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+			if(MSG_ADH) Cadref::SendMessage($args);
+		}
+	}
+
+	private function imprimeSuivi($suivi, $list, $annee) {
+		require_once ('PrintSuivi.class.php');
+
+		$pdf = new PrintSuivi();
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle('Attestations de suivi de cours');
+		foreach($list as $l) {
+			$adh = Sys::getOneData('Cadref', 'Adherent/'.$l['Id']);
+			$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+			$ins = $this->getChildren('Inscription/Annee='.$annee);
+			if(!$aan || (!$aan->Cotisation && !count($ins))) continue;
+			$pdf->PrintPage($suivi, $adh, $ins, $aan, $annee);
+		}
+
+		$file = 'Home/tmp/Suivi'.$num.'_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().'/'.$file);
+		$pdf->Close();
+
+		return $file;
+	}
+
+
+	private function sendSuivi($suivi, $pdo, $annee) {
+		$an = $annee.'-'.($annee+1);
+		$sub = "CADREF : Attestation de suivi de cours";
+		$bod = "Veuillez trouver en pièce jointe l’attestation de suivi de cours $an .<br/><br />";
+		$bod .= Cadref::MailSignature();
+		foreach($pdo as $p) {
+			$file = $this->imprimeSuivi($suivi, array($p), $annee);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);
@@ -972,40 +1130,90 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$m = intval(substr($c, 3));
 		return ($m < 9 ? 10000 : 0)+$m*100+intval(substr($c, 0, 2)); 
 	}
+
+	public function GetPayment($montant) {
+		$p = genericClass::createInstance('Cadref', 'Paiement');
+		$p->Montant = $montant;
+		$tp = Sys::getOneData('Cadref', 'TypePaiement/Actif=1');
+		$p->addParent($tp);
+		$p->addParent($this);
+		$p->Save();
+		$pl = $tp->getPlugin();
+		return $pl->getCodeHTML($p);
+	}
 	
-	function GetPanier($remove) {
+	function GetPanier($action, $classe, $donation=-1) {
 		$adhId = $this->Id;
 		$annee = Cadref::$Annee;
+
+		$pa = $this->getOneChild('Panier/Annee='.$annee);
+		if(!$pa) {
+			$pa = genericClass::createInstance('Cadref', 'Panier');
+			$pa->Numero = $this->Numero;
+			$pa->Annee = $annee;
+			$pa->addParent($this);
+		}
+		$ids = $pa->Panier;
+		$donate = $pa->Dons;
+		$sess = isset($_SESSION['panier']);
+		if($sess) $ids = unserialize($_SESSION['panier']);
+
+		if(!empty($classe)) {
+			$sess = true;
+			if(!empty($ids)) {
+				if(strpos($ids, "'$classe'") === false) $ids .= ",'$classe'";
+			}
+			else $ids = "'$classe'";	
+		}
+		
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
 		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
-		
+
 		$data = array();
-		$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
-			'Jour'=>0,'HeureDebut'=>'','HeureFin'=>'','CycleDebut'=>'','CycleFin'=>'',
-			'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
-			'Disponibles'=>0,'note2'=>'','heures'=>0];
-		if($co->Cotisation)	{
-			$cot['Prix'] = $co->Cotisation;
-			$cot['classe'] = 'label-success';
-			$cot['note'] = 'Déjà réglée';
-			$cotis = 0;
-		} else {
-			$cot['Prix'] = $cotis = $an->Cotisation;
-			$cot['classe'] = 'label-warning';
-			$cot['note'] = 'à régler';
+		if($action != 'inscribe') {
+			$cot = ['clsId'=>0,'CodeClasse'=>'','LibelleD'=>'Cotisation CADREF '.$annee.'-'.($annee+1),'LibelleN'=>'',
+				'Jour'=>0,'HeureDebut'=>'','HeureFin'=>'','CycleDebut'=>'','CycleFin'=>'',
+				'LibelleA'=>'','Prix'=>0,'Reduction'=>0,'Soutien'=>0,'Inscrit'=>1,'Places'=>0,
+				'Disponibles'=>0,'note2'=>'','heures'=>0];
+			if($co && $co->Cotisation)	{
+				$cotisDue = 0;
+				$cot['Prix'] = $cotis = $co->Cotisation;
+				$cot['classe'] = 'label-success';
+				$cot['note'] = 'Déjà réglée';
+			} else {
+				$cot['Prix'] = $cotis = $cotisDue = $an->Cotisation;
+				$cot['classe'] = 'label-warning';
+				$cot['note'] = 'A régler';
+			}
+			$data[] = $cot;
+			$regul = $co ? $co->Regularisation : 0;
+			$dons = $co ? $co->Dons : 0;
 		}
-		$data[] = $cot;
-		
-		$ids = isset($_SESSION['panier']) ? unserialize($_SESSION['panier']) : '';
-		if(!empty($ids) && !empty($remove)) {
-			$c = "'$remove'";
+		else {
+			if($co) {
+				$cotisDue = 0;
+				$cotis = $co->Cotisation ? $co->Cotisation : $an->Cotisation;
+				$regul = $co->Regularisation;
+				$dons = $co->Dons;
+			}
+			else {
+				$cotis = $cotisDue = $an->Cotisation;
+				$regul = 0;
+				$dons = 0;
+			}
+		}
+
+		if(!empty($ids) && $action == 'remove' && !empty($classe)) {
+			$c = "'$classe'";
 			$p = strpos($ids, $c);
 			if($p !== false) {
 				$s = substr($ids, $p+9, 1);
 				if($s == ',') $c .= ',';
-				$ids = str_replace($c, '', $ids); 				
+				$ids = str_replace($c, '', $ids); 	
+				$s = substr($ids, -1, 1);
+				if($s == ',') $ids = substr($ids, 0, strlen($ids)-1);
 			}
-			$_SESSION['panier'] = serialize($ids);			
+			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
 
 		$sql = "
@@ -1032,7 +1240,8 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			$r['note'] = 'Déjà inscrit';
 			$r['note2'] = '';
 			$r['heures'] = 0;
-			$data[] = $r;
+			if($action != 'inscribe') $data[] = $r;
+			
 			$c = "'".$r['CodeClasse']."'";
 			$p = strpos($ids, $c);
 			if($p !== false) {
@@ -1041,13 +1250,19 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				$ids = str_replace($c, '', $ids); 				
 			}
 		}
-		$_SESSION['panier'] = serialize($ids);
+		if($sess) {
+			$_SESSION['panier'] = serialize($ids);
+			$pa->Panier = $ids;
+			if($donation >= 0) $pa->Dons = $donate = $donation;
+			$pa->Save();
+		}
+			
 		
 		$sql = "
 select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
-if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+if(c.DateReduction2 is not null and c.DateReduction2<=UNIX_TIMESTAMP(),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=UNIX_TIMESTAMP(),c.Reduction2,0)) as Reduction,
 0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on c.NiveauId=n.Id
@@ -1095,18 +1310,20 @@ inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where ce.Classe=:cid";
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql1);
-		foreach($data as $d) {
-			$pdo->execute(array(':cid'=>$d['clsId']));
+		foreach($data as &$d) {
+			$id = $d['clsId'];
+			if(!$id) continue;
+			$pdo->execute(array(':cid'=>$id));
 			$e = '';
 			foreach($pdo as $p) {
 				if($e) $e .= ', ';
 				$e .= trim($p['Prenom'].' '.$p['Nom']);
 			}
-			$r['Enseignants'] = $e;
+			$d['Enseignants'] = $e;
 		}
-		
-		$total = $cotis+$montant;
-		return array('data'=>$data, 'cotis'=>$cotis, 'montant'=>$montant, 'total'=>$total, 'urlweb'=>unserialize($_SESSION['urlweb']));		
+
+		$total = $cotisDue+$montant+$donate;
+		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
 
 	function GetCours($mode, $obj) {
@@ -1128,8 +1345,8 @@ where Libelle like '%$filter%'
 				$sql = "
 select distinct s.Id, s.Libelle
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-WebSection` s on s.Id=d.WebSectionId
 where d0.WebDisciplineId>0 and s.Libelle like '%$filter%'
@@ -1139,28 +1356,28 @@ order by s.Libelle";
 				$sql = "
 select distinct d.Id, d.Libelle
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.WebSectionId=$secId and d.Id=d0.WebDisciplineId
 where d0.WebDisciplineId>0 and d.Libelle like '%$filter%'
 order by d.Libelle";				
 				break;
 			case 'classe':
 				$sql = "
-select distinct c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
+select distinct c.CodeClasse, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
-if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,0)) as Reduction,
 0 as Soutien
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
-where d0.WebDisciplineId=$disId and n.AccesWeb=1 and c.AccesWeb=1 and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
+where d0.WebDisciplineId=$disId and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
 			case 'inscription':
@@ -1399,37 +1616,49 @@ where ce.Visite=:cid";
 		$inscr = $params['Visit'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
+		$data->Dons = $inscr['dons'];
 		$this->SaveAnnee($data, 1);
 	}
 	
 
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');
+		
+		$annee = $params['Annee'];
+		
+		if($params['CalculSolde']) {
+			$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
+			foreach($adhs as $adh) {
+				//$adh = $aan->getOneParent('Adherent');
+				$adh->SaveAnnee(null, 3);
+			}
+		}
 
-		$annee = Cadref::$Annee;
+		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
+
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 
 		$sql = "
-select a.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Cotisation,a.NotesAnnuelles,
+select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
 i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
 from `##_Cadref-AdherentAnnee` a
-inner join `##_Cadref-Adherent` e on e.Id=a.AdherentId
-left join `##_Cadref-Inscription` i on i.AdherentId=e.Id
+left join `##_Cadref-Adherent` e on e.Id=a.AdherentId
+left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee'
 left join `##_Cadref-Classe` c on c.Id=i.ClasseId 
 left join `##_Cadref-Niveau` n on n.Id=c.NiveauId 
 left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-where i.Annee='$annee' and (a.Cotisation>0 or a.Cours>0 or a.Reglement>0 or a.Differe>0)
+where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0)
 ";
-		if(isset($params['NonSolde']) && $params['NonSolde'])
-			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe-a.Regularisation<>0 or a.Cotisation=0)";		
-		$sql .= " order by e.Nom,e.Prenom,i.CodeClasse";
+		if($nsold)
+			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons<>0 or a.Cotisation=0)";		
+		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 
-		$pdf = new PrintRecapitulatif();
+		$pdf = new PrintRecapitulatif($nsold);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 

@@ -19,7 +19,7 @@
     <div class="control-group">
         <input type="text" class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"
 			{% if readonly %} readonly tabindex="-1"{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
-			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}{% if focus %} tabindex="0"{% endif %}
+			{% if cap %} style="text-transform:uppercase;"{% endif %}{% if focus %} tabindex="0"{% endif %}
 		/>
     </div>
 {% endmacro %}

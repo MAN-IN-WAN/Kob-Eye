@@ -2,7 +2,7 @@
 $menus = array(
 	'adh_informations'=>'AdhInfo',
 	'adh_finance'=>'AdhFinance',
-	'adh_inscriptions'=>'AdhInscription',
+	'adh_inscriptions'=>'AdhPanier',  //'AdhInscription',
 	'adh_visites'=>'AdhVisite',
 	'adh_visites'=>'AdhVisite',
 	'adh_documents/adh_carte'=>'AdhCarte',

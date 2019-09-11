@@ -11,13 +11,13 @@ $vars['identifier'] = 'CadrefAdherent';
 
 $info = Info::getInfos($vars['Query']);
 $aa = Sys::getData('Cadref','AdherentAnnee/AdherentId='.$info['LastId']);
-$last = '';
+$first = '';
 $ta = array();
 foreach($aa as $a) {
-	$last = $a->Annee;
-	$ta[$last] = $last.'-'.($last+1);
-	$tr[$last] = date('Y', $a->DateCotisation);
+	if($first == '') $first = $a->Annee;
+	$ta[$a->Annee] = $a->Annee.'-'.($a->Annee+1);
+	$tr[$a->Annee] = date('Y', $a->DateCotisation);
 }
 $vars['attestAnnees'] = $ta;
-$vars['attestLast'] = $last;
+$vars['attestFirst'] = $first;
 

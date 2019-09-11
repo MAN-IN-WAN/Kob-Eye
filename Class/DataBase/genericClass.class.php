@@ -385,11 +385,11 @@ class genericClass extends Root {
 	 * Renvoie la liste des catégories pour un objet
 	 * @return Array(Array(String))
 	 */
-	public function getCategories() {
+	public function getCategories($full = false) {
 		//Recupération de l'objetClass
 		$Obj = Sys::$Modules[$this -> Module] -> Db -> getObjectClass($this -> ObjectType);
 		//Récupération de la liste des catégories de propriétés
-		return $Obj -> getCategories();
+		return $Obj -> getCategories($full);
 	}
 	/**
 	 * getCategories

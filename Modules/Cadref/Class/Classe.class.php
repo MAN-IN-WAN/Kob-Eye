@@ -38,6 +38,9 @@ class Classe extends genericClass {
 	function Delete() {
 		$rec = $this->getChildren('Inscription');
 		if(count($rec)) throw new Exception('Cette classe ne peut être supprimée');
+		
+		$ds = $this->getChildren('ClasseDate');
+		foreach($ds as $d) $d->Delete();
 
 		return parent::Delete();
 	}
@@ -69,6 +72,32 @@ class Classe extends genericClass {
 		if(isset($_SESSION['ListClasse'])) $obj = $_SESSION['ListClasse'];
 		else $obj = false;
 		return $obj;
+	}
+	
+	function CopyDates($args) {
+		$annee = $args['Annee'];
+		$org = $args['CopyFrom'];
+		
+		$ds = $this->getChildren('ClasseDate');
+		foreach($ds as $d) $d->Delete();
+	
+		
+		$sql = "
+select d.DateCours
+from `##_Cadref-Classe` c 
+left join `##_Cadref-ClasseDate` d on c.Id=d.ClasseId
+where c.Annee='$annee' and c.CodeClasse='$org'
+order by d.DateCours";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$d = genericClass::createInstance('Cadref', 'ClasseDate');
+			$d->Annee = $annee;
+			$d->DateCours = $p['DateCours'];
+			$d->addParent($this);
+			$d->Save();
+		}
+		return array('args'=>$args, 'sql'=>$sql);
 	}
 	
 	function NextDate() {
@@ -162,7 +191,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$annee = Cadref::$Annee;
 		$sql = "
-select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour
+select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
@@ -174,19 +203,35 @@ order by c.CodeClasse";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return false;
 		
+		$file = 'Home/tmp/ListeClasse_'.date('YmdHis');
+		if($obj['mode'] == 1) {
+			$f = fopen(getcwd().'/'.$file.'.csv', 'w');
+			foreach($pdo as $p) {
+				$s = $this->dblCotes($p['CodeClasse']).";".$this->dblCotes($p['LibelleD'].' '.$p['LibelleN']).";";
+				$s .= $this->dblCotes($p['CycleDebut'].' '.$p['CycleFin']).";".($p['Jour']).";".$this->dblCotes($p['HeureDebut'].' '.$p['HeureFin'])."\n";
+				fwrite($f, $s);
+			}
+			fclose($f);
+			return array('csv'=>$file.'.csv');
+		}
+		
 		$pdf = new PrintClasse($annee);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Liste des classe');
 
+		$pdf->AddPage();
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/ListeClasse_'.date('YmdHis').'.pdf';
-		$pdf->Output(getcwd() . '/' . $file);
+		$pdf->Output(getcwd().'/'.$file.'.pdf');
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file.'.pdf');
 	}
 	
+	private function dblCotes($s) {
+		return '"'.iconv('UTF-8','ISO-8859-15//TRANSLIT',str_replace('"', "\"", $s)).'"';
+	}
+
 	
 	function CheckAbsence($start, $end) {
 		$annee = Cadref::$Annee;

@@ -1,6 +1,7 @@
 <section class="center-block">
-	<h5>Nouvel Adhérent : Tous les champs sont obligatoire.</h5>
+	<h5 style="color:red">Réservée aux personnes n'ayant jamais été adhérent du CADREF</h2>
 	<div id="msg"  class="alert alert-danger" hidden></div>
+	<h3>Tous les champs sont obligatoires</h3>
 	<div class="row" style="height:10px"></div>
 	<form method="POST" id="registerUser">
 		<div class="form-group">
@@ -42,13 +43,22 @@
 			<div class="row" style="height:2px"></div>
 			<div class="row">
 				<div class="col-md-3">
-					<label class="form-control-label cadref-label" style="line-height:1.1">Confirmation mail</label>
+					<label class="form-control-label cadref-label" style="line-height:1.1">Confirmation adresse mail</label>
 				</div>
 				<div class="col-md-9">
 					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="MailConfirm"/>
 				</div>
 			</div>
-			<div class="row" style="height:20px"></div>
+{#			<div class="row" style="height:2px"></div>
+			<div class="row" id="codeVerif">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Code de vérification</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Code de vérification" id="CadrefMail" name="MailVerif"/>
+				</div>
+			</div>
+#}			<div class="row" style="height:20px"></div>
 			<input type="submit" class="btn btn-success btn-block" id="Valider" name="Valider" value="Valider" />
 		</div>
 	</form>
@@ -57,6 +67,7 @@
 </section>
 <script>
 	$(document).ready(function (e) {
+		//$('#codeVerif').hide();
 		$('#registerUser').on('submit', function (e) {
 			e.preventDefault();
 			$('.spin-mask').spin().addClass('actif');
@@ -67,13 +78,13 @@
 				method: 'POST'
 			}).done(function (response) {
 				var resp = JSON.parse(response);
-				console.log(resp);
 				if (resp.success) {
 					$('#Valider').hide();
 					$('#Annuler').text('Retour');
 				} 
 				$('#msg').html(resp.message);
 				$('#msg').show();
+				if(resp.message.indexOf('avec ce nom') > 0) $('#codeVerif').show();
 				$('.spin-mask').removeClass('actif').spin(false);
 			});
 		});

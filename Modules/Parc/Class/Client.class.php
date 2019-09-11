@@ -42,7 +42,7 @@ class Parc_Client extends genericClass {
 	 */
 	public function Verify( $synchro = false ) {
         if(!empty($this->CodeGestion)){
-            $yets = Sys::getData('Parc','Client/CodeGestion='.$this->CodeGestion);
+            $yets = Sys::getData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($this->CodeGestion));
             foreach($yets as $yet){
                 if($yet && $yet->Id != $this->Id){
                     $this->AddError(
@@ -55,11 +55,18 @@ class Parc_Client extends genericClass {
                     return false;
                 }
             }
-
+            if(empty($this->Nom)){
+                $this->Nom = $this->CodeGestion; // Gestion des tiers sans nom dans la gestion
+            }
         }
 
         if (empty($this->NomLDAP)) {
             $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
+            $cpt = 0;
+            $base = $this->NomLDAP;
+            while ($Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/NomLDAP=" . $this->NomLDAP)){
+                $this->NomLDAP = $base.'_'.$cpt;
+            }
         }
         $this->NomLDAP = strtolower($this->NomLDAP);
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);

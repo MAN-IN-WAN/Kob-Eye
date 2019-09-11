@@ -1,5 +1,5 @@
 <section id="cd-timeline" class="cd-container">
-    <div class="cd-timeline-block" ng-repeat="item in itemList">
+    <div class="cd-timeline-block" ng-repeat="item in itemList|orderBy:'sort':true">
         <div class="cd-timeline-img cd-picture" ng-class="item.Side">
         </div> <!-- cd-timeline-img -->
 
@@ -18,7 +18,7 @@
                 <!--<a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="ParcActionmodify(item)" title="Modifier"></a>-->
                 <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="ParcActionFakedelete(item)" title="Supprimer"></a>
             </span>
-            <span class="cd-date" ng-bind-html="item.Date"></span>
+            <span class="cd-date" ng-bind-html="item.DateDebut"></span>
         </div> <!-- cd-timeline-content -->
     </div> <!-- cd-timeline-block -->
 </section> <!-- cd-timeline -->

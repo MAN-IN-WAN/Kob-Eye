@@ -32,6 +32,10 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	 **/
 	public function getCodeHTML($paiement) {
 		$adh = $paiement->getOneParent('Adherent');
+		
+		if($this->Params['MODEPRODUCTION']) $url = "https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+		else $url = "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+		
 		// Params
 		//mode d'appel
 		     $PBX_MODE        = '4';    //pour lancement paiement par exécution
@@ -48,14 +52,15 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		//informations paiement (appel)
 		     $PBX_TOTAL       = round($paiement->Montant * 100);
 		     $PBX_DEVISE      = '978';
-		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
+		     $PBX_CMD         = sprintf("%s-%d", $adh->Numero, $paiement->Id);
 		     $PBX_PORTEUR     = !empty($adh->Mail) ? $adh->Mail : $GLOBALS["Systeme"]->Conf->get("GENERAL::INFO::ADMIN_MAIL");
 		//informations nécessaires aux traitements (réponse)
-		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
-		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
+//		     $PBX_RETOUR      = "auto:A\;amount:M\;ident:R\;trans:T";
+		     $PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T;status:E";
+		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5.');
 		     $PBX_REFUSE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_ANNULE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
-		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s');
+		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s.htm');
 		//page en cas d'erreur
 		     $PBX_ERREUR      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		//date
@@ -74,16 +79,21 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		echo $html;
 		exit();*/
 		//return shell_exec( PAYBOX_LIB_DIR."/modulev2.cgi $PBX" );
+			 
+			 
 		
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
 		//on génère la clef HMAC
+		$msg = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT".
+				"&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR".
+				"&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A&PBX_HASH=SHA512&PBX_TIME=$PBX_TIME".
+				"&PBX_RUF1=POST";
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
-		return '
-		<form method="POST" onload="this." action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		return '<form method="POST" onload="this." action="'.$url.'">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -95,38 +105,60 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
 			<input type="hidden" name="PBX_HASH" value="SHA512">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
+			<input type="hidden" name="PBX_RUF1" value="POST">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
-			<input type="submit" value="Envoyer">
+			<input type="submit" class="btn btn-success" value="Payer">
 		</form>
 		';
 	}
 
-	public function serveurAutoResponse( $paiement, $commande ) {
-		// Vérification signature
-		$signature = sha1(
-			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
-			$_POST['validation_mode'] . "+" . $_POST['capture_delay'] . "+" . $_POST['payment_config'] . "+" . $_POST['card_brand'] ."+" . 
-			$_POST['card_number'] . "+" . $_POST['amount'] . "+" . $_POST['currency'] ."+" . $_POST['auth_mode'] ."+" . $_POST['auth_result'] ."+" .
-			$_POST['auth_number'] ."+" . $_POST['warranty_result'] ."+" . $_POST['payment_certificate'] ."+" . $_POST['result'] ."+" . $_POST['hash'] . "+" . $this->Params["CERTIFICAT"]
-		);
-		if($signature != $_POST['signature']) {
-			return false;
+	public function serveurAutoResponse($paiement, $commande) {
+		$status = isset($_POST['status']) ? $_POST['status' ] : '';
+		$ident = isset($_POST['ident']) ? $_POST['ident' ] : '';
+		$etat = 1;
+		
+		if($status != '0000' || empty($ident)) $etat = 0;;
+		$a = explode('-', $ident);
+		if(!isset($a[0]) || empty($a[0])) $etat = 0;
+		else {
+			$adh = $paiement->getOneParent('Adherent');
+			if(! $adh || $adh->Numero != $a[0]) $etat = 0;
 		}
+		
+		return array('etat'=>$etat, 'ref'=>$_POST['trans'], 'detail'=>$ident, 'status'=>$status);
 
-		// Retourne le code d'état du paiement
-		$etat = ($_POST['result'] == '00') ? 1 : 2;
-		return array(
-			'etat' => $etat,
-			'ref' => $_POST['auth_number']
-		);
+//		// Vérification signature
+//		$signature = sha1(
+//			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
+//			$_POST['validation_mode'] . "+" . $_POST['capture_delay'] . "+" . $_POST['payment_config'] . "+" . $_POST['card_brand'] ."+" . 
+//			$_POST['card_number'] . "+" . $_POST['amount'] . "+" . $_POST['currency'] ."+" . $_POST['auth_mode'] ."+" . $_POST['auth_result'] ."+" .
+//			$_POST['auth_number'] ."+" . $_POST['warranty_result'] ."+" . $_POST['payment_certificate'] ."+" . $_POST['result'] ."+" . $_POST['hash'] . "+" . $this->Params["CERTIFICAT"]
+//		);
+//		if($signature != $_POST['signature']) {
+//			return false;
+//		}
+//
+//		// Retourne le code d'état du paiement
+//		$etat = ($_POST['result'] == '00') ? 1 : 2;
+//		return array(
+//			'etat' => $etat,
+//			'ref' => $_POST['auth_number']
+//		);
 	}
 
 	public function retrouvePaiementEtape4s() {
-		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
+		$s = date('Y-m-d H:i:s')."\nPOST---------------\n".print_r($_POST, true)."\nGET---------------\n".print_r($_GET, true)."\n\n";
+		file_put_contents(getcwd()."/Log/Paiement.log", $s, FILE_APPEND);
+		
+//		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
+		if(isset($_POST['ident']) and !empty($_POST['ident'])) {
+			$a = explode('-', $_POST['ident']);
+			return round($a[1]);
+		}
 		return false;
 	}
 
-	public function affichageEtape5( $paiement, $commande ) {
+	public function affichageEtape5($paiement, $commande) {
 		if($commande->Paye) return 'Votre inscription a été enregistrée sous le numéro '. $commande->RefCommande;
 		else return 'Une erreur est survenue lors du paiement de la commande '. $commande->RefCommande . '<br /> Vous pouvez contacter le support via ce <a href="/Contact">formulaire</a> en rappelant cette référence.';
 	}

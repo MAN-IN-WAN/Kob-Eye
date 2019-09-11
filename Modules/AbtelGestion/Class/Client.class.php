@@ -5,6 +5,7 @@ class Client extends AbtelGestionBase {
     protected $identifier = 'Code';
 
     public function Set($prop, $newValue){
+        file_put_contents('/tmp/debugCli',$prop.' : '.$newValue.PHP_EOL,8 );
         if($prop == 'Code'){
             if($newValue === 0 || $newValue === '0'){
                 $newValue = 'ABT_0';
@@ -18,6 +19,12 @@ class Client extends AbtelGestionBase {
             return true;
         }
         if($prop == 'Historique') $prop = '__z__'.$prop;
+
+        if($prop == 'EstProspect' || $prop == 'EstClient' || $prop == 'EstConstructeur' || $prop == 'EstFournisseur'){
+            //file_put_contents('/tmp/debugCli',$prop.' : '.$newValue.PHP_EOL,8 );
+            if(!empty($newValue)) return true;
+            //file_put_contents('/tmp/debugCli','------------------ OOOKKKK'.PHP_EOL,8 );
+        }
 
         //Gestion du rtf
         if(!empty($newValue) && is_string($newValue) && strpos($newValue,'{\rtf1\ansi') !== false){
@@ -44,3 +51,4 @@ class Client extends AbtelGestionBase {
     }
 
 }
+

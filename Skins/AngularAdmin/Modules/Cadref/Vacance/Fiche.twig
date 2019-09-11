@@ -1,0 +1,78 @@
+{# fiche Section #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o=Create ? 'modalObj' : 'obj' %}
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+    <!-- Default Panel -->
+	<form name="CadrefContent">
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
+					<div class="row">
+						<div class="col-md-8" >
+							{{ flinput(f.Annee, o, false, '', 'width:150px; text-transform:uppercase;', true) }}
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label">Type</label>
+								</div>
+								<div class="col-md-10">
+									{{ fvalues(f.Type, o) }}
+								</div>
+							</div>
+							{{ flinput(f.Libelle, o) }}
+							{{ flinput(f.Logo, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label">Date de début</label>
+								</div>
+								<div class="col-md-10">
+									{{ fdate(f.DateDebut, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label">Date de fin</label>
+								</div>
+								<div class="col-md-10">
+									{{ fdate(f.DateFin, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label">Jour début/fin</label>
+								</div>
+								<div class="col-md-10">
+									{{ fquery(f.JourId, o, 'width:100px', '') }}
+								</div>
+							</div>					
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+				</div>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+				</div>
+			</div>
+		</div>
+    </section>
+	</form>
+</div>
+

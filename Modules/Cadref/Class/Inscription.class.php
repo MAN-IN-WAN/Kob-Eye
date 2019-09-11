@@ -218,7 +218,7 @@ order by disc, i.Antenne";
 	function PrintFinance($obj) {
 		require_once ('PrintFinance.class.php');
 		
-		$annee = Cadref::$Annee;
+		$annee = $obj['Annee'];
 		$sql = "select count(*) as nbr,sum(Cotisation) as cotis from `##_Cadref-AdherentAnnee` where Annee='$annee' and Cotisation>0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);

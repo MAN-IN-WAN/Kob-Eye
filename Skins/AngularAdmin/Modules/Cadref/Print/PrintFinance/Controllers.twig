@@ -3,6 +3,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj.Annee = '{{ Annee }}';
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {

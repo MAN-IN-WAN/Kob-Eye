@@ -1,21 +1,23 @@
 <section class="col-md-12 center-block">
-	<h5>Je suis déjà adhérent du CADREF.</h5>
+	<h5 style="color:red">Je suis déjà adhérent du CADREF.</h5>
+	<h5>Je souhaite activer mon compte en ligne.</h5>
 	<div id="msg"  class="alert alert-danger" hidden></div>
+	<div class="row" style="height:5px"></div>
+	<h3>Tous les champs sont obligatoires</h3>
 	<div class="row" style="height:10px"></div>
 	<form method="POST" id="checkAdherent">
 		<div class="form-group">
 			<div id="saisie">
-				<h3>Je connais mon numéro d'adhérent (N° de carte) :</h3>
 				<div class="row">
 					<div class="col-md-4">
-						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
+						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent à six chiffres, N° de carte</label>
 					</div>
 					<div class="col-md-8">
 						<input type="text" class="form-control cadref-input" placeholder="Numéro adhérent à 6 chiffres" id="CadrefNumero" name="CadrefNumero" style="widht: 150px"/>
 					</div>
 				</div>
-				<h3>Sinon je renseigne mon nom et prénom :</h3>
-				<div class="row">
+				<div class="row" style="height:5px"></div>
+{#				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
 					</div>
@@ -23,6 +25,7 @@
 						<input type="text" class="form-control cadref-input" placeholder="Nom de famille" id="CadrefNom" name="CadrefNom" onkeyup="this.value = this.value.toUpperCase();"/>
 					</div>
 				</div>
+				<div class="row" style="height:5px"></div>
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Prénom</label>
@@ -31,22 +34,13 @@
 						<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefNom" name="CadrefPrenom" onkeyup="this.value = this.value.toUpperCase();"/>
 					</div>
 				</div>
-				<div class="row" style="height:10px"></div>
-				<h3>Je saisis ensuite mon adresse mail ou mon numéro de téléphone :</h3>
-				<div class="row">
+				<div class="row" style="height:5px"></div>
+#}				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
 					</div>
 					<div class="col-md-8">
 						<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="CadrefMail"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
-					</div>
-					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefTel" name="CadrefTel"/>
 					</div>
 				</div>
 			</div>
@@ -147,7 +141,7 @@
 					}
 					if(resp.ValidForm == "3") {
 						$('#Valider').hide();
-						$('#Annuler').text('Retour');
+						$('#Annuler').text('Continuer');
 					}
 					$('#ValidForm').val(resp.ValidForm);
 				}

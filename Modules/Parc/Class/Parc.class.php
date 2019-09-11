@@ -292,7 +292,7 @@ class Parc extends Module{
             }else{
                 $Tcs = Sys::$User->getOneChild('Technicien');
                 if ($Tcs) {
-                    $this->_ParcRevendeur = $Tcs;
+                    $this->_ParcTechnicien = $Tcs;
                     $GLOBALS["Systeme"]->registerVar("ParcTechnicien", $this->_ParcTechnicien);
                 }else {
                     //test si revendeur

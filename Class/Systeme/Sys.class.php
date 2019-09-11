@@ -453,7 +453,7 @@ class Sys extends Root{
 				$data = $Skin->ProcessLang($data);
 				print($data);
 			break;
-
+		
 			case "xml":
 				header("Content-type: text/xml; charset=".CHARSET_CODE."");
 				$data = "";
@@ -556,6 +556,12 @@ class Sys extends Root{
                     print($data);
                 }
                 break;
+				
+			case "prlv":
+				if($this->type=="prlv") {
+					header('Content-type: text/plain');
+					header("Accept-Ranges:bytes");
+				}
 			case "pdf":
 				if ($this->type=="pdf"){
 					header('Content-type: application/pdf');
