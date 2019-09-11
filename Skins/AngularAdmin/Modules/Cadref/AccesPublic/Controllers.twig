@@ -590,8 +590,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				o.ClasseItems = data.data.data.data;
 				$scope.$digest();
 				break;
-			case 'antenne': o.AntenneId = 0;  // pas de break
-			case 'section': o.SectionId = 0;  // pas de break
+			case 'antenne': o.AntenneId = 0;  // no break
+			case 'section': o.SectionId = 0;  // no break
 			case 'discipline': o.DisciplineId = 0; o.ClasseItems = [];
 		}	
 		return data.data.data.data;
