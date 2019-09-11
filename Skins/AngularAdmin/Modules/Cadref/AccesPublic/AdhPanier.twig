@@ -12,7 +12,7 @@
 									<label class="form-control-label cadref-label" style="line-height:1.1">Antenne : Alès, Bagnols, Nîmes...</label>
 								</div>
 								<div class="col-md-4">
-									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('antenne',$searchTerm)" 
+									<div id="panierSelectAntenne" custom-select="a.Id as a.Libelle for a in inscriptionGetData('antenne',$searchTerm)" 
 										 custom-select-options="{'async': true, 'filter':''}" 
 										 ng-model="inscriptionObj.AntenneId"
 										 class="form-control">
@@ -24,7 +24,7 @@
 									<label class="form-control-label cadref-label" style="line-height:1">Section : Langue, Histoire, Activité physique... </label>
 								</div>
 								<div class="col-md-4">
-									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('section',$searchTerm)" 
+									<div id="panierSelectSection" custom-select="a.Id as a.Libelle for a in inscriptionGetData('section',$searchTerm)" 
 										 custom-select-options="{'async':true, 'filter':''}" 
 										 ng-model="inscriptionObj.SectionId" 
 										 class="form-control" 
@@ -37,7 +37,7 @@
 									<label class="form-control-label cadref-label" style="line-height:1">Discipline : Anglais, Histoire de l'art, Yoga... </label>
 								</div>
 								<div class="col-md-4">
-									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('discipline',$searchTerm)" 
+									<div id="panierSelectDiscipline" custom-select="a.Id as a.Libelle for a in inscriptionGetData('discipline',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':''}" 
 										 ng-model="inscriptionObj.DisciplineId" 
 										 class="form-control" 
@@ -62,26 +62,28 @@
 													<th class="cadref-th">Prix</th>
 													<th class="cadref-th">Places</th>
 													<th class="cadref-th">Enseignant</th>
-													<th class="cadref-th"></th>
+{#													<th class="cadref-th"></th>#}
 												</tr>
 											</thead>
 											<tbody>
 												<tr ng-repeat="item in inscriptionObj.ClasseItems">
 													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 													<td  class="cadref-td-btn">
-														<button type="button" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)">S'inscrire</button>
+														<label ng-if="!(item.Web*1)" class="label label-danger">Cours indisponible en ligne</label> 
+														<label ng-if="(item.Web*1) && !(item.Disponible*1)" class="label label-danger">Cours complet</label> 
+														<button type="button" ng-if="(item.Web*1) && (item.Disponible*1)" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)">S'inscrire à ce cours</button>
 													</td>
 													<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 													<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleA }]}</span></td>
 													<td scope="row" class="cadref-td"><span class="label" style="font-weight:600">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
 													<td scope="row" class="cadref-td"><span class="label" style="font-weight:600" >{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
 													<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
-													<td scope="row" class="cadref-td"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td scope="row" class="cadref-td"><span class="label" ng-class="{'cadref-highlight': item.Disponible*1==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
 													<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
-													<td  class="cadref-td-btn">
-														<button type="button" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)" title="Inscrire">S'inscrire</button>
+{#													<td  class="cadref-td-btn">
+														<button type="button" ng-if="(item.Web*1) && (item.Disponible*1)" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)" title="Inscrire">S'inscrire</button>
 													</td>
-												</tr>
+#}												</tr>
 											</tbody>
 										</table>
 									</div>
