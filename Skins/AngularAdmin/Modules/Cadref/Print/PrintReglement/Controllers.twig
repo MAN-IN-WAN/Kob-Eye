@@ -30,11 +30,16 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		);
 	}
 
-	$scope.prelevements = function(obj) {
+	$scope.prelevements = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'Prelevements');
 		ajax.success(
 			function(data) {
-				$window.open(data.data.file);
+				var link = document.createElement("a");
+			    link.download = data.data.file;
+				link.href = data.data.file;
+				link.click();
+
+				//$window.open(data.data.file);
 			}
 		).error(
 			function() {
@@ -42,4 +47,28 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 			}
 		);
 	}
+
+	$scope.encaissements = function() {
+		swal({
+			title: "Encaissement",
+			type: "warning",
+			showCancelButton: true,
+			cancelButtonText: "Annuler",
+			confirmButtonText: "Confirmer",
+			closeOnConfirm: true
+		},
+		function() {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'Encaissements');
+			ajax.success(
+				function(data) {
+					swal("Encaissements", "Les prélèvements ont été encaissés.", "succes");
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		});
+	}
+
 });

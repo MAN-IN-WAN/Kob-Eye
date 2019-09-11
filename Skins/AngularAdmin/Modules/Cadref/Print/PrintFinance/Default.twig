@@ -23,7 +23,7 @@
 										<div class="col-md-10">
 											<select class="form-control cadref-input" ng-model="obj.Annee" style="width:80px">
 												{% for u in annees %}
-													<option value="{{ u }}">{{ u }}</option>
+													<option {% if u == Annee %}selected{% endif %} value="{{ u }}">{{ u }}</option>
 												{% endfor %}
 											</select>
 										</div>

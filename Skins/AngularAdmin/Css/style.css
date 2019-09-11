@@ -1468,16 +1468,14 @@ Choix des composants
     max-width: 1200px;
 }
 .modal-body {
-   /* overflow: hidden;
-    overflow: -webkit-paged-y !important;*/
+/*    overflow: hidden;
+    height: fit-content;*/
 }
-.modal-body small  .help-wrapper{
-    display: block;
-    line-height: 80%;
-    margin-top: -7px;
-    margin-bottom: 3px;
-    opacity: 0.7;
+.modal-dialog .modal-body {
+    display: table;
+    width: 100%;
 }
+
 
 .logo-centre {
 	margin: auto;

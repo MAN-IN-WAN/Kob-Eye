@@ -95,25 +95,26 @@ class Cadref extends Module {
 		}
 
 		$num = isset($_POST['CadrefNumero']) ? trim($_POST['CadrefNumero']) : '';
-		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
-		$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
+		//$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
+		//$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
 		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
-		if((empty($num) && (empty($nom) || empty($pnom))) || empty($mail)) {
-			$data['message'] = "Vous devez spécifier soit le numéro soit les nom et prénom<br />puis l'adresse mail.";
+		//if((empty($num) && (empty($nom) || empty($pnom))) || empty($mail)) {
+		if(empty($num) || empty($mail)) {
+			$data['message'] = "Vous devez spécifier soit le numéro d'adhérent l'adresse mail.";
 			return json_encode($data);
 		}
 		
 		$telr = '';
-		$nomr ='';
+		//$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
-		if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
+		//if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
+		//if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
 
-		if($num) $w = "Numero='$num'";
-		else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
+		//if($num) $w = "Numero='$num'";
+		//else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
 
 		if($mail) $w1 .= "Mail='$mail'";
-		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
+		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where Numero='$num' and Mail='$mail' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -137,7 +138,7 @@ class Cadref extends Module {
 				if(substr($p['Telephone1'],2) == '06' || substr($p['Telephone1'],2) == '07') $t = $p['Telephone1'];
 				if($t == '') if(substr($p['Telephone2'],2) == '06' || substr($p['Telephone2'],2) == '07') $t = $p['Telephone2'];
 				if($t == '') $t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
-				if($t) $r['Tel'] = '...'.substr($t, -4, 4);
+				if($t) $r['Tel'] = '...'.substr($t, -5, 5);
 
 				$data['ValidForm'] = "2";
 				$data['data'] = $r;
@@ -147,7 +148,7 @@ class Cadref extends Module {
 			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
 			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
 			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
-		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
+		} else $data['message'] = "Aucun adhérent ne correspond à ces critères.<br>Si vous ne parvenez pas à vous identifier veuillez contacter le CADREF au 04.66.36.99.44.";
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
@@ -173,7 +174,7 @@ class Cadref extends Module {
 		$u->Pass = '[md5]'.md5($pass);
 		$u->Save();
 
-		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte utilisateur : ';
+		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
 		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,$s.$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 		
 		if(strpos($a->Mail, '@') > 0) {
@@ -259,7 +260,7 @@ class Cadref extends Module {
 		$data = array('success'=>0);
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
 		$pre = isset($_POST['Prenom']) ? trim($_POST['Prenom']) : '';
-		//$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
+		$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
 		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
 		$conf = isset($_POST['MailConfirm']) ? trim($_POST['MailConfirm']) : '';
 		
@@ -273,28 +274,51 @@ class Cadref extends Module {
 		}
 		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
 		if(count($adh)) {
-			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.\nUtiliser l'option \"Activer mon compte\"";
+			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br>Veuillez utiliser l'option \"Activer mon compte\"";
 			return json_encode($data);			
 		}
 		if($mail != $conf) {
 			$data['message'] = "L'adresse mail et la confirmation sont différentes.";
 			return json_encode($data);			
 		}
-//		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-//		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
-//		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-//		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-//		if($pdo && $pdo->rowcount()) {
-//			$data['message'] = 'Il existe déjà un adhérent avec ce numéro de téléphone.';
-//			return json_encode($data);			
-//		}
+		
+		$telr = preg_replace('/[^0-9]/', '', $tel);
+		if(strlen($telr) != 10) {
+			$data['message'] = "Le format du numero de téléphone est incorrect.";
+			return json_encode($data);			
+		}
+		$p = '([^0-9])*';
+		$telr = substr($telr, 0, 2).$p.substr($telr, 2, 2).$p.substr($telr, 4, 2).$p.substr($telr, 6, 2).$p.substr($telr, 8, 2);	
+		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo && $pdo->rowcount()) {
+			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br>Veuillez utiliser l'option \"Activer mon compte\"";
+			return json_encode($data);			
+		}
+		
+		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', strtoupper($nom));
+		if($pre) $prer = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', strtoupper($pre));
+		$sql = "select Id from `##_Cadref-Adherent` where upper(Nom) regexp '$nomr' and upper(Prenom) regexp '$prer'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo && $pdo->rowcount()) {
+			$s = "Il existe déjà un adhérent avec ce nom et ce prénom.<br>";
+			$s .= "Si vous n'avez jamais été adhérent veuillez contacter le CADREF au 04.66.36.99.44.<br>";
+			$s .= "Sinon veuiller utiliser l'option \"Activer mon compte\"";
+			$data['message'] = $s;
+			return json_encode($data);			
+		}
+
 		
 		$nom = strtoupper($nom);
 		$pre = strtoupper(substr($pre, 0, 1)).strtolower(substr($pre, 1));
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
 		$adh->Nom = $nom;
 		$adh->Prenom = $pre;
-		$adh->Telephone1 = $tel;
+		$p = '.';
+		$telr = preg_replace('/[^0-9]/', '', $tel);
+		$adh->Telephone1 = substr($telr, 0, 2).$p.substr($telr, 2, 2).$p.substr($telr, 4, 2).$p.substr($telr, 6, 2).$p.substr($telr, 8, 2);	
 		$adh->Mail = $mail;
 		$adh->Web = 1;
 		$adh->Save();
@@ -329,7 +353,7 @@ class Cadref extends Module {
 		}
 		$a = Sys::getOneData('Cadref', 'Adherent/'.$info[0]);
 		if(!count($a) || $a->Mail != $info[1]) {
-			$data['message'] = "Une erreur c'est produite :\nVeuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Une erreur c'est produite.<br>Veuillez contacter le CADREF au 04.66.36.99.44.";
 			return json_encode($data);
 		}
 
@@ -358,11 +382,18 @@ class Cadref extends Module {
 	public static function between($t, $start, $end) {
 		return $start <= $t && $t <= $end;
 	}
+	
+	private static function gmtTime($d) {
+		$dt = date('Y-m-d', $d+(2*60*60));
+		return strtotime($dt.' 00:00:00 GMT');
+	}
 
 	public static function GetCalendar($args) {
 		$args = json_decode(str_replace("\\", "", $args['args']));
-		$start = strtotime(str_replace('T', ' ', $args->start));
-		$end = strtotime(str_replace('T', ' ', $args->end));
+		$a = explode('T', $args->start);
+		$start = strtotime($a[0].' 00:00:0 GMT');
+		$a = explode('T', $args->end);
+		$end = strtotime($a[0].' 00:00:0 GMT');
 
 		$annee = self::$Annee;
 		$data = array();
@@ -375,8 +406,8 @@ class Cadref extends Module {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$t = $p['Type'];
-			$d = $p['DateDebut'];
-			$f = $p['DateFin'] ? $p['DateFin'] : $d;
+			$d = self::gmtTime($p['DateDebut']);
+			$f = $p['DateFin'] ? self::gmtTime($p['DateFin']) : self::gmtTime($d);
 			if($t == 'V') {
 				$e = new stdClass();
 				$e->title = $p['Libelle'] ?: 'VACANCES';
@@ -395,8 +426,6 @@ class Cadref extends Module {
 		}
 
 		$group = Sys::$User->getParents('Group')[0]->Nom;
-
-
 
 		$adh = false;
 		$adm = false;
@@ -483,8 +512,8 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql1);
 		foreach($pdo as $p) {
-			$d = $p['DateDebut'];
-			$f = $p['DateFin'] ? $p['DateFin'] : $d;
+			$d = self::gmtTime($p['DateDebut']);
+			$f = $p['DateFin'] ? self::gmtTime($p['DateFin']) : self::gmtTime($d);
 			$a = new stdClass();
 			$a->cid = $p['cid'];
 			$a->nom = trim($p['Prenom'].' '.$p['Nom']) ?: 'ENSEIGNANT';
@@ -510,16 +539,15 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				$cy = $p['CycleDebut'];
 				if($cy != '') {
 					$m = substr($cy, 3, 2);
-					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
 					$cy = $p['CycleFin'];
 					$m = substr($cy, 3, 2);
-					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
 					$cf += 86400 - 1;
 				}
 				$j = $p['JourId'] - 1;
 				$d = $start + ($j * 24 * 60 * 60);
-				while($d < $end) {
-					//$ok = true;
+				while($d <= $end) {
 					$ok = !($cd && ($d < $cd || $d > $cf));
 					if($ok) {
 						foreach($vacances as $v) {

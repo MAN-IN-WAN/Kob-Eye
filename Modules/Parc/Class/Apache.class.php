@@ -296,6 +296,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = false ) {
+	    $this->ApacheServerName = SubDomain::checkName($this->ApacheServerName);
         if ($this->Ssl&&$this->SslMethod=='Letsencrypt') {
             $this->addWarning(array("Message" => "Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
         }
@@ -752,8 +753,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
         try {
             $t = $resolver->query($domain, 'A');
         }catch (Exception $e){
-            die("Timeout DNS : ".$e->getMessage());
-            return '';
+            throw new Exception("Timeout DNS : ".$e->getMessage());
         }
         if (sizeof($t->answer))
             return $t->answer[sizeof($t->answer)-1]->address;
@@ -807,9 +807,14 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             $act->Terminate(false);
         }
         //on vérifie l'ip du domaine principal
-        $act = $task->createActivity('Recherche de l\'ip pour le domaine '.$first);
-        $ip = Apache::getDomainIp($first);
-        $act->addDetails(print_r($ip,true));
+        $act = $task->createActivity('Recherche de l\'ip pour le domaine '.$this->getFirstDomain());
+        try {
+            $ip = Apache::getDomainIp($this->getFirstDomain());
+        }catch (Exception $e) {
+            $act->addDetails(print_r($ip, true));
+            Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
+            return false;
+        }
         if ($ip){
             $act = $task->createActivity('Recherche du proxy pour l\'ip '.$ip);
 

@@ -49,13 +49,144 @@ class Systeme extends Module {
         return false;
     }
     /**
+     * UTILS FUNCTIONS
+     */
+    static public function localExec( $command, $activity = null,$total=0,$path=null,$stderr = false)
+    {
+        /*exec( $command,$output,$return);
+        if( $return ) {
+            throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
+        }
+        return implode("\n",$output);*/
+        $proc = popen($command.' '.($stderr?'2>&1':'').' ; echo Exit status : $?', 'r');
+        $complete_output = "";
+        if ($path && is_file($path) && is_readable($path)){
+            //On fork le process pour calculer le progress en parallele
+            switch ($pid = pcntl_fork()) {
+                case -1:
+                    // @fail
+                    $activity->addDetails('No Fork , No Progress');
+                    break;
+
+                case 0:
+                    // @child: Include() misbehaving code here
+                    while (!feof($proc)) {
+                        $size = AbtelBackup::getSize($path);
+                        $progress = floatval($size)*100/$total;
+                        $progress = intval($progress);
+                        if ($progress != $activity->Progression){
+                            $activity->setProgression($progress);
+                        }
+
+                        sleep(5);
+                    }
+                    exit;
+                    break;
+
+                default:
+                    // @parent
+                    break;
+            }
+        }
+
+        while (!feof($proc)){
+            $buf     = fread($proc, 4096);
+            $progress = 0;
+
+            //cas borg
+            if (preg_match('#O ([0-9\.]+)? MB C#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1]))/$total;
+                $buf = '';
+            }
+            //347.08 GB O 285.33 GB C 212.73 G
+            if (preg_match('#O ([0-9\.]+)? GB C#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1])*1024)/$total;
+                $buf = '';
+            }
+            if (preg_match('#O ([0-9\.]+)? TB C#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1])*1048576)/$total;
+                $buf = '';
+            }
+            //cas rsync
+            if (preg_match('#([0-9]+)?%#',$buf,$out)&&$activity) {
+                $progress = intval($out[1])/100;
+                $buf = '';
+            }
+            if($progress&&intval($progress*100)!=$activity->Progression){
+                $activity->setProgression($progress*100);
+            }
+
+
+            $complete_output .= $buf;
+        }
+
+
+        if($path){
+            //On tue le fork pour eviter les process zombies
+            if($pid > 0){
+                posix_kill ( $pid , SIGKILL );
+                //Si le fork a marché on attend la mort de l'enfant
+                pcntl_waitpid($pid, $status);
+            }
+        }
+
+        pclose($proc);
+        // get exit status
+        preg_match('/[0-9]+$/', $complete_output, $matches);
+
+        // return exit status and intended output
+        if(  isset($matches[0]) && $matches[0] !== "0" && !$stderr) {
+            throw new RuntimeException( $complete_output, (int)$matches[0] );
+        }
+        return str_replace("Exit status : " . ((isset($matches[0]))?$matches[0]:0), '', $complete_output);
+    }
+    /**
+     * getMemoryState
+     */
+    static public function getMemory() {
+        return 0;
+        $fh = Systeme::localExec('cat /proc/meminfo');
+        $total = 0;
+        $free = 0;
+        $pieces = array();
+        if (preg_match('/^MemTotal:\s+(\d+)\skB$/', $line, $pieces)) {
+            $total = $pieces[1];
+        }
+        if (preg_match('/^MemFree:\s+(\d+)\skB$/', $line, $pieces)) {
+            $free = $pieces[1];
+        }
+        fclose($fh);
+        $out = intval((($total-$free)/$total)*100);
+        if (!$out) $out = 0;
+        return $out;
+    }
+    /**
+     * getNbProcess
+     */
+    static public function getNbProcess($filter='php cron.php') {
+        $fh = Systeme::localExec('ps aux | grep \''.$filter.'\' | wc -l');
+        return intval($fh);
+    }
+    /**
      * Execution des taches
      */
     public  function executeTasks() {
         //reconnexion sql
         $start = time();
         Sys::autocommitTransaction();
-        while(time()<$start+240){
+        while(time()<$start+60){
+            //on vérifie l'état de la mémoire
+            if (Systeme::getMemory()>80){
+                echo "memory > 80% \n";
+                sleep(1);
+                continue;
+            }
+            //on vérifie le nombre de threads
+            if (Systeme::getNbProcess()>=80){
+                echo "too many process (".Systeme::getNbProcess().") > 80\n";
+                sleep(1);
+                continue;
+            }
             //empty query cache
             Sys::$Modules['Systeme']->Db->clearLiteCache();
             //gestion des priorités
@@ -64,17 +195,40 @@ class Systeme extends Module {
                 $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time(),0,1);
             //execution de la tache
             if ($t) {
-                try {
-                    echo "Execute task ".$t->getFirstSearchOrder()." - ".$t->Id."\r\n";
-                    $t->Execute($t);
-                }catch (Throwable $e){
-                    $t->Erreur = true;
-                    $t->Save();
-                    $t->createActivity('Erreur Fatale: '.$e->getMessage());
-                    $t->Terminate(false);
+                $pid = pcntl_fork();
+
+                if ( $pid == -1 ) {
+                    // Fork failed
+                    exit(1);
+                } else if ( $pid ) {
+                    // We are the parent
+                    // Can no longer use $db because it will be closed by the child
+                    // Instead, make a new MySQL connection for ourselves to work with
+                    $GLOBALS['Systeme']->connectSQL(true);
+                    Server::$_LDAP = null;
+                } else {
+                    echo 'début du thread '.posix_getpid()."\n";
+                    $GLOBALS['Systeme']->connectSQL(true);
+                    Server::$_LDAP = null;
+                    // We are the child
+                    // Do something with the inherited connection here
+                    // It will get closed upon exit
+                    try {
+                        echo "Execute task ".$t->getFirstSearchOrder()." - ".$t->Id."\r\n";
+                        $t->Execute($t);
+                    }catch (Throwable $e){
+                        $t->Demarre = true;
+                        $t->Erreur = true;
+                        $t->Save();
+                        $act = $t->createActivity('Erreur Fatale: '.$e->getMessage());
+                        $act->Terminate(false);
+                    }
+                    echo 'fin du thread '.posix_getpid()."\n";
+                    exit(0);
                 }
+
             }
-            sleep(1);
+            usleep(100);
         }
         return true;
     }
@@ -405,6 +559,7 @@ class Systeme extends Module {
                 exit(0);
             }
         }
+        echo 'fin du thread parent '.posix_getpid()."\n";
     }
 }
 

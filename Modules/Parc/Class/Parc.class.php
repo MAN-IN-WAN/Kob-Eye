@@ -522,6 +522,17 @@ class Parc extends Module{
         }
         return str_replace("Exit status : " . $matches[0], '', $complete_output);
     }
+
+    /**
+     * is ProcessAlive
+     */
+    static function isProcessAlive($pid) {
+        $out = Parc::localExec('ps -p '.$pid.' -h');
+        $out = trim($out);
+        if (empty($out)) return false;
+        else return true;
+    }
+
     static public function getMyIp(){
         $output = Parc::localExec('/usr/sbin/ifconfig');
         preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);

@@ -102,9 +102,12 @@
 										<div class="col-md-2">
 											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
 										</div>
-										{% if mode == 1 %}
+										{% if mode == 1 and prelevement == 1 %}
 										<div class="col-md-2">
 											<button type="button" ng-if="obj.ModeReglement=='P'" class="btn btn-info margin-inline cadref-btn-100" ng-click="prelevements()">Fichier SEPA</button>
+										</div>
+										<div class="col-md-2">
+											<button type="button" ng-if="obj.ModeReglement=='P'" class="btn btn-warning margin-inline cadref-btn-100" ng-click="encaissements()">Encaissement</button>
 										</div>
 										{% endif %}
 									</div>

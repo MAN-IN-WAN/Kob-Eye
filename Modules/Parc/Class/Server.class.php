@@ -891,8 +891,8 @@ class Server extends genericClass {
 	 * @return 	Liaison
 	 */
 	static function ldapConnect() {
-		if (!is_null(Server::$_LDAP))
-			return Server::$_LDAP;
+		/*if (!is_null(Server::$_LDAP))
+			return Server::$_LDAP;*/
 		Server::$_LDAP = ldap_connect(PARC_LDAP_IP);
 		if (Server::$_LDAP) {
 			ldap_set_option(Server::$_LDAP, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -924,8 +924,12 @@ class Server extends genericClass {
 	 */
 	static function ldapAdd($dn, $entry) {
 		$e = array();
-		$connect = Server::ldapConnect();
-		$req = @ldap_add(Server::$_LDAP, $dn, $entry);
+        try {
+    		$connect = Server::ldapConnect();
+            $req = ldap_add(Server::$_LDAP, $dn, $entry);
+        }catch (Throwable $e){
+		    return array('Message' => $e->getMessage());
+        }
 		if ($connect and $req) {
 			// L'enregistrement a réussi - on récupère l'id et le tms LDAP
 			$search = ldap_search(Server::$_LDAP, $dn, 'objectClass=*', array('modifytimestamp', 'entryuuid'));

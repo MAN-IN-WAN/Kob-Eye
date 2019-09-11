@@ -44,7 +44,7 @@
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regul" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Inscr.nonSolde}" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr">
-					<input type="text" id="inscrPaye" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.paye" ng-change="classePaye()" style="width:60px" />
+					<input type="text" id="inscrPaye" class="form-control cadref-input" ng-focus="selectAllContent($event)" onclick="this.select()" ng-model="CadrefClasse.Inscr.paye" ng-change="classePaye()" style="width:60px" />
 				</td>
 				<td class="cadref-td-inscr">
 					<select class="form-control cadref-input" ng-model="CadrefClasse.Inscr.mode" ng-change="nextControle(true)">
@@ -52,7 +52,6 @@
 						<option value="B">Banque</option>
 						<option value="C">Carte</option>
 						<option value="E">Espèces</option>
-						<option value="A">Vacances</option>
 					</select>	
 				</td>
 				<td class="cadref-td-inscr">

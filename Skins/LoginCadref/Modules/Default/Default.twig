@@ -6,23 +6,47 @@
 
 <form class="form col-md-12 center-block" method="POST">
     <div class="form-group">
-		<h3>J'ai déjà un compte. Je rentre mon code utilisateur et mon mot de passse :</h3> 
-        <input type="text" name="login" class="form-control input-cadref" placeholder="Code utilisateur">
-        <input type="password" name="pass" class="form-control input-cadref" placeholder="Mot de passe">
+		<h3>J'ai déjà un compte en ligne. Je rentre mon numéro d'addhérent et mon mot de passse.</h3>
+		<div class="row">
+			<label class="col-md-3">N° adhérent</label>
+		<div class="col-md-9">
+	        <input type="text" name="login" class="form-control input-cadref" placeholder="N° adhérent à 6 chiffres">
+		</div>
+		</div>
+		<div class="row">
+			<label class="col-md-3">Mot de passe</label>
+			<div class="col-md-9">
+			    <input id="password-field" type="password" name="pass" class="form-control input-cadref" placeholder="Mot de passe">
+				<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+			</div>
+		</div>
 		<div style="height:5px"></div>
         <input type="submit" class="btn btn-success btn-cadref btn-block" name="logform" value="valider">
     </div>
     <div class="form-group">
-		<h3>Je suis <strong>déjà adhérent</strong> du CADREF mais je n'ai encore activé mon compte :</h3> 
+		<h3>Je suis <strong style="color:red">déjà adhérent du CADREF</strong> mais je n'ai pas encore activé mon compte en ligne.</h3> 
         <a href="/Systeme/Adherent{{ classe }}" class="btn btn-info btn-cadref btn-block">Activer mon compte</a>
     </div>
-    <div class="form-group">
-		<h3>Je ne suis <strong>pas encore adhérent</strong> du CADREF, je souhaite m'enregistrer :</h3> 
+{#    <div class="form-group">
+		<h3>Je ne suis <strong style="color:red">pas encore adhérent du CADREF</strong>, je souhaite m'enregistrer :</h3> 
         <a href="/Systeme/Register{{ classe }}" class="btn btn-info btn-cadref btn-block">Créer mon compte</a>
     </div>
-   <div class="form-group">
-		<h3>J'ai déjà un compte mais j'ai oublié mon mot de passe :</h3> 
+#}   <div class="form-group">
+		<h3>J'ai déjà un compte en ligne mais j'ai oublié mon mot de passe.</h3> 
         <a href="/Systeme/Password{{ classe }}" class="btn btn-warning btn-cadref btn-block">Changer de mot de passe</a>
     </div>
  </form>
 
+<script>
+$(".toggle-password").click(function() {
+
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $($(this).attr("toggle"));
+  if (input.attr("type") == "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+});
+</script>
+	

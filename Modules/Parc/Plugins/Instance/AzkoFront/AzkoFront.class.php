@@ -36,6 +36,9 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             require all granted
         </Directory>';
         $apache->Save();
+        //suppression des users ftp
+        $usrFtps = $host->getChildren('Ftpuser');
+        foreach ($usrFtps as $usr) $usr->Delete();
     }
 
     /**
@@ -50,6 +53,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->Nom = 'Installation de la version '.$version->Version.' d\'AzkoFront sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Instance';
+        $task->TaskType = 'install';
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
@@ -84,12 +88,16 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
             $act->addDetails($out);
             $act->Terminate(true);
+            //configuration du git
+            $this->configGit($task,$apachesrv,$host,$version);
+            //execution du git clone
             $act = $task->createActivity('Initialisation du git clone', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && git clone '.$version->GitUrl.' www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && sudo -u ' . $host->NomLDAP . ' git clone '.$version->GitUrl.' www';
             if (!empty($version->GitBranche))
                 $cmd.=' -b '.$version->GitBranche;
+            $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails('cd /home/' . $host->NomLDAP . '/ && git clone '.$version->GitUrl.' www');
+            $act->addDetails('cd /home/' . $host->NomLDAP . '/ && sudo -u ' . $host->NomLDAP . ' git clone '.$version->GitUrl.' www');
             $act->addDetails($out);
             $act->Terminate(true);
             $act = $task->createActivity('Création du fichier de config', 'Info');
@@ -124,6 +132,32 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $act->Terminate(false);
             throw new Exception($e->getMessage());
         }
+    }
+    /**
+     * configGit
+     * Configuration du Git
+     */
+    private function configGit($task,$apachesrv,$host,$version) {
+        //Configuratio du git clone
+        $act = $task->createActivity('Configuration du git', 'Info');
+        try {
+            $apachesrv->remoteExec('sudo -u ' . $host->NomLDAP . ' ssh -T '.$version->GitUrl);
+        }catch (Throwable $e){
+            //erreur normales
+        }
+        $apachesrv->remoteExec('if [ ! -d  /home/' . $host->NomLDAP . '/.ssh ]; then mkdir /home/' . $host->NomLDAP . '/.ssh; fi');
+        $cmd = 'echo "'.base64_encode($version->SshKey).'" | base64 -d > /home/' . $host->NomLDAP . '/.ssh/azko_app.key';
+        $out = $apachesrv->remoteExec($cmd);
+        $act->addDetails($cmd);
+        $act->addDetails($out);
+        $cmd = 'echo "'.base64_encode($version->SshConfig).'" | base64 -d > /home/' . $host->NomLDAP . '/.ssh/config';
+        $out = $apachesrv->remoteExec($cmd);
+        $act->addDetails($cmd);
+        $act->addDetails($out);
+        $cmd = 'chmod 400 /home/' . $host->NomLDAP . '/.ssh/azko_app.key && chmod 400 /home/' . $host->NomLDAP . '/.ssh/config && chown -R ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/.ssh';
+        $act->addDetails($cmd);
+        $apachesrv->remoteExec($cmd);
+        $act->Terminate(true);
     }
     /**
      * createAndMountFolders
@@ -196,17 +230,23 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'AzkoFront sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Instance';
+        $task->TaskType = 'install';
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'updateSoftware';
+//        $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
         $host = $this->_obj->getOneChild('Host');
-        $task->addParent($host);
-        $task->addParent($host->getOneParent('Server'));
-        if (is_object($orig)) $task->addParent($orig);
-        $task->Save();
-        //changement du statut de l'instance
-        $this->_obj->setStatus(3);
-        return array('task'=>$task);
+        if ($host) {
+            $task->addParent($host);
+            $task->addParent($host->getOneParent('Server'));
+            if (is_object($orig)) $task->addParent($orig);
+            $task->Save();
+            //changement du statut de l'instance
+            $this->_obj->setStatus(3);
+            return array('task'=>$task);
+        }else{
+            return true;
+        }
     }
 
     /**
@@ -217,139 +257,161 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      */
     public function updateSoftware($task){
         $host = $this->_obj->getOneChild('Host');
-        $apachesrv = $host->getOneParent('Server');
+        //$host = $this->_obj->getOneChild('Host');
+        $apachesrvs = $host->getParents('Server');
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoFront Type '.$this->_obj->Type);
-        try {
-            if ($version->GitReset) {
-                $GLOBALS['Chrono']->start('AZKOFRONT: git init');
-                $act = $task->createActivity('Initialisation du git clone et connexion à ' . $apachesrv->Nom, 'Info');
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
-                $act->addDetails($cmd);
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                if (!empty($out)) {
-                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote rm origin';
+        foreach ($apachesrvs as $apachesrv) {
+            try {
+                //configuration du git
+                if ($version->SshReset)
+                    $this->configGit($task, $apachesrv, $host, $version);
+
+                if ($version->GitReset) {
+                    $GLOBALS['Chrono']->start('AZKOFRONT: git init');
+                    $act = $task->createActivity('Initialisation du git clone et connexion à ' . $apachesrv->Nom, 'Info');
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git remote -v';
                     $act->addDetails($cmd);
                     $out = $apachesrv->remoteExec($cmd);
                     $act->addDetails($out);
+                    if (!empty($out)) {
+                        $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git remote rm origin';
+                        $act->addDetails($cmd);
+                        $out = $apachesrv->remoteExec($cmd);
+                        $act->addDetails($out);
+                    }
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git remote add origin ' . $version->GitUrl;
+                    $act->addDetails($cmd);
+                    $out .= $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
+                    $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git fetch';
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    if (!empty($version->GitBranche))
+                        $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git reset --hard origin/' . $version->GitBranche;
+                    else $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git reset --hard origin/master';
+                    $act->addDetails($cmd);
+                    $out .= $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);
+                    $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
+                    $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
+                    $act = $task->createActivity('Modification des droits', 'Info');
+                    $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);
+                    $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
+                    $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
+                    //changement du statut de l'instance
+                    $this->_obj->CurrentVersion = $version->Version;
+                    $this->_obj->setStatus(2);
+                    if ($task) {
+                        $task->addRetour($GLOBALS['Chrono']->total());
+                    }
+                    $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
+                    return true;
+                } else {
+                    $GLOBALS['Chrono']->start('AZKOFRONT: git pull');
+                    $act = $task->createActivity('Execution du git pull et connexion à ' . $apachesrv->Nom, 'Info');
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && sudo -u ' . $host->NomLDAP . ' git pull ' . $version->GitUrl . ' ' . $version->GitBranche;
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);
+                    $GLOBALS['Chrono']->stop('AZKOFRONT: git pull');
+                    //changement du statut de l'instance
+                    $this->_obj->CurrentVersion = $version->Version;
+                    $this->_obj->setStatus(2);
+                    if ($task) {
+                        $task->addRetour($GLOBALS['Chrono']->total());
+                    }
+                    $act = $task->createActivity('Fin de la mise à jour', 'Info');
+                    $act->Terminate(true);
                 }
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote add origin ' . $version->GitUrl;
-                $act->addDetails($cmd);
-                $out .= $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
-                $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git fetch';
-                $act->addDetails($cmd);
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                if (!empty($version->GitBranche))
-                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/' . $version->GitBranche;
-                else $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/master';
-                $act->addDetails($cmd);
-                $out .= $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                $act->Terminate(true);
-                $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
-                $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
-                $act = $task->createActivity('Modification des droits', 'Info');
-                $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
-                $act->addDetails($cmd);
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                $act->Terminate(true);
-                $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
-                $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
-                //changement du statut de l'instance
-                $this->_obj->CurrentVersion = $version->Version;
-                $this->_obj->setStatus(2);
-                if ($task) {
-                    $task->addRetour($GLOBALS['Chrono']->total());
-                }
-                $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
-                return true;
-            }else{
-                $GLOBALS['Chrono']->start('AZKOFRONT: git pull');
-                $act = $task->createActivity('Execution du git pull et connexion à ' . $apachesrv->Nom, 'Info');
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git pull ' . $version->GitUrl.' '.$version->GitBranche;
-                $act->addDetails($cmd);
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($out);
-                $act->Terminate(true);
-                $GLOBALS['Chrono']->stop('AZKOFRONT: git pull');
-                //changement du statut de l'instance
-                $this->_obj->CurrentVersion = $version->Version;
-                $this->_obj->setStatus(2);
-                if ($task) {
-                    $task->addRetour($GLOBALS['Chrono']->total());
-                }
+            } catch (Exception $e) {
+                $act->addDetails('Erreur: ' . $e->getMessage());
+                $act->Terminate(false);
+                //throw new Exception($e->getMessage());
             }
-        }catch (Exception $e){
-            $act->addDetails('Erreur: '.$e->getMessage());
-            $act->Terminate(false);
-            throw new Exception($e->getMessage());
         }
+        return true;
     }
     /**
      * checkState
      */
     public function checkState($task){
         $host = $this->_obj->getOneChild('Host');
-        $apachesrv = $host->getOneParent('Server');
-        try {
-            $GLOBALS['Chrono']->start('AZKOFRONT: checkState check mount');
-            $act = $task->createActivity('Vérification des points de montage '.$apachesrv->Nom.' PID:'.getmypid(), 'Info');
-            $cmd = 'mountpoint -q /home/' . $host->NomLDAP . '/azkocms_medias && mountpoint -q /home/' . $host->NomLDAP . '/azkocms_skins && echo 2';
-            $act->addDetails($cmd);
+        $apachesrvs = $host->getParents('Server');
+        foreach ($apachesrvs as $apachesrv) {
             try {
+                //demontage forcé
+                try {
+                    $act = $task->createActivity('Démontage des points de montage ' . $apachesrv->Nom . ' PID:' . getmypid(), 'Info');
+                    $cmd = 'umount /home/' . $host->NomLDAP . '/azkocms_medias && umount /home/' . $host->NomLDAP . '/azkocms_skins';
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                }catch (Throwable $e){
+
+                }
+                //check mount
+                $GLOBALS['Chrono']->start('AZKOFRONT: checkState check mount');
+                $act = $task->createActivity('Vérification des points de montage ' . $apachesrv->Nom . ' PID:' . getmypid(), 'Info');
+                $cmd = 'mountpoint -q /home/' . $host->NomLDAP . '/azkocms_medias && mountpoint -q /home/' . $host->NomLDAP . '/azkocms_skins && echo 2';
+                $act->addDetails($cmd);
+                try {
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);
+                } catch (Exception $e) {
+                    $act->addDetails($out);
+                    $act->Terminate(false);
+                    //montage des dossiers
+                    $out = 0;
+                }
+                if (intval($out) < 2) {
+                    $act = $task->createActivity('Montage des dossiers skins et médias sur le serveur ' . $apachesrv->Nom . ' PID:' . getmypid(), 'Info');
+                    try {
+                        $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance ' . $this->_obj->Nom . ' ne sont pas montés.', 'Le code de retour est ', $this->_obj, 'FOLDER_MOUNT', $this->_obj->NomInstance, 3, false);
+                        if ($this->createAndMountFolders($apachesrv, $host, $task)) {
+                            $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance ' . $this->_obj->Nom . ' ne sont pas montés.', 'Le code de retour est ', $this->_obj, 'FOLDER_MOUNT', $this->_obj->NomInstance, 3, true);
+                        }
+                    } catch (Exception $e) {
+                        $act->addDetails('ERREUR DE MONTAGE : ' . $e->getMessage());
+                    }
+                } else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance ' . $this->_obj->Nom . ' ne sont pas montés.', 'Le code de retour est ', $this->_obj, 'FOLDER_MOUNT', $this->_obj->InstanceNom, 3, true);
+
+
+                $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');
+                $GLOBALS['Chrono']->start('AZKOFRONT: checkState check software');
+                $act = $task->createActivity('Vérification de l\'installation du logciel', 'Info');
+                $cmd = 'ls -lah /home/' . $host->NomLDAP . '/www/azkocms | wc -l';
+                $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);
                 $act->Terminate(true);
-            } catch (Exception $e){
-                $act->addDetails($out);
-                $act->Terminate(false);
-                //montage des dossiers
-                $out=0;
-            }
-            if (intval($out)<2){
-                $act = $task->createActivity('Montage des dossiers skins et médias sur le serveur '.$apachesrv->Nom.' PID:'.getmypid(), 'Info');
-                try {
-                    $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,false);
-                    if ($this->createAndMountFolders($apachesrv, $host,$task)) {
-                        $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
-                    }
-                }catch (Exception $e){
-                    $act->addDetails('ERREUR DE MONTAGE : '.$e->getMessage());
+                if (!intval($out)) {
+                    //Lancement de l'installation du logiciel
+                    //$this->createInstallTask();
+                    $act->addDetails('Logiciel mal installé!');
+                    $act->Terminate(false);
+                    $this->_obj->setStatus(1);
+                } else $this->_obj->setStatus(2);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check software');
+                if ($task) {
+                    $task->addRetour($GLOBALS['Chrono']->total());
                 }
-            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->InstanceNom,3,true);
-
-
-            $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');
-            $GLOBALS['Chrono']->start('AZKOFRONT: checkState check software');
-            $act = $task->createActivity('Vérification de l\'installation du logciel' , 'Info');
-            $cmd = 'ls -lah /home/'.$host->NomLDAP.'/www/azkocms | wc -l';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            if (!intval($out)) {
-                //Lancement de l'installation du logiciel
-                //$this->createInstallTask();
-                $act->addDetails('Logiciel mal installé!');
+            } catch (Exception $e) {
+                $act->addDetails('Erreur: ' . $e->getMessage());
                 $act->Terminate(false);
-                $this->_obj->setStatus(1);
-            }else $this->_obj->setStatus(2);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check software');
-            if ($task){
-                $task->addRetour($GLOBALS['Chrono']->total());
+                //throw new Exception($e->getMessage());
             }
-            return true;
-        }catch (Exception $e){
-            $act->addDetails('Erreur: '.$e->getMessage());
-            $act->Terminate(false);
-            throw new Exception($e->getMessage());
         }
+        return true;
     }
     /**
      * rewriteConfig

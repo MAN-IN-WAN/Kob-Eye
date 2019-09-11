@@ -1,0 +1,8 @@
+[BASH COLOR|red]Suppression des comptes ftps des instances de type AzkoFront[/BASH]
+[STORPROC Parc/Instance/Plugin=AzkoFront|I|0|10000]
+    [STORPROC Parc/Instance/[!I::Id!]/Host|H|0|1]
+        [STORPROC Parc/Host/[!H::Id!]/Ftpuser|F|0|10]
+            [BASH COLOR|red] - delete [!F::Id!] - [!F::Delete()!][/BASH]
+        [/STORPROC]
+    [/STORPROC]
+[/STORPROC]

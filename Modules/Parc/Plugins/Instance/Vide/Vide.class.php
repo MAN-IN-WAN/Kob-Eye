@@ -17,18 +17,21 @@ class ParcInstanceVide extends Plugin implements ParcInstancePlugin {
      * Suppression des éléments spécifiques
      */
     public function Delete(){
+        return true;
     }
     /**
      * postInit
      * Initialisation du plugin
      */
     public function postInit(){
+        return true;
     }
     /**
      * createInstallTask
      * Creation de la tach d'installation du secib web
      */
     public function createInstallTask(){
+        return true;
     }
     /**
      * installSecibWeb
@@ -36,13 +39,14 @@ class ParcInstanceVide extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function installSoftware($task){
+        return true;
     }
     /**
      * createUpdateTask
      * Creation de la tache de mise à jour du logiciel
      */
     public function createUpdateTask(){
-
+        return true;
     }
     /**
      * updateSoftware
@@ -50,13 +54,13 @@ class ParcInstanceVide extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function updateSoftware($task){
-
+        return true;
     }
     /**
      * checkState
      */
     public function checkState($task){
-
+        return true;
     }
     /**
      * rewriteConfig

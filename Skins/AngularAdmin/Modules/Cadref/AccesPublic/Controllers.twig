@@ -436,7 +436,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			$scope.adherentInfo();
 			$scope.inscriptionGetData('inscription', '');
 			$scope.reservationGetData('reservation', '');
-			$scope.getPanier('');
+			$scope.getPanier('', '');
         });
     }
     $scope.initAdh();
@@ -486,21 +486,65 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+	
+	// attestation fiscale
+	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
+	$scope.adherentAttestation = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestationPublic',$scope.Attest,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf == false) swal('Attention',"Vous n'êtes pas inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	$scope.selectAttestMode = function(mode) {
+		var o = $scope.Attest;
+		switch(mode) {
+		case 0: 
+			if(o.AttestFisc) { o.AttestPaiement = o.AttestSuivi = 0; }
+			else { o.AttestPaiement = 0; o.AttestSuivi = 1; }
+			break;
+		case 1: 
+			if(o.AttestSuivi) { o.AttestPaiement = o.AttestFisc = 0; }
+			else { o.AttestPaiement = 1; o.AttestFisc = 0; }
+			break;
+		case 2: 
+			if(o.AttestPaiement) { o.AttestFisc = o.AttestSuivi = 0; }
+			else { o.AttestFisc = 1; o.AttestSuivi = 0; }
+		}
+	}
+
+
 
 	//---------------------------
 	// gestion du panier
-	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Urlweb:''};
-	$scope.getPanier = async function(action, classe) { 
+	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Dons:0, Urlweb:''};
+	$scope.getPanier = async function(action, classe, dons) { 
 		if(classe == undefined) classe = '';
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',[action, classe]);
+		var args = [action, classe];
+		if(dons != undefined) args.push(dons);
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',args);
 		$scope.panierObj.panierItems = data.data.data.data;
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
 		$scope.panierObj.Montant = data.data.data.montant;
 		$scope.panierObj.Total = data.data.data.total;
 		$scope.panierObj.Urlweb = data.data.data.urlweb;
+		$scope.panierObj.Dons = data.data.data.donate;
 		$scope.$digest();
 	}
+
+	$scope.panierAjoute = function(c) {
+		$scope.inscriptionObj.Select = 0;
+		$scope.getPanier('add', c.CodeClasse);
+	}
+
 	
 	$scope.panierSupprime = function(item) {
 		$scope.getPanier('remove', item.CodeClasse);
@@ -518,6 +562,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$("#modal-panier").modal('toggle');
 	}
 	
+	$scope.panierDons = function() {
+		$scope.getPanier('', '', $scope.panierObj.Dons);
+	}
 
 
 	//---------------------------
@@ -557,11 +604,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return (m < 9 ? 10000 : 0)+m*100+parseInt(c.substr(0, 2)); 
 	}
 	
-	$scope.inscriptionAjoutePanier = function(c) {
-		$scope.inscriptionObj.Select = 0;
-		$scope.getPanier('add', c.CodeClasse);
-	}
-
 	$scope.inscriptionAjoute = function(c) {
 		var i = $scope.inscriptionObj;
 		var t = i.InscriptionItems;

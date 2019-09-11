@@ -8,6 +8,7 @@
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/spin.js"></script>
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/jquery.spin.js"></script>
 <link href="Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_bleu64.png" rel="icon" type="image/png">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 [/HEADER]
 
 <!--login modal-->

@@ -28,7 +28,7 @@ body{
 
 @media screen and (min-width: 768px) {
     .modal-dialog {
-        width: 500px;
+        width: 550px;
         padding-top: 50px;
         padding-bottom: 30px;
     }
@@ -125,4 +125,13 @@ body { font-weight: normal;}
 
 .cadref-label.obligatoire {
 	color: red;
+}
+
+
+.field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
 }

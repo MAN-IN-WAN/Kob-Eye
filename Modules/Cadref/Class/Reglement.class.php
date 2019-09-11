@@ -14,6 +14,7 @@ class Reglement extends genericClass {
 	function PrintReglement($obj) {
 		require_once ('PrintReglement.class.php');
 
+		$annee  = Cadref::$Annee;
 		$menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 		
@@ -27,7 +28,7 @@ class Reglement extends genericClass {
 			case 0:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 				$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
-				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1)";
+				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1) and r.Annee='$annee'";
 				$title = 'Règlements '.$user.' '.$obj['DateDebut'].'-'.$obj['DateFin'];
 				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'_'.date('YmdHis').'.pdf';
 				break;
@@ -90,7 +91,7 @@ where ".$where;
 		return $s;
 	}
 	
-	private function sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
+	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
 		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN');
 		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC');
 		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS');
@@ -101,8 +102,9 @@ from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l($sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$nbre		= $p['cnt'];
@@ -123,15 +125,17 @@ klog::l($sql);
 		return $Sepa;
 	}
 
-	private function sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
+	private function sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
 		$Sepa = '';
 		$sql = "
 select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
-order by a.Nom,a.Prenom
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+		$sql .= " order by a.Nom,a.Prenom";
+
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -151,6 +155,7 @@ order by a.Nom,a.Prenom
 	}
 
 	function Prelevements($obj) {
+		$user = $obj['Utilisateur'];
 		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
 		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00'); 
 		$dfin->add(DateInterval::createFromDateString('1 month'));
@@ -259,6 +264,7 @@ select count(*) as cnt,sum(round(Montant,2)) as tot
 from `##_Cadref-Reglement`
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
 ";
+		if($user != 'Tous') $sql .= " and Utilisateur='$user'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -274,29 +280,54 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 
 		$nSeq = 0;
 		$cSeq = "FRST";
-		$tmp = $this->sepaPrl1($remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
 			$Sepa .= $cPrl4;
 		}
 		$nSeq = 1;
 		$cSeq = "RCUR";
-		$tmp = $this->sepaPrl1($remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
 			$Sepa .= $cPrl4;
 		}
 
 		$Sepa .= $cPrl1;
 
 		// fichier sepa
-		$file	= getcwd()."/Home/tmp/REM_".time('ymd-hi',$time)."_CA.B2C.SDD";
-		file_put_contents($file, $Sepa);
+		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".prlv";
+		file_put_contents(getcwd().$file, $Sepa);
 		
 		return array('file'=>$file);
 	}
 
+	function Encaissements($obj) {
+		$user = $obj['Utilisateur'];
+		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
+		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00'); 
+		$dfin->add(DateInterval::createFromDateString('1 month'));
+		$dfin->add(DateInterval::createFromDateString('1 second'));
+		$dfin = $dfin->getTimestamp();
+		$sql = "
+select a.id as adhId, r.Id as regId
+from `##_Cadref-Reglement` r
+inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$reg = Sys::getOneData('Cadref', 'Reglement/'.$p['regId']);
+			$reg->Encaisse = 1;
+			$reg->Save();
+			$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['adhId']);
+			$adh->EtatRUM = 1;
+			$adh->Save();
+		}
+		return true;
+	}
 	
 }

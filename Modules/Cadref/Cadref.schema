@@ -564,10 +564,10 @@
 		<PROPERTIES type="varchar" length="4" obligatoire="1" list="1" form="1" fiche="1" category="Description" description="Année scolaire">Annee</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" obligatoire="1" category="Description" values="D::Début,F::Fin,V::Vacances" list="1" form="1" fiche="1" description="Type">Type</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" list="1" form="1" fiche="1" description="Libellé">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="16" category="Description" list="1" form="1" fiche="1" description="Logo">Logo</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="Description" form="1" fiche="1" description="Logo">Logo</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateDebut</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateFin</PROPERTIES>
-		<FKEY card="0,1" module="Cadref" data="Jour,Id" category="Description" description="Jour de fin des cours">JourId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="Jour,Id" category="Description" description="Jour début/fin des cours">JourId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Parametre" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Paramètre" Operations="add,edit" Dico="1">
@@ -599,8 +599,10 @@
     </OBJECTCLASS>
 
     <OBJECTCLASS title="Panier" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="6">Numero</PROPERTIES>
         <PROPERTIES type="varchar" length="4">Annee</PROPERTIES>
         <PROPERTIES type="varchar" length="255">Panier</PROPERTIES>
+        <PROPERTIES type="float" default="0">Dons</PROPERTIES>
         <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
     </OBJECTCLASS>
 

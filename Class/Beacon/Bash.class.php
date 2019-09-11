@@ -23,5 +23,8 @@ class Bash extends Beacon {
         $this->Data = Parser::PostProcessing($tmp);
         return $this->Data;
     }
-
+    function Affich(){
+        return '';
+    }
 }
+

@@ -48,17 +48,18 @@ if($vars['mode'] == 0) {
 	}
 	$vars['annees'] = $tmp;
 	
-	$tmp = array();
+	$tmp = array('' => '');
 	$as = Sys::getData('Cadref', 'Lieu');
 	foreach($as as $a)
 		$tmp[$a->Id] = $a->Lieu.' '.$a->Libelle;
 	$vars['lieux'] = $tmp;
 
-	$tmp = array();
+	$tmp = array('' => '');
 	$as = Sys::getData('Cadref', 'Jour');
 	foreach($as as $a)
 		$tmp[$a->Id] = $a->Jour;
 	$vars['jours'] = $tmp;
+	
 
 	$vars['ruptures'] = array('D' => 'Disciplines', 'N' => 'Niveaux', 'C' => 'Classes', 'S' => 'Sans rupture');
 	$vars['contenu'] = array('' => '', 'E' => 'Elèves seulement', 'N' => 'Impression du nom', 'A' => 'Impression nom et adresse', 'Q' => 'Etiquettes');

@@ -473,6 +473,10 @@
 			}
 		});
 
+		// selectionne le contenu
+		$scope.selectAllContent = function($event) {
+			$event.target.select();
+		}
 		
 		// donne le focus
 		$scope.takeFocus = function(id) {
@@ -672,6 +676,7 @@
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 					$scope.obj.certifInvalide = data.data.certifInvalide;
+					try { $scope.$digest(); } catch(ex) {}
 				}
 			).error(
 				function() {

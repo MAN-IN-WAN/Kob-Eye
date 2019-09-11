@@ -118,7 +118,7 @@ class PrintAdherent extends FPDF {
 				if($this->rupVal != $r) {
 					if($this->rupVal != '' && $this->rupture != 'E') {
 						$this->footRupture();
-						if($this->rupture == 'C') $this->AddPage();
+						if($this->rupture == 'C' && ($this->contenu == 'N' || $this->contenu == 'A')) $this->AddPage();
 					}
 					$this->headRupture($l);
 					$this->rupVal = $r;

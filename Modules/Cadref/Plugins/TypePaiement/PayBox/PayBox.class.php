@@ -32,6 +32,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	 **/
 	public function getCodeHTML($paiement) {
 		$adh = $paiement->getOneParent('Adherent');
+		
 		if($this->Params['MODEPRODUCTION']) $url = "https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
 		else $url = "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
 		
@@ -92,7 +93,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		$hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 		
 		//on renvoie le formulaire
-		return '<form method="POST" onload="this." action="https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		return '<form method="POST" onload="this." action="'.$url.'">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -124,7 +125,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			if(! $adh || $adh->Numero != $a[0]) $etat = 0;
 		}
 		
-		return array('etat'=>1, 'ref'=>$_POST['trans'], 'detail'=>$ident, 'status'=>$status);
+		return array('etat'=>$etat, 'ref'=>$_POST['trans'], 'detail'=>$ident, 'status'=>$status);
 
 //		// Vérification signature
 //		$signature = sha1(
@@ -146,6 +147,9 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function retrouvePaiementEtape4s() {
+		$s = date('Y-m-d H:i:s')."\nPOST---------------\n".print_r($_POST, true)."\nGET---------------\n".print_r($_GET, true)."\n\n";
+		file_put_contents(getcwd()."/Log/Paiement.log", $s, FILE_APPEND);
+		
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
 		if(isset($_POST['ident']) and !empty($_POST['ident'])) {
 			$a = explode('-', $_POST['ident']);
