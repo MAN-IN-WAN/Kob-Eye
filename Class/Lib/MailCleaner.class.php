@@ -4,7 +4,12 @@ class MailCleaner {
 
     const MC_URL = 'https://mailcleaner1.abtel.link/api/soap/?wsdl';
 
-    //Connexion à l'api zabbix
+
+    function __construct($infra) {
+        print "In BaseClass constructor\n";
+    }
+
+    //Connexion à l'api Mailcleaner
     private static function connect(){
         $mc = new SoapClient(self::MC_URL);
         return $mc;

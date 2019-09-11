@@ -197,7 +197,7 @@ class Instance extends genericClass{
             }
             if (!$infra){
                 //affectation à l'infra par défaut
-                $infra = Sys::getOneData('Parc','Infra/Default=1',0,100,null,null,null,null,true);
+                $infra = Sys::getOneData('Parc','Infra/Default=1&Mail=0',0,100,null,null,null,null,true);
                 $this->addParent($infra);
             }
             return $infra;
@@ -206,7 +206,7 @@ class Instance extends genericClass{
         $infra = Sys::getOneData('Parc','Infra/Instance/'.$this->Id,0,100,null,null,null,null,true);
         if (!$infra){
             //affectation à l'infra par défaut
-            $infra = Sys::getOneData('Parc','Infra/Default=1');
+            $infra = Sys::getOneData('Parc','Infra/Default=1&Mail=0');
             $this->addParent($infra);
             return $infra;
         }

@@ -1016,7 +1016,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
                     $this->_KEInfra = $inst->getInfra();
                     $this->addParent($this->_KEInfra);
                 }else{
-                    $infra = Sys::getOneData('Parc','Infra/Default=1');
+                    $infra = Sys::getOneData('Parc','Infra/Default=1&Mail=0');
                     $this->_KEInfra = $infra;
                     if (!is_object($infra)){
                         $this->addError(array('Message'=> 'Aucune infrastructure n\'est définie par défaut. Veuillez contacter votre administrateur'));
