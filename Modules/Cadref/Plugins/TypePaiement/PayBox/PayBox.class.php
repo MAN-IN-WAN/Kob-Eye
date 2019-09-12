@@ -107,7 +107,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
 			<input type="hidden" name="PBX_RUF1" value="POST">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
-			<input type="submit" class="btn btn-success" value="Payer">
+			<input id="PBXPayer" type="submit" class="btn btn-success" value="Payer">
 		</form>
 		';
 	}
