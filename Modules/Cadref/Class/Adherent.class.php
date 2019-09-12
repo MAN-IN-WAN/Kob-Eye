@@ -1656,7 +1656,7 @@ where ce.Visite=:cid";
 
 		$sql = "
 select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
-i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
+i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN,i.Utilisateur
 from `##_Cadref-AdherentAnnee` a
 left join `##_Cadref-Adherent` e on e.Id=a.AdherentId
 left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee'
