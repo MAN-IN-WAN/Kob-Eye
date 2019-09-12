@@ -47,6 +47,13 @@ foreach ($vars['fields'] as $f){
     if ($f['type']=='text'||$f['type']=='raw'||$f['type']=='varchar'||$f['type']=='html'||$f['type']=='titre'){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = Utils::cleanJson($vars['row']->{$f['name']});
+        //Clean des symboles twig
+        $vars['row']->{$f['name']} = str_replace('{{','{&zwnj;{', $vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = str_replace('}}','}&zwnj;}', $vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = str_replace('{#','{&zwnj;#', $vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = str_replace('#}','#&zwnj;}', $vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = str_replace('{%','{&zwnj;%', $vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = str_replace('%}','%&zwnj;}', $vars['row']->{$f['name']});
     }
     if ($f['type']=='fkey'&&$f['card']=='short'){
         if ($vars['row']->{$f['name']} > 0) {
@@ -86,4 +93,5 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }
+
 ?>

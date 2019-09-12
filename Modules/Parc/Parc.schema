@@ -194,14 +194,16 @@
 		<PROPERTIES type="boolean" searchOrder="8" fiche="1" form="1">Guacamole</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="9" fiche="1" form="1">Zabbix</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="10" fiche="1" form="1">Grafana</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="9" fiche="1" form="1">MailCleaner</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="10" fiche="1" form="1">MailInBlack</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1"  listDescr="Proxy" form="1">Proxy</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="12" quickview="1" fiche="1"  list="1" listDescr="PageSpeed" form="1">PageSpeed</PROPERTIES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="SSH: Mot de passe" form="1">SshPassword</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de cpu" fiche="1" list="1" form="1" listDescr="CPU">NbCpu</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de giga de RAM" fiche="1" list="1" listDescr="RAM" form="1">NbRam</PROPERTIES>
-			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de cpu" fiche="1" form="1" listDescr="CPU">NbCpu</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de giga de RAM" fiche="1" listDescr="RAM" form="1">NbRam</PROPERTIES>
+			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" fiche="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Mail" formCondition="{{ scopeObj }}.Mail == 1">
@@ -210,7 +212,7 @@
 			<PROPERTIES type="boolean" description="Serveur sql par défaut" form="1" >defaultSqlServer</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071">mailAdminPort</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Guacamole" formCondition="{{ scopeObj }}.Guacamole == 1">
 			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" form="1">guacAdminUser</PROPERTIES>
@@ -219,6 +221,10 @@
 		<CATEGORY title="Sql" formCondition="{{ scopeObj }}.Sql == 1">
 			<PROPERTIES type="varchar" description="User BDD" form="1">SqlUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="MailInBlack" formCondition="{{ scopeObj }}.MailInBlack == 1">
+			<PROPERTIES type="varchar" description="User MIB" form="1">MIBUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Pass MIB" form="1">MIBPass</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -243,7 +249,7 @@
 		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
 		<FUNCTION title="Configuration du serveur">createConfigTask</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN">
+	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN,addServerHostTask::PARC_TECHNICIEN,delServerHostTask::PARC_TECHNICIEN,syncHostTask::PARC_TECHNICIEN">
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -523,7 +529,7 @@
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Ticket" logEvent="1" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php" Operations="closeTicket,delete::PARC_TECHNICIEN,edit::PARC_TECHNICIEN,export,add::PARC_TECHNICIEN">
+	<OBJECTCLASS title="Ticket" logEvent="1" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php" Operations="closeTicket,edit::PARC_TECHNICIEN,export,add::PARC_TECHNICIEN">
 		<FUNCTION title="Creation de ticket" hidden="1">createTicket</FUNCTION>
 		<FUNCTION title="Cloture du ticket" >closeTicket</FUNCTION>
 
@@ -539,7 +545,7 @@
 		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" list="1" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" gestion="1" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Intitulé" list="1" form="1" fiche="1" gestion="1" listDescr="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" gestion="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN" default="[!TMS::Now!]">DateEcheance</PROPERTIES>
+		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" gestion="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN" now="1">DateEcheance</PROPERTIES>
 		<PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" gestion="1" listDescr="Etat" values="10::En cours,20::Terminé,30::A facturer,40::Clôturé,41::Abandonné">Etat</PROPERTIES>
 		<PROPERTIES type="boolean" list="1" form="1" fiche="1" listDescr="Prioritaire" hasRole="PARC_TECHNICIEN">Prioritaire</PROPERTIES>
 		<PROPERTIES type="text" description="Information complémentaires" fiche="1" form="1" list="1" gestion="1" listDescr="Retour">Note</PROPERTIES>
@@ -554,7 +560,7 @@
 		<PROPERTIES type="varchar" description="Cloturé par"  fiche="1" gestion="1" listDescr="Terminé par">UserCloture</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" description="Id Contact Gestion" fiche="1" gestion="1" listDescr="Contact Client" hasRole="PARC_TECHNICIEN">IdContactGestion</PROPERTIES>
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
-		<FKEY card="1,1" data="Client,Id" list="1" fiche="1" form="1" description="Client">ClientId</FKEY>
+		<FKEY card="1,1" searchOrder="6" data="Client,Id" list="1" fiche="1" form="1" description="Client">ClientId</FKEY>
 		<FKEY card="0,1" module="Abtel" fiche="1" data="Contrat,Id" >ContratId</FKEY>
 		<FKEY card="0,1" data="Contact,Id" fiche="1">ContactId</FKEY>
 

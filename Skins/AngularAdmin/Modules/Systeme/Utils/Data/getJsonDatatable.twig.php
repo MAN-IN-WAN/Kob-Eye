@@ -93,12 +93,12 @@ foreach ($vars['rows'] as $k=>$v){
                 //transformation des timestamps en format js
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 //Clean des symboles twig
-                $v->{$f['name']} = str_replace('{{','{ {', $v->{$f['name']});
-                $v->{$f['name']} = str_replace('}}','} }', $v->{$f['name']});
-                $v->{$f['name']} = str_replace('{#','{ #', $v->{$f['name']});
-                $v->{$f['name']} = str_replace('#}','# }', $v->{$f['name']});
-                $v->{$f['name']} = str_replace('{%','{ %', $v->{$f['name']});
-                $v->{$f['name']} = str_replace('%}','% }', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('{{','{&zwnj;{', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('}}','}&zwnj;}', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('{#','{&zwnj;#', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('#}','#&zwnj;}', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('{%','{&zwnj;%', $v->{$f['name']});
+                $v->{$f['name']} = str_replace('%}','%&zwnj;}', $v->{$f['name']});
                 break;
         }
         if (isset($f['Values'])&&isset($f['Values'][$v->{$f['name']}])){

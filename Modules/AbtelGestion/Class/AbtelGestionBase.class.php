@@ -83,7 +83,6 @@ class AbtelGestionBase extends genericClass {
     public function makeRequest(){
         $query = $GLOBALS['Systeme']->getRegVars('Query');
         $inf = $this->reworkQuery($query,1);
-
         if($this->getOrigin()){
             //Gestion donc on appelle l'api du parc
             $url = self::PARCURL.'/'.$inf['Route'];
@@ -559,7 +558,7 @@ class AbtelGestionBase extends genericClass {
 
         $info = Info::getInfos($query);
 
-        if($info['TypeSearch'] == 'Direct' && $getId){
+        if($info['TypeSearch'] == 'Direct' && $getId && $this->getOrigin()){
             $qs = explode('/',$query);
             $fields = $this->getQueryFields($this->getOrigin());
             $f = $fields[$this->identifier];
@@ -827,12 +826,14 @@ class AbtelGestionBase extends genericClass {
                 $req = 'INSERT INTO '.$infos['Table'].' ( '.implode(',',$cols).' ) VALUES ( '.implode(',',$vals).' ); ';
                 break;
             case 'PATCH':
+                if($where === '1') return false; // secu pour eviter de modifier la table
                 $couples = array_map(function($col,$val){
                     return $col.' = '.$val;
                 },$cols,$vals);
                 $req = 'UPDATE '.$infos['Table'].' SET '.implode(',',$couples).' WHERE '.$where;
                 break;
             case 'PUT':
+                if($where === '1') return false; // secu pour eviter de modifier la table
                 $entity = Sys::getOneData('AbtelGestion',"Entite/Nom=".$this->entity);
                 $fields = $entity->getChildren('Champ');
 
@@ -852,7 +853,6 @@ class AbtelGestionBase extends genericClass {
             case 'DELETE':
                 if($where === '1') return false; // secu pour eviter de vider la table
                 $req = 'DELETE FROM '.$infos['Table'].' WHERE '.$where;
-
                 break;
         }
 

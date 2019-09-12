@@ -14,9 +14,9 @@ class Temoa extends genericClass {
 				$zip->extractTo($dir);
 				$zip->close();
 				$f = "$dir/$this->Code";
-				$this->Nahuatl = file_get_contents("$f.rtf");
-				$this->Trad1 = file_exists("$f".'trad.rtf') ? file_get_contents("$f".'trad.rtf') : '';
-				$this->Trad2 = file_exists("$f".'trad2.rtf') ? file_get_contents("$f".'trad2.rtf') : '';
+				//$this->Nahuatl = file_get_contents("$f.rtf");
+				//$this->Trad1 = file_exists("$f".'trad.rtf') ? file_get_contents("$f".'trad.rtf') : '';
+				//$this->Trad2 = file_exists("$f".'trad2.rtf') ? file_get_contents("$f".'trad2.rtf') : '';
 				$this->importRtf($f.'_esp.rtf', 'PresentationEs'); 
 				$this->importRtf($f.'_fra.rtf', 'PresentationFr'); 
 				$this->importRtf($f.'_ang.rtf', 'PresentationEn'); 

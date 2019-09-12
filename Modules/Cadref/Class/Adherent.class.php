@@ -1236,6 +1236,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		foreach($pdo as $r) {
+			$r['bloque'] = 0;
 			$r['classe'] = 'label-success';
 			$r['note'] = 'Déjà inscrit';
 			$r['note2'] = '';
@@ -1263,7 +1264,8 @@ select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle a
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
 if(c.DateReduction2 is not null and c.DateReduction2<=UNIX_TIMESTAMP(),c.Reduction2,
 if(c.DateReduction1 is not null and c.DateReduction1<=UNIX_TIMESTAMP(),c.Reduction2,0)) as Reduction,
-0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles
+0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles,
+c.AccesWeb as cWeb,n.AccesWeb as nWeb
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on c.NiveauId=n.Id
 inner join `##_Cadref-Discipline` d on n.DisciplineId=d.Id
@@ -1276,6 +1278,11 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		$montant = 0;
 		foreach($pdo as $r) {
+			$r['bloque'] = 0;
+			if($r['cWeb'] || $r['nWeb']) {
+				$r['bloque'] = 1;
+				$r['note2'] = 'Indisponible en ligne';
+			}
 			$r['classe'] = 'label-warning';
 			$r['note'] = 'Nouveau cours';
 			$jr = $r['Jour'];
@@ -1295,12 +1302,14 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				}			
 			}
 			$r['heures'] = $heures;
-			if($r['Disponibles'] <= 0) $r['note2'] =  'Plus de place disponible';
+			if(!$r['bloque'] && $r['Disponibles'] <= 0) {
+				$r['note2'] =  'Plus de place disponible';
+				$r['bloque'] = 1;
+			}
 			elseif($heures) $r['note2'] = "Chevauchement d'horaire";
 			else $r['note2'] = '';
-
 			$data[] = $r;
-			if($r['Disponibles'] > 0) $montant += $r['Prix']-$r['Reduction'];
+			if(!$r['bloque'] > 0) $montant += $r['Prix']-$r['Reduction'];
 		}
 
 		$sql1 = "
@@ -1321,7 +1330,6 @@ where ce.Classe=:cid";
 			}
 			$d['Enseignants'] = $e;
 		}
-
 		$total = $cotisDue+$montant+$donate;
 		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 'regul'=>$regul, 'dons'=>$dons, 'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}
@@ -1370,10 +1378,10 @@ c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
 if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,
 if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,0)) as Reduction,
-0 as Soutien
+0 as Soutien,(n.AccesWeb and c.AccesWeb) as Web
 from `##_Cadref-Discipline` d0
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId and n.AccesWeb=1
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee' and c.AccesWeb=1
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId

@@ -55,8 +55,8 @@
 		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">PresentationEs</PROPERTIES>
 		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">PresentationFr</PROPERTIES>
 		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">PresentationEn</PROPERTIES>
-		<PROPERTIES type="text" category="Description" form="5" fiche="5" >Nahuatl</PROPERTIES>
-		<PROPERTIES type="text" category="Description" form="6" fiche="6" >Trad1</PROPERTIES>
-		<PROPERTIES type="text" category="Description" form="7" fiche="7" >Trad2</PROPERTIES>
+		<PROPERTIES type="text" category="Description" >Nahuatl</PROPERTIES>
+		<PROPERTIES type="text" category="Description" >Trad1</PROPERTIES>
+		<PROPERTIES type="text" category="Description" >Trad2</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
