@@ -533,24 +533,24 @@
 		<FUNCTION title="Creation de ticket" hidden="1">createTicket</FUNCTION>
 		<FUNCTION title="Cloture du ticket" >closeTicket</FUNCTION>
 
+		<FILTER name="Backlog" color="info"><![CDATA[Etat=10&Categorie=OPE]]></FILTER>
 		<FILTER name="Mes tickets" color="success" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&UserNext=[!ParcTechnicien::IdGestion!]&Categorie=OPE]]></FILTER>
-		<FILTER name="Backlog" color="info">Etat=10</FILTER>
 		<FILTER name="Bloquant" color="danger" ><![CDATA[Etat=10&Priorite=4]]></FILTER>
 		<FILTER name="Tous les tickets" color="secondary" ></FILTER>
 
 		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
-		<PROPERTIES type="varchar" description="Source du ticket" list="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
+		<PROPERTIES type="varchar" description="Source du ticket" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
 		<PROPERTIES type="varchar" unique="1" searchOrder="1" description="Numero du ticket" list="1" fiche="1" gestion="1" listDescr="N° Ticket">Numero</PROPERTIES>
-		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" list="1" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code client Abtel" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" gestion="1" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Intitulé" list="1" form="1" fiche="1" gestion="1" listDescr="Intitulé">Titre</PROPERTIES>
 		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" gestion="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN" now="1">DateEcheance</PROPERTIES>
 		<PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" gestion="1" listDescr="Etat" values="10::En cours,20::Terminé,30::A facturer,40::Clôturé,41::Abandonné">Etat</PROPERTIES>
-		<PROPERTIES type="boolean" list="1" form="1" fiche="1" listDescr="Prioritaire" hasRole="PARC_TECHNICIEN">Prioritaire</PROPERTIES>
-		<PROPERTIES type="text" description="Information complémentaires" fiche="1" form="1" list="1" gestion="1" listDescr="Retour">Note</PROPERTIES>
-		<PROPERTIES type="date" description="Date de création" list="1" fiche="1" gestion="1" listDescr="Date de création">DateCrea</PROPERTIES>
-		<PROPERTIES type="varchar" description="Intervenant original" list="0" fiche="1" gestion="1" listDescr="Créateur">UserCrea</PROPERTIES>
+		<PROPERTIES type="boolean"  form="1" fiche="1" listDescr="Prioritaire" hasRole="PARC_TECHNICIEN">Prioritaire</PROPERTIES>
+		<PROPERTIES type="text" description="Information complémentaires" list="1" fiche="1" form="1" gestion="1" listDescr="Retour">Note</PROPERTIES>
+		<PROPERTIES type="date" description="Date de création" fiche="1" list="1" gestion="1" listDescr="Date de création">DateCrea</PROPERTIES>
+		<PROPERTIES type="varchar" description="Intervenant original" fiche="1" gestion="1" listDescr="Créateur">UserCrea</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" description="Code contrat Abtel" fiche="1" gestion="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeContrat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Affecté au technicien" list="1" fiche="1" form="1" gestion="1" listDescr="Prochain" query="Parc/Technicien::IdGestion::Nom">UserNext</PROPERTIES>
 		<PROPERTIES type="varchar" description="Urgence" list="1" form="1" fiche="1" gestion="1" listDescr="Priorité" values="1::Reportable,2::Normal,3::Perturbant,4::Bloquant" default="2" >Priorite</PROPERTIES>

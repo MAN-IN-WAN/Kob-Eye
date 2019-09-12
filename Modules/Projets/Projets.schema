@@ -21,10 +21,10 @@
 		<PROPERTIES type="boolean" category="Descriptif" description="Projet interne" list="1" form="1" fiche="1" listDescr="Projet Interne">ProjetInterne</PROPERTIES>
 		<PROPERTIES type="boolean" category="Descriptif" description="Suivi uniquement" list="1" form="1" fiche="1" listDescr="Suivi">SuiviUniquement</PROPERTIES>
 		<PROPERTIES type="order" form="1" fiche="1" list="1" listDescr="Priorite" description="Priorité">Ordre</PROPERTIES>
-		<PROPERTIES type="int" form="1" fiche="1" list="1" listDescr="Temps prévu" description="Temps prévu (en heure s'il vous plaît à raison de 7 heures par jour)">TempsPrevu</PROPERTIES>
+		<PROPERTIES type="int" form="1" fiche="1" list="1" listDescr="Temps prévu (heure)" description="Temps prévu (en heure s'il vous plaît à raison de 7 heures par jour)">TempsPrevu</PROPERTIES>
 		<FKEY card="0,1" data="Status,Id" list="1" form="1" fiche="1" >Status</FKEY>
 		<FKEY card="1,1" module="Parc" data="Technicien,Id" form="1" fiche="1" description="Chef de projet" listDescr="Chef de projet">ChefProjet</FKEY>
-		<RKEY card="0,1" data="Ticket,Id" list="1" form="1" fiche="1" module="Parc" >ProjectId</RKEY>
+		<RKEY card="0,1" data="Ticket,Id" form="1" fiche="1" module="Parc" >ProjectId</RKEY>
 	</OBJECTCLASS>
 	<!--<OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" master="0" Description="Taches"  Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" order="DateDebut" orderType="ASC">
 		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" form="1" fiche="1" listWidth="200">Nom</PROPERTIES>

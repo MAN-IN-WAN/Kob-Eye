@@ -268,6 +268,19 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
+        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
+        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
+        $host = $this->_obj->getOneParent('Host');
+        $bdd = $host->getOneChild('Bdd');
+
+
+        //Saisie du fichier de configuration
+        //db host
+        $cmd = 'cat /home/' . $host->Nom . '/www/lib/init.php | sed -e \'s/oConfig->DB_PARAMS_ONLINE.*$/oConfig->DB_PARAMS_ONLINE = array("db_host" => "' . $mysqlsrv->IP . '" , "db_user" => "' . $host->Nom . '", "db_pass" => "' . $host->Password . '"  , "db_name" => "' . $bdd->Nom . '"); /\' > /home/' . $host->Nom . '/www/lib/init.php.tmp';
+        $out = $apachesrv->remoteExec($cmd);
+        $apachesrv->remoteExec('rm /home/' . $host->Nom . '/www/lib/init.php && mv /home/' . $host->Nom . '/www/lib/init.php.tmp /home/' . $host->Nom . '/www/lib/init.php && chown ' . $host->Nom . ':users /home/' . $host->Nom . '/www/lib/init.php');
+        $out = $apachesrv->remoteExec('cat /home/' . $host->Nom . '/www/lib/init.php');
+        $apachesrv->remoteExec('chmod 705 /home/' . $host->Nom . '/* -R');
         return true;
     }
 }
