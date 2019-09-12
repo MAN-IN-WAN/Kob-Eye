@@ -122,11 +122,11 @@
 									</td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleA }]}</span></td>
-									<td scope="row" class="cadref-td"><span class="label" ng-class="{'label-danger': item.heures*1}">{[{ item.clsId ? item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin : '' }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label" ng-class="{'label-warning': item.heures*1}">{[{ item.clsId ? item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin : '' }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : (item.clsId ? "Toute l'année" : "") }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
-									<td scope="row" class="cadref-td"><span class="label label-danger">{[{ item.note2 }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span></td>
 								</tr>
 							</tbody>
 						</table>

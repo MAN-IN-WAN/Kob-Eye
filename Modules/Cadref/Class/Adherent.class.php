@@ -1212,6 +1212,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				$ids = str_replace($c, '', $ids); 	
 				$s = substr($ids, -1, 1);
 				if($s == ',') $ids = substr($ids, 0, strlen($ids)-1);
+				$ids = str_replace("',,'", "','", $ids);
 			}
 			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
@@ -1279,7 +1280,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$montant = 0;
 		foreach($pdo as $r) {
 			$r['bloque'] = 0;
-			if($r['cWeb'] || $r['nWeb']) {
+			if(!$r['cWeb'] || !$r['nWeb']) {
 				$r['bloque'] = 1;
 				$r['note2'] = 'Indisponible en ligne';
 			}
@@ -1292,7 +1293,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			$hrf = $r['HeureFin'];
 			$heures = 0;
 			foreach($data as $d) {
-				if(!$r['clsId']) continue;
+				if($d['clsId'] == 0) continue;
 				$cd = $this->cycleValeur($d['CycleDebut'], true);
 				$cf = $this->cycleValeur($d['CycleFin'], false);
 				if($jr == $d['Jour'] && (($cf >= $cyd && $cf <= $cyf) || ($cd >= $cyd && $cd <= $cyf))) {
@@ -1309,7 +1310,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			elseif($heures) $r['note2'] = "Chevauchement d'horaire";
 			else $r['note2'] = '';
 			$data[] = $r;
-			if(!$r['bloque'] > 0) $montant += $r['Prix']-$r['Reduction'];
+			if($r['bloque'] == 0) $montant += $r['Prix']-$r['Reduction'];
 		}
 
 		$sql1 = "
