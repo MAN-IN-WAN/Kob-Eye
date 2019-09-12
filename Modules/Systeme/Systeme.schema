@@ -148,7 +148,7 @@
 		<PROPERTIES type="varchar" length="30" searchOrder="3">EventModule</PROPERTIES>
 		<PROPERTIES type="varchar" length="30" searchOrder="4">EventObjectClass</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="5">EventId</PROPERTIES>
-		<PROPERTIES type="text">Data</PROPERTIES>
+		<PROPERTIES type="longtext">Data</PROPERTIES>
 		<FKEY card="1,1" data="User,Id" >UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Donnee"  Description="Média de l'entête" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png" order="Ordre" orderType="ASC" cache="1">
