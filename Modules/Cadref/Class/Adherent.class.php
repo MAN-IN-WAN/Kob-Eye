@@ -367,6 +367,7 @@ class Adherent extends genericClass {
 		$cert = false;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 		foreach($ins as $i) {
+			if($i->Supprime || $i->Attente) continue;
 			$c = $i->getOneParent('Classe');
 			$d = $c->getOneParent('Discipline');
 			if($d->Certificat) {
@@ -801,7 +802,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$fisc = date('Y', $an->DateCotisation);
 		$sql = "
-select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons,a.Reglement,a.Differe
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 where a.AdherentId=$id and a.Annee='$annee'
@@ -815,7 +816,7 @@ where a.AdherentId=$id and a.Annee='$annee'
 
 	function PrintAttestation($params) {
 		$sql = "
-select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons,a.Reglement,a.Differe
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 ";
@@ -1224,7 +1225,7 @@ a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,
 i.Attente,i.Supprime,1 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles,
 from_unixtime(i.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
 from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
-from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription
+from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription, i.Supprime
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -1239,7 +1240,12 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			$r['classe'] = 'label-success';
-			$r['note'] = 'Déjà inscrit';
+			switch($r['Supprime']) {
+				case 0: $r['note'] = 'Déjà inscrit'; break;
+				case 1: $r['note'] = 'Cours supprimé'; break;
+				case 2: $r['note'] = 'Cours échangé'; break;
+			}
+			
 			$r['note2'] = '';
 			$r['heures'] = 0;
 			if($action != 'inscribe') $data[] = $r;
