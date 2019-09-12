@@ -3,24 +3,20 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12"  href="#/Infrastructure/Tickets">
                 <div class="widget widget-seven background-primary">
-                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active">
-                                <a href="http://proxy.abtel.fr/mautic/" class="widget-body" target="_blank">
-                                    <h2>
-                                        <i class="icmn-mail"></i> Mautic
-                                    </h2>
-                                    <p>
-                                        Gestionnaire de newsletter.
-                                    </p>
-                                </a>
-                            </div>
+                    <div class="widget-body">
+                        <div href="javascript: void(0);" class="widget-body-inner">
+                            <h5 class="text-uppercase">Mes tickets opérationnels</h5>
+                            <i class="counter-icon icmn-newspaper"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init" data-from="0" data-to="{{ NbMyTickets }}"></span>
+                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
             <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
                 <div class="widget widget-seven background-danger">
                     <div class="carousel-widget carousel slide" data-ride="carousel">
