@@ -40,17 +40,26 @@ class Domain extends genericClass {
                 }
             }
 			if($this->Mail){
-			    if(!MailCleaner::domainExists($this->Url)) {
-                    if(!$res = MailCleaner::addDomain($this->Url)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (1)','Obj'=> $res ));
+                try {
+			        $mc = new MailCleaner();
+                } catch(Exception $e){
+                    $this->addWarning(array('Message' => 'Une erreur s\'est produite lors de l\'enregistrement du domaine, il nous est impossible de localiser un serveur MailCleaner', 'Obj' => $e->getMessage()));
                 }
+
+                if (is_object($mc) && !$mc->domainExists($this->Url)) {
+                    if (!$res = $mc->addDomain($this->Url)) $this->addWarning(array('Message' => 'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (1)', 'Obj' => $res));
+                }
+
 
 			    //Si MIB
                 if($this->MailFilter) {
+
                     $params = array("destination"=>"10.100.200.51");
-                    if(!$res = MailCleaner::editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2a)','Obj'=> $res ));
+                    if( is_object($mc) && !$res = $mc->editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2a)','Obj'=> $res ));
                 } else {
+
                     $params = array("destination"=>"10.0.189.1,10.0.189.2,10.0.189.3");
-                    if(!$res = MailCleaner::editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2b)','Obj'=> $res ));
+                    if( is_object($mc) && !$res = $mc->editDomain($this->Url,$params)) $this->addWarning(array('Message'=>'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (2b)','Obj'=> $res ));
                 }
 
 			    if(!$this->Secondaire){

@@ -201,9 +201,9 @@
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="SSH: Mot de passe" form="1">SshPassword</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de cpu" fiche="1" list="1" form="1" listDescr="CPU">NbCpu</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de giga de RAM" fiche="1" list="1" listDescr="RAM" form="1">NbRam</PROPERTIES>
-			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de cpu" fiche="1" form="1" listDescr="CPU">NbCpu</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de giga de RAM" fiche="1" listDescr="RAM" form="1">NbRam</PROPERTIES>
+			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" fiche="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Mail" formCondition="{{ scopeObj }}.Mail == 1">
@@ -221,6 +221,10 @@
 		<CATEGORY title="Sql" formCondition="{{ scopeObj }}.Sql == 1">
 			<PROPERTIES type="varchar" description="User BDD" form="1">SqlUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="MailInBlack" formCondition="{{ scopeObj }}.MailInBlack == 1">
+			<PROPERTIES type="varchar" description="User MIB" form="1">MIBUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Pass MIB" form="1">MIBPass</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -556,7 +560,7 @@
 		<PROPERTIES type="varchar" description="Cloturé par"  fiche="1" gestion="1" listDescr="Terminé par">UserCloture</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" description="Id Contact Gestion" fiche="1" gestion="1" listDescr="Contact Client" hasRole="PARC_TECHNICIEN">IdContactGestion</PROPERTIES>
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
-		<FKEY card="1,1" data="Client,Id" list="1" fiche="1" form="1" description="Client">ClientId</FKEY>
+		<FKEY card="1,1" searchOrder="6" data="Client,Id" list="1" fiche="1" form="1" description="Client">ClientId</FKEY>
 		<FKEY card="0,1" module="Abtel" fiche="1" data="Contrat,Id" >ContratId</FKEY>
 		<FKEY card="0,1" data="Contact,Id" fiche="1">ContactId</FKEY>
 

@@ -2,35 +2,50 @@
 
 class Mib
 {
-    const BASEURL = "https://mib.abtel.link/app/api/v1.0/";
-    const APIUSER = "admin";
-    const APIPASS = "mailinblack";
+    private $con_handle = null;
+    private $token = null;
+    private $url = null;
 
     //Connexion à l'api MailInBlack
 
     /**
-     * @return array|null
+     * Mib constructor.
+     * @param null $infra
+     * @throws Exception
      */
-    private static function connect()
+    function __construct($infra = null)
     {
-        $con_handle = curl_init(self::BASEURL . 'login');
-        curl_setopt($con_handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
-        $data = json_encode(array('username' => self::APIUSER, 'password' => self::APIPASS));
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
+        if (!$infra)
+            $infra = Sys::getOneData('Parc', 'Infra/Type=Mail&Default=1');
+
+        if (!$infra)
+            throw new Exception('Aucune infra fournie et aucune infra de mail par défaut.');
+
+
+        $serv = $infra->getOneChild('Server/MailInBlack=1');
+
+        if (!$serv)
+            throw new Exception('Aucun serveur MailCleaner de disponible.');
+
+        $this->url = "https://' . $serv->DNSNom . '/app/api/v1.0/";
+        $user = $serv->MIBUser;
+        $admin = $serv->MIBPass;
+        
+        $this->con_handle = curl_init($this->url . 'login');
+        curl_setopt($this->con_handle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        $data = json_encode(array('username' => $user, 'password' => $admin));
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
-        curl_setopt($con_handle, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($con_handle, CURLOPT_SSL_VERIFYPEER, 0);
-        $ret = json_decode(curl_exec($con_handle), true);
-        if (!$ret) $ret = json_decode(curl_exec($con_handle), true); // Retry en cas de timeout
+        curl_setopt($this->con_handle, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($this->con_handle, CURLOPT_SSL_VERIFYPEER, 0);
+        $ret = json_decode(curl_exec($this->con_handle), true);
+        if (!$ret) $ret = json_decode(curl_exec($this->con_handle), true); // Retry en cas de timeout
         if ($ret && $ret['token']) {
-            $api_token = $ret['token'];
-            return array('handle' => $con_handle, 'token' => $api_token);
-        } else {
-            return null;
+            $this->token = $ret['token'];
         }
     }
 
@@ -41,12 +56,10 @@ class Mib
      * @param $client : nom Client
      * @return mixed
      */
-    public static function addClient($client)
+    public function addClient($client)
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'clients');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'clients');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
         $client = array(
             'name' => $client,
             'step' => 1000,
@@ -54,14 +67,14 @@ class Mib
             'defaultTemplate' => 1
         );
         $data = json_encode($client);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -78,11 +91,8 @@ class Mib
      *                      )
      * @return mixed
      */
-    public static function getClient($search, $params = array())
+    public function getClient($search, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $paramsDefault = array(
             'size' => 20,
             'page' => 1,
@@ -92,17 +102,17 @@ class Mib
         $params = array_replace($paramsDefault, $params);
         $params = array_merge($params, $search);
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'findByGlobalSearch');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'findByGlobalSearch');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
         $data = json_encode($params);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         if ($params['projection'] == 'clientListProjection') {
             return $ret['_embedded']['clients'];
@@ -113,41 +123,38 @@ class Mib
         return true;
     }
 
-
     /**
      * @param $client
      * @param $params (logo / color)
      * @return mixed
      *
      */
-    public static function editClient($client, $params)
+    public function editClient($client, $params)
     {
         $codes = array(
             'logo' => 16,
             'color' => 17
         );
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
 
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
         $rets = array();
         foreach ($params as $k => $param) {
-            curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'clientHasFields/' . $codes[$k] . '-' . $cId);
-            curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "PATCH");
+            curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'clientHasFields/' . $codes[$k] . '-' . $cId);
+            curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "PATCH");
             $param = array(
                 'value' => $param,
                 'defaut' => false
             );
             $data = json_encode($param);
-            curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                    'X-Auth-Token: ' . $mc['token'],
+            curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                    'X-Auth-Token: ' . $this->token,
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($data))
             );
-            $ret = json_decode(curl_exec($con_handle), true);
+            $ret = json_decode(curl_exec($this->con_handle), true);
             $rets[] = $ret;
         }
 
@@ -166,16 +173,13 @@ class Mib
      *          )
      * @return mixed
      */
-    public static function addLicense($client, $params = array())
+    public function addLicense($client, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'licenses');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
         $license = array(
             'clientId' => $cId,
@@ -186,14 +190,14 @@ class Mib
         $license = array_replace($license, $params);
 
         $data = json_encode($license);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -203,16 +207,13 @@ class Mib
      * @param array $params cf addLicense
      * @return mixed
      */
-    public static function editLicense($client, $params = array())
+    public function editLicense($client, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'licenses');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "PUT");
 
         $license = array(
             'clientId' => $cId,
@@ -223,14 +224,14 @@ class Mib
         $license = array_replace($license, $params);
 
         $data = json_encode($license);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -239,30 +240,27 @@ class Mib
      * @param $client
      * @return mixed
      */
-    public static function getLicense($client)
+    public function getLicense($client)
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'licenses');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
 
         $license = array(
             'clientId' => $cId
         );
 
         $data = json_encode($license);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -281,16 +279,13 @@ class Mib
      *          )
      * @return mixed
      */
-    public static function addDomain($client, $domain, $params = array())
+    public function addDomain($client, $domain, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'domains');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'domains');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
         $domain = array(
             'clientId' => $cId,
@@ -303,14 +298,14 @@ class Mib
         $domain = array_replace($domain, $params);
 
         $data = json_encode($domain);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -326,11 +321,8 @@ class Mib
      *                      )
      * @return bool
      */
-    public static function getDomain($search, $params = array())
+    public function getDomain($search, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         if (!empty($search['client'])) {
             $cli = self::getClient(array('name' => $search['client']));
             $cId = $cli[0]['id'];
@@ -346,17 +338,17 @@ class Mib
         $params = array_replace($paramsDefault, $params);
         $params = array_merge($params, $search);
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'findByGlobalSearch');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'findByGlobalSearch');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
         $data = json_encode($params);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         if ($params['projection'] == 'domainWithServer') {
             return $ret['_embedded']['domains'];
@@ -374,19 +366,16 @@ class Mib
      * @param int $priority
      * @return mixed
      */
-    public static function addDomainServer($client, $domain, $server, $priority = 1)
+    public function addDomainServer($client, $domain, $server, $priority = 1)
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
         $dom = self::getDomain(array('domain' => $domain));
         $dId = $dom[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'domainServers');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'domainServers');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
         $domainServer = array(
             'clientId' => $cId,
@@ -396,14 +385,14 @@ class Mib
         );
 
         $data = json_encode($domainServer);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -432,16 +421,13 @@ class Mib
      *                      )
      * @return mixed
      */
-    public static function addUser($client, $mail, $params = array())
+    public function addUser($client, $mail, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         $cli = self::getClient(array('name' => $client));
         $cId = $cli[0]['id'];
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'domains');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'domains');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
         $emails = array($mail);
         if (!empty($params['emails'])) {
@@ -462,14 +448,14 @@ class Mib
         $user = array_replace($user, $params);
 
         $data = json_encode($user);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         return $ret;
     }
@@ -486,11 +472,8 @@ class Mib
      *                      )
      * @return bool
      */
-    public static function getUser($search, $params = array())
+    public function getUser($search, $params = array())
     {
-        $mc = self::connect();
-        $con_handle = $mc['handle'];
-
         if (!empty($search['client'])) {
             $cli = self::getClient(array('name' => $search['client']));
             $cId = $cli[0]['id'];
@@ -514,17 +497,17 @@ class Mib
         $params = array_replace($paramsDefault, $params);
         $params = array_merge($params, $search);
 
-        curl_setopt($con_handle, CURLOPT_URL, self::BASEURL . 'findByGlobalSearch');
-        curl_setopt($con_handle, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'findByGlobalSearch');
+        curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
         $data = json_encode($params);
-        curl_setopt($con_handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($con_handle, CURLOPT_HTTPHEADER, array(
-                'X-Auth-Token: ' . $mc['token'],
+        curl_setopt($this->con_handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->con_handle, CURLOPT_HTTPHEADER, array(
+                'X-Auth-Token: ' . $this->token,
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($con_handle), true);
+        $ret = json_decode(curl_exec($this->con_handle), true);
 
         if ($params['projection'] == 'userId') {
             return $ret['_embedded']['domains'];
