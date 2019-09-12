@@ -107,7 +107,16 @@ class Ticket extends genericClass{
 
     public function Verify(){
         //valeurs par défaut
-        $this->
+        $this->Source = 'Web';
+        $this->Etat = 10;
+        $this->DateCrea = time();
+        if (empty($this->UserCrea)) {
+            $this->UserCrea = 'ZZ';
+        }
+        $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+        if($tech)
+            $this->UserCrea = $tech->IdGestion;
+
 
         if(!empty($this->CodeClient)){
             $cli = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($this->CodeClient));

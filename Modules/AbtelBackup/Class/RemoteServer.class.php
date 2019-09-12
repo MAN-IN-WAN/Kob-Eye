@@ -74,7 +74,11 @@ class RemoteServer extends genericClass {
         if (!$this->_connection)$this->Connect();
         //génération des clefs publiques / privées
         try {
-            AbtelBackup::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && chmod 750 .ssh && cd .ssh && rm -f id_". $this->IP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->IP);
+//            AbtelBackup::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && chmod 750 .ssh && cd .ssh && rm -f id_". $this->IP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->IP);
+            //test du dossier
+            AbtelBackup::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && chmod 750 .ssh && cd .ssh");
+            //test existence du fichier
+            AbtelBackup::localExec("if [ ! -f '.ssh/id_". $this->IP."' ]; then /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->IP."; fi");
             //récupération et stockage des clefs
             $stream2 =  AbtelBackup::localExec("cd .ssh && cat id_" . $this->IP);
             $this->PrivateKey = $stream2;

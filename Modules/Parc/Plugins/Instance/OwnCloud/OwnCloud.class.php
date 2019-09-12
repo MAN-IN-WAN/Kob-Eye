@@ -154,24 +154,7 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-        $hos = $this->_obj->getOneChild('Host');
-        $srv = $hos->getOneParent('Server');
-        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php');
-        if (!empty($conf)){
-            $conf = preg_replace('#define\(\'DB_USER\', \'(.*)\'\);#','define(\'DB_USER\', \''.$hos->NomLDAP.'\');',$conf);
-            $conf = preg_replace('#define\(\'DB_PASSWORD\', \'(.*)\'\);#','define(\'DB_PASSWORD\', \''.$hos->Password.'\');',$conf);
-            $conf = preg_replace('#define\(\'DB_HOST\', \'(.*)\'\);#','define(\'DB_HOST\', \'db.maninwan.fr'.'\');',$conf);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php',$conf);
-
-            //récupération de l'index
-            $index = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/index.php');
-            $index = preg_replace('#define\(\'WP_USE_THEMES\', true\);#',"define('WP_USE_THEMES', true);\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\n \$_SERVER['HTTPS'] = 'on';\n\$_SERVER['SERVER_PORT'] = 443;\n}\n",$index);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/index.php',$index);
-
-            $htaccess = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess');
-            $htaccess = preg_replace('#RewriteCond %\{HTTPS\} off#','RewriteCond %{HTTP:X-Forwarded-Proto} !https',$htaccess);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess',$htaccess);
-        }
+        #TODO faire configuratio bdd
         return true;
     }
 }
