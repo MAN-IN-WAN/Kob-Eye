@@ -20,8 +20,8 @@ class Temoa extends genericClass {
 				$this->importRtf($f.'_esp.rtf', 'PresentationEs'); 
 				$this->importRtf($f.'_fra.rtf', 'PresentationFr'); 
 				$this->importRtf($f.'_ang.rtf', 'PresentationEn'); 
-				unlink($this->ZipFile);
-				$this->ZipFile = "";
+				//unlink($this->ZipFile);
+				//$this->ZipFile = "";
 			}
 			else $zip->Close();
 		}

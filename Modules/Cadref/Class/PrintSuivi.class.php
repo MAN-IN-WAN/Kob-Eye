@@ -58,7 +58,8 @@ class PrintSuivi extends FPDF {
 		if($this->mode) {
 			$cot = $aan->Cotisation;
 			$crs = $aan->Cours;
-			$tot = $cot+$crs;
+			$reg = $aan->Reglement+$aan->Differe-$aan->Regularisation;
+			$tot = $cot+$reg;
 			$s .= "la somme de $tot Euros correspondant à :\n\n";
 			$s .= " -  Cotisation $annee-".($annee+1)." : $cot Euros\n\n";
 			$s .= " -  Inscription au".(count($ins) > 1 ? "x" : "")." cours : $crs Euros";
@@ -69,7 +70,14 @@ class PrintSuivi extends FPDF {
 		}
 		$this->MultiCell(180, 5, $this->cv($s));
 		
-		$this->posy = $this->mode ? 160 : 140;
+		if($this->mode && $aan->Solde > 0) {
+			$this->SetFont('Arial','B',12);
+			$this->SetXY(0,160);
+			$this->Cell(210, 6, $this->cv('SITUATION NON SOLDÉE'), 0, 0, 'C');
+			$this->posy = 170;
+		}
+		else $this->posy = $this->mode ? 160 : 140;
+		
 		$this->SetFont('Arial','',12);
 		foreach($ins as $i) $this->printLine($i);
 		

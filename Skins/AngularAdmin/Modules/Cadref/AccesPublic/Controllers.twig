@@ -487,7 +487,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		);
 	}
 	
-	// attestation fiscale
+	// attestations diverses
 	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
 	$scope.adherentAttestation = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestationPublic',$scope.Attest,false);
@@ -558,6 +558,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		//$('#settings').spin();
 		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[$scope.panierObj.Total]);
 		$("#panierPayer").html(data.data.data);
+		$('#PBXPayer').click(function() {
+			$('#modal-panier').modal('hide');
+		});
 		//$('#settings').spin(false);
 		$("#modal-panier").modal('toggle');
 	}
