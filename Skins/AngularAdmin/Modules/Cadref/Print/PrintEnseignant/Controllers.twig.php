@@ -6,4 +6,8 @@ $vars['function'] = 'PrintEtiquettes';
 
 $vars['identifier'] = $vars['module'].$vars['objecttype'];
 $vars['url'] = $vars['module'].'/'.$vars['objecttype'];
+
+//$usr = Sys::$User->Login;
+
+ $vars['adherent'] = 0;
 ?>

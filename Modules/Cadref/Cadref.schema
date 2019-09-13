@@ -588,7 +588,7 @@
 		<PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	
-    <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Cadref/Class/Paiement.class.php">
+    <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Cadref/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
         <PROPERTIES description="Detail" type="text"  special="multi" auto="1">Detail</PROPERTIES>
         <PROPERTIES description="Référence Paiement" type="varchar" auto="0" length="30" list="3" listDescr="Référence">Reference</PROPERTIES>
@@ -598,12 +598,21 @@
         <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="Panier" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
-        <PROPERTIES type="varchar" length="6">Numero</PROPERTIES>
-        <PROPERTIES type="varchar" length="4">Annee</PROPERTIES>
-        <PROPERTIES type="varchar" length="255">Panier</PROPERTIES>
-        <PROPERTIES type="float" default="0">Dons</PROPERTIES>
+    <OBJECTCLASS title="Panier" driver="mysql" AccessPoint="0" master="0" Description="Paniers" Operations="edit,delete" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" list="1" form="1" fiche="1" length="4">Annee</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" list="2" form="2" fiche="2" length="6">Numero</PROPERTIES>
+        <PROPERTIES type="varchar" list="5" form="5" fiche="5" length="255">Panier</PROPERTIES>
+        <PROPERTIES type="float"   list="6" form="6" fiche="6" default="0">Dons</PROPERTIES>
         <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
+
+		<VIEW title="PanierList" default="0">
+			<OBJECTCLASS title="Panier" filters="">
+				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id">
+					<PROPERTIES type="varchar" list="3" form="3" fiche="3" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" form="4" fiche="4" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
     </OBJECTCLASS>
 
 </SCHEMA>

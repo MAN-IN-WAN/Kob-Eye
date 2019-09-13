@@ -1635,6 +1635,12 @@ where ce.Visite=:cid";
 		$this->SaveAnnee($data, 1);
 	}
 	
+	function PrintSite($mode) {
+		switch($mode) {
+			case 'adherent':
+			case 'enseignant':
+		}
+	}
 
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');

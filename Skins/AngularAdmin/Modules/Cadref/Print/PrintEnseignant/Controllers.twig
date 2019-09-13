@@ -4,6 +4,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
 	$scope.obj.Pieces = {data: [], mode: '', filePath: ''};
+	$scope.obj.Adherent = {{ adherent }};
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {

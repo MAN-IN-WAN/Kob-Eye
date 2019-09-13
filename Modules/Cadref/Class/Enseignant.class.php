@@ -99,6 +99,7 @@ where ce.EnseignantId=$id";
 	}
 
 	function PrintEtiquettes($obj) {
+klog::l("sssssssssssssssssssssssss",$obj);
 		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -118,7 +119,7 @@ where ce.EnseignantId=$id";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'obj'=>$obj);
 	}
 	
 }
