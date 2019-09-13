@@ -181,65 +181,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	
 	{% if objecttype == 'Enseignant' %}
-	// ferme attachement edit section
-	$scope.attachementCloseEdit = function() {
-		$scope.attachementInfo.mode = '';
-	}
-	
-	// ajout attachement
-	$scope.attachementAdd = function() {
-		var i = $scope.attachementInfo;
-		var o = $scope.attachementObj = CadrefAttachementStore.getNewData();
-		o.ClasseClasseId = i.classeId;
-		o.VisiteVisiteId = i.visiteId;
-		i.mode = 'add';
-	}
-	
-	// modification attachement
-	$scope.attachementModify = function(item) {
-		var i = $scope.attachementInfo;
-		var o = $scope.attachementObj = {};
-		angular.copy(item, o);
-		o.ClasseClasseId = i.classeId;
-		o.VisiteVisiteId = i.visiteId;
-		i.mode = 'edit';
-	}
-
-	// sauve attachement
-	$scope.attachementSave = function() {
-        $('#settings').spin();
-        CadrefAttachementStore.saveData($scope.attachementObj).then(function (data) {
-            $('#settings').spin(false);
-			$scope.attachementInfo.mode = '';
-		});
-	}
-
-	// suppression attachement
-	$scope.attachementDelete = function(item) {
-		swal({
-				title: "Effacer l'attachement",
-				text: "Cette suppression sera définitive. ",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonClass: "btn-danger",
-				cancelButtonText: "Annuler",
-				confirmButtonText: "Oui, supprimer !",
-				closeOnConfirm: true
-			},
-			function(){
-				CadrefAttachementStore.deleteOneData(item.id,'all');
-				$scope.attachementInfo.mode = '';
-			}
-		);
-	}
-	{% endif %}
-	
-	
 	//--------------------------------
 	// ENSEIGNANT
 	//--------------------------------	
-	
-	{% if objecttype == 'Enseignant' %}
+
+
 	//Gestion du store
     $scope.store = CadrefEnseignantStore;
 
@@ -407,6 +353,62 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
       }
 
 	});
+	
+	
+	// ATTACHEMENTS
+	
+	// ferme attachement edit section
+	$scope.attachementCloseEdit = function() {
+		$scope.attachementInfo.mode = '';
+	}
+	
+	// ajout attachement
+	$scope.attachementAdd = function() {
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = CadrefAttachementStore.getNewData();
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'add';
+	}
+	
+	// modification attachement
+	$scope.attachementModify = function(item) {
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = {};
+		angular.copy(item, o);
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'edit';
+	}
+
+	// sauve attachement
+	$scope.attachementSave = function() {
+        $('#settings').spin();
+        CadrefAttachementStore.saveData($scope.attachementObj).then(function (data) {
+            $('#settings').spin(false);
+			$scope.attachementInfo.mode = '';
+		});
+	}
+
+	// suppression attachement
+	$scope.attachementDelete = function(item) {
+		swal({
+				title: "Effacer l'attachement",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAttachementStore.deleteOneData(item.id,'all');
+				$scope.attachementInfo.mode = '';
+			}
+		);
+	}
+
 	{% endif %}
 
 
@@ -415,8 +417,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//--------------------------------
 
 	{% if objecttype == 'Adherent' %}
-				
-    //Gestion du store
+
+	//Gestion du store
     $scope.store = CadrefAdherentStore;  
 
 	// store children
@@ -488,7 +490,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	// responsable site
-	$scope.adherentSite = function() {
+{#	$scope.adherentSite = function(mode) {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSite',[mode]);
 		ajax.success(
 			function(data) {
@@ -501,7 +503,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
-
+#}
 	
 	// attestations diverses
 	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
