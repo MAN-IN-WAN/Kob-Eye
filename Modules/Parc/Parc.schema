@@ -533,8 +533,9 @@
 		<FUNCTION title="Creation de ticket" hidden="1">createTicket</FUNCTION>
 		<FUNCTION title="Cloture du ticket" >closeTicket</FUNCTION>
 
-		<FILTER name="Backlog" color="info"><![CDATA[Etat=10&Categorie=OPE]]></FILTER>
 		<FILTER name="Mes tickets" color="success" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&UserNext=[!ParcTechnicien::IdGestion!]&Categorie=OPE]]></FILTER>
+		<FILTER name="Backlog informatique" color="info"><![CDATA[Etat=10&Categorie=OPE&UserNext=00]]></FILTER>
+		<FILTER name="Backlog web" color="info"><![CDATA[Etat=10&Categorie=OPE&UserNext=01]]></FILTER>
 		<FILTER name="Bloquant" color="danger" ><![CDATA[Etat=10&Priorite=4]]></FILTER>
 		<FILTER name="Tous les tickets" color="secondary" ></FILTER>
 
