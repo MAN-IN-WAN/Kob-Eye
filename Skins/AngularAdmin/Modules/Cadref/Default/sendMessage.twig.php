@@ -10,7 +10,7 @@ if($menu == 'ens_message') {
 
 	$to = array('C'=>'Cadref (Secrétariat)','T'=>'Tous mes élèves');
 	$sql = "
-select c.Id, concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle,
+select distinct c.Id, concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle,
 CycleDebut, CycleFin
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -35,7 +35,7 @@ elseif($menu == 'adh_message') {
 	
 	$to = array('C'=>'Cadref (Secrétariat)');
 	$sql = "
-select Mail, Nom, Prenom
+select distinct Mail, Nom, Prenom
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId
 inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId

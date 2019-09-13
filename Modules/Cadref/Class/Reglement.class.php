@@ -141,11 +141,11 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		foreach($pdo as $p) {
 			$nume = $p['Numero'];
 			$mont = round($p['Montant'],0);
-			$iban = str_replace(' ','',$p['IBAN']);
-			$bic = $p['BIC'];
-			$drum = $p['DateRUM'];
-			$nom = $p['Nom'];
-			$pren = $p['Prenom'];
+			$iban = strtoupper(str_replace(' ','',$p['IBAN']));
+			$bic = strtoupper($p['BIC']);
+			$drum = strtoupper($p['DateRUM']);
+			$nom = strtoupper($p['Nom']);
+			$pren = strtoupper($p['Prenom']);
 			$dreg = $p['DateReglement'];
 			$tmp = date('YmdHis',$dreg).'/'.$nume;
 			$tmp2 = date('Y-m-d', $drum);
