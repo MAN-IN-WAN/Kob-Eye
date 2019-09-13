@@ -1,15 +1,12 @@
 <?php
 
 switch(Sys::$CurrentMenu->Url) {
-	case 'adh_site_adherent':
-		$vars['fiche'] = 'Cadref/Print/Adherent/?adherent='.$this->Id;
-		break;
-
+	
 	case 'adh_site_enseignant':
 		$vars['fiche'] = 'Cadref/Print/PrintEnseignant/?adherent='.$this->Id;
 		break;
 	
-	dafault:
+	default:
 		$menus = array(
 			'adh_informations'=>'AdhInfo',
 			'adh_finance'=>'AdhFinance',
@@ -20,7 +17,7 @@ switch(Sys::$CurrentMenu->Url) {
 			'adh_documents/adh_attestation'=>'AdhAttestation',
 			'adh_message'=>'sendMessage',
 			'adh_panier'=>'AdhPanier',
-			//'adh_res_site'=>'AdhResSite',
+			'adh_site_adherent'=>'AdhListeAdherent',
 			'ens_informations'=>'EnsInfo',
 			'ens_absences'=>'EnsAbsence',
 			'ens_cours'=>'EnsCours',

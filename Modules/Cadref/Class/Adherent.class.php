@@ -16,6 +16,8 @@ class Adherent extends genericClass {
 		$this->Utilisateur = Sys::$User->Initiales;
 		$this->DateModification = time();
 		return parent::Save();
+		
+		// valeur de AdherentAnnee sauvé par Adherent/Save.twig.php)
 	}
 
 	function GetFormInfo($annee) {
@@ -56,23 +58,6 @@ class Adherent extends genericClass {
 			$diffe = $p['differe'];
 		}
 		
-//		$ins = $this->getChildren('Inscription/Annee='.$annee);
-//		foreach($ins as $in) {
-//			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
-//		}
-//		$vis = $this->getChildren('Reservation/Annee='.$annee);
-//		foreach($vis as $vi) {
-//			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
-//		}
-//		$rgs = $this->getChildren('Reglement/Annee='.$annee);
-//		foreach($rgs as $rg) {
-//			if($rg->Supprime) continue;
-//			if($rg->Differe) {
-//				if($rg->Encaisse) $regle += $rg->Montant;
-//				else $diffe += $rg->Montant;
-//			} else $regle += $rg->Montant;
-//		}
-
 		$a = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		if(!$a) {
 			$a = genericClass::createInstance('Cadref', 'AdherentAnnee');
@@ -82,6 +67,25 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
+			if($a->AntenneId != $data->AntenneId) {
+				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+				if($usr) {
+					if(!$data->AntenneId) {
+						$grs = $usr->getParents('Group');
+						foreach($grs as $g) {
+							if($g->Nom == 'CADREF_SITE'); {
+								$usr->delParent($g);
+								break;
+							}
+						}
+					}
+					else {
+						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+						$usr->addParent($g);
+					}
+					$usr->Save();
+				}
+			}
 			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;

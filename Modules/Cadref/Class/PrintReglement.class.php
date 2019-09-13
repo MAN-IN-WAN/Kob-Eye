@@ -30,7 +30,7 @@ class PrintReglement extends FPDF {
 		$this->AcceptPageBreak(true, 12);
 
 		$this->head = array('Util','Date','Montant','','Adhérent','');
-		$this->width = array(10,18,19,2,110,40);
+		$this->width = array(10,18,19,1,110,40);
 		$this->align = array('L','L','R','L','L','L');
 
 		$this->mode = $mode;
@@ -142,10 +142,16 @@ class PrintReglement extends FPDF {
 		$this->SetFont('Arial','',10);
 		$this->Cell($this->width[3], 4.5, '');
 		$this->Cell($this->width[4], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
-		if($l['ModeReglement'] == 'P' && ($l['IBAN'] == '' || $l['BIC'] == '' || !$l['DateRUM'])) {
-			$this->SetTextColor(255,0,0);
-			$this->Cell($this->width[5], 4.5, 'IBAN manquant');
-			$this->SetTextColor(0);
+		if($l['ModeReglement'] == 'P') {
+			if($l['IBAN'] == '' || $l['BIC'] == '' || !$l['DateRUM']) {
+				$this->SetTextColor(255,0,0);
+				$this->Cell($this->width[5], 4.5, 'IBAN manquant');
+				$this->SetTextColor(0);
+			}
+//			else {
+//				$this->SetFont('Arial','',8);
+//				$this->SetFont('Arial','',10);
+//			}
 		}
 		$this->posy += 4.5;
 	} 

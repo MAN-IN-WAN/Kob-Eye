@@ -13,7 +13,7 @@ $groups = Sys::$User->getParents('Group');
 foreach($groups as $group) {
 	if($group->Nom == 'CADREF_SITE') {
 		$n = Sys::$User->Login;
-		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
+		$a = Sys::getOneData('Cadref', "AdherentAnnee/Numero=$n&Annee=$annee");
 		$antenne = $a->AntenneId;
 		break;
 	}
@@ -22,20 +22,21 @@ foreach($groups as $group) {
 if($antenne) {
 	$to = array('0'=>"Tous le enseignants de l'antenne");
 	$sql = "
-	select distinct Id,Nom,Prenom
+	select distinct e.Id,e.Nom,e.Prenom
 	from `##_Cadref-ClasseEnseignants` ce 
-	inner join `##_Cadref-Classe` c on c.Id=ce.Classe and AntenneId
+	inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 	inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-	where c.AntenneId=$antenne and c.Annee='$annee' and e.Mail<>''";
+	where c.AntenneId=$antenne and c.Annee='$annee' and e.Mail<>''
+	order by Nom,Prenom";
 }
 else {
-	$to = array('tous'=>'Tous le enseignants');
-	$sql = "select Id,Nom,Prenom from `##_Cadref-Enseignant` where Mail<>''";
+	$to = array('0'=>'Tous le enseignants');
+	$sql = "select Id,Nom,Prenom from `##_Cadref-Enseignant` where Mail<>'' order by Nom,Prenom";
 }
 $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 $pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 foreach($pdo as $p) {
-	$s = $p['Prenom'].' '.$p['Nom'];
-	$to[$p['Mail']] = $s;
+	$s = $p['Nom'].' '.$p['Prenom'];
+	$to[$p['Id']] = $s;
 }
 $vars['destinataires'] = $to;

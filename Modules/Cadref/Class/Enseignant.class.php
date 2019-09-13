@@ -118,7 +118,7 @@ where ce.EnseignantId=$id";
 					if(MSG_ADH) Cadref::SendMessage($args);				
 				}
 			}
-			return;
+			return array('pdf'=>false, 'msg'=>true);
 		}
 				
 		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
@@ -140,7 +140,7 @@ where ce.EnseignantId=$id";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file, 'obj'=>$obj);
+		return array('pdf'=>$file, 'msg'=>false);
 	}
 	
 }

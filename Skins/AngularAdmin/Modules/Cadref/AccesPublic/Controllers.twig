@@ -488,7 +488,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	// responsable site
-	$scope.adherentSite = function(mode) {
+	$scope.adherentSite = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSite',[mode]);
 		ajax.success(
 			function(data) {
