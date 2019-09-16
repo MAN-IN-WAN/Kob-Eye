@@ -92,7 +92,7 @@ where ".$where;
 		return $s;
 	}
 	
-	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2) {
+	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2,$nonSEPA) {
 		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN');
 		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC');
 		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS');
@@ -104,6 +104,8 @@ inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
 ";
 		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+		if($nonSEPA) $sql .= " and r.SEPA=0";
+
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -126,7 +128,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		return $Sepa;
 	}
 
-	private function sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
+	private function sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3,$nonSEPA) {
 		$Sepa = '';
 		$sql = "
 select a.Numero,r.Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement,r.Id
@@ -135,6 +137,7 @@ inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
 ";
 		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
+		if($nonSEPA) $sql .= " and r.SEPA=0";
 		$sql .= " order by a.Nom,a.Prenom";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -166,6 +169,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$dfin->add(DateInterval::createFromDateString('1 month'));
 		$dfin->add(DateInterval::createFromDateString('1 second'));
 		$dfin = $dfin->getTimestamp();
+		$nonSEPA = $obj['SEPA'] == 'N';
 		
 		$cPrl0 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <Document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02\">
@@ -270,6 +274,7 @@ from `##_Cadref-Reglement`
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
 ";
 		if($user != 'Tous') $sql .= " and Utilisateur='$user'";
+		if($nonSEPA) $sql .= " and SEPA=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -285,18 +290,18 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 
 		$nSeq = 0;
 		$cSeq = "FRST";
-		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2,$nonSEPA);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3,$nonSEPA);
 			$Sepa .= $cPrl4;
 		}
 		$nSeq = 1;
 		$cSeq = "RCUR";
-		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2,$nonSEPA);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
-			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
+			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3,$nonSEPA);
 			$Sepa .= $cPrl4;
 		}
 

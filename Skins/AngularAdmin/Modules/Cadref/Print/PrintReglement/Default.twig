@@ -42,6 +42,7 @@
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
+									{% if mode == 1 and prelevement == 1 %}
 									<div class="row" ng-if="obj.ModeReglement=='P'">
 										<div class="col-md-2">
 											{{ label("Fichier SEPA") }}
@@ -54,6 +55,7 @@
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
+									{% endif %}
 									<div class="row">
 										<div class="col-md-2">
 											{{ label("Ordre de tri") }}
