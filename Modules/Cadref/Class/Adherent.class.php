@@ -412,6 +412,16 @@ class Adherent extends genericClass {
 		return array('pdf'=>$file);
 	}
 
+	function PrintSiteAdherents() {
+		$annee = Cadref::$Annee;
+		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
+		if(! $aa->AntenneId) return array('pdf'=>false, );
+		
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee);
+		return $this->PrintAdherent($obj);
+	}
+
+
 	
 	function PrintAdherentSession($obj) {
 		if(isset($_SESSION['PrintAdherent'])) $obj = $_SESSION['PrintAdherent'];
@@ -1639,13 +1649,6 @@ where ce.Visite=:cid";
 		$this->SaveAnnee($data, 1);
 	}
 	
-	function PrintSite($mode) {
-		switch($mode) {
-			case 'adherent':
-			case 'enseignant':
-		}
-	}
-
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');
 		

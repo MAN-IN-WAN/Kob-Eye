@@ -490,11 +490,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	// responsable site
-{#	$scope.adherentSite = function(mode) {
-		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSite',[mode]);
+	$scope.adherentSite = function(mode) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSiteAdherents',[]);
 		ajax.success(
 			function(data) {
-				$window.open(data.data.pdf,'_blank');
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
 			}
 		).error(
 			function() {
@@ -503,7 +503,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
-#}
+
 	
 	// attestations diverses
 	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
