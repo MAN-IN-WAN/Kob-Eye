@@ -426,6 +426,7 @@
 		<PROPERTIES type="boolean" default="0" category="Description" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="4" form="1" listDescr="Diff" description="Différé">Differe</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="5" form="1" listDescr="Enc" description="Encaissé">Encaisse</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="6" form="1" description="Fichier SEPA">SEPA</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="6" form="1" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" form="1" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" description="Réglement web">Web</PROPERTIES>

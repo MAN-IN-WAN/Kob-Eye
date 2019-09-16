@@ -57,6 +57,7 @@ where ".$where;
 		$sql .= " and r.Supprime=0 ";	
 		if($user != '') $sql .= " and r.Utilisateur='$user' ";
 		if($type != 'T') $sql .= " and r.ModeReglement='$type'";
+		if($type == 'P' and $obj['SEPA'] == 'N') $sql .= " and r.SEPA=0";
 		
 		if($type == 'T') $sql .= " order by r.ModeReglement";
 		else {
@@ -91,7 +92,7 @@ where ".$where;
 		return $s;
 	}
 	
-	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,&$nSeq,$cPrl2) {
+	private function sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2) {
 		$iban = Cadref::GetParametre('BANQUE', 'COMPTE', 'IBAN');
 		$bic = Cadref::GetParametre('BANQUE', 'COMPTE', 'BIC');
 		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS');
@@ -117,7 +118,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$ics = Cadref::GetParametre('BANQUE', 'COMPTE', 'ICS')->Valeur;
 		$nume = Cadref::GetParametre('BANQUE', 'COMPTE', 'PRELEVEMENT')->Valeur;
 		$nume++;
-		Cadref::GetParametre('BANQUE', 'COMPTE', 'PRELEVEMENT', $nume);
+		Cadref::SetParametre('BANQUE', 'COMPTE', 'PRELEVEMENT', $nume);
 
 		$tmp = date("Y-m-d");
 		$Sepa = $this->formate($cPrl2,[$nume.'00'.$nSeq,$nbre,$total,$cSeq,$tmp,$remet, str_replace(" ","",$iban),$bic,$ics]);
@@ -128,7 +129,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 	private function sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3) {
 		$Sepa = '';
 		$sql = "
-select a.Numero,Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement
+select a.Numero,r.Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement,r.Id
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
 where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
@@ -139,6 +140,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
+			$id = $p['Id'];
 			$nume = $p['Numero'];
 			$mont = round($p['Montant'],0);
 			$iban = strtoupper(str_replace(' ','',$p['IBAN']));
@@ -150,6 +152,9 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 			$tmp = date('YmdHis',$dreg).'/'.$nume;
 			$tmp2 = date('Y-m-d', $drum);
 			$Sepa .= $this->formate($cPrl3,[$tmp,$mont,$nume.'-'.$tmp2,$tmp2,$bic,substr($nom.' '.$pren,0,35),$iban,$nume]);
+			$sql = "update `##_Cadref-Reglement` set SEPA=1 where Id=$id";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$GLOBALS['Systeme']->Db[0]->exec($sql);
 		}
 		return $Sepa;
 	}
@@ -288,7 +293,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		}
 		$nSeq = 1;
 		$cSeq = "RCUR";
-		$tmp = $this->sepaPrl1($user,$remet,$date,$ddeb,$dfin,$cSeq,$nSeq,$cPrl2);
+		$tmp = $this->sepaPrl1($user,$remet,$ddeb,$dfin,$time,$cSeq,$nSeq,$cPrl2);
 		if(!empty($tmp)) {
 			$Sepa .= $tmp;
 			$Sepa .= $this->sepaPrl2($user,$ddeb,$dfin,$cSeq,$nSeq,$cPrl3);
@@ -315,13 +320,14 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 select a.id as adhId, r.Id as regId
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1;
 ";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			$reg = Sys::getOneData('Cadref', 'Reglement/'.$p['regId']);
 			$reg->Encaisse = 1;
+			$reg->SEPA = 1;
 			$reg->Save();
 			$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['adhId']);
 			$adh->EtatRUM = 1;
