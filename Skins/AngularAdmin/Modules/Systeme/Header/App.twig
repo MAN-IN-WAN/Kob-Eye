@@ -485,17 +485,16 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 	$scope.alertUserReadAll = function(ev) {
     		ev.stopPropagation();
     		$('.notification-block').spin();
-    		var items = SystemeAlertUserStore.data.default;
-    		for(var i=0; i < items.length;i++){
-    		    var item = items[i];
-    		    item.Read = 1;
-                //$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
-                $scope.SystemeAlertUser.store.saveData(item);
-    		}
-    		$scope.SystemeAlertUser.store.refresh('default');
-    		setTimeout(function(){
-                       $('.notification-block').spin(false);
-                    }, 2000);
+    		$http.get('Systeme/User/ClearAlerts.json').then(
+    		    function(response){
+    		        console.log('clear OK',response);
+    		        $scope.SystemeAlertUser.store.refresh('default');
+    		        $('.notification-block').spin(false);
+    		    },function(response){
+                    console.log('clear Error',response);
+                    $('.notification-block').spin(false);
+                }
+    		);
     	}
 	
 	// PGF 20190219

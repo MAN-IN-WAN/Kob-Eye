@@ -74,6 +74,12 @@ class Parc_Action extends genericClass{
 
 
         $ok = parent::Save();
+
+        if( $ok ){
+            $tck = $this->getOneParent('Ticket');
+            AlertUser::addAlert('Ticket mis à jour : '.$tck->Titre,"Ticket : ".$tck->Numero,'Parc','Ticket',$tck->Id,[],'PARC_TECHNICIEN','icmn-user3');
+        }
+
         return $ok;
     }
 

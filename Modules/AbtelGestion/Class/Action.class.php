@@ -11,19 +11,28 @@ class Action extends AbtelGestionBase {
             $reader->Parse($newValue);
             $formatter = new RtfHtml();
             $desc=$formatter->Format($reader->root);
-            $desc=strip_tags($desc);
             $newValue = utf8_encode($desc);
         }
 
         if($prop == "Fichier" && !$this->getOrigin()){
             if(!empty($newValue)){
-                $this->props['ACNOTE'] .= PHP_EOL.$newValue.PHP_EOL;
+                if(!empty($this->NOTEADDED)) {
+                    $this->props['ACNOTE'] .= PHP_EOL . $newValue . PHP_EOL;
+                } else {
+                    $this->props['ACNOTE'] =  $newValue . PHP_EOL;
+                }
+                $this->FILEADDED = 1;
             }
             return true;
         }
         if($prop == "Note" && !$this->getOrigin()){
             if(!empty($newValue)){
-                $this->props['ACNOTE'] .= $newValue;
+                if(!empty($this->FILEADDED)) {
+                    $this->props['ACNOTE'] .= $newValue;
+                } else {
+                    $this->props['ACNOTE'] = $newValue;
+                }
+                $this->NOTEADDED = 1;
             }
             return true;
         }

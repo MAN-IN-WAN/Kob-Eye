@@ -38,12 +38,12 @@
                     <ul id="dropdown-alert-auto" class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
                         <div class="notification-block" ng-if="SystemeAlertUser.data.length">
                             <div class="item">
-                                <a href="javascript: void(0);" class="notification-clear" title="Tout supprimer" ng-click="alertUserReadAll($event)" style="    padding-left: 50px;    display: inline-block;    width: 100%;"><span class="notification-button"></span>Tout supprimer</a>
+                                <a href="javascript: void(0);" class="notification-clear" title="Tout supprimer" ng-click="alertUserReadAll($event)" style="    padding-left: 50px;    display: inline-block;    width: 100%;"><span class="notification-button"></span>Tout marquer comme lu</a>
                             </div>
                             <div class="item" style="min-height:70px" ng-repeat="item in SystemeAlertUser.data">
 								<i class="notification-icon {[{ item.Icon }]}"></i>
 								<a href="javascript: void(0);" class="notification-button" title="Supprimer" ng-click="alertUserRead($event, item)"></a>
-                                <div class="inner" ng-click="goToAlert($event,item);">
+                                <div class="inner" ng-click="alertUserRead($event, item);goToAlert($event,item);">
                                     <div class="time">
                                         <span class="pull-right">{[{ item.create.substr(0, 5)+' '+item.create.substr(11, 5) }]}</span>
                                     </div>
