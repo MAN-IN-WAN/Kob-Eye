@@ -99,6 +99,28 @@ where ce.EnseignantId=$id";
 	}
 
 	function PrintEtiquettes($obj) {
+		$mode = $obj['mode'];
+		
+		if($mode != 'print') {
+			$mail = $obj['Mail'];
+			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where ";
+			if($mail != 0) $sql .= "Id=$mail";
+			else $sql .= "Mail<>''";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			foreach($pdo as $p) {
+				if($mode == 'sms') {
+					$params = array('Telephone1'=>$p['Telephone1'],'Telephone2'=>$p['Telephone2'],'Message'=>$obj['SMS']);
+					Cadref::SendSms($params);
+				}
+				else {
+					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($p['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+					if(MSG_ADH) Cadref::SendMessage($args);				
+				}
+			}
+			return array('pdf'=>false, 'msg'=>true);
+		}
+				
 		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -118,7 +140,7 @@ where ce.EnseignantId=$id";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'msg'=>false);
 	}
 	
 }

@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>Ionic App</title>
 
-  <base href="/Skins/CEN/cen/www/" />
+  <base href="/" />
 
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="format-detection" content="telephone=no" />
@@ -16,10 +16,10 @@
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="stylesheet" href="styles.c8c2dc97bb40cadf1768.css"></head>
+<link rel="stylesheet" href="styles.731c7598ba529a14b4b1.css"></head>
 
 <body>
   <app-root></app-root>
-<script type="text/javascript" src="runtime.2fe7c5ca3ad8de63a646.js"></script><script type="text/javascript" src="es2015-polyfills.2306969ab6640fe7476f.js" nomodule></script><script type="text/javascript" src="polyfills.1783961edf653265edc9.js"></script><script type="text/javascript" src="main.e450ae18cf9e95a9efea.js"></script></body>
+<script type="text/javascript" src="runtime.c5822962f0f0324e32be.js"></script><script type="text/javascript" src="es2015-polyfills.f8196d0ffe251497e5a8.js" nomodule></script><script type="text/javascript" src="polyfills.c2901ced1e6aef81e25f.js"></script><script type="text/javascript" src="main.3a6d1b2c6c3d9cf7191b.js"></script></body>
 
 </html>

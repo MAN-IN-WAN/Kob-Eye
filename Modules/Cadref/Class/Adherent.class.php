@@ -16,6 +16,8 @@ class Adherent extends genericClass {
 		$this->Utilisateur = Sys::$User->Initiales;
 		$this->DateModification = time();
 		return parent::Save();
+		
+		// valeur de AdherentAnnee sauvé par Adherent/Save.twig.php)
 	}
 
 	function GetFormInfo($annee) {
@@ -56,23 +58,6 @@ class Adherent extends genericClass {
 			$diffe = $p['differe'];
 		}
 		
-//		$ins = $this->getChildren('Inscription/Annee='.$annee);
-//		foreach($ins as $in) {
-//			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
-//		}
-//		$vis = $this->getChildren('Reservation/Annee='.$annee);
-//		foreach($vis as $vi) {
-//			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
-//		}
-//		$rgs = $this->getChildren('Reglement/Annee='.$annee);
-//		foreach($rgs as $rg) {
-//			if($rg->Supprime) continue;
-//			if($rg->Differe) {
-//				if($rg->Encaisse) $regle += $rg->Montant;
-//				else $diffe += $rg->Montant;
-//			} else $regle += $rg->Montant;
-//		}
-
 		$a = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		if(!$a) {
 			$a = genericClass::createInstance('Cadref', 'AdherentAnnee');
@@ -82,6 +67,25 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
+			if($a->AntenneId != $data->AntenneId) {
+				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+				if($usr) {
+					if(!$data->AntenneId) {
+						$grs = $usr->getParents('Group');
+						foreach($grs as $g) {
+							if($g->Nom == 'CADREF_SITE'); {
+								$usr->delParent($g);
+								break;
+							}
+						}
+					}
+					else {
+						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+						$usr->addParent($g);
+					}
+					$usr->Save();
+				}
+			}
 			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
@@ -367,6 +371,7 @@ class Adherent extends genericClass {
 		$cert = false;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 		foreach($ins as $i) {
+			if($i->Supprime || $i->Attente) continue;
 			$c = $i->getOneParent('Classe');
 			$d = $c->getOneParent('Discipline');
 			if($d->Certificat) {
@@ -406,6 +411,16 @@ class Adherent extends genericClass {
 
 		return array('pdf'=>$file);
 	}
+
+	function PrintSiteAdherents() {
+		$annee = Cadref::$Annee;
+		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
+		if(! $aa->AntenneId) return array('pdf'=>false, );
+		
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee);
+		return $this->PrintAdherent($obj);
+	}
+
 
 	
 	function PrintAdherentSession($obj) {
@@ -801,7 +816,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 		$an = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$fisc = date('Y', $an->DateCotisation);
 		$sql = "
-select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons,a.Reglement,a.Differe
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 where a.AdherentId=$id and a.Annee='$annee'
@@ -815,7 +830,7 @@ where a.AdherentId=$id and a.Annee='$annee'
 
 	function PrintAttestation($params) {
 		$sql = "
-select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons
+select distinct h.Id,h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation,a.Dons,a.Reglement,a.Differe
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId
 ";
@@ -1212,6 +1227,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				$ids = str_replace($c, '', $ids); 	
 				$s = substr($ids, -1, 1);
 				if($s == ',') $ids = substr($ids, 0, strlen($ids)-1);
+				$ids = str_replace("',,'", "','", $ids);
 			}
 			if($sess) $_SESSION['panier'] = serialize($ids);			
 		}
@@ -1223,7 +1239,7 @@ a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,
 i.Attente,i.Supprime,1 as Inscrit,c.Places,if(c.Places-c.Inscrits<=0,0,c.Places-c.Inscrits) as Disponibles,
 from_unixtime(i.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
 from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
-from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription
+from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription, i.Supprime
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -1238,7 +1254,12 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			$r['classe'] = 'label-success';
-			$r['note'] = 'Déjà inscrit';
+			switch($r['Supprime']) {
+				case 0: $r['note'] = 'Déjà inscrit'; break;
+				case 1: $r['note'] = 'Cours supprimé'; break;
+				case 2: $r['note'] = 'Cours échangé'; break;
+			}
+			
 			$r['note2'] = '';
 			$r['heures'] = 0;
 			if($action != 'inscribe') $data[] = $r;
@@ -1279,7 +1300,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$montant = 0;
 		foreach($pdo as $r) {
 			$r['bloque'] = 0;
-			if($r['cWeb'] || $r['nWeb']) {
+			if(!$r['cWeb'] || !$r['nWeb']) {
 				$r['bloque'] = 1;
 				$r['note2'] = 'Indisponible en ligne';
 			}
@@ -1292,7 +1313,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			$hrf = $r['HeureFin'];
 			$heures = 0;
 			foreach($data as $d) {
-				if(!$r['clsId']) continue;
+				if($d['clsId'] == 0) continue;
 				$cd = $this->cycleValeur($d['CycleDebut'], true);
 				$cf = $this->cycleValeur($d['CycleFin'], false);
 				if($jr == $d['Jour'] && (($cf >= $cyd && $cf <= $cyf) || ($cd >= $cyd && $cd <= $cyf))) {
@@ -1309,7 +1330,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			elseif($heures) $r['note2'] = "Chevauchement d'horaire";
 			else $r['note2'] = '';
 			$data[] = $r;
-			if(!$r['bloque'] > 0) $montant += $r['Prix']-$r['Reduction'];
+			if($r['bloque'] == 0) $montant += $r['Prix']-$r['Reduction'];
 		}
 
 		$sql1 = "
@@ -1628,7 +1649,6 @@ where ce.Visite=:cid";
 		$this->SaveAnnee($data, 1);
 	}
 	
-
 	function PrintRecapitulatif($params) {
 		require_once ('PrintRecapitulatif.class.php');
 		
@@ -1649,7 +1669,7 @@ where ce.Visite=:cid";
 
 		$sql = "
 select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
-i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN
+i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN,i.Utilisateur
 from `##_Cadref-AdherentAnnee` a
 left join `##_Cadref-Adherent` e on e.Id=a.AdherentId
 left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee'

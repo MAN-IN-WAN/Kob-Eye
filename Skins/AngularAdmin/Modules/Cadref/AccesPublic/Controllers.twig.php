@@ -3,7 +3,14 @@ $vars['Annee'] = Cadref::$Annee;
 $vars['module'] = 'Cadref';
 $menu = Sys::$CurrentMenu->Url;
 $login = Sys::$User->Login;
-$group = Sys::$User->getParents('Group')[0]->Nom;
+
+$groups = Sys::$User->getParents('Group');
+foreach($groups as $g) {
+	if($g->Nom == 'CADREF_ADH' || $g->Nom == 'CADREF_ENS') {
+		$group = $g->Nom;
+		break;
+	}
+}
 
 if($group == 'CADREF_ADH') {
 	$vars['identifier'] = 'CadrefAdherent';

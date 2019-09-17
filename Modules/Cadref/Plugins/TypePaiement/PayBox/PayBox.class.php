@@ -107,7 +107,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
 			<input type="hidden" name="PBX_RUF1" value="POST">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
-			<input type="submit" class="btn btn-success" value="Payer">
+			<input id="PBXPayer" type="submit" class="btn btn-success" value="Payer">
 		</form>
 		';
 	}
@@ -147,7 +147,7 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 	}
 
 	public function retrouvePaiementEtape4s() {
-		$s = date('Y-m-d H:i:s')."\nPOST---------------\n".print_r($_POST, true)."\nGET---------------\n".print_r($_GET, true)."\n\n";
+		$s = date('Y-m-d H:i:s')."\nPOST---------------\n".print_r($_POST, true)."\n\n";
 		file_put_contents(getcwd()."/Log/Paiement.log", $s, FILE_APPEND);
 		
 //		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
