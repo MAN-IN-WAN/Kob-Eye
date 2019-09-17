@@ -13,11 +13,18 @@ class Parc_Action extends genericClass{
 
     public function Save($syncGestion = false){
         if(!$this->Titre){
-            if($this->UserCrea == "ZZ"){
+            $tempnote = strip_tags($this->Note);
+            if(strlen($tempnote) < 80) {
+                $this->Titre = $tempnote;
+                $this->Note = '';
+            } else{
+                $this->Titre = substr($tempnote,0,70).' [...]';
+            }
+            /*if($this->UserCrea == "ZZ"){
                 $this->Titre = 'Communication Client';
             }else{
                 $this->Titre = 'Communication Abtel';
-            }
+            }*/
         }
         if(!$this->Etat)
             $this->Etat = 2;

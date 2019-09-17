@@ -88,6 +88,7 @@ class AbtelTache extends AbtelGestionBase {
 
             if(!$this->getOrigin()){
                 $this->props['NumeroTicket'] = $new;
+                $this->props['CreatTms'] = date('YmdHis00',time() - 300);
             }else{
                 $this->props['Numero'] = $new;
             }

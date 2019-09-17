@@ -56,6 +56,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Technicien" driver="mysql" Dico="1" Description="Accès techniciens" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Technicien" Class="Modules/Parc/Class/Technicien.class.php" Order="Nom">
 		<PROPERTIES category="Gestion" type="varchar" length="10"  description="Initiales dans la gestion" obligatoire="1" list="1" fiche="1" form="1">IdGestion</PROPERTIES>
+		<PROPERTIES category="Gestion" type="color" unique="1" list="6" form="5" fiche="1" description="Couleur des actions" listDescr="Couleur actions">Couleur</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>

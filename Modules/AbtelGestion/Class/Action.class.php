@@ -72,6 +72,10 @@ class Action extends AbtelGestionBase {
 
 
     public function Save(){
+        if(!$this->getOrigin()){
+            $this->props['CreatTms'] = date('YmdHis00',time() - 300);
+        }
+
         $ok = parent::Save();
 
         if(!$this->getOrigin() && empty ($this->props['IdGestion']) && empty($this->props['Id'])){
