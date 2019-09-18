@@ -603,6 +603,7 @@
         <PROPERTIES type="varchar" list="1" form="1" fiche="1" length="4">Annee</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" list="2" form="2" fiche="2" length="6">Numero</PROPERTIES>
         <PROPERTIES type="varchar" list="5" form="5" fiche="5" length="255">Panier</PROPERTIES>
+        <PROPERTIES type="varchar" list="5" form="5" fiche="5" length="255">Visite</PROPERTIES>
         <PROPERTIES type="float"   list="6" form="6" fiche="6" default="0">Dons</PROPERTIES>
         <FKEY card="1,1" data="Adherent,Id">AdherentId</FKEY>
 
