@@ -1,0 +1,30 @@
+<div>
+    <!-- Contact Abtel -->
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Technicien</label>
+        </div>
+        <div class="col-md-6 form-group">
+            <div custom-select="a.id as a.label+' '+a.description for a in getSelectData('ParcTechnicienStore',$searchTerm)"
+                 custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"
+                 ng-model="ParcTicketfunction.args.tech"
+                 class="form-control"
+                 ng-title="tutu"></div>
+        </div>
+    </div>
+
+    <!-- Raison -->
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-control-label" for="l0">Informations complémentaires</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <div ui-ace="{useWrapMode : true,mode: 'html',onLoad: aceLoaded,onChange: aceChanged}" ng-model="ParcTicketfunction.args.description" class="ace_editor"></div>
+        </div>
+    </div>
+
+
+
+</div>

@@ -12,7 +12,6 @@ $vars["uid"] = Sys::$User->Id;
 
 $vars["initiales"] = "ZZ";
 $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
-$isTech = is_object($tech);
 if($tech)
     $vars["initiales"] = $tech->IdGestion;
 

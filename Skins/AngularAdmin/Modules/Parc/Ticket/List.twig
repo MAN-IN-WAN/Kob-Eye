@@ -84,159 +84,162 @@
     <div class="col-lg-4 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
-</div>
 
-<div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' ">
-    <div class="row">
-        <div class="col-md-12">
-            <h5>Requète complête: {[{ {{ identifier }}.filterQuery }]}</h5>
+</div>
+<div class="row">
+    <div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' " ng-init="{{ identifier }}.filterPanel = true">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Requète complête: {[{ {{ identifier }}.filterQuery }]}</h5>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-lg-6">
-            {% for field in searchfields %}
-            {% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"  %}
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-control-label" for="l0">{{ field.description }}</label>
-                        {% if field.help %}
-                            <small>
-                                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
-                            </small>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}" ng-init="{{ identifier }}.filters.{{ field.name }}.type='{{ field.type }}'">
-                            {% if field.type == "fkey" and field.card == "short" %}
-                                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
-                            {% elseif field.type == "boolean" %}
-                                <switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
-                            {% elseif field.type == "date" %}
-                                <p>Après le :</p>
-                                <label class="input-group datepicker-only-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-calendar"></i>
-                                    </span>
-                                </label>
-                                <p>Avant le :</p>
-                                <label class="input-group datepicker-only-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-calendar"></i>
-                                    </span>
-                                </label>
-                            {% elseif field.type == "time" %}
-                                <p>Après le :</p>
-                                <label class="input-group timepicker-only-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-clock"></i>
-                                    </span>
-                                </label>
-                                <p>Avant le :</p>
-                                <label class="input-group timepicker-only-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date"  ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-clock"></i>
-                                    </span>
-                                </label>
-                            {% elseif field.type == "datetime" %}
-                                <p>Après le :</p>
-                                <label class="input-group datetimepicker-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-calendar"></i>
-                                    </span>
-                                </label>
-                                <p>Avant le :</p>
-                                <label class="input-group timepicker-only-init">
-                                    <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-                                    <span class="input-group-addon">
-                                        <i class="icmn-clock"></i>
-                                    </span>
-                                </label>
-                            {% else %}
-                                {% if field.query %}
-                                    <select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
-                                        {% for v,k in field.query %}
-                                            <option value="{{ v }}">{{ k }}</option>
-                                        {% endfor %}
-                                    </select>
-                                {% elseif field.Values %}
-                                    <select class="form-control form-control-sm"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
-                                        {% for v,k in field.Values %}
-                                            <option value="{{ v }}">{{ k }}</option>
-                                        {% endfor %}
-                                    </select>
-                                {% else %}
-                                    <input type="text" class="form-control form-control-sm" placeholder=""  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
-                                    <label for="{{ identifier }}{{ field.name }}">Correspondance stricte</label><input type="checkbox" id="{{ identifier }}{{ field.name }}" ng-checked="{{ identifier }}.filters.{{ field.name }}.strict" ng-init="{{ identifier }}.filters.{{ field.name }}.strict=true" ng-model="{{ identifier }}.filters.{{ field.name }}.strict" ng-change="{{ identifier }}applyFilters()">
-                                {% endif %}
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                {% for field in searchfields %}
+                {% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"  %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-control-label" for="l0">{{ field.description }}</label>
+                            {% if field.help %}
+                                <small>
+                                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+                                </small>
                             {% endif %}
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}" ng-init="{{ identifier }}.filters.{{ field.name }}.type='{{ field.type }}'">
+                                {% if field.type == "fkey" and field.card == "short" %}
+                                    <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
+                                {% elseif field.type == "boolean" %}
+                                    <switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
+                                {% elseif field.type == "date" %}
+                                    <p>Après le :</p>
+                                    <label class="input-group datepicker-only-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-calendar"></i>
+                                    </span>
+                                    </label>
+                                    <p>Avant le :</p>
+                                    <label class="input-group datepicker-only-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-calendar"></i>
+                                    </span>
+                                    </label>
+                                {% elseif field.type == "time" %}
+                                    <p>Après le :</p>
+                                    <label class="input-group timepicker-only-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-clock"></i>
+                                    </span>
+                                    </label>
+                                    <p>Avant le :</p>
+                                    <label class="input-group timepicker-only-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date"  ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-clock"></i>
+                                    </span>
+                                    </label>
+                                {% elseif field.type == "datetime" %}
+                                    <p>Après le :</p>
+                                    <label class="input-group datetimepicker-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-calendar"></i>
+                                    </span>
+                                    </label>
+                                    <p>Avant le :</p>
+                                    <label class="input-group timepicker-only-init">
+                                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
+                                        <span class="input-group-addon">
+                                        <i class="icmn-clock"></i>
+                                    </span>
+                                    </label>
+                                {% else %}
+                                    {% if field.query %}
+                                        <select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                            {% for v,k in field.query %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% elseif field.Values %}
+                                        <select class="form-control form-control-sm"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                            {% for v,k in field.Values %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <input type="text" class="form-control form-control-sm" placeholder=""  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" ng-init="{{ identifier }}.filters.{{ field.name }}.strict=false">
+{#                                        <label for="{{ identifier }}{{ field.name }}">Correspondance stricte</label><input type="checkbox" id="{{ identifier }}{{ field.name }}" ng-checked="{{ identifier }}.filters.{{ field.name }}.strict" ng-init="{{ identifier }}.filters.{{ field.name }}.strict=true" ng-model="{{ identifier }}.filters.{{ field.name }}.strict" ng-change="{{ identifier }}applyFilters()">#}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
-        </div>
-        <div class="col-md-12 col-lg-6">
-            {% endif %}
-            {% endfor %}
-        </div>
-        <script>
-            $('.datepicker-only-init').datetimepicker({
-                widgetPositioning: {
-                    horizontal: 'left'
-                },
-                locale: 'fr',
-                format : 'DD/MM/YYYY',
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-            });
-            $('.timepicker-only-init').datetimepicker({
-                widgetPositioning: {
-                    horizontal: 'left'
-                },
-                locale: 'fr',
-                format : 'HH:mm',
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-            });
-            $('.datetimepicker-init').datetimepicker({
-                widgetPositioning: {
-                    horizontal: 'left'
-                },
-                locale: 'fr',
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-            });
+                {% endif %}
+                {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
+            </div>
+            <div class="col-md-12 col-lg-6">
+                {% endif %}
+                {% endfor %}
+            </div>
+            <script>
+                $('.datepicker-only-init').datetimepicker({
+                    widgetPositioning: {
+                        horizontal: 'left'
+                    },
+                    locale: 'fr',
+                    format : 'DD/MM/YYYY',
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    }
+                });
+                $('.timepicker-only-init').datetimepicker({
+                    widgetPositioning: {
+                        horizontal: 'left'
+                    },
+                    locale: 'fr',
+                    format : 'HH:mm',
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    }
+                });
+                $('.datetimepicker-init').datetimepicker({
+                    widgetPositioning: {
+                        horizontal: 'left'
+                    },
+                    locale: 'fr',
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    }
+                });
 
-        </script>
-    </div>
-    <div class=" row">
-        <div class="col-md-10">
-            <a href="javascript: void(0);" class="btn btn-info " ng-click="{{ identifier }}applyFilters()">
-                Appliquer les filtres
-            </a>
-            <a href="javascript: void(0);" class="btn btn-warning " ng-click="{{ identifier }}resetFilters()">
-                Réinitialiser les filtres
-            </a>
+            </script>
+        </div>
+        <div class=" row">
+            <div class="col-md-10">
+                <a href="javascript: void(0);" class="btn btn-info " ng-click="{{ identifier }}applyFilters()">
+                    Appliquer les filtres
+                </a>
+                <a href="javascript: void(0);" class="btn btn-warning " ng-click="{{ identifier }}resetFilters()">
+                    Réinitialiser les filtres
+                </a>
+            </div>
         </div>
     </div>
 </div>
+
 
 
 <div style="position:relative;">

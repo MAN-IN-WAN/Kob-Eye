@@ -1,33 +1,39 @@
 app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,ParcActionStore, ParcTechnicienStore, SystemeUserStore, ParcTicketStore) {
 
     $scope.getSide = function(item){
-        if ( item.UserCrea == 'ZZ' ) return 'leftSide';
-
+        if ( item.UserCrea != '{{ initiales }}' ) return 'leftSide';
         return 'rightSide';
     }
 
     $scope.ParcTicketStore = ParcTicketStore;
     $scope.ParcTechnicienStore = ParcTechnicienStore;
     $scope.SystemeUserStore = SystemeUserStore;
+    $scope.ParcTechnicienStore.initContext('timeline');
+    $scope.ParcTechnicienStore.setPageLength(999,'timeline');
+    $scope.ParcTechnicienStore.getData(1,'timeline');
+
 
     $scope.editable = function(item){
         item.customized = true;
         if(item.creator == {{ uid }}) item.Editable = true;
 
-        item.Auteur ='';
+        item.Auteur = '';
+        item.Couleur = '';
         if(item.UserCrea == 'ZZ' ) {
             item.Auteur = $scope.ParcTicketStore.data['fiche'][0].ClientClientIdlabel;
+            item.Couleur = "#fff";
         }
         if(item.UserCrea != 'ZZ' && item.UserCrea != '' && item.UserCrea != undefined && item.UserCrea != null) {
-            $scope.ParcTechnicienStore.initContext('timeline');
-            $scope.ParcTechnicienStore.setFilters('IdGestion='+item.UserCrea,'timeline');
-            $scope.ParcTechnicienStore.getData(1,'timeline').then(function(){
-                if($scope.ParcTechnicienStore.data['timeline'].length > 0){
-                    item.Auteur = $scope.ParcTechnicienStore.data['timeline'][0].Nom+' '+$scope.ParcTechnicienStore.data['timeline'][0].Prenom;
+            for(var n = 0; n < $scope.ParcTechnicienStore.data['timeline'].length;n++){
+                if($scope.ParcTechnicienStore.data['timeline'][n].IdGestion == item.UserCrea){
+                    item.Auteur = $scope.ParcTechnicienStore.data['timeline'][n].Nom+' '+$scope.ParcTechnicienStore.data['timeline'][n].Prenom;
+                    item.Couleur = $scope.ParcTechnicienStore.data['timeline'][n].Couleur;
+                    break;
                 }
-            });
+            }
         }
         if(item.Auteur == '') item.Auteur = 'Abtel';
+        if(item.Couleur == '') item.Couleur = '#e6e6e6';
 
         item = $scope.updateDateDebut(item);
         return item;
