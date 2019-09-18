@@ -93,7 +93,8 @@
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefAdherentStore.setGlobalFilter('NomPrenom~'+$scope.CadrefAdherent.filter2,'default');
+						var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
+						CadrefAdherentStore.setGlobalFilter(np,'default');
 						lasttimeout = $timeout(function () {
 							CadrefAdherentStore.getData(1,'default');
 						},250);
