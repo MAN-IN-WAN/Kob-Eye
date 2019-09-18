@@ -12,6 +12,8 @@ class Adherent extends genericClass {
 			$this->Inscription = $annee;
 		}
 		$this->Nom = strtoupper($this->Nom);
+		$this->IBAN = strtoupper($this->IBAN);
+		$this->BIC = strtoupper($this->BIC);
 		$this->NomPrenom = $this->Nom.' '.$this->Prenom;
 		$this->Utilisateur = Sys::$User->Initiales;
 		$this->DateModification = time();
