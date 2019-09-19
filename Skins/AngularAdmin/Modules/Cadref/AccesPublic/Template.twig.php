@@ -12,7 +12,7 @@ switch(Sys::$CurrentMenu->Url) {
 			'adh_finance'=>'AdhFinance',
 			'adh_inscriptions'=>'AdhPanier',  //'AdhInscription',
 			'adh_visites'=>'AdhVisite',
-			'adh_visites'=>'AdhVisite',
+			//'adh_visites'=>'AdhPanierVisite',
 			'adh_documents/adh_carte'=>'AdhCarte',
 			'adh_documents/adh_attestation'=>'AdhAttestation',
 			'adh_message'=>'sendMessage',

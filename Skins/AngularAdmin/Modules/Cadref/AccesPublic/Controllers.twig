@@ -542,7 +542,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	//---------------------------
 	// gestion du panier
-	$scope.panierObj = {Montant:0, panierItems:[], Cotisation:0, Montant:0, Total:0, Dons:0, Urlweb:''};
+	$scope.panierObj = {Montant:0, panierItems:[], visiteItems:[], Cotisation:0, Montant:0, Total:0, TotalVisite:0, Dons:0, Urlweb:''};
 	$scope.getPanier = async function(action, classe, dons) { 
 		if(classe == undefined) classe = '';
 		var args = [action, classe];
@@ -552,18 +552,23 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
 		$scope.panierObj.Montant = data.data.data.montant;
+		$scope.panierObj.Solde = data.data.data.solde;
 		$scope.panierObj.Total = data.data.data.total;
 		$scope.panierObj.Urlweb = data.data.data.urlweb;
 		$scope.panierObj.Dons = data.data.data.donate;
+		$scope.panierObj.visiteItems = data.data.data.visites;
+		$scope.panierObj.TotalVisite = data.data.data.totalVisite;
+		$scope.panierObj.MontantVisite = data.data.data.montantVisite;
+		$scope.panierObj.affSolde = $scope.panierObj.Solde*1 > 0;
 		$scope.$digest();
+//console.log($scope.panierObj);
 	}
 
-	$scope.panierAjoute = function(c) {
+	$scope.panierAjoute = function(item) {
 		$scope.inscriptionObj.Select = 0;
-		$scope.getPanier('add', c.CodeClasse);
+		$scope.getPanier('add', item.CodeClasse);
 	}
 
-	
 	$scope.panierSupprime = function(item) {
 		$scope.getPanier('remove', item.CodeClasse);
 	}
@@ -572,14 +577,12 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		window.location.href = $scope.panierObj.Urlweb;
 	}
 	
-	$scope.panierConfirme = async function() {
-		//$('#settings').spin();
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[$scope.panierObj.Total]);
+	$scope.panierConfirme = async function(mode) {
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[mode=='classe' ? $scope.panierObj.Total : $scope.panierObj.TotalVisite, mode]);
 		$("#panierPayer").html(data.data.data);
 		$('#PBXPayer').click(function() {
 			$('#modal-panier').modal('hide');
 		});
-		//$('#settings').spin(false);
 		$("#modal-panier").modal('toggle');
 	}
 	
@@ -587,13 +590,25 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.getPanier('', '', $scope.panierObj.Dons);
 	}
 
+	$scope.panierVisiteAjoute = function(item) {
+		$scope.inscriptionObj.Select = 0;
+		$scope.getPanier('visiteAdd', item.Visite);
+	}
+
+	$scope.panierVisiteSupprime = function(item) {
+		$scope.getPanier('visiteRemove', item.Visite);
+	}
+	
 
 	//---------------------------
 	// gestion des inscriptions
 	
 	// affiche / cache le panneau d'inscription
-	$scope.inscriptionSelect = function(mode) {
+	$scope.inscriptionSelect = function(mode, visite) {
 		$scope.inscriptionObj.Select = mode;
+		if(visite) {
+			$scope.inscriptionGetData('visite', '');
+		}
 	}
 	
 	// charge les données d'inscription
@@ -605,16 +620,18 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		switch(mode) {
 			case 'inscription':
 				o.InscriptionItems = data.data.data.data;
-				$scope.$digest();
 				break;
 			case 'classe':
 				o.ClasseItems = data.data.data.data;
-				$scope.$digest();
 				break;
 			case 'antenne': o.AntenneId = 0;  // no break
 			case 'section': o.SectionId = 0;  // no break
-			case 'discipline': o.DisciplineId = 0; o.ClasseItems = [];
+			case 'discipline': o.DisciplineId = 0; o.ClasseItems = []; break;
+			case 'visite':
+				o.VisiteItems = data.data.data.data;
+				break;
 		}	
+		$scope.$digest();
 		return data.data.data.data;
 	}
 
@@ -709,7 +726,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	// affiche / cache le panneau d'e reservation
 	$scope.reservationSelect = function(mode) {
 		if(mode) $scope.reservationGetData('visite','');
-		$scope.reservationObj.Select = mode;
+		$scope.inscriptionObj.Select = mode;
+		//$scope.reservationObj.Select = mode;
 	}
 	
 	// charge les données de reservation

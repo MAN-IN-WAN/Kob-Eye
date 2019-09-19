@@ -93,7 +93,8 @@
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefAdherentStore.setGlobalFilter('NomPrenom~'+$scope.CadrefAdherent.filter2,'default');
+						var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
+						CadrefAdherentStore.setGlobalFilter(np,'default');
 						lasttimeout = $timeout(function () {
 							CadrefAdherentStore.getData(1,'default');
 						},250);
@@ -653,6 +654,7 @@
 		$scope.obj.nonSolde = false;
 		$scope.CotisationAnnuelle = 0;
 		$scope.adherentInfo = function() {
+			$scope.obj.adherentWait = true;
 			var annee = $scope.obj.AnneeSelect;
 			if(annee == undefined) annee = '{{ Annee }}';
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
@@ -676,6 +678,7 @@
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 					$scope.obj.certifInvalide = data.data.certifInvalide;
+					$scope.obj.adherentWait = false;
 					try { $scope.$digest(); } catch(ex) {}
 				}
 			).error(
@@ -1319,8 +1322,12 @@
 		}
 		
 		$scope.diffChange = function(lig) {
-			var dif = $scope.CadrefClasse.Diff.regl.updated = true;
-
+			var dif = $scope.CadrefClasse.Diff;
+			var reg = dif.regl;
+			var r = reg[lig];
+			r.updated = true;
+			//$scope.CadrefClasse.Diff.regl.updated = true;
+			//$scope.CadrefClasse.Diff.reg[lig].updated = true;
 		}
 
 

@@ -69,7 +69,7 @@
 												<tr ng-repeat="item in inscriptionObj.ClasseItems">
 													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 													<td  class="cadref-td-btn">
-														<label ng-if="!(item.Web*1)" class="label label-danger">Cours indisponible en ligne</label> 
+														<label ng-if="!(item.Web*1)" class="label label-danger">Indisponible en ligne</label> 
 														<label ng-if="(item.Web*1) && !(item.Disponible*1)" class="label label-danger">Cours complet</label> 
 														<button type="button" ng-if="(item.Web*1) && (item.Disponible*1)" class="btn cadref-btn btn-success" ng-click="panierAjoute(item)">S'inscrire à ce cours</button>
 													</td>
@@ -126,14 +126,20 @@
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : (item.clsId ? "Toute l'année" : "") }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
-									<td scope="row" class="cadref-td"><span class="label" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span></td>
+									<td scope="row" class="cadref-td">
+										<span ng-if="item.insId*1>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+											  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+										</span>
+										<span class="label" ng-if="item.insId*1==0" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span>
+									</td>
 								</tr>
+								
 							</tbody>
 						</table>
 						</div>
 						<div class="row" ng-if="!inscriptionObj.Select">
 							<div class="col-md-2">
-								<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
+								<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true, false)">Ajouter un cours</button>
 							</div>
 						</div>		
 						<div style="height:30px"></div>
@@ -143,6 +149,9 @@
 							</div>
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ panierObj.CotisationDue*1>0 ? '€ '+panierObj.CotisationDue : 'déjà réglée' }]}</label>
+							</div>
+							<div class="col-md-2" ng-if="panierObj.affSolde">
+								<label class="form-control-label cadref-label" style="line-height:1">Solde dû : {[{ '€ '+panierObj.Solde }]}</label>
 							</div>
 							<div class="col-md-2">
 								<div class="row">
@@ -157,11 +166,11 @@
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
 							</div>
-							<div class="col-md-2">
+{#							<div class="col-md-2">
 								<button type="button" ng-if="panierObj.Urlweb" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
 							</div>
-							<div class="col-md-2">
-								<button type="button" class="btn btn-success" ng-click="panierConfirme()">Confirmer et payer</button>
+#}							<div class="col-md-2">
+								<button type="button" class="btn btn-success" ng-click="panierConfirme('classe')">Confirmer et payer</button>
 							</div>
 						</div>
 						<div class="row" ng-if="panierObj.Total*1">
@@ -204,6 +213,16 @@
 					</div>
 				</div>
 				<div style="height:10px"></div>
+				<div class="row" ng-if="panierObj.affSolde">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Solde dû</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Solde }]}</label>
+					</div>
+				</div>
+				<div style="height:10px" ng-if="panierObj.affSolde"></div>
+
 				<div class="row">
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label">Don de soutien</label>

@@ -28,7 +28,7 @@ class Reglement extends genericClass {
 			case 0:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 				$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
-				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1) and r.Annee='$annee'";
+				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and r.Annee='$annee'";
 				$title = 'Règlements '.$user.' '.$obj['DateDebut'].'-'.$obj['DateFin'];
 				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'_'.date('YmdHis').'.pdf';
 				break;
@@ -311,7 +311,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".prlv";
 		file_put_contents(getcwd().$file, $Sepa);
 		
-		return array('file'=>$file);
+		return array('file'=>$file, 'total'=>$total, 'count'=>$nbre);
 	}
 
 	function Encaissements($obj) {
@@ -325,10 +325,13 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 select a.id as adhId, r.Id as regId
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1;
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$tot = 0;
+		$nbr = 0;
 		foreach($pdo as $p) {
 			$reg = Sys::getOneData('Cadref', 'Reglement/'.$p['regId']);
 			$reg->Encaisse = 1;
@@ -337,8 +340,10 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 			$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['adhId']);
 			$adh->EtatRUM = 1;
 			$adh->Save();
+			$nbr++;
+			$tot += $reg->Montant;
 		}
-		return true;
+		return array('total'=>$tot, 'count'=>$nbr, 'sql'=>$sql);
 	}
 	
 }
