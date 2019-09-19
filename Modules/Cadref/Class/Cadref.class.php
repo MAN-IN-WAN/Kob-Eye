@@ -399,6 +399,10 @@ class Cadref extends Module {
 			$data['message'] = "Une erreur c'est produite.<br>Veuillez contacter le CADREF au 04.66.36.99.44.";
 			return json_encode($data);
 		}
+		if($a->Confirme) {
+			$data['message'] = "Vous avez déjà confirmé votre la création de votre compte.";
+			return json_encode($data);
+		}
 
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
 		$adh->Nom = $a->Nom;
@@ -414,6 +418,8 @@ class Cadref extends Module {
 		$adh->Naissance = $a->Naissance;
 		$adh->Web = 1;
 		$adh->Save();
+		$a->Confirme = 1;
+		$a->Save();
 		self::CreateUser($adh->Numero, true);
 		$data['success'] = 1;
 		$data['message'] = 'Votre code utilisateur et votre mot de passe vous ont été envoyés par email.';

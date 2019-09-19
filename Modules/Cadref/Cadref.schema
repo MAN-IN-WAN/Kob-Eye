@@ -629,6 +629,7 @@
 		<PROPERTIES type="mail" length="50"     obligatoire="0" searchOrder="6" category="Contact" list="7" form="10" fiche="10" listDescr="Mail">Mail</PROPERTIES>
 		<PROPERTIES type="varchar" length="1"  form="16" fiche="16" description="Sexe">Sexe</PROPERTIES>
 		<PROPERTIES type="varchar" length="4"  description="Année de naissance">Naissance</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  >Confirme</PROPERTIES>
     </OBJECTCLASS>
 
 
