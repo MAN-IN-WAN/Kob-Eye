@@ -137,6 +137,9 @@ class Adherent extends genericClass {
 		$rec = $this->getChildren('Reservation');
 		foreach($rec as $r)
 			$r->Delete();
+		
+		$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+		if($usr) $usr->Delete();
 
 		return parent::Delete();
 	}
@@ -261,7 +264,6 @@ class Adherent extends genericClass {
 			if(!$inscr['paye'] && $inscr['solde']) return false;
 			return true;
 		}
-
 		// inscriptions
 		foreach($params['newInscr'] as $ins) {
 			if(!$ins['updated']) continue;
@@ -347,7 +349,9 @@ class Adherent extends genericClass {
 			}
 
 			$m = $r['mois'];
-			$d = '15/'.(strlen($m) == 1 ? '0' : '').$m.'/'.($m >= 9 ? $annee : ($annee + 1));
+			$d = ($m >= 9 ? $annee : ($annee + 1)).(strlen($m) == 1 ? '0' : '').$m;
+			$j = Cadref::GetParametre('REGLEMENT', 'DIFFERE', $d);
+			$d = ($j ? $j->Valeur.'/' : '15/').(strlen($m) == 1 ? '0' : '').$m.'/'.($m >= 9 ? $annee : ($annee + 1));
 			$o->Numero = $this->Numero;
 			$o->Annee = $annee;
 			$o->DateReglement = $d;

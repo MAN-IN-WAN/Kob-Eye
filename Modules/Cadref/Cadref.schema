@@ -575,7 +575,7 @@
 		<PROPERTIES type="varchar" length="16" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Domaine">Domaine</PROPERTIES>
 		<PROPERTIES type="varchar" length="16" searchOrder="2" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Sous domaine">SousDomaine</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" searchOrder="3" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Paramétre">Parametre</PROPERTIES>
-		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Libellé">Valeur</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Valeur">Valeur</PROPERTIES>
 		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" description="Texte">Texte</PROPERTIES>
 	</OBJECTCLASS>
 
@@ -616,6 +616,21 @@
 			</OBJECTCLASS>
 		</VIEW>
     </OBJECTCLASS>
+
+	<OBJECTCLASS title="Register" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Nouvel Adhérents" Operations="">
+		<PROPERTIES type="varchar" length="100" searchOrder="1" displayOrder="2" filterMode="generic" obligatoire="1" category="Description" list="2" form="2" fiche="2" listDescr="Nom" description="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="2" displayOrder="3" obligatoire="1" category="Description" list="3" form="3" fiche="3" listDescr="Prénom" description="Prénom">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" list="5" form="4" fiche="4" description="Adresse">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" form="5" fiche="5" description="Adresse">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="6"  obligatoire="0" category="Description" form="6" fiche="6" description="Code postal" listDescr="CP">CP</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" filterMode="generic" obligatoire="0" category="Description" list="4" form="7" fiche="7" description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="8" fiche="8" listDescr="Téléphone" description="Téléphone 1">Telephone1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="9" fiche="9" listDescr="Téléphone" description="Téléphone 2">Telephone2</PROPERTIES>
+		<PROPERTIES type="mail" length="50"     obligatoire="0" searchOrder="6" category="Contact" list="7" form="10" fiche="10" listDescr="Mail">Mail</PROPERTIES>
+		<PROPERTIES type="varchar" length="1"  form="16" fiche="16" description="Sexe">Sexe</PROPERTIES>
+		<PROPERTIES type="varchar" length="4"  description="Année de naissance">Naissance</PROPERTIES>
+    </OBJECTCLASS>
+
 
 
 </SCHEMA>

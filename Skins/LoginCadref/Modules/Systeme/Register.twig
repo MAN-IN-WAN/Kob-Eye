@@ -1,16 +1,27 @@
 <section class="center-block">
 	<h5 style="color:red">Réservée aux personnes n'ayant jamais été adhérent du CADREF</h2>
 	<div id="msg"  class="alert alert-danger" hidden></div>
-	<h3>Tous les champs sont obligatoires</h3>
+	<h3>Tous les champs en rouge sont obligatoires</h3>
 	<div class="row" style="height:10px"></div>
 	<form method="POST" id="registerUser">
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Civilité</label>
+				</div>
+				<div class="col-md-9">
+					<select class="form-control cadref-input" name="Sexe" style="border-color:red">
+						<option value="H">Monsieur</option>
+						<option value="F">Madame</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
 					<label class="form-control-label cadref-label" style="line-height:1.1">Nom</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control cadref-input " placeholder="Nom" id="CadrefNom" name="Nom" style="text-transform:uppercase;"/>
+					<input type="text" class="form-control cadref-input " placeholder="Nom" id="CadrefNom" name="Nom" style="text-transform:uppercase; border-color:red"/>
 				</div>
 			</div>
 			<div class="row" style="height:2px"></div>
@@ -19,7 +30,43 @@
 					<label class="form-control-label cadref-label" style="line-height:1.1">Prenom</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefMail" name="Prenom"/>
+					<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefMail" name="Prenom" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse" id="CadrefMail" name="Adresse1" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse (suite)</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse (suite)" id="CadrefMail" name="Adresse2"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Code postal" id="CadrefMail" name="CP" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Ville</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Ville" id="CadrefMail" name="Ville" style="text-transform:uppercase; border-color:red"/>
 				</div>
 			</div>
 			<div class="row" style="height:2px"></div>
@@ -28,7 +75,25 @@
 					<label class="form-control-label cadref-label" style="line-height:1.1">Telephone</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone"/>
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone1" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Telephone</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone2"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Année de naissance</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Année" id="CadrefMail" name="Annee" style="border-color:red"/>
 				</div>
 			</div>
 			<div class="row" style="height:2px"></div>
@@ -37,7 +102,7 @@
 					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="Mail"/>
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="Mail" style="border-color:red"/>
 				</div>
 			</div>
 			<div class="row" style="height:2px"></div>
@@ -46,7 +111,7 @@
 					<label class="form-control-label cadref-label" style="line-height:1.1">Confirmation adresse mail</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="MailConfirm"/>
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="MailConfirm" style="border-color:red"/>
 				</div>
 			</div>
 {#			<div class="row" style="height:2px"></div>
@@ -80,7 +145,9 @@
 				var resp = JSON.parse(response);
 				if (resp.success) {
 					$('#Valider').hide();
-					$('#Annuler').text('Retour');
+					$('#Annuler').text('Continuer');
+					$('#msg').removeClass('alert-danger');
+					$('#msg').addClass('alert-success');
 				} 
 				$('#msg').html(resp.message);
 				$('#msg').show();

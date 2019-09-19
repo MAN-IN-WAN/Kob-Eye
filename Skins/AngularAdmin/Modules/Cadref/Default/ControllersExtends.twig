@@ -1320,8 +1320,12 @@
 		}
 		
 		$scope.diffChange = function(lig) {
-			var dif = $scope.CadrefClasse.Diff.regl.updated = true;
-
+			var dif = $scope.CadrefClasse.Diff;
+			var reg = dif.regl;
+			var r = reg[lig];
+			r.updated = true;
+			//$scope.CadrefClasse.Diff.regl.updated = true;
+			//$scope.CadrefClasse.Diff.reg[lig].updated = true;
 		}
 
 
