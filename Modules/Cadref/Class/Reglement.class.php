@@ -311,7 +311,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$file	= "/Home/tmp/PRLV_".date('YmdHis',$time).".prlv";
 		file_put_contents(getcwd().$file, $Sepa);
 		
-		return array('file'=>$file);
+		return array('file'=>$file, 'total'=>$total, 'count'=>$nbre);
 	}
 
 	function Encaissements($obj) {
