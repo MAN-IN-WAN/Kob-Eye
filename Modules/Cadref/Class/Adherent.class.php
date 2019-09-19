@@ -1205,6 +1205,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$ids = $pa->Panier;
 		$vids = $pa->Visite;
 		$donate = $pa->Dons;
+
 		$sess = isset($_SESSION['panier']);
 		if($sess) $ids = unserialize($_SESSION['panier']);
 		$vsess = isset($_SESSION['visite']);
@@ -1230,6 +1231,9 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
 		$co = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		
+		$solde = 0;
+		if($co && $co->Solde > 0) $solde = $co->Solde; 
 
 		// recheche cotisation due ou payee
 		$data = array();
@@ -1384,7 +1388,7 @@ where ce.Classe=:cid";
 			}
 			$d['Enseignants'] = $e;
 		}
-		$total = $cotisDue+$montant+$donate;
+		$total = $cotisDue+$montant+$donate+$solde;
 		
 		
 		// visites deja inscrites
@@ -1469,9 +1473,9 @@ where ce.Visite=:cid";
 			}
 			$d['Enseignants'] = $e;
 		}
-		$totalVisite = $cotisDue+$montantVisite+$donate;
+		$totalVisite = $cotisDue+$montantVisite+$donate+$solde;
 
-		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 
+		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'solde'=>$solde, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 
 			'regul'=>$regul, 'dons'=>$dons, 'visites'=>$visites, 'montantVisite'=>$montantVisite, 'totalVisite'=>$totalVisite,
 			'urlweb'=>unserialize($_SESSION['urlweb']));		
 	}

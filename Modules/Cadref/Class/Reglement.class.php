@@ -325,10 +325,13 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 select a.id as adhId, r.Id as regId
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1;
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1
 ";
+		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$tot = 0;
+		$nbr = 0;
 		foreach($pdo as $p) {
 			$reg = Sys::getOneData('Cadref', 'Reglement/'.$p['regId']);
 			$reg->Encaisse = 1;
@@ -337,8 +340,10 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 			$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['adhId']);
 			$adh->EtatRUM = 1;
 			$adh->Save();
+			$nbr++;
+			$tot += $reg->Montant;
 		}
-		return true;
+		return array('total'=>$tot, 'count'=>$nbr, 'sql'=>$sql);
 	}
 	
 }

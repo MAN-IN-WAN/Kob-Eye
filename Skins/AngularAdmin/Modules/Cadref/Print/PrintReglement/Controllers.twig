@@ -61,7 +61,9 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'Encaissements');
 			ajax.success(
 				function(data) {
-					swal("Encaissements", "Les prélèvements ont été encaissés.", "succes");
+console.log(data);
+					var s = "Prélèvements encaissés : € "+data.data.total+" ("+data.data.count+")";
+					swal("Encaissements", s, "success");
 				}
 			).error(
 				function() {

@@ -552,13 +552,16 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
 		$scope.panierObj.Montant = data.data.data.montant;
+		$scope.panierObj.Solde = data.data.data.solde;
 		$scope.panierObj.Total = data.data.data.total;
 		$scope.panierObj.Urlweb = data.data.data.urlweb;
 		$scope.panierObj.Dons = data.data.data.donate;
 		$scope.panierObj.visiteItems = data.data.data.visites;
 		$scope.panierObj.TotalVisite = data.data.data.totalVisite;
 		$scope.panierObj.MontantVisite = data.data.data.montantVisite;
+		$scope.panierObj.affSolde = $scope.panierObj.Solde*1 > 0;
 		$scope.$digest();
+//console.log($scope.panierObj);
 	}
 
 	$scope.panierAjoute = function(item) {

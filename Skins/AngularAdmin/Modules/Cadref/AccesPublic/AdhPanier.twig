@@ -150,6 +150,9 @@
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ panierObj.CotisationDue*1>0 ? '€ '+panierObj.CotisationDue : 'déjà réglée' }]}</label>
 							</div>
+							<div class="col-md-2" ng-if="panierObj.affSolde">
+								<label class="form-control-label cadref-label" style="line-height:1">Solde dû : {[{ '€ '+panierObj.Solde }]}</label>
+							</div>
 							<div class="col-md-2">
 								<div class="row">
 									<div class="col-md-6" style="padding-left:8px;padding-right:8px">
@@ -163,10 +166,10 @@
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
 							</div>
-							<div class="col-md-2">
+{#							<div class="col-md-2">
 								<button type="button" ng-if="panierObj.Urlweb" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les inscriptions</button>
 							</div>
-							<div class="col-md-2">
+#}							<div class="col-md-2">
 								<button type="button" class="btn btn-success" ng-click="panierConfirme('classe')">Confirmer et payer</button>
 							</div>
 						</div>
@@ -210,6 +213,16 @@
 					</div>
 				</div>
 				<div style="height:10px"></div>
+				<div class="row" ng-if="panierObj.affSolde">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Solde dû</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Solde }]}</label>
+					</div>
+				</div>
+				<div style="height:10px" ng-if="panierObj.affSolde"></div>
+
 				<div class="row">
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label">Don de soutien</label>
