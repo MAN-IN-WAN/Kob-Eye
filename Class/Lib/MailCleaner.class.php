@@ -24,7 +24,7 @@ class MailCleaner
         if (!$serv)
             throw new Exception('Aucun serveur MailCleaner de disponible.');
 
-        $this->mc = new SoapClient('https://' . $serv->DNSNom . '/api/soap/?wsdl');
+        $this->mc = new SoapClient('http://' . $serv->DNSNom . '/api/soap/?wsdl',array('connection_timeout' => 10));
 
         return true;
     }

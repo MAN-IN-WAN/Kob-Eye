@@ -27,7 +27,7 @@ class Mib
         if (!$serv)
             throw new Exception('Aucun serveur MailCleaner de disponible.');
 
-        $this->url = "https://' . $serv->DNSNom . '/app/api/v1.0/";
+        $this->url = "https://" . $serv->DNSNom . "/app/api/v1.0/";
         $user = $serv->MIBUser;
         $admin = $serv->MIBPass;
         
@@ -58,6 +58,7 @@ class Mib
      */
     public function addClient($client)
     {
+        print_r($client);
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'clients');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
         $client = array(
@@ -73,9 +74,9 @@ class Mib
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($data))
         );
-
-        $ret = json_decode(curl_exec($this->con_handle), true);
-
+        $ret = curl_exec($this->con_handle);
+        //print_r(curl_error($this->con_handle));
+        $ret = json_decode($ret, true);
         return $ret;
     }
 
@@ -124,7 +125,7 @@ class Mib
     }
 
     /**
-     * @param $client
+     * @param $client array( 'name' => 'xxxxx') ou directement clientId
      * @param $params (logo / color)
      * @return mixed
      *
@@ -136,8 +137,12 @@ class Mib
             'color' => 17
         );
 
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         $rets = array();
         foreach ($params as $k => $param) {
@@ -167,7 +172,7 @@ class Mib
     /**
      * @param $client : nom Client
      * @param array $params (
-     *              endContract -> Date de fin du contrat  "Y-m-d\TH:i:s.uO" Ex : 2099-01-01T00:00:00.000+0000 /+
+     *              endContract -> Date de fin du contrat  "Y-m-d\TH:i:s.uO" Ex : 2099-01-01T00:00:00.000+0000 ou null /+
      *              flag -> 4 for "Use global license parameters" and 1 if it is not the case /+
      *              nbLicense -> Must be set if flag is equals to 4, put -1 if flag is 4
      *          )
@@ -175,17 +180,21 @@ class Mib
      */
     public function addLicense($client, $params = array())
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
         $license = array(
             'clientId' => $cId,
-            'endContract' => '2099-01-01T00:00:00.000+0000',
+            'endContract' => null, //date('Y-m-d\TH:i:s.vO',strtotime('+10 years', time())),
             'flag' => 4,
-            'nbLicense' => -1
+            'nbLicence' => -1
         );
         $license = array_replace($license, $params);
 
@@ -209,8 +218,12 @@ class Mib
      */
     public function editLicense($client, $params = array())
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -242,8 +255,12 @@ class Mib
      */
     public function getLicense($client)
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'licenses');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
@@ -281,8 +298,12 @@ class Mib
      */
     public function addDomain($client, $domain, $params = array())
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'domains');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
@@ -324,8 +345,12 @@ class Mib
     public function getDomain($search, $params = array())
     {
         if (!empty($search['client'])) {
-            $cli = self::getClient(array('name' => $search['client']));
-            $cId = $cli[0]['id'];
+            if(is_array($search['client'])) {
+                $cli = self::getClient($search['client']);
+                $cId = $cli[0]['id'];
+            } else{
+                $cId = $search['client'];
+            }
             $search = array('clientId' => $cId);
         }
 
@@ -368,8 +393,12 @@ class Mib
      */
     public function addDomainServer($client, $domain, $server, $priority = 1)
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         $dom = self::getDomain(array('domain' => $domain));
         $dId = $dom[0]['id'];
@@ -423,17 +452,54 @@ class Mib
      */
     public function addUser($client, $mail, $params = array())
     {
-        $cli = self::getClient(array('name' => $client));
-        $cId = $cli[0]['id'];
+        if(is_array($client)) {
+            $cli = self::getClient($client);
+            $cId = $cli[0]['id'];
+        } else{
+            $cId = $client;
+        }
 
         curl_setopt($this->con_handle, CURLOPT_URL, $this->url . 'domains');
         curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
 
-        $emails = array($mail);
+        $tld = explode('@', $mail);
+        $tld = end($tld);
+        $dom = $this->getDomain((array('domain'=>$tld)));
+        if(empty($dom[0])) throw new Exception('Le domaine correspondant à cette adresse n\'existe pas sur la pate-forme de filtrage des mail');
+        $dId = $dom['id'];
+
+        $emails = array(
+            'email'=>$mail,
+            'templateId'=>1,
+            'flag'=>1,
+            'domainId' => $dId
+        );
         if (!empty($params['emails'])) {
-            $emails = array_merge($emails, $params['emails']);
-            unset($params['emails']);
+            foreach($params['emails'] as $alias){
+                $tld2 = explode('@', $alias);
+                $tld2 = end($tld2);
+                if($tld2 != $tld){
+                    $dom2 = $this->getDomain((array('domain'=>$tld2)));
+                    if(empty($dom2[0])) continue;
+                    $dId2 = $dom2['id'];
+                } else {
+                    $dId2 = $dId;
+                }
+
+                $emails[] = array(
+                    'email'=>$alias,
+                    'templateId'=>1,
+                    'flag'=>2,
+                    'domainId' => $dId2
+                );
+            }
         }
+
+        $temp = array();
+
+
+
+
         $name = explode('@', $mail);
         $name = $name[0];
 
@@ -475,8 +541,12 @@ class Mib
     public function getUser($search, $params = array())
     {
         if (!empty($search['client'])) {
-            $cli = self::getClient(array('name' => $search['client']));
-            $cId = $cli[0]['id'];
+            if(is_array($search['client'])) {
+                $cli = self::getClient($search['client']);
+                $cId = $cli[0]['id'];
+            } else{
+                $cId = $search['client'];
+            }
             $search = array('clientId' => $cId);
         } elseif (!empty($search['domain'])) {
             $dom = self::getDomain(array('domain' => $search['domain']));
@@ -510,7 +580,7 @@ class Mib
         $ret = json_decode(curl_exec($this->con_handle), true);
 
         if ($params['projection'] == 'userId') {
-            return $ret['_embedded']['domains'];
+            return $ret['_embedded']['users'];
         } else {
             //TODO
         }
