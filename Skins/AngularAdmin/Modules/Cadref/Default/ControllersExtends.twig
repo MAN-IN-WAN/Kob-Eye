@@ -654,6 +654,7 @@
 		$scope.obj.nonSolde = false;
 		$scope.CotisationAnnuelle = 0;
 		$scope.adherentInfo = function() {
+			$scope.obj.adherentWait = true;
 			var annee = $scope.obj.AnneeSelect;
 			if(annee == undefined) annee = '{{ Annee }}';
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
@@ -677,6 +678,7 @@
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 					$scope.obj.certifInvalide = data.data.certifInvalide;
+					$scope.obj.adherentWait = false;
 					try { $scope.$digest(); } catch(ex) {}
 				}
 			).error(
