@@ -1989,7 +1989,28 @@
 		
 		{% if objecttype == 'Enseignant' %}
 		$scope.enseignantUser = function() {
-			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'CreateUser');
+			swal({
+				title: "Création utilisateur Web",
+				text: "Confirmer la création.",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-success",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Création",
+				closeOnConfirm: true
+			},
+			function(){
+				var ajax = $scope.{{ identifier }}callMethod($scope.obj,'CreateUser');
+				ajax.success(function(data) {
+					swal("Utilisateur", data.data.msg, data.data.success*1 ? "success" : "warning");
+						var d = $scope.CadrefContent.$dirty;
+					}
+				).error(function() {
+						console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+					}
+				);
+			});
+
 		}
 		
 		

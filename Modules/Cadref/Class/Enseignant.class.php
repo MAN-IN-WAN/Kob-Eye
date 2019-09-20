@@ -1,6 +1,13 @@
 <?php
 class Enseignant extends genericClass {
 	
+	function Save() {
+		$this->Code = strtoupper($this->Code);
+		$this->Nom = strtoupper($this->Nom);
+		$this->Ville = strtoupper($this->Ville);
+		return parent::Save();
+	}
+	
 	function Delete() {
 		$rec = $this->getChildren('Classe');
 		if(count($rec)) {
@@ -51,11 +58,11 @@ class Enseignant extends genericClass {
 	function CreateUser() {
 		$usr = 'ens'.strtolower($this->Code);
 		$o = Sys::getOneData('Systeme', 'User/Login='.$usr);
-		if($o) return array('msg'=>'User deja existant');
+		if($o) return array('msg'=>'Utilisateur déjà existant.', 'success'=>0);
 		Cadref::CreateUser($usr, false, $this->Id);
 		$this->Compte = 1;
 		$this->Save();
-		return array('user'=>$usr);
+		return array('msg'=>'Utilisateur créé.','success'=>1);
 	}
 	
 	function PublicSendMessage($params) {
