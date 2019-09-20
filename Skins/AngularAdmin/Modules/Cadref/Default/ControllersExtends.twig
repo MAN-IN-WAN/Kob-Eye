@@ -443,7 +443,6 @@
 		var getObj = $interval(function(){
             if($scope.obj){
                 $interval.cancel(getObj);
-console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 				{% if objecttype == 'Adherent' %}
 					$scope.adherentInfo(); 
 					//$scope.checkCertificat();
