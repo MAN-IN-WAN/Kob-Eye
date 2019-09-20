@@ -379,28 +379,28 @@ class Cadref extends Module {
 		self::SendMessage($params);
 
 		$data['success'] = 1;
-		$data['message'] = "Nous vous avons envoyé un email de confirmation.\nVeuillez l'ouvrir et cliquer sur le lien \"Confirmer mon inscription\".";
+		$data['message'] = "Nous vous avons envoyé un email de confirmation.<br />Veuillez l'ouvrir et cliquer sur le lien \"Confirmer mon inscription\".";
 		return json_encode($data);		
 	}
 	
 	public static function RegisterConfirmation() {
-		$data = array('success'=>0,'message'=>"Une erreur c'est produite :\nLe lien est incorrect.");
+		$data = array('success'=>0,'message'=>"Une erreur c'est produite : Le lien est incorrect.");
 
 		$get = isset($_GET['info']) ? trim($_GET['info']) : '';
 		if($get == '') return json_encode($data);
 		$info = explode(',', base64_decode($get));
 		if(count($info) != 3) return json_encode($data);	
 		if(($info[2]+2*86400) < time()) {
-			$data['message'] = "Une erreur c'est produite :\nLe lien est expiré.";
+			$data['message'] = "Une erreur c'est produite : Le lien est expiré.";
 			return json_encode($data);
 		}
 		$a = Sys::getOneData('Cadref', 'Register/'.$info[0]);
 		if(!$a || $a->Mail != $info[1]) {
-			$data['message'] = "Une erreur c'est produite.<br>Veuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Une erreur c'est produite.<br />Veuillez contacter le CADREF au 04.66.36.99.44.";
 			return json_encode($data);
 		}
 		if($a->Confirme) {
-			$data['message'] = "Vous avez déjà confirmé votre la création de votre compte.";
+			$data['message'] = "Vous avez déjà confirmé votre la création de votre compte.<br />Vous avez dû recevoir un mail contenant vos identifiants.";
 			return json_encode($data);
 		}
 
