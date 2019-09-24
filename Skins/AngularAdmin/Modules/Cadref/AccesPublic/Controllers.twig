@@ -415,8 +415,76 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//--------------------------------
 	// ADHERENT
 	//--------------------------------
+	{% if objecttype == 'Adherent' and CurrentUrl == 'ben_adherent' %}
+		
+	$scope.CadrefAdherent = $rootScope.createStore(CadrefAdherentStore, 'default');
+	$scope.CadrefAdherent.store.setFilters('Annee={{ Annee }}', 'default');
+	
+	$scope.$watch('CadrefAdherent.currentPage', function() {
+		$scope.CadrefAdherent.store.setPage($scope.CadrefClasse.currentPage, 'children');
+	});
+	$scope.$watch('CadrefClasse.pageLength', function() {
+		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.currentPage, 'children');
+	});
 
-	{% if objecttype == 'Adherent' %}
+
+	// efface le contenu du filtre
+	$scope.clearFilter = function(id) {
+		$scope.{{ ident }}.filter = '';
+		$scope.{{ ident }}.filter1 = '';
+		$scope.{{ ident }}.filter2 = '';
+		$('#search{{ ident }}2').focus();
+	}
+
+	var lasttimeout = false;
+	// wait for CadrefAdherent to be defined before setting a watch on filters
+	var unwatch = $scope.$watch('CadrefAdherent', function() {
+console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+		if($scope.CadrefAdherent != undefined && $scope.CadrefAdherent.filter2 == undefined) {
+console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+			$scope.CadrefAdherent.filter1 = '';
+			$scope.CadrefAdherent.filter2 = '';
+			var f = CadrefAdherentStore.getFilters('default',true).global;
+			if(f != '') {
+				if(f.substring(0, 10) == 'NomPrenom~') $scope.CadrefAdherent.filter2 = f.substring(10);
+				else $scope.CadrefAdherent.filter1 = f
+			}
+			$scope.$watch('CadrefAdherent.filter1', function() {
+console.log('ccccccccccccccccccccccccccccccccccccccccccc');
+
+				if ($scope.CadrefAdherent.filter1 != CadrefAdherentStore.getFilters('default',true).global){
+					if (lasttimeout){
+						$timeout.cancel(lasttimeout);
+						lasttimeout = false;
+					}
+					CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
+					lasttimeout = $timeout(function () {
+						CadrefAdherentStore.getData(1,'default');
+					},250);
+				}
+			});
+			$scope.$watch('CadrefAdherent.filter2', function() {
+console.log('ddddddddddddddddddddddddddddddddddddddddddd');
+				if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
+					if (lasttimeout){
+						$timeout.cancel(lasttimeout);
+						lasttimeout = false;
+					}
+					var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
+					CadrefAdherentStore.setGlobalFilter(np,'default');
+					lasttimeout = $timeout(function () {
+						CadrefAdherentStore.getData(1,'default');
+					},250);
+				}
+			});
+			unwatch();
+		}
+	});
+
+	{% endif %}
+	
+	
+	{% if objecttype == 'Adherent' and CurrentUrl != 'ben_adherent' %}
 
 	//Gestion du store
     $scope.store = CadrefAdherentStore;  

@@ -59,7 +59,7 @@ class PrintSuivi extends FPDF {
 			$cot = $aan->Cotisation;
 			$crs = $aan->Cours;
 			$reg = $aan->Reglement+$aan->Differe-$aan->Regularisation;
-			$tot = $cot+$reg;
+			$tot = $reg;
 			$s .= "la somme de $tot Euros correspondant à :\n\n";
 			$s .= " -  Cotisation $annee-".($annee+1)." : $cot Euros\n\n";
 			$s .= " -  Inscription au".(count($ins) > 1 ? "x" : "")." cours : $crs Euros";
