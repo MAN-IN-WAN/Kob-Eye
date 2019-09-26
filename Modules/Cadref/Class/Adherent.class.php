@@ -388,7 +388,7 @@ class Adherent extends genericClass {
 		if($cert && ($dat <= 0 || date('Ymd', $dat) < $min)) return false;
 		return true;
 	}
-
+	
 	function PrintCarte($recto = false) {
 		require_once ('PrintCarte.class.php');
 

@@ -4,12 +4,11 @@ $vars['module'] = 'Cadref';
 $menu = Sys::$CurrentMenu->Url;
 $login = Sys::$User->Login;
 
+$vars['benevole'] = 0;
 $groups = Sys::$User->getParents('Group');
 foreach($groups as $g) {
-	if($g->Nom == 'CADREF_ADH' || $g->Nom == 'CADREF_ENS') {
-		$group = $g->Nom;
-		break;
-	}
+	if($g->Nom == 'CADREF_BENE') $vars['benevole'] = 1; 
+	if($g->Nom == 'CADREF_ADH' || $g->Nom == 'CADREF_ENS' || $g->Nom == 'CADREF_BENE') $group = $g->Nom;
 }
 
 if($group == 'CADREF_ADH') {
@@ -23,6 +22,11 @@ elseif($group == 'CADREF_ENS') {
 	$vars['objecttype'] = 'Enseignant';
 	$vars['entite'] = Sys::getOneData('Cadref', 'Enseignant/code=' . substr($login, 3, 3));
 	$vars['url'] = 'Cadref/Enseignant';
+}
+elseif($group == 'CADREF_BENE') {
+	$vars['identifier'] = 'CadrefAdherent';
+	$vars['objecttype'] = 'Adherent';
+	$vars['url'] = 'Cadref/Adherent';
 }
 
 

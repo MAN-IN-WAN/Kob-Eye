@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, $window,
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, $window, $timeout,
 	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
 	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
 
@@ -415,33 +415,33 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//--------------------------------
 	// ADHERENT
 	//--------------------------------
-	{% if objecttype == 'Adherent' and CurrentUrl == 'ben_adherent' %}
+
+	{% if objecttype == 'Adherent' and benevole == 1 %}
 		
 	$scope.CadrefAdherent = $rootScope.createStore(CadrefAdherentStore, 'default');
 	$scope.CadrefAdherent.store.setFilters('Annee={{ Annee }}', 'default');
+	CadrefAdherentStore.getData(1,'default');
 	
 	$scope.$watch('CadrefAdherent.currentPage', function() {
-		$scope.CadrefAdherent.store.setPage($scope.CadrefClasse.currentPage, 'children');
+		$scope.CadrefAdherent.store.setPage($scope.CadrefAdherent.currentPage, 'children');
 	});
 	$scope.$watch('CadrefClasse.pageLength', function() {
-		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.currentPage, 'children');
+		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.currentPage, 'children');
 	});
 
 
 	// efface le contenu du filtre
 	$scope.clearFilter = function(id) {
-		$scope.{{ ident }}.filter = '';
-		$scope.{{ ident }}.filter1 = '';
-		$scope.{{ ident }}.filter2 = '';
-		$('#search{{ ident }}2').focus();
+		$scope.CadrefAdherent.filter = '';
+		$scope.CadrefAdherent.filter1 = '';
+		$scope.CadrefAdherent.filter2 = '';
+		$('#searchCadrefAdherent2').focus();
 	}
 
 	var lasttimeout = false;
 	// wait for CadrefAdherent to be defined before setting a watch on filters
 	var unwatch = $scope.$watch('CadrefAdherent', function() {
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 		if($scope.CadrefAdherent != undefined && $scope.CadrefAdherent.filter2 == undefined) {
-console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 			$scope.CadrefAdherent.filter1 = '';
 			$scope.CadrefAdherent.filter2 = '';
 			var f = CadrefAdherentStore.getFilters('default',true).global;
@@ -450,8 +450,6 @@ console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 				else $scope.CadrefAdherent.filter1 = f
 			}
 			$scope.$watch('CadrefAdherent.filter1', function() {
-console.log('ccccccccccccccccccccccccccccccccccccccccccc');
-
 				if ($scope.CadrefAdherent.filter1 != CadrefAdherentStore.getFilters('default',true).global){
 					if (lasttimeout){
 						$timeout.cancel(lasttimeout);
@@ -464,7 +462,6 @@ console.log('ccccccccccccccccccccccccccccccccccccccccccc');
 				}
 			});
 			$scope.$watch('CadrefAdherent.filter2', function() {
-console.log('ddddddddddddddddddddddddddddddddddddddddddd');
 				if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
 					if (lasttimeout){
 						$timeout.cancel(lasttimeout);
@@ -480,11 +477,45 @@ console.log('ddddddddddddddddddddddddddddddddddddddddddd');
 			unwatch();
 		}
 	});
-
+	
+	$scope.benevoleCarte = function(obj) {
+		var ajax = $scope.{{ identifier }}callMethod(obj,'PrintCarte',[false]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.log('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	// attestations diverses
+	$scope.benevoleAttestation = function(obj, mode) {
+		var attest = {AttestAnnee:'{{ Annee }}', AttestFisc:0, AttestSuivi:0, AttestPaiement:0};
+		switch(mode) {
+			case 0: attest.AttestFisc = 1; break;
+			case 1: attest.AttestSuivi = 1; break;
+			case 2: attest.AttestPaiement = 1; break;
+		}
+		var ajax = $scope.{{ identifier }}callMethod(obj,'PrintAttestationPublic',attest,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf == false) swal('Attention',"Non inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
 	{% endif %}
 	
 	
-	{% if objecttype == 'Adherent' and CurrentUrl != 'ben_adherent' %}
+	{% if objecttype == 'Adherent' and benevole == 0 %}
 
 	//Gestion du store
     $scope.store = CadrefAdherentStore;  

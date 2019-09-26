@@ -79,6 +79,8 @@ table tr td.cadref-td-diff {
 	padding: 8px 8px;
 	max-width: 6.5rem;
 }
+
+
 .cadref-btn {
 	margin-bottom: 2px;
 }
@@ -126,8 +128,17 @@ table tr td.cadref-td-diff {
     border-color: #f0ad4e;
 }
 .cadref-btn-close:after {
-    content: "\ed66";
+   font-family: 'icomoon-ultimate', serif;
+   content: "\ed66";
 }
+.cadref-btn-carte:after {
+    content: "\e90b";
+}
+.cadref-btn-fiscal:after {
+    font-family: 'icomoon-ultimate', serif;
+    content: "\e9ad";
+}
+
 /*
 cadref-btn-close:hover {
     color: #fff;

@@ -1,7 +1,14 @@
 <div class="form-group row">
 	<div class="col-lg-5 col-md-12">
 		<div class="input-group list-search">
-			<input type="text" id="search{{ identifier }}" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+			<div class="row">
+				<div class="col-md-6" style="padding-right:0">
+					<input type="text" id="search{{ identifier }}2" autofocus class="form-control" name="{{ identifier }}query2" ng-model="{{ identifier }}.filter2" placeholder="Nom..." >
+				</div>
+				<div class="col-md-6" style="padding-left:0">
+					<input type="text" id="search{{ identifier }}1" class="form-control" name="{{ identifier }}query1" ng-model="{{ identifier }}.filter1" placeholder="Recherche..." >
+				</div>
+			</div>
 			<span class="input-group-btn">
 				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('{{ identifier }}')"></a>				
 				<a href="javascript: void(0);" class="btn btn-warning" accesskey="r" title="Alt R" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
@@ -56,8 +63,9 @@
 
 
 				<td scope="row" class="cadref-td typeint">
-					<a class="btn-abt btn-abt-nfo btn-primary" title="Carte"></a>
-				</td>
+					<a class="btn-abt cadref-btn-carte btn-primary" ng-click="benevoleCarte(item)" title="Carte"></a>
+{#					<a href="#down" class="btn-abt btn-abt-fiscal btn-info" ng-click="benevoleAttestation(item,2)" title="Attestations de paiement"></a>
+#}				</td>
 			</tr>
 		</tbody>
 		<tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
