@@ -60,6 +60,7 @@
 						<switch class="cadref-switch-red" ng-model="reglementObj.Encaisse"></switch>
 					</div>
 				</div>
+				{% if prelevement == 1 %}
 				<div class="row">
 					<div class="col-md-4">
 						{{ label("Fichier SEPA") }}
@@ -68,6 +69,7 @@
 						<switch class="cadref-switch-red" ng-model="reglementObj.SEPA"></switch>
 					</div>
 				</div>
+				{% endif %}
 				<div class="row">
 					<div class="col-md-4">
 						{{ label("Supprimé") }}

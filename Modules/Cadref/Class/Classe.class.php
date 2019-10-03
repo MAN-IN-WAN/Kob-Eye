@@ -148,7 +148,6 @@ order by d.DateCours";
 	
 	function PrintPresence($obj) {
 		require_once ('PrintPresence.class.php');
-
 		$annee = Cadref::$Annee;
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];

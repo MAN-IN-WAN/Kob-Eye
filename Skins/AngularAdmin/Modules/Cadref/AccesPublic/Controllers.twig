@@ -408,6 +408,39 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+	
+	// PRESENCE
+	$scope.Presence = {Debut:''};
+	$scope.enseignantPresence = function() {
+		var p = $scope.Presence;
+		p.Fin = p.Debut;
+		$scope.obj.Fin = $scope.obj.Debut;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintPresence',p,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.log('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// liste adhérents
+	$scope.enseignantAdh = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
 
 	{% endif %}
 
@@ -589,7 +622,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	// responsable site
-	$scope.adherentSite = function(mode) {
+	$scope.adherentSite = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSiteAdherents',[]);
 		ajax.success(
 			function(data) {

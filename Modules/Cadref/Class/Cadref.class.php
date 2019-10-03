@@ -486,7 +486,10 @@ class Cadref extends Module {
 			$vacances[] = $v;
 		}
 
-		$group = Sys::$User->getParents('Group')[0]->Nom;
+		$groups = Sys::$User->getParents('Group');
+		foreach($groups as $g) {
+			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom)) $group = $g->Nom;
+		}
 
 		$adh = false;
 		$adm = false;

@@ -150,4 +150,16 @@ where ce.EnseignantId=$id";
 		return array('pdf'=>$file, 'msg'=>false);
 	}
 	
+	function PrintPresence($obj) {
+		$c = genericClass::createInstance('Cadref', 'Classe');
+		return $c->PrintPresence($obj);
+	}
+	
+	function PrintAdherents() {
+		$annee = Cadref::$Annee;
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
+		$a = genericClass::createInstance('Cadref', 'Adherent');
+		return $a->PrintAdherent($obj);
+	}
+	
 }

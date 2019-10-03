@@ -1,3 +1,5 @@
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set o='obj' %}
 <div class="form-group row">
 	<div class="col-lg-5 col-md-12">
 		<div class="input-group list-search">
@@ -52,14 +54,14 @@
 		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
 			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Numero }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Nom }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Prenom }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Ville }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Adresse1 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Telephone1 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Telephone2 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Mail }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Numero }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Nom }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Prenom }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Ville }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Adresse1 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone1 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone2 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
 
 
 				<td scope="row" class="cadref-td typeint">
@@ -85,7 +87,159 @@
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
-{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+	<div class="modal-dialog cadref-modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+				<h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+			</div>
+			<div class="modal-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-7" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Numéro") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Numero, o, true, '', 'width:80px') }}
+								</div>
+							</div>
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année de Naissance") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Naissance, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Sexe") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Sexe, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Certificat médical") }}
+										</div>
+										<div class="col-md-7">
+											<input type="text" ng-if="!obj.certifInvalide" class="form-control cadref-input" ng-model="obj.Certificat" readonly/>
+											<input type="text" ng-if="obj.certifInvalide" class="form-control cadref-input cadref-highlight" ng-model="obj.Certificat" 
+												   title="Certificat médical absent ou obsolète" onmouseenter="$(this).tooltip('show')"readonly/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Situation") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.SituationId, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Profession") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.ProfessionId, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Connaissance du CADREF") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Origine, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année d'inscription") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Inscription, o, true) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Dernière inscription") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Annee, o, true) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="{{ identifier }}InfoSave()">Enregistrer les modifications</button>
+								</div>
+							</div>
+						</div>
+			</div>
+        </div>
+	</div>
+</div>
 <script type="text/javascript">
 	$('.spinner-list').spin();
 </script>
