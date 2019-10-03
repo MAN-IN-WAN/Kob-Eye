@@ -266,6 +266,16 @@
 													{% endfor %}
 												</select>
 											</div>
+											<div class="col-md-5" ng-if="obj.Rupture=='C'">
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Saut de pages") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Pages"></switch>
+													</div>
+												</div>
+											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
 										<div class="row">

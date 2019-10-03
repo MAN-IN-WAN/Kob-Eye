@@ -103,7 +103,7 @@ $vars['hideModal'] = isset($_GET['hideModal']) ? $_GET['hideModal'] : '';
 
 //if(isset($_SESSION['ListClasse'])) $vars['AnneeFiltre'] = $_SESSION['ListClasse'];
 //else 
-	$vars['AnneeFiltre'] = $annee;
+$vars['AnneeFiltre'] = $annee;
 
 
 ?>

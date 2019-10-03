@@ -425,7 +425,7 @@ class Adherent extends genericClass {
 		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
 		if(! $aa->AntenneId) return array('pdf'=>false, );
 		
-		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee);
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee, 'Pages'=>true);
 		return $this->PrintAdherent($obj);
 	}
 
@@ -458,6 +458,7 @@ class Adherent extends genericClass {
 				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
+				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$adherent = false;
 
 				if($soutien) {
@@ -706,7 +707,7 @@ order by a.Nom, a.Prenom";
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
-			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $typAdh);
+			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $typAdh, $pages);
 			$pdf->SetAuthor("Cadref");
 			$pdf->SetTitle('Liste adherents');
 

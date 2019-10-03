@@ -9,6 +9,7 @@ class PrintAdherent extends FPDF {
 	private $antenne;
 	private $attente;
 	private $adherent;
+	private $sauts;
 	private $head;
 	private $align;
 	private $width;
@@ -23,13 +24,14 @@ class PrintAdherent extends FPDF {
 	private $mode;
 	private $rupEns = "\t";  // valeur initiale non vide
 
-	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $adherent) {
+	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $adherent, $pages) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
 		$this->contenu = $contenu;
 		$this->rupture = $rupture;
 		$this->adherent = $adherent;
+		$this->sauts = $pages;
 
 		$this->mode = $mode;
 		switch($mode) {
@@ -118,7 +120,7 @@ class PrintAdherent extends FPDF {
 				if($this->rupVal != $r) {
 					if($this->rupVal != '' && $this->rupture != 'E') {
 						$this->footRupture();
-						if($this->rupture == 'C' && ($this->contenu == 'N' || $this->contenu == 'A')) $this->AddPage();
+						if($this->sauts && $this->rupture == 'C' && ($this->contenu == 'N' || $this->contenu == 'A')) $this->AddPage();
 					}
 					$this->headRupture($l);
 					$this->rupVal = $r;
