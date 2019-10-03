@@ -45,9 +45,9 @@
 				<th>Prénom</th>
 				<th>Ville</th>
 				<th>Adresse</th>
+{#				<th>Téléphone</th>
 				<th>Téléphone</th>
-				<th>Téléphone</th>
-				<th>Mail</th>
+#}				<th>Mail</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -59,9 +59,9 @@
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Prenom }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Ville }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Adresse1 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone1 }]}</a></td>
+{#				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone1 }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone2 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
+#}				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
 
 
 				<td scope="row" class="cadref-td typeint">
