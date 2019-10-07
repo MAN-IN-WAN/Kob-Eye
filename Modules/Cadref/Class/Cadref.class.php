@@ -488,7 +488,7 @@ class Cadref extends Module {
 
 		$groups = Sys::$User->getParents('Group');
 		foreach($groups as $g) {
-			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS" !== false, $g->Nom)) $group = $g->Nom;
+			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) $group = $g->Nom;
 		}
 
 		$adh = false;
