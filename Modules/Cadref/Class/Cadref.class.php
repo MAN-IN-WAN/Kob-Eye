@@ -515,7 +515,8 @@ inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
-where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>'' and c.Programmation=0
+where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>'' and c.Programmation=0 
+and i.Attente=0 and i.Supprime=0
 ";
 			$sql1 = "
 select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,i.ClasseId as cid,a.EnseignantId
@@ -524,6 +525,7 @@ left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId
 left join `##_Cadref-Absence` a on a.EnseignantId=ce.EnseignantId
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
+and i.Attente=0 and i.Supprime=0
 ";
 			$sql2 = "
 select cd.DateCours,i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
@@ -536,6 +538,7 @@ inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where i.AdherentId=$id and cd.DateCours>=$start and cd.DateCours<=$end
+and i.Attente=0 and i.Supprime=0
 ";
 		} else if($group == 'CADREF_ENS') {
 			$adh = false;
@@ -559,7 +562,7 @@ from `##_Cadref-Absence` a
 where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
 ";
 			$sql2 = "			
-select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+select cd.DateCours,c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
 concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=ce.Classe
@@ -715,6 +718,7 @@ where ve.Visite=$vid
 		}
 
 		$data['events'] = $events;
+		//$data['sql'] = $sss;
 		return $data;
 	}
 	
