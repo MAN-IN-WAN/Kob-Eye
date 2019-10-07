@@ -340,3 +340,25 @@ span.cadref-success {
 span.cadref-info {
 	color: #0190da;
 }
+
+
+nav.left-menu {
+    width: 200px;
+}
+
+nav.left-menu + * + .page-content {
+    margin-left: 200px;
+}
+
+nav.left-menu + nav.top-menu {
+    left: 200px;
+}
+
+nav.left-menu .logo-container {
+    padding: 21px 15px 0px;
+    width: 200px;
+}
+
+nav.left-menu .logo-container .logo {
+    max-width: 200px;
+}

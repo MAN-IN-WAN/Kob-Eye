@@ -178,8 +178,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
-
-	
 	{% if objecttype == 'Enseignant' %}
 	//--------------------------------
 	// ENSEIGNANT
@@ -445,6 +443,28 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	{% endif %}
 
 
+	{% if benevole == 1 %}
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'default');
+	$scope.CadrefVisite.store.setFilters('Annee={{ Annee }}', 'default');
+	CadrefVisiteStore.getData(1,'default');
+	
+	$scope.$watch('CadrefVisite.currentPage', function() {
+		$scope.CadrefVisite.store.setPage($scope.CadrefVisite.currentPage, 'default');
+	});
+	$scope.$watch('CadrefVisite.pageLength', function() {
+		$scope.CadrefVisite.store.setPageLength($scope.CadrefVisite.currentPage, 'default');
+	});
+
+
+	// efface le contenu du filtre
+	$scope.clearFilter = function(id) {
+		$scope.CadrefVisite.filter = '';
+		$('#searchCadrefVisite').focus();
+	}
+
+	{% endif %}
+	
+
 	//--------------------------------
 	// ADHERENT
 	//--------------------------------
@@ -456,16 +476,15 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	CadrefAdherentStore.getData(1,'default');
 	
 	$scope.$watch('CadrefAdherent.currentPage', function() {
-		$scope.CadrefAdherent.store.setPage($scope.CadrefAdherent.currentPage, 'children');
+		$scope.CadrefAdherent.store.setPage($scope.CadrefAdherent.currentPage, 'default');
 	});
-	$scope.$watch('CadrefClasse.pageLength', function() {
-		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.currentPage, 'children');
+	$scope.$watch('CadrefAdherent.pageLength', function() {
+		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.currentPage, 'default');
 	});
 
 
 	// efface le contenu du filtre
 	$scope.clearFilter = function(id) {
-		$scope.CadrefAdherent.filter = '';
 		$scope.CadrefAdherent.filter1 = '';
 		$scope.CadrefAdherent.filter2 = '';
 		$('#searchCadrefAdherent2').focus();

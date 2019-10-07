@@ -25,7 +25,8 @@ switch(Sys::$CurrentMenu->Url) {
 			'ens_message'=>'sendMessage',
 			'ens_documents/ens_adherents'=>'EnsAdherent',
 			'ens_documents/ens_presence'=>'EnsPresence',
-			'ben_adherents'=>'BenAdherent'
+			'ben_adherents'=>'BenAdherent',
+			'ben_visites'=>'BenVisite'
 			);
 		$vars['fiche'] = 'Cadref/AccesPublic/'.$menus[Sys::$CurrentMenu->Url];
 }

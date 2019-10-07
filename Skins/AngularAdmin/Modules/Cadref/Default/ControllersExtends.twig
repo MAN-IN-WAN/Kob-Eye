@@ -149,6 +149,7 @@
 		{% endif %}
 
 		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
+
 		//-----------------------------
 		// ATTACHEMENT
 		//-----------------------------
@@ -2010,10 +2011,27 @@
 					}
 				);
 			});
-
 		}
 		
 		
+		$scope.ClasseAnnee = '{{ Annee }}';
+		$scope.classeAnneeChange = function(mode) {
+console.log("xxxxxxxxxxxxxxxxxxxxx")
+			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
+			if(mode == undefined) mode = true;
+			
+			var f = '';
+			if(CadrefClasseStore.Filter2 != '') f = 'CodeClasse~'+CadrefClasseStore.Filter2;
+			else if(CadrefClasseStore.Filter1 != '') f = CadrefClasseStore.Filter1;
+			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
+			
+			var p = mode ? 1 : $scope.ClassePage;
+            CadrefClasseStore.setGlobalFilter(f,'default');
+            CadrefClasseStore.getData(p,'default');
+			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
+		}
+		
+
 		//-----------------
 		// ABSENCE
 		//-----------------
