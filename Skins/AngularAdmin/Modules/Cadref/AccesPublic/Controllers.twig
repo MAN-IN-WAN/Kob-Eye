@@ -192,6 +192,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefAbsence = $rootScope.createStore(CadrefAbsenceStore, 'children');
 	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
 	$scope.CadrefClasse = $rootScope.createStore(CadrefClasseStore, 'children');
+	$scope.CadrefClasse.pageLength = 15;
 	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
 	$scope.$watch('CadrefClasse.currentPage', function() {
 		$scope.CadrefClasse.store.setPage($scope.CadrefClasse.currentPage, 'children');
@@ -444,7 +445,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	{% endif %}
 
 
-	{% if benevole == 1 %}
+{#	{% if objecttype == 'Visite' and  benevole == 1 %}
 	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'default');
 	$scope.CadrefVisite.store.setFilters('Annee={{ Annee }}', 'default');
 	CadrefVisiteStore.getData(1,'default');
@@ -464,7 +465,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 
 	{% endif %}
-	
+#}	
 
 	//--------------------------------
 	// ADHERENT
@@ -510,6 +511,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 					}
 					CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
 					lasttimeout = $timeout(function () {
+						CadrefAdherentStore.setPageLength(15);
+
 						CadrefAdherentStore.getData(1,'default');
 					},250);
 				}
@@ -523,6 +526,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 					var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
 					CadrefAdherentStore.setGlobalFilter(np,'default');
 					lasttimeout = $timeout(function () {
+						CadrefAdherentStore.setPageLength(15);
+
 						CadrefAdherentStore.getData(1,'default');
 					},250);
 				}
