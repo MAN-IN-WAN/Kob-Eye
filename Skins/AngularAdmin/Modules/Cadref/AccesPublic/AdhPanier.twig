@@ -111,7 +111,7 @@
 									<th class="cadref-th">Période</th>
 									<th class="cadref-th">Prix</th>
 									<th class="cadref-th">Enseignant</th>
-									<th class="cadref-th"></th>
+									<th class="cadref-th">Doc.</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -261,3 +261,22 @@
         </div>
 	</div>
 </div>
+
+<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title" id="myModalLabel">Classes : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachementInfo.classeId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>

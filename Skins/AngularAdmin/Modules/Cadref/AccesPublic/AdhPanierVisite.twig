@@ -82,7 +82,7 @@
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.Depart }]}</span></td>
 									<td scope="row" class="cadref-td">
 										<span ng-if="item.resId*1>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-											  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+											  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
 										</span>
 										<span class="label" ng-if="item.resId*1==0" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span>
 									</td>

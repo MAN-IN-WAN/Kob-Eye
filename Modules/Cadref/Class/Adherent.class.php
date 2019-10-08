@@ -1376,12 +1376,11 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 			}
 		}
 
-		if($sess) {
-			$_SESSION['panier'] = serialize($ids);
-			$pa->Panier = $ids;
-			if($donation >= 0) $pa->Dons = $donate = $donation;
-			$pa->Save();
-		}
+		if($sess) $_SESSION['panier'] = serialize($ids);
+		$pa->Panier = $ids;
+		if($donation >= 0) $pa->Dons = $donate = $donation;
+		$pa->Save();
+
 
 		$sql1 = "
 select e.Nom, e.Prenom 

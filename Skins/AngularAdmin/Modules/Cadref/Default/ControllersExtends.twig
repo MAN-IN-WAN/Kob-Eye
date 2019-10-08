@@ -436,7 +436,7 @@
 //***********************
 	
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
-		$rootScope, $routeParams, $http, $log, 
+		$rootScope, $routeParams, $http, $log, $injector,
 		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 
 		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore, CadrefDepartStore, CadrefAttachementStore,
 		CadrefSituationStore, CadrefProfessionStore) {
@@ -1855,6 +1855,14 @@
 		$scope.CadrefReservationadd = function() {
 			$scope.CadrefReservationaddExt($scope.CadrefReservationcallbackAdd);
 		}
+				
+		$scope.getSelectAdherent = function (store,search){
+			var s = $injector.get(store);
+			var c = search == '' ? '' : 'NomPrenom~'+search;
+			s.setFilters(c,'form');
+			return s.getData(1,'form');
+		}
+		
 
 		// modification reservation
 		$scope.reservationOpenCallback = function(item, obj) {

@@ -114,7 +114,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
 				break;
 			case 'inscription':
-				o.classeId = item.ClasseClasseId;
+				o.classeId = item.clsId; //item.ClasseClasseId;
 				o.code = item.CodeClasse;
 				o.libelle = item.LibelleS+' / '+item.LibelleD+' '+item.LibelleN;
 				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
@@ -126,7 +126,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
 				break;
 			case 'reservation':
-				o.visiteId = item.VisiteVisiteId;
+				o.visiteId = item.clsId; //item.VisiteVisiteId;
 				o.code = item.Visite;
 				o.libelle = item.Libelle;
 				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
@@ -187,25 +187,34 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	//Gestion du store
     $scope.store = CadrefEnseignantStore;
-
+	
 	// store children
 	$scope.CadrefAbsence = $rootScope.createStore(CadrefAbsenceStore, 'children');
 	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
-	$scope.CadrefClasse = $rootScope.createStore(CadrefClasseStore, 'children');
-	$scope.CadrefClasse.pageLength = 15;
+{#	$scope.CadrefClasse = $rootScope.createStore(CadrefClasseStore, 'children');
 	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'children');
+	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
 	$scope.$watch('CadrefClasse.currentPage', function() {
 		$scope.CadrefClasse.store.setPage($scope.CadrefClasse.currentPage, 'children');
 	});
 	$scope.$watch('CadrefClasse.pageLength', function() {
-		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.currentPage, 'children');
+		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.pageLength, 'children');
 	});
-	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'children');
-	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
+#}
+	$scope.ens = {classes: [], visites: [], busy: true };
 
     $scope.initEns = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
+			
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetClassesVisites',[]);
+			ajax.success(function(data) {
+				$scope.ens.classes = data.data.classes;
+				$scope.ens.visites = data.data.visites;
+				$scope.ens.busy = false;
+			});
+
         });
     }
     $scope.initEns();
@@ -481,7 +490,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.CadrefAdherent.store.setPage($scope.CadrefAdherent.currentPage, 'default');
 	});
 	$scope.$watch('CadrefAdherent.pageLength', function() {
-		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.currentPage, 'default');
+		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.pageLength, 'default');
 	});
 
 
@@ -511,7 +520,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 					}
 					CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
 					lasttimeout = $timeout(function () {
-						CadrefAdherentStore.setPageLength(15);
+						//CadrefAdherentStore.setPageLength(15);
 
 						CadrefAdherentStore.getData(1,'default');
 					},250);
@@ -526,7 +535,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 					var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
 					CadrefAdherentStore.setGlobalFilter(np,'default');
 					lasttimeout = $timeout(function () {
-						CadrefAdherentStore.setPageLength(15);
+						//CadrefAdherentStore.setPageLength(15);
 
 						CadrefAdherentStore.getData(1,'default');
 					},250);

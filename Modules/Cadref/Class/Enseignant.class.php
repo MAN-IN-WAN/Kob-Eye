@@ -20,6 +20,18 @@ class Enseignant extends genericClass {
 		
 		return parent::Delete();
 	}
+	
+	public function GetClassesVisites() {
+		$cls = $this->getChildren('Classe/Annee='.Cadref::$Annee);
+		foreach($cls as $c) $c->id = $c->Id;
+		$vis = $this->getChildren('Visite/Annee='.Cadref::$Annee);
+		foreach($vis as $v) {
+			$v->id = $v->Id;
+			$v->DateVisite = date('d/m/Y', $v->DateVisite);
+		}
+		$a = array('classes'=>$cls, 'visites'=>$vis);
+		return $a;
+	}
 
 	public function SendMessage($params) {
 		if(!isset($params['step'])) $params['step'] = 0;

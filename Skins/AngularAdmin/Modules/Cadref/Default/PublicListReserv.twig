@@ -35,7 +35,7 @@
 				</td>
 				<td scope="row" class="cadref-td typeint">
 					<span ng-if="item.resId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-						  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+						  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
 					</span>
 					<span ng-if="item.resId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="reservationSupprime(item)" title="Annuler l'inscription"></span>
 				</td>
@@ -51,7 +51,7 @@
                 <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
             </div>
             <div class="modal-body">
-                <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
+                <div ng-if="attachementInfo.visiteId>0">
 					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
                 </div>
             </div>
