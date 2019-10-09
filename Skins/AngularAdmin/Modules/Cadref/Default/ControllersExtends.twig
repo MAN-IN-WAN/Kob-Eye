@@ -672,7 +672,7 @@
 					o.Regularisation = Number(data.data.Regularisation);
 					o.Dons = Number(data.data.Dons);
 					o.Solde = Number(data.data.Solde);
-					o.NotesAnnuelles = data.data.NotesAnnuelles;
+					o.NotesAnnuelles = data.data.NotesAnnuelles == null ? '' : data.data.NotesAnnuelles;
 					o.Adherent = data.data.Adherent;
 					o.ClasseId = data.data.ClasseId;
 					o.AntenneId = data.data.AntenneId;
