@@ -378,7 +378,7 @@
 										{{ label("Notes annuelles") }}
 									</div>
 									<div class="col-md-10">
-										<textarea class="form-control cadref-input cadref-annuel" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="{{ o }}.NotesAnnuelles"></textarea>
+										<textarea class="form-control cadref-input" ng-class="{'cadref-annuel':{{ o }}.NotesAnnuelles=='','cadref-highlight':{{ o }}.NotesAnnuelles!=''}" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="{{ o }}.NotesAnnuelles"></textarea>
 									</div>
 								</div>
 							</section>
