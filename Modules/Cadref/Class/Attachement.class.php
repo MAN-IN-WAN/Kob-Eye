@@ -15,11 +15,11 @@ class Attachement extends genericClass {
 
 	function Delete() {
 		$c = $this->getOneParent('Classe');
+		$v = $this->getOneParent('Visite');
+		$ret = parent::Delete();
 		if($c) $c->Save();
-		$c = $this->getOneParent('Visite');
-		if($c) $c->Save();
-		
-		return parent::Delete();
+		if($v) $v->Save();
+		return $ret;
 	}
 
 	
