@@ -1,4 +1,5 @@
 <?php
+$vars['Annee'] = Cadref::$Annee;
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $o->setView();

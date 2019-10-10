@@ -8,9 +8,10 @@ class Paiement extends genericClass
 
     public function CheckPaiement()
     {
-        if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
-            return;
-        }
+        //if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
+        //    return;
+        //}
+		if ($this->Etat == 1 && $this->Status != 0) return;
 
         // Récupération type de paiement
         $type = $this->getTypePaiement();

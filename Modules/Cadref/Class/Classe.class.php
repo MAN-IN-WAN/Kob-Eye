@@ -31,6 +31,7 @@ class Classe extends genericClass {
 			$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
 			$this->Inscrits = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=0&Supprime=0');
 			$this->Attachements = Sys::getCount('Cadref','Classe/'.$this->Id.'/Attachement');
+klog::l("xxxxxxxxxxxxxxxx".$this->Attachements);
 		}
 		return parent::Save();
 	}
@@ -148,7 +149,6 @@ order by d.DateCours";
 	
 	function PrintPresence($obj) {
 		require_once ('PrintPresence.class.php');
-
 		$annee = Cadref::$Annee;
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];

@@ -42,6 +42,20 @@
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
+									{% if mode == 1 and prelevement == 1 %}
+									<div class="row" ng-if="obj.ModeReglement=='P'">
+										<div class="col-md-2">
+											{{ label("Fichier SEPA") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.SEPA" ng-init="obj.SEPA='T'" style="width:160px">
+												<option value="C">Tous</option>
+												<option value="N">Non envoyés</option>
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									{% endif %}
 									<div class="row">
 										<div class="col-md-2">
 											{{ label("Ordre de tri") }}

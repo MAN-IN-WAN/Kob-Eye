@@ -752,7 +752,7 @@
                 });
         }
         $scope.getSelectData = function (store,search){
-            console.log('get select data',store,search);
+            console.log('get select data 1',store,search);
             return $injector.get(store).getDataFilter(search,'form');
         }
 
@@ -1641,7 +1641,7 @@
 
                 //GETSELECTDATA
                 $scope.getSelectData = function (store,search){
-                    console.log('get select data',store,search);
+                    console.log('get select data 2',store,search);
                     return $injector.get(store).getDataFilter(search,'form');
                 }
 

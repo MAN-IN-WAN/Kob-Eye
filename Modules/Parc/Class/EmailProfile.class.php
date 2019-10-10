@@ -41,7 +41,7 @@ class EmailProfile extends genericClass {
         $profiles = Sys::getData('Parc','EmailProfile/Enabled=1&DroitDeconnexion=1');
         $curDate = date('Y-m-d');
         $curTms = time();
-        file_put_contents('/tmp/DD','---------------------------------------'.PHP_EOL.$curTms.PHP_EOL,8);
+        //file_put_contents('/tmp/DD','---------------------------------------'.PHP_EOL.$curTms.PHP_EOL,8);
 
         foreach ($profiles as $profile){
             $dateDebut = $curDate.' '.$profile->HeureDebut;

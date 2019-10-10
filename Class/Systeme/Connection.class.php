@@ -101,6 +101,7 @@ class Connection extends Root{
                     $this->initPublicSession();
                     $this->LoadLoginVars();
                     //Verficiation de la connexion
+
                     if (!$this->DetectUser()) {
                         $this->initDefaultUser();
                     } else {
@@ -896,8 +897,8 @@ class Connection extends Root{
 // 				$GLOBALS["Systeme"]->Error->sendErrorMsg(100);
 				$this->destroyAuth();
 			}
-		}
-		$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX NO LOGIN PROVIDED');
+		}else 
+			$GLOBALS["Systeme"]->Log->log('XXXXXXXXXXXXXX NO LOGIN PROVIDED');
 		return false;
 	}
 

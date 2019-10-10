@@ -1,0 +1,197 @@
+{# fiche panier visite #}
+<div class="page-content-inner">
+	<h3>Visites</h3>
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">		
+                <div class="col-md-12">
+					<section class="panel" ng-if="inscriptionObj.Select">
+						<div class="panel-body">
+							<div class="row">
+								<div style="height:10px"></div>
+								<div class="col-md-12">
+									<div class="listWrap">
+										<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+											<thead>
+												<tr>
+													<th class="cadref-th"></th>
+													<th class="cadref-th">Date</th>
+													<th class="cadref-th">Visite</th>
+													<th class="cadref-th">Prix</th>
+													<th class="cadref-th">Places</th>
+													<th class="cadref-th">Animateur</th>
+{#													<th class="cadref-th"></th>#}
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="item in inscriptionObj.VisiteItems">
+													<td  class="cadref-td-btn">
+														<label ng-if="(item.resId*1)" class="label label-success">Déjà inscrit</label> 
+														<label ng-if="!(item.resId*1) && !(item.Web*1)" class="label label-danger">Indisponible en ligne</label> 
+														<label ng-if="!(item.resId*1) && (item.Web*1) && !(item.Disponible*1)" class="label label-danger">Visite complète</label> 
+														<button type="button" ng-if="!(item.resId*1) && (item.Web*1) && (item.Disponible*1)" class="btn cadref-btn btn-success" ng-click="panierVisiteAjoute(item)">S'inscrire à cette visite</button>
+													</td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
+{#													<td  class="table-action cadref-td-btn">
+														<span class="btn-abt cadref-btn-add btn-success" ng-click="reservationAjoute(item)" title="Inscrire"></span>
+													</td>
+#}												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler la recherche</button>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="panel">
+						<div class="panel-body">
+						<table class="table table-hover nowrap straight" id="Panier-table" width="100%" style="line-height:1" >
+							<thead>
+								<tr>
+									<th class="cadref-th" style="max-width:140px"></th>
+									<th class="cadref-th" style="width:30px"></th>
+									<th class="cadref-th">Date</th>
+									<th class="cadref-th">Visite</th>
+									<th class="cadref-th">Prix</th>
+									<th class="cadref-th">Départ</th>
+									<th class="cadref-th">Animateur</th>
+									<th class="cadref-th"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in panierObj.visiteItems"">
+									<td scope="row" class="cadref-td"><span class="label {[{ item.classe }]}">{[{ item.note }]}</span></td>
+									<td scope="row" class="cadref-td">
+										<button type="button" class="btn cadref-btn btn-danger" ng-if="(item.clsId*1) && item.Inscrit*1==0" ng-click="panierVisiteSupprime(item)" title="Supprimer cette visite">Supprimer</button>
+									</td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.DateText }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.LibelleD }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">€ {[{ item.Prix*1 }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
+									<td scope="row" class="cadref-td"><span class="label">{[{ item.Depart }]}</span></td>
+									<td scope="row" class="cadref-td">
+										<span ng-if="item.resId*1>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+											  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+										</span>
+										<span class="label" ng-if="item.resId*1==0" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						<div class="row" ng-if="!inscriptionObj.Select">
+							<div class="col-md-2">
+								<button type="button" class="btn btn-info" ng-click="inscriptionSelect(true, true)">Ajouter une visite</button>
+							</div>
+						</div>		
+						<div style="height:30px"></div>
+						<div class="row" ng-if="panierObj.TotalVisite*1">
+							<div class="col-md-2">
+								<label class="form-control-label cadref-label" style="line-height:1">Prix des visites : € {[{ panierObj.MontantVisite }]}</label>
+							</div>
+							<div class="col-md-2">
+								<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ panierObj.CotisationDue*1>0 ? '€ '+panierObj.CotisationDue : 'déjà réglée' }]}</label>
+							</div>
+							<div class="col-md-2">
+								<div class="row">
+									<div class="col-md-6" style="padding-left:8px;padding-right:8px">
+										<label class="form-control-label cadref-label" style="line-height:1">Don de soutien</label>
+									</div>
+									<div class="col-md-6">
+										<input type="text" mask="9999" class="form-control cadref-input" ng-model="panierObj.Dons" ng-change="panierDons()" style="width:60px" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.TotalVisite }]}</label>
+							</div>
+							<div class="col-md-2">
+								<button type="button" ng-if="panierObj.Urlweb" class="btn btn-info" ng-click="panierPoursuivre()">Poursuivre les réservations</button>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-success" ng-click="panierConfirme('visite')">Confirmer et payer</button>
+							</div>
+						</div>
+						<div class="row" ng-if="!panierObj.panierItems.length">
+							<label class="form-control-label cadref-label">Aucune réservation.</label>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div class="modal fade modal-size-medium" id="modal-panier" role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+	<div class="modal-dialog cadref-modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+				<h4 class="modal-title">Confirmer les réservations</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Cotisation CADREF {{ Annees }}</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label" ng-if="panierObj.CotisationDue*1">€ {[{ panierObj.CotisationDue }]}</label>
+						<label class="form-control-label cadref-label" ng-if="panierObj.CotisationDue*1==0">Déjà réglée</label>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Prix des visites</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.MontantVisite }]}</label>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Don de soutien</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Dons }]}</label>
+					</div>
+				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:5px;margin-top:15px"></div>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Montant à payer</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">€ {[{ panierObj.TotalVisite }]}</label>
+					</div>
+				</div>
+				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:25px;margin-top:5px"></div>
+				<div style="height:20px"></div>
+				<div class="row">
+					<div class="col-md-2">
+					</div>
+					<div id="panierPayer" class="col-md-2">
+						<button type="button" class="btn btn-success">Chargement ...</button>
+					</div>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+        </div>
+	</div>
+</div>

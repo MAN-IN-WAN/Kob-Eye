@@ -1,6 +1,13 @@
 <?php
 class Enseignant extends genericClass {
 	
+	function Save() {
+		$this->Code = strtoupper($this->Code);
+		$this->Nom = strtoupper($this->Nom);
+		$this->Ville = strtoupper($this->Ville);
+		return parent::Save();
+	}
+	
 	function Delete() {
 		$rec = $this->getChildren('Classe');
 		if(count($rec)) {
@@ -12,6 +19,18 @@ class Enseignant extends genericClass {
 			$r->Delete();
 		
 		return parent::Delete();
+	}
+	
+	public function GetClassesVisites() {
+		$cls = $this->getChildren('Classe/Annee='.Cadref::$Annee);
+		foreach($cls as $c) $c->id = $c->Id;
+		$vis = $this->getChildren('Visite/Annee='.Cadref::$Annee);
+		foreach($vis as $v) {
+			$v->id = $v->Id;
+			$v->DateVisite = date('d/m/Y', $v->DateVisite);
+		}
+		$a = array('classes'=>$cls, 'visites'=>$vis);
+		return $a;
 	}
 
 	public function SendMessage($params) {
@@ -51,11 +70,11 @@ class Enseignant extends genericClass {
 	function CreateUser() {
 		$usr = 'ens'.strtolower($this->Code);
 		$o = Sys::getOneData('Systeme', 'User/Login='.$usr);
-		if($o) return array('msg'=>'User deja existant');
+		if($o) return array('msg'=>'Utilisateur déjà existant.', 'success'=>0);
 		Cadref::CreateUser($usr, false, $this->Id);
 		$this->Compte = 1;
 		$this->Save();
-		return array('user'=>$usr);
+		return array('msg'=>'Utilisateur créé.','success'=>1);
 	}
 	
 	function PublicSendMessage($params) {
@@ -99,6 +118,28 @@ where ce.EnseignantId=$id";
 	}
 
 	function PrintEtiquettes($obj) {
+		$mode = $obj['mode'];
+		
+		if($mode != 'print') {
+			$mail = $obj['Mail'];
+			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where ";
+			if($mail != 0) $sql .= "Id=$mail";
+			else $sql .= "Mail<>''";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			foreach($pdo as $p) {
+				if($mode == 'sms') {
+					$params = array('Telephone1'=>$p['Telephone1'],'Telephone2'=>$p['Telephone2'],'Message'=>$obj['SMS']);
+					Cadref::SendSms($params);
+				}
+				else {
+					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($p['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+					if(MSG_ADH) Cadref::SendMessage($args);				
+				}
+			}
+			return array('pdf'=>false, 'msg'=>true);
+		}
+				
 		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -118,7 +159,19 @@ where ce.EnseignantId=$id";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'msg'=>false);
+	}
+	
+	function PrintPresence($obj) {
+		$c = genericClass::createInstance('Cadref', 'Classe');
+		return $c->PrintPresence($obj);
+	}
+	
+	function PrintAdherents() {
+		$annee = Cadref::$Annee;
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
+		$a = genericClass::createInstance('Cadref', 'Adherent');
+		return $a->PrintAdherent($obj);
 	}
 	
 }

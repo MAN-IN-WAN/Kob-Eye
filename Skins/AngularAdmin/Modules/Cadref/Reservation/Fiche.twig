@@ -40,11 +40,12 @@
 									{{ label('Adhérent') }}
 								</div>
 								<div class="col-md-10" ng-if="!{{ o }}.Numero">
-									<div custom-select="a.id as a.label+'&nbsp;&nbsp;'+a.Nom+'&nbsp;&nbsp;'+a.Prenom for a in getSelectData('CadrefAdherentStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':'{#{{ field.filter }}#}'}" 
+									<div custom-select="a.id as a.label+'&nbsp;&nbsp;'+a.Nom+'&nbsp;&nbsp;'+a.Prenom for a in getSelectAdherent('CadrefAdherentStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
 										 ng-model="{{ o }}.AdherentAdherentId" 
 										 class="form-control cadref-input" 
-										 ng-title="{{ o }}.AdherentAdherentIdlabel+'&nbsp;&nbsp;'+obj.Nom+'&nbsp;&nbsp;'+obj.Prenom">
+										 ng-title="{{ o }}.AdherentAdherentIdlabel+'&nbsp;&nbsp;'+obj.Nom+'&nbsp;&nbsp;'+obj.Prenom"
+										 id="adherentSelect">
 									</div>
 								</div>
 								<div class="col-md-10" ng-if="{{ o }}.Numero">

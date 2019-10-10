@@ -83,6 +83,12 @@ foreach ($childs as $child){
 }
 
 $t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
+
+$vars['benevole'] = isset($_GET['Mode']) && $_GET['Mode'] == 'benevole';
+if($vars['benevole']) {
+	$vars['CurrentUrl'] = 'ben_reservations';
+}
+
 $vars['hideBtn'] = array(
 	'selection' => strpos($t, 'selection') !== false,
 	'add' => strpos($t, 'add') !== false,
@@ -91,5 +97,7 @@ $vars['hideBtn'] = array(
 	'functions' => strpos($t, 'functions') !== false
 );
 $vars['showCheckboxes'] = false;
+
+
 
 ?>

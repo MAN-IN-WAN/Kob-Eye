@@ -7,11 +7,57 @@
                 <div class="col-md-12">
 					<section class="panel">
 						<div class="panel-body">
-							<ng-include src="'Cadref/Enseignant/0/Visite/PublicListVisite.htm'"></ng-include>
+{#							<ng-include src="'Cadref/Enseignant/0/Visite/PublicListVisite.htm'"></ng-include>#}
+
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" width="100%">
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				{#<th>Visite</th>#}
+				<th>Date</th>
+				<th>Libellé</th>
+				<th>Prix</th>
+				{#<th>Assur.</th>#}
+				<th>Places</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!ens.busy">
+			<tr ng-repeat="item in ens.visites">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				{#<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Visite }]}</a></td>#}
+				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.DateVisite }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
+				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
+				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': Number(item.Inscrits)>=Number(item.Places)}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="ens.busy">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
 						</div>
 					</section>
 				</div>
 			</div>
     </section>
 </div>
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>
 

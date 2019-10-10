@@ -29,4 +29,6 @@ if(!isset($info['ObjectType'])) {
 	$tab = array($info['Module'], $info['ObjectType'], 'Form');
 }
 
+$vars['prelevement'] = Sys::$User->Initiales == 'NAT' || Sys::$User->Initiales == 'ADM' ? 1 : 0;
+
 ?>

@@ -180,6 +180,10 @@ class AbtelGestionBase extends genericClass {
      * @return bool
      */
     public function Save(){
+        if(!$this->getOrigin()){
+            $this->props['ModifTms'] = date('YmdHis00',time() - 300);
+        }
+
         return $this->makeRequest();
     }
 

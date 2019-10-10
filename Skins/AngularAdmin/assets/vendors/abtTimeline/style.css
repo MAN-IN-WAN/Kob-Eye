@@ -253,6 +253,7 @@ header h1 {
   box-shadow: 4px 3px 0 #d7e4ed;
   background-color: #e6e6e6;
   padding: 0 15px 15px;
+  border: 1px solid #cacaca;
 }
 .cd-timeline-content::after {
   clear: both;
@@ -334,7 +335,7 @@ header h1 {
   }
   .cd-timeline-content::before {
     top: 24px;
-    left: 100%;
+    left: 101%;
     border-color: transparent;
     border-left-color: #e6e6e6;
   }

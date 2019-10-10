@@ -1475,7 +1475,13 @@ Choix des composants
     display: table;
     width: 100%;
 }
-
+.modal-body small  .help-wrapper{
+    display: block;
+    line-height: 80%;
+    margin-top: -7px;
+    margin-bottom: 3px;
+    opacity: 0.7;
+}
 
 .logo-centre {
 	margin: auto;
@@ -1726,3 +1732,17 @@ Choix des composants
 .color10{
     border-left: 35px solid #000000;
 }
+
+
+/**
+TimeLIne actions
+ */
+.cd-timeline-content.rightSide{
+    background-color: #0a83b6 !important;
+    color: #fff;
+}
+.cd-timeline-title{
+    word-break: break-word;
+}
+
+

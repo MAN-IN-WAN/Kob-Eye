@@ -50,7 +50,7 @@ class PrintCheque extends FPDF {
 		$this->SetX(140);
 		$this->Cell(50, $h, $this->cv('Téléphone : 04 66 36 99 44'));
 		
-		$this->SetFont('Arial','B',14);
+		$this->SetFont('Arial','B',12);
 		$nom = '';
 		if($l) {
 			switch($l['Sexe']) {
@@ -76,7 +76,7 @@ class PrintCheque extends FPDF {
 		$p = $this->cv($l ? $l['Prenom'] : $params['Prenom']);
 		$this->Cell(104, $h, $p, 0, 1);
 		$nom .= ' '.$p;
-		$this->SetFont('Arial','B',14);
+		$this->SetFont('Arial','B',12);
 		$this->SetX(104);
 		$this->Cell(104, $h, $this->cv($l ? $l['Adresse1'] : $params['Adresse1']), 0, 1);
 		$this->SetX(104);

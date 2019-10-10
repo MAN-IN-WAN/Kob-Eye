@@ -23,6 +23,9 @@ class CEN extends Module {
 			case 'doc':
 				return Temoa::getDocument($args);
 				
+			case 'notes':
+				return Temoa::getNotes($args);
+				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
 				$dicId= array();

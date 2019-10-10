@@ -18,6 +18,7 @@
 					<a href="javascript: void(0);" class="btn btn-warning" accesskey="r" title="Alt R" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
 						Rafraîchir
 					</a>
+					{% if not benevole %}
 					{% if (operation.add or (context == 'children' and operation.addChildren)) and not hideBtn.add %}
 						<a  href="javascript: void(0);" class="btn btn-success" accesskey="n"  title="Alt N" ng-click="{{ identifier }}add()">
 							Nouveau
@@ -42,6 +43,7 @@
 						<a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
 							Selection
 						</a>
+					{% endif %}
 					{% endif %}
 				</span>
 			</div>
@@ -263,11 +265,13 @@
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix }]}</span></td>
 				{#<td scope="row" class="cadref-td typefloat"><span>{[{ item.Assurance }]}</span></td>#}
+				{% if not benevole %}
 				<td scope="row" class="cadref-td typeint">
 					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
 					</span>
 				</td>
+				{% endif %}
 				<td  class="table-action cadref-td-btn">
 						<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
 				</td>

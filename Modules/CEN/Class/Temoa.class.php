@@ -64,19 +64,19 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 
 		$temoa->AddArrow($args['word']);
-		if($temoa->Search()) {
-klog::l("ok");
-			$s = $temoa->GetTargetsJson();
-		}
-		else klog::l("nok");
+		if($temoa->Search()) $s = $temoa->GetTargetsJson();
+
 		unset($temoa);
-klog::l("$corpus : $s");
+
 		$o = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$words = count($o);
 		$occur = 0;
 		$docs = array();
 		foreach($o as $a) {
-			$docs[$a->doc] = '';
+			$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
+			$a->id = $t->Id;
+			$docs[$t->Id] = '';
+			$a->title = $t->Nom;
 			$occur += $a->count;
 		}
 		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
@@ -95,13 +95,43 @@ klog::l("$corpus : $s");
 	}
 	
 	static function getDocument($args) {
+		$id = $args['id'];
+		$t = Sys::getOneData('CEN', "Temoa/$id");
+		$c = $t->Code;
+		$a = explode('/', $t->ZipFile);
+		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
+		$trd = file_exists("$f.trad") ? 1 : 0;
+		$tr2 = file_exists("$f.trad2") ? 1 : 0;
+		
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-		$doc = $temoa->GetHTML($args['doc']);
-		$s = $temoa->GetMarksJson();
-		$mrk = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-		return array('doc'=>utf8_encode($doc), 'marks'=>$mrk);
+		$doc = $temoa->GetHTML("$f.rtf");
+		$not = $temoa->GetNotesJson();
+		$mrk = $temoa->GetMarksJson();
+		unset($temoa);
+		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$mrk = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+
+		return array('doc'=>utf8_encode($doc),'notes'=>count($note),'marks'=>$mrk,'trad'=>$trad,'trad2'=>$trad2 );
+	}
+	
+	static function getNotes($args) {
+		$id = $args['id'];
+		$t = Sys::getOneData('CEN', "Temoa/$id");
+		$c = $t->Code;
+		$a = explode('/', $t->ZipFile);
+		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c.rtf";
+		
+		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+		$temoa = new temoa2\Temoa();
+		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+		$doc = $temoa->GetHTML($f);
+		$not = $temoa->GetNotesJson();
+		unset($temoa);
+		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		foreach($note as &$n) $n->text = utf8_encode($n->text);
+		return array('notes'=>$note);
 	}
 
 }

@@ -12,25 +12,20 @@ class Parc_Action extends genericClass{
 
 
     public function Save($syncGestion = false){
-        /*if(!$this->Titre){
-            if($this->UserCrea == "ZZ"){
+        if(!$this->Titre){
+            $tempnote = strip_tags($this->Note);
+            if(strlen($tempnote) < 80) {
+                $this->Titre = $tempnote;
+                $this->Note = '';
+            } else{
+                $this->Titre = substr($tempnote,0,70).' [...]';
+            }
+            /*if($this->UserCrea == "ZZ"){
                 $this->Titre = 'Communication Client';
             }else{
-                //$this->Titre = 'Communication Technicien';
-                $this->Titre = 'Communication Technicien';
-            }
-        }*/
-        $this->Titre = substr(strip_tags($this->Note),0,50);
-        if (strlen(strip_tags($this->Note))<=50) $this->Note = '';
-        if (empty($this->Titre)){
-            if($this->UserCrea == "ZZ"){
-                $this->Titre = 'Communication Client';
-            }else{
-                //$this->Titre = 'Communication Technicien';
-                $this->Titre = 'Communication Technicien';
-            }
+                $this->Titre = 'Communication Abtel';
+            }*/
         }
-
         if(!$this->Etat)
             $this->Etat = 2;
 
@@ -86,6 +81,12 @@ class Parc_Action extends genericClass{
 
 
         $ok = parent::Save();
+
+        if( $ok ){
+            $tck = $this->getOneParent('Ticket');
+            AlertUser::addAlert('Ticket mis à jour : '.$tck->Titre,"Ticket : ".$tck->Numero,'Parc','Ticket',$tck->Id,[],'PARC_TECHNICIEN','icmn-user3');
+        }
+
         return $ok;
     }
 

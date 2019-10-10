@@ -3,9 +3,9 @@
         <div class="cd-timeline-img cd-picture" ng-class="item.Side">
         </div> <!-- cd-timeline-img -->
 
-        <div class="cd-timeline-content" ng-class="item.Side">
+        <div class="cd-timeline-content" ng-class="item.Side" style="background-color:{[{item.Couleur}]};">
             <div class="row">
-                <p class="col-md-12" ng-bind-html="item.Titre"></p>
+                <p class="col-md-12 cd-timeline-title" ng-bind-html="item.Titre"></p>
                 <!--<p class="col-md-2">
                     <a href="" class="unfold" ng-init="attachListener();">Detail</a>
                 </p>-->

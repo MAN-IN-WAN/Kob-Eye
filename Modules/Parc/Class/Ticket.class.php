@@ -55,6 +55,8 @@ class Ticket extends genericClass{
         if( $ok  && $new){
             AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'Parc','Ticket',$this->Id,[],'PARC_TECHNICIEN','icmn-user3');
             return true;
+        } elseif($ok ){
+            AlertUser::addAlert('Ticket mis à jour : '.$this->Titre,"Ticket : ".$this->Numero,'Parc','Ticket',$this->Id,[],'PARC_TECHNICIEN','icmn-user3');
         }
         return $ok;
     }
@@ -416,10 +418,13 @@ class Ticket extends genericClass{
         $this->DateCloture = time();
         $this->UserCloture = 'ZZ';
 
+        $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+        if($tech)
+            $this->UserCloture = $tech->IdGestion;
 
         if($this->Verify() && $this->Save()){
             return array(
-                'data' => 'Ticket créé avec succès !',
+                'data' => 'Ticket cloturé avec succès !',
                 'errors' => $this->Error,
                 'infos' => $info
             );
@@ -429,6 +434,81 @@ class Ticket extends genericClass{
                 'errors' => $this->Error,
                 'infos' => $info
             );
+        }
+    }
+
+    public function shutTicket(){
+        $info = array();
+
+        $this->Etat = 20;
+        $this->DateTermine = time();
+        $this->UserTermine = 'ZZ';
+        $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+        if($tech)
+            $this->UserTermine = $tech->IdGestion;
+
+
+        if($this->Verify() && $this->Save()){
+            return array(
+                'data' => 'Ticket fermé avec succès !',
+                'errors' => $this->Error,
+                'infos' => $info
+            );
+        } else{
+            return array(
+                'data' => 'Oups, une erreur s\'est produite !',
+                'errors' => $this->Error,
+                'infos' => $info
+            );
+        }
+    }
+
+    public function moveTicket($args){
+        if($args['step'] != 1) {
+            return array(
+                'template' => 'Move',
+                'step' => 1,
+                'callNext' => array(
+                    'nom'=> 'moveTicket',
+                    'title'=> 'Réaffecter le Ticket',
+                    'needConfirm' => false,
+                    'item' => null
+                )
+            );
+        } else{
+            if(!empty($args['tech'])){
+                $tech = Sys::getOneData('Parc','Technicien/'.$args['tech']);
+                $this->UserNext = $tech->IdGestion;
+            } else {
+                $this->UserNext = '00';
+            }
+
+
+            if($this->Verify() && $this->Save()){
+                $act = genericClass::createInstance('Parc','Action');
+                $act->Titre = 'Ticket réaffecté à '.$this->UserNext;
+                if(!empty($args['description'])){
+                    $act->Note = $args['description'];
+                }
+                $act->UserCrea = 'ZZ';
+                $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+                if($tech)
+                    $act->UserCrea = $tech->IdGestion;
+
+                $act->addParent($this);
+                if($act->Verify() && $act->Save()) {
+                    return array(
+                        'data' => 'Ticket réaffecté avec succès !',
+                        'errors' => $this->Error
+                    );
+                }
+            } else{
+                return array(
+                    'data' => 'Oups, une erreur s\'est produite !',
+                    'errors' => $this->Error
+
+                );
+            }
         }
     }
 
