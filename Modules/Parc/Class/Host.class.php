@@ -22,7 +22,7 @@ class Host extends genericClass
         else $old = false;
         //test de modification du ApacheServerName
         if ($old&&$old->Nom!=$this->Nom){
-            $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données. (".$old->Nom."!=".$this->Nom.")"));
             return false;
         }
         if ($old&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
@@ -696,13 +696,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
         $this->NomLDAP = substr($this->NomLDAP,0,32);
         $old = Sys::getOneData('Parc','Host/'.$this->Id);
-        //test de modification du ApacheServerName
-        if ($this->Id&&$old->Nom!=$this->Nom){
-            $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
-            return false;
-        }
         if ($this->Id&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
-            $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données. (".$old->Nom."!=".$this->Nom.")"));
             return false;
         }
         if (strlen($this->Nom)>50||strlen($this->Nom)<2){
@@ -1129,26 +1124,14 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $rp->Save();
         try {
             $result = $rp->backup($task);
-            //reinitialisation des incidents de backup
-            $incidents = Sys::getData('Parc','Host/'.$this->Id.'/Incident/Code=BACKUP_ERROR');
-            foreach ($incidents as $incident){
-                $incident->Solved = true;
-                $incident->Save();
-            }
+            Incident::createIncident('Erreur sur la sauvegarde de l\'hébergement '.$host->Nom, '', $this, 'BACKUP_ERROR', $this->NomLDAP, 3, true);
             return $result;
         }catch (Exception $e){
             //création d'un incident
-            $incident = genericClass::createInstance('Parc','Incident');
-            $incident->Titre = 'Erreur sur la sauvegarde de l\'hébergement '.$host->Nom;
-            $incident->Code = 'BACKUP_ERROR';
-            $incident->Severity = 'Warning';
-            $incident->addParent($this);
-            if ($inst)
-                $incident->addParent($inst);
-            $incident->Details = $e->getMessage();
-            $incident->Save();
+            Incident::createIncident('Erreur sur la sauvegarde de l\'hébergement '.$host->Nom, $e->getMessage(), $this, 'BACKUP_ERROR', $this->NomLDAP, 3, false);
             return false;
         }
+        return true;
     }
 
     /**
@@ -1424,7 +1407,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $act = $task->createActivity(' > Execution du borg prune','Info');
             $nd = $this->BackupRetention / 86400;
             $nd = intval($nd);
-            $cmd = 'cd /home/' . $this->NomLDAP . '/backup && borg prune -v --list --keep-within=' . $nd . 'd . && chown ' . $this->NomLDAP . ':users /home/' . $host->NomLDAP . '/backup -R';
+            $cmd = 'cd /home/' . $this->NomLDAP . '/backup && borg prune -v --list --keep-within=' . $nd . 'd . && chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/backup -R';
             $act->addDetails($cmd);
             $apachesrv->remoteExec($cmd);
             $act->Terminate(true);

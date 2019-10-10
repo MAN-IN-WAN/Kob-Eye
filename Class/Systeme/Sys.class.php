@@ -826,7 +826,7 @@ class Sys extends Root{
 	//***********************************
 	//	Methodes PRIVES
 
-	function isModule($Temp) {
+	static function isModule($Temp) {
 		$ModTemp = array_keys(Sys::$Modules);
 		for ($i=0;$i<count(Sys::$Modules);$i++) {
 			if ($ModTemp[$i]==$Temp) {
@@ -975,7 +975,7 @@ class Sys extends Root{
 	static public function searchInMenus($Field,$Value,$Url=Array(),$Tab=Array(),$Niv=0,$all=false){
 		//echo "Search $Field $Value $Niv \r\n";
 		//Sinon on continue a analyser le lien
-		if (!sizeof($Tab)&&$Niv==0)$Tab=Sys::$User->Menus;
+		if ((!is_array($Tab)||!sizeof($Tab))&&$Niv==0)$Tab=Sys::$User->Menus;
 		$Result=false;
 		if (is_array($Tab)){
 			for ($i=0;$i<sizeof($Tab);$i++){
@@ -1048,7 +1048,6 @@ class Sys extends Root{
             $Menus = Sys::$allMenus;
 			$out=Array();
 		}else $Menus = NULL;
-		
 		foreach ($Ap as $a){
 			$m = Sys::searchInMenus('Alias',$a[0],Array(),$Menus,0,$all);
 			if ($m&&is_array($m)){
@@ -1072,7 +1071,7 @@ class Sys extends Root{
 	static public function getMenu($Query, $strict = false){
 		$m = Sys::getMenus($Query,false,$strict);
 		$out='';
-		if ($m){
+		if (is_array($m)){
 			foreach ($m as $a) {
                 $out .= ((!empty($out)) ? '/' : '') . $a->Url;
                 if (isset($a->MenuParent)&&sizeof($a->MenuParent)&&is_object($a->MenuParent[0])){

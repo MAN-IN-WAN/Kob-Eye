@@ -31,7 +31,7 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
 
         $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
 
-        $host = $this->_obj->getOneChild('Host');
+        $host = $this->_obj->getOneParent('Host');
         $host->PHPVersion = '7.0.10';
         $host->Save();
 
@@ -120,7 +120,7 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
     public function installSoftware($task){
         $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
         $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
-        $host = $this->_obj->getOneChild('Host');
+        $host = $this->_obj->getOneParent('Host');
         $version = VersionLogiciel::getLastVersion('Secib',$this->_obj->Type);
         if (!$version) {
             $act = $task->createActivity('Erreur pas de version correpsondante', 'Info');
@@ -241,7 +241,7 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
-        $host = $this->_obj->getOneChild('Host');
+        $host = $this->_obj->getOneParent('Host');
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);

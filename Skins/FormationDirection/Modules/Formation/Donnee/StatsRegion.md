@@ -17,7 +17,7 @@
 
 
 <h3>[!TQ::Nom!]</h3>
-//<p>[!CD::TypeReponse!]</p>
+<p>[!CD::TypeReponse!]</p>
 [SWITCH [!CD::TypeReponse!]|=]
     [CASE 1]
         //<h1>Cas Jauge</h1>

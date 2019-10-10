@@ -42,9 +42,15 @@ class Ticket extends genericClass{
             }
 
 
+        }else{
+            //génératio d'un numéro
+            if (empty($this->Numero))
+                $this->Numero = 'W'.time();
+
         }
 
         $new = empty($this->Id);
+
         $ok = parent::Save();
         if( $ok  && $new){
             AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'Parc','Ticket',$this->Id,[],'PARC_TECHNICIEN','icmn-user3');
@@ -120,8 +126,7 @@ class Ticket extends genericClass{
                 $this->UserCrea = $tech->IdGestion;
         }
 
-
-        if(!empty($this->CodeClient)){
+        if(!empty($this->CodeClient)&&Sys::isModule('Abtel')){
             $cli = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($this->CodeClient));
             if(!$cli) {
                 $this->addError(array("Message"=>"Client introuvable dans la base du Parc"));
@@ -235,9 +240,13 @@ class Ticket extends genericClass{
             $contrat = null;
             $contact = null;
             $cli = null;
+            $args['client'] = trim($args['client']);
 
             if(!empty($args['client'])){
-                $cli = Sys::getOneData('Abtel','Client/'.Utils::KEAddSlashes($args['client']));
+                if (Sys::isModule('Abtel'))
+                    $cli = Sys::getOneData('Abtel','Client/'.Utils::KEAddSlashes($args['client']));
+                else
+                    $cli = Sys::getOneData('Parc','Client/'.trim($args['client']));
             }else {
                 $cli = Process::GetTempVar('ParcClient');
             }
@@ -361,6 +370,7 @@ class Ticket extends genericClass{
             }
 
             if($tick->Verify() && $tick->Save()){
+
                 foreach ($acts as $ac){
                     $ac->addParent($tick);
                     if($ac->Verify()){

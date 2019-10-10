@@ -6,6 +6,7 @@ Class/Utils/Utils.extend.php
 Conf/General.conf
 .idea/*
 Data/*
+Modules/Parc/Parc.conf
 /nbproject/private/
 /Skins/AngularAdmin/assets/vendors/bootstrap/dist/jboots.zip
 /Skins/AngularAdmin/img/nimesmetropole.png

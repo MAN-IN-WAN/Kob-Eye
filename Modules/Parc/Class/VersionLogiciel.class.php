@@ -21,20 +21,27 @@ class VersionLogiciel extends genericClass {
      */
     public function lookForUpdate($task) {
         //vérifie d'abord qu'il s'agisse de la version la plus haute pour ce type
-        $nb = Sys::getCount('Parc','VersionLogiciel/Version>'.$this->Version.'&Type='.$this->Type);
-        if ($nb) throw new Exception('Ce n\'est pas la version la plus récente');
+        $nbvl = Sys::getCount('Parc','VersionLogiciel/Version>'.$this->Version.'&Type='.$this->Type);
+        if ($nbvl) throw new Exception('Ce n\'est pas la version la plus récente');
         //détecte les instances à mettre à jour et génère les taches de mise à jour
-        $nb = Sys::getCount('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
+        $nb = Sys::getCount('Parc','Instance/Plugin='.$this->Nom.'&CurrentVersion<'.$this->Version.'&Type='.$this->Type);
+        $nbfor = floor($nb/100)+1;
         $act = $task->createActivity('Inventaire des instances à mettre à jour : '.$nb, 'Info');
-        $insts = Sys::getData('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
         $act->Terminate(true);
         $tms = 0;
-        foreach ($insts as $inst){
-            $tms+=25;
-            $act = $task->createActivity('Création de la tache de mise à jour pour l\'instance '.$inst->Nom, 'Info');
-            $inst->createUpdateTask($this);
-            $act->Terminate(true);
-        }
+        //for ($i=0; $i<$nbfor;$i++){
+            //$act = $task->createActivity('Boucle'.$i.'/'.$nbfor.' ', 'Info');
+            //$act->Terminate(true);
+            $insts = Sys::getData('Parc','Instance/Plugin='.$this->Nom.'&CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,10000);
+            foreach ($insts as $inst){
+                $tms+=25;
+                $act = $task->createActivity('Création de la tache de mise à jour pour l\'instance '.$inst->Nom, 'Info');
+                $inst->createUpdateTask($this);
+                $act->Terminate(true);
+            }
+        //}
+        $act = $task->createActivity('Fin de la création des taches de mise à jour.  '.$nb, 'Info');
+        $act->Terminate(true);
         $proxys = Sys::getData('Parc','Server/Proxy=1');
         foreach($proxys as $p){
             $task = genericClass::createInstance('Systeme', 'Tache');

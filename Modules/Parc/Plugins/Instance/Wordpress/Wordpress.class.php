@@ -67,8 +67,8 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws2.maninwan.fr:/home/modele-wordpress/www/ www';
-            $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             $act = $task->createActivity('Modification des droits', 'Info', $task);
@@ -79,7 +79,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //Dump de la base
             $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
-            $cmd = 'mysqldump -h db.maninwan.fr -u modele-wordpress -pb57f9fda5b3d748ec61b3687 modele-wordpress | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $cmd = 'mysqldump -h 10.100.210.6 -u modele-wordpress -pb57f9fda5b3d748ec61b3687 modele-wordpress | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);

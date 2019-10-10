@@ -162,8 +162,14 @@ class Question extends genericClass{
                 $init = array_fill(0,count($vals[0]),0);
 
                 $res = array_reduce($vals,function($carry,$item){
-                    for($n =0;$n < count($carry); $n++ ){
-                        $carry[$n] += $item[$n];
+                    if (is_object($item)) {
+                        for($n =0;$n < count($carry); $n++ ){
+                            $carry[$n] += $item->$n;
+                        }
+                    }else if (is_array($item)) {
+                        for ($n = 0; $n < count($carry); $n++) {
+                            $carry[$n] += $item[$n];
+                        }
                     }
                     return $carry;
                 },$init);
@@ -213,6 +219,7 @@ class Question extends genericClass{
                 $vals = array();
                 foreach($data as $v){
                     $values = json_decode($v->Valeur,true);
+                    print_r($values);
                     foreach ($values as $vs){
                         //verification de la saisie
                         if (isset($vs[0])&&!empty($vs[0]))

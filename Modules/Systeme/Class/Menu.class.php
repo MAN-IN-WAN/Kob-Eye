@@ -224,11 +224,11 @@ class Menu extends genericClass {
 	 * return the main menu list
 	 * @return Array ( genericClass ) 
 	 */
-	 public function getMainMenus (){
+	 public static function getMainMenus (){
 	 	$out = Array();
 	 	//Recherche parmis les menus systeme
-	 	if (is_array($GLOBALS["Systeme"]->Menus)){
-	 		foreach ($GLOBALS["Systeme"]->Menus as $m){
+	 	if (is_array(Sys::$User->Menus)){
+	 		foreach (Sys::$User->Menus as $m){
 	 			if ($m->Affiche && $m->MenuPrincipal){
 	 				array_push($out,$m);
 	 			}
@@ -241,7 +241,7 @@ class Menu extends genericClass {
 	 * return the top menu list
 	 * @return Array ( genericClass ) 
 	 */
-	 public function getTopMenus (){
+	 public static function getTopMenus (){
 	 	$out = Array();
 	 	//Recherche parmis les menus systeme
 	 	if (is_array($GLOBALS["Systeme"]->Menus)){
@@ -258,7 +258,7 @@ class Menu extends genericClass {
 	 * return the bottom menu list
 	 * @return Array ( genericClass ) 
 	 */
-	 public function getBottomMenus (){
+	 public static function getBottomMenus (){
 	 	$out = Array();
 	 	//Recherche parmis les menus systeme
 	 	if (is_array($GLOBALS["Systeme"]->Menus)){

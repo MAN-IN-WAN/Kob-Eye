@@ -99,7 +99,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
 		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+(7*86400)){
-			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiration n'interviendra pas dans la prochaine semain."));
+			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiration n'interviendra pas dans la prochaine semaine."));
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
@@ -137,9 +137,9 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
                 if(sizeof($serv)){
                     $servP = $serv[0];
                     $infra = $servP->getOneParent('Infra');
-                    if( ($infra && !$this->_KEInfra) || ($infra && ($infra->Id != $this->_KEInfra->Id)) ){
+                    /*if( ($infra && !$this->_KEInfra) || ($infra && ($infra->Id != $this->_KEInfra->Id)) ){
                         $serv=array();
-                    }
+                    }*/
                 }
                 if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
@@ -810,6 +810,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
         $act = $task->createActivity('Recherche de l\'ip pour le domaine '.$this->getFirstDomain());
         try {
             $ip = Apache::getDomainIp($this->getFirstDomain());
+            $act->addDetails(print_r($ip, true));
         }catch (Exception $e) {
             $act->addDetails(print_r($ip, true));
             Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
@@ -945,6 +946,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
             $task->Erreur = 1;
+            Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
             $task->Save();
             return false;
         }

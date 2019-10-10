@@ -1093,8 +1093,8 @@ class genericClass extends Root {
 			$pags = $site->getChildren('Page/PageModule=' . $this->Module . '&PageObject=' . $this->ObjectType . '&PageId=' . $this->Id);
 			if (sizeof($pags)) return $pags[0]->Url;
 
-		    $mens =  Sys::getMenus($this->Module.'/'.$this->ObjectType.'/'.$this->Id,true,true);
-            if (sizeof($mens)) return $mens[0]->Url;
+		    $mens =  Sys::getMenus($this->Module.'/'.$this->ObjectType.'/'.$this->Id,true,false);
+            if (sizeof($mens)) return $mens[0]->Url.'/'.$this->Url;
 		}
 		$Url = $this -> Module;
 		$Nbhisto = sizeof($this -> Historique()) - 1;
@@ -2261,21 +2261,22 @@ class genericClass extends Root {
                     $Query = Process::searchAndReplaceVars($Query);
                     klog::l("ACCESS Save" . $Query);
                     $i = Info::getInfos($Query);
-                    $pI = explode('/',$i['LastDirect'],2);
-                    $exists = $this->getOneParent($pI[0],$pI[1]);
-                    if(!$exists){
-                        $parent = Sys::getOneData($pI[0],$pI[1]);
-                        //print_r($parent);
-                        $this->addParent($parent);
-                    } else{
-                        //TODO surement un truc à fair emais je ne vois pas quoi ...
-                        //print_r($exists);
+                    $pI = explode('/',$i['LastDirect']);
+                    if (sizeof($pI)<=2) {
+                        $exists = $this->getOneParent($pI[0], $pI[1]);
+                        if (!$exists) {
+                            $parent = Sys::getOneData($pI[0], $pI[1]);
+                            //print_r($parent);
+                            $this->addParent($parent);
+                        } else {
+                            //TODO surement un truc à fair emais je ne vois pas quoi ...
+                            //print_r($exists);
+                        }
                     }
                     break;
                 }
             }
         }
-
         $Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
 		if (!is_array($Results)&&is_string($Results)&&!empty($Results)){
 		    $this->addError(Array("Message"=>$Results));
@@ -2466,10 +2467,14 @@ class genericClass extends Root {
 	  */
 	  public function getCustomFilters() {
 		$obj = Sys::$Modules[$this -> Module] -> Db -> getObjectClass($this -> ObjectType);
-		$filters = $obj->getCustomFilters();
-		if (is_array($filters))foreach ($filters as $k=>$f){
-			$f->filter = Process::processingVars($f->filter);
-			$filters[$k] = $f;
+		$filters= array();
+		$temp = $obj->getCustomFilters();
+		if (is_array($temp))foreach ($temp as $k=>$f){
+		    //test de l'attribut hasRole
+            if (!isset($f->hasRole)||Role::hasRole($f->hasRole)) {
+                $f->filter = Process::processingVars($f->filter);
+                $filters[] = $f;
+            }
 		}
 		return $filters;
 	  }

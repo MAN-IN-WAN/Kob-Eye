@@ -1,0 +1,8 @@
+<div class="row">
+    <div class="col-lg-10" id="spectacle">
+        {{ include(template_from_string(module('Reservation/Spectacle/ListHome'))) }}
+    </div>
+    <div class="col-lg-2" id="filters">
+        {{ include(template_from_string(module('Reservation/Filters'))) }}
+    </div>
+</div>

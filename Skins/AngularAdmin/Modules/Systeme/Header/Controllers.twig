@@ -180,7 +180,7 @@
             }
         });
 
-        $scope.displaySelect = function(){
+        $scope.{{ c.identifier }}displaySelect = function(){
             if ($scope.{{ c.identifier }}){
                 for(var i in $scope.{{ c.identifier }}.selected){
                     if($scope.{{ c.identifier }}.selected[i]) return true;
@@ -875,8 +875,8 @@
                 $scope[toto].store.getData(1,context);
             }
         }
-        $scope.displaySelect = function(){
-            if ($scope.{{ c.identifier }}){
+        $scope.{{ c.identifier }}displaySelect = function(){
+           if ($scope.{{ c.identifier }}){
 
                 for(var i in $scope.{{ c.identifier }}.selected){
                     if($scope.{{ c.identifier }}.selected[i]) return true;
@@ -1346,6 +1346,15 @@
                 }
 
 
+                $scope.{{ child.objectModule }}{{ child.objectName }}displaySelect = function(){
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}){
+
+                        for(var i in $scope.{{ child.objectModule }}{{ child.objectName }}.selected){
+                            if($scope.{{ child.objectModule }}{{ child.objectName }}.selected[i]) return true;
+                        }
+                    }
+                    return false;
+                }
 
                 //SELECTION
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.selected.selectall', function() {

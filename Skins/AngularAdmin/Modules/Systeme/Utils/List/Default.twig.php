@@ -53,13 +53,7 @@ foreach ($vars['searchfields'] as $k=>$f){
 }
 
 $vars['filters'] = $o->getCustomFilters();
-foreach ($vars['filters'] as $k=>$f){
-    if(!empty($f->hasRole)){
-        if(!Sys::$User->isRole($f->hasRole)){
-            unset($vars['filters'][$k]);
-        }
-    }
-}
+
 if (is_object(Sys::$CurrentMenu)) {
     if (isset($vars['Type'])&&$vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);

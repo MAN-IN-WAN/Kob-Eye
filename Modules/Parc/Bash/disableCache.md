@@ -1,0 +1,5 @@
+[STORPROC Parc/Apache/ProxyCache=1|T|0|10000]
+    [BASH COLOR|blue][!T::Id!] [!T::ApacheServerName!][/BASH]
+    [METHOD T|Set][PARAM]ProxyCache[/PARAM][PARAM]0[/PARAM][/METHOD]
+    [BASH COLOR|yellow]- Suppression cache -> [!T::Save()!][/BASH]
+[/STORPROC]

@@ -83,6 +83,11 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $db->query("GRANT SELECT ON `azkocms_common`.* TO `".$host->Nom."` @'%';");
             $act->Terminate(true);
+            //On s'assure que le dossier utilisateur est bien créé
+            $act = $task->createActivity('Initialisation dossier hébergement', 'Info');
+            $out = $apachesrv->remoteExec('su - ' . $host->NomLDAP.' -c /usr/bin/echo 1');
+            $act->addDetails($out);
+            $act->Terminate(true);
             //Installation des fichiers
             $act = $task->createActivity('Suppression du dossier www', 'Info');
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
@@ -233,7 +238,6 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->TaskType = 'install';
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'updateSoftware';
-//        $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
         $host = $this->_obj->getOneChild('Host');
         if ($host) {
@@ -336,7 +340,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             } catch (Exception $e) {
                 $act->addDetails('Erreur: ' . $e->getMessage());
                 $act->Terminate(false);
-                //throw new Exception($e->getMessage());
+                throw new Exception($e->getMessage());
             }
         }
         return true;
