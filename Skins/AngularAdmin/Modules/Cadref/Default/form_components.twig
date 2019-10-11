@@ -82,14 +82,16 @@
     </div>
 {% endmacro %}
 
-{% macro fdate(field, obj) %}
+{% macro fdate(field, obj, readonly) %}
     <label class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
-        <input id="input-{{ obj }}{{ field.name }}" type="text" class="form-control cadref-input" placeholder="Date" 
+        <input id="input-{{ obj }}{{ field.name }}" type="text" class="form-control cadref-input" placeholder="Date" {% if readonly %}readonly{% endif %}
 			   ng-model="{{ obj }}.{{ field.name }}" {% if field.now %}ng-init="{{ obj }}.{{ field.name }}='{{ "now"|date("d/m/Y") }}'"{% endif %}"
-			   ng-init="initDatePickerOnly()"/>
+			   {% if not readonly %}ng-init="initDatePickerOnly()"{% endif %}/>
+		{% if not readonly %}
         <span class="input-group-addon">
             <i class="icmn-calendar"></i>
         </span>
+		{% endif %}
     </label>
 {% endmacro %}
 

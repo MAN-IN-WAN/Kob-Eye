@@ -64,7 +64,9 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 
 		$temoa->AddArrow($args['word']);
-		if($temoa->Search()) $s = $temoa->GetTargetsJson();
+		if($temoa->Search()) {
+			$s = $temoa->GetTargetsJson();
+		}
 
 		unset($temoa);
 
@@ -72,12 +74,14 @@ class Temoa extends genericClass {
 		$words = count($o);
 		$occur = 0;
 		$docs = array();
-		foreach($o as $a) {
-			$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
-			$a->id = $t->Id;
-			$docs[$t->Id] = '';
-			$a->title = $t->Nom;
-			$occur += $a->count;
+		if($o) {
+			foreach($o as $a) {
+				$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
+				$a->id = $t->Id;
+				$docs[$t->Id] = '';
+				$a->title = $t->Nom;
+				$occur += $a->count;
+			}
 		}
 		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
 	}

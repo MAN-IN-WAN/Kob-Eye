@@ -689,6 +689,17 @@
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 				}
 			);
+			
+{#			var header = {
+			  headers: new HttpHeaders()
+				.set('Authorization',  'Basic aW50cmFuZXQ6I1lhbm9sb3JwMjA=')
+				.set('Content-Type', 'application/json')
+			};
+			var data = JSON.stringify({sApiKey: 'count', nId: '0015143'});
+			$http.post('https://scan.cadref.com/api/member/', header).this(function(data) {
+			console.log(data);
+			});
+#}			
 		}
 		
 		// change l'année selectionnée
@@ -1602,6 +1613,22 @@
 		$scope.sectionInfo = function() {
 			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleS = $scope.obj.Libelle;
+			
+			
+{#			var req = {
+				method: 'POST',
+				url: 'https://scan.cadref.com/api/member/',
+				headers: {
+				  'Content-Type': 'application/json',
+				  'Authorization':  'Digest ' + btoa('intranet:#Yanolorp20')
+				}
+				//data: {sApiKey: 'count', nId: '0015143'}
+			}
+			console.error('aaaaaaaaaaaaaaaaaaaaaaaaaaa',req);
+			$http(req).success(function(data) {
+			console.log(data);
+			});
+#}
 		}
 		
 		$scope.testalert = function() {

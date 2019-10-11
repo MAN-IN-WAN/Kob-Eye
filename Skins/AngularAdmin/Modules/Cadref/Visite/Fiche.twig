@@ -29,13 +29,13 @@
 									{{ label("Visite") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.Visite, o, false, '', 'width:80px', true) }}
+									{{ finput(f.Visite, o, not admin, '', 'width:80px', true) }}
 								</div>
 								<div class="col-md-2">
 									{{ label("Année") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.Annee, o, false, '', 'width:50px') }}
+									{{ finput(f.Annee, o, not admin, '', 'width:50px') }}
 								</div>
 							</div>
 							{{ flinput(f.Libelle, o) }}
@@ -45,13 +45,13 @@
 									{{ label("Date") }}
 								</div>
 								<div class="col-md-3">
-									{{ fdate(f.DateVisite, o) }}
+									{{ fdate(f.DateVisite, o, not admin) }}
 								</div>
 								<div class="col-md-2">
 									{{ label("Limite annulation") }}
 								</div>
 								<div class="col-md-3">
-									{{ fdate(f.DateLimite, o) }}
+									{{ fdate(f.DateLimite, o, not admin) }}
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
@@ -73,14 +73,15 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Places, o, not admin, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">
 														<input type="text" class="form-control cadref-input" ng-class="{'cadref-highlight': Number({{ o }}.Inscrits)>=Number({{ o }}.Places)}" ng-model="{{ o }}.Inscrits"
 															readonly tabindex="-1" mask="dddd" style="width:80px"
+															{% if not admin %}readonly{% endif %}
 														/>
 													</td>
 													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Prix, o, not admin, 'dddd', 'width:80px') }}</td>
 													{#<td class="cadref-td-inscr">{{ finput(f.Assurance, o, false, 'dddd', 'width:80px') }}</td>#}
 												</tr>
 											</tbody>
@@ -89,6 +90,7 @@
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
+							{% if admin %}
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Animateurs") }}
@@ -130,6 +132,7 @@
 									<switch class="cadref-switch" ng-model="{{ o }}.Inactif"></switch>
 								</div>
 							</div>
+							{% endif %}
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
@@ -155,8 +158,10 @@
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					{% if admin %}
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					{% endif %}
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="CadrefVisitecallFunction(obj,'PrintVisite','Impression','')">Imprimer</button>
 				</div>
