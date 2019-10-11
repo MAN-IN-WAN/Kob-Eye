@@ -3,7 +3,7 @@ class MailQueue extends genericClass{
 	
 	function Save() {
 		if(!$this->Id) $this->CreationTime = time();
-		parent::Save();
+		return parent::Save();
 	}
 
 	public static function SendMails() {

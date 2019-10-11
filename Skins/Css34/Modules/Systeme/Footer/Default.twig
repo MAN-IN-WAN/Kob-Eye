@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row" id="news">
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc?CODE=HOME_NEWS_1'))) }}
+        </div>
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc?CODE=HOME_NEWS_2'))) }}
+        </div>
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc?CODE=HOME_NEWS_3'))) }}
+        </div>
+    </div>
+    <div class="row" id="liens">
+        <div class="col-lg-6">
+            {{ include(template_from_string(module('Systeme/Bloc?CODE=HOME_BOTTOM_LEFT'))) }}
+        </div>
+        <div class="col-lg-6 ">
+            {{ include(template_from_string(module('Systeme/Bloc?CODE=HOME_BOTTOM_RIGHT'))) }}
+        </div>
+    </div>
+    <div class="row" id="partenaires">
+        <ul class="partner">
+        {% for p in partners %}
+            <li><a href="{{ p.Lien }}" title="{{ p.Nom }}"><img src="/{{ p.Image }}.limit.200x50.jpg" title="{{ p.Nom }}"/></a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="row" id="footerlinks">
+        <div class="col-lg-4">
+            <h3>PRESENTATION</h3>
+            <p>Comment bénéficier de notre dispositif ?</p>
+            <a href="#nogo" class="btn btn-lg btn-dark to-bottom">Ici + d'informations</a>
+        </div>
+        <div class="col-lg-4">
+            <h3>NEWSLETTER</h3>
+            <p>Entrez votre emailet envoyez le nous.<br />
+            Vous recevrez notre newsletter.</p>
+            <input type="text" href="#nogo" class="form-control input-dark to-bottom" style="width: calc(100% - 20px) !important;    margin: 0 2px;"/>
+        </div>
+        <div class="col-lg-4">
+            <h3>CONTACT</h3>
+            <p>Espace solidarité,<br />
+                181 avenue de biterrois, 34080, Montpellier<br />
+                Tèl: 04 67 42 </p>
+            <a href="#facebooklink" class="to-bottom"><i class="fab fa-facebook-square fa-4x" style="color: #000;"></i></a>
+        </div>
+    </div>
+</div>

@@ -78,7 +78,7 @@
                                         [/IF]
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">[!S::Nom!]</div>
+                                        <div class="huge">[!S::Nom!] [STORPROC Formation/Region/Session/[!S::Id!]|R|0|1]- [!R::Nom!][/STORPROC] </div>
                                         [IF [!S::EnCours!]]
                                         <div>Formation en cours</div>
                                         [ELSE]

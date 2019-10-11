@@ -1,0 +1,44 @@
+<div id="mainmenu">
+    <div class="espacepro pull-right">
+        <a href="#" data-toggle="modal" data-target="#login-modal">Espace Pro</a>
+    </div>
+    <nav class="nav" role="navigation">
+        <ul class="menu">
+            {% for menu in menus %}
+                <li><a href="/{{ menu.FullUrl }}">{{ menu.Titre }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+<div id="submenu">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="logo">
+                    <a href="/"><img src="/Home/879/logo_0.png.limit.100x200.png" /></a>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <a class="square blue" href="/ateliers">
+                    <h3>Ateliers</h3>
+                    <p>de pratique artistique<br/>
+                    et sportive</p>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a class="square green" href="/sorties">
+                    <h3>Sorties</h3>
+                    <p>musique, sport, théatre, danse,<br/>
+                        exposition ...</p>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a class="square pink" href="/formations">
+                    <h3>Formations</h3>
+                    <p>Initiation à la médiation culturelle :<br/>
+                        culture et insertion sociale</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

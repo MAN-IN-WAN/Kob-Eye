@@ -11,12 +11,12 @@ class Incident extends genericClass {
      */
     public static function createIncident($title,$detail,$parent,$code,$identifiant,$severity=1,$solved = false){
         //test si exsite alors on modifie
-        $incident = $parent->getChildren('Incident/Code='.$code.'&Identifiant='.$identifiant);
-        if (!isset($incident[0])) {
+        $incident = Sys::getOneData('Parc','Incident/Solved=0&Code='.$code.'&Identifiant='.$identifiant);
+        if (!$incident) {
             if ($solved) return true;
             //si existe pas, alors le crée
             $incident = genericClass::createInstance('Parc', 'Incident');
-        }else $incident = $incident[0];
+        }else $incident;
         $incident->Titre = $title;
         $incident->Details = $detail;
         $incident->Severity = $severity;

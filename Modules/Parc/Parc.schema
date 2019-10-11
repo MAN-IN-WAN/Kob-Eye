@@ -210,7 +210,7 @@
 			<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1"  listDescr="Proxy" form="1">Proxy</PROPERTIES>
 			<PROPERTIES type="boolean" searchOrder="12" quickview="1" fiche="1"  list="1" listDescr="PageSpeed" form="1">PageSpeed</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Web"  formCondition="{{ scopeObj }}.Web == 1">
+		<CATEGORY title="Web" formCondition="{{ scopeObj }}.Web == 1">
 			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1" >defaultWebServer</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Guacamole" formCondition="{{ scopeObj }}.Guacamole == 1">
@@ -239,7 +239,7 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserDN</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserID</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
-		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" form="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FKEY card="0,1" data="ServerProfile,Id" fiche="1" form="1" description="Modèle de configuration du serveur">ServerProfileId</FKEY>
 		<FKEY data="Infra,Id" card="0,n" description="Infrastructure" form="1" >InfraId</FKEY>
 
@@ -273,13 +273,13 @@
 		<PROPERTIES type="progress" subtype="bytes" default="0" searchOrder="10" description="Espace disque" fiche="1" list="1" listDescr="Hdd" listWidth="500">DiskQuota</PROPERTIES>
 		<PROPERTIES type="varchar" default="standard" searchOrder="8" description="Type de Haute disponibilité" fiche="1" form="1" values="standard::Un seul Serveur,loadbalancing::Equilibrage de charge,master::Seul le serveur maître est en production">HAMode</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="8" description="Serveur maître" fiche="1" form="1" query="Parc/Server/Web=1::Id::Nom">MasterServer</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" hasRole="PARC_TECHNICIEN" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
 		<CATEGORY title="Sauvegarde">
-			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
+			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup" list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
 			<PROPERTIES type="int" description="Durée de rétention" listDescr="Retention"  list="1" form="1" fiche="1" default="1209600" values="604800::7 jours,1209600::14 jours,2592000::30 jours,5184000::60 jours,7776000::90 jours,10368000::120 jours">BackupRetention</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,n" data="Server,Id" link="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" >ServerId</FKEY>
@@ -544,9 +544,11 @@
 		<FUNCTION title="Réaffecter le ticket" >moveTicket</FUNCTION>
 
 		<FILTER name="Mes tickets" color="success" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&UserNext=[!ParcTechnicien::IdGestion!]&Categorie=OPE]]></FILTER>
-		<FILTER name="Backlog informatique" color="info"><![CDATA[Etat=10&Categorie=OPE&UserNext=00]]></FILTER>
-		<FILTER name="Backlog web" color="info"><![CDATA[Etat=10&Categorie=OPE&UserNext=01]]></FILTER>
-		<FILTER name="Bloquant" color="danger" ><![CDATA[Etat=10&Priorite=4]]></FILTER>
+		<FILTER name="Backlog informatique" color="info" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&Categorie=OPE&UserNext=00]]></FILTER>
+		<FILTER name="Backlog web" color="primary" hasRole="PARC_TECHNICIEN"><![CDATA[Etat=10&Categorie=OPE&UserNext=01]]></FILTER>
+		<FILTER name="Bloquant" color="danger" hasRole="PARC_TECHNICIEN" ><![CDATA[Etat=10&Priorite=4]]></FILTER>
+
+		<FILTER name="Les tickets ouverts" color="success" ><![CDATA[Etat=10]]></FILTER>
 		<FILTER name="Tous les tickets" color="secondary" ></FILTER>
 
 		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
@@ -590,7 +592,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" logEvent="1" Description="Action des tickets" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" className="Parc_Action" Class="Modules/Parc/Class/Action.class.php">
-		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="int" description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Numero du ticket" list="1" form="1" fiche="1" gestion="1" listDescr="N° Ticket">NumeroTicket</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" gestion="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" gestion="1" listDescr="Categorie" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
@@ -679,7 +681,7 @@
 		<FILTER name="Forfaits Expert 20G" color="primary" ><![CDATA[Produit=expert]]></FILTER>
 		<INTERFACES name="fiche_tab">
 			<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Information.htm" title="Informations de configuration">Infos</FORM>
-			<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Hebergement.htm" title="Hébergements">Hébergements</FORM>
+			<!--<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Hebergement.htm" title="Hébergements">Hébergements</FORM>-->
 		</INTERFACES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
@@ -706,7 +708,7 @@
 		<!--<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>-->
         <!-- UPDATE `parc-Parc-Host` h SET InstanceId = (select Id from `parc-Parc-Instance` where HostId=h.Id) -->
 		<!--<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>-->
-		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1"  hasRole="PARC_TECHNICIEN,PARC_REVENDEUR" list="1">ClientId</FKEY>
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" fiche="1" >InfraId</FKEY>
         <RKEY card="0,n" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>
 		<FUNCTION title="Activer le SSL">enableSsl</FUNCTION>
@@ -718,6 +720,7 @@
 		<FUNCTION title="Déplacer l'instance vers un autre serveur">moveInstanceTask</FUNCTION>
 		<FUNCTION title="Synchroniser les hébergements (dans le cas ou il y plusieurs serveurs)">syncInstanceTask</FUNCTION>
 		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
+        <FUNCTION title="Migrer les données d'un autre site">migrateFromExternal</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="InstanceDomain" driver="mysql" Description="Domaine de l'instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/InstanceDomain.class.php" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du dmoaine" list="1" form="1" fiche="1" listDescr="Nom">Url</PROPERTIES>

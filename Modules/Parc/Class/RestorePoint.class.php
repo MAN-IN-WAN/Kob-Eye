@@ -286,6 +286,12 @@ class RestorePoint extends genericClass{
                 $act->addDetails($out);
                 $act->Terminate(true);
             }
+            $act = $task->createActivity('Suppression du lock', 'Info', $task);
+            $cmd = 'cd /home/' . $host->NomLDAP . ' && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg break-lock backup';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
             $act = $task->createActivity('Backup fichier', 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . ' && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs" --exclude "azkocms_medias" --exclude "azkocms_skins"';
             $act->addDetails($cmd);

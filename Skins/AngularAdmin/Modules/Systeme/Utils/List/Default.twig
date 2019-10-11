@@ -11,7 +11,7 @@
     </ul>
 </div>
 <div class="form-group row">
-    <div class="col-lg-7 col-md-12">
+    <div class="col-lg-6 col-md-12">
         <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
@@ -29,7 +29,7 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                <a  href="javascript: void(0);" ng-if="displaySelect('{{ context }}');" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                <a  href="javascript: void(0);" ng-if="{{ identifier }}displaySelect()" class="btn btn-danger" ng-click="{{ identifier }}selectDelete('{{ context }}')">
                 Supprimer la sélection
                 </a>
                 {% endif %}
@@ -41,7 +41,7 @@
                         {% endif %}
                     {% endfor %}
                     {% if fs %}
-                    <div class="btn-group " ng-if="displaySelect();"  uib-dropdown>
+                    <div class="btn-group " ng-if="{{ identifier }}displaySelect()"  uib-dropdown>
                         <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
                         <button type="button" class="btn btn-func" uib-dropdown-toggle>
                             <span class="caret"></span>
@@ -82,8 +82,9 @@
         </select>
     </div>
 
-{#    <div class="col-lg-2 col-md-12">
-    </div>#}
+    <div class="col-lg-1 col-md-12" style="line-height: 2.5em;">
+        <i>Total: {[{ {{ identifier }}.store.total['{{ context }}'] }]}</i>
+    </div>
     <div class="col-lg-4 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>

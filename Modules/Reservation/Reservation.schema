@@ -87,7 +87,12 @@
 		<FUNCTION title="Dupliquer">Dupliquer</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Genre" driver="mysql" Dico="1" generateUrl="1">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<FILTER name="Genre sur le site public" color="success" ><![CDATA[FrontFilter=1]]></FILTER>
+		<FILTER name="Tous les genres" color="warning" ></FILTER>
+		<PROPERTIES type="varchar" searchOrder="1" fiche="1" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" fiche="1" list="1" form="1" Description="Filtre en front-office" listDescr="Filtre Public">FrontFilter</PROPERTIES>
+		<PROPERTIES type="color" fiche="1" list="1" form="1">Couleur</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" list="1" form="1">Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="TypeSortie" driver="mysql" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
@@ -131,7 +136,7 @@
 		<PROPERTIES type="int" fiche="1" form="1" auto="1" Description="Code Postal">CodPos</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" auto="1" Description="Ville">Ville</PROPERTIES>
 		<PROPERTIES type="datetime" fiche="1" form="1" obligatoire="1" Description="Date de Fin" >DateFin</PROPERTIES>
-		<PROPERTIES type="int" list="1" fiche="1" form="1" listDescr="Places disponnibles" Description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
+		<PROPERTIES type="int" list="1" fiche="1" form="1" listDescr="Places disponibles" Description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
 		<PROPERTIES type="boolean"  fiche="1" form="1" auto="1" Description="Validité de l'évènement" default="1">Valide</PROPERTIES>
 		<FKEY card="1,1" data="Spectacle,Id" childrenHiddenSoft="1">SpectacleId</FKEY>
 		<FKEY card="1,1" data="Salle,Id">SalleId</FKEY>
@@ -187,5 +192,19 @@
 		<PROPERTIES type="varchar" fiche="1" form="1" >Message</PROPERTIES>
 		<PROPERTIES type="txt" list="1" fiche="1" form="1" searchOrder="1" Description="Nom spectacle">Description</PROPERTIES>
 		<FKEY card="1,1" data="Evenement,Id" hasRole="RESAS_ADMIN">EvenementId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Partenaire" driver="mysql" AccessPoint="1" Description="Partenaires">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
+		<PROPERTIES type="image" fiche="1" form="1" list="1" >Image</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" list="1" >Lien</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="BlocNavigation" driver="mysql" Dico="1" Description="Blocs de navigation">
+		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Icone (font-awesome)">Icone</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" list="1" searchOrder="2">Code</PROPERTIES>
+		<PROPERTIES type="image" fiche="1" form="1" list="1" description="Image de fond (600x300 minimum)">Image</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" list="1" >Lien</PROPERTIES>
+		<PROPERTIES type="color" fiche="1" form="1" list="1" >Couleur</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

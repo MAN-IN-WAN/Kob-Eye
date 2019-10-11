@@ -6,6 +6,7 @@ app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $
         $scope.{{ identifier }}gantt.fromdate = moment.unix($scope.{{ identifier }}gantt.from);
         $scope.{{ identifier }}gantt.frompicker = moment.unix($scope.{{ identifier }}gantt.from).format(dateformat);
         $scope.{{ identifier }}gantt.to = max;
+        $scope.{{ identifier }}gantt.display = true;
         $scope.{{ identifier }}gantt.todate = moment.unix($scope.{{ identifier }}gantt.to);
         $scope.{{ identifier }}gantt.topicker = moment.unix($scope.{{ identifier }}gantt.to).format(dateformat);
         console.log('gantt >> from:', $scope.{{ identifier }}gantt.fromdate,' to:', $scope.{{ identifier }}gantt.todate,'orig:',min,max);
@@ -58,7 +59,7 @@ app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $
     $scope.{{ identifier }}storeSettings = function () {
         console.log('activity gantt >>> storeSettings',$scope.obj);
         SystemeActivityStore.initContext('gantt');
-        SystemeActivityStore.setPageLength(1000, 'gantt');
+        SystemeActivityStore.setPageLength(50, 'gantt');
         SystemeActivityStore.sort['gantt'] = ['Id','ASC'];
         SystemeActivityStore.setFilters('Tache.TacheId(' + $scope.currentObj.id + ')','gantt');
         setReady('obj');
@@ -91,6 +92,9 @@ app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $
      * Rafraichit le gantt et ses données
      */
     $scope.{{ identifier }}refreshGantt = function () {
+        if (SystemeActivityStore.total['gantt']>50){
+            $scope.{{ identifier }}gantt.display = false;
+        }else $scope.{{ identifier }}gantt.display = true;
         SystemeActivityStore.getData(1,'gantt').then(function (data) {
             //refresh gantt data
             var out = {{ identifier }}formatData(data);
@@ -119,7 +123,7 @@ app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $
             if (data[i].tmsEdit>max) max =data[i].tmsEdit;
             dep = [];
             if (i>0) dep.push({from:'task-'+data[i-1].id});
-            if (data[i+1]) dep.push({to:'task-'+data[i+1].id});
+            //if (data[i+1]) dep.push({to:'task-'+data[i+1].id});
 
             out.push({
                 name: data[i].label,

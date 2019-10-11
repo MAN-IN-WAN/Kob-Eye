@@ -1,0 +1,31 @@
+//JQUERY
+[HEADER JS]Tools/Js/Jquery/1.11.3/jquery.min.js[/HEADER]
+
+//BOOTSTRAP
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap.css[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap-theme.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3.1/js/bootstrap.js[/HEADER]
+
+//FONTAWESOME
+[HEADER CSS]Tools/Fonts/fontawesome-free-5.0.10/web-fonts-with-css/css/fontawesome-all.css[/HEADER]
+
+//ISOTOPE
+[HEADER JS]Tools/Js/Isotope/isotope.min.js[/HEADER]
+
+//FONTS
+[HEADER]
+<link href="https://fonts.googleapis.com/css?family=Baloo&display=swap" rel="stylesheet">
+[/HEADER]
+
+<div id="header">
+    [MODULE Systeme/Header/Menu]
+</div>
+<div id="content">
+    <div class="container">
+        [DATA]
+    </div>
+</div>
+<div id="footer">
+    [MODULE Systeme/Footer]
+</div>
+[MODULE Systeme/Login]

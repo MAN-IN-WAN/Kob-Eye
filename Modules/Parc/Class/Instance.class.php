@@ -79,7 +79,12 @@ class Instance extends genericClass{
         //Check du client
         $client = $this->getOneParent('Client');
         if (!$client) {
-            $client = Parc_Client::getClientFromCode(Instance::checkName($this->Nom),$this->Nom);
+            //si le client est connecté
+            if (isset($GLOBALS['Systeme']->RegVars['ParcClient']))
+                $client = $GLOBALS['Systeme']->RegVars['ParcClient'];
+            if (!$client) {
+                $client = Parc_Client::getClientFromCode(Instance::checkName($this->Nom),$this->Nom);
+            }
             $this->addParent($client);
         }
         parent::Save();
@@ -687,5 +692,12 @@ class Instance extends genericClass{
         }
         //lancement de la synchronisation
         return $srcHost->syncHost($task);
+    }
+
+    /************************************************
+    * MIGRATE FROM EXTERNAL                         *
+    ************************************************/
+    public function migrateFromExternal() {
+
     }
 }

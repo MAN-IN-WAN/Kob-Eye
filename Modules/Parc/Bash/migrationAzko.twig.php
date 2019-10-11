@@ -3,7 +3,7 @@
 $bc = new BashColors();
 
 //connexion ancien serveur mysql
-$db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', '*********', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $serveur='192.168.120.55';
 /**
@@ -151,19 +151,19 @@ foreach ($result as $org){
             echo $bc->getColoredString("      -> SQL DUMP ".$bdd." ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='192.168.120.55'){
-                $cmd = 'mysqldump -h 192.168.120.55 -u root -p"zH34Y6u5" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
+                $cmd = 'mysqldump -h 192.168.120.55 -u root -p"*********" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
                 echo $bc->getColoredString(" DUMP ... ", 'red');
                 exec($cmd);
-                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.19 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.19 -u root -p********* ' . $bdd;
                 //echo $cmd."\n";
                 exec($cmd);
                 echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
                 $base->Save();
             }else {
-                $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i" > /tmp/'.$bdd.'.sql';
+                $cmd = 'mysqldump -h 192.168.100.50 -u root -p********* ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i" > /tmp/'.$bdd.'.sql';
                 echo $bc->getColoredString(" DUMP ... ", 'red');
                 exec($cmd);
-                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -p********* ' . $bdd;
                 //echo $cmd."\n";
                 exec($cmd);
                 echo $bc->getColoredString(" INSERT OK " . "\n", 'green');

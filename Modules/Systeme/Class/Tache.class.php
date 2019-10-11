@@ -151,6 +151,7 @@ class Tache extends genericClass{
         $this->Demarre=0;
         $this->Erreur=0;
         $this->ThreadId='';
+        $this->DateDebut = '';
         return $this->Save();
     }
 

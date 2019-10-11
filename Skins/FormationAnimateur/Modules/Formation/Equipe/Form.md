@@ -56,12 +56,27 @@
                 </div>
             [/CASE]
             [CASE 3] //Texte
-                <div class="form-group">
-                    <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
-                    <div class="col-sm-12">
-                        <textarea class="form-control" rows="3" name="donn-[!D::Numero!]">[!R::Valeur!]</textarea>
+                [!nbTq:=1!]
+                [IF [!TQ::MultiPart!]]
+                    [!nbTq:=4!]
+                [/IF]
+                [!vals:=[!R::Valeur!]!]
+                [STORPROC [!nbTq!]]
+                    [!tt:=[!Pos!]!]
+                    [!tt-=1!]
+                    [IF [!TQ::MultiPart!]]
+                        <h4><b>Participant [!Pos!]</b></h4>
+                    [/IF]
+
+                    [!vs:=[!vals::[!tt!]!]!]
+
+                    <div class="form-group">
+                        <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="3" name="donn-[!D::Numero!][[!tt!]]">[!vs!]</textarea>
+                        </div>
                     </div>
-                </div>
+                [/STORPROC]
             [/CASE]
             [CASE 4] //Boolean
                 <div class="form-group">
@@ -73,35 +88,49 @@
                 </div>
             [/CASE]
             [CASE 5] //Selection
-                <div class="form-group">
-                    <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
-                    <div class="col-sm-4">
-                        <select class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]">
-                                <option value="">...</option>
-                            [!legend:=0!]
-                            [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
-                                <option value="[!TQV::Id!]" [IF [!R::Valeur!]=[!TQV::Id!]]selected="selected"[/IF]>
-                                    [!TQV::Valeur!]
-                                    [IF [!TQV::Image!]!=][!legend:=1!][/IF]
-                                </option>
-                            [/STORPROC]
-                        </select>
-                    </div>
-                    [IF [!legend!]=1]
-                    <div class="row">
-                        <h5 class="col-md-12">Valeurs:</h5>
-                        <ul class="col-md-12">
-                            [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
-                            <li class="col-md-4"> [!TQV::Valeur!]
-                                [IF [!TQV::Image!]!=]
-                                : <img src="/[!TQV::Image!]">
-                                [/IF]
-                            </li>
-                            [/STORPROC]
-                        </ul>
-                    </div>
+                [!nbTq:=1!]
+                [IF [!TQ::MultiPart!]]
+                    [!nbTq:=4!]
+                [/IF]
+                [!vals:=[!R::Valeur!]!]
+                [STORPROC [!nbTq!]]
+                    [!tt:=[!Pos!]!]
+                    [!tt-=1!]
+                    [IF [!TQ::MultiPart!]]
+                        <h4><b>Participant [!Pos!]</b></h4>
                     [/IF]
-                </div>
+
+                    [!vs:=[!vals::[!tt!]!]!]
+                    <div class="form-group">
+                        <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="donn-[!D::Numero!]-[!tt!]" name="donn-[!D::Numero!][[!tt!]]">
+                                    <option value="">...</option>
+                                [!legend:=0!]
+                                [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
+                                    <option value="[!TQV::Id!]" [IF [!vs!]=[!TQV::Id!]]selected="selected"[/IF]>
+                                        [!TQV::Valeur!]
+                                        [IF [!TQV::Image!]!=][!legend:=1!][/IF]
+                                    </option>
+                                [/STORPROC]
+                            </select>
+                        </div>
+                        [IF [!legend!]=1]
+                        <div class="row">
+                            <h5 class="col-md-12">Valeurs:</h5>
+                            <ul class="col-md-12">
+                                [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
+                                <li class="col-md-4"> [!TQV::Valeur!]
+                                    [IF [!TQV::Image!]!=]
+                                    : <img src="/[!TQV::Image!]">
+                                    [/IF]
+                                </li>
+                                [/STORPROC]
+                            </ul>
+                        </div>
+                        [/IF]
+                    </div>
+                [/STORPROC]
             [/CASE]
             [CASE 6] //Pourcentage
                 <div class="form-group">

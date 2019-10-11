@@ -1497,14 +1497,18 @@ class Server extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
-
     /**
-     * callLdap2Service
-     * execute remotely ldap2service
+     * createTaskLdap2Service
+     * create task for async execution
      */
-    public function callLdap2Service($retry=false) {
-        $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$this->Id.'&TaskFunction=callLdap2service&Termine=0&Erreur=0');
-        if ($nb) return true;
+    public function createTaskLdap2Service() {
+        $nb = Sys::getOneData('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$this->Id.'&TaskFunction=callLdap2service&Termine=0&Erreur=0');
+        if ($nb) {
+            $nb->DateDebut = time()+5;
+            $nb->Save();
+            return true;
+
+        }
 
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
@@ -1513,8 +1517,27 @@ class Server extends genericClass {
         $task->TaskObject = 'Server';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'callLdap2service';
-        $task->Demarre = true;
+        $task->DateDebut = time()+10;
         $task->Save();
+        return true;
+    }
+
+    /**
+     * callLdap2Service
+     * execute remotely ldap2service
+     */
+    public function callLdap2Service($task=null,$retry=false) {
+        if (!$task) {
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Server';
+            $task->TaskId = $this->Id;
+            $task->TaskFunction = 'callLdap2service';
+            $task->Demarre = true;
+            $task->Save();
+        }
         $act = $task->createActivity('Execution de synchronisation');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
@@ -1530,7 +1553,7 @@ class Server extends genericClass {
         if (empty($ct)&&!$retry){
             //alors on pousse une valeur
             $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
-            $this->callLdap2Service(true);
+            $this->callLdap2Service($task,true);
         }
 
         $act->addDetails($out);
