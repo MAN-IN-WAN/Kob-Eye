@@ -49,7 +49,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Temoa" driver="mysql" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Temoa.class.php">
-		<PROPERTIES type="varchar" length="20" category="Description" searchOrder="1" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" searchOrder="1" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" searchOrder="2" form="2" list="2" fiche="2">Nom</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" form="3" fiche="3" description="Images">Images</PROPERTIES>
 		<PROPERTIES type="file" category="Description" form="4" fiche="4" description="Fichier zip">ZipFile</PROPERTIES>

@@ -101,7 +101,7 @@ where ".$where;
 select count(*) as cnt,sum(round(r.Montant,2)) as tot
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Supprime=0 and a.EtatRUM=$nSeq
 ";
 		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
 		if($nonSEPA) $sql .= " and r.SEPA=0";
@@ -134,7 +134,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 select a.Numero,r.Montant,a.IBAN,a.BIC,a.DateRUM,a.Nom,a.Prenom,r.DateReglement,r.Id
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and a.EtatRUM=$nSeq
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Supprime=0 and a.EtatRUM=$nSeq
 ";
 		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
 		if($nonSEPA) $sql .= " and r.SEPA=0";
@@ -271,7 +271,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$sql = "
 select count(*) as cnt,sum(round(Montant,2)) as tot
 from `##_Cadref-Reglement`
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Supprime=0
 ";
 		if($user != 'Tous') $sql .= " and Utilisateur='$user'";
 		if($nonSEPA) $sql .= " and SEPA=0";
@@ -325,7 +325,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 select a.id as adhId, r.Id as regId
 from `##_Cadref-Reglement` r
 inner join `##_Cadref-Adherent` a on a.Id=r.AdherentId
-where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and SEPA=1
+where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Montant>0 and Encaisse=0 and Supprime=0 and SEPA=1
 ";
 		if($user != 'Tous') $sql .= " and r.Utilisateur='$user'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);

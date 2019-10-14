@@ -4,7 +4,14 @@ class Temoa extends genericClass {
 
 	// importation d'un dictionnaire
 	function Save() {
-		if($this->ZipFile != '') {
+		$fok = $this->ZipFile != '';
+		$id = $this->Id;
+		if($id) {
+			$old = Sys::getOneData('CEN', "Temoa/$id");
+			if($this->ZipFile == $old->ZipFile) $fok = false;
+		}
+		
+		if($fok) {
 			$uid = Sys::$User->Id;
 			$dir = "./Home/$uid/CEN/Temoa/".$this->Code;
 			mkdir($dir);

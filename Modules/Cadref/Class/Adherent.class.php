@@ -30,6 +30,33 @@ class Adherent extends genericClass {
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
 			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons);
 	}
+	
+	public function GetScanCount() {
+		//return array('ScanCount'=>0);
+	
+		$data = array('sApiKey'=>1, 'nId'=> $this->Id);
+
+		$ch = curl_init("https://scan.cadref.com/api/member");
+		curl_setopt_array($ch, array(
+			CURLOPT_HTTPAUTH => CURLAUTH_ANY,
+			CURLOPT_USERPWD => "intranet:#Yanolorp20",
+		    CURLOPT_POST => TRUE,
+		    CURLOPT_SSL_VERIFYHOST => FALSE,
+		    CURLOPT_SSL_VERIFYPEER => FALSE,
+		    CURLOPT_RETURNTRANSFER => TRUE,
+		    CURLOPT_HTTPHEADER => array(
+		        'Content-Type: application/json'
+		    ),
+		    CURLOPT_POSTFIELDS => json_encode($data)
+		));
+		// request
+		$ret = curl_exec($ch);
+		// close
+		curl_close($ch);
+		// return
+		return $ret;
+
+	}
 
 	// $mode :
 	// 0 => save adherent (appel par Adherent/Save.twig.php)

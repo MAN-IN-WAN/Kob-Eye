@@ -412,22 +412,7 @@
 				unwatch();
 			}
 		});
-/*
-		$scope.ListClasseGetSession = function() {
-			var args = {name: 'ListClasse'} ;
-			var ajax = $scope.{{ ident }}callMethod(args,'ListClassGetSession');
-			ajax.success(
-				function(data) {
-					if(data.data) $scope.ClasseAnnee = data.data;
-					$scope.classeAnneeChange(false);
-				}
-			).error(
-				function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
-		}
-*/
+
 		{% endif %}
 		
 		
@@ -690,16 +675,15 @@
 				}
 			);
 			
-{#			var header = {
-			  headers: new HttpHeaders()
-				.set('Authorization',  'Basic aW50cmFuZXQ6I1lhbm9sb3JwMjA=')
-				.set('Content-Type', 'application/json')
-			};
-			var data = JSON.stringify({sApiKey: 'count', nId: '0015143'});
-			$http.post('https://scan.cadref.com/api/member/', header).this(function(data) {
-			console.log(data);
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
+			ajax.success(function(data) {
+				var o = $scope.obj;
+				console.log('>>>>>>>>>>>>>>>>>>',data);
+				//o.ScanCount = Number(data.data.ScanCount);
+				try { $scope.$digest(); } catch(ex) {}
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
-#}			
 		}
 		
 		// change l'année selectionnée
@@ -1604,7 +1588,7 @@
 
 		{% endif %}
 		
-		
+	
 		
 		{% if objecttype == 'Section' %}
 		//--------------------------------------
@@ -1613,23 +1597,8 @@
 		$scope.sectionInfo = function() {
 			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleS = $scope.obj.Libelle;
-			
-			
-{#			var req = {
-				method: 'POST',
-				url: 'https://scan.cadref.com/api/member/',
-				headers: {
-				  'Content-Type': 'application/json',
-				  'Authorization':  'Digest ' + btoa('intranet:#Yanolorp20')
-				}
-				//data: {sApiKey: 'count', nId: '0015143'}
-			}
-			console.error('aaaaaaaaaaaaaaaaaaaaaaaaaaa',req);
-			$http(req).success(function(data) {
-			console.log(data);
-			});
-#}
 		}
+
 		
 		$scope.testalert = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'testalert');
