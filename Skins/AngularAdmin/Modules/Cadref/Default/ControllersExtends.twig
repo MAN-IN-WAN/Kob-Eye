@@ -675,7 +675,7 @@
 				}
 			);
 			
-			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
+{#			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
 			ajax.success(function(data) {
 				var o = $scope.obj;
 				console.log('>>>>>>>>>>>>>>>>>>',data);
@@ -684,7 +684,7 @@
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
-		}
+#}		}
 		
 		// change l'année selectionnée
 		var anneeDirty;
