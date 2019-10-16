@@ -1071,7 +1071,7 @@ class Sys extends Root{
 	static public function getMenu($Query, $strict = false){
 		$m = Sys::getMenus($Query,false,$strict);
 		$out='';
-		if (is_array($m)){
+		if ($m){
 			foreach ($m as $a) {
                 $out .= ((!empty($out)) ? '/' : '') . $a->Url;
                 if (isset($a->MenuParent)&&sizeof($a->MenuParent)&&is_object($a->MenuParent[0])){
