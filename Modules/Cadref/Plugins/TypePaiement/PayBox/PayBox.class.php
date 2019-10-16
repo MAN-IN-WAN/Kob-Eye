@@ -60,7 +60,9 @@ class CadrefTypePaiementPayBox extends Plugin implements CadrefTypePaiementPlugi
 		     $PBX_EFFECTUE    = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_REFUSE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		     $PBX_ANNULE      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
-		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s.htm');
+		     $PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".'Cadref/Paiement/Etape4s.htm';
+		     //$PBX_REPONDRE_A  = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape4s.htm');
+//klog::l(">>>>>>>>>>>>>>>$PBX_EFFECTUE....$PBX_REPONDRE_A");
 		//page en cas d'erreur
 		     $PBX_ERREUR      = "https://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Cadref/Paiement/Etape5');
 		//date
