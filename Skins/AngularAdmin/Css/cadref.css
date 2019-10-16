@@ -108,6 +108,9 @@ table tr td.cadref-td-diff {
 .cadref-btn-copy:after {
     content: "\e9c8";
 }
+.cadref-btn-encais:after {
+    content: "\ea0c";
+}
 .cadref-btn-erase:after {
     font-family: 'icomoon-ultimate', serif;
     content: "\ed66";

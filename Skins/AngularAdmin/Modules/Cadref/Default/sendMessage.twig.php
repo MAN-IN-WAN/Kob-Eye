@@ -7,6 +7,8 @@ if($menu == 'ens_message') {
 	$n = substr(Sys::$User->Login, 3, 3);
 	$e = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 	$id = $e->Id;
+	
+	$vars['sender'] = "Message de la part de ".$e->Prenom.' '.$e->Nom;
 
 	$to = array('C'=>'Cadref (Secrétariat)','T'=>'Tous mes élèves');
 	$sql = "
@@ -33,6 +35,8 @@ elseif($menu == 'adh_message') {
 	$n = Sys::$User->Login;
 	$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 	$id = $a->Id;
+
+	$vars['sender'] = "Message de la part de ".$a->Prenom.' '.$a->Nom;
 	
 	$to = array('C'=>'Cadref (Secrétariat)');
 	$sql = "

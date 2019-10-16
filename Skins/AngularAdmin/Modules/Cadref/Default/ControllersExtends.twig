@@ -516,7 +516,7 @@
 		//-----------------------------
 		// MESSAGE
 		//-----------------------------
-		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
+		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
 		$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 		$scope.pieceAdd = function() {
 			var p = $scope.msgObj.Pieces;
@@ -848,6 +848,11 @@
 				$scope.reglementInfo.mode = '';
 				$scope.adherentInfo();
 			});
+		}
+		
+		$scope.reglementEncaisse = function() {
+			$scope.reglementObj.Encaisse = true;
+			$scope.reglementSave();
 		}
 
 		// suppression reglement

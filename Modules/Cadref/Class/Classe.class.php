@@ -153,12 +153,18 @@ order by d.DateCours";
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];
 		$fin .= substr('ZZZZZZZ', 0, 7-strlen($fin));
+		$eid = isset($obj['Enseignant']) ? $obj['Enseignant'] : 0;
 		
 		$sql = "
 select i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN, e.Numero, e.Nom, e.Prenom, 
 a.Libelle as LibelleA, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin, c.Seances
 from `##_Cadref-Inscription` i
-inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId";
+		
+		if($eid) $sql .= "
+inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id and ce.EnseignantId=$eid
+";
+		$sql .= "
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId 
@@ -171,7 +177,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return false;
+		if(! $pdo) return array('pdf'=>false, 'sql'=>$sql);
 		
 		$pdf = new PrintPresence($debut, $fin, $obj['Mois']);
 		$pdf->SetAuthor("Cadref");

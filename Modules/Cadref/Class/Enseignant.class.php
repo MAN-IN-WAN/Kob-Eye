@@ -83,7 +83,7 @@ class Enseignant extends genericClass {
 		$mode = $params['sendMode'];
 		$args = array();
 		$args['Subject'] = $params['Subject'];
-		$args['Body'] = $params['Body'];
+		$args['Body'] = $params['Sender']."\n\n".$params['Body'];
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		
 		$to = $params['Mail'];
@@ -163,6 +163,7 @@ where ce.EnseignantId=$id";
 	}
 	
 	function PrintPresence($obj) {
+		$obj['Enseignant'] = $this->Id;
 		$c = genericClass::createInstance('Cadref', 'Classe');
 		return $c->PrintPresence($obj);
 	}

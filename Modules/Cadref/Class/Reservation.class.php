@@ -18,8 +18,8 @@ class Reservation extends genericClass {
 		if(!$this->Supprime) $this->DateSupprime = 0;
 		
 		$ret = parent::Save();
-//		if($ret) {
-//			$vis->Save(true);
+		if($ret) {
+			$vis->Save(true);
 //			
 //			// réglement
 //			$r = $this->getOneChild('Reglement');
@@ -43,7 +43,7 @@ class Reservation extends genericClass {
 //			else $r->Supprime = 0;
 //			$r->Utilisateur = Sys::$User->Initiales;
 //			$r->Save();
-//		}
+		}
 		return $ret;
 	}
 	

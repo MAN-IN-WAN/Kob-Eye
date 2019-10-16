@@ -34,6 +34,17 @@
 					<input type="text" class="form-control cadref-input" placeholder="Sujet du message" ng-model="msgObj.Subject"/>
 				</div>
 			</div>
+			{% if mode != 'admin' %}
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					{#{{ label('') }}#}
+				</div>
+				<div class="col-md-10">
+					<input type="text" class="form-control cadref-input" readonly tabindex="-1" ng-model="msgObj.Sender" ng-init="msgObj.Sender='{{ sender }}'"/>
+				</div>
+			</div>
+			{% endif %}
 			<div style="height: 5px"></div>
 			<div class="row">
 				<div class="col-md-1">

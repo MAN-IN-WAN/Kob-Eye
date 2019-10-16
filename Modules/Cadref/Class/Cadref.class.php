@@ -180,14 +180,14 @@ class Cadref extends Module {
 		if(strpos($a->Mail, '@') > 0) {
 			$s = self::MailCivility($a);
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-			$s .= "Vos paramètres de connection sont les suivants :<br /><br />";
+			$s .= "Vos paramètres de connexion sont les suivants :<br /><br />";
 			$s .= "Code utilisateur : <strong>$num</strong><br />Mot de Passe : <strong>$pass</strong><br /><br />";
 			if($confirm) {
 				//$s .= 'Avant de pouvoir vous inscrire à des cours ou à des visites guidées,<br />';
 				$s .= 'Pensez à compléter les informations dans la rubrique "Info personnelles".<br /><br />';
 			}
 			$s .= self::MailSignature();
-			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenue dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
 				'To'=>array($a->Mail),
 				'Body'=>$s);
 			self::SendMessage($params);
