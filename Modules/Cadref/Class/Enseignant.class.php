@@ -83,7 +83,7 @@ class Enseignant extends genericClass {
 		$mode = $params['sendMode'];
 		$args = array();
 		$args['Subject'] = $params['Subject'];
-		$args['Body'] = $params['Sender']."\n\n".$params['Body'];
+		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		
 		$to = $params['Mail'];
