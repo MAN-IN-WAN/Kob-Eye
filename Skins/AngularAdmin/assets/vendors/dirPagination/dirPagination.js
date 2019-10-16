@@ -396,6 +396,7 @@
 			/*** gestion clavier PGF ***/
 			$document.unbind("keydown");
 			$document.bind("keydown", function (event) {
+console.log('>>>>>>>>',event);
 				var p = scope.pagination;
 					if(event.which === 34) {
 						if(p.current !== p.last) scope.setCurrent(p.current + 1);
