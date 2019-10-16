@@ -89,12 +89,14 @@ class Enseignant extends genericClass {
 		$to = $params['Mail'];
 
 		if($to == 'C') {
-			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-			$to = array();
-			foreach($us as $u) {
-				$args['To'] = array($u->Mail);
-				Cadref::SendMessage($args);
-			}
+			$args['To'] = aray('contact@cadref.com');
+			Cadref::SendMessage($args);
+//			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+//			$to = array();
+//			foreach($us as $u) {
+//				$args['To'] = array($u->Mail);
+//				Cadref::SendMessage($args);
+//			}
 			return array('data'=>'Message envoyé');
 		}
 

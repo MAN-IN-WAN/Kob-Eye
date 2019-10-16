@@ -1188,7 +1188,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$to = $params['Mail'];
 
 		if($to == 'C') {
-			$args['To'] = 'contact@cadref.com';
+			$args['To'] = array('contact@cadref.com');
 			Cadref::SendMessage($args);
 //			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
 //			$to = array();
