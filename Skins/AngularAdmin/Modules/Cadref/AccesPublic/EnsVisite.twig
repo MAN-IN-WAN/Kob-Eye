@@ -19,7 +19,7 @@
 				<th>Libellé</th>
 				<th>Prix</th>
 				{#<th>Assur.</th>#}
-				<th>Places</th>
+				<th>Inscrits</th>
 				<th>Doc.</th>
 			</tr>
 		</thead>
@@ -31,7 +31,7 @@
 				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
 				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
-				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': parseInt(item.Disponibles)==0}">{[{ item.Disponibles+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': parseInt(item.Disponibles)==0}">{[{ item.Inscrits+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
 				<td scope="row" class="table-action cadref-td cadref-td-btn">
 					<span href="" class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}</span>

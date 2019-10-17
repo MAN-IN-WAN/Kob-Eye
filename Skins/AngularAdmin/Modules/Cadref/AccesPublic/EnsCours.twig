@@ -18,7 +18,7 @@
 				<th>Libellé</th>
 				<th>Heures</th>
 				<th>Cycle</th>
-				<th>Places</th>
+				<th>Inscrits</th>
 				<th>Doc.</th>
 			</tr>
 		</thead>
@@ -29,7 +29,7 @@
 				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
-				<td scope="row" class="typefloat"><span ng-class="{'cadref-highlight': Number(item.Disponibles)==0}">{[{ item.Disponibles+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
+				<td scope="row" class="typefloat"><span ng-class="{'cadref-highlight': Number(item.Disponibles)==0}">{[{ item.Inscrits+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'classe')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
