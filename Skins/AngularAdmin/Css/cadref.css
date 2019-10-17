@@ -124,6 +124,9 @@ table tr td.cadref-td-diff {
 .cadref-btn-msg:after {
     content: "\ea32";
 }
+.cadref-btn-print:after {
+    content: "\ea69";
+}
 .cadref-btn-close {
 	float: right;
 	color: #fff;

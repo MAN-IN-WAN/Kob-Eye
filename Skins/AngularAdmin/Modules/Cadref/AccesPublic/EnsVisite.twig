@@ -32,10 +32,10 @@
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
 				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
 				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': Number(item.Inscrits)>=Number(item.Places)}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
-				<td scope="row" class="cadref-td typeint">
-					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
-					</span>
+				<td scope="row" class="table-action cadref-td cadref-td-btn">
+					<span href="" class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}</span>
+					<a href="" class="btn btn-abt cadref-btn-print btn-primary" ng-click="visitePrint(item)" title="Imprimer"></a>
 				</td>
 			</tr>
 		</tbody>

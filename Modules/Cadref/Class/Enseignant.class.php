@@ -177,4 +177,9 @@ where ce.EnseignantId=$id";
 		return $a->PrintAdherent($obj);
 	}
 	
+	function PrintVisite($args) {
+		$a = genericClass::createInstance('Cadref', 'Visite');
+		return $a->PrintVisite($args);		
+	}
+	
 }

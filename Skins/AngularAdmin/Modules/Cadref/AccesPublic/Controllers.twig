@@ -363,7 +363,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	});
 	
-	
+		
 	// ATTACHEMENTS
 	
 	// ferme attachement edit section
@@ -439,6 +439,22 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	// liste adhérents
 	$scope.enseignantAdh = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// print visite
+	$scope.visitePrint = function(item) {
+		var args = {Debut:item.Visite, Fin:item.Visite, Guide:1, Chauffeur:0, Interne:0}; 
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintVisite',args,false);
 		ajax.success(
 			function(data) {
 				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
