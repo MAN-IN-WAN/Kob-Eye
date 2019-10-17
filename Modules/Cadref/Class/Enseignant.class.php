@@ -177,8 +177,14 @@ where ce.EnseignantId=$id";
 		return $a->PrintAdherent($obj);
 	}
 	
-	function PrintVisite($args) {
-		$a = genericClass::createInstance('Cadref', 'Visite');
+	function PrintVisite($visite) {
+		$annee = Cadref::$Annee;
+		$a = Sys::getOneData('Cadref', "Visite/Visite=$visite&Annee=$annee");
+		$args['Fin'] = $args['Debut'] = $a->DateVisite;
+		$args['Guide'] = 1;
+		$args['Chauffeur'] = 0;
+		$args['Interne'] = 0;
+		$a->Id = 0;
 		return $a->PrintVisite($args);		
 	}
 	
