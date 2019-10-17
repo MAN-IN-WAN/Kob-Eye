@@ -166,7 +166,7 @@ class PrintAdherent extends FPDF {
 					$s = $cls->CodeClasse;
 				}
 				else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
-				else $s = 'C:'.substr($l['CodeClasse'], 10, 1);
+				else $s = 'C:'.substr($l['CodeClasse'], 6, 1);
 				break;
 			case 1:
 				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
