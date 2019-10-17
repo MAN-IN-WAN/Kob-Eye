@@ -23,11 +23,15 @@ class Enseignant extends genericClass {
 	
 	public function GetClassesVisites() {
 		$cls = $this->getChildren('Classe/Annee='.Cadref::$Annee);
-		foreach($cls as $c) $c->id = $c->Id;
+		foreach($cls as $c) {
+			$c->id = $c->Id;
+			$c->Disponibles = $c->Inscrits >= $c->Places ? 0 : $c->Places-$c->Inscrits;
+		}
 		$vis = $this->getChildren('Visite/Annee='.Cadref::$Annee);
 		foreach($vis as $v) {
 			$v->id = $v->Id;
 			$v->DateVisite = date('d/m/Y', $v->DateVisite);
+			$v->Disponibles = $v->Inscrits >= $v->Places ? 0 : $v->Places-$v->Inscrits;
 		}
 		$a = array('classes'=>$cls, 'visites'=>$vis);
 		return $a;
