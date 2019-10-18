@@ -111,8 +111,8 @@ class Temoa extends genericClass {
 		$c = $t->Code;
 		$a = explode('/', $t->ZipFile);
 		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
-		$trd = file_exists("$f.trad") ? 1 : 0;
-		$tr2 = file_exists("$f.trad2") ? 1 : 0;
+		$trd = file_exists($f."_trad.rtf") ? 1 : 0;
+		$tr2 = file_exists($f."_trad2.rtf") ? 1 : 0;
 		
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 		$temoa = new temoa2\Temoa();

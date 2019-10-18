@@ -176,7 +176,7 @@
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-class="{'cadref-highlight': !item.AccesWeb}">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><span ng-class="{'cadref-highlight': item.Places*1<=item.Inscrits*1}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>

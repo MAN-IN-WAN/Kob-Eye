@@ -28,6 +28,7 @@ if(Sys::$User->isRole('PARC_TECHNICIEN'))
 else if(Sys::$User->isRole('CADREF_ADMIN')) $vars['RoleSpace'] = 'administrateur';
 else if(Sys::$User->isRole('CADREF_ENS')) $vars['RoleSpace'] = 'enseignant';
 else if(Sys::$User->isRole('CADREF_ADH')) $vars['RoleSpace'] = 'adhérent';
+else if(Sys::$User->isRole('CADREF_BENE')) $vars['RoleSpace'] = '';
 else $vars['RoleSpace'] = 'client';
 
 if (Sys::$User->isRole('INCIDENT_CLIENT') && !Sys::$User->Admin){
