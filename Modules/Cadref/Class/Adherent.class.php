@@ -679,12 +679,13 @@ order by a.Nom, a.Prenom";
 		}
 		
 		if($obj['mode'] == 'mail') {
+			
 			foreach($pdo as $a) {
 				if(strpos($a['Mail'], '@') > 0) {
 					if($mode == 1) {
 						$file = $this->imprimeCertificat(array($a));
 						$b = Cadref::MailCivility($a).$body;
-						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
+						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$b, 'Attachments'=>array($file));
 					}
 					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
 					if(MSG_ADH) Cadref::SendMessage($args);				
@@ -1026,6 +1027,8 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);
 		}
+		$args = array('To'=>array('contact@cadref.com'), 'Subject'=>$sub, 'Body'=>$bod);
+		Cadref::SendMessage($args);
 	}
 
 	private function imprimeSuivi($suivi, $list, $annee) {
@@ -1059,8 +1062,10 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$file = $this->imprimeSuivi($suivi, array($p), $annee);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-			if(MSG_ADH) Cadref::SendMessage($args);
+			Cadref::SendMessage($args);
 		}
+		$args = array('To'=>array('contact@cadref.com'), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+		Cadref::SendMessage($args);
 	}
 	
 	function CotisationList($id) {
@@ -1159,7 +1164,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
-					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['To'] = array($params['Msg']['Mail'],'contact@cadref.com');
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
@@ -1200,7 +1205,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			return array('data'=>'Message envoyé');
 		}
 
-		$args['To'] = array($p['Mail']);
+		$args['To'] = array($p['Mail'],'contact@cadref.com');
 		$ret = Cadref::SendMessage($args);
 		return array('data'=>'Message envoyé','sql'=>$sql);
 	}
@@ -1696,7 +1701,7 @@ where ce.Visite=:cid";
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
 			$s .= Cadref::MailSignature();
 			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-				'To'=>array($this->Mail),
+				'To'=>array($this->Mail,'contact@cadref.com'),
 				'Body'=>$s);
 			Cadref::SendMessage($params);
 		}

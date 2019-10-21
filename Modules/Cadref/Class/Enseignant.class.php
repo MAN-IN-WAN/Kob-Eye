@@ -58,6 +58,8 @@ class Enseignant extends genericClass {
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
+					$params['Msg']['To'] = array('contact@cadref.com');
+					$ret = Cadref::SendMessage($params['Msg']);
 				}
 				else {
 					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
@@ -89,7 +91,6 @@ class Enseignant extends genericClass {
 		$args['Subject'] = $params['Subject'];
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
-		$args['Cc'] = array($this->Mail);
 		
 		$to = $params['Mail'];
 
@@ -114,6 +115,9 @@ where ce.EnseignantId=$id";
 		if($to != 'T') $sql .= " and ce.Classe=$to";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		
+		$args['To'] = array('contact@cadref.com',$this->Mail);
+		$ret = Cadref::SendMessage($args);
 		foreach($pdo as $p) {
 			if($p['Mail']) {
 				$args['To'] = array($p['Mail']);
@@ -134,6 +138,10 @@ where ce.EnseignantId=$id";
 			else $sql .= "Mail<>''";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($mode == 'mail') {
+				$args = array('Subject'=>$obj['Sujet'], 'To'=>array('contact@cadref.com'), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+				Cadref::SendMessage($args);
+			}
 			foreach($pdo as $p) {
 				if($mode == 'sms') {
 					$params = array('Telephone1'=>$p['Telephone1'],'Telephone2'=>$p['Telephone2'],'Message'=>$obj['SMS']);
@@ -141,7 +149,7 @@ where ce.EnseignantId=$id";
 				}
 				else {
 					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($p['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MSG_ADH) Cadref::SendMessage($args);				
+					Cadref::SendMessage($args);				
 				}
 			}
 			return array('pdf'=>false, 'msg'=>true);

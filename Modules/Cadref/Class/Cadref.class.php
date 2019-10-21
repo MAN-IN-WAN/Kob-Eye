@@ -188,8 +188,7 @@ class Cadref extends Module {
 			}
 			$s .= self::MailSignature();
 			$params = array('Subject'=>($new ? 'CADREF : Bienvenue dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
-				'To'=>array($a->Mail),
-				'Body'=>$s);
+				'To'=>array($a->Mail,'contact@cadref.com'), 'Body'=>$s);
 			self::SendMessage($params);
 		}
 		$msg = "Code utilisateur: $num\nMote de passe: $pass\n";
@@ -242,8 +241,7 @@ class Cadref extends Module {
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
 		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-			'To'=>array($mail),
-			'Body'=>$s);
+			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
 		self::SendMessage($params);
 
 		$msg = "CADREF : Changement de mot de passe.\nMot de passe: $new\n";
@@ -374,8 +372,7 @@ class Cadref extends Module {
 		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Confirmation d\'enregistrement.'),
-			'To'=>array($mail),
-			'Body'=>$s);
+			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
 		self::SendMessage($params);
 
 		$data['success'] = 1;
@@ -768,25 +765,26 @@ where ce.Classe=$cid
 		return $e;
 	}
 		
-	public static function SendMessage($params) {
+	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		$m->From = "noreply@cadref.com";
 		if(isset($params['To']))
 			$m->To = implode(',', $params['To']);
+klog::l(">>>>>>>>>>>>>>>".$m->To);
 //		if($m->To == 'contact@cadref.com') 
 //			$m->From = "contact@cadref.com";
 //		else {
-			if(isset($params['Cc']))
-				$m->Cc = implode(',', $params['Cc']);
-			//if(isset($params['Bcc']))
-				$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
+//			if(isset($params['Cc']))
+//				$m->Cc = implode(',', $params['Cc']);
+//			//if(isset($params['Bcc']))
+//				$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
 //		}
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments']))
 			$m->Attachments = implode(',', $params['Attachments']);
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		$m->EmbeddedImages = $p->Valeur; //"Skins/LoginCadref/Img/cadref_logo_bleu_100.png|cadref_logo";
+		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
 	}
 	
