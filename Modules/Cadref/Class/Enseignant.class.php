@@ -82,7 +82,6 @@ class Enseignant extends genericClass {
 	}
 	
 	function PublicSendMessage($params) {
-klog::l("<<<<<<<<<<<<<<<<<<<",$params);
 		$annee = Cadref::$Annee;
 		$id = $this->Id;
 		$mode = $params['sendMode'];
