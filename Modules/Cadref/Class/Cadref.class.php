@@ -769,18 +769,19 @@ where ce.Classe=$cid
 	}
 		
 	public static function SendMessage($params) {
+klog::l(">>>>>>>>>>>>>>>",$params);
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		$m->From = "noreply@cadref.com";
 		if(isset($params['To']))
 			$m->To = implode(',', $params['To']);
-		if($m->To == 'contact@cadref.com') 
-			$m->From = "contact@cadref.com";
-		else {
+//		if($m->To == 'contact@cadref.com') 
+//			$m->From = "contact@cadref.com";
+//		else {
 			if(isset($params['Cc']))
 				$m->Cc = implode(',', $params['Cc']);
 			//if(isset($params['Bcc']))
 				$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
-		}
+//		}
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments']))

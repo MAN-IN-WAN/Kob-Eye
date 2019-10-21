@@ -25,6 +25,9 @@ class CEN extends Module {
 				
 			case 'notes':
 				return Temoa::getNotes($args);
+
+			case 'temoa-trad':
+				return Temoa::getTraduction($args);
 				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
@@ -44,13 +47,16 @@ class CEN extends Module {
 				return GDN::GetGDN($args);
 				
 			case 'pres':
-				$dic = genericClass::createInstance('CEN', 'Dictionnaire');
-				$dic->initFromId($args['id']);
+				switch($args['pres']) {
+					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
+					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
+				}
 				switch($args['lang']) {
 					case 'es': $pres = $dic->PresentationEs; break;
 					case 'fr': $pres = $dic->PresentationFr; break;
 					case 'en': $pres = $dic->PresentationEn; break;
 				}
+				if(empty($pres)) $pres = $dic->PresentationEs;
 				return array('text'=>$pres);
 				
 			case 'comm':

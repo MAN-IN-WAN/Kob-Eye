@@ -82,18 +82,20 @@ class Enseignant extends genericClass {
 	}
 	
 	function PublicSendMessage($params) {
+klog::l("<<<<<<<<<<<<<<<<<<<",$params);
 		$annee = Cadref::$Annee;
 		$id = $this->Id;
 		$mode = $params['sendMode'];
 		$args = array();
 		$args['Subject'] = $params['Subject'];
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
-		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		$args['Attachments'] = $params['Pieces']['data'];
+		$args['Cc'] = array($this->Mail);
 		
 		$to = $params['Mail'];
 
 		if($to == 'C') {
-			$args['To'] = aray('contact@cadref.com');
+			$args['To'] = array('contact@cadref.com');
 			Cadref::SendMessage($args);
 //			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
 //			$to = array();

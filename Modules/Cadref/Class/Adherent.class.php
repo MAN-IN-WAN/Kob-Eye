@@ -1184,6 +1184,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Subject'] = $params['Subject'];
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		$args['Cc'] = array($this->Mail);
 		
 		$to = $params['Mail'];
 

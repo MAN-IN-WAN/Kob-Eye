@@ -111,20 +111,20 @@ class Temoa extends genericClass {
 		$c = $t->Code;
 		$a = explode('/', $t->ZipFile);
 		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
-		$trd = file_exists($f."_trad.rtf") ? 1 : 0;
-		$tr2 = file_exists($f."_trad2.rtf") ? 1 : 0;
+		$trd = file_exists($f."_trad.rtf");
+		$tr2 = file_exists($f."_trad2.rtf");
 		
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-		$doc = $temoa->GetHTML("$f.rtf");
+		$doc = $temoa->GetHTML($f.".rtf");
 		$not = $temoa->GetNotesJson();
 		$mrk = $temoa->GetMarksJson();
 		unset($temoa);
 		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$mrk = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
-		return array('doc'=>utf8_encode($doc),'notes'=>count($note),'marks'=>$mrk,'trad'=>$trad,'trad2'=>$trad2 );
+		return array('doc'=>utf8_encode($doc),'notes'=>count($note),'marks'=>$mrk,'trad'=>$trd,'trad2'=>$tr2 );
 	}
 	
 	static function getNotes($args) {
@@ -143,6 +143,32 @@ class Temoa extends genericClass {
 		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		foreach($note as &$n) $n->text = utf8_encode($n->text);
 		return array('notes'=>$note);
+	}
+	
+	static function getTraduction($args) {
+		$id = $args['id'];
+		$t = Sys::getOneData('CEN', "Temoa/$id");
+		$c = $t->Code;
+		$a = explode('/', $t->ZipFile);
+		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
+		
+		switch($args['trad']) {
+			case 0: $f .= "_trad.rtf"; break;
+			case 1: $f .= "_trad2.rtf"; break;
+			case 2: $f .= "_trad3.rtf"; break;
+		}
+		
+klog::l("xxxxxxxxxxxx:$f",$args);
+		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+		$temoa = new temoa2\Temoa();
+		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+		$doc = $temoa->GetHTML($f);
+		$mrk = $temoa->GetMarksJson();
+		unset($temoa);
+		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$mrk = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+
+		return array('doc'=>utf8_encode($doc),'marks'=>$mrk);
 	}
 
 }
