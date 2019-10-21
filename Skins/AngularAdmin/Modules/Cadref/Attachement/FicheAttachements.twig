@@ -20,7 +20,7 @@
 						{{ label('Documents') }}
 					</div>
 					<div class="col-md-10">
-						<input type="text" class="form-control" placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
+						<input type="text" class="form-control" readonly placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
 						<label for="input-AttachementFilePath-file" class="clickable"> Choisissez un fichier </label>
 						<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
 							   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attachement' }],
