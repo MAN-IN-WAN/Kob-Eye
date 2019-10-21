@@ -45,7 +45,7 @@ class Absence extends genericClass {
 		foreach($cs as $c) {
 			if($c->CheckAbsence($this->DateDebut, $this->DateFin)) {
 				$as = Sys::getData('Cadref', "Classe/".$c->Id.'/Adherent');
-				$params = array('Subject'=>$s, 'To'=>array('contact@cadref.com',$e->Mail), 'Body'=>$b0.$b.$h.$d);
+				$params = array('Subject'=>$s, 'To'=>array('contact@cadref.com',$e->Mail), 'Body'=>$b.$h.$d);
 				Cadref::SendMessage($params);			
 				foreach($as as $a) {
 					if($a->Mail) {
