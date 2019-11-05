@@ -19,8 +19,9 @@ Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',
 
 
 
-//$vars['row']->label = $vars['row']->getFirstSearchOrder();
-$uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
+$vars['row']->label = $vars['row']->getFirstSearchOrder();
+$uc = null;
+//$uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
 $ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);
 if (is_object($uc))
     $vars['row']->userCreateName = $uc->Login;
