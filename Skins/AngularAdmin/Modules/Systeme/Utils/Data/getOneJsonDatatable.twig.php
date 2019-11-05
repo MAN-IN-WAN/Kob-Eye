@@ -29,7 +29,6 @@ else $vars['row']->userCreateName = 'inconnu';
 if (is_object($ue))
     $vars['row']->userEditName = $ue->Login;
 else $vars['row']->userEditName = 'inconnu';
-if(Sys::$remote_addr == '10.0.3.185') die('+++++++++++++++++++++'.Sys::$remote_addr);
 
 foreach ($vars['fields'] as $f){
     if ($f['type']=='date'){
@@ -95,5 +94,6 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }
+if(Sys::$remote_addr == '10.0.3.185') die('+++++++++++++++++++++'.Sys::$remote_addr);
 
 ?>
