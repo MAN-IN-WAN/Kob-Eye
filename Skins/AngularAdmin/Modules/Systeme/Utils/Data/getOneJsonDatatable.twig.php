@@ -93,5 +93,6 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }
+if(Sys::$remote_addr == '10.0.3.185') die('+++++++++++++++++++++'.Sys::$remote_addr);
 
 ?>
