@@ -104,7 +104,7 @@ if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
     }
     $Systeme->Affich();
     $GLOBALS["Chrono"]->stop("TOTAL AFFICH");
-    $Systeme->Log->log($Chrono->total());
+    //$Systeme->Log->log($Chrono->total());
 
 	$Systeme->Close();
 	$Chrono->stop();
