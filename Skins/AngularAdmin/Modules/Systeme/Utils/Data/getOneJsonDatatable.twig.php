@@ -17,12 +17,11 @@ if (!$vars['row']){
 }
 Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context,$vars['row']->Id);
 
-if(Sys::$remote_addr == '10.0.3.185') die(print_r($vars['row'],1));
 
 
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
-$uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
-$ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);
+$uc = $vars['row']->userCreate ? Sys::getOneData('Systeme','User/'.$vars['row']->userCreate) : null;
+$ue = $vars['row']->userCreate ? Sys::getOneData('Systeme','User/'.$vars['row']->userEdit) : null;
 if (is_object($uc))
     $vars['row']->userCreateName = $uc->Login;
 else $vars['row']->userCreateName = 'inconnu';
