@@ -1,4 +1,7 @@
 <?php
+
+if(Sys::$remote_addr == '10.0.3.185') die('+++++++++++++++++++++'.Sys::$remote_addr);
+
 session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
