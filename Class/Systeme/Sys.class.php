@@ -449,15 +449,9 @@ class Sys extends Root{
 				$Skin = new Skin();
 				$this->CurrentSkin=$Skin; 
 				$this->CurrentSkin->Template = false;
-				$GLOBALS["Chrono"]->start('xxJSON_3');
 				$data .= $this->getContenu();
-				$GLOBALS["Chrono"]->stop('xxJSON_3');
-				$GLOBALS["Chrono"]->start('xxJSON_4');
 				$data = $Skin->ProcessLang($data);
-				$GLOBALS["Chrono"]->stop('xxJSON_4');
-				$GLOBALS["Chrono"]->start('xxJSON_5');
 				print($data);
-				$GLOBALS["Chrono"]->stop('xxJSON_5');
 			break;
 		
 			case "xml":
