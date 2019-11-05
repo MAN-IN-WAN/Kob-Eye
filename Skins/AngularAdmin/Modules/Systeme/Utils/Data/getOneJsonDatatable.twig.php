@@ -20,9 +20,10 @@ Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',
 
 
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
-$uc = null;
-//$uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
-$ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);
+//$uc = null;
+$uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
+$ue = null;
+//$ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);
 if (is_object($uc))
     $vars['row']->userCreateName = $uc->Login;
 else $vars['row']->userCreateName = 'inconnu';
