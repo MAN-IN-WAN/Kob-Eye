@@ -428,12 +428,36 @@ class Cadref extends Module {
 	public static function GetStat() {
 		$annee = self::$Annee;
 		$data = array();
-		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.self::$Annee);
-		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.self::$Annee.'&Attente=0&Supprime=0');
-		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.self::$Annee.'&Attente=0&Supprime=0');
-		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
-		$u = $g->getChildren('User');
-		$data['NbUsers'] = count($u);
+
+		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbAdherents'] = $p['cnt'];
+		
+		$sql = "select count(*) as cnt from `##_Cadref-Inscription` where Annee='$annee' and Attente=0 and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbInscriptions'] = $p['cnt'];
+		
+		$sql = "select count(*) as cnt from `##_Cadref-Reservation` where Annee='$annee' and Attente=0 and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbReservations'] = $p['cnt'];
+
+		$sql = "
+select count(*) as cnt from `##_Systeme-Group` g
+inner join `##_Systeme-UserGroupId` ug on ug.GroupId=g.Id
+where g.Nom='CADREF_ADH'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbUsers'] = $p['cnt'];
+		
+//		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.self::$Annee);
+//		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.self::$Annee.'&Attente=0&Supprime=0');
+//		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.self::$Annee.'&Attente=0&Supprime=0');
+//		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+//		$u = $g->getChildren('User');
+//		$data['NbUsers'] = count($u);
 		return $data;
 	}
 

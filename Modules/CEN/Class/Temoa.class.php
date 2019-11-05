@@ -118,13 +118,14 @@ class Temoa extends genericClass {
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$doc = $temoa->GetHTML($f.".rtf");
-		$not = $temoa->GetNotesJson();
+		$not = $temoa->GetNoteCount();
 		$mrk = $temoa->GetMarksJson();
+		$lin = $temoa->GetLinesJson();
 		unset($temoa);
-		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-		$mrk = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$mark = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$line = json_decode($lin, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
-		return array('doc'=>utf8_encode($doc),'notes'=>count($note),'marks'=>$mrk,'trad'=>$trd,'trad2'=>$tr2 );
+		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark,'lines'=>$line,'trad'=>$trd,'trad2'=>$tr2,'picts'=>0);
 	}
 	
 	static function getNotes($args) {
@@ -132,7 +133,14 @@ class Temoa extends genericClass {
 		$t = Sys::getOneData('CEN', "Temoa/$id");
 		$c = $t->Code;
 		$a = explode('/', $t->ZipFile);
-		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c.rtf";
+		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
+
+		switch($args['num']) {
+			case 0: $f .= ".rtf"; break;
+			case 1: $f .= "_trad.rtf"; break;
+			case 2: $f .= "_trad2.rtf"; break;
+			case 3: $f .= "_trad3.rtf"; break;
+		}
 		
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 		$temoa = new temoa2\Temoa();
@@ -158,17 +166,18 @@ class Temoa extends genericClass {
 			case 2: $f .= "_trad3.rtf"; break;
 		}
 		
-klog::l("xxxxxxxxxxxx:$f",$args);
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$doc = $temoa->GetHTML($f);
+		$not = $temoa->GetNoteCount();
 		$mrk = $temoa->GetMarksJson();
+		$lin = $temoa->GetLinesJson();
 		unset($temoa);
-		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-		$mrk = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$mark = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		$line = json_decode($lin, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
-		return array('doc'=>utf8_encode($doc),'marks'=>$mrk);
+		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark, 'lines'=>$line);
 	}
 
 }

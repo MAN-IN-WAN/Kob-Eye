@@ -617,7 +617,7 @@
 		</VIEW>
     </OBJECTCLASS>
 
-	<OBJECTCLASS title="Register" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Nouvel Adhérents" Operations="">
+	<OBJECTCLASS title="Register" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Nouvel Adhérents" Operations="">
 		<PROPERTIES type="varchar" length="100" searchOrder="1" displayOrder="2" filterMode="generic" obligatoire="1" category="Description" list="2" form="2" fiche="2" listDescr="Nom" description="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" searchOrder="2" displayOrder="3" obligatoire="1" category="Description" list="3" form="3" fiche="3" listDescr="Prénom" description="Prénom">Prenom</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" list="5" form="4" fiche="4" description="Adresse">Adresse1</PROPERTIES>

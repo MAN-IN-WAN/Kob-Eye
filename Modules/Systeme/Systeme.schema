@@ -391,7 +391,7 @@
 		<PROPERTIES type="varchar" length="1024" fiche="1">EmbeddedImages</PROPERTIES>
 		<PROPERTIES type="datetime" fiche="1" list="1" >CreationTime</PROPERTIES>
 		<PROPERTIES type="datetime" fiche="1" list="1" >SendTime</PROPERTIES>
-		<PROPERTIES type="int" fiche="1" list="1" >Status</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="4" fiche="1" list="1" >Status</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" list="1" >Error</PROPERTIES>
 	</OBJECTCLASS>
 
