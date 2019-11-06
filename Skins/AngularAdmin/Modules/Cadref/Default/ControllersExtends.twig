@@ -680,6 +680,7 @@
 			ajax.success(function(data) {
 				var o = $scope.obj;
 				if(!data.data) return;
+console.error(">>>>>>>>>>>>>>",data);
 				if(data.data.error == 'No result') o.ScanCount = 0;
 				else o.ScanCount = data.data.response.aResult.length;
 				try { $scope.$digest(); } catch(ex) {}
