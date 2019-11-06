@@ -31,12 +31,10 @@ class Adherent extends genericClass {
 			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons);
 	}
 	
-	public function GetScanCount() {
-		//return array('ScanCount'=>0);
-	
-		$data = array('sApiKey'=>1, 'nId'=> $this->Id);
-
-		$ch = curl_init("https://scan.cadref.com/api/member");
+	public function GetScanCount($annee) {
+		$id = $this->Id;
+		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>"$id");
+		$ch = curl_init("https://scan.cadref.com/api/member/");
 		curl_setopt_array($ch, array(
 			CURLOPT_HTTPAUTH => CURLAUTH_ANY,
 			CURLOPT_USERPWD => "intranet:#Yanolorp20",
@@ -49,13 +47,9 @@ class Adherent extends genericClass {
 		    ),
 		    CURLOPT_POSTFIELDS => json_encode($data)
 		));
-		// request
 		$ret = curl_exec($ch);
-		// close
 		curl_close($ch);
-		// return
-		return $ret;
-
+		return json_decode($ret);
 	}
 
 	// $mode :

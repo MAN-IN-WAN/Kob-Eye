@@ -50,6 +50,7 @@ class CEN extends Module {
 				switch($args['pres']) {
 					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
 					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
+					case 'comm': return GDN::GetComments($args);
 				}
 				switch($args['lang']) {
 					case 'es': $pres = $dic->PresentationEs; break;
@@ -58,9 +59,6 @@ class CEN extends Module {
 				}
 				if(empty($pres)) $pres = $dic->PresentationEs;
 				return array('text'=>$pres);
-				
-			case 'comm':
-				return GDN::GetComments($args);
 				
 			case 'norm':
 				break;

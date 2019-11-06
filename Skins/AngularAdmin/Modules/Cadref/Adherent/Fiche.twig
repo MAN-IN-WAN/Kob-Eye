@@ -415,7 +415,7 @@
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestations','')">Attestations</button>
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>
-					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Documents</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Scan: {[{ obj.ScanCount }]}</button>
 				</div>
 			</div>
 		</div>

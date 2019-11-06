@@ -636,6 +636,7 @@
 
 		
 		// info annuelles et cotisation
+		$scope.obj.ScanCount = '?';
 		$scope.obj.nonCotis = false;
 		$scope.obj.nonSolde = false;
 		$scope.obj.NotesAnnuelles = '';
@@ -675,16 +676,17 @@
 				}
 			);
 			
-{#			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
 			ajax.success(function(data) {
 				var o = $scope.obj;
-				console.log('>>>>>>>>>>>>>>>>>>',data);
-				//o.ScanCount = Number(data.data.ScanCount);
+				if(!data.data) return;
+				if(data.data.error == 'No result') o.ScanCount = 0;
+				else o.ScanCount = data.data.response.aResult.length;
 				try { $scope.$digest(); } catch(ex) {}
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
-#}		}
+		}
 		
 		// change l'année selectionnée
 		var anneeDirty;

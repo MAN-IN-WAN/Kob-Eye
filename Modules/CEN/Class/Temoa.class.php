@@ -121,11 +121,13 @@ class Temoa extends genericClass {
 		$not = $temoa->GetNoteCount();
 		$mrk = $temoa->GetMarksJson();
 		$lin = $temoa->GetLinesJson();
+		if(!$temoa->GetPicts($f.'_esp.rtf')) $temoa->GetPicts($f.'_fra.rtf');
+		$pic = $temoa->GetPictCount();
 		unset($temoa);
 		$mark = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$line = json_decode($lin, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-
-		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark,'lines'=>$line,'trad'=>$trd,'trad2'=>$tr2,'picts'=>0);
+		
+		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark,'lines'=>$line,'trad'=>$trd,'trad2'=>$tr2,'picts'=>$pic);
 	}
 	
 	static function getNotes($args) {
