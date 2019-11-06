@@ -32,8 +32,8 @@ class Adherent extends genericClass {
 	}
 	
 	public function GetScanCount($annee) {
-		$id = $this->Id;
-		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>"$id");
+		$num = $this->Numero;
+		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>$num);
 		$ch = curl_init("https://scan.cadref.com/api/member/");
 		curl_setopt_array($ch, array(
 			CURLOPT_HTTPAUTH => CURLAUTH_ANY,
