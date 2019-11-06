@@ -133,7 +133,7 @@ where ce.EnseignantId=$id";
 		
 		if($mode != 'print') {
 			$mail = $obj['Mail'];
-			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where ";
+			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where Inactif=0 and ";
 			if($mail != 0) $sql .= "Id=$mail";
 			else $sql .= "Mail<>''";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -155,7 +155,7 @@ where ce.EnseignantId=$id";
 			return array('pdf'=>false, 'msg'=>true);
 		}
 				
-		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
+		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` where Inactif=0 order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return false;

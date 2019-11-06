@@ -465,18 +465,20 @@ class Adherent extends genericClass {
 	}
 	
 	function PrintAdherent($obj) {
-		$_SESSION['PrintAdherent'] = $obj;
-		
-		$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
-		$mode = array_search($obj['CurrentUrl'], $menus);
+		//$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
+		//$mode = array_search($obj['CurrentUrl'], $menus);
+		$mode = $obj['type'];
 
 		$annee = $obj['Annee'];
 		if(empty($annee)) $annee = Cadref::$Annee;
 		$sql = '';
 		$whr = '';
 
+		// selection selon de mode
 		switch($mode) {
 			case 0: // liste edherents
+				$_SESSION['PrintAdherent'] = $obj;
+
 				$file = 'ListeAdherent';
 				$typAdh = isset($obj['TypeAdherent']) ? $obj['TypeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
@@ -630,6 +632,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 					else $sql .= "order by i.CodeClasse, e.Nom, e.Prenom ";
 				}
 				break;
+				
 			case 1: // certificats medicaux
 				$file = 'ListeCertificat';
 				$contenu = 'N';
@@ -654,6 +657,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 
 				$sql .= "order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
+				
 			case 2: // fiches incomplètes
 				$file = 'ListeIncomplet';
 				$contenu = 'N';
@@ -672,25 +676,39 @@ order by a.Nom, a.Prenom";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
-		if($mode == 1) {
-			$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
-			$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
-			$body .= Cadref::MailSignature();
-		}
 		
 		if($obj['mode'] == 'mail') {
-			
-			foreach($pdo as $a) {
-				if(strpos($a['Mail'], '@') > 0) {
-					if($mode == 1) {
-						$file = $this->imprimeCertificat(array($a));
-						$b = Cadref::MailCivility($a).$body;
-						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$b, 'Attachments'=>array($file));
-					}
-					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MSG_ADH) Cadref::SendMessage($args);				
-				}
+
+			switch($mode) {
+				case 0:
+					$subj = $obj['Sujet'];
+					$body = $obj['Corps'];
+					$att = $obj['Pieces']['data'];
+					break;
+				case 1:
+					$subj = 'CADREF : Certificat médical';
+					$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
+					$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
+					break;
+				case 2:
+					$subj = '';
+					$body = '';
+					$att = array();
+					break;
 			}
+			$body .= Cadref::MailSignature();
+
+			foreach($pdo as $a) {
+				if(strpos($a['Mail'], '@') === false) continue;
+					
+				if($mode == 1) {
+					$att = array($this->imprimeCertificat(array($a)));
+				}
+				$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
+				Cadref::SendMessage($args);				
+			}
+			$args = array('Subject'=>$subj, 'To'=>array('contact@cadref.com'), 'Body'=>$body, 'Attachments'=>$att);
+			Cadref::SendMessage($args);				
 			return true;
 		}
 		if($obj['mode'] == 'sms') {

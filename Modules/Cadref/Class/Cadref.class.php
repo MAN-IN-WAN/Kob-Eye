@@ -794,7 +794,7 @@ where ce.Classe=$cid
 		$m->From = "noreply@cadref.com";
 		if(isset($params['To']))
 			$m->To = implode(',', $params['To']);
-klog::l(">>>>>>>>>>>>>>>".$m->To);
+//klog::l(">>>>>>>>>>>>>>>".$m->To);
 //		if($m->To == 'contact@cadref.com') 
 //			$m->From = "contact@cadref.com";
 //		else {
