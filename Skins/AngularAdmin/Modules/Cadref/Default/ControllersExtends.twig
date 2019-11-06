@@ -679,10 +679,7 @@
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
 			ajax.success(function(data) {
 				var o = $scope.obj;
-				if(!data.data) return;
-console.error(">>>>>>>>>>>>>>",data);
-				if(data.data.error == 'No result') o.ScanCount = 0;
-				else o.ScanCount = data.data.response.aResult.length;
+				o.ScanCount = data.data.scan;
 				try { $scope.$digest(); } catch(ex) {}
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');

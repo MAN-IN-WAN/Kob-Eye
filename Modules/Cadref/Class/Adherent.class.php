@@ -49,7 +49,18 @@ class Adherent extends genericClass {
 		));
 		$ret = curl_exec($ch);
 		curl_close($ch);
-		return json_decode($ret);
+		
+		if($ret == '') return array('scan'=>0);
+		
+		$o = json_decode($ret);
+		if($o->error == 'No result') return array('scan'=>0);
+		$n = 0;
+		if(isset($o->response)) {
+			foreach($o->response->aResult as $r) {
+				if(substr($r->DTY_DT_CREATION,6,4) == $annee) $n++;
+			}
+		}
+		return array('scan'=>$n);
 	}
 
 	// $mode :
