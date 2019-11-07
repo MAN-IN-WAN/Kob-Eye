@@ -25,3 +25,5 @@ $vars['adresse1'] = $a->Adresse1;
 $vars['adresse2'] = $a->Adresse2;
 $vars['ville'] = $a->CP.'  '.$a->Ville;
 $vars['objet'] = "Remboursement de cours";
+klog::l('aaaaaaaaaaaaa',$a);
+klog::l('vvvvvvvvvvvvv',$vars);
