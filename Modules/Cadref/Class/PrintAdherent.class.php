@@ -276,7 +276,7 @@ class PrintAdherent extends FPDF {
 		$this->SetXY($this->left + 5, $this->posy);
 		$this->SetFont('Arial', 'I', 10);
 		$this->Cell(20, 4, $this->rupVal, 0, 0, 'L');
-		$this->Cell(55, 4, $this->cv($this->rupLib), 0, 0, 'L');
+		$this->Cell(65, 4, $this->cv($this->rupLib), 0, 0, 'L');
 		
 			$this->Cell(20, 4, $this->cv($this->Jour), 0, 0, 'L');
 			$this->Cell(15, 4, $this->HeureDebut, 0, 0, 'L');
