@@ -199,7 +199,7 @@ class Cadref extends Module {
 	
 	public static function GeneratePassword() {	
 		$lc = "abcdefghijkmnpqrstuvwxyz";
-		$lc = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+		$uc = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 		$dc = '123456789';
 		$sc = '$*+?-=';
 		return str_shuffle(substr(str_shuffle($lc),0,6).substr(str_shuffle($uc),0,1).substr(str_shuffle($dc),0,1));
