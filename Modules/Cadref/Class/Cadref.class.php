@@ -122,13 +122,13 @@ klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $sql");
 			foreach($pdo as $p) {
 				$r = array();
 				$r['Numero'] = $p['Numero'];
-				$r['Nom'] = strtoupper($p['Nom']);
-				$r['Prenom'] = strtoupper($p['Prenom']);
-				$a = strtoupper($p['Adresse1']);
-				$r['Adresse'] = substr($a, 0, 10);
+				$r['Nom'] = $p['Nom'];
+				$r['Prenom'] = $p['Prenom'];
+				$a = $p['Adresse1'];
+				$r['Adresse'] = mb_substr($a, 0, 10);
 				if(strlen($a) > 10) $r['Adresse'] .= '...';
-				if(strlen($a) > 16) $r['Adresse'] .= substr($a, -4, 4);
-				$r['Ville'] = strtoupper($p['Ville']);
+				if(strlen($a) > 16) $r['Adresse'] .= mb_substr($a, -3, 3);
+				$r['Ville'] = $p['Ville'];
 				$s = $p['Mail'];
 				if($mail && $mail == $s) $r['Mail'] = $s;
 				else if($s) {
