@@ -117,7 +117,6 @@ class Cadref extends Module {
 		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where Numero='$num' and Mail='$mail' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $sql");
 		if($pdo && $pdo->rowcount()) {
 			foreach($pdo as $p) {
 				$r = array();
@@ -146,9 +145,7 @@ klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $sql");
 				break;
 			}
 			$data['success'] = 1;
-klog::l("xxxxxxxxxxxxxxxxxxxxxxxx",$r);
 			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
-klog::l("uuuuuuuuuuuuuuuuuuuu".$u->id);			
 			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
 			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
 		} else $data['message'] = "Aucun adhérent ne correspond à ces critères.<br>Si vous ne parvenez pas à vous identifier veuillez contacter le CADREF au 04.66.36.99.44.";
