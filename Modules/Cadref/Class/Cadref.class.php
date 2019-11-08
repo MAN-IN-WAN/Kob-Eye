@@ -155,7 +155,7 @@ klog::l("uuuuuuuuuuuuuuuuuuuu".$u->id);
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
-		return json_encode($data, JSON_UNESCAPED_UNICODE);
+		return json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE);
 	}
 
 	public static function CreateUser($num, $confirm=false, $ensId=0) {
