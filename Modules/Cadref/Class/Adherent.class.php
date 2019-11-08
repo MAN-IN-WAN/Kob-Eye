@@ -1272,22 +1272,27 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$vsess = isset($_SESSION['visite']);
 		if($vsess) $vids = unserialize($_SESSION['visite']);
 
-		$c = "'$classe',";
-		if($action == 'add' && !empty($classe)) {
-			$sess = true;
-			if(strpos($ids, $c) === false) $ids .= $c;
-		}
-		if(!empty($ids) && $action == 'remove' && !empty($classe)) {
-			$ids = str_replace($c, '', $ids);
-			if($sess) $_SESSION['panier'] = serialize($ids);			
-		}
-		if($action == 'visiteAdd' && !empty($classe)) {
-			$vsess = true;
-			if(strpos($vids, $c) === false) $vids .= $c;
-		}
-		if($action == 'visiteRemove' && !empty($vids) && !empty($classe)) {
-			$vids = str_replace($c, '', $vids);
-			if($vsess) $_SESSION['visite'] = serialize($vids);			
+		$classe = trim($classe);
+		if(!empty($classe)) {
+			$c = "'$classe',";
+			if($action == 'add') {
+				$sess = true;
+				if(strpos($ids, $c) === false) $ids .= $c;
+				//if($sess) $_SESSION['panier'] = serialize($ids);			
+			}
+			if(!empty($ids) && $action == 'remove') {
+				$ids = str_replace($c, '', $ids);
+				//if($sess) $_SESSION['panier'] = serialize($ids);			
+			}
+			if($action == 'visiteAdd') {
+				$vsess = true;
+				if(strpos($vids, $c) === false) $vids .= $c;
+				//if($vsess) $_SESSION['visite'] = serialize($vids);			
+			}
+			if($action == 'visiteRemove' && !empty($vids)) {
+				$vids = str_replace($c, '', $vids);
+				//if($vsess) $_SESSION['visite'] = serialize($vids);			
+			}
 		}
 		
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);

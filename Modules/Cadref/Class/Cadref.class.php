@@ -117,6 +117,7 @@ class Cadref extends Module {
 		$sql = "select Numero,Nom,Prenom,Adresse1,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where Numero='$num' and Mail='$mail' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $sql");
 		if($pdo && $pdo->rowcount()) {
 			foreach($pdo as $p) {
 				$r = array();
@@ -216,9 +217,10 @@ class Cadref extends Module {
 		}
 		
 		$adh = Sys::getOneData('Cadref', "Adherent/Numero=$login&Mail=$mail");
-		if(!count($adh)) {
+		if(!$adh) {
+			// user local (admin)
 			$usr = Sys::getOneData('Systeme', "User/Login=$login&Mail=$mail");
-			if(!count($usr)) {
+			if(!$usr) {
 				$data['message'] = 'UTILISATEUR NON TROUVÉ.';
 				return json_encode($data);							
 			}

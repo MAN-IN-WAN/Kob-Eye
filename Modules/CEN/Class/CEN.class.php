@@ -17,17 +17,23 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'temoa':
+				return Temoa::GetList($args);
+				
 			case 'docs':
 				return Temoa::GetDocs();
 				
 			case 'doc':
-				return Temoa::getDocument($args);
+				return Temoa::GetDocument($args);
 				
 			case 'notes':
-				return Temoa::getNotes($args);
+				return Temoa::GetNotes($args);
+
+			case 'picts':
+				return Temoa::GetPicts($args);
 
 			case 'temoa-trad':
-				return Temoa::getTraduction($args);
+				return Temoa::GetTraduction($args);
 				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
@@ -62,9 +68,6 @@ class CEN extends Module {
 				
 			case 'norm':
 				break;
-			
-			case 'temoa':
-				return Temoa::GetList($args);
 		}
 	}
 

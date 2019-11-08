@@ -83,6 +83,7 @@ class Temoa extends genericClass {
 		$docs = array();
 		if($o) {
 			foreach($o as $a) {
+				$a->text = strtolower($a->text);
 				$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
 				$a->id = $t->Id;
 				$docs[$t->Id] = '';
@@ -105,7 +106,7 @@ class Temoa extends genericClass {
 		return array('documentsId'=>$docId, 'documents'=>$doc);		
 	}
 	
-	static function getDocument($args) {
+	static function GetDocument($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
 		$c = $t->Code;
@@ -130,7 +131,7 @@ class Temoa extends genericClass {
 		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark,'lines'=>$line,'trad'=>$trd,'trad2'=>$tr2,'picts'=>$pic);
 	}
 	
-	static function getNotes($args) {
+	static function GetNotes($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
 		$c = $t->Code;
@@ -155,7 +156,29 @@ class Temoa extends genericClass {
 		return array('notes'=>$note);
 	}
 	
-	static function getTraduction($args) {
+	static function GetPicts($args) {
+		$id = $args['id'];
+		$t = Sys::getOneData('CEN', "Temoa/$id");
+		$c = $t->Code;
+		$a = explode('/', $t->ZipFile);
+		$d = "/Home/$a[1]/CEN/Temoa/$c/";
+		$f = getcwd()."$d$c";
+		
+		$file = $f.'_esp.rtf';
+		if(!file_exists($file)) {
+			$file = $f.'_fra.rtf';
+			if(!file_exists($file)) return array('picts'=>array());
+		}
+
+		$temoa = new temoa2\Temoa();
+		$temoa->GetPicts($file);
+		$pic = $temoa->GetPictsJson();
+		unset($temoa);
+		$pict = json_decode($pic, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		return array('dir'=>$d, 'picts'=>$pict);
+	}
+	
+	static function GetTraduction($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
 		$c = $t->Code;
