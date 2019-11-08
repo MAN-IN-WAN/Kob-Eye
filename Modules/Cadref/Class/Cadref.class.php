@@ -127,7 +127,7 @@ klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $sql");
 				$a = strtoupper($p['Adresse1']);
 				$r['Adresse'] = substr($a, 0, 10);
 				if(strlen($a) > 10) $r['Adresse'] .= '...';
-				if(strlen($a) > 16) $r['Adresse'] .= substr($a, -3, 3);
+				if(strlen($a) > 16) $r['Adresse'] .= substr($a, -4, 4);
 				$r['Ville'] = strtoupper($p['Ville']);
 				$s = $p['Mail'];
 				if($mail && $mail == $s) $r['Mail'] = $s;
