@@ -168,8 +168,9 @@ class PrintAdherent extends FPDF {
 		switch($this->mode) {
 			case 0:
 				if($this->adherent) {
-					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
-					$s = $cls->CodeClasse;
+					$s = $l['Delegue'];
+//					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
+//					$s = $cls->CodeClasse;
 				}
 				//else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
 				//else $s = 'C:'.substr($l['CodeClasse'], 6, 1);

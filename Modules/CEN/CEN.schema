@@ -1,5 +1,5 @@
 <SCHEMA>
-	<OBJECTCLASS title="Dictionnaire" driver="mysql" AccessPoint="1" Description="Dictionnaire"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Dictionnaire.class.php">
+	<OBJECTCLASS title="Dictionnaire" driver="mysql" order="Nom" AccessPoint="1" Description="Dictionnaire"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Dictionnaire.class.php">
 		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="60" searchOrder="2" category="Description" form="2" list="2" fiche="2">Nom</PROPERTIES>
 		<PROPERTIES type="int" default="0" auto="1" category="Description" form="3" list="3" fiche="3">Entrees</PROPERTIES>
@@ -48,7 +48,7 @@
 		<PROPERTIES type="file" category="Description" form="5" fiche="5" description="Fichier">FilePath</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Temoa" driver="mysql" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Temoa.class.php">
+	<OBJECTCLASS title="Temoa" driver="mysql" order="Nom" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Temoa.class.php">
 		<PROPERTIES type="varchar" length="255" category="Description" searchOrder="1" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" searchOrder="2" form="2" list="2" fiche="2">Nom</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" form="3" fiche="3" description="Images">Images</PROPERTIES>
@@ -56,8 +56,26 @@
 		<PROPERTIES type="html" category="Présentation" form="5" fiche="5" description="Présentation Espagnol">PresentationEs</PROPERTIES>
 		<PROPERTIES type="html" category="Présentation" form="6" fiche="6" description="Présentation Français">PresentationFr</PROPERTIES>
 		<PROPERTIES type="html" category="Présentation" form="7" fiche="7" description="Présentation Anglais">PresentationEn</PROPERTIES>
-		<PROPERTIES type="text" category="Description" >Nahuatl</PROPERTIES>
-		<PROPERTIES type="text" category="Description" >Trad1</PROPERTIES>
-		<PROPERTIES type="text" category="Description" >Trad2</PROPERTIES>
+		<PROPERTIES type="longtext" category="Document" >DocText</PROPERTIES>
+		<PROPERTIES type="longtext" category="Document" >DocHtml</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Document" >DocNoteCount</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Document" >DocPictCount</PROPERTIES>
+		<PROPERTIES type="longtext" category="Document" >DocNotes</PROPERTIES>
+		<PROPERTIES type="text" category="Document" >DocMarks</PROPERTIES>
+		<PROPERTIES type="text" category="Document" >DocLines</PROPERTIES>
+		<PROPERTIES type="text" category="Document" >DocPictures</PROPERTIES>
+
+		<PROPERTIES type="longtext" category="Traduction1" >Trad1Html</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Traduction1" >Trad1NoteCount</PROPERTIES>
+		<PROPERTIES type="longtext" category="Traduction1" >Trad1Notes</PROPERTIES>
+		<PROPERTIES type="text" category="Traduction1" >Trad1Marks</PROPERTIES>
+		<PROPERTIES type="text" category="Traduction1" >Trad1Lines</PROPERTIES>
+
+		<PROPERTIES type="longtext" category="Traduction2" >Trad2Html</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Traduction2" >Trad2NoteCount</PROPERTIES>
+		<PROPERTIES type="longtext" category="Traduction2" >Trad2Notes</PROPERTIES>
+		<PROPERTIES type="text" category="Traduction2" >Trad2Marks</PROPERTIES>
+		<PROPERTIES type="text" category="Traduction2" >Trad2Lines</PROPERTIES>
+
 	</OBJECTCLASS>
 </SCHEMA>

@@ -275,6 +275,10 @@ cadref-btn-close:hover {
 .cadref-annuel {
 	background-color:paleturquoise !important;
 }
+.cadref-annuel .dropdown-toggle {
+	background-color:paleturquoise !important;
+}
+
 .cadref-highlight {
 	background-color: yellow !important;
 }

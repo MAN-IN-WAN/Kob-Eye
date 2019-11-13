@@ -472,6 +472,11 @@
 			},100);
 		}
 		
+		// majuscules
+		$scope.keyUpper = function(event) {
+		console.log(event);
+		}
+		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
 			$scope[child].filter = '';
@@ -664,6 +669,7 @@
 					o.AntenneId = data.data.AntenneId;
 					o.nonSolde = Number($scope.obj.Solde) != 0;
 					o.nonCotis = Number($scope.obj.Cotisation) == 0;
+					o.ClasseClasseIdlabel = data.data.ClasseClasseIdlabel;
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 					$scope.obj.certifInvalide = data.data.certifInvalide;

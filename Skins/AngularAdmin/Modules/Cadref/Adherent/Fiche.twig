@@ -249,11 +249,20 @@
 											{{ label("Délégué de classe") }}
 										</div>
 										<div class="col-md-7">
-											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
+{#											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
 												{% for v,k in classes %}
 													<option value="{{ v }}">{{ k }}</option>
 												{% endfor %}
-											</select>
+											</select>#}
+									<div custom-select="a.id as a.label for a in getSelectData('CadrefClasseStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':'Annee={{ Annee }}'}" 
+										 ng-model="{{ o }}.ClasseId"
+										 class="form-control cadref-input cadref-annuel" 
+										 ng-title="{{ o }}.ClasseClasseIdlabel"
+										 style="text-transform:uppercase;"
+										 placeholder=""
+										 >
+									</div>
 										</div>
 									</div>
 								</div>

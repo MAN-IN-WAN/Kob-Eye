@@ -1,7 +1,7 @@
 <?php
 
 class Adherent extends genericClass {
-
+	
 	function Save() {
 		$id = $this->Id;
 		$annee = Cadref::$Annee;
@@ -25,10 +25,15 @@ class Adherent extends genericClass {
 	function GetFormInfo($annee) {
 		$c = !$this->CheckCertificat();
 		$s = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		$cc = '';
+		if($s->ClasseId) {
+			$c = Sys::getOneData('Cadref', 'Classe/'.$s->ClasseId);
+			$cc = $c->CodeClasse;
+		}
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
-			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons);
+			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc);
 	}
 	
 	public function GetScanCount($annee) {
