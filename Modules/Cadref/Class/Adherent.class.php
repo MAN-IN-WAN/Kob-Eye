@@ -27,8 +27,8 @@ class Adherent extends genericClass {
 		$s = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$cc = '';
 		if($s->ClasseId) {
-			$c = Sys::getOneData('Cadref', 'Classe/'.$s->ClasseId);
-			$cc = $c->CodeClasse;
+			$cl = Sys::getOneData('Cadref', 'Classe/'.$s->ClasseId);
+			$cc = $cl->CodeClasse;
 		}
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,

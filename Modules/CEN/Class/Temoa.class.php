@@ -82,7 +82,7 @@ class Temoa extends genericClass {
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
-		$orto = json_decode($args['ortho']);
+		$ortho = json_decode($args['ortho']);
 
 		$sql = "select Code,ZipFile from `##_CEN-Temoa` where 1 $corpus";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
