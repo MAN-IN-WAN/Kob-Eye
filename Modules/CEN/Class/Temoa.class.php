@@ -82,7 +82,7 @@ class Temoa extends genericClass {
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
-		$ortho = json_decode($args['ortho']);
+		$ortho = $args['ortho'];
 
 		$sql = "select Code,ZipFile from `##_CEN-Temoa` where 1 $corpus";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -98,6 +98,7 @@ class Temoa extends genericClass {
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$ret = $temoa->SetCorpus($corpus);
+		$temoa->SetOrtho($ortho);
 
 		$temoa->AddArrow($args['word']);
 		if($temoa->Search()) {
@@ -112,7 +113,7 @@ class Temoa extends genericClass {
 		$docs = array();
 		if($o) {
 			foreach($o as $a) {
-				$a->text = strtolower($a->text);
+				//$a->text = strtolower($a->text);
 				$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
 				$a->id = $t->Id;
 				$docs[$t->Id] = '';

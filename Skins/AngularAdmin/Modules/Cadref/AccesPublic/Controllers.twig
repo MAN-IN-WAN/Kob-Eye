@@ -46,7 +46,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			query: '{{ module }}/{{ objecttype }}/'+obj.id,
 			args : args,
 			explodeArgs:explodeArgs,
-			tms : Date.now(),
+			tms : Date.now()
 		};
 		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
