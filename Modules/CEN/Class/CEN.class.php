@@ -17,14 +17,23 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'temoa':
+				return Temoa::GetList($args);
+				
 			case 'docs':
 				return Temoa::GetDocs();
 				
 			case 'doc':
-				return Temoa::getDocument($args);
+				return Temoa::GetDocument($args);
 				
 			case 'notes':
-				return Temoa::getNotes($args);
+				return Temoa::GetNotes($args);
+
+			case 'picts':
+				return Temoa::GetPicts($args);
+
+			case 'temoa-trad':
+				return Temoa::GetTraduction($args);
 				
 			case 'dict':
 				$dics = Sys::getData('CEN', 'Dictionnaire');
@@ -44,23 +53,24 @@ class CEN extends Module {
 				return GDN::GetGDN($args);
 				
 			case 'pres':
-				$dic = genericClass::createInstance('CEN', 'Dictionnaire');
-				$dic->initFromId($args['id']);
+				switch($args['pres']) {
+					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
+					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
+					case 'comm': return GDN::GetComments($args);
+					case 'doc-read':
+						$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	
+						return array('text'=>$dic->DocHtml);
+				}
 				switch($args['lang']) {
 					case 'es': $pres = $dic->PresentationEs; break;
 					case 'fr': $pres = $dic->PresentationFr; break;
 					case 'en': $pres = $dic->PresentationEn; break;
 				}
+				if(empty($pres)) $pres = $dic->PresentationEs;
 				return array('text'=>$pres);
-				
-			case 'comm':
-				return GDN::GetComments($args);
 				
 			case 'norm':
 				break;
-			
-			case 'temoa':
-				return Temoa::GetList($args);
 		}
 	}
 

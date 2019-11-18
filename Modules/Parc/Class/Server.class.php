@@ -1426,7 +1426,8 @@ class Server extends genericClass {
         if( !$noerror&&$matches[1] !== "0" ) {
             throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
         }
-        return $result[0];
+        //return $result[0].$result[3];
+        return print_r($result,true);
     }
 
     /**
@@ -1473,11 +1474,12 @@ class Server extends genericClass {
     private function rawExec( $command,$activity=null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
+        $dio_stream = ssh2_fetch_stream($stream, SSH2_STREAM_STDDIO);
         stream_set_blocking( $stream, TRUE );
         stream_set_blocking( $error_stream, TRUE );
+        stream_set_blocking( $dio_stream, TRUE );
         $data='';
         while ($buf = fread($stream, 4096)) {
-            //echo $buf;
             //tentative de récupération de la progression
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
@@ -1486,7 +1488,16 @@ class Server extends genericClass {
             $data.=$buf;
         }
         $output = $data;//substr($data,strlen($data)-1,1);//stream_get_contents( $stream );
-        $error_output = stream_get_contents( $error_stream );
+        $error_output = '';
+        while ($buf = fread($error_stream, 4096)) {
+            $error_output.=$buf;
+        }
+        $dio_output = '';
+        while ($buf = fread($dio_stream, 4096)) {
+            $dio_output.=$buf;
+        }
+        /*$error_output = stream_get_contents( $error_stream );
+        $dio_output = stream_get_contents( $dio_stream );*/
         //alors récupération sur le dernier caractère
         $exit_output = 0;
         if (preg_match('/^(.*)\n(0|-?[1-9][0-9]*)$/s',$output,$out)) {
@@ -1495,7 +1506,8 @@ class Server extends genericClass {
         }
         fclose( $stream );
         fclose( $error_stream );
-        return array( $output, $error_output,$exit_output);
+        fclose( $dio_stream );
+        return array( $output, $error_output,$exit_output,$dio_output);
     }
     /**
      * createTaskLdap2Service

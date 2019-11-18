@@ -249,11 +249,20 @@
 											{{ label("Délégué de classe") }}
 										</div>
 										<div class="col-md-7">
-											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
+{#											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
 												{% for v,k in classes %}
 													<option value="{{ v }}">{{ k }}</option>
 												{% endfor %}
-											</select>
+											</select>#}
+									<div custom-select="a.id as a.label for a in getSelectData('CadrefClasseStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':'Annee={{ Annee }}'}" 
+										 ng-model="{{ o }}.ClasseId"
+										 class="form-control cadref-input cadref-annuel" 
+										 ng-title="{{ o }}.ClasseClasseIdlabel"
+										 style="text-transform:uppercase;"
+										 placeholder=""
+										 >
+									</div>
 										</div>
 									</div>
 								</div>
@@ -415,7 +424,7 @@
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestations','')">Attestations</button>
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>
-					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Documents</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Scan: {[{ obj.ScanCount }]}</button>
 				</div>
 			</div>
 		</div>

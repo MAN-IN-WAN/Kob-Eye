@@ -124,9 +124,9 @@ class Cadref extends Module {
 				$r['Nom'] = $p['Nom'];
 				$r['Prenom'] = $p['Prenom'];
 				$a = $p['Adresse1'];
-				$r['Adresse'] = substr($a, 0, 10);
+				$r['Adresse'] = mb_substr($a, 0, 10);
 				if(strlen($a) > 10) $r['Adresse'] .= '...';
-				if(strlen($a) > 16) $r['Adresse'] .= substr($a, -3, 3);
+				if(strlen($a) > 16) $r['Adresse'] .= mb_substr($a, -3, 3);
 				$r['Ville'] = $p['Ville'];
 				$s = $p['Mail'];
 				if($mail && $mail == $s) $r['Mail'] = $s;
@@ -180,16 +180,15 @@ class Cadref extends Module {
 		if(strpos($a->Mail, '@') > 0) {
 			$s = self::MailCivility($a);
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-			$s .= "Vos paramètres de connection sont les suivants :<br /><br />";
+			$s .= "Vos paramètres de connexion sont les suivants :<br /><br />";
 			$s .= "Code utilisateur : <strong>$num</strong><br />Mot de Passe : <strong>$pass</strong><br /><br />";
 			if($confirm) {
 				//$s .= 'Avant de pouvoir vous inscrire à des cours ou à des visites guidées,<br />';
 				$s .= 'Pensez à compléter les informations dans la rubrique "Info personnelles".<br /><br />';
 			}
 			$s .= self::MailSignature();
-			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
-				'To'=>array($a->Mail),
-				'Body'=>$s);
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenue dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
+				'To'=>array($a->Mail,'contact@cadref.com'), 'Body'=>$s);
 			self::SendMessage($params);
 		}
 		$msg = "Code utilisateur: $num\nMote de passe: $pass\n";
@@ -200,7 +199,7 @@ class Cadref extends Module {
 	
 	public static function GeneratePassword() {	
 		$lc = "abcdefghijkmnpqrstuvwxyz";
-		$lc = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+		$uc = $lc = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 		$dc = '123456789';
 		$sc = '$*+?-=';
 		return str_shuffle(substr(str_shuffle($lc),0,6).substr(str_shuffle($uc),0,1).substr(str_shuffle($dc),0,1));
@@ -217,9 +216,10 @@ class Cadref extends Module {
 		}
 		
 		$adh = Sys::getOneData('Cadref', "Adherent/Numero=$login&Mail=$mail");
-		if(!count($adh)) {
+		if(!$adh) {
+			// user local (admin)
 			$usr = Sys::getOneData('Systeme', "User/Login=$login&Mail=$mail");
-			if(!count($usr)) {
+			if(!$usr) {
 				$data['message'] = 'UTILISATEUR NON TROUVÉ.';
 				return json_encode($data);							
 			}
@@ -242,8 +242,7 @@ class Cadref extends Module {
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
 		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-			'To'=>array($mail),
-			'Body'=>$s);
+			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
 		self::SendMessage($params);
 
 		$msg = "CADREF : Changement de mot de passe.\nMot de passe: $new\n";
@@ -374,8 +373,7 @@ class Cadref extends Module {
 		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Confirmation d\'enregistrement.'),
-			'To'=>array($mail),
-			'Body'=>$s);
+			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
 		self::SendMessage($params);
 
 		$data['success'] = 1;
@@ -431,12 +429,36 @@ class Cadref extends Module {
 	public static function GetStat() {
 		$annee = self::$Annee;
 		$data = array();
-		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.self::$Annee);
-		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.self::$Annee.'&Attente=0&Supprime=0');
-		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.self::$Annee.'&Attente=0&Supprime=0');
-		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
-		$u = $g->getChildren('User');
-		$data['NbUsers'] = count($u);
+
+		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbAdherents'] = $p['cnt'];
+		
+		$sql = "select count(*) as cnt from `##_Cadref-Inscription` where Annee='$annee' and Attente=0 and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbInscriptions'] = $p['cnt'];
+		
+		$sql = "select count(*) as cnt from `##_Cadref-Reservation` where Annee='$annee' and Attente=0 and Supprime=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbReservations'] = $p['cnt'];
+
+		$sql = "
+select count(*) as cnt from `##_Systeme-Group` g
+inner join `##_Systeme-UserGroupId` ug on ug.GroupId=g.Id
+where g.Nom='CADREF_ADH'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
+		foreach($pdo as $p) $data['NbUsers'] = $p['cnt'];
+		
+//		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.self::$Annee);
+//		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.self::$Annee.'&Attente=0&Supprime=0');
+//		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.self::$Annee.'&Attente=0&Supprime=0');
+//		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+//		$u = $g->getChildren('User');
+//		$data['NbUsers'] = count($u);
 		return $data;
 	}
 
@@ -768,21 +790,19 @@ where ce.Classe=$cid
 		return $e;
 	}
 		
-	public static function SendMessage($params) {
+	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
-		$m->From = "noreply@cadref.com";
-		if(isset($params['To']))
-			$m->To = implode(',', $params['To']);
-		if(isset($params['Cc']))
-			$m->Cc = implode(',', $params['Cc']);
-		//if(isset($params['Bcc']))
-			$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
+		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
+		else $m->From = "noreply@cadref.com";		
+		if(isset($params['To'])) $m->To = implode(',', $params['To']);
+		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
+		
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
-		if(isset($params['Attachments']))
-			$m->Attachments = implode(',', $params['Attachments']);
+		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
+		
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		$m->EmbeddedImages = $p->Valeur; //"Skins/LoginCadref/Img/cadref_logo_bleu_100.png|cadref_logo";
+		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
 	}
 	

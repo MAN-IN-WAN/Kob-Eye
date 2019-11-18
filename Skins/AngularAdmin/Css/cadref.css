@@ -108,6 +108,9 @@ table tr td.cadref-td-diff {
 .cadref-btn-copy:after {
     content: "\e9c8";
 }
+.cadref-btn-encais:after {
+    content: "\ea0c";
+}
 .cadref-btn-erase:after {
     font-family: 'icomoon-ultimate', serif;
     content: "\ed66";
@@ -120,6 +123,9 @@ table tr td.cadref-td-diff {
 }
 .cadref-btn-msg:after {
     content: "\ea32";
+}
+.cadref-btn-print:after {
+    content: "\ea69";
 }
 .cadref-btn-close {
 	float: right;
@@ -269,6 +275,10 @@ cadref-btn-close:hover {
 .cadref-annuel {
 	background-color:paleturquoise !important;
 }
+.cadref-annuel .dropdown-toggle {
+	background-color:paleturquoise !important;
+}
+
 .cadref-highlight {
 	background-color: yellow !important;
 }

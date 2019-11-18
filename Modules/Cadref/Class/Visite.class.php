@@ -11,10 +11,15 @@ class Visite extends genericClass {
 		if(! $id) { //if($mode) {
 			$this->Annee = $annee;
 			$this->Utilisateur = Sys::$User->Initiales;
+			$this->Attentes = 0;
+			$this->Inscrits = 0;
+			$this->Attachements = 0;
 		}
-		$this->Attentes = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=1&Supprime=0');
-		$this->Inscrits = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=0&Supprime=0');
-		$this->Attachements = Sys::getCount('Cadref','Visite/'.$this->Id.'/Attachement');
+		else {
+			$this->Attentes = Sys::getCount('Cadref','Visite/'.$id.'/Reservation/Attente=1&Supprime=0');
+			$this->Inscrits = Sys::getCount('Cadref','Visite/'.$id.'/Reservation/Attente=0&Supprime=0');
+			$this->Attachements = Sys::getCount('Cadref','Visite/'.$id.'/Attachement');
+		}
 
 		$ret = parent::Save();
 		if(! $id) {

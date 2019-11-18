@@ -1,7 +1,7 @@
 <?php
 
 class Adherent extends genericClass {
-
+	
 	function Save() {
 		$id = $this->Id;
 		$annee = Cadref::$Annee;
@@ -25,10 +25,47 @@ class Adherent extends genericClass {
 	function GetFormInfo($annee) {
 		$c = !$this->CheckCertificat();
 		$s = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		$cc = '';
+		if($s->ClasseId) {
+			$cl = Sys::getOneData('Cadref', 'Classe/'.$s->ClasseId);
+			$cc = $cl->CodeClasse;
+		}
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
-			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons);
+			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc);
+	}
+	
+	public function GetScanCount($annee) {
+		$num = $this->Numero;
+		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>$num);
+		$ch = curl_init("https://scan.cadref.com/api/member/");
+		curl_setopt_array($ch, array(
+			CURLOPT_HTTPAUTH => CURLAUTH_ANY,
+			CURLOPT_USERPWD => "intranet:#Yanolorp20",
+		    CURLOPT_POST => TRUE,
+		    CURLOPT_SSL_VERIFYHOST => FALSE,
+		    CURLOPT_SSL_VERIFYPEER => FALSE,
+		    CURLOPT_RETURNTRANSFER => TRUE,
+		    CURLOPT_HTTPHEADER => array(
+		        'Content-Type: application/json'
+		    ),
+		    CURLOPT_POSTFIELDS => json_encode($data)
+		));
+		$ret = curl_exec($ch);
+		curl_close($ch);
+		
+		if($ret == '') return array('scan'=>0);
+		
+		$o = json_decode($ret);
+		if($o->error == 'No result') return array('scan'=>0);
+		$n = 0;
+		if(isset($o->response)) {
+			foreach($o->response->aResult as $r) {
+				if(substr($r->DTY_DT_CREATION,6,4) == $annee) $n++;
+			}
+		}
+		return array('scan'=>$n);
 	}
 
 	// $mode :
@@ -438,18 +475,20 @@ class Adherent extends genericClass {
 	}
 	
 	function PrintAdherent($obj) {
-		$_SESSION['PrintAdherent'] = $obj;
-		
-		$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
-		$mode = array_search($obj['CurrentUrl'], $menus);
+		//$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
+		//$mode = array_search($obj['CurrentUrl'], $menus);
+		$mode = $obj['type'];
 
 		$annee = $obj['Annee'];
 		if(empty($annee)) $annee = Cadref::$Annee;
 		$sql = '';
 		$whr = '';
 
+		// selection selon de mode
 		switch($mode) {
 			case 0: // liste edherents
+				$_SESSION['PrintAdherent'] = $obj;
+
 				$file = 'ListeAdherent';
 				$typAdh = isset($obj['TypeAdherent']) ? $obj['TypeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
@@ -603,6 +642,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 					else $sql .= "order by i.CodeClasse, e.Nom, e.Prenom ";
 				}
 				break;
+				
 			case 1: // certificats medicaux
 				$file = 'ListeCertificat';
 				$contenu = 'N';
@@ -627,6 +667,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 
 				$sql .= "order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
+				
 			case 2: // fiches incomplètes
 				$file = 'ListeIncomplet';
 				$contenu = 'N';
@@ -645,24 +686,39 @@ order by a.Nom, a.Prenom";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
-		if($mode == 1) {
-			$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
-			$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
-			$body .= Cadref::MailSignature();
-		}
 		
 		if($obj['mode'] == 'mail') {
-			foreach($pdo as $a) {
-				if(strpos($a['Mail'], '@') > 0) {
-					if($mode == 1) {
-						$file = $this->imprimeCertificat(array($a));
-						$b = Cadref::MailCivility($a).$body;
-						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
-					}
-					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MSG_ADH) Cadref::SendMessage($args);				
-				}
+
+			switch($mode) {
+				case 0:
+					$subj = $obj['Sujet'];
+					$body = $obj['Corps'];
+					$att = $obj['Pieces']['data'];
+					break;
+				case 1:
+					$subj = 'CADREF : Certificat médical';
+					$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
+					$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
+					break;
+				case 2:
+					$subj = '';
+					$body = '';
+					$att = array();
+					break;
 			}
+			$body .= Cadref::MailSignature();
+
+			foreach($pdo as $a) {
+				if(strpos($a['Mail'], '@') === false) continue;
+					
+				if($mode == 1) {
+					$att = array($this->imprimeCertificat(array($a)));
+				}
+				$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
+				Cadref::SendMessage($args);				
+			}
+			$args = array('Subject'=>$subj, 'To'=>array('contact@cadref.com'), 'Body'=>$body, 'Attachments'=>$att);
+			Cadref::SendMessage($args);				
 			return true;
 		}
 		if($obj['mode'] == 'sms') {
@@ -999,6 +1055,8 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);
 		}
+		$args = array('To'=>array('contact@cadref.com'), 'Subject'=>$sub, 'Body'=>$bod);
+		Cadref::SendMessage($args);
 	}
 
 	private function imprimeSuivi($suivi, $list, $annee) {
@@ -1032,8 +1090,10 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$file = $this->imprimeSuivi($suivi, array($p), $annee);
 			$b = Cadref::MailCivility($p).$bod;
 			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-			if(MSG_ADH) Cadref::SendMessage($args);
+			Cadref::SendMessage($args);
 		}
+		$args = array('To'=>array('contact@cadref.com'), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+		Cadref::SendMessage($args);
 	}
 	
 	function CotisationList($id) {
@@ -1132,7 +1192,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
-					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['To'] = array($params['Msg']['Mail'],'contact@cadref.com');
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
@@ -1155,26 +1215,18 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$mode = $params['sendMode'];
 		$args = array();
 		$args['Subject'] = $params['Subject'];
-		$args['Body'] = $params['Body'];
+		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		$args['Cc'] = array($this->Mail);
+		$args['ReplyTo'] = array($this->Mail);
+		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-
-		if($to == 'C') {
-			$args['To'] = 'contact@cadref.com';
-			Cadref::SendMessage($args);
-//			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-//			$to = array();
-//			foreach($us as $u) {
-//				$args['To'] = array($u->Mail);
-//				Cadref::SendMessage($args);
-//			}
-			return array('data'=>'Message envoyé');
-		}
-
-		$args['To'] = array($p['Mail']);
+		if($to == 'C') $to = array('contact@cadref.com');
+		else $args['To'] = array($to,'contact@cadref.com');
+		
 		$ret = Cadref::SendMessage($args);
-		return array('data'=>'Message envoyé','sql'=>$sql);
+		return array('data'=>'Message envoyé');
 	}
 	
 	
@@ -1216,22 +1268,27 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$vsess = isset($_SESSION['visite']);
 		if($vsess) $vids = unserialize($_SESSION['visite']);
 
-		$c = "'$classe',";
-		if($action == 'add' && !empty($classe)) {
-			$sess = true;
-			if(strpos($ids, $c) === false) $ids .= $c;
-		}
-		if(!empty($ids) && $action == 'remove' && !empty($classe)) {
-			$ids = str_replace($c, '', $ids);
-			if($sess) $_SESSION['panier'] = serialize($ids);			
-		}
-		if($action == 'visiteAdd' && !empty($classe)) {
-			$vsess = true;
-			if(strpos($vids, $c) === false) $vids .= $c;
-		}
-		if($action == 'visiteRemove' && !empty($vids) && !empty($classe)) {
-			$vids = str_replace($c, '', $vids);
-			if($vsess) $_SESSION['visite'] = serialize($vids);			
+		$classe = trim($classe);
+		if(!empty($classe)) {
+			$c = "'$classe',";
+			if($action == 'add') {
+				$sess = true;
+				if(strpos($ids, $c) === false) $ids .= $c;
+				//if($sess) $_SESSION['panier'] = serialize($ids);			
+			}
+			if(!empty($ids) && $action == 'remove') {
+				$ids = str_replace($c, '', $ids);
+				//if($sess) $_SESSION['panier'] = serialize($ids);			
+			}
+			if($action == 'visiteAdd') {
+				$vsess = true;
+				if(strpos($vids, $c) === false) $vids .= $c;
+				//if($vsess) $_SESSION['visite'] = serialize($vids);			
+			}
+			if($action == 'visiteRemove' && !empty($vids)) {
+				$vids = str_replace($c, '', $vids);
+				//if($vsess) $_SESSION['visite'] = serialize($vids);			
+			}
 		}
 		
 		$an = Sys::GetOneData('Cadref','Annee/Annee='.$annee);
@@ -1668,7 +1725,7 @@ where ce.Visite=:cid";
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
 			$s .= Cadref::MailSignature();
 			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-				'To'=>array($this->Mail),
+				'To'=>array($this->Mail,'contact@cadref.com'),
 				'Body'=>$s);
 			Cadref::SendMessage($params);
 		}

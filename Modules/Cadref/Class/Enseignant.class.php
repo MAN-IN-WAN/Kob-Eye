@@ -23,11 +23,15 @@ class Enseignant extends genericClass {
 	
 	public function GetClassesVisites() {
 		$cls = $this->getChildren('Classe/Annee='.Cadref::$Annee);
-		foreach($cls as $c) $c->id = $c->Id;
+		foreach($cls as $c) {
+			$c->id = $c->Id;
+			$c->Disponibles = $c->Inscrits >= $c->Places ? 0 : $c->Places-$c->Inscrits;
+		}
 		$vis = $this->getChildren('Visite/Annee='.Cadref::$Annee);
 		foreach($vis as $v) {
 			$v->id = $v->Id;
 			$v->DateVisite = date('d/m/Y', $v->DateVisite);
+			$v->Disponibles = $v->Inscrits >= $v->Places ? 0 : $v->Places-$v->Inscrits;
 		}
 		$a = array('classes'=>$cls, 'visites'=>$vis);
 		return $a;
@@ -53,6 +57,8 @@ class Enseignant extends genericClass {
 					$params['Msg']['To'] = array($params['Msg']['Mail']);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
+					$ret = Cadref::SendMessage($params['Msg']);
+					$params['Msg']['To'] = array('contact@cadref.com');
 					$ret = Cadref::SendMessage($params['Msg']);
 				}
 				else {
@@ -83,18 +89,15 @@ class Enseignant extends genericClass {
 		$mode = $params['sendMode'];
 		$args = array();
 		$args['Subject'] = $params['Subject'];
-		$args['Body'] = $params['Body'];
-		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
+		$args['Attachments'] = $params['Pieces']['data'];
+		$args['ReplyTo'] = array($this->Mail);
+		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-
 		if($to == 'C') {
-			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-			$to = array();
-			foreach($us as $u) {
-				$args['To'] = array($u->Mail);
-				Cadref::SendMessage($args);
-			}
+			$args['To'] = array('contact@cadref.com');
+			Cadref::SendMessage($args);
 			return array('data'=>'Message envoyé');
 		}
 
@@ -107,12 +110,19 @@ where ce.EnseignantId=$id";
 		if($to != 'T') $sql .= " and ce.Classe=$to";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		
+		$args['To'] = array($this->Mail);
+		$ret = Cadref::SendMessage($args);
 		foreach($pdo as $p) {
 			if($p['Mail']) {
 				$args['To'] = array($p['Mail']);
 				$ret = Cadref::SendMessage($args);
 			}
 		}
+		
+		$args['To'] = array('contact@cadref.com');
+		$ret = Cadref::SendMessage($args);
+		
 //		$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
 		return array('data'=>'Message envoyé','sql'=>$sql);
 	}
@@ -122,11 +132,15 @@ where ce.EnseignantId=$id";
 		
 		if($mode != 'print') {
 			$mail = $obj['Mail'];
-			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where ";
+			$sql = "select Mail,Telephone1,Telephone2 from from `##_Cadref-Enseignant` where Inactif=0 and ";
 			if($mail != 0) $sql .= "Id=$mail";
 			else $sql .= "Mail<>''";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($mode == 'mail') {
+				$args = array('Subject'=>$obj['Sujet'], 'To'=>array('contact@cadref.com'), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+				Cadref::SendMessage($args);
+			}
 			foreach($pdo as $p) {
 				if($mode == 'sms') {
 					$params = array('Telephone1'=>$p['Telephone1'],'Telephone2'=>$p['Telephone2'],'Message'=>$obj['SMS']);
@@ -134,13 +148,13 @@ where ce.EnseignantId=$id";
 				}
 				else {
 					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($p['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MSG_ADH) Cadref::SendMessage($args);				
+					Cadref::SendMessage($args);				
 				}
 			}
 			return array('pdf'=>false, 'msg'=>true);
 		}
 				
-		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
+		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` where Inactif=0 order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return false;
@@ -163,6 +177,7 @@ where ce.EnseignantId=$id";
 	}
 	
 	function PrintPresence($obj) {
+		$obj['Enseignant'] = $this->Id;
 		$c = genericClass::createInstance('Cadref', 'Classe');
 		return $c->PrintPresence($obj);
 	}
@@ -172,6 +187,17 @@ where ce.EnseignantId=$id";
 		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
 		$a = genericClass::createInstance('Cadref', 'Adherent');
 		return $a->PrintAdherent($obj);
+	}
+	
+	function PrintVisite($visite) {
+		$annee = Cadref::$Annee;
+		$a = Sys::getOneData('Cadref', "Visite/Visite=$visite&Annee=$annee");
+		$args['Fin'] = $args['Debut'] = $a->DateVisite;
+		$args['Guide'] = 1;
+		$args['Chauffeur'] = 0;
+		$args['Interne'] = 0;
+		$a->Id = 0;
+		return $a->PrintVisite($args);		
 	}
 	
 }

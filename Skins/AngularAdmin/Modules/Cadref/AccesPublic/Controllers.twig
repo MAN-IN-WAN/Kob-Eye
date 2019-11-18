@@ -46,7 +46,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			query: '{{ module }}/{{ objecttype }}/'+obj.id,
 			args : args,
 			explodeArgs:explodeArgs,
-			tms : Date.now(),
+			tms : Date.now()
 		};
 		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
@@ -139,7 +139,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//-----------------------------
 	// MESSAGE
 	//-----------------------------
-	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
+	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
 	$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 	$scope.pieceAdd = function() {
 		var p = $scope.msgObj.Pieces;
@@ -363,7 +363,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 
 	});
 	
-	
+		
 	// ATTACHEMENTS
 	
 	// ferme attachement edit section
@@ -439,6 +439,21 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	// liste adhérents
 	$scope.enseignantAdh = function() {
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// print visite
+	$scope.visitePrint = function(item) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintVisite',[item.Visite]);
 		ajax.success(
 			function(data) {
 				if(data.data.pdf) $window.open(data.data.pdf,'_blank');

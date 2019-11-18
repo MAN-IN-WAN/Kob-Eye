@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-md-6">
+        <label class="form-control-label" for="l0">Choisissez le serveur:</label>
+        <small>
+            <i class="icmn-question3 help-wrapper"></i>
+        </small>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div custom-select="a.id as a.label for a in getSelectData('ParcServerStore',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'Mail=1&Nom~%mbx%'}" ng-model="ParcCompteMailfunction.args.selectedServer" class="form-control" ng-title="label"></div>
+        </div>
+    </div>
+</div>

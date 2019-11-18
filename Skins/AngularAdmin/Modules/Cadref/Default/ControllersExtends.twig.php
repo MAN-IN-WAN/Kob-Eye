@@ -27,6 +27,12 @@ if(isset($info['ObjectType'])){
 $vars['Annee'] = Cadref::$Annee;
 $vars['Cotisation'] = Cadref::$Cotisation;
 $vars['Initiales'] = Sys::$User->Initiales;
-//$vars['Utilisateur'] = "XXX";
+
+$vars['benevole'] = 0;
+$groups = Sys::$User->getParents('Group');
+foreach($groups as $g) {
+	if($g->Nom == 'CADREF_BENE') $vars['benevole'] = 1; 
+	if($g->Nom == 'CADREF_ADH' || $g->Nom == 'CADREF_ENS' || $g->Nom == 'CADREF_BENE') $vars['Group'] = $g->Nom;
+}
 
 ?>

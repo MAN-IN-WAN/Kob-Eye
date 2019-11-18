@@ -412,22 +412,7 @@
 				unwatch();
 			}
 		});
-/*
-		$scope.ListClasseGetSession = function() {
-			var args = {name: 'ListClasse'} ;
-			var ajax = $scope.{{ ident }}callMethod(args,'ListClassGetSession');
-			ajax.success(
-				function(data) {
-					if(data.data) $scope.ClasseAnnee = data.data;
-					$scope.classeAnneeChange(false);
-				}
-			).error(
-				function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
-		}
-*/
+
 		{% endif %}
 		
 		
@@ -487,6 +472,11 @@
 			},100);
 		}
 		
+		// majuscules
+		$scope.keyUpper = function(event) {
+		console.log(event);
+		}
+		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
 			$scope[child].filter = '';
@@ -531,7 +521,7 @@
 		//-----------------------------
 		// MESSAGE
 		//-----------------------------
-		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
+		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
 		$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 		$scope.pieceAdd = function() {
 			var p = $scope.msgObj.Pieces;
@@ -651,6 +641,7 @@
 
 		
 		// info annuelles et cotisation
+		$scope.obj.ScanCount = '?';
 		$scope.obj.nonCotis = false;
 		$scope.obj.nonSolde = false;
 		$scope.obj.NotesAnnuelles = '';
@@ -678,6 +669,7 @@
 					o.AntenneId = data.data.AntenneId;
 					o.nonSolde = Number($scope.obj.Solde) != 0;
 					o.nonCotis = Number($scope.obj.Cotisation) == 0;
+					o.ClasseClasseIdlabel = data.data.ClasseClasseIdlabel;
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 					$scope.obj.certifInvalide = data.data.certifInvalide;
@@ -689,6 +681,15 @@
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 				}
 			);
+			
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetScanCount',[annee]);
+			ajax.success(function(data) {
+				var o = $scope.obj;
+				o.ScanCount = data.data.scan;
+				try { $scope.$digest(); } catch(ex) {}
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
 		}
 		
 		// change l'année selectionnée
@@ -853,6 +854,11 @@
 				$scope.reglementInfo.mode = '';
 				$scope.adherentInfo();
 			});
+		}
+		
+		$scope.reglementEncaisse = function() {
+			$scope.reglementObj.Encaisse = true;
+			$scope.reglementSave();
 		}
 
 		// suppression reglement
@@ -1593,7 +1599,7 @@
 
 		{% endif %}
 		
-		
+	
 		
 		{% if objecttype == 'Section' %}
 		//--------------------------------------
@@ -1603,6 +1609,7 @@
 			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleS = $scope.obj.Libelle;
 		}
+
 		
 		$scope.testalert = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'testalert');

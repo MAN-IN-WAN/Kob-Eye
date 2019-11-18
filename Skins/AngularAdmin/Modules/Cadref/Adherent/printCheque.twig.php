@@ -19,9 +19,9 @@ switch($a->Sexe) {
 		$s = 'Mme'; break;
 }
 $vars['civilite'] = $s;
-$vars['nom'] = $a->Nom;
-$vars['prenom'] = $a->Prenom;
-$vars['adresse1'] = $a->Adresse1;
-$vars['adresse2'] = $a->Adresse2;
-$vars['ville'] = $a->CP.'  '.$a->Ville;
+$vars['nom'] = addslashes($a->Nom);
+$vars['prenom'] = addslashes($a->Prenom);
+$vars['adresse1'] = addslashes($a->Adresse1);
+$vars['adresse2'] = addslashes($a->Adresse2);
+$vars['ville'] = addslashes($a->CP.'  '.$a->Ville);
 $vars['objet'] = "Remboursement de cours";

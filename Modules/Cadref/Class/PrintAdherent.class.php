@@ -23,6 +23,9 @@ class PrintAdherent extends FPDF {
 	private $totaux = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	private $mode;
 	private $rupEns = "\t";  // valeur initiale non vide
+	private $Jour = '';
+	private $Heure = '';
+	private $Enseignant = '';
 
 	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $adherent, $pages) {
 		parent::__construct('P', 'mm', 'A4');
@@ -55,8 +58,10 @@ class PrintAdherent extends FPDF {
 				break;
 		}
 
-		$this->head = array('', 'Inscrits', 'Attentes', 'Total', '', 'Classe/Att.');
-		$this->width = array(130, 15, 15, 15, 1, 24);
+		$this->head = array('', 'Inscrits', '', '', '', '');
+		$this->width = array(160, 15, 15, 15, 1, 24);
+//		$this->head = array('', 'Inscrits', 'Attentes', 'Total', '', 'Classe/Att.');
+//		$this->width = array(130, 15, 15, 15, 1, 24);
 		$this->align = array('L', 'R', 'R', 'R', 'L', 'L');
 	}
 
@@ -159,20 +164,21 @@ class PrintAdherent extends FPDF {
 		$this->Cell(26, 4, $l['Telephone1'], 0, 0, 'L');
 		$this->Cell(26, 4, $l['Telephone2'], 0, 0, 'L');
 
+		$s = '';
 		switch($this->mode) {
 			case 0:
 				if($this->adherent) {
-					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
-					$s = $cls->CodeClasse;
+					$s = $l['Delegue'];
+//					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
+//					$s = $cls->CodeClasse;
 				}
-				else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
-				else $s = 'C:'.substr($l['CodeClasse'], 10, 1);
+				//else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
+				//else $s = 'C:'.substr($l['CodeClasse'], 6, 1);
 				break;
 			case 1:
 				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
 				break;
 			case 2:
-				$s = '';
 				break;
 		}
 		$this->SetXY($this->left + 176, $this->posy);
@@ -215,8 +221,11 @@ class PrintAdherent extends FPDF {
 
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[1][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, $this->totaux[1][1], 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, $this->totaux[1][2], 0, 0, $this->align[3]);
+
+		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
+		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
+//		$this->Cell($this->width[2], 4, $this->totaux[1][1], 0, 0, $this->align[2]);
+//		$this->Cell($this->width[3], 4, $this->totaux[1][2], 0, 0, $this->align[3]);
 		$this->posy += 5;
 
 		for($i = 0; $i < 3; $i++) {
@@ -228,17 +237,21 @@ class PrintAdherent extends FPDF {
 	private function headRupture($l) {
 		$this->rupLib = $l['LibelleD'];
 		if($thi->rupture != 'D') $this->rupLib .= ' ' . $l['LibelleN'];
+		
+		$c = Sys::getOneData('Cadref', 'Classe/' . $l['ClasseId']);
+		$this->HeureDebut = $c->HeureDebut;
+		$this->Jour = Sys::getOneData('Cadref', 'Jour/' . $c->JourId)->Jour;
+		$es = $c->getParents('Enseignant');
+		$ens = '';
+		foreach($es as $e) {
+			if($ens != '') $ens .= ", ";
+			$ens .= $e->Nom;
+		}
+		$this->Enseignant = $ens;
+		
 		if($this->contenu != 'N' && $this->contenu != 'A') return;
 
 		if($this->rupture == 'C' || $this->rupture == 'E') {
-			$c = Sys::getOneData('Cadref', 'Classe/' . $l['ClasseId']);
-			$j = Sys::getOneData('Cadref', 'Jour/' . $c->JourId);
-			$es = $c->getParents('Enseignant');
-			$ens = '';
-			foreach($es as $e) {
-				if($ens != '') $ens .= ", ";
-				$ens .= $e->Nom;
-			}
 			if($this->rupture == 'E') {
 				if($this->rupEns != "\t" && $this->rupEns != $ens) $this->AddPage();
 				$this->rupEns = $ens;
@@ -251,9 +264,9 @@ class PrintAdherent extends FPDF {
 		$this->Cell(90, 4, $this->cv($this->rupLib), 0, 0, 'L');
 
 		if($this->rupture == 'C' || $this->rupture == 'E') {
-			$this->Cell(20, 4, $this->cv($j->Jour), 0, 0, 'L');
-			$this->Cell(15, 4, $c->HeureDebut, 0, 0, 'L');
-			$this->Cell(75, 4, $this->cv($ens), 0, 0, 'L');
+			$this->Cell(20, 4, $this->cv($this->Jour), 0, 0, 'L');
+			$this->Cell(15, 4, $this->HeureDebut, 0, 0, 'L');
+			$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
 		}
 
 		$this->posy += 5;
@@ -261,15 +274,21 @@ class PrintAdherent extends FPDF {
 
 	private function footRupture() {
 		$this->posy += 2;
-		$this->SetXY($this->left + 30, $this->posy);
+		$this->SetXY($this->left + 5, $this->posy);
 		$this->SetFont('Arial', 'I', 10);
-		$this->Cell(30, 4, $this->rupVal, 0, 0, 'L');
-		$this->Cell(60, 4, $this->cv($this->rupLib), 0, 0, 'L');
-
+		$this->Cell(20, 4, $this->rupVal, 0, 0, 'L');
+		$this->Cell(65, 4, $this->cv($this->rupLib), 0, 0, 'L');
+		
+			$this->Cell(20, 4, $this->cv($this->Jour), 0, 0, 'L');
+			$this->Cell(15, 4, $this->HeureDebut, 0, 0, 'L');
+			$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
+		
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[0][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, $this->totaux[0][1], 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, $this->totaux[0][2], 0, 0, $this->align[3]);
+		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
+		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
+//		$this->Cell($this->width[2], 4, $this->totaux[0][1], 0, 0, $this->align[2]);
+//		$this->Cell($this->width[3], 4, $this->totaux[0][2], 0, 0, $this->align[3]);
 		$this->posy += 5;
 
 		for($i = 0; $i < 3; $i++) {
@@ -287,8 +306,10 @@ class PrintAdherent extends FPDF {
 		$col = ($this->rupture == 'S' || $this->rupture == 'E') ? 0 : 2;
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[$col][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, $this->totaux[$col][1], 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, $this->totaux[$col][2], 0, 0, $this->align[3]);
+		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
+		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
+//		$this->Cell($this->width[2], 4, $this->totaux[$col][1], 0, 0, $this->align[2]);
+//		$this->Cell($this->width[3], 4, $this->totaux[$col][2], 0, 0, $this->align[3]);
 	}
 
 }

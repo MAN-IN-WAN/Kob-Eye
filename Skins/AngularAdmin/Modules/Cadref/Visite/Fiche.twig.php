@@ -66,4 +66,11 @@ else $vars['CurrentUrl'] = $vars['Query'];
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
+
+$vars['admin'] = 1; 
+$groups = Sys::$User->getParents('Group');
+foreach($groups as $g) {
+	if($g->Nom == 'CADREF_BENE') $vars['admin'] = 0; 
+}
+
 ?>

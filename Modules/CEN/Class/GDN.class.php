@@ -86,6 +86,7 @@ order by  $sort";
 			$com = preg_replace('/ \$/', '</i>', $com, 1);
 			$pos = strpos($com, '$ ');
 		}
+klog::l(">>>>>>>>>>>>>:$com:",$o);
 		return array('text'=>$com);				
 	}
 	

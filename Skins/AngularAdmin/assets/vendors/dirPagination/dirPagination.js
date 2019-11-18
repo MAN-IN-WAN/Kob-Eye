@@ -393,7 +393,7 @@
                 }
             };
 
-			/** gestion clavier PGF **/
+			/*** gestion clavier PGF ***/
 			$document.unbind("keydown");
 			$document.bind("keydown", function (event) {
 				var p = scope.pagination;
