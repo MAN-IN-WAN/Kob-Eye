@@ -20,46 +20,48 @@ class Temoa extends genericClass {
 			if($res === TRUE) $zip->extractTo($dir);
 			$zip->close();
 		}
-		$tmp = explode('/', $this->ZipFile);
-		$dir = "./Home/".$tmp[1]."/CEN/Temoa/".$this->Code;
-		$f = "$dir/$this->Code";
-		
-		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-		$temoa = new temoa2\Temoa();
-		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-		$this->DocText = $temoa->GetText($f.".rtf");
-		
-		$this->DocHtml = $temoa->GetHTML($f.".rtf");
-		$this->DocNoteCount = $temoa->GetNoteCount();
-		$this->DocNotes = $temoa->GetNotesJson();
-		$this->DocMarks = $temoa->GetMarksJson();
-		$this->DocLines = $temoa->GetLinesJson();
-		
-		if(!$temoa->GetPicts($f.'_esp.rtf')) $temoa->GetPicts($f.'_fra.rtf');
-		$this->DocPictCount = $temoa->GetPictCount();
-		$this->DocPictures = $temoa->GetPictsJson();
+		if($this->ZipFile) {
+			$tmp = explode('/', $this->ZipFile);
+			$dir = "/Home/".$tmp[1]."/CEN/Temoa/".$this->Code;
+			$f = getcwd()."$dir/$this->Code";
+			$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
 
-		$this->Trad1Html = $temoa->GetHTML($f."_trad.rtf");
-		if($this->Trad1Html) {
-			$this->Trad1NoteCount = $temoa->GetNoteCount();
-			$this->Trad1Notes = $temoa->GetNotesJson();
-			$this->Trad1Marks = $temoa->GetMarksJson();
-			$this->Trad1Lines = $temoa->GetLinesJson();
+			$temoa = new temoa2\Temoa();
+			$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+//			$this->DocText = addslashes($temoa->GetText($f.".rtf"));
+
+			$this->DocHtml = ($temoa->GetHTML($f.".rtf"));
+			$this->DocNoteCount = $temoa->GetNoteCount();
+			$this->DocNotes = ($temoa->GetNotesJson());
+			$this->DocMarks = $temoa->GetMarksJson();
+			$this->DocLines = $temoa->GetLinesJson();
+
+			if(!$temoa->GetPicts($f.'_esp.rtf')) $temoa->GetPicts($f.'_fra.rtf');
+			$this->DocPictCount = $temoa->GetPictCount();
+			$this->DocPictures = $temoa->GetPictsJson();
+
+			$this->Trad1Html = ($temoa->GetHTML($f."_trad.rtf"));
+			if($this->Trad1Html) {
+				$this->Trad1NoteCount = addslashes($temoa->GetNoteCount());
+				$this->Trad1Notes = $temoa->GetNotesJson();
+				$this->Trad1Marks = $temoa->GetMarksJson();
+				$this->Trad1Lines = $temoa->GetLinesJson();
+			}
+
+			$this->Trad2Html = ($temoa->GetHTML($f."_trad2.rtf"));
+			if($this->Trad2Html) {
+				$this->Trad2NoteCount = ($temoa->GetNoteCount());
+				$this->Trad2Notes = $temoa->GetNotesJson();
+				$this->Trad2Marks = $temoa->GetMarksJson();
+				$this->Trad2Lines = $temoa->GetLinesJson();
+			}
+			unset($temoa);
+
+			$this->importRtf($f.'_esp.rtf', 'PresentationEs'); 
+			$this->importRtf($f.'_fra.rtf', 'PresentationFr'); 
+			$this->importRtf($f.'_ang.rtf', 'PresentationEn'); 
 		}
 
-		$this->Trad2Html = $temoa->GetHTML($f."_trad2.rtf");
-		if($this->Trad2Html) {
-			$this->Trad2NoteCount = $temoa->GetNoteCount();
-			$this->Trad2Notes = $temoa->GetNotesJson();
-			$this->Trad2Marks = $temoa->GetMarksJson();
-			$this->Trad2Lines = $temoa->GetLinesJson();
-		}
-		unset($temoa);
-
-		$this->importRtf($f.'_esp.rtf', 'PresentationEs'); 
-		$this->importRtf($f.'_fra.rtf', 'PresentationFr'); 
-		$this->importRtf($f.'_ang.rtf', 'PresentationEn'); 
-		
 		return parent::Save();
 	}
 	
@@ -198,7 +200,6 @@ class Temoa extends genericClass {
 			case 2: $not .= $t->Trad2Notes; break;
 		}
 		
-		
 //		$c = $t->Code;
 //		$a = explode('/', $t->ZipFile);
 //		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
@@ -216,7 +217,9 @@ class Temoa extends genericClass {
 //		$doc = $temoa->GetHTML($f);
 //		$not = $temoa->GetNotesJson();
 //		unset($temoa);
-	
+//		
+//		file_put_contents("/home/paul/tmp/notes.json", $not);
+		
 		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		foreach($note as &$n) $n->text = utf8_encode($n->text);
 		return array('notes'=>$note);
@@ -260,13 +263,13 @@ class Temoa extends genericClass {
 		switch($args['trad']) {
 			case 0:
 				$doc = $t->Trad1Html;
-				$not = $t->Trad1NotesCount;
+				$not = $t->Trad1NoteCount;
 				$mrk = $t->Trad1Marks;
 				$lin = $t->Trad1Lines;
 				break;
 			case 1: 
 				$doc = $t->Trad2Html;
-				$not = $t->Trad2NotesCount;
+				$not = $t->Trad2NoteCount;
 				$mrk = $t->Trad2Marks;
 				$lin = $t->Trad2Lines;
 				break;

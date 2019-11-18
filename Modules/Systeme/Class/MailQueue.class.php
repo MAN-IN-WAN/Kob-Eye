@@ -32,6 +32,11 @@ class MailQueue extends genericClass{
 			foreach($tos as $to)
 				$Mail->To($to);
 		}
+		if($m->ReplyTo) {
+			$rtos = explode(',', $m->ReplyTo);
+			foreach($rtos as $rto)
+				$Mail->ReplyTo($rto);
+		}
 		if($m->Cc) {
 			$ccs = explode(',', $m->Cc);
 			foreach($ccs as $cc)

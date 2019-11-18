@@ -792,22 +792,15 @@ where ce.Classe=$cid
 		
 	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
-		$m->From = "noreply@cadref.com";
-		if(isset($params['To']))
-			$m->To = implode(',', $params['To']);
-//klog::l(">>>>>>>>>>>>>>>".$m->To);
-//		if($m->To == 'contact@cadref.com') 
-//			$m->From = "contact@cadref.com";
-//		else {
-//			if(isset($params['Cc']))
-//				$m->Cc = implode(',', $params['Cc']);
-//			//if(isset($params['Bcc']))
-//				$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
-//		}
+		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
+		else $m->From = "noreply@cadref.com";		
+		if(isset($params['To'])) $m->To = implode(',', $params['To']);
+		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
+		
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
-		if(isset($params['Attachments']))
-			$m->Attachments = implode(',', $params['Attachments']);
+		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
+		
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
 		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
