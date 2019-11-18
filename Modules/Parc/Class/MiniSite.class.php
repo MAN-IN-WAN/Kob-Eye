@@ -100,7 +100,6 @@ public function Save(){
         $pag->addParent($sit);
         $pag->Save();
 
-        print_r($pag);
     }
 
 

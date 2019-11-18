@@ -1,0 +1,21 @@
+.cms-col{
+    float: left;
+    overflow: hidden;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+.cms-row{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+.SaisieContenu{
+    background-color: white;
+    margin:0;
+    padding:0;
+}
+#cms-page .dvContent{
+    margin:0;
+    padding:0;
+}

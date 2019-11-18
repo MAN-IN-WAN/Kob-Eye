@@ -177,8 +177,7 @@ class autokeyword {
 	{
         $y = array();
 		//create an array out of the site contents
-		$x = split(" ", $this->contents);
-
+		$x = preg_split("# #", $this->contents);
 		//$y = array();
 		for ($i=0; $i < count($x)-1; $i++) {
 			//delete phrases lesser than 5 characters
@@ -207,7 +206,7 @@ class autokeyword {
 	function parse_3words()
 	{
 		//create an array out of the site contents
-		$a = split(" ", $this->contents);
+		$a = preg_split("# #", $this->contents);
 		//initilize array
 		$b = array();
 

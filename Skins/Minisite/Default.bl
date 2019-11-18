@@ -5,10 +5,15 @@
 [!Instance:=[!Sitos::getOneChild(MiniSite)!]!]
 
 <div class="banner" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF]">
-    <div class="header">
+    [IF [!Instance::Video!]]
+        <video poster="[!Instance::Image!]" style="position: absolute;top: 0;z-index: 0;width: 100%;" id="bgvid" playsinline autoplay muted loop>
+            <source src="[!Instance::Video!]" type="video/mp4">
+        </video>
+    [/IF]
+    <div class="header [IF [!Instance::Video!]]video[/IF]">
         <div class="header-inner container clear">
             [IF [!Instance::Logo!]]
-                <a class="logo" href="" style="background-image: url(/[!Instance::Logo!]);">
+                <a class="logo " href="" style="background-image: url(/[!Instance::Logo!]);">
                     <span class="sr">[!Instance::Nom!]</span>
                 </a>
             [ELSE]

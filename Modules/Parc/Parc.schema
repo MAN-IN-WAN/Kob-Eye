@@ -273,13 +273,13 @@
 		<PROPERTIES type="progress" subtype="bytes" default="0" searchOrder="10" description="Espace disque" fiche="1" list="1" listDescr="Hdd" listWidth="500">DiskQuota</PROPERTIES>
 		<PROPERTIES type="varchar" default="standard" searchOrder="8" description="Type de Haute disponibilité" fiche="1" form="1" values="standard::Un seul Serveur,loadbalancing::Equilibrage de charge,master::Seul le serveur maître est en production">HAMode</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="8" description="Serveur maître" fiche="1" form="1" query="Parc/Server/Web=1::Id::Nom">MasterServer</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" hasRole="PARC_TECHNICIEN" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
 		<CATEGORY title="Sauvegarde">
-			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup" list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
+			<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
 			<PROPERTIES type="int" description="Durée de rétention" listDescr="Retention"  list="1" form="1" fiche="1" default="1209600" values="604800::7 jours,1209600::14 jours,2592000::30 jours,5184000::60 jours,7776000::90 jours,10368000::120 jours">BackupRetention</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,n" data="Server,Id" link="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" >ServerId</FKEY>
@@ -404,7 +404,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connexion(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,TELNET,HTTPS,HTTP">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0"  description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="0" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
@@ -668,6 +668,7 @@
 			<PROPERTIES type="varchar" form="22" fiche="22" description="Texte du bouton de contact" >TexteBoutonContact</PROPERTIES>
 			<PROPERTIES type="color" form="23" fiche="23" description="Couleur du menu" >CouleurMenu</PROPERTIES>
 			<PROPERTIES type="color" form="24" fiche="24" description="Couleur du texte du pavé de contact" >CouleurTexteContact</PROPERTIES>
+			<PROPERTIES type="file" form="24" fiche="24" description="Vidéo sur le site" >Video</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="0,1" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine">DomainId</FKEY>
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" >HostId</FKEY>

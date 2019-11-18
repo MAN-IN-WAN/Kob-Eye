@@ -1,0 +1,10 @@
+
+{
+"total": "{{ total }}",
+"data": [
+{% for data in graphData %}
+    {{ data }}
+    {% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}

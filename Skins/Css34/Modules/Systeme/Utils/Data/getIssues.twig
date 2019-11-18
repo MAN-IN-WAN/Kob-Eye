@@ -1,0 +1,12 @@
+{
+"total": "{{ total }}",
+"data": [
+{% for issue in issues %}
+    {
+    "hote":"{{ issue.hosts[0].host }}",
+    "description":"{{ issue.description }}",
+    "priorite":"{{ issue.priority }}"
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}

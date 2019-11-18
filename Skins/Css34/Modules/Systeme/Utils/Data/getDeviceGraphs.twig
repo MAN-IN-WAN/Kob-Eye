@@ -1,0 +1,13 @@
+
+{
+"total": "{{ total }}",
+"data": [
+{% for graph in graphs %}
+    {
+    "id":"{{ graph.id }}",
+    "label":"{{ graph.label }}",
+    "delay":"{{ graph.delay }}"
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}

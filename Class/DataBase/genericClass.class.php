@@ -891,6 +891,10 @@ class genericClass extends Root {
 	public function getParentTypes() {
 		Sys::$Modules[$this -> Module] -> loadSchema();
 		$ObjClass = Sys::$Modules[$this -> Module] -> Db -> getObjectClass($this -> ObjectType);
+		if (!is_object($ObjClass)){
+		    print_r($this);
+		    die();
+        }
 		$C = $ObjClass -> getParent();
 		$Ct = Array();
 		if (is_array($C) && !empty($C))
@@ -1088,7 +1092,8 @@ class genericClass extends Root {
 	 * @return String of history's query
 	 */
 	public function getUrl() {
-		if ($site = Site::getCurrentSite()) {
+	    $site = Site::getCurrentSite();
+		if (is_object($site)&&!Sys::$User->Admin) {
 			//recherche des pages pour ce domaine
 			$pags = $site->getChildren('Page/PageModule=' . $this->Module . '&PageObject=' . $this->ObjectType . '&PageId=' . $this->Id);
 			if (sizeof($pags)) return $pags[0]->Url;

@@ -517,7 +517,6 @@ class FormationSession extends genericClass {
         $context  = stream_context_create( $options );
         $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
         $response = json_decode( $result );
-//        if (false){//isset($response->success)&&$response->success){
         if (isset($response->success)&&$response->success){
             $this->Synchro = 1;
             print_r($response);

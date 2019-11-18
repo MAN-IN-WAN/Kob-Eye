@@ -119,6 +119,9 @@ p{
 	width:100%;
 	height:300px;
 }
+#footer .container{
+    padding:0 10px;
+}
 #news, #liens{
 	margin-bottom:10px;
 }
@@ -182,7 +185,13 @@ p{
 #content{
 	margin-bottom:5px;
 }
-
+#content .container{
+    padding:0;
+}
+#content .container form > div.row{
+    margin-left:0;
+    margin-right:0;
+}
 /*FILTERS*/
 #filters a.btn-css34{
 	display: block;
@@ -193,18 +202,52 @@ p{
 	text-transform: uppercase;
 	text-align: left;
 }
+#filters a.selected{
+	box-shadow: 0 0 12px #a2a2a2;
+	margin:15px;
+}
 #filters{
 	padding:0;
 }
+.input-css34,.select-css34,.submit-css34{
+	display: block;
+	width: calc(100% - 10px);
+	border: 2px solid black;
+	margin:5px;
+	height:3em;
+	padding:5px;
+	line-height: 2em;
+	font-family: 'Baloo', cursive;
+	font-size:13px;
+}
+.submit-css34{
+	color: #fff;
+	background-color: black;
+}
+.select-css34 {
+	line-height:0.8em;
+}
 /*LIST*/
+
 #spectacle{
 	padding:0;
 }
-
+.spectacles-list-reset{
+	column-count: 1;
+}
+.spectacles-list-reset > .card{
+	width:33.3333% !important;
+	display: block !important;
+}
+.spectacles-list{
+	margin:0;
+	column-count: 3;
+	column-gap:0;
+}
 .spectacles-list .card {
-	width:33.33%;
-	display: block;
-	position: relative;
+	width:100%;
+	margin:0;
+	display: inline-block;
 }
 .spectacle-item{
 	width:calc(100% - 10px);
@@ -245,30 +288,124 @@ p{
 	padding:5px;
 	color: #000;
 }
+.spectacle-item .card-body > p.card-text{
+    font-family: 'Open Sans', cursive;;
+    font-size:11px;
+    margin:0;
+}
+.spectacle-item .card-body > p.card-text:first-child{
+    font-family: 'Baloo', cursive;
+    text-transform: uppercase;
+}
+.spectacle-item .card-body > h5{
+    font-family: 'Baloo', cursive;
+    text-transform: uppercase;
+    font-size:12px;
+}
+
 /*FICHE*/
 #spectacle-fiche{
     margin: 10px 0;
     padding:0;
 }
 #spectacle-fiche .fiche-propriete{
-    margin:0;
+    margin: 0;
+}
+#spectacle-fiche .fiche-propriete div{
+    font-family: 'Baloo', cursive;
+}
+
+#spectacle-fiche .fiche-propriete > .col-lg-1{
+    margin: 10px 0 0 10px;
+    width: calc(8.33333333% - 10px);
+}
+#spectacle-fiche .fiche-propriete > .col-lg-3{
+    margin: 10px 0 0 10px;
+    width: calc(25% - 10px);
+}
+#spectacle-fiche .fiche-propriete > .col-lg-6{
+    margin: 10px 0 0 10px;
+    width: calc(50% - 10px);
+}
+#spectacle-fiche .fiche-propriete > .col-lg-3:first-child{
+    margin: 10px 0 0 0;
+    width: calc(25%);
+    color: white;
+}
+#spectacle-fiche .fiche-propriete > .col-lg-9:first-child{
+    margin: 10px 0 0 0;
+    width: calc(75%);
+}
+#spectacle-fiche .fiche-propriete > .col-lg-11:first-child{
+    margin: 10px 0 0 0;
+    width: calc(91.66666667%);
+}
+#spectacle-fiche .fiche-propriete > .col-lg-11:first-child > a {
+    color: #fff;
 }
 #spectacle-fiche .col-lg-8 {
     padding:0 5px 0 0;
 }
 #spectacle-fiche .fiche-propriete > div{
-    height:30px;
-    background-color: red;
+    height:45px;
+    background-color: #ffdaa1;
+    line-height:3em;
+    text-transform: uppercase  ;
 }
 #spectacle-fiche #description {
     padding:0 0 0 5px;
 }
+
 #spectacle-fiche #description > h1{
-    background-color: green;
+    background-color: #ffdaa1;
     margin-top:0;
     padding:20px;
     color: #fff;
 }
 #spectacle-fiche #description > img {
     width:100%;
+}
+#spectacle-fiche #description > p {
+    margin:10px 0 10px 0;
+    text-align: justify;
+}
+/** TIMELINE **/
+.timeline-container{
+	width:100%;
+	background-color: red;
+	height:60px;
+	overflow: hidden;
+	display: flex; /*1*/
+	flex-direction : row; /*2*/
+	justify-content: flex-start; /*3*/
+}
+.timeline-item{
+	width: 40px;
+	height: 60px;
+	display: block;
+	border: 1px solid #d2d2d2;
+	background-color: #e5e5e5;
+	text-align: center;
+}
+.timeline-item h6{
+	font-size: 21px;
+	margin-top: 0;
+	color: #666;
+	font-weight: lighter;
+}
+.timeline-item span{
+	margin-top: 13px;
+	line-height: 10px;
+	font-size: 8px;
+	color: #333;
+	font-weight: 400;
+	display: block;
+}
+.timeline-item.selected{
+	background-color:#ffdaa1;
+}
+
+/****** CONTENU *******/
+#cms-page{
+	background-color: plum;
 }

@@ -69,8 +69,9 @@
 		<PROPERTIES type="boolean" list="1" fiche="1" form="1" Description="Communiquer sur ce spectacle" default="0">AlaUne</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Utiliser la contremarque" values="0::Pas d'impression du tout,1::Contremarque normale,2::Impression ticket mais pas une contremarque" default="1">TypeContreMarque</PROPERTIES>
 		<PROPERTIES type="text" fiche="1" form="1" Description="Texte Contremarque" >Contremarque</PROPERTIES>
-		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Présentation">Presentation</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Présentation">Presentation</PROPERTIES>
 		<PROPERTIES type="text" fiche="1" form="1" Description="Video en iframe" >Video</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" Description="Information d'accès" >Acces</PROPERTIES>
 		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Résumé">Resume</PROPERTIES>
 		<PROPERTIES type="bbcode" fiche="1" form="1" Description="Information de réservation">InformationReservation</PROPERTIES>
 		<PROPERTIES type="metat" fiche="1" form="1" category="Referencement">Title</PROPERTIES>
@@ -82,7 +83,8 @@
 			<FORM type="Template" urlPrefix="/Reservation/Spectacle/" urlSuffix="/Orga.htm" title="Structure culturelle organisatrice">Infos</FORM>
 		</INTERFACES>
 		<FKEY card="1,1" data="Organisation,Id">OrganisationId</FKEY>
-<!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
+		<RKEY card="0,n" data="Partenaire,Id">Partenaire</RKEY>
+		<!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
 		<FUNCTION title="Générer un lot d'evenements">genererLotEvenement</FUNCTION>
 		<FUNCTION title="Dupliquer">Dupliquer</FUNCTION>
 	</OBJECTCLASS>
