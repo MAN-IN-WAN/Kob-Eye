@@ -1218,24 +1218,15 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		$args['Cc'] = array($this->Mail);
+		$args['ReplyTo'] = array($this->Mail);
+		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-
-		if($to == 'C') {
-			$args['To'] = array('contact@cadref.com');
-			Cadref::SendMessage($args);
-//			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-//			$to = array();
-//			foreach($us as $u) {
-//				$args['To'] = array($u->Mail);
-//				Cadref::SendMessage($args);
-//			}
-			return array('data'=>'Message envoyé');
-		}
-
-		$args['To'] = array($p['Mail'],'contact@cadref.com');
+		if($to == 'C') $to = array('contact@cadref.com');
+		else $args['To'] = array($to,'contact@cadref.com');
+		
 		$ret = Cadref::SendMessage($args);
-		return array('data'=>'Message envoyé','sql'=>$sql);
+		return array('data'=>'Message envoyé');
 	}
 	
 	

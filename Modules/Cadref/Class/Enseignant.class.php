@@ -91,18 +91,13 @@ class Enseignant extends genericClass {
 		$args['Subject'] = $params['Subject'];
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
+		$args['ReplyTo'] = array($this->Mail);
+		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-
 		if($to == 'C') {
 			$args['To'] = array('contact@cadref.com');
 			Cadref::SendMessage($args);
-//			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-//			$to = array();
-//			foreach($us as $u) {
-//				$args['To'] = array($u->Mail);
-//				Cadref::SendMessage($args);
-//			}
 			return array('data'=>'Message envoyé');
 		}
 
@@ -116,7 +111,7 @@ where ce.EnseignantId=$id";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
-		$args['To'] = array('contact@cadref.com',$this->Mail);
+		$args['To'] = array($this->Mail);
 		$ret = Cadref::SendMessage($args);
 		foreach($pdo as $p) {
 			if($p['Mail']) {
@@ -124,6 +119,10 @@ where ce.EnseignantId=$id";
 				$ret = Cadref::SendMessage($args);
 			}
 		}
+		
+		$args['To'] = array('contact@cadref.com');
+		$ret = Cadref::SendMessage($args);
+		
 //		$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
 		return array('data'=>'Message envoyé','sql'=>$sql);
 	}
