@@ -1418,7 +1418,7 @@ class Server extends genericClass {
      * @return mixed
      */
     public function remoteExec( $command ,$activity = null,$noerror=false){
-        if (!$this->_connection)$this->Connect();
+        if (!$this->_connection)if (!$this->Connect()) throw new RuntimeException($this->Error[0]['Message']);
         $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
@@ -1426,8 +1426,7 @@ class Server extends genericClass {
         if( !$noerror&&$matches[1] !== "0" ) {
             throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
         }
-        //return $result[0].$result[3];
-        return print_r($result,true);
+        return $result[0];
     }
 
     /**
@@ -1481,9 +1480,17 @@ class Server extends genericClass {
         $data='';
         while ($buf = fread($stream, 4096)) {
             //tentative de récupération de la progression
+            //BORG
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
                 $activity->setProgression($progress);
+            }
+            //ZIMBRA ZXSUITE
+            if (preg_match('# Moved blobs        :     ([0-9]+)/([0-9]+)#',$buf,$out)&&$activity) {
+                if ($out[2]>0) {
+                    $progress = floor(($out[1]/$out[2])*100);
+                    $activity->setProgression($progress);
+                }
             }
             $data.=$buf;
         }

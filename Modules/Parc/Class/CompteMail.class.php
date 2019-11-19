@@ -716,6 +716,15 @@ class CompteMail extends genericClass
     public function doMigrationMail ($params=null) {
         if (!$params) $params =array('step'=>0);
         if (!isset($params['step'])) $params['step']=0;
+        $srcSrv=$this->getKEServer();
+        if ($params['step']==1){
+            //vérification de la destination
+            $srcSrv=$this->getKEServer();
+            if ($srcSrv->Id==$params['selectedServer']) {
+                $params['step'] = 0;
+                $this->addError(array('Message'=>'Le serveur de destination et le serveur sont identiques. Veuillez vérifier votre saisie.'));
+            }
+        }
         switch($params['step']) {
             case 1:
                 $srv = Sys::getOneData('Parc', 'Server/' . $params['selectedServer'], 0, 1, '', '', '', '', true);
@@ -735,7 +744,7 @@ class CompteMail extends genericClass
                 return array('task' => $task, 'title' => 'Progression du déplacement du compte');
                 break;
             default:
-                return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'));
+                return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
         }
     }
     /**
@@ -757,15 +766,21 @@ class CompteMail extends genericClass
         try{
             $out=$srcSrv->remoteExec($cmd);
             $json=json_decode($out);
+            $act->addDetails(print_r($json,true));
+            //mise à jour de la progression
+            $cmd2 = 'sudo -u zimbra /opt/zimbra/bin/zxsuite hsm monitor '.$json->response->operationId;
+            $srcSrv->remoteExec($cmd2,$act);
         }
         catch (RuntimeException $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
             return false;
         }
-        $act->addDetails($out);
+        //reussite
+        $this->resetParents('Server');
+        $this->addParent($targetSrv);
+        parent::Save();
         $act->Terminate(true);
-
         return true;
     }
 }
