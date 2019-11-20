@@ -1,0 +1,60 @@
+<template>
+    <div>
+        <div id="mainmenu">
+            <div class="espacepro pull-right">
+                <a href="#" data-toggle="modal" data-target="#login-modal">Espace Pro</a>
+            </div>
+            <nav class="nav" role="navigation">
+                <ul class="menu">
+                    {% for menu in menus %}
+                        <li><router-link to="/{{ menu.Url }}">{{ menu.Titre }}</router-link></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+        <div id="submenu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="logo">
+                            <router-link to="/"><img src="/Home/879/logo_0.png.limit.100x200.png" /></router-link>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <router-link to="/ateliers" class="square blue">
+                            <h3>Ateliers</h3>
+                            <p>de pratique artistique<br/>
+                                et sportive</p>
+                        </router-link>
+                    </div>
+                    <div class="col-lg-3">
+                        <router-link class="square green" to="/sorties">
+                            <h3>Sorties</h3>
+                            <p>musique, sport, théatre, danse,<br/>
+                                exposition ...</p>
+                        </router-link>
+                    </div>
+                    <div class="col-lg-3">
+                        <router-link class="square pink" to="/formations">
+                            <h3>Formations</h3>
+                            <p>Initiation à la médiation culturelle :<br/>
+                                culture et insertion sociale</p>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+module.exports = {
+    name: 'header-menu',
+    template: '#header',
+    data (){
+        return {
+            render: true
+        };
+    }
+
+}
+</script>

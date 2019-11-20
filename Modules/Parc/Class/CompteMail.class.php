@@ -708,4 +708,79 @@ class CompteMail extends genericClass
     {
         parent::Delete();
     }
+
+    /**
+     * doMigrationMail
+     * Migration de boite mail entre serveur MBX
+     */
+    public function doMigrationMail ($params=null) {
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        $srcSrv=$this->getKEServer();
+        if ($params['step']==1){
+            //vérification de la destination
+            $srcSrv=$this->getKEServer();
+            if ($srcSrv->Id==$params['selectedServer']) {
+                $params['step'] = 0;
+                $this->addError(array('Message'=>'Le serveur de destination et le serveur sont identiques. Veuillez vérifier votre saisie.'));
+            }
+        }
+        switch($params['step']) {
+            case 1:
+                $srv = Sys::getOneData('Parc', 'Server/' . $params['selectedServer'], 0, 1, '', '', '', '', true);
+                if (!$srv) return false;
+                $task = genericClass::createInstance('Systeme', 'Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Déplacement du compte mail '. $this->Nom . ' vers le serveur "' . $srv->Nom . '"';
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'CompteMail';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'moveMailAccount';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'MAIL_ACCOUNT_SERVER_MOVE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task' => $task, 'title' => 'Progression du déplacement du compte');
+                break;
+            default:
+                return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
+        }
+    }
+    /**
+     * moveMailAccount
+     * Déplacement d'un compte mail
+     * @param object task
+     */
+    public function moveMailAccount ($task) {
+        $params=unserialize($task->TaskArgs);
+        //Préparation de la commande
+        $targetSrv=Sys::getOneData('Parc','Server/'.$params['selectedServer']);
+        $srcSrv=$this->getKEServer();
+        $cmd='sudo -u zimbra /opt/zimbra/bin/zxsuite --json hsm doMailboxMove '.$targetSrv->DNSNom.' accounts '.$this->Adresse;
+        $act=$task->createActivity('Préparation de la commande de migration');
+        $act->addDetails($cmd);
+        $act->Terminate(true);
+        //Exécution de la commande
+        $act=$task->createActivity('Exécution de la commande de migration sur le serveur '.$srcSrv->Nom);
+        try{
+            $out=$srcSrv->remoteExec($cmd);
+            $json=json_decode($out);
+            $act->addDetails(print_r($json,true));
+            //mise à jour de la progression
+            $cmd2 = 'sudo -u zimbra /opt/zimbra/bin/zxsuite hsm monitor '.$json->response->operationId;
+            $srcSrv->remoteExec($cmd2,$act);
+        }
+        catch (RuntimeException $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+        //reussite
+        $this->resetParents('Server');
+        $this->addParent($targetSrv);
+        parent::Save();
+        $act->Terminate(true);
+        return true;
+    }
 }

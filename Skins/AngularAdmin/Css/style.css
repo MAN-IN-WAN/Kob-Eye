@@ -1006,7 +1006,7 @@ Position et comportement des boutons en col, en raw et en dvContent
 .addCol,
 .configComp  {
     position:absolute;
-    bottom: -42px;
+    bottom: -34px;
     left: 5px;
 }
 #AgencementPage .addRow .btn-primary,
@@ -1076,6 +1076,16 @@ Position et comportement des boutons en col, en raw et en dvContent
     position:absolute;
 }
 
+.addRow {
+    width: 100%;
+    padding: 0px 20px 0px 0;
+    text-align: left;
+}
+.addRow > .zoneTitle{
+    color: white;
+    float: right;
+    line-height:1em;
+}
 
 .delCol {
     bottom: -42px;

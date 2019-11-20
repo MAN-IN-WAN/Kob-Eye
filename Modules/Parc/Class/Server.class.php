@@ -1418,7 +1418,7 @@ class Server extends genericClass {
      * @return mixed
      */
     public function remoteExec( $command ,$activity = null,$noerror=false){
-        if (!$this->_connection)$this->Connect();
+        if (!$this->_connection)if (!$this->Connect()) throw new RuntimeException($this->Error[0]['Message']);
         $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
@@ -1473,20 +1473,38 @@ class Server extends genericClass {
     private function rawExec( $command,$activity=null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
+        $dio_stream = ssh2_fetch_stream($stream, SSH2_STREAM_STDDIO);
         stream_set_blocking( $stream, TRUE );
         stream_set_blocking( $error_stream, TRUE );
+        stream_set_blocking( $dio_stream, TRUE );
         $data='';
         while ($buf = fread($stream, 4096)) {
-            //echo $buf;
             //tentative de récupération de la progression
+            //BORG
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
                 $activity->setProgression($progress);
             }
+            //ZIMBRA ZXSUITE
+            if (preg_match('# Moved blobs        :     ([0-9]+)/([0-9]+)#',$buf,$out)&&$activity) {
+                if ($out[2]>0) {
+                    $progress = floor(($out[1]/$out[2])*100);
+                    $activity->setProgression($progress);
+                }
+            }
             $data.=$buf;
         }
         $output = $data;//substr($data,strlen($data)-1,1);//stream_get_contents( $stream );
-        $error_output = stream_get_contents( $error_stream );
+        $error_output = '';
+        while ($buf = fread($error_stream, 4096)) {
+            $error_output.=$buf;
+        }
+        $dio_output = '';
+        while ($buf = fread($dio_stream, 4096)) {
+            $dio_output.=$buf;
+        }
+        /*$error_output = stream_get_contents( $error_stream );
+        $dio_output = stream_get_contents( $dio_stream );*/
         //alors récupération sur le dernier caractère
         $exit_output = 0;
         if (preg_match('/^(.*)\n(0|-?[1-9][0-9]*)$/s',$output,$out)) {
@@ -1495,7 +1513,8 @@ class Server extends genericClass {
         }
         fclose( $stream );
         fclose( $error_stream );
-        return array( $output, $error_output,$exit_output);
+        fclose( $dio_stream );
+        return array( $output, $error_output,$exit_output,$dio_output);
     }
     /**
      * createTaskLdap2Service

@@ -2644,9 +2644,12 @@ img {
     .header {
         padding-top: 10px;
     }
+    .header.video .logo  {
+        opacity:0.6
+    }
     .header-inner {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding:15px;
+        background-color: rgba(0,0,0,0.1);
     }
     .banner-lead {
         font-size: 60px;
@@ -2672,6 +2675,8 @@ img {
     }
     .navigation-menu .navigation-item > a {
         color: #fff;
+        text-shadow: #000 1px 0 10px;
+        font-size:1.3em;
     }
     .clients-list li {
         padding-left: 15px;
@@ -3163,4 +3168,24 @@ fieldset > .text-right {
     #floatingLinks p {
         display:inline-block;
     }
+    .header.video .logo{
+        opacity:0.6;
+        width: 120px;
+        background-position-y: top;
+        background-position-x: 20px;
+    }
+    .header.video{
+        height:250px;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    .header.video .header-inner{
+        padding:0;
+    }
+    .header.video .navigation{
+        background-color: rgba(0,0,0,0.8);
+        position: relative;
+        z-index: 100;
+        padding: 20px;
+    }
+
 }

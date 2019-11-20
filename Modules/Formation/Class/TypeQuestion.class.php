@@ -17,8 +17,15 @@ class TypeQuestion extends genericClass {
         $txt='';
         $reps = Sys::getData('Formation', 'TypeQuestion/'.$this->Id.'/Reponse');
         foreach ($reps as $r){
-            $txt.=json_decode($r->Valeur).' ';
+            $tmp = Utils::jsonDecode($r->Valeur);
+            if (is_array($tmp)){
+                $txt.=implode(' ',$tmp).' ';
+            }else $txt.=$tmp.' ';
         }
+        $txt = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+        }, $txt);
+        $txt = str_replace('\\','',$txt);
         $this->_txt = $txt;
         return $txt;
     }

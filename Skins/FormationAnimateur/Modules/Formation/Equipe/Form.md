@@ -66,9 +66,10 @@
                     [!tt-=1!]
                     [IF [!TQ::MultiPart!]]
                         <h4><b>Participant [!Pos!]</b></h4>
+                        [!vs:=[!Utils::jsonDecode([!vals::[!tt!]!])!]!]
+                    [ELSE]
+                        [!vs:=[!Utils::jsonDecode([!vals!])!]!]
                     [/IF]
-
-                    [!vs:=[!vals::[!tt!]!]!]
 
                     <div class="form-group">
                         <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
@@ -270,6 +271,18 @@
                     [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
                         <li class="col-md-4"><input type="checkbox" name="donn-[!D::Numero!][]" id="donn-[!D::Numero!][!Pos!]" value="[!TQV::Id!]" [STORPROC [!R::Valeur!]|V][IF [!V!]=[!TQV::Id!]]checked[/IF][/STORPROC]> [!TQV::Valeur!]</li>
                     [/STORPROC]
+                    </ul>
+                </div>
+            </div>
+            [/CASE]
+            [CASE 14] //Ordonner
+            <div class="form-group">
+                <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                <div class="col-sm-12">
+                    <ul>
+                        [STORPROC Formation/TypeQuestion/[!TQ::Id!]/TypeQuestionValeur|TQV]
+                        <li class="col-md-4"><input type="checkbox" name="donn-[!D::Numero!]" id="donn-[!D::Numero!][!Pos!]" value="[!TQV::Valeur!]" [IF [!R::Valeur!]=[!TQV::Valeur!]]checked[/IF]> [!TQV::Valeur!] </li>
+                        [/STORPROC]
                     </ul>
                 </div>
             </div>

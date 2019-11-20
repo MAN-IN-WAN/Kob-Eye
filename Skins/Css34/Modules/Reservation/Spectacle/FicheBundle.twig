@@ -10,9 +10,7 @@
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <img src="/{{ s.Logo }}.limit.1000x1000.jpg" alt="...">
-                    <div class="carousel-caption">
-                        test de resumé
-                    </div>
+                    <div class="carousel-caption"></div>
                 </div>
             </div>
 
@@ -27,7 +25,7 @@
             </a>
         </div>
         <div class="row fiche-propriete">
-            <div class="col-lg-3 genre">{{ s.Genre }}</div>
+            <div class="col-lg-3" style="background-color: {{ genre.Couleur }};">{{ s.Genre }}</div>
             <div class="col-lg-3">{{ s.TypePublic }}</div>
             <div class="col-lg-6">{{ s.Localisation }}</div>
         </div>
@@ -51,20 +49,35 @@
                         <td>{{ e.Salle.Nom }}</td>
                         <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
                         <td>{{ structure.Tel }}</td>
-                        <td>{{ structure.SiteWeb ? '<a href="'~structure.SiteWeb~'" target="_blank">'~structure.Nom~'</a>' : '<i class="fas fa-cross"></i>'}}</td>
-                        <td>{{ e.NbPlace>0 ? '<i class="fas fa-check"></i>' : '<i class="fas fa-cross"></i>' }}</td>
+                        <td>{% if structure.SiteWeb!='' %}
+                                <a href="http://{{  structure.SiteWeb }}" target="_blank">{{ structure.Nom }}</a>
+                            {% else %}
+                                <i class="fas fa-cross" style="color:red"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ e.NbPlace>0 ? '<i class="fas fa-check" style="color:green"></i>' : '<i class="fas fa-cross" style="color:red"></i>' }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <div class="row">
-            <div class="col-lg-11"><a href="#nogo" class="btn btn-css34">RESERVER*</a></div>
+        <div class="row fiche-propriete">
+            <div class="col-lg-11" style="background-color: {{ genre.Couleur }};"><a href="#nogo" class="btn btn-css34">RESERVER*</a></div>
             <div class="col-lg-1"><i class="fas fa-print"></i></div>
         </div>
     </div>
     <div class="col-lg-4" id="description">
-        <h1>{{ s.Nom }}</h1>
+        <h1 style="background-color: {{ genre.Couleur }};">{{ s.Nom }}</h1>
         <img src="/{{ s.Logo }}.limit.400x600.jpg" class="img-responsive"/>
         <p >{{ s.Resume |striptags }}</p>
+        <div>
+            <h3>ACCES</h3>
+            <p >{{ s.Acces |striptags }}</p>
+        </div>
+        <div>
+            <h3>PARTENAIRES</h3>
+            {% for p in partenaires %}
+                <img src="/{{ p.Image }}.limit.200x50.jpg" />
+            {% endfor %}
+        </div>
     </div>
 </div>

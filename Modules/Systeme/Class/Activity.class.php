@@ -1,6 +1,9 @@
 <?php
 include_once 'Class/Utils/BashColors.class.php';
 class Activity extends genericClass{
+    public $Progression = 0;
+    public $ProgressStart= 0;
+    public $ProgressSpan= 100;
 
     function addDetails($det,$color = 'cyan',$mute = false) {
         $this->Details .= date('d/m/Y H:i:s').' > '.$det."\n";
@@ -44,7 +47,6 @@ class Activity extends genericClass{
         $task = $this->getOneParent('Tache');
         if(!$task) return false;
         $job = $task;
-
         $prog = intval($this->ProgressStart + $this->ProgressSpan*$this->Progression/100);
         if($prog != $job->Progression){
             $job->Progression = $prog;

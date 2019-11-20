@@ -103,7 +103,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
-        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/Termine=0')){
+        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/TaskCode=SSL_RENEW&Termine=0&tmsEdit>'.(time()-86400))){
             $this->addError(array("Message"=>"Il y a déjà une tache à venir pour l'activation SSL."));
             return false;
         }
@@ -183,10 +183,11 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
                 $task  = genericClass::createInstance('Systeme','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->getDomains()." ( ".$this->Id." )";
                 $task->Type = "Fonction";
-                $task->TaskType = "installation";
+                $task->TaskType = "install";
                 $task->TaskModule = "Parc";
                 $task->TaskObject = "Apache";
                 $task->TaskFunction = "executeLetsencrypt";
+                $task->TaskCode = 'SSL_RENEW';
                 $task->TaskId = $this->Id;
                 $task->addParent($this);
                 $task->addParent($serv);
@@ -198,8 +199,9 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
                 $instance = $host->getOneChild('Instance');
                 $task->addParent($instance);
                 //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
-                $nb = Sys::getCount('Systeme','Tache/DateDebut>'.time());
-                $task->DateDebut = time()+(60*($nb+1));
+                Sys::$Modules['Systeme']->Db->clearLiteCache();
+                $nb = Sys::getCount('Systeme','Tache/TaskCode=SSL_RENEW&DateDebut>'.time());
+                $task->DateDebut = time()+(300*($nb+1));
                 $task->Save();
                 parent::Save();
 			break;
@@ -788,7 +790,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
      * Execution de letsencrypt sur le serveur
      */
     public function executeLetsencrypt($task) {
-        $first=$this->SslMainDomain;
+        $first=null;//$this->SslMainDomain;
         if (empty($first)){
             $first = $this->getFirstDomain();
         }

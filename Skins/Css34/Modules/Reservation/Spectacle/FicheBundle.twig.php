@@ -8,3 +8,4 @@ foreach ($vars['evenements'] as $k=>$e){
     $e->Salle = $s;
     $vars['evenements'][$k] = $e;
 }
+$vars['partenaires'] = $vars['s']->getChildren('Partenaire');

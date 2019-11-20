@@ -92,23 +92,23 @@
     [/CASE]
     [CASE 2]
 //Cas Echelle
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur>1|NbR]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur=2+Valeur=3+Valeur=4+Valeur=5+Valeur=6+Valeur="1"+Valeur="2"+Valeur="3"+Valeur="4"+Valeur="5"+Valeur="6"!)|NbR]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=2|Nb2]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=2+Valeur="2"!)|Nb2]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=3|Nb3]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=3+Valeur="3"!)|Nb3]
 [!Nb3:=[!Nb3:/[!NbR!]!]!]
 [!Nb3:=[!Math::Floor([!Nb3:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=4|Nb4]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=4+Valeur="4"!)|Nb4]
 [!Nb4:=[!Nb4:/[!NbR!]!]!]
 [!Nb4:=[!Math::Floor([!Nb4:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=5|Nb5]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=5+Valeur="5"!)|Nb5]
 [!Nb5:=[!Nb5:/[!NbR!]!]!]
 [!Nb5:=[!Math::Floor([!Nb5:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=6|Nb6]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=6+Valeur="6"!)|Nb6]
 [!Nb6:=[!Nb6:/[!NbR!]!]!]
 [!Nb6:=[!Math::Floor([!Nb6:*100!])!]!]
         <div class="legendeG">FAIBLE</div>
@@ -201,7 +201,7 @@
                     var data = [];
                     data['keywords'] = [
                    [STORPROC [!TQ::getKeywords()!]|K]
-                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [IF [!Pos!]>1],[/IF]{"text": "[!Key!]", "weight": [!K!]}
                     [/STORPROC]
                     ];
 
@@ -217,7 +217,7 @@
 
                     data['twokeywords'] = [
                         [STORPROC [!TQ::getTwoKeywords()!]|K]
-                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [IF [!Pos!]>1],[/IF]{"text": "[!Key!]", "weight": [!K!]}
                     [/STORPROC]
                     ];
                 </script>
@@ -227,7 +227,7 @@
                 <script>
                     data['threekeywords'] = [
                         [STORPROC [!TQ::getThreeKeywords()!]|K]
-                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [IF [!Pos!]>1],[/IF]{"text": "[!Key!]", "weight": [!K!]}
                     [/STORPROC]
                     ];
                 </script>
@@ -261,7 +261,10 @@
                     //[STORPROC Formation/Question/TypeQuestion/[!TQ::Id!]|Q][/STORPROC]
                     //[STORPROC Formation/Equipe/Reponse/[!R::Id!]|E][/STORPROC]
                     //[STORPROC Formation/Session/Equipe/[!E::Id!]|S][/STORPROC]
-                    <p>[!Utils::JsonDecode([!R::Valeur!])!]</p>
+
+                    <p>        [!Result:=[!Utils::jsonDecode([!R::Valeur!])!]!]
+                        [!Utils::Implode([!Result!], )!]
+                    </p>
                 </div>
                 [/STORPROC]
             </div>
@@ -281,13 +284,13 @@
     [/CASE]
     [CASE 4]
         //Cas OUi / Non
-[COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
-[!Nb1:=[!Nb1:/[!NbR!]!]!]
-[!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|Nb2]
-[!Nb2:=[!Nb2:/[!NbR!]!]!]
-[!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur="1"+Valeur=1!)|Nb1]
+        [!Nb1:=[!Nb1:/[!NbR!]!]!]
+        [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur!="1"&Valeur!=1!)|Nb2]
+        [!Nb2:=[!Nb2:/[!NbR!]!]!]
+        [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
         <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
 
         <script>
@@ -430,12 +433,27 @@
                     highlightFill: "rgba(151,187,205,0.75)",
                     highlightStroke: "rgba(151,187,205,1)",
                     data: [
-                        [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
+                    [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
+                        [IF [!TQ::MultiPart!]]
+                            [!Nb1:=0!]
+                            [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|TT]
+                                [!TT:=[!Utils::jsonDecode([!TT::Valeur!])!]!]
+                                [STORPROC [!TT!]|V]
+                                    [IF [!V!]=[!TQV::Id!]]
+                                        [!Nb1+=1!]
+                                    [/IF]
+                                [/STORPROC]
+                             [/STORPROC]
+                             [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                             [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
+                         [ELSE]
                             [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|Nb1]
                              [!Nb1:=[!Nb1:/[!NbR!]!]!]
                              [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                              [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
-                         [/STORPROC]
+                        [/IF]
+                    [/STORPROC]
 
                  ]
              }
@@ -488,11 +506,10 @@
         <canvas id="myChart-TQ5-[!RE::Id!]" width="200" height="250" style="width: 75%;margin-left: 12%"></canvas>
 
         <script>
-
             // Get context with jQuery - using jQuery's .get() method.
             var ctx = $("#myChart-TQ5-[!RE::Id!]").get(0).getContext("2d");
             var data = {
-                labels: [[STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]"[!TQV::Valeur!]"[IF [!Pos!]!=[!NbResult!]],[/IF][/STORPROC]],
+                labels: [[STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]"[SUBSTR 5|...][!TQV::Valeur!][/SUBSTR]"[IF [!Pos!]!=[!NbResult!]],[/IF][/STORPROC]],
             datasets: [
                 {
                     label: "[!TQV::Valeur!]",
@@ -502,11 +519,26 @@
                     highlightStroke: "rgba(151,187,205,1)",
                     data: [
                         [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
-                        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|Nb1]
-                [!Nb1:=[!Nb1:/[!NbR!]!]!]
-            [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-            [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
-            [/STORPROC]
+                            [IF [!TQ::MultiPart!]]
+                                [!Nb1:=0!]
+                                [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|TT]
+                                    [!TT:=[!Utils::jsonDecode([!TT::Valeur!])!]!]
+                                    [STORPROC [!TT!]|V]
+                                        [IF [!V!]=[!TQV::Id!]]
+                                            [!Nb1+=1!]
+                                        [/IF]
+                                    [/STORPROC]
+                                [/STORPROC]
+                                 [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                                 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                                 [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
+                            [ELSE]
+                                [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=[!TQV::Id!]+Valeur="[!TQV::Id!]"+Valeur=[!TQV::Valeur!]!)|Nb1]
+                                [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                                [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                                [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
+                            [/IF]
+                        [/STORPROC]
 
             ]
             }
@@ -713,6 +745,20 @@
             <div class="col-md-12">
                 <h5>[!RE::Nom!]</h5>
                 [!q::traiterTypeReponse(13,*,[!CD::TypeQuestionId!],-RE[!RE::Id!],[!RE::Id!])!]
+            </div>
+            [/STORPROC]
+        </div>
+    [/CASE]
+    [CASE 14]
+        [OBJ Formation|Question|q]
+        [!q::traiterTypeReponse(14,[!S::Id!],[!CD::TypeQuestionId!])!]
+        //REGION
+        <h2>Régions</h2>
+        <div class="row">
+            [STORPROC Formation/Region|RE]
+            <div class="col-md-12">
+                <h5>[!RE::Nom!]</h5>
+                [!q::traiterTypeReponse(14,*,[!CD::TypeQuestionId!],-RE[!RE::Id!],[!RE::Id!])!]
             </div>
             [/STORPROC]
         </div>
