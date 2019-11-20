@@ -102,7 +102,7 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 		$temoa->SetOrtho($ortho);
 
-		$temoa->AddArrow($args['word']);
+		$temoa->AddArrow(utf8_decode($args['word']));
 		if($temoa->Search()) {
 			$s = $temoa->GetTargetsJson();
 		}
