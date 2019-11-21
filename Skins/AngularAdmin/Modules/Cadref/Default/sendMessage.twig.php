@@ -44,7 +44,7 @@ select distinct Mail, Nom, Prenom
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId
 inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where i.AdherentId=$id and e.Mail<>''
+where i.AdherentId=$id and e.Mail<>'' and e.Inactif=0 and e.AccesWeb=1
 order by Nom,Prenom";
 	$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 	$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
