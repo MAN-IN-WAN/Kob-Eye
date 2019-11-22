@@ -1222,7 +1222,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-		if($to == 'C') $to = array('contact@cadref.com');
+		if($to == 'C') $args['To'] = array('contact@cadref.com');
 		else $args['To'] = array($to,'contact@cadref.com');
 		
 		$ret = Cadref::SendMessage($args);
