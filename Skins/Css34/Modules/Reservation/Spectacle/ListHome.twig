@@ -1,25 +1,6 @@
+{% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item %}
 <div class="spectacles-list">
     {% for s in spectacles %}
-        <a class="card {{ s.big }}" href="/{{ s.getUrl() }}">
-            <div class="spectacle-item">
-                <img src="/{{ s.Logo }}.mini.300x320.jpg" class="card-img-top img-responsive" alt="">
-                <div class="card-body" style="background-color:{{ s.Couleur }}">
-                    <h5 class="card-title">{{ s.Nom }}</h5>
-                    <p class="card-text">{{ s.Genre }}</p>
-                    <p class="card-text">du {{ s.DateDebut }} au {{ s.DateFin }}</p>
-                </div>
-            </div>
-        </a>
+        {{ spectacle_item(s,s._Organisation,s._Genre) }}
     {% endfor %}
 </div>
-<script type="text/javascript">
-    $('.spectacles-list').isotope({
-        // set itemSelector so .grid-sizer is not used in layout
-        itemSelector: '.card',
-        percentPosition: true,
-        masonry: {
-            // use element for option
-            columnWidth: '.card'
-        }
-    })
-</script>

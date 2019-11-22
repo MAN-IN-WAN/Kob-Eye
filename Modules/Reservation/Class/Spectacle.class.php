@@ -60,11 +60,7 @@ class Spectacle extends genericClass {
 			//si le champ description est vide alors on definit comme valeur le resume du spectacle
 			/*	if ($this->Description==""){$this->Set("Description",$this->Resume);}*/
 		}
-		genericClass::Save();
-		
-	
-		
-		
+		return genericClass::Save();
 	}
 	function Update(){
 		

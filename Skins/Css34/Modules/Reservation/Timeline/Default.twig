@@ -1,42 +1,9 @@
 <div class="timeline-container">
     {% for d in dates %}
-    <a class="timeline-item" href="#nogo">
+    <a class="timeline-item {{ d.selected ? 'selected':'' }}" v-on:click.prevent="onDateClick('{{ d.value }}')"  href="?genre={{ genre }}&search={{ search }}&date={{ d.value }}" :class="{selected: date == '{{ d.value }}'}">
         <span>{{ d.day }}</span>
         <h6>{{ d.num }}</h6>
     </a>
     {% endfor %}
 </div>
 
-<style>
-    .timeline-container{
-        width:100%;
-        background-color: red;
-        height:60px;
-        overflow: hidden;
-        display: flex; /*1*/
-        flex-direction : row; /*2*/
-        justify-content: flex-start; /*3*/
-    }
-    .timeline-item{
-        width: 40px;
-        height: 60px;
-        display: block;
-        border: 1px solid #d2d2d2;
-        background-color: #e5e5e5;
-        text-align: center;
-    }
-    .timeline-item h6{
-        font-size: 21px;
-        margin-top: 0;
-        color: #666;
-        font-weight: lighter;
-    }
-    .timeline-item span{
-        margin-top: 13px;
-        line-height: 10px;
-        font-size: 8px;
-        color: #333;
-        font-weight: 400;
-        display: block;
-    }
-</style>

@@ -140,8 +140,18 @@ class Utils {
 		return $t[sizeof($t)-1];
 	}
 	static function jsonDecode($P){
-		$P = implode(",",$P);
-		return json_decode($P,true);
+	    if (is_array($P))
+		    $P = implode(",",$P);
+		$out = json_decode($P,true);
+		if (empty($out)){
+            $out = str_replace('"','',$P);
+            $out = str_replace('[','',$out);
+            $out = str_replace(']','',$out);
+        }
+        if (is_array($out)&&sizeof($out)==1) {
+		    return $out[0];
+        }
+		return $out;
 	}
     static function jsonEncode($P){
 	    if(!is_string($P[0]))
@@ -205,7 +215,9 @@ class Utils {
 	}
 	
     static function  Implode($P) {
-        return is_array($P[1]) ? implode($P[0], $P[1]) : "";
+	    if (is_array($P[0]))
+            return implode($P[0], $P[1]);
+	    else return $P[0];
     }
 
     static function  Explode($P) {

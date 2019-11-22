@@ -10,22 +10,40 @@
 [HEADER CSS]Tools/Fonts/fontawesome-free-5.0.10/web-fonts-with-css/css/fontawesome-all.css[/HEADER]
 
 //ISOTOPE
-[HEADER JS]Tools/Js/Isotope/isotope.min.js[/HEADER]
+[HEADER JS]https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js[/HEADER]
 
-//FONTS
+//EXTERNAL CDN
 [HEADER]
+//FONTS
 <link href="https://fonts.googleapis.com/css?family=Baloo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 [/HEADER]
 
-<div id="header">
-    [MODULE Systeme/Header/Menu]
-</div>
-<div id="content">
-    <div class="container">
-        [DATA]
+//CUSTOM VUEJS
+//DEV
+[HEADER JS]https://cdn.jsdelivr.net/npm/vue/dist/vue.js[/HEADER]
+[HEADER JS]https://unpkg.com/axios/dist/axios.min.js[/HEADER]
+[HEADER JS]https://unpkg.com/vue-router/dist/vue-router.js[/HEADER]
+[HEADER JS]https://unpkg.com/http-vue-loader[/HEADER]
+//PROD
+//[HEADER JS]https://cdn.jsdelivr.net/npm/vue[/HEADER]
+//[HEADER JS]Skins/Css34/Js/vuejs.js[/HEADER]
+
+<div id="app">
+    <div id="header">
+        <header-menu></header-menu>
+        [MODULE Systeme/Header/Menu]
+    </div>
+    <div id="content">
+        <div class="container">
+            <keep-alive><router-view></router-view></keep-alive>
+            <div v-if="!render">[DATA]</div>
+        </div>
     </div>
 </div>
 <div id="footer">
     [MODULE Systeme/Footer]
 </div>
 [MODULE Systeme/Login]
+//<!--<script type="text/javascript" src="/Skins/Css34/Js/vuejs.js"></script>-->
+<script type="text/javascript" src="/Systeme/Header/App.vue"></script>

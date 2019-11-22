@@ -1,0 +1,12 @@
+app.controller('{{ controller }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ identifier }}Store) {
+    //récupération des données du store.
+    {{ identifier }}Store.getOneData($routeParams.id).then(function (data){
+        console.log('retour chargement one data',data);
+        $scope.obj = data;
+        {% for child in ChildrenElements %}
+            $scope.{{ child.objectModule }}{{ child.objectName }} = {
+                data:data.{{ child.objectName }}
+            };
+        {% endfor %}
+    });
+});

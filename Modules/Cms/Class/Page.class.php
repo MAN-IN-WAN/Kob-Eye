@@ -121,7 +121,18 @@
 
 
 
-
+        /**
+         * display
+         * Affiche cette page
+         */
+        public function Display(){
+            //Recuperation de la Page
+            $Bloc=new Template();
+            $Bloc->setConfig($this->TemplateConfig,'CmsDefault',$this->HtmlConfig);
+            $Bloc->init();
+            $Bloc->generate();
+            return $Bloc->Affich();
+        }
 
 
 

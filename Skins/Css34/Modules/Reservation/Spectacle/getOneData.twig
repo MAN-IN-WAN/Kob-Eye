@@ -1,0 +1,62 @@
+{% for row in rows %}
+    {
+    "id":"{{ row.Id }}",
+    "creator":"{{ row.userCreate }}",
+    "label":"{{ row.label }}",
+    "description":{{ row.description | json_encode | raw }},
+    {% if recursiv %}
+        "_tail":{{ row.isTail }},
+    {% endif %}
+    {#"_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}",#}
+    "create":"{{ row.tmsCreate | date('d/m/Y H:i') }}",
+    "tmsCreate":"{{ row.tmsCreate }}",
+    "tmsEdit":"{{ row.tmsEdit }}"
+    {% for field in fields %}
+        {% if field.type == "boolean" %}
+            ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}
+        {% elseif field.type == "fkey" and field.card=='short' %}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) }}
+            ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+            ,"{{ field.objectName }}{{ field.name }}color": "{{ attribute(row,field.name~'color') }}"
+        {% else %}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
+        {% endif %}
+        {% if field.Values|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+        {% endif %}
+        {% if field.query|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+        {% endif %}
+    {% endfor %}
+    {% for child in children %}
+        ,"{{ child.name }}{{ child.objectName }}CLabel": "{{ attribute(row,child.objectName~'Clabel') | raw}}"
+    {% endfor %}
+    ,"events": [
+    {% for event in events %}
+        {
+            "id": {{ event.Id }},
+            "DateCloture": {{ event.DateCloture }},
+            "DateDebut": {{ event.DateDebut }},
+            "Nom": "{{ event.Nom }}",
+            "CodPos": "{{ event.CodPos }}",
+            "Ville": "{{ event.Ville }}",
+            "DateFin": {{ event.DateFin }},
+            "NbPlace": {{ event.NbPlace }},
+            "Valide": {{ event.Valide }},
+            "Salle": {
+                "id": {{ event.salle.Id }},
+                "Nom": "{{ event.salle.Nom }}",
+                "Adresse": "{{ event.salle.Adresse }}",
+                "Ville": "{{ event.salle.Ville }}",
+                "CodPos": "{{ event.salle.CodPos }}"
+            },
+            "Structure": {
+                "Tel": "{{ structure.Tel }}",
+                "SiteWeb": "{{ structure.SiteWeb }}",
+                "Nom": "{{ structure.Nom }}"
+            }
+        }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+    }{% if not loop.last %},{% endif %}
+{% endfor %}

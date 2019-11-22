@@ -264,8 +264,8 @@ class Sys extends Root{
 		$this->setLink($LienOrig);        
         $proto = (Sys::$port == '443')?"https":"http";
         $this->registerVar("DomaineHttp","http://".Sys::$domain);
-	$this->registerVar("DomaineHttps","https://".Sys::$domain);
-	$this->registerVar("Domaine",$proto."://".Sys::$domain);
+        $this->registerVar("DomaineHttps","https://".Sys::$domain);
+        $this->registerVar("Domaine",$proto."://".Sys::$domain);
 
 		$this->setDefault($this->Conf->get("GENERAL::SERVER::DEFAULT_LINK"));
 		//Test si l url definit un fichier ou un dossier
@@ -436,6 +436,24 @@ class Sys extends Root{
 				$name = $Temp[sizeof($Temp)-1];
 				$this->output_file($file,$name);
 			break;
+            case "vue":
+                header("Content-type: text/javascript; charset=".CHARSET_CODE."");
+                header("Accept-Ranges:bytes");
+                header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
+                header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE");
+                header("Access-Control-Allow-Origin: *");
+                $data = "";
+                $this->AnalyseVars();
+                Parser::Init();
+                $Skin = new Skin();
+                $this->CurrentSkin=$Skin;
+                $this->CurrentSkin->Template = false;
+                $data .= $this->getContenu();
+                $data = $Skin->ProcessLang($data);
+                $data = KeTwig::processTemplates($data);
+
+                print($data);
+                break;
 			case "htrc":
 			case "json":
 				header("Content-type: text/json; charset=".CHARSET_CODE."");
@@ -451,7 +469,9 @@ class Sys extends Root{
 				$this->CurrentSkin->Template = false;
 				$data .= $this->getContenu();
 				$data = $Skin->ProcessLang($data);
-				print($data);
+	            $data = KeTwig::processTemplates($data);
+
+    	        print($data);
 			break;
 		
 			case "xml":
@@ -464,7 +484,9 @@ class Sys extends Root{
 				$this->CurrentSkin->Template = false;  
 				$data .= $this->getContenu();
 				$data = $Skin->ProcessLang($data);
-				print($data);
+                $data = KeTwig::processTemplates($data);
+
+                print($data);
 			break;
 			case "soap":
 				if($this->Lien=="Systeme"){
@@ -526,7 +548,9 @@ class Sys extends Root{
 					Parser::Init();
 					$data .= $this->getContenu();
 					$data = $Skin->ProcessLang($data);
-					if (DEBUG_DISPLAY) $data.=KError::displayErrors();
+                    $data = KeTwig::processTemplates($data);
+
+                    if (DEBUG_DISPLAY) $data.=KError::displayErrors();
 					if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
 					print($data);
 				}
@@ -551,6 +575,8 @@ class Sys extends Root{
                     Parser::Init();
                     $data .= $this->getContenu();
                     $data = $Skin->ProcessLang($data);
+                    $data = KeTwig::processTemplates($data);
+
                     if (DEBUG_DISPLAY) $data.=KError::displayErrors();
                     if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
                     print($data);
@@ -600,6 +626,7 @@ class Sys extends Root{
 				header("Content-type: text/html; charset=".CHARSET_CODE."");
 				$Skin = new Skin();
 				$data .= $Skin->ProcessLang($this->getContenu());
+                $data = KeTwig::processTemplates($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				$this->Log->Log($GLOBALS["Chrono"]->total());
 				print($data);
@@ -612,6 +639,7 @@ class Sys extends Root{
 				header("Content-type: text/html; charset=".CHARSET_CODE."");
 				$Skin = new Skin();
 				$data = $Skin->ProcessLang($this->getContenu());
+                $data = KeTwig::processTemplates($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				$this->Log->Log($GLOBALS["Chrono"]->total());
 				print($data);
@@ -625,6 +653,7 @@ class Sys extends Root{
 				$Skin->Generate();
 				$data=$Skin->Affich();
 				$data = $Skin->ProcessLang($data);
+                $data = KeTwig::processTemplates($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				print($data);
 			break;
@@ -652,6 +681,7 @@ class Sys extends Root{
 					$data=$Skin->Affich();
  					$Contenu =$this->getContenu();
  					$data=Parser::ProcessData($data,$Contenu);
+                    $data = KeTwig::processTemplates($data);
  					$data = $Skin->ProcessLang($data);
 					//On ajoute les erreurs
 					if (DEBUG_DISPLAY) $data.=KError::displayHtml();
@@ -675,6 +705,7 @@ class Sys extends Root{
 	function AnalyseVars(){
 		//Ici on definit les variables globales necessaires.
 		$this->Query=$this->AnalyseMenu($this->Lien);
+
 		//Définition du men par défaut
 		/*$Results = $this->searchMenu('');
 		Sy::$DefaultMenu = $Results;*/

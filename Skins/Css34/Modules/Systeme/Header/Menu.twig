@@ -1,4 +1,4 @@
-<div id="mainmenu">
+<div id="mainmenu"  v-if="!render">
     <div class="espacepro pull-right">
         <a href="#" data-toggle="modal" data-target="#login-modal">Espace Pro</a>
     </div>
@@ -10,7 +10,7 @@
         </ul>
     </nav>
 </div>
-<div id="submenu">
+<div id="submenu"  v-if="!render">
     <div class="container">
         <div class="row">
             <div class="col-lg-3">

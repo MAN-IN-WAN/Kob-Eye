@@ -1,0 +1,124 @@
+<template>
+    <form v-on:submit.prevent="onSubmit">
+        <div class="row">
+            <div class="col-lg-10" id="spectacle">
+                {% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item,template_spectacle_item %}
+                <div class="spectacles-list spectacles-list-reset">
+                    {{ template_spectacle_item() }}
+                </div>
+            </div>
+            <div class="col-lg-2" id="filters">
+                {{ include(template_from_string(module('Reservation/Filters'))) }}
+            </div>
+        </div>
+    </form>
+</template>
+<script>
+    module.exports = {
+        name: 'spectacle-home',
+        template: '#sorties',
+        data (){
+            return {
+                genre: '',
+                spectacles: [],
+                spectacle: {},
+                date: '',
+                search: '',
+                dirty: 0,
+                first: true,
+                render: true,
+                busy: false,
+            };
+        },
+        components: {
+            /*spectacleList*/
+        },
+        methods: {
+            onSubmit: function (event) {
+                console.log('COMP submit detected display component', this.spectacles);
+                this.getData();
+            },
+            onGenderClick: function (value) {
+                console.log('COMP click gender detected display component', value, this.spectacles);
+                if (this.genre == value) {
+                    //unselect
+                    this.genre = '';
+                } else
+                    this.genre = value;
+                this.getData();
+            },
+            onDateClick: function (value) {
+                console.log('COMP click date detected display component', this.spectacles);
+                if (this.date == value) {
+                    //unselect
+                    this.date = '';
+                } else
+                    this.date = value;
+                this.getData();
+            },
+            getData: function () {
+                var me = this;
+                axios
+                    .get('/Reservation/Spectacle/getData.json?filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre)
+                    .then(function (response) {
+                        me.render = false;
+                        me.resetData();
+                        me.dirty = true;
+                        Vue.nextTick(function () {
+                            me.addData(response.data.data);
+                            me.render = true;
+                            me.dirty = false;
+                            console.log('COMP rendu component', me.spectacles);
+                        })
+                    });
+            },
+            resetData: function () {
+                var nb = this.spectacles.length;
+                for (var i = 0; i < nb; i++)
+                    this.spectacles.pop();
+                console.log('COMP CONTAINER: resetdata', this.spectacles);
+            },
+            addData: function (tab) {
+                for (var i in tab)
+                    this.spectacles.push(tab[i]);
+                console.log('COMP CONTAINER: addata', this.spectacles);
+            },
+            refreshIsotope: function () {
+                $('.spectacles-list').isotope('destroy');
+                $('.spectacles-list').isotope();
+            },
+            goToFiche: function (spectacle){
+                console.log('gotofiche: ',spectacle);
+                window.spec.spectacle = spectacle;
+                router.push({path: spectacle.Url, params: {spectacle:spectacle}});
+            }
+        },
+        mounted: function () {
+            console.log('APP VUE > RESET CSS');
+            //reset css
+            //$('.spectacles-list').addClass('spectacles-list-reset');
+        },
+        watch: {
+            spectacles: function (val) {
+                if (val.length) {
+                    setTimeout(function () {
+                        console.log('COMP CONTAINER: after data', $('.spectacles-list'));
+                        $('.spectacles-list').isotope('destroy');
+                        $('.spectacles-list').isotope({
+                            // set itemSelector so .grid-sizer is not used in layout
+                            itemSelector: '.card',
+                            percentPosition: true,
+                            masonry: {
+                                // use element for option
+                                columnWidth: '.card'
+                            }
+                        }, 100);
+                    });
+                }
+            }
+        }
+    };
+</script>
+<style>
+
+</style>

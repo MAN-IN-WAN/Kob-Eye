@@ -219,7 +219,6 @@ class Question extends genericClass{
                 $vals = array();
                 foreach($data as $v){
                     $values = json_decode($v->Valeur,true);
-                    print_r($values);
                     foreach ($values as $vs){
                         //verification de la saisie
                         if (isset($vs[0])&&!empty($vs[0]))
@@ -296,18 +295,27 @@ class Question extends genericClass{
 
                 $reps = array();
                 foreach($data as $v){
-                    $values = json_decode($v->Valeur);
-                    foreach ($values as $vas){
-                        if(empty($reps[$vas])){
-                            $reps[$vas] = 1;
+                    $values = Utils::jsonDecode($v->Valeur);
+                    if (is_array($values)) {
+                        foreach ($values as $vas) {
+                            if (empty($reps[$vas])) {
+                                $reps[$vas] = 1;
+                            } else {
+                                $reps[$vas] += 1;
+                            }
+                        }
+                    }else{
+                        $values = str_replace('"','',$values);
+                        if (empty($reps[$values])) {
+                            $reps[$values] = 1;
                         } else {
-                            $reps[$vas] +=1;
+                            $reps[$values] += 1;
                         }
                     }
                 }
 
                 foreach($vals as $vs){
-                    $labels[] = $vs->Valeur;
+                    $labels[] = substr($vs->Valeur,0,50).'...';
                     $ds[] = floor($reps[$vs->Id]/$NbR*100);
                 }
                 $ds = array('label'=> 'toto',
@@ -317,8 +325,98 @@ class Question extends genericClass{
                     'highlightStroke'=> "rgba(151,187,205,1)",
                     'data'=> $ds
                 );
-                        //print_r($ds);
         $html .= '
+                <canvas id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
+
+                <script>
+            
+                        // Get context with jQuery - using jQuery\'s .get() method.
+                        var ctx = $("#spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'").get(0).getContext("2d");
+                        var data = {
+                            labels: '.json_encode($labels).',
+                            datasets: ['.json_encode($ds).']
+                        };
+                        var myNewChart = new Chart(ctx).Bar(data, {
+                        scaleBeginAtZero : true,
+                        
+                            //Boolean - Whether grid lines are shown across the chart
+                        scaleShowGridLines : true,
+                        
+                            //String - Colour of the grid lines
+                        scaleGridLineColor : "rgba(0,0,0,.05)",
+                        
+                            //Number - Width of the grid lines
+                        scaleGridLineWidth : 1,
+                        
+                            //Boolean - Whether to show horizontal lines (except X axis)
+                        scaleShowHorizontalLines: true,
+                        
+                            //Boolean - Whether to show vertical lines (except Y axis)
+                        scaleShowVerticalLines: true,
+                        
+                            //Boolean - If there is a stroke on each bar
+                        barShowStroke : true,
+                        
+                            //Number - Pixel width of the bar stroke
+                        barStrokeWidth : 2,
+                        
+                            //Number - Spacing between each of the X value sets
+                        barValueSpacing : 5,
+                        
+                            //Number - Spacing between data sets within X values
+                        barDatasetSpacing : 1,
+                        
+                            //String - A legend template
+                        legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                        });
+                        
+                 </script>';
+
+                break;
+            case 14:
+                $qty = 3;
+                $params = json_decode($tp->Parametres,true);
+                if(!empty($params) && !empty($params['Quantite'])) $qty = $params['Quantite'];
+                $NbR = Sys::getCount('Formation','Session/'.$session.'/Equipe/*/Reponse/TypeQuestionId='.$TypeQuestionId);
+                $NbR *= $qty;
+
+                $vals = $tp->getChildren('TypeQuestionValeur');
+                $labels = array();
+                $ds = array();
+
+                $reps = array();
+                foreach($data as $v){
+                    $values = Utils::jsonDecode($v->Valeur);
+                    if (is_array($values)) {
+                        foreach ($values as $vas) {
+                            if (empty($reps[$vas])) {
+                                $reps[$vas] = 1;
+                            } else {
+                                $reps[$vas] += 1;
+                            }
+                        }
+                    }else{
+                        $values = str_replace('"','',$values);
+                        if (empty($reps[$values])) {
+                            $reps[$values] = 1;
+                        } else {
+                            $reps[$values] += 1;
+                        }
+                    }
+                }
+
+                foreach($vals as $vs){
+                    $labels[] = substr($vs->Valeur,0,50).'...';
+                    $ds[] = floor($reps[$vs->Valeur]/$NbR*100);
+                }
+                $ds = array('label'=> 'toto',
+                    'fillColor'=> "rgba(151,187,205,0.5)",
+                    'strokeColor'=> "rgba(151,187,205,0.8)",
+                    'highlightFill'=> "rgba(151,187,205,0.75)",
+                    'highlightStroke'=> "rgba(151,187,205,1)",
+                    'data'=> $ds
+                );
+                $html .= '
                 <canvas id="spidergraphcontainer-TQ'.$TypeQuestionId.$suffix.'" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
                 <script>

@@ -16,9 +16,12 @@ for ($i=0; $i<$nbbig;$i++) {
 foreach ($vars['spectacles'] as $k=>$s){
     //recherche du genre
     $genre = Sys::getOneData('Reservation','Genre/Nom='.$s->Genre);
-    if ($genre)
+    $sc = $s->getOneParent('Organisation');
+    if ($genre) {
         $vars['spectacles'][$k]->Couleur = $genre->Couleur;
-    else
+        $vars['spectacles'][$k]->_Genre = $genre;
+        $vars['spectacles'][$k]->_Organisation = $sc;
+    }else
         $vars['spectacles'][$k]->Couleur = "#fff";
 
     if (in_array($k,$big)){
