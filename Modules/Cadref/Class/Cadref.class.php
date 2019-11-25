@@ -215,7 +215,12 @@ class Cadref extends Module {
 			return json_encode($data);			
 		}
 		
-		$adh = Sys::getOneData('Cadref', "Adherent/Numero=$login&Mail=$mail");
+		$ens = substr($login,0,3) == 'ens';
+		if($ens) {
+			$cod = strtoupper(substr($login, 3));
+			$adh = Sys::getOneData('Cadref', "Enseignant/Code=$cod&Mail=$mail");
+		}
+		else $adh = Sys::getOneData('Cadref', "Adherent/Numero=$login&Mail=$mail");
 		if(!$adh) {
 			// user local (admin)
 			$usr = Sys::getOneData('Systeme', "User/Login=$login&Mail=$mail");
@@ -228,7 +233,7 @@ class Cadref extends Module {
 			$s = self::MailCivility($usr);
 		}
 		else {
-			$usr = Sys::getOneData('Systeme', 'User/Login='.$adh->Numero);
+			$usr = Sys::getOneData('Systeme', 'User/Login='.$login);
 			$tel1 = $adh->Telephone1;
 			$tel2 = $adh->Telephone2;
 			$s = self::MailCivility($adh);
