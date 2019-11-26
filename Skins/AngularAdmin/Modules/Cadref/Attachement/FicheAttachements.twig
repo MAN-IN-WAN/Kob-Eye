@@ -12,7 +12,7 @@
 						{{ label('Titre') }}
 					</div>
 					<div class="col-md-10">
-						<input type="text" class="form-control cadref-input" ng-model="attachementObj.Titre"/>
+						<input type="text" class="form-control cadref-input" maxlength="255" ng-model="attachementObj.Titre"/>
 					</div>
 				</div>
 				<div class="row">
@@ -21,7 +21,8 @@
 					</div>
 					<div class="col-md-10">
 						<input type="text" class="form-control" readonly placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
-						<button for="input-AttachementFilePath-file" class="clickable">Choisir un fichier</button>
+						<label for="input-AttachementFilePath-file" class="clickable">Choisir un fichier</label>
+						<progress id="upload-progress" max="100" value=""></progress>
 						<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
 							   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attachement' }],
 							   removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'attachementObj.FilePath' }" 

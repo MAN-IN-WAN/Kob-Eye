@@ -8,9 +8,11 @@ switch(Sys::$CurrentMenu->Url) {
 	
 	default:
 		$menus = array(
+			'adh_cours'=>'AdhInscription',
 			'adh_informations'=>'AdhInfo',
 			'adh_finance'=>'AdhFinance',
-			'adh_inscriptions'=>'AdhPanier',  //'AdhInscription',
+			'adh_inscriptions'=>'AdhPanier',
+			'adh_cours'=>'AdhInscription',
 			'adh_visites'=>'AdhVisite',
 			//'adh_visites'=>'AdhPanierVisite',
 			'adh_documents/adh_carte'=>'AdhCarte',

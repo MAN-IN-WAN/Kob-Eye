@@ -111,7 +111,7 @@
 									<th class="cadref-th">Période</th>
 									<th class="cadref-th">Prix</th>
 									<th class="cadref-th">Enseignant</th>
-									<th class="cadref-th">Doc.</th>
+{#									<th class="cadref-th">Doc.</th>#}
 								</tr>
 							</thead>
 							<tbody>
@@ -126,12 +126,12 @@
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : (item.clsId ? "Toute l'année" : "") }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 									<td scope="row" class="cadref-td"><span class="label">{[{ item.Enseignants }]}</span></td>
-									<td scope="row" class="cadref-td">
+{#									<td scope="row" class="cadref-td">
 										<span ng-if="item.insId*1>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 											  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
 										</span>
 										<span class="label" ng-if="item.insId*1==0" ng-class="{'label-danger':item.bloque*1, 'label-warning':!(item.bloque*1)}">{[{ item.note2 }]}</span>
-									</td>
+#}									</td>
 								</tr>
 								
 							</tbody>

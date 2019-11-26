@@ -83,6 +83,50 @@ class Enseignant extends genericClass {
 		return array('msg'=>'Utilisateur créé.','success'=>1);
 	}
 	
+	function ChangePassword($params) {
+		$data = array();
+		$data['success'] = 0;
+		$data['error'] = 0;
+		$pwd = '[md5]'.md5($params['PwdOld']);
+		if($pwd != Sys::$User->Pass) {
+			$data['message'] = 'Mot de passe actuel incorrect';
+			$data['error'] = 1;
+			return $data;
+		}
+		$new = $params['PwdNew'];
+		$cnf = $params['PwdConf'];
+		$p = "/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/";
+		if(strlen($new) < 8 || ! preg_match($p, $new)) {
+			$data['message'] = 'Nouveau mot de passe non conforme';
+			$data['error'] = 2;
+			return $data;
+		}
+		if($new != $cnf) {
+			$data['message'] = 'Confirmation incorrecte';
+			$data['error'] = 3;
+			return $data;
+		}
+		Sys::$User->Pass = '[md5]'.md5($new);
+		Sys::$User->Save();
+		
+		if(strpos($this->Mail, '@') > 0) {
+			$s = Cadref::MailCivility($this);
+			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
+			$s .= Cadref::MailSignature();
+			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
+				'To'=>array($this->Mail,'contact@cadref.com'),
+				'Body'=>$s);
+			Cadref::SendMessage($params);
+		}
+		$msg = "CADREF : Changement de mot de passe.\nCode utilisateur: ens".strtolower($this->Code)."\nMote de passe: $new\n";
+		$params = array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$msg);
+		Cadref::SendSms($params);
+
+		$data['success'] = 1;
+		$data['message'] = 'Mot de passe enregistré';
+		return $data;
+	}
+
 	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;
 		$id = $this->Id;

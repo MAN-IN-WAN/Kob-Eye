@@ -104,6 +104,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.attachementObj;
 	$scope.attachementInfo;
 	$scope.attachementsOpen = function(item, origine) {
+		$('#upload-progress').val(0);
 		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
 		var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
 		switch(origine){
@@ -134,6 +135,10 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		}
 		$scope.CadrefAttachement.store.getData(1, 'children');
 		$("#modal-Attachements").modal();
+	}
+	
+	$scope.autoUploader.onProgressAll = function(progress) {
+		$('#upload-progress').val(progress);
 	}
 
 	//-----------------------------

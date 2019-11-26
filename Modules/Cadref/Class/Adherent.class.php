@@ -1222,7 +1222,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['From'] = 'contact@cadref.com';
 		
 		$to = $params['Mail'];
-		if($to == 'C') $to = array('contact@cadref.com');
+		if($to == 'C') $args['To'] = array('contact@cadref.com');
 		else $args['To'] = array($to,'contact@cadref.com');
 		
 		$ret = Cadref::SendMessage($args);
@@ -1628,7 +1628,7 @@ inner join `##_Cadref-Discipline` d0 on d0.Id=n.DisciplineId
 inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
 inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
-where i.AdherentId=$adhId and i.Annee='$annee'
+where i.AdherentId=$adhId and i.Annee='$annee' and i.Supprime=0
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
 			case 'visite':

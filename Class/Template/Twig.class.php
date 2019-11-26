@@ -34,7 +34,7 @@ class KeTwig{
         }*/
         return KeTwig::$templates[$template] = KeTwig::$Twig->loadTemplate($dir.'/'.$file);
     }
-    public static function render($template, $vars){
+    public static function render($template, $vars, $direct=false){
         //echo "zob => $template \r\n";
         if (file_exists($template.'.php'))
             include($template.'.php');
@@ -49,8 +49,12 @@ class KeTwig{
             die();
         }*/
         //return KeTwig::$templates[$template]->render($vars);
-        KeTwig::$renderedTemplates[$tempname] = KeTwig::$templates[$template]->render($vars);
-        return '##TWIG##'.$tempname.'##TWIG##';
+		if ($direct){
+			return KeTwig::$templates[$template]->render($vars);
+		}else{
+			KeTwig::$renderedTemplates[$tempname] = KeTwig::$templates[$template]->render($vars);
+			return '##TWIG##'.$tempname.'##TWIG##';
+		}
     }
     public static function callModule($var) {
         $bl = new Bloc();

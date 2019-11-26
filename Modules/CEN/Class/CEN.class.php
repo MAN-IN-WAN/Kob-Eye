@@ -17,6 +17,9 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'genor':
+				return Temoa::GetGenor($args);
+				
 			case 'temoa':
 				return Temoa::GetList($args);
 				
