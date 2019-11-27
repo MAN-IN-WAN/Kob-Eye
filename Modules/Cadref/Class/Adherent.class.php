@@ -554,10 +554,11 @@ left join `##_Cadref-Niveau` n on n.Id=c0.NiveauId ";
 							break;
 						case 'A': $whr .= "and aa.Adherent in ('B','A') ";
 							break;
-						case 'D': $whr .= "and aa.ClasseId<>0 ";
+						case 'D': 
+							$whr .= "and aa.ClasseId<>0 ";
+							if($antenne != '') $whr .= "and n.AntenneId=$antenne ";
 							break;
 					}
-					if($antenne != '') $whr .= "and n.AntenneId=$antenne ";
 				}
 				elseif($visite != '') {
 					$sql .= "

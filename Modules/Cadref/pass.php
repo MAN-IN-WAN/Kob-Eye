@@ -1,9 +1,9 @@
 <?php
 
-$servername = "localhost";
-$database = "kbabtel";
-$username = "kbabtel";
-$password = "21wyisey";
+$servername = "127.0.0.1";
+$database = "instance-cadref-application";
+$username = "instance-cadref-application";
+$password = "8b97558596944f7ee9f79605";
 $sql = "select Body from `kob-Systeme-MailQueue` where Body like '%Code utilisateur%' order by Id";
 $sqla = "update `kob-Cadref-Adherent` set Password=:pass where Numero=:num";
 $sqle = "update `kob-Cadref-Enseignant` set Password=:pass where Code=:ens";
