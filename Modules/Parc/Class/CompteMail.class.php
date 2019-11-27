@@ -716,7 +716,6 @@ class CompteMail extends genericClass
     public function doMigrationMail ($params=null) {
         if (!$params) $params =array('step'=>0);
         if (!isset($params['step'])) $params['step']=0;
-        $srcSrv=$this->getKEServer();
         if ($params['step']==1){
             //vérification de la destination
             $srcSrv=$this->getKEServer();
@@ -727,25 +726,34 @@ class CompteMail extends genericClass
         }
         switch($params['step']) {
             case 1:
-                $srv = Sys::getOneData('Parc', 'Server/' . $params['selectedServer'], 0, 1, '', '', '', '', true);
-                if (!$srv) return false;
-                $task = genericClass::createInstance('Systeme', 'Tache');
-                $task->Type = 'Fonction';
-                $task->Nom = 'Déplacement du compte mail '. $this->Nom . ' vers le serveur "' . $srv->Nom . '"';
-                $task->TaskModule = 'Parc';
-                $task->TaskObject = 'CompteMail';
-                $task->TaskId = $this->Id;
-                $task->TaskFunction = 'moveMailAccount';
-                $task->TaskType = 'install';
-                $task->TaskCode = 'MAIL_ACCOUNT_SERVER_MOVE';
-                $task->TaskArgs = serialize($params);
-                $task->addParent($this);
-                $task->Save();
+                $task=$this->createMailboxMoveTask($params);
                 return array('task' => $task, 'title' => 'Progression du déplacement du compte');
                 break;
             default:
                 return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
         }
+    }
+    /**
+     * createMailboxMoveTask
+     * Création d'une tache pour le déplacement d'un compte
+     * @param object params
+     */
+    public function createMailboxMoveTask ($params) {
+        $srv = Sys::getOneData('Parc', 'Server/' . $params['selectedServer'], 0, 1, '', '', '', '', true);
+        if (!$srv) return false;
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Déplacement du compte mail '. $this->Nom . ' vers le serveur "' . $srv->Nom . '"';
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'CompteMail';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'moveMailAccount';
+        $task->TaskType = 'install';
+        $task->TaskCode = 'MAIL_ACCOUNT_SERVER_MOVE';
+        $task->TaskArgs = serialize($params);
+        $task->addParent($this);
+        $task->Save();
+        return $task;
     }
     /**
      * moveMailAccount

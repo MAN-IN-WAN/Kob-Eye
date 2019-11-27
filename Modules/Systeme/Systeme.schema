@@ -324,6 +324,7 @@
         <FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
         <FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
         <FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
+		<FILTER name="Migration mail" color="success"><![CDATA[TaskCode=MAIL_ACCOUNT_SERVER_MOVE]]></FILTER>
 		<INTERFACES name="fiche_middle">
 			<FORM type="Template" url="Systeme/Tache/Histo" title="Historique d'éxécution">Template</FORM>
 		</INTERFACES>
@@ -337,7 +338,7 @@
         <PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
 		<PROPERTIES type="datetime" list="1" fiche="1" listDescr="Date de fin">DateFin</PROPERTIES>
         <PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour,backup::Sauvegarde,rotate::Rotation" description="Type de tache" listDescr="Type" default="check">TaskType</PROPERTIES>
-        <PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
+        <PROPERTIES type="varchar" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
         <PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
