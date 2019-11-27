@@ -351,6 +351,15 @@ span.cadref-info {
 	color: #0190da;
 }
 
+.menu-static nav.left-menu + nav.top-menu {
+	margin-left:200px;
+}
+
+@media (min-width: 767px) {
+	nav.left-menu + * + * + .cwt__footer {
+		margin-left:216px;
+	}
+}
 
 nav.left-menu {
     width: 200px;
@@ -375,4 +384,10 @@ nav.left-menu .logo-container .logo {
 
 .panel-body.cadref-public {
 	padding: 5px 5px 5px 5px;
+}
+
+.listWrap{
+    position: relative;
+    width: 100%;
+    overflow: auto !important;
 }
