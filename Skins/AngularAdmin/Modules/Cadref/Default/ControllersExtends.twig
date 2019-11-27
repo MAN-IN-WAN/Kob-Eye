@@ -1,4 +1,5 @@
 {% if not noExtend %}
+	// Cadref list controller {{ objecttype }}
 	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, $log,
 		{{ ident }}Store, CadrefAttachementStore, CadrefSituationStore, CadrefProfessionStore) {
 
@@ -191,10 +192,11 @@
 			}
 			$scope.CadrefAttachement.store.getData(1, 'children');
 			$("#modal-Attachements").modal();
-		}
-
-		$scope.autoUploader.onProgressAll = function(progress) {
-			$('#upload-progress').val(progress);
+			if($scope.autoUploader != undefined && $scope.autoUploader.onProgressAll == undefined) {
+				$scope.autoUploader.onProgressAll = function(progress) {
+					$('#upload-progress').val(progress);
+				}
+			}
 		}
 
 		// ferme attachement edit section
@@ -267,7 +269,7 @@
 			{% set codeName = 'CodeDiscipline' %}
 			{% set codeLength = 15 %}
 		{% endif %}
-		var lasttimeout = false;
+		var {{ ident }}lasttimeout = false;
 		// wait for {{ ident }} to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('{{ ident }}', function() {
 			if($scope.{{ ident }} != undefined && $scope.{{ ident }}.filter2 == undefined) {
@@ -280,24 +282,24 @@
 				}
 				$scope.$watch('{{ ident }}.filter1', function() {
 					if ($scope.{{ ident }}.filter1 != {{ ident }}Store.getFilters('default',true).global){
-						if (lasttimeout){
-							$timeout.cancel(lasttimeout);
-							lasttimeout = false;
+						if ({{ ident }}lasttimeout){
+							$timeout.cancel({{ ident }}lasttimeout);
+							{{ ident }}lasttimeout = false;
 						}
 						{{ ident }}Store.setGlobalFilter($scope.{{ ident }}.filter1,'default');
-						lasttimeout = $timeout(function () {
+						{{ ident }}lasttimeout = $timeout(function () {
 							{{ ident }}Store.getData(1,'default');
 						},250);
 					}
 				});
 				$scope.$watch('{{ ident }}.filter2', function() {
 					if ($scope.{{ ident }}.filter2 != {{ ident }}Store.getFilters('default',true).global){
-						if (lasttimeout){
-							$timeout.cancel(lasttimeout);
-							lasttimeout = false;
+						if ({{ ident }}lasttimeout){
+							$timeout.cancel({{ ident }}lasttimeout);
+							{{ ident }}lasttimeout = false;
 						}
 						{{ ident }}Store.setGlobalFilter('{{ codeName }}~'+$scope.{{ ident }}.filter2,'default');
-						lasttimeout = $timeout(function () {
+						{{ ident }}lasttimeout = $timeout(function () {
 							{{ ident }}Store.getData(1,'default');
 						},250);
 					}
@@ -309,6 +311,7 @@
 
 		
 		{% if objecttype == 'Classe' %}		
+console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		$scope.ClassePage = CadrefClasseStore.getCurrentPage();
 		if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
 		$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
@@ -356,60 +359,60 @@
 		}
 		
 		
-		var lasttimeout = false;
-		var ignoreNext = 0;
-		var ingoreFirst = 2;
+		var CadrefClasselasttimeout = false;
+		var CadrefClasseignoreNext = 0;
+		var CadrefClasseingoreFirst = 2;
 		// wait for CadrefClasse to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefClasse', function() {
 			if($scope.CadrefClasse != undefined && $scope.CadrefClasse.filter2 == undefined) {
 				$scope.CadrefClasse.filter1 = CadrefClasseStore.Filter1;
 				$scope.CadrefClasse.filter2 = CadrefClasseStore.Filter2;
 				$scope.$watch('CadrefClasse.filter1', function() {
-					if(ignoreNext == 1) {
-						ignoreNext = 0;
+					if(CadrefClasseignoreNext == 1) {
+						CadrefClasseignoreNext = 0;
 						return;
 					}
-					if(ingoreFirst) {
-						ingoreFirst--;
+					if(CadrefClasseingoreFirst) {
+						CadrefClasseingoreFirst--;
 						return;
 					}
 					
 					if($scope.CadrefClasse.filter1 != CadrefClasseStore.Filter1) {
 						if($scope.CadrefClasse.filter2 != '') {
-							ignoreNext = 2;
+							CadrefClasseignoreNext = 2;
 							$scope.CadrefClasse.filter2 = '';
 						}
 						CadrefClasseStore.Filter1 = $scope.CadrefClasse.filter1;
 						
-						if(lasttimeout){
-							$timeout.cancel(lasttimeout);
-							lasttimeout = false;
+						if(CadrefClasselasttimeout){
+							$timeout.cancel(CadrefClasselasttimeout);
+							CadrefClasselasttimeout = false;
 						}
 						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1+'&Annee='+$scope.ClasseAnnee,'default');
 
-						lasttimeout = $timeout(function () {
+						CadrefClasselasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
 					}
 				});
 				$scope.$watch('CadrefClasse.filter2', function() {
-					if(ignoreNext == 2) {
-						ignoreNext = 0;
+					if(CadrefClasseignoreNext == 2) {
+						CadrefClasseignoreNext = 0;
 						return;
 					}
 					if($scope.CadrefClasse.filter2 != CadrefClasseStore.filter2) {
 						if($scope.CadrefClasse.filter1 != '') {
-							ignoreNext = 1;
+							CadrefClasseignoreNext = 1;
 							$scope.CadrefClasse.filter1 = '';
 						}
 						CadrefClasseStore.Filter2 = $scope.CadrefClasse.filter2;
 						
-						if (lasttimeout){
-							$timeout.cancel(lasttimeout);
-							lasttimeout = false;
+						if (CadrefClasselasttimeout){
+							$timeout.cancel(CadrefClasselasttimeout);
+							CadrefClasselasttimeout = false;
 						}
 						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2+'&Annee='+$scope.ClasseAnnee,'default');
-						lasttimeout = $timeout(function () {
+						CadrefClasselasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
 					}
@@ -425,6 +428,7 @@
 
 //***********************
 	
+	// Cadref form controller {{ objecttype }}
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
 		$rootScope, $routeParams, $http, $log, $injector,
 		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 

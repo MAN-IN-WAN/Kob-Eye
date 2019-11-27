@@ -372,3 +372,7 @@ nav.left-menu .logo-container {
 nav.left-menu .logo-container .logo {
     max-width: 200px;
 }
+
+.panel-body.cadref-public {
+	padding: 5px 5px 5px 5px;
+}
