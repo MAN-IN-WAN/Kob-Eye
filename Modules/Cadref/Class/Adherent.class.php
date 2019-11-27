@@ -498,6 +498,7 @@ class Adherent extends genericClass {
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
+				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$adherent = false;
 
 				if($soutien) {
@@ -542,6 +543,22 @@ group by i.Antenne
 					$sql .= "from `##_Cadref-Adherent` e ";
 					$whr = "and e.Cotisation>0 and e.Reglement=e.Cotisation and e.Differe=0 and e.Montant=0 ";
 				}
+				else if($typAdh != '') {
+					$sql .= "
+from `##_Cadref-Adherent` e
+inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'
+left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId 
+left join `##_Cadref-Niveau` n on n.Id=c0.NiveauId ";
+					switch($typAdh) {
+						case 'B': $whr .= "and aa.Adherent='B' ";
+							break;
+						case 'A': $whr .= "and aa.Adherent in ('B','A') ";
+							break;
+						case 'D': $whr .= "and aa.ClasseId<>0 ";
+							break;
+					}
+					if($antenne != '') $whr .= "and n.AntenneId=$antenne ";
+				}
 				elseif($visite != '') {
 					$sql .= "
 from `##_Cadref-Adherent` e
@@ -578,25 +595,25 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh != 'S' && $visite == '' && $visiteAnnee == '') {
+				if($typAdh == '' && $visite == '' && $visiteAnnee == '') {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
-					// type adherent
-					if($typAdh != '') {
-						$whr .= "and aa.Adherent in (";
-						switch($typAdh) {
-							case 'B': $whr .= "'B') ";
-								break;
-							case 'A': $whr .= "'B','A') ";
-								break;
-							case 'D': $whr .= "'B','A','D') ";
-								break;
-						}
-					}
+//					// type adherent
+//					if($typAdh != '') {
+//						$whr .= "and aa.Adherent in (";
+//						switch($typAdh) {
+//							case 'B': $whr .= "'B') ";
+//								break;
+//							case 'A': $whr .= "'B','A') ";
+//								break;
+//							case 'D': $whr .= "'B','A','D') ";
+//								break;
+//						}
+//					}
 
 					if(isset($obj['Nouveaux']) && $obj['Nouveaux']) $whr .= "and e.Inscription='$annee' ";
 
-					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
+//					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
 
 					$attente = (isset($obj['Attente']) && $obj['Attente'] != '') ? $obj['Attente'] : '';
@@ -1719,6 +1736,9 @@ where ce.Visite=:cid";
 		}
 		Sys::$User->Pass = '[md5]'.md5($new);
 		Sys::$User->Save();
+		
+		$this->Password = $new;
+		$this->Save();
 		
 		if(strpos($this->Mail, '@') > 0) {
 			$s = Cadref::MailCivility($this);

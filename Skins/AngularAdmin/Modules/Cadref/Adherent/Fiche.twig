@@ -42,15 +42,20 @@
 										{% endfor %}
 									</select>
 								</div>
-								<div class="col-md-1">
+{#								<div class="col-md-1">
 									{{ label("Etoiles") }}
 								</div>
 								<div class="col-md-2">
-									{#{{ fvalues(f.Etoile, o) }}#}
-								</div>
+									{{ fvalues(f.Etoile, o) }}
+								</div>#}
 								<div class="col-md-3">
 									<label class="form-control-label cadref-label">{[{ {{ o }}.Utilisateur+'&nbsp;&nbsp;'+{{ o }}.DateModification }]}</label>
 								</div>
+								{% if not Create %}
+								<div class="col-md-1">
+									<a class="form-control-label cadref-label" href="" ng-click="showPassword(obj)">?</a>
+								</div>
+								{% endif %}
 							</div>
 							<div class="row">
 								<div class="col-md-2">

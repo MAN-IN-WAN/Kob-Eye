@@ -173,6 +173,10 @@ class Cadref extends Module {
 		$pass = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($pass);
 		$u->Save();
+		
+		$a->Password = $pass;
+		if($endId) $a->Compte = 1;
+		$a->Save();
 
 		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
 		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,$s.$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
@@ -242,6 +246,9 @@ class Cadref extends Module {
 		$new = self::GeneratePassword();
 		$usr->Pass = '[md5]'.md5($new);
 		$usr->Save();
+		
+		$adh->Password = $new;
+		$adh->Save();
 
 		$s .= "Votre nouveau mot de passe est : <strong>$new</strong><br /><br />";
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
