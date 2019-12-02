@@ -633,7 +633,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		}
 		// cours
 		if($group != 'CADREF_ADMIN' && $group != 'CADREF_BENE') {
-			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
 				$cd = 0;
@@ -752,7 +752,7 @@ where ve.Visite=$vid
 		}
 
 		$data['events'] = $events;
-		//$data['sql'] = $sss;
+		$data['sql'] = $sss;
 		return $data;
 	}
 	

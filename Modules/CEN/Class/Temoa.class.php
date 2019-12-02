@@ -138,7 +138,7 @@ class Temoa extends genericClass {
 		$doc = array();
 		foreach($docs as $d) {
 			$id = $d->Id;
-			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true);
 			$docId[$d->Id] = $d->Nom;
 		}
 		
