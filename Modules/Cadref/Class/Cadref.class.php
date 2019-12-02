@@ -634,7 +634,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		}
 		// cours
 		if($group != 'CADREF_ADMIN' && $group != 'CADREF_BENE') {
-			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
 				$cd = 0;
@@ -642,6 +642,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				if($cy != '') {
 					$m = substr($cy, 3, 2);
 					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
+					$cd -= 60*60;
 					$cy = $p['CycleFin'];
 					$m = substr($cy, 3, 2);
 					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
@@ -675,7 +676,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					$d += 7 * 24 * 60 * 60;
 				}
 			}
-			$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
 				$d = $p['DateCours'];
