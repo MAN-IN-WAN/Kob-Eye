@@ -487,6 +487,7 @@ where g.Nom='CADREF_ADH'";
 		$args = json_decode(str_replace("\\", "", $args['args']));
 		$a = explode('T', $args->start);
 		$start = strtotime($a[0].' 00:00:0 GMT');
+		$start -= 60*60;
 		$a = explode('T', $args->end);
 		$end = strtotime($a[0].' 00:00:0 GMT');
 
