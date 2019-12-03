@@ -21,7 +21,7 @@ class CEN extends Module {
 				return Temoa::GetGenor($args);
 				
 			case 'temoa':
-				return Temoa::GetList($args);
+				return Temoa::GetTargets($args);
 				
 			case 'docs':
 				return Temoa::GetDocs();

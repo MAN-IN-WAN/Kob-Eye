@@ -1048,6 +1048,7 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				});
 			});
 			$timeout(function() {
+				$scope.nextControle(false);
 				$('#searchCadrefClasse').focus();
 			}, 300);
 			$scope.inscrOpened = true;
@@ -1065,7 +1066,7 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		$scope.nextControle = function(mode) {
 			var enb = false;
 			var cad = $scope.CadrefClasse.Inscr;
-			var p = Number(cad.paye);
+			var p = cad.paye*1;
 			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
 			$scope.nextDisabled = !enb;
 			if(enb) {
@@ -1316,7 +1317,10 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				if(r.mois == '' && r.user == '') {
 					if(lig == 0) {
 						r.mois = $filter('date')(new Date(), "MM");
-						if($filter('date')(new Date(), "DD") >= "15") r.mois = (r.mois*1)+1;
+						if($filter('date')(new Date(), "DD") >= "15") {
+							r.mois = (r.mois*1)+1;
+							if(r.mois == 13) r.mois = 1;
+						}
 					}
 					else {
 						var n = parseInt(lig)-1;
