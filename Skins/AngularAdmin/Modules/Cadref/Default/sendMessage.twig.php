@@ -55,7 +55,8 @@ order by Nom,Prenom";
 	$aa = $a->getOneChild('AdherentAnnee/Annee='.$annee);
 	if($aa->ClasseId) {
 		$sql = "
-select concat(d.Libelle,' ',n.Libelle) as Libelle, j.Jour, concat(c.HeureDebut,'-',c.HeureFin) as Heure
+select concat(d.Libelle,' ',n.Libelle) as Libelle, j.Jour, concat(c.HeureDebut,'-',c.HeureFin) as Heure,
+CycleDebut, CycleFin
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d0 on d0.Id=n.DisciplineId
@@ -66,7 +67,9 @@ where c.Id=".$aa->ClasseId;
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		foreach($pdo as $r) {
-			$to['D:'.$aa->ClasseId] = 'Classe: '.$r['Libelle'].' '.$r['Jour'].' '.$r['Heure'];
+			$s = $r['Libelle'].'  '.$r['Jour'].'  '.$r['Heure'];
+			if($p['CycleDebut']) $s .= '  ('.$p['CycleDebut'].'-'.$p['CycleFin'].')';
+			$to['D:'.$aa->ClasseId] = $s;
 			break;
 		}
 	}
