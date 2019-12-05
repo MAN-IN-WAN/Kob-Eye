@@ -76,6 +76,33 @@
 		<PROPERTIES type="longtext" category="Traduction2" >Trad2Notes</PROPERTIES>
 		<PROPERTIES type="text" category="Traduction2" >Trad2Marks</PROPERTIES>
 		<PROPERTIES type="text" category="Traduction2" >Trad2Lines</PROPERTIES>
-
 	</OBJECTCLASS>
+<!--
+	<OBJECTCLASS title="Codex" driver="mysql" order="Nom" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Archive</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Clef</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Presentation</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Etude</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Realite</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Dictionnaire</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Bibliographie</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Remerciements</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Credit</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Repertoire</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Planche" driver="mysql" order="Nom" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">ABComplete</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Zone" driver="mysql" order="Nom" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">ABComplete</PROPERTIES>
+	</OBJECTCLASS>
+-->
 </SCHEMA>

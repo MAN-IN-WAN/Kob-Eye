@@ -231,7 +231,7 @@ where ce.EnseignantId=$id";
 	
 	function PrintAdherents() {
 		$annee = Cadref::$Annee;
-		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
 		$a = genericClass::createInstance('Cadref', 'Adherent');
 		return $a->PrintAdherent($obj);
 	}

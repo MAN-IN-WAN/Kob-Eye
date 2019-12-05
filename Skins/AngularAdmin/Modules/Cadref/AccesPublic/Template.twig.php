@@ -20,6 +20,7 @@ switch(Sys::$CurrentMenu->Url) {
 			'adh_message'=>'sendMessage',
 			'adh_panier'=>'AdhPanier',
 			'adh_site/adh_site_adherent'=>'AdhSiteAdherent',
+			'adh_delegue/adh_delegue_adherent'=>'AdhDelegueAdherent',
 			'ens_informations'=>'EnsInfo',
 			'ens_absences'=>'EnsAbsence',
 			'ens_cours'=>'EnsCours',

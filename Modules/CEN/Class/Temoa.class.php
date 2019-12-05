@@ -103,8 +103,17 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 		$temoa->SetOrtho($ortho);
 
+		$genor = false;
 		if($args['arrows']) $temoa->AddArrows($args['arrows']);
-		else $temoa->AddArrow($args['word']);
+		else {
+			$temoa->AddArrow($args['word']);
+			$o = json_decode($ortho);
+			if($o->spelling == '3') {
+				$genor = true;
+				$arrs = $temoa->GetGenorJson($o->genor);
+			}
+		}
+
 		
 		if($temoa->Search()) {
 			$s = $temoa->GetTargetsJson();
@@ -125,7 +134,9 @@ class Temoa extends genericClass {
 				$occur += $a->count;
 			}
 		}
-		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
+		$ret = array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));	
+		if($genor) $ret['arrows'] = json_decode($arrs, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);;
+		return $ret;			
 	}
 
 	// liste des documents //et des filtres

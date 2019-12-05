@@ -125,6 +125,25 @@ class Adherent extends genericClass {
 					$usr->Save();
 				}
 			}
+			if($a->ClasseId != $data->ClasseId) {
+				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+				if($usr) {
+					if(!$data->ClasseId) {
+						$grs = $usr->getParents('Group');
+						foreach($grs as $g) {
+							if($g->Nom == 'CADREF_DELEGUE'); {
+								$usr->delParent($g);
+								break;
+							}
+						}
+					}
+					else {
+						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
+						$usr->addParent($g);
+					}
+					$usr->Save();
+				}
+			}
 			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
@@ -460,9 +479,19 @@ class Adherent extends genericClass {
 	function PrintSiteAdherents() {
 		$annee = Cadref::$Annee;
 		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
-		if(! $aa->AntenneId) return array('pdf'=>false, );
+		if(! $aa->AntenneId) return array('pdf'=>false);
 		
-		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee, 'Pages'=>true);
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee, 'Pages'=>true);
+		return $this->PrintAdherent($obj);
+	}
+
+	function PrintDelegueAdherents() {
+		$annee = Cadref::$Annee;
+		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
+		if(! $aa->ClasseId) return array('pdf'=>false);
+		$cl = Sys::getOneData('Cadref', 'Classe/'.$aa->ClasseId);
+		
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Disc'=>array($cl->CodeClasse), 'Annee'=>$annee, 'Pages'=>true);
 		return $this->PrintAdherent($obj);
 	}
 
@@ -1241,9 +1270,23 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array('contact@cadref.com');
+		elseif(substr($to, 0, 2) == 'D:') {
+			$sql = "
+select distinct a.Mail
+from `##_Cadref-Inscription` i 
+inner join `##_Cadref-Adherent` a on a.Id=i.AdherentId
+where i.ClasseId=".substr($to, 2)." and a.Mail like '%@%'";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+			foreach($pdo as $r) {
+				$args['To'] = array($r['Mail']);
+				$ret = Cadref::SendMessage($args);
+			}
+			$args['To'] = array('contact@cadref.com');
+		}
 		else $args['To'] = array($to,'contact@cadref.com');
 		
-		$ret = Cadref::SendMessage($args);
+		Cadref::SendMessage($args);
 		return array('data'=>'Message envoyé');
 	}
 	

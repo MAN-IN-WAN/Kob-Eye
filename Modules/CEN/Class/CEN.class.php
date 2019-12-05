@@ -66,6 +66,12 @@ class CEN extends Module {
 				
 			case 'norm':
 				break;
+			
+			case 'lang';
+				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
+				$lang = file_get_contents($lang->FilePath);
+				return array('lang'=>$lang);
+
 		}
 	}
 
