@@ -106,44 +106,44 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
-			if($a->AntenneId != $data->AntenneId) {
-				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
-				if($usr) {
-					if(!$data->AntenneId) {
-						$grs = $usr->getParents('Group');
-						foreach($grs as $g) {
-							if($g->Nom == 'CADREF_SITE'); {
-								$usr->delParent($g);
-								break;
-							}
-						}
-					}
-					else {
-						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
-						$usr->addParent($g);
-					}
-					$usr->Save();
-				}
-			}
-			if($a->ClasseId != $data->ClasseId) {
-				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
-				if($usr) {
-					if(!$data->ClasseId) {
-						$grs = $usr->getParents('Group');
-						foreach($grs as $g) {
-							if($g->Nom == 'CADREF_DELEGUE'); {
-								$usr->delParent($g);
-								break;
-							}
-						}
-					}
-					else {
-						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
-						$usr->addParent($g);
-					}
-					$usr->Save();
-				}
-			}
+//			if($a->AntenneId != $data->AntenneId) {
+//				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+//				if($usr) {
+//					if(!$data->AntenneId) {
+//						$grs = $usr->getParents('Group');
+//						foreach($grs as $g) {
+//							if($g->Nom == 'CADREF_SITE'); {
+//								$usr->delParent($g);
+//								break;
+//							}
+//						}
+//					}
+//					else {
+//						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+//						$usr->addParent($g);
+//					}
+//					$usr->Save();
+//				}
+//			}
+//			if($a->ClasseId != $data->ClasseId) {
+//				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+//				if($usr) {
+//					if(!$data->ClasseId) {
+//						$grs = $usr->getParents('Group');
+//						foreach($grs as $g) {
+//							if($g->Nom == 'CADREF_DELEGUE'); {
+//								$usr->delParent($g);
+//								break;
+//							}
+//						}
+//					}
+//					else {
+//						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
+//						$usr->addParent($g);
+//					}
+//					$usr->Save();
+//				}
+//			}
 			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;

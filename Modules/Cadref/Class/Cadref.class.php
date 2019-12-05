@@ -4,6 +4,7 @@ class Cadref extends Module {
 
 	public static $Annee = null;
 	public static $Cotisation = null;
+	public static $Group = null;
 
 	/**
 	 * Surcharge de la fonction postInit
@@ -43,8 +44,52 @@ class Cadref extends Module {
 				header("Location: $h/#/adh_panier");
 			}
 		}
+		$this->checkGroups();
 	}
-
+	
+	private function checkGroups() {
+		$usr = Sys::$User;
+		$groups = $usr->getParents('Group');
+		$site = null;
+		$delegue = null;
+		foreach($groups as $g) {
+			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) self::$Group = $g->Nom;
+			if($g->Nom == 'CADREF_SITE') $site = $g;
+			if($g->Nom == 'CADREF_DELEGUE') $delegue = $g;
+		}
+		if(self::$Group == 'CADREF_ADH') {
+			$modif = false;
+			$adh = Sys::getOneData('Cadref', 'Adherent/Numero='.$usr->Login);
+			$aan = $adh->getOneChild('AdherentAnnee/Annee='.self::$Annee);
+			if($aan) {
+				if($aan->AntenneId && !$site) {
+					$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+					$usr->addParent($g);
+					$modif = true;
+				}
+				elseif(!$aan->AntenneId && $site) {
+					$usr->delParent($site);
+					$modif = true;
+				}
+				if($aan->ClasseId && !$delegue) {
+					$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
+					$usr->addParent($g);
+					$modif = true;
+				}
+				elseif(!$aan->ClasseId && $delegue) {
+					$usr->delParent($delegue);
+					$modif = true;
+				}
+			}
+			else {
+				if($site) $usr->delParent($site);
+				if($delegue) $usr->delParent($delegue);
+				$modif = true;
+			}
+			if($modif) $usr->Save();
+		}
+	}
+	
 	public static function GetPayment($args) {
 		$id = $args['id'];
 		$mt = $args['montant'];
@@ -521,11 +566,12 @@ where g.Nom='CADREF_ADH'";
 			$vacances[] = $v;
 		}
 
-		$groups = Sys::$User->getParents('Group');
-		foreach($groups as $g) {
-			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) $group = $g->Nom;
-		}
-
+//		$groups = Sys::$User->getParents('Group');
+//		foreach($groups as $g) {
+//			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) $group = $g->Nom;
+//		}
+		$group = Cadref::$Group;
+		
 		$adh = false;
 		$adm = false;
 		if($group == 'CADREF_ADMIN' || $group == 'CADREF_BENE') {
