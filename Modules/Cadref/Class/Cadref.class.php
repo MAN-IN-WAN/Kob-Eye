@@ -806,6 +806,8 @@ where ve.Visite=$vid
 		return $data;
 	}
 	
+	
+
 	private static function calEvent($adh, $d, $p, $absences) {
 		$cid = $p['cid'];
 		$hd = isset($p['dhd']) && !empty($p['dhd']) ? $p['dhd'] : $p['HeureDebut'];
