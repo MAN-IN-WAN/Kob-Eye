@@ -2049,21 +2049,20 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		}
 		
 		
-		$scope.ClasseAnnee = '{{ Annee }}';
+		//$scope.CadrefClasse.ClasseAnnee = '{{ Annee }}';
 		$scope.classeAnneeChange = function(mode) {
-console.log("xxxxxxxxxxxxxxxxxxxxx")
 			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
 			if(mode == undefined) mode = true;
 			
 			var f = '';
-			if(CadrefClasseStore.Filter2 != '') f = 'CodeClasse~'+CadrefClasseStore.Filter2;
-			else if(CadrefClasseStore.Filter1 != '') f = CadrefClasseStore.Filter1;
-			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
+			if(CadrefClasseStore.Filter2 != '' && CadrefClasseStore.Filter2 != undefined) f = 'CodeClasse~'+CadrefClasseStore.Filter2;
+			else if(CadrefClasseStore.Filter1 != '' && CadrefClasseStore.Filter1 != undefined) f = CadrefClasseStore.Filter1;
+			f += (f != '' ? '&' : '')+'Annee='+$scope.CadrefClasse.ClasseAnnee;
 			
 			var p = mode ? 1 : $scope.ClassePage;
-            CadrefClasseStore.setGlobalFilter(f,'default');
-            CadrefClasseStore.getData(p,'default');
-			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
+            CadrefClasseStore.setGlobalFilter(f,'children');
+            CadrefClasseStore.getData(p,'children');
+			CadrefClasseStore.ListClasseAnnee = $scope.CadrefClasse.ClasseAnnee;
 		}
 		
 
