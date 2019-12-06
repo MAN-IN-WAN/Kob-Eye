@@ -142,7 +142,8 @@ where d.VisiteId=".$this->rupture;
 			$this->posy += 4.5;
 		}
 	}
-
+	
+	
 	private function printLine($l) {
 		$mode = $this->mode;
 		if($mode == 1 && ($l['Attente'] || $l['Supprime'])) return;
