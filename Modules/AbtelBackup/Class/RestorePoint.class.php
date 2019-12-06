@@ -13,8 +13,12 @@ class RestorePoint extends genericClass {
 
         //pour chaque vm
         $v =  $this->getOneParent('EsxVm');
+        if ($v) {
+            $v = $this->getOneParent('SambaDevice');
+        }
+        if (!$v) return true;
         $borg = $this->getOneParent('BorgRepo');
-
+        if (!$borg) return true;
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Collecteur';
         $task->Nom = 'Restore :' . $v->Titre .' -> '.$this->Titre;

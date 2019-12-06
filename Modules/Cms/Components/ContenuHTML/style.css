@@ -1,0 +1,121 @@
+.ImageEtLien {
+	overflow:hidden;
+	display:block;
+	position:relative;
+}
+
+/*
+Contenu
+ */
+
+.dvContent .cms-col > .Contenu {
+/*	padding:15px;*/
+
+}
+.dvContent .cms-col > .SaisieContenu.Contenu {
+	margin: 5px;
+
+}
+.dvContent .cms-col > .SaisieContenu.Contenu > p {
+	margin:0;
+
+}
+
+
+.dvContent .cms-col > .Contenu > .articleMainContent,
+.dvContent .cms-col > .Contenu  .article {
+	padding-left:15px;
+}
+/*
+ContenuColle
+ */
+
+.ContenuColle {
+	margin-left:-15px;
+}
+
+.dvContent .cms-col > .ContenuColle {
+	padding:15px;
+}
+
+/*
+Tableaux Prestations
+*/
+
+.Prestations {
+	padding:0;
+}
+
+
+.Prestations caption {
+	background-color: #af0410;
+	font-weight: bold;
+	text-align: center;
+	font-size:1rem;
+}
+
+.Prestations caption,
+.Prestations table tbody tr:first-child {
+	color:#ffffff;
+	border-bottom: none;
+}
+
+.Prestations caption,
+.Prestations table tbody tr:first-child th,
+.Prestations table tbody tr:first-child td {
+	padding: 5px 15px 5px 15px;
+}
+
+
+.Prestations tbody {
+	width:100%;
+	font-size:1rem;
+}
+
+.Prestations td {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.PPrestations td p {
+	margin-bottom: 0;
+}
+
+
+.Prestations table tbody tr:first-child {
+	background-color: #536281;
+	font-weight: 600;
+	min-height: 18px;
+}
+
+
+.Prestations table tbody tr:nth-child(1n+2) td {
+	font-weight: bold;
+	height: 30px;
+	border-bottom: 1px solid #ffffff;
+	border-right:1px solid #ffffff;
+	background-color: #ededef;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.Prestations td { width:33%;
+	font-size: 0.9em;
+}
+
+.Prestations table tbody tr:nth-child(1n+2) td:first-child {
+	border-left: 1px solid #ffffff;
+}
+
+.Prestations table tbody tr:nth-child(1n+2) td:only-of-type {
+	border-left: none;
+}
+
+
+
+
+.Prestations table tbody tr:nth-child(1n+2) td:last-child {
+	border-right: none;
+}
+
+
