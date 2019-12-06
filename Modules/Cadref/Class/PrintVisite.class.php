@@ -117,14 +117,7 @@ class PrintVisite extends FPDF {
 			$this->SetFont('Arial','B',$mode == 2 ? 9 :12);
 			$this->Cell($this->pageWidth, $this->lineHeight, $this->cv('Total général : ').$this->total, 'LRT');
 			$this->posy += $this->lineHeight;
-		}
-		if($this->mode != 0) return;
-		
-		$this->SetXY($this->left, $this->posy);
-		$this->Cell($this->pageWidth, 0.01, '', 'T');
-		$this->posy += 2;
-		
-
+		}		
 
 		$this->SetFont('Arial','',10);
 		$sql = "
@@ -142,8 +135,7 @@ where d.VisiteId=".$this->rupture;
 			$this->posy += 4.5;
 		}
 	}
-	
-	
+
 	private function printLine($l) {
 		$mode = $this->mode;
 		if($mode == 1 && ($l['Attente'] || $l['Supprime'])) return;
