@@ -118,22 +118,6 @@ class PrintVisite extends FPDF {
 			$this->Cell($this->pageWidth, $this->lineHeight, $this->cv('Total général : ').$this->total, 'LRT');
 			$this->posy += $this->lineHeight;
 		}		
-
-		$this->SetFont('Arial','',10);
-		$sql = "
-select l.Lieu, d.HeureDepart, l.Libelle
-from `##_Cadref-Depart` d
-inner join `##_Cadref-Lieu` l on l.Id=d.LieuId
-where d.VisiteId=".$this->rupture;
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		foreach($pdo as $p) {
-			$this->SetXY($this->left, $this->posy);
-			$this->Cell(10, 4.5, $p['Lieu'], '', 0, 'L');
-			$this->Cell(12, 4.5, $p['HeureDepart'], '', 0, 'L');
-			$this->Cell(140, 4.5, $this->cv($p['Libelle']), '', 0, 'L');
-			$this->posy += 4.5;
-		}
 	}
 
 	private function printLine($l) {
