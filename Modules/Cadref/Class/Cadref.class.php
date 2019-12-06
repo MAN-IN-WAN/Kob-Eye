@@ -820,9 +820,10 @@ where ve.Visite=$vid
 		$e->end = Date('Y-m-d', $d).'T'.$hf;
 		$e->className = 'fc-event-info';
 		$e->description = $hd.' à '.$hf.($cy ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
-		if($pr==0 && $cd==1) $e->className = 'fc-event-warning';
+ 
 		if(isset($p['Notes']) && !empty($p['Notes'])) {
-			$e->description .= "\n".$p['Notes'];
+			$e->description .= "\n<b>".$p['Notes'].'</b>';
+			$e->className = 'fc-event-warning';
 		}
 		if($p['Ville']) {
 			$l = $p['Ville'];
