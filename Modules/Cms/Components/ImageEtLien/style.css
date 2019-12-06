@@ -1,0 +1,30 @@
+
+
+.Publicite figure {
+	text-align: center;
+}
+
+
+.Publicite figure img {
+	display:inline;
+	width: 100%;
+}
+
+.PetitePub, .PetitePubDroite {
+	padding-top: 15px;
+	width:100%;
+}
+
+.PetitPub img,
+.PetitePubDroite img {
+	object-fit: contain;
+	max-height:247px;
+}
+
+.GrandePub img {
+	object-fit: cover;
+	width: 100%;
+	max-height:510px;
+}
+
+
