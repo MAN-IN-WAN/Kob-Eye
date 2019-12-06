@@ -38,6 +38,24 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2">
+										<table>
+											<thead>
+												<tr>
+													<th>Heure début</th>
+													<th>Heure fin</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="cadref-td-inscr">{{ finput(f.HeureDebut, o, false, 'ww:ww', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.HeureFin, o, false, 'ww:ww', 'width:80px') }}</td>
+												</tr>
+											</tbody>
+										</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
 									{{ label("Notes") }}
 								</div>
 								<div class="col-md-10">

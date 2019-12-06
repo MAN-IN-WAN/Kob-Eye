@@ -588,7 +588,7 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 			$id = $a->Id;
 			$sql = "
-select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Programmation,0 as cd,
 concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -610,7 +610,8 @@ and i.Attente=0 and i.Supprime=0
 ";
 			$sql2 = "
 select cd.DateCours,i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2,
+cd.Notes,cd.HeureDebut as dhd,cd.HeureFin as dhf,c.Programmation,1 as cd
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=i.ClasseId
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -627,7 +628,7 @@ and i.Attente=0 and i.Supprime=0
 			$e = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 			$id = $e->Id;
 			$sql = "
-select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Programmation,0 as cd,
 concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -644,7 +645,8 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 ";
 			$sql2 = "			
 select cd.DateCours,c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2,
+cd.Notes,cd.HeureDebut as dhd,cd.HeureFin as dhf,c.Programmation,1 as cd
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=ce.Classe
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -806,12 +808,22 @@ where ve.Visite=$vid
 	
 	private static function calEvent($adh, $d, $p, $absences) {
 		$cid = $p['cid'];
+		$hd = isset($p['dhd']) && !empty($p['dhd']) ? $p['dhd'] : $p['HeureDebut'];
+		$hf = isset($p['dhf']) && !empty($p['dhf']) ? $p['dhf'] : $p['HeureFin'];
+		$pr = $p['Programmation'];
+		$cd = $p['cd'];
+		$cy = $p['CycleDebut'] && (($pr==0 && $cd==0) || ($pr==1 && $cd==1));
+		
 		$e = new stdClass();
 		$e->title = $p['Libelle'];
-		$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
-		$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
+		$e->start = Date('Y-m-d', $d).'T'.$hd;
+		$e->end = Date('Y-m-d', $d).'T'.$hf;
 		$e->className = 'fc-event-info';
-		$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($p['CycleDebut'] ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+		$e->description = $hd.' à '.$hf.($cy ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+
+		if(isset($p['Notes']) && !empty($p['Notes'])) {
+			$e->description .= "\n".$p['Notes'];
+		}
 		if($p['Ville']) {
 			$l = $p['Ville'];
 			if($p['Adresse1']) $l .= ', '.$p['Adresse1'];

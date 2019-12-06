@@ -19,6 +19,22 @@
 						</label>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Horaires  Début") }}
+					</div>
+					<div class="col-md-3">
+						<input type="text" class="form-control cadref-input" mask="ww:ww" ng-model="classeDateObj.HeureDebut"/>
+					</div>
+					<div class="col-md-2">
+						{{ label("Fin") }}
+					</div>
+					<div class="col-md-3">
+						<input type="text" class="form-control cadref-input" mask="ww:ww" ng-model="classeDateObj.HeureFin"/>
+					</div>
+				</div>
+					
 				<div class="row">
 					<div class="col-md-4">
 						{{ label("Notes") }}
@@ -71,6 +87,7 @@
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Heure</th>
 				<th class="cadref-th">Note</th>
 				<th class="cadref-th-btn">
 					<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="classeDateAdd()" title="Ajouter une date"></a>
@@ -82,6 +99,7 @@
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typedate"><a href="" ng-click="classeDateModify(item)">{[{ item.DateCours }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeDateModify(item)">{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeDateModify(item)">{[{ item.Notes }]}</a></td>
 				<td  class="table-action cadref-td-btn" style="width:64px">
 					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ></a>
