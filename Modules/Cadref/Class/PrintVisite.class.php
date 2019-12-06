@@ -119,7 +119,11 @@ class PrintVisite extends FPDF {
 			$this->posy += $this->lineHeight;
 		}		
 
-		if($this->rupture) {
+		if($this->rupture && $this->mode == 0) {
+			$this->SetXY($this->left, $this->posy);
+			$this->Cell($this->pageWidth, 0.01, '', 'T');
+			$this->posy += 3;
+			
 			$this->SetFont('Arial','',10);
 			$sql = "
 	select l.Lieu, d.HeureDepart, l.Libelle
