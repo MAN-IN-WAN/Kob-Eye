@@ -1,29 +1,35 @@
 <div class="listWrap">
-	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
-				<th>Date</th>
+				<th>Doc.</th>
 				<th>Visite</th>
+				<th>Date</th>
 				<th>Animateur</th>
 				<th>Prix</th>
 				{#<th>Assur.</th>#}
 				<th>Départ</th>
-				<th>Etat</th>
-				<th>Date état</th>
-				<th>Doc.</th>
+{#				<th>Etat</th>
+				<th>Date état</th>#}
 			</tr>
 		</thead>
 		<tbody>
 			<tr {% if tempContext %}ng-repeat="item in reservationObj.ReservationItems"{% else %}dir-paginate="item in {{ identifier }}.data{% endif %}">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span ng-if="item.resId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+					</span>
+					<span ng-if="item.resId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="reservationSupprime(item)" title="Annuler l'inscription"></span>
+				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Enseignants }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
 				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.HeureDepart+' '+item.LibelleL }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar">
+{#				<td scope="row" class="cadref-td typevarchar">
 					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
 					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
 					<span class="label label-danger" ng-if="item.Supprime>0">Supprimé</span>
@@ -32,13 +38,7 @@
 					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime | limitTo : 11 }]}</span>
 					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
 					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
-				</td>
-				<td scope="row" class="cadref-td typeint">
-					<span ng-if="item.resId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-						  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
-					</span>
-					<span ng-if="item.resId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="reservationSupprime(item)" title="Annuler l'inscription"></span>
-				</td>
+				</td>#}
 			</tr>
 		</tbody>
 	</table>

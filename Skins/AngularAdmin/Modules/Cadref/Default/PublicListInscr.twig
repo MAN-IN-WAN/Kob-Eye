@@ -1,27 +1,33 @@
 <div class="listWrap">
-	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
 			<tr>
+				<th class="cadref-th">Doc.</th>
 				<th class="cadref-th">Libellé</th>
 				<th class="cadref-th">Antenne</th>
 				<th class="cadref-th">Horaires</th>
 				<th class="cadref-th">Période</th>
 				<th class="cadref-th">Prix</th>
 				<th class="cadref-th">Enseignant</th>
-				<th class="cadref-th">Etat</th>
-				<th class="cadref-th">Date état</th>
-				<th class="cadref-th">Doc.</th>
+{#				<th class="cadref-th">Etat</th>
+				<th class="cadref-th">Date état</th>#}
 			</tr>
 		</thead>
 		<tbody>
 			<tr {% if tempContext %}ng-repeat="item in inscriptionObj.InscriptionItems"{% else %}dir-paginate="item in {{ identifier }}.data{% endif %}">
+				<td scope="row" class="cadref-td typeint">
+					<span ng-if="item.insId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+					</span>
+					<span ng-if="item.insId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="inscriptionSupprime(item)" title="Annuler l'inscription"></span>
+				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures}">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar">
+{#				<td scope="row" class="cadref-td typevarchar">
 					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
 					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
 					<span class="label label-danger" ng-if="item.Supprime==1">Supprimé</span>
@@ -31,18 +37,12 @@
 					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
 					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
 					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
-				</td>
-				<td scope="row" class="cadref-td typeint">
-					<span ng-if="item.insId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-						  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
-					</span>
-					<span ng-if="item.insId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="inscriptionSupprime(item)" title="Annuler l'inscription"></span>
-				</td>
+				</td>#}
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+{#<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -51,6 +51,21 @@
             </div>
             <div class="modal-body">
                 <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+#}<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title" id="myModalLabel">Cours : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachementInfo.classeId>0">
 					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
                 </div>
             </div>

@@ -80,7 +80,8 @@ class Temoa extends genericClass {
 		} 
 	}
 	
-	static function GetList($args) {
+	// liste des mots dans le documents
+	static function GetTargets($args) {
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
@@ -102,11 +103,21 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 		$temoa->SetOrtho($ortho);
 
-		$temoa->AddArrow($args['word']);
+		$genor = false;
+		if($args['arrows']) $temoa->AddArrows($args['arrows']);
+		else {
+			$temoa->AddArrow($args['word']);
+			$o = json_decode($ortho);
+			if($o->spelling == '3') {
+				$genor = true;
+				$arrs = $temoa->GetGenorJson($o->genor);
+			}
+		}
+
+		
 		if($temoa->Search()) {
 			$s = $temoa->GetTargetsJson();
 		}
-
 		unset($temoa);
 
 		$o = json_decode($s, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -123,38 +134,43 @@ class Temoa extends genericClass {
 				$occur += $a->count;
 			}
 		}
-		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
+		$ret = array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));	
+		if($genor) $ret['arrows'] = json_decode($arrs, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);;
+		return $ret;			
 	}
 
+	// liste des documents //et des filtres
 	static function GetDocs() {
 		$docs = Sys::getData('CEN', 'Temoa');
 		$docId= array();
 		$doc = array();
 		foreach($docs as $d) {
 			$id = $d->Id;
-			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true);
 			$docId[$d->Id] = $d->Nom;
 		}
 		
-		$filt = array();
-		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-		$rul = file_get_contents(getcwd().'/'.$rule->FilePath);
-		$p = strpos($rul, '[Filters]');
-		$p = strpos($rul, "\n", $p);
-		$rul = substr($rul, $p+1);
-		while(substr($rul, 0, 1) != '[') {
-			$p = strpos($rul, "\n");
-			$f = trim(substr($rul, 0, $p));
-			if($f) {
-				$q = strpos($f, '=');
-				$filt[] = substr($f, 0, $q);
-			}
-			$rul = substr($rul, $p+1);
-		}
+//		$filt = array();
+//		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+//		$rul = file_get_contents(getcwd().'/'.$rule->FilePath);
+//		$p = strpos($rul, '[Filters]');
+//		$p = strpos($rul, "\n", $p);
+//		$rul = substr($rul, $p+1);
+//		while(substr($rul, 0, 1) != '[') {
+//			$p = strpos($rul, "\n");
+//			$f = trim(substr($rul, 0, $p));
+//			if($f) {
+//				$q = strpos($f, '=');
+//				$filt[] = substr($f, 0, $q);
+//			}
+//			$rul = substr($rul, $p+1);
+//		}
 			
-		return array('documentsId'=>$docId, 'documents'=>$doc, 'filters'=>$filt);		
+		return array('documentsId'=>$docId, 'documents'=>$doc,); // 'filters'=>$filt);		
 	}
 	
+	
+	// charge un document
 	static function GetDocument($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
@@ -190,6 +206,8 @@ class Temoa extends genericClass {
 		return array('doc'=>utf8_encode($doc),'marks'=>$mark,'lines'=>$line,'trad'=>$trd,'trad2'=>$tr2,'notes'=>$not,'picts'=>$pic);
 	}
 	
+	
+	// liste des notes
 	static function GetNotes($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
@@ -225,6 +243,8 @@ class Temoa extends genericClass {
 		return array('notes'=>$note);
 	}
 	
+	
+	// liste des images
 	static function GetPicts($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
@@ -256,6 +276,7 @@ class Temoa extends genericClass {
 		return array('dir'=>$d, 'picts'=>$pict);
 	}
 	
+	// charge une traduction
 	static function GetTraduction($args) {
 		$id = $args['id'];
 		$t = Sys::getOneData('CEN', "Temoa/$id");
@@ -299,6 +320,21 @@ class Temoa extends genericClass {
 
 		return array('doc'=>utf8_encode($doc),'notes'=>$not,'marks'=>$mark, 'lines'=>$line);
 	}
+	
+	// liste des mots générés Genor
+	static function GetGenor($args) {
+		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
+
+		$temoa = new temoa2\Temoa();
+		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
+		$temoa->AddArrows($args['arrows']);
+		//$temoa->AddArrow('tlatoani');
+		$g = $temoa->GetGenorJson($args['level']);
+		unset($temoa);
+		
+		$gen = json_decode($g, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+		return array('arrows'=>$gen);
+	} 
 	
 
 }

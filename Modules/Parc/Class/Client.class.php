@@ -503,4 +503,48 @@ class Parc_Client extends genericClass {
         }
         return $client;
     }
+    /**
+     * doMigrationMail
+     * Migration de boite mail entre serveur MBX
+     */
+    public function doMigrationMail ($params=null) {
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']) {
+            case 1:
+                $srv = Sys::getOneData('Parc', 'Server/' . $params['selectedServer'], 0, 1, '', '', '', '', true);
+                if (!$srv) return false;
+                $task = genericClass::createInstance('Systeme', 'Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Inventaire des comptes à déplacer du client '. $this->Nom . ' vers le serveur "' . $srv->Nom . '"';
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Client';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'findMailAccounts';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'CLIENT_MAIL_ACCOUNTS_SERVER_MOVE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task' => $task, 'title' => 'Progression de l\'inventaire');
+                break;
+            default:
+                return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
+        }
+    }
+    /**
+     * moveMailAccounts
+     * Migration de boites mail du client entre serveur MBX
+     * @param object task
+     */
+    public function findMailAccounts ($task) {
+        $params=unserialize($task->TaskArgs);
+        $account=$this->getChildren('CompteMail');
+        foreach ($account as $a) {
+            //Exécution de la commande
+            $act=$task->createActivity('Création de la tache pour le compte '.$a->Adresse);
+            $a->createMailboxMoveTask($params);
+            $act->Terminate(true);
+        }
+    }
 }

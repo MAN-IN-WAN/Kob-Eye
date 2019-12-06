@@ -47,7 +47,7 @@
             $params = array('Query'=>$path);
             $params = array_merge($params,$vars['params']);
             KeTwig::loadTemplate($file);
-            $temp = KeTwig::render($file,$params);
+            $temp = KeTwig::render($file,$params,true);
         }
         $vars['toReturn']['data'] = $temp;
         $vars['toReturn']['success'] = true;

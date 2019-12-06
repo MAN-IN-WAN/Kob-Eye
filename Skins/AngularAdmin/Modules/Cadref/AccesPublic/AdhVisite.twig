@@ -2,7 +2,7 @@
 <div class="page-content-inner">
 	<h3>Visites guidées</h3>
     <section class="panel">
-        <div class="panel-body">
+        <div class="panel-body cadref-public">
             <div class="row no-gutters">
                 <div class="col-md-12">
 {#					<div class="row" ng-if="!reservationObj.Select">
@@ -10,7 +10,7 @@
 							<button type="button" class="btn btn-success" ng-click="reservationSelect(true)">Ajouter une visite</button>
 						</div>
 					</div>
-#}					<section class="panel" ng-if="reservationObj.Select">
+					<section class="panel" ng-if="reservationObj.Select">
 						<div class="panel-body">
 							<div class="row">
 								<div style="height:10px"></div>
@@ -52,19 +52,19 @@
 								</div>
 							</div>
 						</div>
-					</section>
+					</section>#}
 					<section class="panel">
-						<div class="panel-body">
+{#						<div class="panel-body">#}
 							<ng-include src="'Cadref/Adherent/0/Reservation/PublicListReserv.htm?tempContext=1'"></ng-include>
-						</div>
-						<div class="row" ng-if="reservationObj.Updated">
+{#						</div>#}
+{#						<div class="row" ng-if="reservationObj.Updated">
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ reservationObj.Montant }]}</label>
 							</div>
 							<div class="col-md-2">
 								<button type="button" class="btn btn-info" ng-click="reservationConfirm()">Confirmer l'inscription</button>
 							</div>
-						</div>
+						</div>#}
 					</section>
 				</div>
 			</div>

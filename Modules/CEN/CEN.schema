@@ -1,4 +1,17 @@
 <SCHEMA>
+	<OBJECTCLASS title="Presentation" driver="mysql" AccessPoint="1" Description="Presentation"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Presentation.class.php">
+		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">TexteEs</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">TexteFr</PROPERTIES>
+		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">TexteEn</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Regle" driver="mysql" AccessPoint="1" Description="Règle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="file" category="Description" form="5" fiche="5" description="Fichier">FilePath</PROPERTIES>
+	</OBJECTCLASS>
+
+
 	<OBJECTCLASS title="Dictionnaire" driver="mysql" order="Nom" AccessPoint="1" Description="Dictionnaire"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Dictionnaire.class.php">
 		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="60" searchOrder="2" category="Description" form="2" list="2" fiche="2">Nom</PROPERTIES>
@@ -8,12 +21,7 @@
 		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">PresentationFr</PROPERTIES>
 		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">PresentationEn</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Presentation" driver="mysql" AccessPoint="1" Description="Presentation"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Presentation.class.php">
-		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">TexteEs</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">TexteFr</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">TexteEn</PROPERTIES>
-	</OBJECTCLASS>
+
 	<OBJECTCLASS title="GDN" driver="mysql" AccessPoint="1" Description="GDN"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/GDN.class.php">
 		<FKEY card="1,1" module="CEN" data="Dictionnaire,Id" form="1" fiche="1" >DictionnaireId</FKEY>
 		<PROPERTIES type="varchar" length="60" searchOrder="3" form="1" list="1" fiche="1">Paleo</PROPERTIES>
@@ -43,10 +51,6 @@
 		</VIEW>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Regle" driver="mysql" AccessPoint="1" Description="Règle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
-		<PROPERTIES type="file" category="Description" form="5" fiche="5" description="Fichier">FilePath</PROPERTIES>
-	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Temoa" driver="mysql" order="Nom" AccessPoint="1" Description="Temoa" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Temoa.class.php">
 		<PROPERTIES type="varchar" length="255" category="Description" searchOrder="1" form="1" list="1" fiche="1">Code</PROPERTIES>
@@ -76,6 +80,304 @@
 		<PROPERTIES type="longtext" category="Traduction2" >Trad2Notes</PROPERTIES>
 		<PROPERTIES type="text" category="Traduction2" >Trad2Marks</PROPERTIES>
 		<PROPERTIES type="text" category="Traduction2" >Trad2Lines</PROPERTIES>
-
 	</OBJECTCLASS>
+
+	<!-- TLACHIA -->
+<!--
+	<OBJECTCLASS title="Codex" driver="mysql" order="Nom" AccessPoint="1" Description="Codex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Archive</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Clef</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Code</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Presentation</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Etude</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Realite</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Dictionnaire</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Bibliographie</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Remerciements</PROPERTIES>
+		<PROPERTIES type="text" category="Description"  form="1" list="1" fiche="1">Credit</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Repertoire</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Planche" driver="mysql" order="Nom" AccessPoint="1" Description="Planche" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">ABComplete</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Zone" driver="mysql" order="Nom" AccessPoint="1" Description="Zone" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">ABComplete</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Glyphe" driver="mysql" order="Nom" AccessPoint="1" Description="Glyphe" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">OHAA</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">OVAA</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">RLAA</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">RHAA</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Recit</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Groupe</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Classe</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">NbElement</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" category="Description"  form="1" fiche="1">MotNouveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">SylPers</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">ValSupl</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">Divers</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">OrientaG</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">OrientaC</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Position</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Liens</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">LiensG</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">LiensP</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">Contact</PROPERTIES>
+		<PROPERTIES type="varchar" length="11" category="Description"  form="1" fiche="1">CotePers</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">AutrePers</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Composition</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">IntegrInt</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">IntegrExt</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Multipli</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Superpo</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Dimensions</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Noir</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Hachure</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">Couleurs</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">SensDeLec</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">SendLecPer</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Hauteur</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Largeur</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Ref</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Mains</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Fond</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Personnage" driver="mysql" order="Nom" AccessPoint="1" Description="Personnage" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Ref</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Recit</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Groupe</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Sexe</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Age</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">NbElement</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description"  form="1" fiche="1">Elements</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Positions</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Altitude</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Bras</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Pieds</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">OrientaP</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">OrientaC</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">Liens</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" category="Description"  form="1" fiche="1">LiensG</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">AutreGly</PROPERTIES>
+		<PROPERTIES type="varchar" length="7" category="Description"  form="1" fiche="1">LiensP</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Hauteur</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Largeur</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">Divers</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">Couleurs</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" category="Description"  form="1" fiche="1">MotNouveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="40" category="Description"  form="1" fiche="1">SylsPers</PROPERTIES>
+		<PROPERTIES type="varchar" length="40" category="Description"  form="1" fiche="1">ValsSupl</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">SensDeLec</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">OHAA</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">OVAA</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Mains</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">Fond</PROPERTIES>
+		<PROPERTIES type="varchar" length="11" category="Description"  form="1" fiche="1">CotePers</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Element" driver="mysql" order="Nom" AccessPoint="1" Description="Element" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" list="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Nahuatl</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Catalogue</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">MisePage</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Repetition</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Reali</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">Figur</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Variante</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Orientation</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Trait</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Description"  form="1" fiche="1">Interieur</PROPERTIES>
+		<PROPERTIES type="varchar" length="6" category="Description"  form="1" fiche="1">Hybride</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Element" driver="mysql" order="Nom" AccessPoint="1" Description="Element" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Nahuatl</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" list="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">Figur</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Orientation</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description"  form="1" fiche="1">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Lateral</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Variante</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Repetition</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Catalogue</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">MisePage</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Trait</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Description"  form="1" fiche="1">Interieur</PROPERTIES>
+		<PROPERTIES type="varchar" length="6" category="Description"  form="1" fiche="1">Hybride</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Citation" driver="mysql" order="Nom" AccessPoint="1" Description="Citation" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">Citation</PROPERTIES>
+		<PROPERTIES type="varchar" length="22" category="Description"  form="1" fiche="1">Source</PROPERTIES>
+		<PROPERTIES type="varchar" length="22" category="Description"  form="1" fiche="1">Pages</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PCitation" driver="mysql" order="Nom" AccessPoint="1" Description="PCitation" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="Text" category="Description"  form="1" fiche="1">Citation</PROPERTIES>
+		<PROPERTIES type="varchar" length="22" category="Description"  form="1" fiche="1">Source</PROPERTIES>
+		<PROPERTIES type="varchar" length="22" category="Description"  form="1" fiche="1">Pages</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Forme" driver="mysql" order="Nom" AccessPoint="1" Description="Forme" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Forme</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Mot" driver="mysql" order="Nom" AccessPoint="1" Description="Mot" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="24" category="Description"  form="1" list="1" fiche="1">Paleo</PROPERTIES>
+		<PROPERTIES type="varchar" length="24" category="Description"  form="1" fiche="1">Trans</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Nouveau" driver="mysql" order="Nom" AccessPoint="1" Description="Nouveau" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">MotNouveau</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PNouveau" driver="mysql" order="Nom" AccessPoint="1" Description="PNouveau" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">MotNouveau</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="SylPers" driver="mysql" order="Nom" AccessPoint="1" Description="SylPers" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">SylPerso</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PSylPers" driver="mysql" order="Nom" AccessPoint="1" Description="PSylPers" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">SylPerso</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Valeur" driver="mysql" order="Nom" AccessPoint="1" Description="Valeur" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Valeur</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Types</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Catalogue</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Place</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Niveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Syllabe</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Determinatif</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PValeur" driver="mysql" order="Nom" AccessPoint="1" Description="PValeur" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Valeur</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Types</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description"  form="1" fiche="1">Catalogue</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Place</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description"  form="1" fiche="1">Niveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Syllabe</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Determinatif</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description"  form="1" fiche="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ValSupl" driver="mysql" order="Nom" AccessPoint="1" Description="ValSupl" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">ValSupl</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PValSupl" driver="mysql" order="Nom" AccessPoint="1" Description="PValSupl" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Cote</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Lecture</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">ValSupl</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Racine" driver="mysql" order="Nom" AccessPoint="1" Description="Racine" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Mot2</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Decomposition</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Racine1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Racine2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Racine3</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Racine4</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" fiche="1">Racine5</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Sens" driver="mysql" order="Nom" AccessPoint="1" Description="Sens" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Sens</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Sens2</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Sens3</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Termino" driver="mysql" order="Nom" AccessPoint="1" Description="Termino" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="34" category="Description"  form="1" list="1" fiche="1">Terme</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Fichier</PROPERTIES>
+		<PROPERTIES type="varchar" length="34" category="Description"  form="1" fiche="1">Espagnol</PROPERTIES>
+		<PROPERTIES type="varchar" length="34" category="Description"  form="1" fiche="1">Anglais</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Theme" driver="mysql" order="Nom" AccessPoint="1" Description="Theme" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="Codex,Id" form="1" fiche="1" >CodexId</FKEY>	
+		<PROPERTIES type="varchar" length="20" category="Description"  form="1" list="1" fiche="1">Element</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Description"  form="1" fiche="1">Theme</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description"  form="1" fiche="1">Sens</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">Page</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description"  form="1" fiche="1">Group</PROPERTIES>
+		<PROPERTIES type="varchar" length="12" category="Description"  form="1" fiche="1">TiTheme</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Description"  form="1" fiche="1">TiCategorie</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">Numero</PROPERTIES>
+	</OBJECTCLASS>
+
+-->
+
+
+
 </SCHEMA>

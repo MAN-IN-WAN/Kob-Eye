@@ -17,8 +17,11 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'genor':
+				return Temoa::GetGenor($args);
+				
 			case 'temoa':
-				return Temoa::GetList($args);
+				return Temoa::GetTargets($args);
 				
 			case 'docs':
 				return Temoa::GetDocs();
@@ -36,15 +39,7 @@ class CEN extends Module {
 				return Temoa::GetTraduction($args);
 				
 			case 'dict':
-				$dics = Sys::getData('CEN', 'Dictionnaire');
-				$dicId= array();
-				$dic = array();
-				foreach($dics as $d) {
-					$id = $d->Id;
-					$dic[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
-					$dicId[$d->Id] = $d->Nom;
-				}
-				return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
+				return Gdn::GetDics();
 				
 			case 'list':
 				return GDN::GetList($args);
@@ -71,6 +66,12 @@ class CEN extends Module {
 				
 			case 'norm':
 				break;
+			
+			case 'lang';
+				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
+				$lang = file_get_contents($lang->FilePath);
+				return array('lang'=>$lang);
+
 		}
 	}
 

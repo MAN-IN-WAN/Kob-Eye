@@ -16,10 +16,10 @@
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="stylesheet" href="styles.d37851f29f9a6f928650.css"></head>
+<link rel="stylesheet" href="styles.37596441aad9b2ec71cf.css"></head>
 
 <body>
   <app-root></app-root>
-<script type="text/javascript" src="runtime.6e04ae9c32ebf5655d6b.js"></script><script type="text/javascript" src="es2015-polyfills.b2fe240b5a29efe9dde7.js" nomodule></script><script type="text/javascript" src="polyfills.2a700ed931a39030654e.js"></script><script type="text/javascript" src="main.887473d03c9cdeaf468a.js"></script></body>
+<script src="runtime.059919d8a3e967aa2b04.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="main.22e1615285fd069b79d5.js" defer></script></body>
 
 </html>
