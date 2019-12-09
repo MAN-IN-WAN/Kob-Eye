@@ -81,7 +81,7 @@ class Temoa extends genericClass {
 	}
 	
 	// liste des mots dans le documents
-	static function GetList($args) {
+	static function GetTargets($args) {
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
@@ -103,11 +103,17 @@ class Temoa extends genericClass {
 		$ret = $temoa->SetCorpus($corpus);
 		$temoa->SetOrtho($ortho);
 
-		if($args['arrows']) {
-			$arr = '{"arrows":'.$args['arrows'].'}';
-			$temoa->AddArrows($arr);
+		$genor = false;
+		if($args['arrows']) $temoa->AddArrows($args['arrows']);
+		else {
+			$temoa->AddArrow($args['word']);
+			$o = json_decode($ortho);
+			if($o->spelling == '3') {
+				$genor = true;
+				$arrs = $temoa->GetGenorJson($o->genor);
+			}
 		}
-		else $temoa->AddArrow($args['word']);
+
 		
 		if($temoa->Search()) {
 			$s = $temoa->GetTargetsJson();
@@ -128,7 +134,9 @@ class Temoa extends genericClass {
 				$occur += $a->count;
 			}
 		}
-		return array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));				
+		$ret = array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));	
+		if($genor) $ret['arrows'] = json_decode($arrs, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);;
+		return $ret;			
 	}
 
 	// liste des documents //et des filtres
@@ -138,7 +146,7 @@ class Temoa extends genericClass {
 		$doc = array();
 		foreach($docs as $d) {
 			$id = $d->Id;
-			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>1);
+			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true);
 			$docId[$d->Id] = $d->Nom;
 		}
 		
@@ -320,7 +328,7 @@ class Temoa extends genericClass {
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$temoa->AddArrows($args['arrows']);
-		//$temoa->AddArrow('TLATOANI');
+		//$temoa->AddArrow('tlatoani');
 		$g = $temoa->GetGenorJson($args['level']);
 		unset($temoa);
 		

@@ -4,6 +4,7 @@ class Cadref extends Module {
 
 	public static $Annee = null;
 	public static $Cotisation = null;
+	public static $Group = null;
 
 	/**
 	 * Surcharge de la fonction postInit
@@ -43,8 +44,52 @@ class Cadref extends Module {
 				header("Location: $h/#/adh_panier");
 			}
 		}
+		$this->checkGroups();
 	}
-
+	
+	private function checkGroups() {
+		$usr = Sys::$User;
+		$groups = $usr->getParents('Group');
+		$site = null;
+		$delegue = null;
+		foreach($groups as $g) {
+			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) self::$Group = $g->Nom;
+			if($g->Nom == 'CADREF_SITE') $site = $g;
+			if($g->Nom == 'CADREF_DELEGUE') $delegue = $g;
+		}
+		if(self::$Group == 'CADREF_ADH') {
+			$modif = false;
+			$adh = Sys::getOneData('Cadref', 'Adherent/Numero='.$usr->Login);
+			$aan = $adh->getOneChild('AdherentAnnee/Annee='.self::$Annee);
+			if($aan) {
+				if($aan->AntenneId && !$site) {
+					$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+					$usr->addParent($g);
+					$modif = true;
+				}
+				elseif(!$aan->AntenneId && $site) {
+					$usr->delParent($site);
+					$modif = true;
+				}
+				if($aan->ClasseId && !$delegue) {
+					$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
+					$usr->addParent($g);
+					$modif = true;
+				}
+				elseif(!$aan->ClasseId && $delegue) {
+					$usr->delParent($delegue);
+					$modif = true;
+				}
+			}
+			else {
+				if($site) $usr->delParent($site);
+				if($delegue) $usr->delParent($delegue);
+				$modif = true;
+			}
+			if($modif) $usr->Save();
+		}
+	}
+	
 	public static function GetPayment($args) {
 		$id = $args['id'];
 		$mt = $args['montant'];
@@ -173,6 +218,10 @@ class Cadref extends Module {
 		$pass = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($pass);
 		$u->Save();
+		
+		$a->Password = $pass;
+		if($endId) $a->Compte = 1;
+		$a->Save();
 
 		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
 		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,$s.$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
@@ -242,6 +291,9 @@ class Cadref extends Module {
 		$new = self::GeneratePassword();
 		$usr->Pass = '[md5]'.md5($new);
 		$usr->Save();
+		
+		$adh->Password = $new;
+		$adh->Save();
 
 		$s .= "Votre nouveau mot de passe est : <strong>$new</strong><br /><br />";
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
@@ -480,6 +532,7 @@ where g.Nom='CADREF_ADH'";
 		$args = json_decode(str_replace("\\", "", $args['args']));
 		$a = explode('T', $args->start);
 		$start = strtotime($a[0].' 00:00:0 GMT');
+		$start -= 60*60;
 		$a = explode('T', $args->end);
 		$end = strtotime($a[0].' 00:00:0 GMT');
 
@@ -513,11 +566,12 @@ where g.Nom='CADREF_ADH'";
 			$vacances[] = $v;
 		}
 
-		$groups = Sys::$User->getParents('Group');
-		foreach($groups as $g) {
-			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) $group = $g->Nom;
-		}
-
+//		$groups = Sys::$User->getParents('Group');
+//		foreach($groups as $g) {
+//			if(strpos("CADREF_ADMIN,CADREF_BENE,CADREF_ADH,CADREF_ENS", $g->Nom) !== false) $group = $g->Nom;
+//		}
+		$group = Cadref::$Group;
+		
 		$adh = false;
 		$adm = false;
 		if($group == 'CADREF_ADMIN' || $group == 'CADREF_BENE') {
@@ -534,7 +588,7 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 			$id = $a->Id;
 			$sql = "
-select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Programmation,0 as cd,
 concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -556,7 +610,8 @@ and i.Attente=0 and i.Supprime=0
 ";
 			$sql2 = "
 select cd.DateCours,i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2,
+cd.Notes,cd.HeureDebut as dhd,cd.HeureFin as dhf,c.Programmation,1 as cd
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=i.ClasseId
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -573,7 +628,7 @@ and i.Attente=0 and i.Supprime=0
 			$e = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 			$id = $e->Id;
 			$sql = "
-select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Programmation,0 as cd,
 concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -590,7 +645,8 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 ";
 			$sql2 = "			
 select cd.DateCours,c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2,
+cd.Notes,cd.HeureDebut as dhd,cd.HeureFin as dhf,c.Programmation,1 as cd
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=ce.Classe
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -626,7 +682,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		}
 		// cours
 		if($group != 'CADREF_ADMIN' && $group != 'CADREF_BENE') {
-			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
 				$cd = 0;
@@ -634,6 +690,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				if($cy != '') {
 					$m = substr($cy, 3, 2);
 					$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
+					$cd -= 60*60;
 					$cy = $p['CycleFin'];
 					$m = substr($cy, 3, 2);
 					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1).' 00:00:00 GMT');
@@ -739,24 +796,37 @@ where ve.Visite=$vid
 				}
 				else $c = 'fc-event-default';
 			}
-			else $c = $p['Web'] ? ($c = $p['Places']<=$p['Inscrits'] ? 'fc-event-danger' : 'fc-event-success') : 'fc-event-default';
+			else $c = $p['Places']<=$p['Inscrits'] ? 'fc-event-danger' : 'fc-event-success';
 			$e->className = $c.' cadref-cal-visite';
 			$events[] = $e;
 		}
 
 		$data['events'] = $events;
-		//$data['sql'] = $sss;
+		$data['sql'] = $sss;
 		return $data;
 	}
 	
+	
+
 	private static function calEvent($adh, $d, $p, $absences) {
 		$cid = $p['cid'];
+		$hd = isset($p['dhd']) && !empty($p['dhd']) ? $p['dhd'] : $p['HeureDebut'];
+		$hf = isset($p['dhf']) && !empty($p['dhf']) ? $p['dhf'] : $p['HeureFin'];
+		$pr = $p['Programmation'];
+		$cd = $p['cd'];
+		$cy = $p['CycleDebut'] && (($pr==0 && $cd==0) || ($pr==1 && $cd==1));
+		
 		$e = new stdClass();
 		$e->title = $p['Libelle'];
-		$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
-		$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
+		$e->start = Date('Y-m-d', $d).'T'.$hd;
+		$e->end = Date('Y-m-d', $d).'T'.$hf;
 		$e->className = 'fc-event-info';
-		$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($p['CycleDebut'] ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+		$e->description = $hd.' à '.$hf.($cy ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+ 
+		if(isset($p['Notes']) && !empty($p['Notes'])) {
+			$e->description .= "\n<b>".$p['Notes'].'</b>';
+			$e->className = 'fc-event-warning';
+		}
 		if($p['Ville']) {
 			$l = $p['Ville'];
 			if($p['Adresse1']) $l .= ', '.$p['Adresse1'];

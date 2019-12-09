@@ -2,6 +2,18 @@
 
 class GDN extends genericClass {
 	
+	static function GetDics() {
+		$dics = Sys::getData('CEN', 'Dictionnaire');
+		$dicId= array();
+		$dic = array();
+		foreach($dics as $d) {
+			$id = $d->Id;
+			$dic[] = array('id'=>$id, 'title'=>$d->Nom, 'selected'=>true);
+			$dicId[$id] = $d->Nom;
+		}
+		return array('dictionariesId'=>$dicId, 'dictionaries'=>$dic);
+	}
+
 	// liste de mots du GDN 
 	static function GetList($args) {
 		$word = $args['word'];

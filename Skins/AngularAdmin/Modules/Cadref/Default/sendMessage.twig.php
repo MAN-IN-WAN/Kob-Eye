@@ -44,13 +44,34 @@ select distinct Mail, Nom, Prenom
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId
 inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where i.AdherentId=$id and e.Mail<>'' and e.Inactif=0 and e.AccesWeb=1
+where i.AdherentId=$id and i.Annee='$annee' and e.Mail<>'' and e.Inactif=0 and e.AccesWeb=1
 order by Nom,Prenom";
 	$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 	$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 	foreach($pdo as $p) {
 		$s = $p['Nom'].' '.$p['Prenom'];
 		$to[$p['Mail']] = $s;
+	}
+	$aa = $a->getOneChild('AdherentAnnee/Annee='.$annee);
+	if($aa->ClasseId) {
+		$sql = "
+select concat(d.Libelle,' ',n.Libelle) as Libelle, j.Jour, concat(c.HeureDebut,'-',c.HeureFin) as Heure,
+CycleDebut, CycleFin
+from `##_Cadref-Classe` c
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d0 on d0.Id=n.DisciplineId
+inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
+left join `##_Cadref-Jour` j on j.Id=c.JourId
+where c.Id=".$aa->ClasseId;
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+		foreach($pdo as $r) {
+			$s = $r['Libelle'].'  '.$r['Jour'].'  '.$r['Heure'];
+			if($p['CycleDebut']) $s .= '  ('.$p['CycleDebut'].'-'.$p['CycleFin'].')';
+			$to['D:'.$aa->ClasseId] = $s;
+			break;
+		}
 	}
 }
 else $vars['mode'] = 'admin';

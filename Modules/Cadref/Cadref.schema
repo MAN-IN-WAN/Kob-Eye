@@ -188,6 +188,8 @@
 		<PROPERTIES type="date" searchOrder="1" category="Description" list="2" form="2" description="Date du cours">DateCours</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="Description" list="2" form="2" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" auto="1" category="Description" list="2" form="2" description="Année scolaire">Annee</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" searchOrder="3" obligatoire="0" category="Planning" list="3" form="8" fiche="8" listDescr="Début" description="Début">HeureDebut</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" searchOrder="4" obligatoire="0" category="Planning" list="4" form="9" fiche="9" listDescr="Fin" description="Fin">HeureFin</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Enseignant" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Enseignants" Operations="add,edit,SendMessage" Class="Modules/Cadref/Class/Enseignant.class.php">
@@ -210,8 +212,9 @@
 		<PROPERTIES type="boolean" default="0" category="Description" form="11" fiche="11" description="Délégué des enseignants">Delegue</PROPERTIES>
 		<PROPERTIES type="text" category="Contact" form="12" fiche="12" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" auto="1" category="Description" form="13" fiche="13" description="Compte">Compte</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" category="Description" form="13" fiche="13" description="Compte">Compte</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" form="19" fiche="19" description="Mot de passe">Password</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Absence" driver="mysql" order="DateDebut" orderType="ASC" logEvent="1" master="0" AccessPoint="0" Icon="[None]" Description="Absence" hidden="0" Operations="add,edit" Class="Modules/Cadref/Class/Absence.class.php">
@@ -288,6 +291,7 @@
 
 		<PROPERTIES type="varchar" length="4" auto="1" category="Description" form="90" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="datetime" auto="1" category="Description" form="91" description="Date de modification">DateModification</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" form="19" fiche="19" description="Mot de passe">Password</PROPERTIES>
 
 <!--
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>

@@ -205,6 +205,11 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         $out = $apachesrv->remoteExec('cd /home/' . $host->Nom . '/ && unzip -o version.zip && chown ' . $this->_obj->InstanceNom . ':users * -R');
         $act->addDetails($out);
         $act->Terminate(true);
+        $act = $task->createActivity('Suppression de l\'archive', 'Info');
+        $out = $apachesrv->remoteExec('cd /home/' . $host->Nom . '/ && rm -f version.zip');
+        $act->addDetails($out);
+        $act->Terminate(true);
+
         //Saisie du fichier de configuration
         $act = $task->createActivity('Modification du fichier de config','Info');
         //db host

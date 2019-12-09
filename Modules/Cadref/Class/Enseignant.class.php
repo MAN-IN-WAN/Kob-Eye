@@ -78,8 +78,8 @@ class Enseignant extends genericClass {
 		$o = Sys::getOneData('Systeme', 'User/Login='.$usr);
 		if($o) return array('msg'=>'Utilisateur déjà existant.', 'success'=>0);
 		Cadref::CreateUser($usr, false, $this->Id);
-		$this->Compte = 1;
-		$this->Save();
+		//$this->Compte = 1;
+		//$this->Save();
 		return array('msg'=>'Utilisateur créé.','success'=>1);
 	}
 	
@@ -108,6 +108,9 @@ class Enseignant extends genericClass {
 		}
 		Sys::$User->Pass = '[md5]'.md5($new);
 		Sys::$User->Save();
+		
+		$this->Password = $new;
+		$this->Save();
 		
 		if(strpos($this->Mail, '@') > 0) {
 			$s = Cadref::MailCivility($this);
@@ -228,7 +231,7 @@ where ce.EnseignantId=$id";
 	
 	function PrintAdherents() {
 		$annee = Cadref::$Annee;
-		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Enseignant'=>$this->Id, 'Annee'=>$annee);
 		$a = genericClass::createInstance('Cadref', 'Adherent');
 		return $a->PrintAdherent($obj);
 	}

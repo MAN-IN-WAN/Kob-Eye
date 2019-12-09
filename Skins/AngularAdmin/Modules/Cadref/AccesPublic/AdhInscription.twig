@@ -2,10 +2,10 @@
 <div class="page-content-inner">
 	<h3>Cours</h3>
     <section class="panel">
-        <div class="panel-body">
+        <div class="panel-body cadref-public">
             <div class="row no-gutters">		
                 <div class="col-md-12">
-					<d{#iv class="row" ng-if="!inscriptionObj.Select">
+					{#<div class="row" ng-if="!inscriptionObj.Select">
 						<div class="col-md-2">
 							<button type="button" class="btn btn-success" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
 						</div>
@@ -101,9 +101,9 @@
 						</div>
 					</section>#}
 					<section class="panel">
-						<div class="panel-body">
+{#						<div class="panel-body">#}
 							<ng-include src="'Cadref/Adherent/0/Inscription/PublicListInscr.htm?tempContext=1'"></ng-include>
-						</div>
+{#						</div>#}
 {#						<div class="row" ng-if="inscriptionObj.Updated">
 							<div class="col-md-2">
 							<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ inscriptionObj.Montant }]}</label>

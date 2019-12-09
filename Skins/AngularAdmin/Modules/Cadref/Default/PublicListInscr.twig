@@ -1,7 +1,8 @@
 <div class="listWrap">
-	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
 			<tr>
+				<th class="cadref-th">Doc.</th>
 				<th class="cadref-th">Libellé</th>
 				<th class="cadref-th">Antenne</th>
 				<th class="cadref-th">Horaires</th>
@@ -9,12 +10,17 @@
 				<th class="cadref-th">Prix</th>
 				<th class="cadref-th">Enseignant</th>
 {#				<th class="cadref-th">Etat</th>
-				<th class="cadref-th">Date état</th>
-#}				<th class="cadref-th">Doc.</th>
+				<th class="cadref-th">Date état</th>#}
 			</tr>
 		</thead>
 		<tbody>
 			<tr {% if tempContext %}ng-repeat="item in inscriptionObj.InscriptionItems"{% else %}dir-paginate="item in {{ identifier }}.data{% endif %}">
+				<td scope="row" class="cadref-td typeint">
+					<span ng-if="item.insId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+					</span>
+					<span ng-if="item.insId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="inscriptionSupprime(item)" title="Annuler l'inscription"></span>
+				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures}">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
@@ -31,13 +37,7 @@
 					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
 					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
 					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
-				</td>
-#}				<td scope="row" class="cadref-td typeint">
-					<span ng-if="item.insId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-						  ng-click="attachementsOpen(item, 'inscription')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
-					</span>
-					<span ng-if="item.insId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="inscriptionSupprime(item)" title="Annuler l'inscription"></span>
-				</td>
+				</td>#}
 			</tr>
 		</tbody>
 	</table>

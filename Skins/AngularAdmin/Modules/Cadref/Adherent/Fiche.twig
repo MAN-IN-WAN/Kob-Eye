@@ -42,15 +42,20 @@
 										{% endfor %}
 									</select>
 								</div>
-								<div class="col-md-1">
+{#								<div class="col-md-1">
 									{{ label("Etoiles") }}
 								</div>
 								<div class="col-md-2">
-									{#{{ fvalues(f.Etoile, o) }}#}
-								</div>
+									{{ fvalues(f.Etoile, o) }}
+								</div>#}
 								<div class="col-md-3">
 									<label class="form-control-label cadref-label">{[{ {{ o }}.Utilisateur+'&nbsp;&nbsp;'+{{ o }}.DateModification }]}</label>
 								</div>
+								{% if not Create %}
+								<div class="col-md-1">
+									<a class="form-control-label cadref-label" href="" ng-click="showPassword(obj)">?</a>
+								</div>
+								{% endif %}
 							</div>
 							<div class="row">
 								<div class="col-md-2">
@@ -249,12 +254,12 @@
 											{{ label("Délégué de classe") }}
 										</div>
 										<div class="col-md-7">
-{#											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
+											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
 												{% for v,k in classes %}
 													<option value="{{ v }}">{{ k }}</option>
 												{% endfor %}
-											</select>#}
-									<div custom-select="a.id as a.label for a in getSelectData('CadrefClasseStore',$searchTerm)" 
+											</select>
+{#									<div custom-select="a.id as a.label for a in getSelectData('CadrefClasseStore',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':'Annee={{ Annee }}'}" 
 										 ng-model="{{ o }}.ClasseId"
 										 class="form-control cadref-input cadref-annuel" 
@@ -262,7 +267,7 @@
 										 style="text-transform:uppercase;"
 										 placeholder=""
 										 >
-									</div>
+									</div>#}
 										</div>
 									</div>
 								</div>

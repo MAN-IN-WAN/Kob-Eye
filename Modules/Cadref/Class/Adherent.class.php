@@ -106,25 +106,44 @@ class Adherent extends genericClass {
 		}
 
 		if($mode == 0) {
-			if($a->AntenneId != $data->AntenneId) {
-				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
-				if($usr) {
-					if(!$data->AntenneId) {
-						$grs = $usr->getParents('Group');
-						foreach($grs as $g) {
-							if($g->Nom == 'CADREF_SITE'); {
-								$usr->delParent($g);
-								break;
-							}
-						}
-					}
-					else {
-						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
-						$usr->addParent($g);
-					}
-					$usr->Save();
-				}
-			}
+//			if($a->AntenneId != $data->AntenneId) {
+//				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+//				if($usr) {
+//					if(!$data->AntenneId) {
+//						$grs = $usr->getParents('Group');
+//						foreach($grs as $g) {
+//							if($g->Nom == 'CADREF_SITE'); {
+//								$usr->delParent($g);
+//								break;
+//							}
+//						}
+//					}
+//					else {
+//						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_SITE');
+//						$usr->addParent($g);
+//					}
+//					$usr->Save();
+//				}
+//			}
+//			if($a->ClasseId != $data->ClasseId) {
+//				$usr = Sys::getOneData('Systeme', 'User/Login='.$this->Numero);
+//				if($usr) {
+//					if(!$data->ClasseId) {
+//						$grs = $usr->getParents('Group');
+//						foreach($grs as $g) {
+//							if($g->Nom == 'CADREF_DELEGUE'); {
+//								$usr->delParent($g);
+//								break;
+//							}
+//						}
+//					}
+//					else {
+//						$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_DELEGUE');
+//						$usr->addParent($g);
+//					}
+//					$usr->Save();
+//				}
+//			}
 			$a->Adherent = $data->Adherent;
 			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
@@ -460,9 +479,19 @@ class Adherent extends genericClass {
 	function PrintSiteAdherents() {
 		$annee = Cadref::$Annee;
 		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
-		if(! $aa->AntenneId) return array('pdf'=>false, );
+		if(! $aa->AntenneId) return array('pdf'=>false);
 		
-		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'A', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee, 'Pages'=>true);
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Antenne'=>$aa->AntenneId, 'Annee'=>$annee, 'Pages'=>true);
+		return $this->PrintAdherent($obj);
+	}
+
+	function PrintDelegueAdherents() {
+		$annee = Cadref::$Annee;
+		$aa = $this->getOneChild("AdherentAnnee/Annee=$annee");
+		if(! $aa->ClasseId) return array('pdf'=>false);
+		$cl = Sys::getOneData('Cadref', 'Classe/'.$aa->ClasseId);
+		
+		$obj = array('CurrentUrl'=>'impressionslisteadherents', 'Contenu'=>'N', 'Rupture'=>'C', 'Disc'=>array($cl->CodeClasse), 'Annee'=>$annee, 'Pages'=>true);
 		return $this->PrintAdherent($obj);
 	}
 
@@ -498,6 +527,7 @@ class Adherent extends genericClass {
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
+				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$adherent = false;
 
 				if($soutien) {
@@ -542,6 +572,23 @@ group by i.Antenne
 					$sql .= "from `##_Cadref-Adherent` e ";
 					$whr = "and e.Cotisation>0 and e.Reglement=e.Cotisation and e.Differe=0 and e.Montant=0 ";
 				}
+				else if($typAdh != '') {
+					$sql .= "
+from `##_Cadref-Adherent` e
+inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'
+left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId 
+left join `##_Cadref-Niveau` n on n.Id=c0.NiveauId ";
+					switch($typAdh) {
+						case 'B': $whr .= "and aa.Adherent='B' ";
+							break;
+						case 'A': $whr .= "and aa.Adherent in ('B','A') ";
+							break;
+						case 'D': 
+							$whr .= "and aa.ClasseId<>0 ";
+							if($antenne != '') $whr .= "and n.AntenneId=$antenne ";
+							break;
+					}
+				}
 				elseif($visite != '') {
 					$sql .= "
 from `##_Cadref-Adherent` e
@@ -578,25 +625,25 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh != 'S' && $visite == '' && $visiteAnnee == '') {
+				if($typAdh == '' && $visite == '' && $visiteAnnee == '') {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
-					// type adherent
-					if($typAdh != '') {
-						$whr .= "and aa.Adherent in (";
-						switch($typAdh) {
-							case 'B': $whr .= "'B') ";
-								break;
-							case 'A': $whr .= "'B','A') ";
-								break;
-							case 'D': $whr .= "'B','A','D') ";
-								break;
-						}
-					}
+//					// type adherent
+//					if($typAdh != '') {
+//						$whr .= "and aa.Adherent in (";
+//						switch($typAdh) {
+//							case 'B': $whr .= "'B') ";
+//								break;
+//							case 'A': $whr .= "'B','A') ";
+//								break;
+//							case 'D': $whr .= "'B','A','D') ";
+//								break;
+//						}
+//					}
 
 					if(isset($obj['Nouveaux']) && $obj['Nouveaux']) $whr .= "and e.Inscription='$annee' ";
 
-					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
+//					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
 
 					$attente = (isset($obj['Attente']) && $obj['Attente'] != '') ? $obj['Attente'] : '';
@@ -1223,9 +1270,23 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array('contact@cadref.com');
+		elseif(substr($to, 0, 2) == 'D:') {
+			$sql = "
+select distinct a.Mail
+from `##_Cadref-Inscription` i 
+inner join `##_Cadref-Adherent` a on a.Id=i.AdherentId
+where i.ClasseId=".substr($to, 2)." and a.Mail like '%@%'";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+			foreach($pdo as $r) {
+				$args['To'] = array($r['Mail']);
+				$ret = Cadref::SendMessage($args);
+			}
+			$args['To'] = array('contact@cadref.com');
+		}
 		else $args['To'] = array($to,'contact@cadref.com');
 		
-		$ret = Cadref::SendMessage($args);
+		Cadref::SendMessage($args);
 		return array('data'=>'Message envoyé');
 	}
 	
@@ -1719,6 +1780,9 @@ where ce.Visite=:cid";
 		}
 		Sys::$User->Pass = '[md5]'.md5($new);
 		Sys::$User->Save();
+		
+		$this->Password = $new;
+		$this->Save();
 		
 		if(strpos($this->Mail, '@') > 0) {
 			$s = Cadref::MailCivility($this);
