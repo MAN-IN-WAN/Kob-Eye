@@ -1911,16 +1911,24 @@
 
             {% endif %}
 
-            var isExtended = false;
-            if(typeof window['{{ c.name }}FicheCtrlExtends'] == 'function') {
-                isExtended = true;
-            }
+            //var isExtended = false;
+            //if(typeof window['{{ c.name }}FicheCtrlExtends'] == 'function') {
+            //    isExtended = true;
+            //}
             try {
                 angular.extend(this, $controller('{{ c.name }}FicheCtrlExtends', {$scope: $scope}));
                 console.log('>> extended {{ c.name }} OK');
             } catch (error) {
                 console.log('No extends {{ c.name }}',error);
+                try {
+                    angular.extend(this, $controller('{{ c.identifier }}FicheCtrlExtends', {$scope: $scope}));
+                    console.log('>> extended {{ c.identifier }} OK');
+                } catch (error) {
+                    console.log('No extends {{ c.identifier }}',error);
+                }
             }
+
+
         });
         });
     {% endif %}
