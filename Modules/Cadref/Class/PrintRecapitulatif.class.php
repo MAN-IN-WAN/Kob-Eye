@@ -114,7 +114,7 @@ class PrintRecapitulatif extends FPDF {
 			// dons / antennes
 			if($this->total[5]) {
 				$max = 0;
-				$ant = '';
+				$ant = '?';
 				foreach($this->dons as $a=>$n) {
 					if($n > $max) {
 						$max = $n;
