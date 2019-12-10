@@ -70,6 +70,8 @@ class CEN extends Module {
 			case 'lang';
 				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
 				$lang = file_get_contents($lang->FilePath);
+				$lang = utf8_encode($lang);
+				$lang = str_replace("\r\n", "\n", $lang);
 				return array('lang'=>$lang);
 
 		}
