@@ -3,7 +3,7 @@
 class GDN extends genericClass {
 	
 	static function GetDics() {
-		$dics = Sys::getData('CEN', 'Dictionnaire');
+		$dics = Sys::getData('CEN', 'Dictionnaire', 0, 999, 'ASC', 'NOM');
 		$dicId= array();
 		$dic = array();
 		foreach($dics as $d) {

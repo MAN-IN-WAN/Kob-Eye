@@ -141,7 +141,7 @@ class Temoa extends genericClass {
 
 	// liste des documents //et des filtres
 	static function GetDocs() {
-		$docs = Sys::getData('CEN', 'Temoa');
+		$docs = Sys::getData('CEN', 'Temoa', 0, 999, 'ASC', 'Nom');
 		$docId= array();
 		$doc = array();
 		foreach($docs as $d) {
