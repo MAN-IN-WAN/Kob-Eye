@@ -10,7 +10,7 @@ class Inscription extends genericClass {
 		require_once ('cadrefStat.class.php');
 		require_once ('PrintStatistique.class.php');
 
-		$annee = '20'+substr($obj['DateDebut'],5);
+		$annee = substr($obj['DateDebut'],6);
 		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 		$file = $file = 'Home/tmp/Statistiques'.date('YmdHi').'.pdf';
