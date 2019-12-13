@@ -10,6 +10,7 @@ class Inscription extends genericClass {
 		require_once ('cadrefStat.class.php');
 		require_once ('PrintStatistique.class.php');
 
+		$annee = '20'+substr($obj['DateDebut'],5);
 		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 		$file = $file = 'Home/tmp/Statistiques'.date('YmdHi').'.pdf';
@@ -106,7 +107,7 @@ order by nais desc, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
-		$annee = Cadref::$Annee;
+		//$annee = Cadref::$Annee;
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
 			if($p['nais'] == '9999') {

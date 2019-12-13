@@ -20,9 +20,6 @@ class CEN extends Module {
 			case 'codex':
 				return Codex::GetCodex($args);
 				
-			case 'planche':
-				return Codex::GetPlanches($args);
-				
 			case 'genor':
 				return Temoa::GetGenor($args);
 				
