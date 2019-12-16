@@ -19,9 +19,38 @@ class Inscription extends genericClass {
 		$antennes = "ABGLNSV";
 		$stats = new cadrefStatList(7);
 		
-		$pdf = new PrintStatistique($obj['DateDebut'], $obj['DateFin'], 7);
-		$pdf->SetAuthor("Cadref");
-		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
+		// antennes
+		$antCount = array();
+		$sql = "
+select count(*) as cnt,Antenne from (
+select distinct i.Numero, i.Antenne
+from `##_Cadref-Inscription` i   
+where i.DateInscription>=1533074400 and i.DateInscription<=1564610399 and (i.Supprime=0 or i.DateSupprime>1564610399) ) t
+group by Antenne
+order by Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$antCount[$col] = $p['cnt'];
+		}
+
+		// inscriptions
+		$intCount = array();
+		$sql = "
+select count(*) as cnt,Antenne
+from `##_Cadref-Inscription` i   
+where i.DateInscription>=1533074400 and i.DateInscription<=1564610399 and (i.Supprime=0 or i.DateSupprime>1564610399) 
+group by Antenne
+order by Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$insCount[$col] = $p['cnt'];
+		}
 
 		// sexe
 		$sql = "
@@ -44,13 +73,13 @@ order by sex, i.Antenne";
 
 		// profession
 		$sql = "
-select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId or h.ProfessionId is null,'ZZZZ') as prof, p.Libelle
+select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId,'ZZZZ') as prof, p.Libelle
 from `##_Cadref-Inscription` i 
 inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
 left join `##_Cadref-Profession` p on p.Id=h.ProfessionId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
 order by prof, i.Antenne";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+$zzz=		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
@@ -172,7 +201,6 @@ inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
 order by h.Ville, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-$zzz=$sql;
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
@@ -217,7 +245,7 @@ left join `##_Cadref-WebSection` ws on ws.id=wd.WebSectionId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
 group by lib,i.Antenne
 order by lib,i.Antenne";
-		$zzz = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
@@ -226,6 +254,9 @@ order by lib,i.Antenne";
 		}
 
 		
+		$pdf = new PrintStatistique($obj['DateDebut'], $obj['DateFin'], 7, $antCount, $insCount);
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 		
 		$pdf->AddPage();
 		$pdf->PrintLines($stats);
