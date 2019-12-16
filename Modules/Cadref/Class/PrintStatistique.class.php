@@ -31,7 +31,7 @@ class PrintStatistique extends FPDF {
 		$this->fin = $fin;
 		$this->antennes = $antennes;
 
-		$this->types = array('Sexes','Professions','Situation','Origine','Répartition par ages','Nombre de cours','Répartition par communes','Disciplines');
+		$this->types = array('Sexes','Professions','Situation','Origine','Répartition par ages','Nombre de cours','Répartition par communes','Disciplines','Disciplines Web');
 		$this->head = array('Alès','Bagnols','Le Grau','Le Vigan','Nîmes','Sommières','Villeneuve');
 		$this->titre = "CADREF : Statistiques du ".$this->debut." au ".$this->fin;
 		

@@ -18,7 +18,7 @@ class Codex extends genericClass {
 					$dic[] = array('id'=>$id, 'code'=>$d->Code, 'title'=>$d->Titre, 'selected'=>true, 'imgSel'=>false, 'dir'=>'/Home/'.$d->userCreate.'/CEN/Codex/'.$d->Repertoire);
 					$dicId[$id] = $d->Titre;
 				}
-				return array('codexId'=>$dicId, 'codex'=>$dic);
+				return array('codex'=>$dic); //'codexId'=>$dicId, 
 				
 			case 'planche':
 				$dics = Sys::getData('CEN', 'Planche/CodexId='.$id, 0, 999, 'ASC', 'Cote');

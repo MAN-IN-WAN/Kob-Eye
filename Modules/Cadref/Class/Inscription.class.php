@@ -205,6 +205,26 @@ order by disc, i.Antenne";
 			$stats->Sum(7, $p['disc'], $p['disc'].' : '.$p['lib'], $col, 1);
 		}
 
+		// discipline web
+		$sql = "
+select distinct count(*) as cnt, i.Antenne, ifnull(ws.Libelle,'Non affecté') as lib, ws.WebSection
+from `##_Cadref-Inscription` i 
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join  `##_Cadref-WebDiscipline` wd on wd.id=d.WebDisciplineId
+left join `##_Cadref-WebSection` ws on ws.id=wd.WebSectionId
+where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
+group by lib,i.Antenne
+order by lib,i.Antenne";
+		$zzz = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$stats->Sum(8, $p['WebSection'], $p['lib'], $col, $p['cnt']);
+		}
+
 		
 		
 		$pdf->AddPage();
