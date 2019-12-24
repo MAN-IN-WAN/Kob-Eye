@@ -19,6 +19,8 @@ class PrintRecapitulatif extends FPDF {
 	private $cours = false;
 	private $nbDons = 0;
 	private $nbSoutien = 0;
+	private $dons;
+	private $tdons = array();
 	
 	
 	function PrintRecapitulatif($nsold) {
@@ -94,10 +96,33 @@ class PrintRecapitulatif extends FPDF {
 			//$this->SetXY($this->left, $this->posy);
 			$this->Cell(58, 4.5, $this->cv("Nombre de dons : ").$this->nbDons);
 			$this->Cell(58, 4.5, $this->cv('Nombre de soutiens : ').$this->nbSoutien);
+			
+			$this->SetFont('Arial','',10);
+			$this->posy += 5;
+			$this->SetXY($this->left, $this->posy);
+			$this->Cell(30, 4.5, 'Dons :');
+			foreach($this->tdons as $a=>$d) {
+				$this->posy += 4.5;
+				$this->SetXY($this->left, $this->posy);
+				$this->Cell(4, 4.5, $a);
+				$this->Cell(20, 4.5, $d);	
+			}
 		}
 		else {
 			if(!$this->cours) $this->sansCours++;
 			for($i = 0; $i < 9; $i++) $this->ttotal[$i] += $this->total[$i];
+			// dons / antennes
+			if($this->total[5]) {
+				$max = 0;
+				$ant = '';
+				foreach($this->dons as $a=>$n) {
+					if($n > $max) {
+						$max = $n;
+						$ant = $a;
+					}
+				}
+				$this->tdons[$ant] = (isset($this->tdons[$ant]) ? $this->tdons[$ant] : 0) + $this->total[5];
+			}
 		}
 	}
 	
@@ -129,6 +154,7 @@ class PrintRecapitulatif extends FPDF {
 		if($l['Dons']) $this->nbDons++;
 		$this->cours = false;
 		$this->total = [0,0,0,0,$l['Cotisation'],$l['Dons'],$l['Reglement'],$l['Differe'],$l['Regularisation']];
+		$this->dons = array();
 	}
 	
 	private function printLine($l) {
@@ -136,6 +162,12 @@ class PrintRecapitulatif extends FPDF {
 		$red = $l['Reduction'];
 		$sou = $l['Soutien'];
 		$sup = $l['Supprime'];
+		
+		// cours / antenne
+		if($this->total[5]) {
+			$ant = substr($l['CodeClasse'], 0, 1);
+			$this->dons[$ant] = (isset($this->dons[$ant]) ? $this->dons[$ant] : 0) + 1;
+		}
 		
 		$this->SetFont('Arial',($sup ? 'I' : ''),10);
 		$this->SetXY($this->left, $this->posy);

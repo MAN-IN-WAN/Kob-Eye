@@ -83,8 +83,8 @@
 	</OBJECTCLASS>
 
 	<!-- TLACHIA -->
-<!--
-	<OBJECTCLASS title="Codex" driver="mysql" order="Nom" AccessPoint="1" Description="Codex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+
+	<OBJECTCLASS title="Codex" driver="mysql" order="Nom" AccessPoint="1" Description="Codex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Codex.class.php">
 		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Archive</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Clef</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description"  form="1" list="1" fiche="1">Code</PROPERTIES>
@@ -376,7 +376,6 @@
 		<PROPERTIES type="varchar" length="3" category="Description"  form="1" fiche="1">Numero</PROPERTIES>
 	</OBJECTCLASS>
 
--->
 
 
 

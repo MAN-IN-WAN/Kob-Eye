@@ -1139,6 +1139,10 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				swal("Attention", "Il n'y à plus de cours à venir.", "warning");
 				return;
 			}
+		
+			// réduction sur date courante et non sur prochain cours
+			next = Math.floor(Date.now() / 1000);
+			
 			if(Number(obj.Reduction) == 0) {
 				d = obj.CDateReduction2;
 				d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);

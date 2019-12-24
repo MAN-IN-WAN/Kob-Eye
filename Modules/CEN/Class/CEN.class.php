@@ -17,6 +17,9 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'codex':
+				return Codex::GetCodex($args);
+				
 			case 'genor':
 				return Temoa::GetGenor($args);
 				
@@ -70,8 +73,12 @@ class CEN extends Module {
 			case 'lang';
 				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
 				$lang = file_get_contents($lang->FilePath);
+				$lang = utf8_encode($lang);
+				$lang = str_replace("\r\n", "\n", $lang);
 				return array('lang'=>$lang);
 
+			default:
+				return array('error'=>'mode inconnu:'.$args['mode']);
 		}
 	}
 

@@ -10,6 +10,7 @@ class Inscription extends genericClass {
 		require_once ('cadrefStat.class.php');
 		require_once ('PrintStatistique.class.php');
 
+		$annee = substr($obj['DateDebut'],6);
 		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 		$file = $file = 'Home/tmp/Statistiques'.date('YmdHi').'.pdf';
@@ -18,9 +19,38 @@ class Inscription extends genericClass {
 		$antennes = "ABGLNSV";
 		$stats = new cadrefStatList(7);
 		
-		$pdf = new PrintStatistique($obj['DateDebut'], $obj['DateFin'], 7);
-		$pdf->SetAuthor("Cadref");
-		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
+		// antennes
+		$antCount = array();
+		$sql = "
+select count(*) as cnt,Antenne from (
+select distinct i.Numero, i.Antenne
+from `##_Cadref-Inscription` i   
+where i.DateInscription>=1533074400 and i.DateInscription<=1564610399 and (i.Supprime=0 or i.DateSupprime>1564610399) ) t
+group by Antenne
+order by Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$antCount[$col] = $p['cnt'];
+		}
+
+		// inscriptions
+		$intCount = array();
+		$sql = "
+select count(*) as cnt,Antenne
+from `##_Cadref-Inscription` i   
+where i.DateInscription>=1533074400 and i.DateInscription<=1564610399 and (i.Supprime=0 or i.DateSupprime>1564610399) 
+group by Antenne
+order by Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$insCount[$col] = $p['cnt'];
+		}
 
 		// sexe
 		$sql = "
@@ -43,13 +73,13 @@ order by sex, i.Antenne";
 
 		// profession
 		$sql = "
-select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId or h.ProfessionId is null,'ZZZZ') as prof, p.Libelle
+select distinct i.Numero, i.Antenne, ifnull(h.ProfessionId,'ZZZZ') as prof, p.Libelle
 from `##_Cadref-Inscription` i 
 inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
 left join `##_Cadref-Profession` p on p.Id=h.ProfessionId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
 order by prof, i.Antenne";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+$zzz=		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
@@ -106,7 +136,7 @@ order by nais desc, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
-		$annee = Cadref::$Annee;
+		//$annee = Cadref::$Annee;
 		foreach($pdo as $p) {
 			$col = strpos($antennes, $p['Antenne']);
 			if($p['nais'] == '9999') {
@@ -171,7 +201,6 @@ inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
 where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
 order by h.Ville, i.Antenne";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-$zzz=$sql;
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('sql'=>$sql);
 		foreach($pdo as $p) {
@@ -204,7 +233,30 @@ order by disc, i.Antenne";
 			$stats->Sum(7, $p['disc'], $p['disc'].' : '.$p['lib'], $col, 1);
 		}
 
+		// discipline web
+		$sql = "
+select distinct count(*) as cnt, i.Antenne, ifnull(ws.Libelle,'Non affecté') as lib, ws.WebSection
+from `##_Cadref-Inscription` i 
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join  `##_Cadref-WebDiscipline` wd on wd.id=d.WebDisciplineId
+left join `##_Cadref-WebSection` ws on ws.id=wd.WebSectionId
+where i.DateInscription>=$ddeb and i.DateInscription<=$dfin and (i.Supprime=0 or i.DateSupprime>$dfin)
+group by lib,i.Antenne
+order by lib,i.Antenne";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(! $pdo) return array('sql'=>$sql);
+		foreach($pdo as $p) {
+			$col = strpos($antennes, $p['Antenne']);
+			$stats->Sum(8, $p['WebSection'], $p['lib'], $col, $p['cnt']);
+		}
+
 		
+		$pdf = new PrintStatistique($obj['DateDebut'], $obj['DateFin'], 7, $antCount, $insCount);
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',$title));
 		
 		$pdf->AddPage();
 		$pdf->PrintLines($stats);

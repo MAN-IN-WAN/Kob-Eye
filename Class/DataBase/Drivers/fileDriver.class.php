@@ -61,6 +61,10 @@ class fileDriver extends ObjectClass {
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			 $Img = imagecreatefromgif($OrigAdresse);
+		}elseif ($TabNom[1]=="bmp"){
+			//On commence le travail de l'image
+			$Dimensions = getimagesize($OrigAdresse);
+			 $Img = imagecreatefrombmp($OrigAdresse);
 		}elseif ($TabNom[1]=="png") {
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
@@ -145,6 +149,10 @@ class fileDriver extends ObjectClass {
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			$Img = imagecreatefromgif($OrigAdresse);
+		}elseif ($TabNom[1]=="bmp"){
+			//On commence le travail de l'image
+			$Dimensions = getimagesize($OrigAdresse);
+			$Img = imagecreatefrombmp($OrigAdresse);
 		}elseif ($TabNom[1]=="png") {
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);

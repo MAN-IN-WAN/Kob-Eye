@@ -7,6 +7,10 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         snaps[i] = i*step;
     }
 
+    /**********************************************
+     *                  PRIVATE
+     **********************************************/
+
     //Recupere le col-md- et la nouvelle size correspondant a une size flottante
     var snapSize = function(size){
         var diff = 100;
@@ -31,31 +35,153 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         }
         return null;
     }
+    /*********************SECTIONS*****************/
+    /**
+     * Création d'une section
+     */
+    function createSection(parent,config){
+        //calcul du nombre de ligne déjà existantes
+        var rows = parent.querySelectorAll('[data-row]');
 
-    function initCounters(){
-        //Init du compte des zones
-        $scope.maxZone = 0;
-        var zones = $scope.tempConfig.getElementsByTagName('ZONE');
-        for(var n in zones){
-            if(zones[n] instanceof Element){
-                var zid = zones[n].getAttribute('tag');
-                zid = zid.split('_')[1];
-                if(parseInt($scope.maxZone) < parseInt(zid)){
-                    $scope.maxZone = zid;
-                }
-            }
-        }
+        //template
+        var newDiv = '<div data-row="'+ rows.length +'" data-order="'+rows.length+'" class="row cms-row">\
+                        <div class="row button-container" r-ignore > \
+                            <div class="addCol">  \
+                                <button type="button" class="btn btn-primary"  ng-click="createCol($event)" title="Ajouter un composant"><i class="icmn-plus2"></i><span class="compoButton">Ajouter un composant</button> \
+                            </div><div class="delRow">  \
+                                <button type="button" class="btn btn-danger"  ng-click="delRow($event)" title="Supprimer la section"><i class="icmn-cross"></i><span class="sectButton">Supprimer la section</button> \
+                            </div> \
+                        </div> \
+                    </div>';
 
-        //Init du compte des row
-        $scope.maxRow = 0;
-        var rows = $scope.tempHtml.querySelectorAll('[data-row]');
-        for(var n in rows){
-            if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
-                $scope.maxRow = rows[n].getAttribute('data-row')
-        }
+        //compilation de la template
+        newDiv = $compile(newDiv)($scope);
+        parent.append(newDiv[0]);
     }
 
+    /**
+     * Création d'un composant
+     */
+    function createComponent(parent,config){
+        var cols = parent.querySelectorAll('[data-col]');
+        //var colWidth = $scope.recalc(rowId);
+        //if(!colWidth) return false;
+        var colWidth = 12;
+        var newDiv = '<div data-col="'+cols.length+'" data-order="1" class="cms-col col-md-'+colWidth+'" data-width="'+snaps[colWidth]+'"></div>';
+        //transformation string en node html
+        var div = document.createElement('div');
+        div.innerHTML = newDiv;
+        var comp = div.firstChild;
 
+        //Affichage du composant à l'intérieur
+        if($scope.getComponent(comp.getAttribute('data-zone'))){
+            var compoHtml = '<div class="compoShow"> \
+                <i class="compoDisplay '+($scope.component.Screen ? $scope.component.Screen : 'icmn-question3' )+'" title="'+ $scope.component.Name +'" alt="'+ $scope.component.Name +'"></i> \
+                <span class="compoTitle">'+ $scope.component.Name +'</span> \
+            </div>';
+        } else{
+            var compoHtml = '<div class="compoShow emptyCompo"> \
+                <i class="compoDisplay icmn-cog3" title="Non choisi" alt="Non Choisi"></i> \
+                <span class="compoTitle">Composant non choisi</span> \
+            </div>';
+        }
+        //newDiv.innerHTML = compoHtml;
+        var div = document.createElement('div');
+        div.innerHTML = compoHtml;
+        newDiv = div.firstChild;
+        comp.insertBefore(newDiv,null);
+
+
+        var newDiv2 = '<div class="configComp">  \
+                            <button type="button" class="btn btn-warning"  ng-click="configComponent($event)" title="Configurer le composant"><i class="icmn-pencil"></i><span class="compoButton" >Configurer le composant</span></button> \
+                        </div>';
+        //transformation string en node html
+        var div = document.createElement('div');
+        div.innerHTML = newDiv2;
+        newDiv2 = div.firstChild;
+        comp.insertBefore(newDiv2,null);
+
+        var newDiv = '<div class="delCol">  \
+                                <button type="button" class="btn btn-danger"  ng-click="delCol($event)" title="Supprimer le composant"><i class="icmn-cross"></i><span class="compoButton">Supprimer le composant</button> \
+                            </div>';
+        //transformation string en node html
+        var div = document.createElement('div');
+        div.innerHTML = newDiv;
+        newDiv = div.firstChild;
+        comp.insertBefore(newDiv,null);
+
+       {# var newDiv = '<div class="dragHandle" ng-drag-handle><i class="fa fa-arrows" aria-hidden="true"></div>';
+        //transformation string en node html
+        var div = document.createElement('div');
+        div.innerHTML = newDiv;
+        newDiv = div.firstChild;
+        comp.insertBefore(newDiv,null);
+
+        comp.setAttribute('ng-drag','true');#}
+
+      {#  var sib  = cols[n].nextElementSibling;
+
+        if( sib instanceof HTMLDivElement && sib.getAttribute('data-col')){
+            comp.setAttribute('resizable','');
+            comp.setAttribute('r-directions',"['right']");
+            comp.setAttribute('r-type','fullRow');
+        }#}
+
+        comp = $compile(comp)($scope);
+        parent.append(comp[0]);
+
+    }
+    //Reorganisation des  rows/cols
+    function reorder(el){
+        var type='';
+        //detection du type d'element à ordonner
+        if (el.classList.contains('cms-row')){
+            //c'est une section donc on organise horizontalement
+            type = 'row';
+        }
+        if (el.classList.contains('dvContent')){
+            //c'est une zone donc on organise verticalement
+            type = 'zone';
+        }
+        switch (type){
+            case 'row':
+
+                break;
+            case 'zone':
+
+                break;
+        }
+
+        /*if(rowId){
+            var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]');
+            var cols = row[0].querySelectorAll('[data-col]');
+            var colOrder = 1;
+            for(var n in cols){
+                if(cols[n] instanceof HTMLDivElement){
+                    cols[n].setAttribute('data-order',colOrder);
+                    colOrder++;
+                }
+            }
+        }else{
+            var dvContainers = $scope.tempHtml.querySelectorAll('[data-dv]');
+            for(var n=0; n < dvContainers.length; n++){
+                console.log('> Reorder dv : '+n);
+                var rows = dvContainers[n].querySelectorAll('[data-row]');
+                var rowOrder = 1;
+                for(var m=0; m < rows.length; m++){
+                    console.log('>> Reorder row : '+m);
+                    if(rows[m] instanceof HTMLDivElement){
+                        rows[m].setAttribute('data-order',rowOrder);
+                        rowOrder++;
+                    }
+                }
+            }
+        }*/
+    };
+
+    /**********************************************
+     *                  INIT
+     **********************************************/
 
     var getObj = $interval(function(){
         if($scope.obj){
@@ -74,10 +200,27 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             $scope.ui = '';
             $scope.modalObj = {fieldErrors: []};
 
-            initCounters();
+            //Init du compte des zones
+            $scope.maxZone = 0;
+            var zones = $scope.tempConfig.getElementsByTagName('ZONE');
+            for(var n in zones){
+                if(zones[n] instanceof Element){
+                    var zid = zones[n].getAttribute('tag');
+                    zid = zid.split('_')[1];
+                    if(parseInt($scope.maxZone) < parseInt(zid)){
+                        $scope.maxZone = zid;
+                    }
+                }
+            }
 
-            console.log('>>>>>>>>>>>>>>>>>> $scope.maxZone : ',$scope.maxZone);
-            console.log('>>>>>>>>>>>>>>>>>> $scope.maxRow : ',$scope.maxRow);
+            //Init du compte des row
+            $scope.maxRow = 0;
+            var rows = $scope.tempHtml.querySelectorAll('[data-row]');
+            for(var n in rows){
+                if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
+                    $scope.maxRow = rows[n].getAttribute('data-row')
+            }
+
 
             $scope.$watch(function($scope){
                 return $scope.obj.HtmlConfig;
@@ -95,39 +238,22 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         }
     },100,50);
 
+    /**********************************************
+     *                  PUBLIC
+     **********************************************/
 
-    /////Gestion des lignes
-    $scope.createRow = function(parent,order){
-        $scope.maxRow++;
-        $scope.maxZone++;
-        var newDiv = '<div data-row="'+ $scope.maxRow +'" data-order="'+order+'" class="row cms-row"> \
-                            <div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col col-md-12" data-width="100" data-zone="ZONE_'+$scope.maxZone+'">[ZONE_'+$scope.maxZone+']</div> \
-                      </div>';
-        //transformation string en node html
-        var div = document.createElement('div');
-        div.innerHTML = newDiv;
-        newDiv = div.firstChild;
+    /*********************SECTIONS*****************/
 
-        var current = new Array();
-        if(order != undefined){
-            current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
-        }
-
-        if(!parent){
-            var parent = $scope.tempHtml.querySelectorAll('[data-dv]')[0];
-        } else {
-            var parent = $scope.tempHtml.querySelectorAll('[data-dv="'+parent+'"]')[0];
-        }
-        if(current.length){
-            parent.insertBefore(newDiv,current[0]);
-
-        }else{
-            parent.insertBefore(newDiv,null);
-        }
+    $scope.createRow = function($event,order){
+        //edit html
+        var parent = angular.element($event.currentTarget.parentElement.parentElement)[0];
+        createSection(parent);
 
         $scope.reorder();
-        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
 
+        //$scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+
+        //config template
         var parser = new DOMParser();
         var newZone = parser.parseFromString('<TEMP><ZONE tag="ZONE_'+$scope.maxZone+'"> </ZONE></TEMP>',"text/xml");
         newZone =  newZone.getElementsByTagName('ZONE')[0];
@@ -152,7 +278,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         $scope.reorder();
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
     };
-    $scope.delRow = function(rowId){
+    $scope.delRow = function($event){
+        console.log('::CMS DEBUG delRow',$event.currentTarget.parentElement.parentElement.parentElement);
         swal({
                 title: "Êtes vous sûr de vouloir supprimer cette section ?",
                 text: "Cette suppression sera définitive, et elle entraînera la suppression de tout les composants affectés à cette section. ",
@@ -164,7 +291,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
                 closeOnConfirm: true
             },
             function(){
-                var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
+                var row = angular.element($event.currentTarget.parentElement.parentElement.parentElement)[0];
                 var cols = row.querySelectorAll('[data-col]');
 
                 for(var n in cols){
@@ -172,9 +299,11 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
 
                     var zone = cols[n].getAttribute('data-zone');
 
-                    $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
+                    var tmp = $scope.tempConfig.querySelectorAll('[tag='+zone+']'); //.remove();
+                    if (tmp.length) tmp[0].remove();
                     $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
                 }
+
                 row.remove();
                 $scope.reorder();
                 $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
@@ -182,28 +311,13 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             });
     };
 
-    /////Gestion des colonnes
-    $scope.createCol = function(rowId,order){
-        $scope.maxZone++;
-        var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
-        var cols = row.querySelectorAll('[data-col]');
-        var colWidth = $scope.recalc(rowId);
-        if(!colWidth) return false;
-        var newDiv = '<div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col col-md-'+colWidth+'" data-zone="ZONE_'+$scope.maxZone+'" data-width="'+snaps[colWidth]+'">[ZONE_'+$scope.maxZone+']</div>';
-        //transformation string en node html
-        var div = document.createElement('div');
-        div.innerHTML = newDiv;
-        newDiv = div.firstChild;
+    /*********************COMPONENT*****************/
 
-        var current = row.querySelectorAll('[data-order="'+order+'"]');
-        if(current.length){
-            row.insertBefore(newDiv,current[0]);
-        }else{
-            row.insertBefore(newDiv,null);
-        }
+    $scope.createCol = function($event,order){
+        var row = angular.element($event.currentTarget.parentElement.parentElement.parentElement)[0];
+        createComponent(row);
 
-
-        $scope.reorder(rowId);
+        //$scope.reorder(rowId);
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
 
         var parser = new DOMParser();
@@ -213,9 +327,10 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         var parent = $scope.tempConfig.getElementsByTagName('ZONES')[0];
         parent.insertBefore(newZone,null);
         $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
+
     };
-    $scope.moveCol = function(colId,order,rowId){
-        var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
+    $scope.moveCol = function($event,order){
+        /*var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
         if(!rowId){
             return false;
@@ -229,9 +344,9 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             parent.insertBefore(row,null);
         }
         $scope.reorder();
-        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;*/
     };
-    $scope.delCol = function(colId){
+    $scope.delCol = function($event){
         swal({
                 title: "Êtes vous sûr de vouloir supprimer ce composant ?",
                 text: "Cette suppression sera définitive et elle entraînera la perte de la configuration qui lui était liée.",
@@ -243,24 +358,24 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
                 closeOnConfirm: true
             },
             function(){
-                var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
+                var col = angular.element($event.currentTarget.parentElement.parentElement)[0];
                 var row = col.parentNode;
 
-                var bSib = nextByAttribute(col,'data-col');
+                /*var bSib = nextByAttribute(col,'data-col');
                 if(!bSib) bSib = nextByAttribute(col,'data-col',true);
                 if(bSib){
                     bSWidth = parseInt(bSib.getAttribute('data-width'))+parseInt(col.getAttribute('data-width'));
                     $scope.resizeWidth(bSib,bSWidth);
-                }
+                }*/
 
                 col.remove();
 
-                $scope.reorder(row.getAttribute('data-row'));
+                $scope.reorder(row);
                 $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
 
-                var zone = col.getAttribute('data-zone');
+                /*var zone = col.getAttribute('data-zone');
 
-                $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
+                $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();*/
                 $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
                 $scope.$apply();
             });
@@ -269,6 +384,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
 
     //Gestion de composants
     $scope.getComponent = function(zoneId){
+        if(!zoneId)
+            return false;
         var zone = $scope.tempConfig.querySelectorAll('[tag="'+zoneId+'"]')[0];
 
         if(!zone)
@@ -294,6 +411,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         return true;
     }
     $scope.setComponent = function(identifier){
+
         if(!identifier)
             return false;
 
@@ -331,9 +449,6 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title;
 
     };
-{#    $scope.delComponent = function(zone){
-
-    };#}
     $scope.componentSave = function (){
         console.log('save component',$scope.component,$scope.modalObj);
         var zone = $scope.component.zone;
@@ -398,37 +513,6 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         });
     }
 
-
-
-
-    //Reorganisation des  rows/cols
-    $scope.reorder = function(rowId){
-        if(rowId){
-            var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]');
-            var cols = row[0].querySelectorAll('[data-col]');
-            var colOrder = 1;
-            for(var n in cols){
-                if(cols[n] instanceof HTMLDivElement){
-                    cols[n].setAttribute('data-order',colOrder);
-                    colOrder++;
-                }
-            }
-        }else{
-            var dvContainers = $scope.tempHtml.querySelectorAll('[data-dv]');
-            for(var n=0; n < dvContainers.length; n++){
-                console.log('> Reorder dv : '+n);
-                var rows = dvContainers[n].querySelectorAll('[data-row]');
-                var rowOrder = 1;
-                for(var m=0; m < rows.length; m++){
-                    console.log('>> Reorder row : '+m);
-                    if(rows[m] instanceof HTMLDivElement){
-                        rows[m].setAttribute('data-order',rowOrder);
-                        rowOrder++;
-                    }
-                }
-            }
-        }
-    };
     //Recalcul de largeurs en gardant les ratios des premieres colonnes
     $scope.recalc = function(rowId){
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
@@ -478,8 +562,6 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         function(){
             $scope.tempHtml = angular.copy($scope.initHtml);
             $scope.tempConfig = angular.copy($scope.initConfig);
-
-            initCounters();
 
             $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
             $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
@@ -557,50 +639,28 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         });
     }
 
+    //Initialisation d'une zone
+    $scope.initZone = function (el) {
+        //intialisation
+        var rows = el.querySelectorAll('[data-row]');
+        var cols = el.querySelectorAll('[data-col]');
 
-    //Generation de l'interface utilisateur
-    $scope.updateInterface = function(){
-        var parser = new DOMParser();
-
-        $scope.tempHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
-        $scope.tempConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
-
-        initCounters();
-
-        $('#pageOrg').spin();
-
-        var base = angular.copy($scope.tempHtml);
-        var body = base.querySelectorAll('body')[0];
-        var dvContainers = base.querySelectorAll('[data-dv]');
-        var rows = base.querySelectorAll('[data-row]');
-        var cols = base.querySelectorAll('[data-col]');
-{#
-        //Ajout du titre
-        var newDiv = '<div class="row pageHeader" ng-bind-html="obj.Titre"></div>';
+        //Definition du container de zone
+        var newDiv = '<div class="row addRow">  \
+                            <button type="button" class="btn btn-primary"  ng-click="createRow($event)" title="Ajouter une section"><i class="icmn-plus2"></i><span class="sectButton">Ajouter une section</span></button> \
+                          <span class="zoneTitle">'+el.getAttribute('data-zone')+'</span></div>';
         //transformation string en node html
         var div = document.createElement('div');
         div.innerHTML = newDiv;
         newDiv = div.firstChild;
-        body.insertBefore(newDiv,body.firstChild);#}
+        el.innerHTML = '';
+        el.classList.add('dvContent');
+        el.insertBefore(newDiv,null);
+        el.setAttribute('ng-drop','true');
+        el.setAttribute('data-drop','col');
+        el.setAttribute('ng-drop-success','dropRow($data,$event,$target,$source)');
 
-        //Ajout des boutons pour ajouter des lignes...
-        for(n in dvContainers){
-            if(!(dvContainers[n] instanceof HTMLDivElement))
-                continue;
-
-            var newDiv = '<div class="row addRow">  \
-                            <button type="button" class="btn btn-primary"  ng-click="createRow('+dvContainers[n].getAttribute('data-dv')+')" title="Ajouter une section"><i class="icmn-plus2"></i><span class="sectButton">Ajouter une section</span></button> \
-                          </div>';
-            //transformation string en node html
-            var div = document.createElement('div');
-            div.innerHTML = newDiv;
-            newDiv = div.firstChild;
-            dvContainers[n].insertBefore(newDiv,null);
-            dvContainers[n].setAttribute('ng-drop','true');
-            dvContainers[n].setAttribute('data-drop','col');
-            dvContainers[n].setAttribute('ng-drop-success','dropRow($data,$event,$target,$source)');
-        }
-
+        //Ajout des sections
         //Ajout de boutons pour supprimer des rows / ajouter des colonnes / Mise en place du dragndrop
         for(n in rows) {
             if (!(rows[n] instanceof HTMLDivElement))
@@ -621,7 +681,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             rows[n].insertBefore(newDiv, null);
             //par.insertBefore(newDiv, rows[n].nextSibling);
 
-            var newDiv = '<div class="dragHandle" r-ignore ng-drag-handle><i class="fa fa-arrows" aria-hidden="true"></i></div>';
+            {#var newDiv = '<div class="dragHandle" r-ignore ng-drag-handle><i class="fa fa-arrows" aria-hidden="true"></i></div>';
             //transformation string en node html
             var div = document.createElement('div');
             div.innerHTML = newDiv;
@@ -631,23 +691,20 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             rows[n].setAttribute('ng-drag', 'true');
             rows[n].setAttribute('ng-drop', 'true');
             rows[n].setAttribute('data-drop', 'col');
-            rows[n].setAttribute('ng-drop-success', 'dropCol($data,$event,$target,$source)');
-
+            rows[n].setAttribute('ng-drop-success', 'dropCol($data,$event,$target,$source)');#}
         }
-
-
-        //Ajout de boutons pour supprimer des colonnes / choisir des composants
+//Ajout de boutons pour supprimer des colonnes / choisir des composants
         for(n in cols){
             if(!(cols[n] instanceof HTMLDivElement)) continue;
 
             //Affichage du composant à l'intérieur
             if($scope.getComponent(cols[n].getAttribute('data-zone'))){
-            var compoHtml = '<div class="compoShow"> \
+                var compoHtml = '<div class="compoShow"> \
                 <i class="compoDisplay '+($scope.component.Screen ? $scope.component.Screen : 'icmn-question3' )+'" title="'+ $scope.component.Name +'" alt="'+ $scope.component.Name +'"></i> \
                 <span class="compoTitle">'+ $scope.component.Name +'</span> \
             </div>';
             } else{
-            var compoHtml = '<div class="compoShow emptyCompo"> \
+                var compoHtml = '<div class="compoShow emptyCompo"> \
                 <i class="compoDisplay icmn-cog3" title="Non choisi" alt="Non Choisi"></i> \
                 <span class="compoTitle">Composant non choisi</span> \
             </div>';
@@ -673,7 +730,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             newDiv = div.firstChild;
             cols[n].insertBefore(newDiv,null);
 
-            var newDiv = '<div class="dragHandle" ng-drag-handle><i class="fa fa-arrows" aria-hidden="true"></div>';
+            {#var newDiv = '<div class="dragHandle" ng-drag-handle><i class="fa fa-arrows" aria-hidden="true"></div>';
             //transformation string en node html
             var div = document.createElement('div');
             div.innerHTML = newDiv;
@@ -688,9 +745,31 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
                 cols[n].setAttribute('resizable','');
                 cols[n].setAttribute('r-directions',"['right']");
                 cols[n].setAttribute('r-type','fullRow');
-            }
+            }#}
         }
+    }
 
+    //Generation de l'interface utilisateur
+    $scope.updateInterface = function(){
+        var parser = new DOMParser();
+        $scope.tempHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
+        $scope.tempConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
+        console.log('::CMS DEBUG::',$scope.obj);
+
+        $('#pageOrg').spin();
+
+        var base = angular.copy($scope.tempHtml);
+        var body = base.querySelectorAll('body')[0];
+        var zones = base.querySelectorAll('[data-zone]');
+
+        console.log('::CMS DEBUG::ZONE LIST',zones);
+
+        //Ajout des boutons pour ajouter des lignes...
+        for(var zone in zones){
+            if(!(zones[zone] instanceof HTMLDivElement))
+                continue;
+            $scope.initZone(zones[zone]);
+        }
         $scope.ui= base.querySelectorAll('body')[0].innerHTML;
         $scope.component = {};
 
@@ -893,7 +972,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         $scope.modalObj.success = false ;
         $scope.modalObj.title = 'Modifier {{ description }} '+obj.label;
         console.log('edit obj',$scope.modalObj);
-        $("#modalfiche-CmsPage").modal();
+        $("#modalfiche-{{ identifier }}").modal();
     }
 
 

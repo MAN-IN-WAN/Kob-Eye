@@ -21,17 +21,26 @@ class PrintStatistique extends FPDF {
 	private $types;
 	private $rupture = -1;
 	private $totaux;
+	private $antCount;
+	private $antTot = 0;
+	private $insCount;
+	private $insTot = 0;
 	
 	
-	function PrintStatistique($debut, $fin, $antennes) {
+	function PrintStatistique($debut, $fin, $antennes, $antCount, $insCount) {
 		parent::__construct('L', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 8);
 
 		$this->debut = $debut;
 		$this->fin = $fin;
 		$this->antennes = $antennes;
+		$this->antCount = $antCount;
+		$this->insCount = $insCount;
+		
+		foreach($antCount as $a) $this->antTot += $a;
+		foreach($insCount as $a) $this->insTot += $a;
 
-		$this->types = array('Sexes','Professions','Situation','Origine','Répartition par ages','Nombre de cours','Répartition par communes','Disciplines');
+		$this->types = array('Sexes','Professions','Situation','Origine','Répartition par ages','Nombre de cours','Répartition par communes','Disciplines','Disciplines Web');
 		$this->head = array('Alès','Bagnols','Le Grau','Le Vigan','Nîmes','Sommières','Villeneuve');
 		$this->titre = "CADREF : Statistiques du ".$this->debut." au ".$this->fin;
 		
@@ -103,13 +112,17 @@ class PrintStatistique extends FPDF {
 				$this->SetXY($x, $this->posy);
 				$x += $this->colw;
 				$v = $stat->Valeurs[$i];
-				$this->Cell($this->colv, 4, $v ? $stat->Valeurs[$i] : '-', 0, 0, 'R');
-				$this->Cell($this->colp, 4, $v ? round($stat->Valeurs[$i] / $stat->Total * 100).'%' : '-', 0, 0, 'R');	
+				$t = $stat->Type >= 7 ? $this->insCount[$i] : $this->antCount[$i];
+				$this->Cell($this->colv, 4, $v ? $v : '-', 0, 0, 'R');
+				$this->Cell($this->colp, 4, $v && $t ? round($v / $t * 100).'%' : '-', 0, 0, 'R');	
 				$this->totaux[$i] += $v;
 			}
 			$this->totaux[$i] += $stat->Total;
 			$this->SetXY($x, $this->posy);
-			$this->Cell($this->colv, 4, $stat->Total, 0, 0, 'R');
+			$v = $stat->Total;
+			$t = $stat->Type >= 7 ? $this->insTot : $this->antTot;
+			$this->Cell($this->colv, 4, $v, 0, 0, 'R');
+			$this->Cell($this->colp, 4, $v && $t ? round($v / $t * 100).'%' : '-', 0, 0, 'R');
 			$this->posy += 4;
 		}
 		if($this->rupture != -1) $this->printTotaux();

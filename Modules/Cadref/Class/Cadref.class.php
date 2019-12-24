@@ -796,7 +796,7 @@ where ve.Visite=$vid
 				}
 				else $c = 'fc-event-default';
 			}
-			else $c = $p['Web'] ? ($c = $p['Places']<=$p['Inscrits'] ? 'fc-event-danger' : 'fc-event-success') : 'fc-event-default';
+			else $c = $p['Places']<=$p['Inscrits'] ? 'fc-event-danger' : 'fc-event-success';
 			$e->className = $c.' cadref-cal-visite';
 			$events[] = $e;
 		}
@@ -806,6 +806,8 @@ where ve.Visite=$vid
 		return $data;
 	}
 	
+	
+
 	private static function calEvent($adh, $d, $p, $absences) {
 		$cid = $p['cid'];
 		$hd = isset($p['dhd']) && !empty($p['dhd']) ? $p['dhd'] : $p['HeureDebut'];
