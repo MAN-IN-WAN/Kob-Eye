@@ -57,10 +57,7 @@ __CURRENT_ORDER__|Commande en cours
 __LA_VALEUR_DU_CHAMP__|La valeur du champ
 __ALREADY_EXISTS__|existe déjà.
 
-
-
 __SAVE_MODAL_OBJ__|Enregistrer les modifications
-
 
 #######HELP pour AngularAdmin###########
 __CATALOGUE_PRODUIT_TITRE_HELP__|Le nom du modèle, évidemment !
