@@ -1,5 +1,5 @@
 body{
-//    background-image: url(/Skins/TennisLogin/Img/Fond.jpg);
+/*    background-image: url(/Skins/TennisLogin/Img/Fond.jpg);*/
     background-size: cover;
     color: #666;
 
@@ -134,4 +134,8 @@ body { font-weight: normal;}
   margin-top: -25px;
   position: relative;
   z-index: 2;
+}
+
+.copyright {
+	color:#ddd;
 }

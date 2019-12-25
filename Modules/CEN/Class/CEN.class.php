@@ -20,6 +20,12 @@ class CEN extends Module {
 			case 'codex':
 				return Codex::GetCodex($args);
 				
+			case 'tlachia-list':
+				return Codex::GetList($args);
+				
+			case 'tlachia':
+				return Codex::GetTlachia($args);
+				
 			case 'genor':
 				return Temoa::GetGenor($args);
 				
@@ -52,6 +58,9 @@ class CEN extends Module {
 				
 			case 'pres':
 				switch($args['pres']) {
+					case 'tlachia':
+						$tla = Sys::getOneData('CEN', 'Codex/'.$args['id']);
+						return $tla->GetDescr($args);
 					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
 					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
 					case 'comm': return GDN::GetComments($args);

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <title>CEN</title>
 
   <base href="/" />
 
@@ -16,10 +16,10 @@
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="stylesheet" href="styles.2e7e88d14acc156b93d3.css"></head>
+<link rel="stylesheet" href="styles.cd9cbfde4db9c78bb4d4.css"></head>
 
 <body>
   <app-root></app-root>
-<script src="runtime.a0e2eb52229ec8b26cac.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="main.a180fbbcdaa0161e12f3.js" defer></script></body>
+<script src="runtime.75d1d838853dbd38e4fd.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.670baf786c434c6c9d2d.js" defer></script></body>
 
 </html>
