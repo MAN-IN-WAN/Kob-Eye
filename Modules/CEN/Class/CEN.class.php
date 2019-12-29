@@ -57,15 +57,32 @@ class CEN extends Module {
 				return GDN::GetGDN($args);
 				
 			case 'pres':
+				$id = $args['id'];
+				$lang = $args['lang'];
+				$lang = strtoupper(substr($lang, 0, 1)).substr($lang, 1, 1);
+				
 				switch($args['pres']) {
 					case 'tlachia':
-						$tla = Sys::getOneData('CEN', 'Codex/'.$args['id']);
+						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
 						return $tla->GetDescr($args);
-					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
-					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
+						
+					case 'pres':
+						$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['id']);
+						switch($args['type']) {
+							case 'intro': $type = 'Texte'; break;
+							case 'pres': $type = 'Present'; break;
+							case 'thanks': $type = 'Remer'; break;
+							case 'credits': $type = 'Credit'; break;
+							case 'help': $type = 'Aide'; break;
+						}
+						$type .= $lang;
+						return array('text'=> $o->$type);
+						
+					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$id);	break;
+					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	break;
 					case 'comm': return GDN::GetComments($args);
 					case 'doc-read':
-						$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	
+						$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	
 						return array('text'=>$dic->DocHtml);
 				}
 				switch($args['lang']) {

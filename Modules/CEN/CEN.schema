@@ -1,9 +1,21 @@
 <SCHEMA>
 	<OBJECTCLASS title="Presentation" driver="mysql" AccessPoint="1" Description="Presentation"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/Presentation.class.php">
 		<PROPERTIES type="varchar" length="60" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="5" fiche="5" description="Présentation Espagnol">TexteEs</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="6" fiche="6" description="Présentation Français">TexteFr</PROPERTIES>
-		<PROPERTIES type="html" category="Description" form="7" fiche="7" description="Présentation Anglais">TexteEn</PROPERTIES>
+		<PROPERTIES type="html" category="Intoduction" form="2" fiche="2" description="Intoduction Espagnol">TexteEs</PROPERTIES>
+		<PROPERTIES type="html" category="Intoduction" form="3" fiche="3" description="Intoduction Français">TexteFr</PROPERTIES>
+		<PROPERTIES type="html" category="Intoduction" form="4" fiche="4" description="Intoduction Anglais">TexteEn</PROPERTIES>
+		<PROPERTIES type="html" category="Présentation" form="5" fiche="5" description="Présentation Espagnol">PresentEs</PROPERTIES>
+		<PROPERTIES type="html" category="Présentation" form="6" fiche="6" description="Présentation Français">PresentFr</PROPERTIES>
+		<PROPERTIES type="html" category="Présentation" form="7" fiche="7" description="Présentation Anglais">PresentEn</PROPERTIES>
+		<PROPERTIES type="html" category="Remerciements" form="8" fiche="8" description="Intoduction Espagnol">RemerEs</PROPERTIES>
+		<PROPERTIES type="html" category="Remerciements" form="9" fiche="9" description="Intoduction Français">RemerFr</PROPERTIES>
+		<PROPERTIES type="html" category="Remerciements" form="10" fiche="10" description="Intoduction Anglais">RemerEn</PROPERTIES>
+		<PROPERTIES type="html" category="Crédits" form="11" fiche="11" description="Intoduction Espagnol">CreditEs</PROPERTIES>
+		<PROPERTIES type="html" category="Crédits" form="12" fiche="12" description="Intoduction Français">CreditFr</PROPERTIES>
+		<PROPERTIES type="html" category="Crédits" form="13" fiche="13" description="Intoduction Anglais">CreditEn</PROPERTIES>
+		<PROPERTIES type="html" category="Aide" form="14" fiche="14" description="Intoduction Espagnol">AideEs</PROPERTIES>
+		<PROPERTIES type="html" category="Aide" form="15" fiche="15" description="Intoduction Français">AideFr</PROPERTIES>
+		<PROPERTIES type="html" category="Aide" form="16" fiche="16" description="Intoduction Anglais">AideEn</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Regle" driver="mysql" AccessPoint="1" Description="Règle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
