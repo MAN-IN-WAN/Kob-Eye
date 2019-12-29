@@ -1,6 +1,12 @@
 [HEADER]
 <base href="/" />
 
+
+<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<meta name="robots" content="all"/>
+<meta name="reply-to" content="info@sup-infor.com"/>
+<meta name="owner" content="SUP-INFOR"/>
+
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="msapplication-tap-highlight" content="no" />
