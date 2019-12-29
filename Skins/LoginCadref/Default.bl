@@ -4,7 +4,7 @@
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
 [HEADER]
-<meta name="author" content="Abtel corp, Paul Gordon Fisher"/>
+<meta name="author" content="Paul Gordon Fisher"/>
 <link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/spin.js"></script>
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/jquery.spin.js"></script>
