@@ -281,6 +281,7 @@ switch($info['TypeSearch']){
             case 'GET':
                 //On retourne l'objet fourni par l'id
                 sendResult(200,$item);
+
                 break;
             case 'POST':
                 //TODO definir si l'on peut modif obj avec post

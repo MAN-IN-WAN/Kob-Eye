@@ -189,6 +189,7 @@
 		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" listDescr="IP publique" form="1">IP</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" quickview="1" list="1" fiche="1" listDescr="IP interne" form="1">InternalIP</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3" quickview="1" fiche="1" description="Utiliser IP Publique pour l'administrer" form="1">usePublicIP</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="12" quickview="1"  fiche="1" listDescr="Port d'administration" form="1" default="22">Port</PROPERTIES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
@@ -220,6 +221,7 @@
 		</CATEGORY>
 		<CATEGORY title="Sql" formCondition="{{ scopeObj }}.Sql == 1">
 			<PROPERTIES type="boolean" description="Serveur sql par défaut" form="1" >defaultSqlServer</PROPERTIES>
+			<PROPERTIES type="int" description="Port BDD" default="3306" form="1">SqlPort</PROPERTIES>
 			<PROPERTIES type="varchar" description="User BDD" form="1">SqlUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
 		</CATEGORY>
@@ -332,6 +334,7 @@
 		<FUNCTION title="Vérifier le certificat SSL">checkSSL</FUNCTION>
 		<FUNCTION title="Forcer la mise à jour du certificat">RenewSSL</FUNCTION>
 		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
+		<FUNCTION title="Supprimer le cache pagespeed">emptyPageSpeedCacheTask</FUNCTION>
 
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">

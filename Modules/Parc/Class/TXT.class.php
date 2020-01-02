@@ -89,6 +89,11 @@ class TXT extends genericClass {
         //Vérification de la longueur du champ texte
         if (strlen($this->Dnstxt)>255&&!preg_match('#\(.*\)#',$this->Dnstxt)){
             $pos=0;
+            //on supprime toutes les parenthèes et guillemets
+            $this->Dnstxt = str_replace('"','',$this->Dnstxt);
+            $this->Dnstxt = str_replace('(','',$this->Dnstxt);
+            $this->Dnstxt = str_replace(')','',$this->Dnstxt);
+
             $out='("';
             while (strlen($this->Dnstxt)>$pos) {
                 $length=255;

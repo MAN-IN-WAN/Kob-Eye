@@ -45,9 +45,10 @@ class Bdd extends genericClass {
     public function checkDatabase(){
         $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         $host = $this->getOneParent('Host');
+        $ip = ($serv->usePublicIP)?$serv->IP:$serv->InternalIP;
         if (!is_object($serv)) return false;
         try {
-            $dbGuac = new PDO('mysql:host=' . $serv->InternalIP . ';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $ip . ';port='.$serv->SqlPort.';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -99,9 +100,11 @@ class Bdd extends genericClass {
     }
     private function removeFromDatabase($silent = false){
         $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
+        $ip = ($serv->usePublicIP)?$serv->IP:$serv->InternalIP;
+
         if (!is_object($serv)) return false;
         try {
-            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $ip . ';port='.$serv->SqlPort.';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(Exception $e){
@@ -156,11 +159,14 @@ class Bdd extends genericClass {
      * Définit la taille des bases de données
      */
     public function getSize() {
+
         $sql = 'SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 AS "Size" FROM information_schema.TABLES WHERE table_schema="'.$this->Nom.'" GROUP BY table_schema';
         $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
+        $ip = ($serv->usePublicIP)?$serv->IP:$serv->InternalIP;
+
         if (!is_object($serv)) return false;
         try {
-            $dbGuac = new PDO('mysql:host=' . $serv->InternalIP . ';dbname=information_schema', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $ip . ';port='.$serv->SqlPort.';dbname=information_schema', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

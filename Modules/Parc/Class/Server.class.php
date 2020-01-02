@@ -1310,14 +1310,13 @@ class Server extends genericClass {
         try {
             //Test de connectivité pour ne pas bloquer l'appli
             $connection = false;
-            if(!empty($this->InternalIP)) {
+            if(!$this->usePublicIP) {
                 $tc = @fsockopen($this->InternalIP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
                     $connection = ssh2_connect($this->InternalIP, $this->Port);
                 }
-            }
-            if(!$connection && !empty($this->IP)) {
+            }else{
                 $tc = @fsockopen($this->IP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
@@ -1326,14 +1325,14 @@ class Server extends genericClass {
             }
 
             if (!$connection){
-                $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));
+                $this->addError(array("Message"=>"Impossible de contacter l'hôte ".(($this->usePublicIP)?$this->IP:$this->InternalIP)));
                 $this->Status = false;
                 parent::Save();
                 return false;
             }
             if (!$this->Status) {
                 if (!ssh2_auth_password($connection, $this->SshUser, $this->SshPassword)) {
-                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->InternalIP . ". Veuillez vérifier vos identifiants."));
+                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . (($this->usePublicIP)?$this->IP:$this->InternalIP) . ". Veuillez vérifier vos identifiants."));
                     $this->Status = false;
                     parent::Save();
                     return false;
@@ -1343,10 +1342,10 @@ class Server extends genericClass {
             }else{
                 //connexion avec clef ssh
 //                if (!ssh2_auth_pubkey_file($connection,$this->Login,$this->PublicKey,$this->PrivateKey)){
-                if (!ssh2_auth_pubkey_file($connection,$this->SshUser,'.ssh/id_'.$this->InternalIP.'.pub','.ssh/id_'.$this->InternalIP)){
+                if (!ssh2_auth_pubkey_file($connection,$this->SshUser,'.ssh/id_'.(($this->usePublicIP)?$this->IP:$this->InternalIP).'.pub','.ssh/id_'.(($this->usePublicIP)?$this->IP:$this->InternalIP))){
                     $this->Status = false;
                     parent::Save();
-                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->InternalIP . ". Veuillez vérifier vos clefs publique / privée ou les regénérer."));
+                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . (($this->usePublicIP)?$this->IP:$this->InternalIP) . ". Veuillez vérifier vos clefs publique / privée ou les regénérer."));
                     return false;
                 }else{
                     if (!$this->Status) {
@@ -1363,7 +1362,7 @@ class Server extends genericClass {
         }catch (Exception $e){
             $this->Status = false;
             parent::Save();
-            $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de connexion à l'hôte ".$this->InternalIP));
+            $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de connexion à l'hôte ".(($this->usePublicIP)?$this->IP:$this->InternalIP)));
             return false;
         }
         return true;
@@ -1389,11 +1388,11 @@ class Server extends genericClass {
         if (!$this->_connection)$this->Connect();
         //génération des clefs publiques / privées
         try {
-            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". $this->InternalIP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->InternalIP);
+            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". (($this->usePublicIP)?$this->IP:$this->InternalIP)."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->InternalIP);
             //récupération et stockage des clefs
-            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $this->InternalIP);
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . (($this->usePublicIP)?$this->IP:$this->InternalIP));
             $this->PrivateKey = $stream2;
-            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $this->InternalIP . ".pub");
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . (($this->usePublicIP)?$this->IP:$this->InternalIP) . ".pub");
             $this->PublicKey = $stream2;
             //publication de la clef
             $stream3 = $this->remoteExec("[ -d /root/.ssh ] || mkdir /root/.ssh");
@@ -1418,13 +1417,13 @@ class Server extends genericClass {
      * @return mixed
      */
     public function remoteExec( $command ,$activity = null,$noerror=false){
-        if (!$this->_connection)if (!$this->Connect()) throw new RuntimeException($this->Error[0]['Message']);
+        if (!$this->_connection)if (!$this->Connect()) throw new RuntimeException('Problème de connexion :'.$this->Error[0]['Message']);
         $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
         }
         if( !$noerror&&$matches[1] !== "0" ) {
-            throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
+            throw new RuntimeException( 'retour différent de zero: ('.$result[1].$result[0].')', (int)$matches[1] );
         }
         return $result[0];
     }
@@ -1558,27 +1557,33 @@ class Server extends genericClass {
             $task->Save();
         }
         $act = $task->createActivity('Execution de synchronisation');
+        $act->addDetails('/usr/bin/ldap2service');
         try {
-            $out = $this->remoteExec('/usr/bin/ldap2service', $act);
+            $this->remoteExec('/usr/bin/ldap2service', $act);
+            $act->addDetails('après exec');
+            //on vérifie quand mêmle la date
+            $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
+            $ct = trim($ct);
+            $act->addDetails('après ldap2service.time');
+            if (empty($ct)&&!$retry){
+                //alors on pousse une valeur
+                $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
+                $this->callLdap2Service($task,true);
+            }
+            $act->addDetails('après rewrite ldap2service.time');
+
+            $act->Terminate(true);
+            $task->Termine = true;
+            $task->Save();
+            $act->addDetails('FIN ldap2service');
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
+            $act->addDetails($out.print_r($e,true).' -> '.$e->getMessage());
             //si erreur il faut vérfiier le fichier de date
+            $task->Error = true;
             $act->Terminate(false);
+            $task->Save();
             return false;
         }
-        //on vérifie quand mêmle la date
-        $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
-        $ct = trim($ct);
-        if (empty($ct)&&!$retry){
-            //alors on pousse une valeur
-            $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
-            $this->callLdap2Service($task,true);
-        }
-
-        $act->addDetails($out);
-        $act->Terminate($out);
-        $task->Termine = true;
-        $task->Save();
         return true;
     }
     /**
@@ -1797,6 +1802,72 @@ class Server extends genericClass {
             $act->Terminate(true);
             if ($params['ApacheSsl']){
                 $act = $task->createActivity('Suppression du dossier cache du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache'].'.ssl');
+                $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl');
+                $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl', $act);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+        return true;
+    }
+    /**
+     * emptyPagespeedCacheTask
+     * Creation de la tache pour vider le cache d'un hote virtuel
+     * @params $apache
+     * @params $infra
+     */
+    public static function emptyPagespeedCacheTask($apache, $infra = null) {
+        $pref = '';
+        if($infra)
+            $pref = 'Infra/'.$infra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/PageSpeed=1',0,100,'','','','',true);
+        foreach ($pxs as $px){
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Suppression du cache pagespeed ' . $px->Nom.' pour l\'hote virtuel ' . $apache->ApacheServerName;
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Server';
+            $task->TaskId = $px->Id;
+            $task->TaskType = 'maintenance';
+            $task->TaskArgs = serialize(array('Apache'=>$apache->ApacheServerName,'ApacheSsl'=>$apache->Ssl));
+            $task->TaskFunction = 'emptyPageSpeedCache';
+            $task->addParent($apache);
+            if ($host = $apache->getOneParent('Host')) {
+                $task->addParent($host);
+                if ($inst = $host->getOneChild('Instance')){
+                    $task->addParent($inst);
+                }
+            }
+            $task->DateDebut = time();
+            $task->Save();
+        }
+    }
+    /**
+     * emptyPageSpeedCache
+     * Vider le pagespeed d'un hote virtuel
+     * @params $apache
+     * @params $infra
+     */
+    public function emptyPageSpeedCache($task) {
+        $params = unserialize($task->TaskArgs);
+        $act = $task->createActivity('Suppression du dossier cache pagespeed du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache']);
+        if (!isset($params['Apache'])||empty($params['Apache'])){
+            $act->addDetails('Paramètre Apache introuvable.');
+            $act->Terminate(false);
+            return false;
+        }
+        try {
+            $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache']);
+            $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'], $act);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            if ($params['ApacheSsl']){
+                $act = $task->createActivity('Suppression du dossier pagespeed cache du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache'].'.ssl');
                 $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl');
                 $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl', $act);
                 $act->addDetails($out);
