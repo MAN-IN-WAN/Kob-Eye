@@ -131,25 +131,34 @@
 	<OBJECTCLASS title="SambaJob" AccessPoint="1" logEvent="1" driver="mysql" Description="Job synchronisation Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/SambaJob.class.php">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
+		<FUNCTION title="Lancer une tache de rotation">createRetentionTask</FUNCTION>
+		<INTERFACES name="fiche_tab">
+			<FORM type="Template" urlPrefix="/AbtelBackup/SambaJob/" urlSuffix="/Histo.htm" title="Historique d'éxécution">Infos</FORM>
+		</INTERFACES>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Actif" description="Actif">Enabled</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours" description="En cours">Running</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
-		<PROPERTIES type="progress"  list="1" fiche="1"  listDescr="Progression">Progression</PROPERTIES>
-		<PROPERTIES type="varchar"  list="1" fiche="1" form="1" listDescr="Etape" description="Etape" default="0" values="0::Attente,1::Initialisation,2::Montage,3::Déduplication">Step</PROPERTIES>
-		<PROPERTIES type="varchar"  fiche="1" form="1" listDescr="Partage en cours" description="Partage en cours" query="AbtelBackup/SambaShare::Id::Titre">CurrentShare</PROPERTIES>
-		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
-		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
-		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
-		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
-		<RKEY data="SambaShare,Id" card="0,n" inline="1" form="1" description="Sélection des partages">SambaShareId</RKEY>
+		<CATEGORY title="Configurations">
+			<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Actif" description="Actif">Enabled</PROPERTIES>
+			<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours" description="En cours">Running</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+			<PROPERTIES type="progress"  list="1" fiche="1"  listDescr="Progression">Progression</PROPERTIES>
+			<PROPERTIES type="varchar"  list="1" fiche="1" listDescr="Etape" description="Etape" default="0" values="0::Attente,1::Initialisation,2::Montage,3::Déduplication">Step</PROPERTIES>
+			<PROPERTIES type="varchar"  fiche="1" listDescr="Partage en cours" description="Partage en cours" query="AbtelBackup/SambaShare::Id::Titre">CurrentShare</PROPERTIES>
+			<RKEY data="SambaShare,Id" card="0,n" inline="1" form="1" description="Sélection des partages">SambaShareId</RKEY>
+		</CATEGORY>
+		<CATEGORY title="Planifications">
+			<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Rétention" description="Durée de rétention"  values="1::1 jour,2::2 jours,3::3 jours,5::5 jours,7::7 jours,15::15 jours,30::30 jours" help="Durée de rétention en jour." default="30">Retention</PROPERTIES>
+			<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+			<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+			<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+			<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+		</CATEGORY>
 		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">SambaJobTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="RemoteJob" logEvent="1" AccessPoint="1" driver="mysql" Description="Job synchronisation distante"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/RemoteJob.class.php">
