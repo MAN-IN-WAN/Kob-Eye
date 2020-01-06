@@ -1618,6 +1618,8 @@ where ce.Visite=:cid";
 			'regul'=>$regul, 'dons'=>$dons, 'visites'=>$visites, 'montantVisite'=>$montantVisite, 'totalVisite'=>$totalVisite,
 			'urlweb'=>unserialize($_SESSION['urlweb']), 'sql'=>$sss);		
 	}
+	
+	
 
 	function GetCours($mode, $obj) {
 		$annee = Cadref::$Annee;
