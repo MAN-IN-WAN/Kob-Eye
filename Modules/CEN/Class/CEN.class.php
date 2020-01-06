@@ -17,6 +17,9 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'tlachia-anal':
+				return Codex::GetAnal($args);
+				
 			case 'codex':
 				return Codex::GetCodex($args);
 				
@@ -108,6 +111,5 @@ class CEN extends Module {
 		}
 	}
 
-	
 	
 }

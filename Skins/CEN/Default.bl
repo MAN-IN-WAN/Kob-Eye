@@ -1,11 +1,11 @@
 [HEADER]
 <base href="/" />
 
-
 <meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
 <meta name="reply-to" content="info@sup-infor.com"/>
 <meta name="owner" content="SUP-INFOR"/>
+<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
@@ -16,10 +16,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="stylesheet" href="styles.283c133eb92c11e4675c.css"></head>
+<link rel="stylesheet" href="styles.dc46ce05a94cdcc50f01.css"></head>
 
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime.5dd0e797b1ae5211098d.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.d1ff2d2de57ace3fd9dd.js" defer></script></body>
-
+<script src="runtime.0c20450ab5457731f385.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.3b816319784c7a513f70.js" defer></script></body>

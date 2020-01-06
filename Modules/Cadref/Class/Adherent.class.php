@@ -1438,7 +1438,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
 if(c.DateReduction2 is not null and c.DateReduction2<=UNIX_TIMESTAMP(),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=UNIX_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+if(c.DateReduction1 is not null and c.DateReduction1<=UNIX_TIMESTAMP(),c.Reduction1,0)) as Reduction,
 0 as Soutien,0 as Attente,0 as Supprime,0 as Inscrit,c.Places,if(c.Places-c.Inscrits-c.Attentes<=0,0,c.Places-c.Inscrits-c.Attentes) as Disponibles,
 c.AccesWeb as cWeb,n.AccesWeb as nWeb,0 as Attachements, 0 as InsId
 from `##_Cadref-Classe` c
@@ -1449,7 +1449,7 @@ inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
 where c.CodeClasse in ($in) and c.Annee='$annee' 
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		$montant = 0;
 		foreach($pdo as $r) {
@@ -1616,7 +1616,7 @@ where ce.Visite=:cid";
 
 		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'solde'=>$solde, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 
 			'regul'=>$regul, 'dons'=>$dons, 'visites'=>$visites, 'montantVisite'=>$montantVisite, 'totalVisite'=>$totalVisite,
-			'urlweb'=>unserialize($_SESSION['urlweb']));		
+			'urlweb'=>unserialize($_SESSION['urlweb']), 'sql'=>$sss);		
 	}
 
 	function GetCours($mode, $obj) {
@@ -1662,7 +1662,7 @@ j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
 if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,
-if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction2,0)) as Reduction,
+if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(CURRENT_TIMESTAMP()),c.Reduction1,0)) as Reduction,
 0 as Soutien,(n.AccesWeb and c.AccesWeb) as Web
 from `##_Cadref-Discipline` d0
 inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
