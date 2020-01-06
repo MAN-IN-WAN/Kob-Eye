@@ -401,27 +401,33 @@ class Host extends genericClass
         //execution du ldap2service
         $servs = $this->getKEServer();
         foreach ($servs as $serv) {
-            $act = $task->createActivity('Configuration de l\'hébergement '.$this->Nom.' sur le serveur '.$serv->Nom);
-            $serv->callLdap2Service();
-            //création du fichier .bashrc
-            $f = '# .bashrc
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
-fi
-
-PS1=\'\[\033[32m\]\u\[\e[1;33m\] PROD :\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ \'
-
-source ~/.bash_git
-# User specific aliases and functions
-alias php="/usr/local/php-'.$this->PHPVersion.'/bin/php"
-export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
-';
-            $serv->putFileContent('/home/'.$this->NomLDAP.'/.bashrc',$f);
-            $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
-            $act->Terminate(true);
-
+            try {
+                $act = $task->createActivity('Configuration de l\'hébergement ' . $this->Nom . ' sur le serveur ' . $serv->Nom);
+                $act->addDetails('execution ldap2service');
+                $serv->callLdap2Service($task);
+                //création du fichier .bashrc
+                $act->addDetails('creation bashrc');
+                $f = '# .bashrc
+    
+    # Source global definitions
+    if [ -f /etc/bashrc ]; then
+            . /etc/bashrc
+    fi
+    
+    PS1=\'\[\033[32m\]\u\[\e[1;33m\] PROD :\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ \'
+    
+    source ~/.bash_git
+    # User specific aliases and functions
+    alias php="/usr/local/php-' . $this->PHPVersion . '/bin/php"
+    export PATH=/usr/local/php-' . $this->PHPVersion . '/bin:$PATH
+    ';
+                $serv->putFileContent('/home/' . $this->NomLDAP . '/.bashrc', $f);
+                $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+                $act->Terminate(true);
+            }catch (Exception $e){
+                $act->addDetails(print_r($e).'---->'.$e->getMessage());
+                $act->Terminate(false);
+            }
         }
         //affectation des clefs ssh
         $this->sshKeysCheck();
@@ -438,7 +444,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $pxs = Sys::getData('Parc','Server/Proxy=1',0,100,'','','','',true);
         foreach ($pxs as $px){
             $act = $task->createActivity('Appel des configuration proxys '.$px->Nom);
-            $px->callLdap2Service();
+            $px->callLdap2Service($task);
             $act->Terminate();
         }
         return true;

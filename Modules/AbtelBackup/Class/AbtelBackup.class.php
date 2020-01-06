@@ -266,7 +266,7 @@ class AbtelBackup extends Module{
         preg_match_all('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
         if (sizeof($out[1])>2&&$last)
             return $out[1][1];
-        else $out[1][0];
+        else return $out[1][0];
     }
     static function getFileSize($path){
         $output = AbtelBackup::localExec('/usr/bin/ls -l "'.$path.'"');

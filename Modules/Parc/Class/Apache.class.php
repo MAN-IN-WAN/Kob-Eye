@@ -103,7 +103,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
-        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/TaskCode=SSL_RENEW&Termine=0&tmsEdit>'.(time()-86400))){
+        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/TaskCode=SSL_RENEW&Termine=0&Erreur=0&tmsEdit>'.(time()-86400))){
             $this->addError(array("Message"=>"Il y a déjà une tache à venir pour l'activation SSL."));
             return false;
         }
@@ -818,6 +818,8 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
             return false;
         }
+        Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, true);
+
         if ($ip){
             $act = $task->createActivity('Recherche du proxy pour l\'ip '.$ip);
 
@@ -952,6 +954,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             $task->Save();
             return false;
         }
+        Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, true);
         $act->addDetails($out);
         $act->Terminate(true);
         if (preg_match('#/etc/letsencrypt/live/(.*?)/fullchain.pem#',$out,$path)) {
@@ -1080,4 +1083,14 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
         Server::emptyProxyCacheTask($this,$infra);
         return true;
     }
+    /**
+     * emptyPageSpeedCacheTask
+     * Supprime le cache pagespeed des serveurs proxy pour cet hote virtuel
+     */
+    public function emptyPageSpeedCacheTask(){
+        $infra=$this->getInfra();
+        Server::emptyPageSpeedCacheTask($this,$infra);
+        return true;
+    }
+
 }
