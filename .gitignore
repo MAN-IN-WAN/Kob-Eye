@@ -11,3 +11,4 @@ Modules/Parc/Parc.conf
 /Skins/AngularAdmin/assets/vendors/bootstrap/dist/jboots.zip
 /Skins/AngularAdmin/img/nimesmetropole.png
 www/*
+.htaccess
