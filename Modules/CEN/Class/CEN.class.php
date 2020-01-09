@@ -111,5 +111,13 @@ class CEN extends Module {
 		}
 	}
 
+//	public static function read_file($f) {
+//		$t = '';
+//		if($fh = fopen($f, "rb")) {
+//			$t = fread($fh, filesize($f));
+//			fclose($fh);
+//		}
+//		return($t);
+//	}
 	
 }

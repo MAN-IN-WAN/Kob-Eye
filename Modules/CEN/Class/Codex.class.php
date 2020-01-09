@@ -58,7 +58,8 @@ class Codex extends genericClass {
 	}
 	
 	private static function getGlyphe($tbl, $whr) {
-		$sql = "select CodexId,Id,Cote,Lecture,Type from `##_CEN-$tbl` $whr";
+		$ty = $tbl == 'Glyphe' ? ',Type' : '';
+		$sql = "select CodexId,Id,Cote,Lecture $ty from `##_CEN-$tbl` $whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -308,13 +309,14 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 		$txt = '';
 		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
 		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
-		$txt = str_replace("\n", '<br />', str_replace("\r", '', utf8_encode($txt)));
+		$txt = utf8_encode(nl2br($txt));
 		return array('text'=>$txt, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
 	
 	static public function GetAnal($args) {
 		$lang = $args['lang'];
 		$word = strtolower($args['word']);
+		if($args['norma']) $word = GDN::normalize($word);
 		$id = $args['id'];
 		$cid = intval($id) ? "CodexId=$id and" : "";
 		
@@ -322,7 +324,7 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 		$sql = "select Trans from `##_CEN-Mot` where $cid (Paleo='$word' or Trans='$word') limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo->rowCount()) return array('success'=>false);		
+		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
 		foreach($pdo as $p) $word = $p['Trans'];
 		
 		$tran = self::getTrans($cid, $word, $lang);
@@ -330,7 +332,7 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 		$sql = "select Decomposition,Racine1,Racine2,Racine3,Racine4,Racine5 from `##_CEN-Racine` where $cid Mot2='$word' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo->rowCount()) return array('success'=>false);		
+		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
 		$rs = array();
 		foreach($pdo as $p) {
 			$anal = $p['Decomposition'];
