@@ -118,8 +118,16 @@ class SambaJob extends Job {
 
         //calcul des progress span
         $pSpan = array();
-        for($n =0; $n < count($this->pStarts);$n++){
-            $pSpan[] = ($this->pStarts[$n+1] - $this->pStarts[$n])/count($sss);
+        if (empty($sss)){
+            throw new Exception('Pas de partage séléctionné',4);
+        }
+
+        try {
+            for($n =0; $n < count($this->pStarts);$n++){
+                $pSpan[] = ($this->pStarts[$n+1] - $this->pStarts[$n])/count($sss);
+            }
+        }catch (Exception $e){
+
         }
 
         foreach ($sss as $ss){
@@ -172,6 +180,9 @@ class SambaJob extends Job {
         }
         //opération terminée
         $this->resetState();
+
+        ///tache de retention
+        $this->createRetentionTask();
         return true;
     }
 
@@ -184,7 +195,7 @@ class SambaJob extends Job {
         parent::Save();
     }
     /**
-     * Nettoyage de l'esx et du stor elocal
+     * Nettoyage de l'esx et du store local
      */
     private function initJob($ss,$dev,$act) {
         Klog::l('DEBUG Test INIT JOB');
@@ -264,5 +275,80 @@ class SambaJob extends Job {
         $this->Progression = 0;
         parent::Save();
     }
+
+    /**
+     * rotate
+     * Rotation des backups
+     */
+    public function rotate($task) {
+        $act = $task->createActivity(' > Demarrage de la rotation du Job Samba : '.$this->Titre.' ('.$this->Id.')','Info');
+        $act->Terminate();
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+
+        //pour chaque vm
+        $vms = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaDevice');
+
+        foreach ($vms as $v){
+            $act = $task->createActivity(' > Rotation du partage Samba : '.$v->Titre.' ('.$v->Id.')','Info');
+            $act->Terminate();
+//            $esx = $v->getOneParent('SambaDevice');
+            $borg = $v->getOneParent('BorgRepo');
+            try {
+                $act->addDetails($v->Titre.' Redéfinition des droits '.$borg->Path);
+                //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Suppression du cache eventuellement corrompu
+                AbtelBackup::localExec('sudo chown -R backup:backup '.$borg->Path.''); //On s'assure que les fichiers borg ne soient pas en root
+                $act->addDetails($v->Titre.' Suppression du borg lock '.$borg->Path);
+                AbtelBackup::localExec('borg break-lock '.$borg->Path); //Suppression des locks borg
+
+                //Recup taille pour graphique/progression
+                $v->BackupSize = AbtelBackup::getSize($borg->Path);
+                $v->Save();
+                $prs = Sys::getData('AbtelBackup','SambaDevice/'.$v->Id.'/RestorePoint/tmsCreate<'.(time()-(86400*intval($this->Retention))));
+                foreach ($prs as $pr){
+                    $pr->Delete();
+                }
+
+                //rotation du dépot pour nettoyer
+                #TODO désactiver à terme ...
+                $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg prune -v --list --keep-within=".$this->Retention."d  ".$borg->Path."", $act);
+                $act->addDetails($det);
+
+                $act->setProgression(100);
+                $act = $task->createActivity(' > Rotation Terminée : suppression de '.sizeof($prs).' version(s)','Info');
+                $act->Terminate(true);
+            }catch (Exception $e){
+                if(!$act) $act = $task->createActivity($v->Titre.' > Exception: Step '.$this->Step,'Info');
+                $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
+                $act->Terminate(false);
+                //opération terminée
+                $this->Running = false;
+                $this->Errors = true;
+                parent::Save();
+                continue;
+            }
+        }
+        $this->saveStats($task);
+        return true;
+    }
+
+    /**
+     * createRetentionTask
+     * Création de la tache de retention
+     */
+    public function createRetentionTask() {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Rotation job machine virtuelle :' . $this->Titre.'. rotation du '.date('d/m/Y H:i:s');
+        $task->TaskModule = 'AbtelBackup';
+        $task->TaskObject = 'SambaJob';
+        $task->TaskType = 'rotate';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'rotate';
+        $task->addParent($this);
+        $task->Save();
+        return array('task'=>$task);
+    }
+
+
 
 }
