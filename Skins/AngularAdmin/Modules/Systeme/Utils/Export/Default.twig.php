@@ -27,4 +27,3 @@ foreach ($vars['rows'] as $k=>$v){
 }
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);
 $vars['lb'] = "\r\n";
-?>

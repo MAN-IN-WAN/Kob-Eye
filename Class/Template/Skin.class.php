@@ -179,6 +179,7 @@ class Skin extends Root{
 				$p = preg_replace("#//.*$#","",$p);
 				$p = preg_replace("#\r\n#","",$p);
 				$p = explode("|",$p);
+//				print_r($p);
 				if(sizeof($p)>1) $data = str_replace($p[0],trim($p[1]),$data);
 			}
 		}
