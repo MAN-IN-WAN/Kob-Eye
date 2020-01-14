@@ -20,7 +20,7 @@
 						<input type="text" id="search{{ identifier }}1" class="form-control" name="{{ identifier }}query1" ng-model="{{ identifier }}.filter1" placeholder="Recherche..." >
 					</div>
 					<div class="col-md-3" style="padding-left:0">
-						<select id="ClasseAnnee" class="form-control" ng-init="{{ identifier }}.ClasseAnnee='{{ Annee }}';classeAnneeChange()" ng-model="{{ identifier }}.ClasseAnnee" ng-change="classeAnneeChange()">
+						<select id="ClasseAnnee" class="form-control" ng-init="ListClasseAnnee='{{ Annee }}';classeAnneeChange()" ng-model="ListClasseAnnee" ng-change="classeAnneeChange()">
 							<option value=""></option>
 							{% for v,c in annees %}
 								<option value="{{ v }}" {% if c %}selected="true"{% endif %}>{{ v }}</option>

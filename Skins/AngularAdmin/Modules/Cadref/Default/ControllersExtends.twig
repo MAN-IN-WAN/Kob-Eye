@@ -311,13 +311,9 @@
 
 		
 		{% if objecttype == 'Classe' %}		
-console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			
 		$scope.ClassePage = CadrefClasseStore.getCurrentPage();
 		if(CadrefClasseStore.ListClasseAnnee == undefined) CadrefClasseStore.ListClasseAnnee = '{{ Annee }}';
-		$scope.ClasseAnnee = CadrefClasseStore.ListClasseAnnee;
-		CadrefClasseStore.setGlobalFilter('Annee='+$scope.ClasseAnnee,'default');
-		if(CadrefClasseStore.Filter1 == undefined) CadrefClasseStore.Filter1 = '';
-		if(CadrefClasseStore.Filter2 == undefined) CadrefClasseStore.Filter2 = '';
 
 		
 		$(document).ready(function(){
@@ -327,35 +323,43 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				return;
 			}
 			CadrefClasseStore.ListClasseReady = false;
+
+			$scope.ListClasseAnnee = CadrefClasseStore.ListClasseAnnee;
+			CadrefClasseStore.setGlobalFilter('Annee='+$scope.ListClasseAnnee,'default');
+			if(CadrefClasseStore.Filter1 == undefined) CadrefClasseStore.Filter1 = '';
+			if(CadrefClasseStore.Filter2 == undefined) CadrefClasseStore.Filter2 = '';
 			
-			// attend que le getData par defaut soit terminé pour lancer un getData sur la bonne page 
+			$('#searchCadrefClasse2').focus();
+			
+{#			// attend que le getData par defaut soit terminé pour lancer un getData sur la bonne page 
 			var busyWatch = $scope.$watch('CadrefClasseStore.busy.default', function() {
 				var getObj = $interval(function() {
 					if(CadrefClasseStore.busy.default == false) {
 						$interval.cancel(getObj);
 						busyWatch();
 						$timeout(function() {
-							$scope.classeAnneeChange(false);
+							//$scope.classeAnneeChange(false);
 							$('#searchCadrefClasse2').focus();
 						},100);
 					}
 				},100,100);
-			});
+			});#}
 		});
 
-		$scope.classeAnneeChange = function(mode) {
+		$scope.classeAnneeChange = function() {
+console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
-			if(mode == undefined) mode = true;
+			//if(mode == undefined) mode = true;
 			
 			var f = '';
 			if(CadrefClasseStore.Filter2 != '') f = 'CodeClasse~'+CadrefClasseStore.Filter2;
 			else if(CadrefClasseStore.Filter1 != '') f = CadrefClasseStore.Filter1;
-			f += (f != '' ? '&' : '')+'Annee='+$scope.ClasseAnnee;
-			
-			var p = mode ? 1 : $scope.ClassePage;
+			if($scope.ListClasseAnnee) f += (f != '' ? '&' : '')+'Annee='+$scope.ListClasseAnnee;
+
+			var p = 1; //mode ? 1 : $scope.ClassePage;
             CadrefClasseStore.setGlobalFilter(f,'default');
             CadrefClasseStore.getData(p,'default');
-			CadrefClasseStore.ListClasseAnnee = $scope.ClasseAnnee;
+			CadrefClasseStore.ListClasseAnnee = $scope.ListClasseAnnee;
 		}
 		
 		
@@ -376,7 +380,7 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 						CadrefClasseingoreFirst--;
 						return;
 					}
-					
+										
 					if($scope.CadrefClasse.filter1 != CadrefClasseStore.Filter1) {
 						if($scope.CadrefClasse.filter2 != '') {
 							CadrefClasseignoreNext = 2;
@@ -388,7 +392,8 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 							$timeout.cancel(CadrefClasselasttimeout);
 							CadrefClasselasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1+'&Annee='+$scope.ClasseAnnee,'default');
+						var ann = $scope.ListClasseAnnee ? '&Annee='+$scope.ListClasseAnnee : '';
+						CadrefClasseStore.setGlobalFilter($scope.CadrefClasse.filter1+ann,'default');
 
 						CadrefClasselasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
@@ -400,6 +405,7 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 						CadrefClasseignoreNext = 0;
 						return;
 					}
+					
 					if($scope.CadrefClasse.filter2 != CadrefClasseStore.filter2) {
 						if($scope.CadrefClasse.filter1 != '') {
 							CadrefClasseignoreNext = 1;
@@ -411,7 +417,8 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 							$timeout.cancel(CadrefClasselasttimeout);
 							CadrefClasselasttimeout = false;
 						}
-						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2+'&Annee='+$scope.ClasseAnnee,'default');
+						var ann = $scope.ListClasseAnnee ? '&Annee='+$scope.ListClasseAnnee : '';
+						CadrefClasseStore.setGlobalFilter('CodeClasse~'+$scope.CadrefClasse.filter2+ann,'default');
 						CadrefClasselasttimeout = $timeout(function () {
 							CadrefClasseStore.getData(1,'default');
 						},250);
@@ -2028,6 +2035,8 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	
 		
 		{% if objecttype == 'Enseignant' %}
+			
+		// creation utilisateur 	
 		$scope.enseignantUser = function() {
 			swal({
 				title: "Création utilisateur Web",
@@ -2052,21 +2061,24 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			});
 		}
 		
-		
-		//$scope.CadrefClasse.ClasseAnnee = '{{ Annee }}';
-		$scope.classeAnneeChange = function(mode) {
+		// filtre sur la liste de classe
+		$scope.ListClasseAnnee = '{{ Annee }}';
+		$scope.classeAnneeChange = function() {
+			$scope.ListClasseAnnee = angular.element($('#ClasseAnnee'))[0].value;
+//console.log('classeAnneeChange ENSEIGNANT+++++++++++++++++++++++',$scope,$scope.ListClasseAnnee)
+
 			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
-			if(mode == undefined) mode = true;
+			//if(mode == undefined) mode = true;
 			
 			var f = '';
 			if(CadrefClasseStore.Filter2 != '' && CadrefClasseStore.Filter2 != undefined) f = 'CodeClasse~'+CadrefClasseStore.Filter2;
 			else if(CadrefClasseStore.Filter1 != '' && CadrefClasseStore.Filter1 != undefined) f = CadrefClasseStore.Filter1;
-			f += (f != '' ? '&' : '')+'Annee='+$scope.CadrefClasse.ClasseAnnee;
+			if($scope.ListClasseAnnee) f += (f != '' ? '&' : '')+'Annee='+$scope.ListClasseAnnee;
 			
-			var p = mode ? 1 : $scope.ClassePage;
+			var p = 1; //mode ? 1 : $scope.ClassePage;
             CadrefClasseStore.setGlobalFilter(f,'children');
             CadrefClasseStore.getData(p,'children');
-			CadrefClasseStore.ListClasseAnnee = $scope.CadrefClasse.ClasseAnnee;
+			CadrefClasseStore.ListClasseAnnee = $scope.ListClasseAnnee;
 		}
 		
 

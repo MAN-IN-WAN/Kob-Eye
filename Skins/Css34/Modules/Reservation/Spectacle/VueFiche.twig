@@ -46,7 +46,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="e in spectacle.events">
-                            <td>{{ e.DateDebut }}</td>
+                            <td>{{ e.DateDebut | Date}}</td>
                             <td>{{ e.Salle.Nom }}</td>
                             <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
                             <td>

@@ -98,11 +98,10 @@ order by  $sort";
 			$com = preg_replace('/ \$/', '</i>', $com, 1);
 			$pos = strpos($com, '$ ');
 		}
-klog::l(">>>>>>>>>>>>>:$com:",$o);
 		return array('text'=>$com);				
 	}
 	
-	private static function normalize($word) {
+	static public function normalize($word) {
 		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
 			
 		$word = ' '.strtolower(trim($word)).' ';

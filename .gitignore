@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 Home/*
 !Home/no-image.png
-Log/Systeme.log
+Log/*
 Class/Utils/Utils.extend.php
 Conf/General.conf
 .idea/*
@@ -10,3 +10,5 @@ Modules/Parc/Parc.conf
 /nbproject/private/
 /Skins/AngularAdmin/assets/vendors/bootstrap/dist/jboots.zip
 /Skins/AngularAdmin/img/nimesmetropole.png
+www/*
+.htaccess

@@ -51,14 +51,15 @@ class Codex extends genericClass {
 				return array('glyphes'=>$gly, 'personnes'=>$per);
 				
 			case 'element':
-				$whr = "where CodexId=$id and Cote='$ext' order by Theme";
+				$whr = "where e.CodexId=$id and e.Cote='$ext' order by e.Theme";
 				$dic = self::getTlaElement($whr);
 				return array('elements'=>$dic);
 		}
 	}
 	
 	private static function getGlyphe($tbl, $whr) {
-		$sql = "select CodexId,Id,Cote,Lecture,Type from `##_CEN-$tbl` $whr";
+		$ty = $tbl == 'Glyphe' ? ',Type' : '';
+		$sql = "select CodexId,Id,Cote,Lecture $ty from `##_CEN-$tbl` $whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -70,13 +71,17 @@ class Codex extends genericClass {
 	}
 	
 	static function getTlaElement($whr) {
-		$sql = "select distinct CodexId,Id,Cote,Theme,Element from `##_CEN-Element` $whr";
+		$sql = "
+select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2
+from `##_CEN-Element` e
+left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element
+$whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
-				'element'=>trim($d['Element']));
+				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2']);
 		}
 		return $dic;
 	}	
@@ -178,8 +183,13 @@ union select distinct Theme as word from `##_CEN-PValeur` where $cdx Theme $mode
 
 			case 'glyphe-elem':
 				$el = $args['element'];
+				if($cdx) {
+					$whr = "where CodexId in ($cdx) and Element like '% $el,%' order by CodexId,Cote";
+				}
+				else {
 				$id = $args['id'];
 				$whr = "where CodexId=$id and Element like '% $el,%' order by CodexId,Cote";
+				}
 				$gly = self::getGlyphe('Glyphe', $whr);
 				$per = self::getGlyphe('Personnage', $whr);
 				return array('glyphes'=>$gly, 'personnes'=>$per);
@@ -197,7 +207,20 @@ union all select Citation,Source,Pages from `##_CEN-PCitation` where CodexId=$id
 				$cit = array();
 				foreach($pdo as $p)	$cit[] = array('citation'=>$p['Citation'],'source'=>$p['Source'],'page'=>$p['Pages']);
 
-				$whr = "where CodexId=$id and Cote='$cote' order by Theme";
+				$sql = "
+select ValSupl from `##_CEN-ValSupl` where CodexId=$id and Cote='$cote'
+union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
+";
+				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+				$valSup = '';
+				foreach($pdo as $p)	{
+					if($valSup) $valSup .=', ';
+					$valSup .= $p['ValSupl'];
+				}
+
+
+				$whr = "where e.CodexId=$id and e.Cote='$cote' order by e.Theme";
 				$elm = self::getTlaElement($whr);
 				foreach($elm as &$l) {
 					$c = $l['cote'];
@@ -216,23 +239,23 @@ union select Valeur from `##_CEN-PValeur` where CodexId=$id and Cote='$c' and Th
 					$l['valeur'] = $val;
 				}
 				
-				return array('citations'=>$cit, 'elements'=>$elm);
+				return array('citations'=>$cit, 'elements'=>$elm, 'valSup'=>$valSup);
 				
 			case 'element':
-				$grp = $args['elements'] == 'true' ? '' : 'group by CodexId';
-				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$whr = "where $cdx (Element $mode or Cote $mode or Theme $mode) $grp order by CodexId,Cote";
+				$grp = $args['elements'] == 'true' ? '' : 'group by e.CodexId';
+				if($cdx) $cdx = "e.CodexId in ($cdx) and";
+				$whr = "where $cdx (e.Element $mode or e.Cote $mode or e.Theme $mode) $grp order by e.CodexId,e.Cote";
 				$dic = self::getTlaElement($whr);
 				return array('elements'=>$dic);
 
 			case 'element-detail':
 				$lang = $args['lang'];
-				$elem = $args['element'];
+//				$elem = $args['element'];
 				$them = $args['theme'];
 				$id = $args['id'];
 				$sql = "
-select Valeur from `##_CEN-Valeur` where CodexId=$id and Cote='$cote' and Theme='$them'
-union select Valeur from `##_CEN-PValeur` where CodexId=$id and Cote='$cote' and Theme='$them'
+select distinct Valeur from `##_CEN-Valeur` where CodexId=$id and Theme='$them'
+union select distinct Valeur from `##_CEN-PValeur` where CodexId=$id and Theme='$them'
 ";
 				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -241,7 +264,7 @@ union select Valeur from `##_CEN-PValeur` where CodexId=$id and Cote='$cote' and
 					if($val) $val .=', ';
 					$val .= $p['Valeur'];
 				}
-				return array('valeur'=>$val);
+				return array('valeur'=>$val,'sql'=>$sql);
 
 			case 'valeur':
 				if($cdx) $cdx = "CodexId in ($cdx) and";
@@ -280,12 +303,79 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 					case 'credit': $pres = 'credits'; break;
 					case 'real': $pres = 'txt_reel'; $dir = '/Home/2/CEN/Codex/Aide/'; $lang = $lana; $les = '.aes'; break;
 				}
+				break;
+			default: $pres = str_replace('.', '_', strtolower($args['text'])); break;
 		}
 		$txt = '';
 		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
 		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
-		$txt = str_replace("\n", '<br />', str_replace("\r", '', utf8_encode($txt)));
+		$txt = utf8_encode(nl2br($txt));
 		return array('text'=>$txt, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
+	
+	static public function GetAnal($args) {
+		$lang = $args['lang'];
+		$word = strtolower($args['word']);
+		if($args['norma']) $word = GDN::normalize($word);
+		$id = $args['id'];
+		$cid = intval($id) ? "CodexId=$id and" : "";
+		
+		
+		$sql = "select Trans from `##_CEN-Mot` where $cid (Paleo='$word' or Trans='$word') limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
+		foreach($pdo as $p) $word = $p['Trans'];
+		
+		$tran = self::getTrans($cid, $word, $lang);
+		
+		$sql = "select Decomposition,Racine1,Racine2,Racine3,Racine4,Racine5 from `##_CEN-Racine` where $cid Mot2='$word' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
+		$rs = array();
+		foreach($pdo as $p) {
+			$anal = $p['Decomposition'];
+			for($i = 1; $i < 6; $i++) {
+				$t = 'Racine'.$i;
+				$r = trim($p[$t]);
+				if($r) $rs[] = ['root'=>$r, 'trans'=>self::getTrans($cid, $r, $lang)];
+			}
+		}
+
+		$cx = Sys::getOneData('CEN', 'Codex/'.$id);
+		$dir = self::getDir($d->userCreate, $d->Repertoire);
+		
+
+		return array('success'=>true, 'title'=>$cx->Titre, 'nahuatl'=>$word, 'trans'=>$tran, 'anal'=>$anal, 'roots'=>$rs);
+	}
+	
+	static private function getTrans($cid, $word, $lang) {
+		$sql = "select Sens,Sens2,Sens3 from `##_CEN-Sens` where $cid Element='$word' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+//klog::l($sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(!$pdo->rowCount()) return '';
+		
+		switch($lang) {
+			case 'es': $t = 'Sens'; break;
+			case 'fr': $t = 'Sens2'; break;
+			case 'en': $t = 'Sens3'; break;
+		}
+		foreach($pdo as $p) return $p[$t];
+	}
+	
+	static private function getPicts($cid, $word) {
+		$sql = "
+select Cote from `kob-CEN-Glyphe` where $cid Lecture='xolotl' group by CodexId
+union select Cote from `kob-CEN-Personnage` where $cid Lecture='xolotl' group by CodexId		
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if(!$pdo->rowCount()) return '';
+		
+	}
+	
+	
 	
 }
