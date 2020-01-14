@@ -2065,7 +2065,7 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 		$scope.ListClasseAnnee = '{{ Annee }}';
 		$scope.classeAnneeChange = function() {
 			$scope.ListClasseAnnee = angular.element($('#ClasseAnnee'))[0].value;
-console.log('classeAnneeChange ENSEIGNANT+++++++++++++++++++++++',$scope.ListClasseAnnee)
+//console.log('classeAnneeChange ENSEIGNANT+++++++++++++++++++++++',$scope,$scope.ListClasseAnnee)
 
 			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
 			//if(mode == undefined) mode = true;
@@ -2074,7 +2074,6 @@ console.log('classeAnneeChange ENSEIGNANT+++++++++++++++++++++++',$scope.ListCla
 			if(CadrefClasseStore.Filter2 != '' && CadrefClasseStore.Filter2 != undefined) f = 'CodeClasse~'+CadrefClasseStore.Filter2;
 			else if(CadrefClasseStore.Filter1 != '' && CadrefClasseStore.Filter1 != undefined) f = CadrefClasseStore.Filter1;
 			if($scope.ListClasseAnnee) f += (f != '' ? '&' : '')+'Annee='+$scope.ListClasseAnnee;
-console.log('FILTER '+f);
 			
 			var p = 1; //mode ? 1 : $scope.ClassePage;
             CadrefClasseStore.setGlobalFilter(f,'children');

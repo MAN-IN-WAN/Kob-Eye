@@ -37,6 +37,9 @@ class Adherent extends genericClass {
 	}
 	
 	public function GetScanCount($annee) {
+		$dd = strtotime('dmY','0108'.$annee);
+		$df = strtotime('dmY','3107'.($annee+1));
+		
 		$num = $this->Numero;
 		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>$num);
 		$ch = curl_init("https://scan.cadref.com/api/member/");
@@ -56,13 +59,14 @@ class Adherent extends genericClass {
 		curl_close($ch);
 		
 		if($ret == '') return array('scan'=>0);
-		
 		$o = json_decode($ret);
 		if($o->error == 'No result') return array('scan'=>0);
 		$n = 0;
 		if(isset($o->response)) {
 			foreach($o->response->aResult as $r) {
-				if(substr($r->DTY_DT_CREATION,6,4) == $annee) $n++;
+				//if(substr($r->DTY_DT_CREATION,6,4) == $annee) $n++;
+				$dc = strtotime('d/m/Y', $r->DTY_DT_CREATION);
+				if($dc >= $dd && $dc <= $df) $n++;
 			}
 		}
 		return array('scan'=>$n);
