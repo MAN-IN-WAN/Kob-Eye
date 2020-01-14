@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-10" id="spectacle">
                 {% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item,template_spectacle_item %}
-                <div class="spectacles-list spectacles-list-reset">
+                <div class="spectacles-list spectacles-list-reset toto">
                     {{ template_spectacle_item() }}
                 </div>
             </div>
@@ -23,15 +23,19 @@
                 spectacles: [],
                 spectacle: {},
                 date: '',
+                appDate : '',
                 search: '',
                 dirty: 0,
                 first: true,
                 render: true,
                 busy: false,
+                dpfr: vdp_translation_fr.js,
+                timezone:''
             };
         },
         components: {
             /*spectacleList*/
+            vuejsDatepicker
         },
         methods: {
             onSubmit: function (event) {
@@ -97,6 +101,10 @@
             console.log('APP VUE > RESET CSS');
             //reset css
             //$('.spectacles-list').addClass('spectacles-list-reset');
+        },created: function(){
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            this.genre = '';
+            this.getData();
         },
         watch: {
             spectacles: function (val) {
@@ -115,6 +123,27 @@
                         }, 100);
                     });
                 }
+            },
+            date: function(val){
+                if(this.dateOrigin == 'appDate') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                //console.log(val);
+                this.appDate = new Date(val*1000);
+                this.dateOrigin = 'date';
+                this.getData();
+            },
+            appDate: function(val){
+                console.log(val);
+                if(this.dateOrigin == 'date') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                console.log(val);
+                this.date = val.getTime() / 1000
+                this.dateOrigin = 'appDate';
+                this.getData();
             }
         }
     };

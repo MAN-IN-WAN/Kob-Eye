@@ -61,7 +61,7 @@
 		<PROPERTIES type="date" fiche="1" form="1" Description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="Adulte,Adulte et adolescent,Enfant,Tout public" searchOrder="5" Description="Type de public">TypePublic</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" searchOrder="6" Description="Places disponibles">Disponibilite</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de Fin" Adminonly="1" auto="1" >DateFin</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Durée en minutes">Duree</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
