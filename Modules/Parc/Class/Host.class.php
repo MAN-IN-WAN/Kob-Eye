@@ -423,6 +423,7 @@ class Host extends genericClass
     ';
                 $serv->putFileContent('/home/' . $this->NomLDAP . '/.bashrc', $f);
                 $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+                $serv->remoteExec('chmod -R 705 /home/' . $this->NomLDAP);
                 $act->Terminate(true);
             }catch (Exception $e){
                 $act->addDetails(print_r($e).'---->'.$e->getMessage());
