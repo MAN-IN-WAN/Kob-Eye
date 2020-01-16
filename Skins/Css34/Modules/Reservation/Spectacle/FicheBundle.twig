@@ -45,7 +45,7 @@
             <tbody>
                 {% for e in evenements %}
                     <tr>
-                        <td>{{ e.DateDebut |date('d/m/Y H:i', timezone="Europe/Paris") }}</td>
+                        <td>{{ e.DateDebut  | date('d/m/Y H:i', timezone="Europe/Paris")  }}</td>
                         <td>{{ e.Salle.Nom }}</td>
                         <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
                         <td>{{ structure.Tel }}</td>

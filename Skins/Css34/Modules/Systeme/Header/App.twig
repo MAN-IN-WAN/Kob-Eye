@@ -7,11 +7,21 @@ const router = new VueRouter({
         {path: '/sorties/:url', component: window.httpVueLoader('/Reservation/Spectacle/VueFiche.vue')},
         {%  for menu in User.Menus %}
             {% if menu.Url!='' and menu.Url!='sorties' %}
-            {path: '/{{ menu.Url }}', component: window.httpVueLoader('/{{ menu.Alias }}/VuePage.vue')},
+            {path: '/{{ menu.Url }}', component: window.httpVueLoader('/{{ menu.Alias }}/VuePage.vue'+'?tms='+Date.now())},
             {% endif %}
         {% endfor %}
     ]
 });
+
+//Declaration filtre
+Vue.filter('date', function (value) {
+    var vals = value.split('/');
+    var tmpDate = vals[2]+'-'+vals[1]+'-'+vals[0];
+    var date = new Date(tmpDate);
+    //console.error( date );
+    return value;
+});
+
 window.spec = new Vue({
         el: '#app',
         data: {
@@ -19,15 +29,17 @@ window.spec = new Vue({
         spectacles: [],
         spectacle: false,
         date: '',
+        appDate : '',
         search: '',
         dirty: 0,
         render: true,
         first: true,
-        currentRoute: window.location.pathname
+        currentRoute: window.location.pathname,
     },
     router: router,
     components: {
-        headerMenu: window.httpVueLoader('/Systeme/Header/VueMenu.vue')
+        headerMenu: window.httpVueLoader('/Systeme/Header/VueMenu.vue'),
+        vuejsDatepicker
     }
 });
 

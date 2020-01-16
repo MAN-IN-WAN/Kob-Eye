@@ -1,25 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+[HEADER]
+<base href="/" />
 
-<head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
+<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<meta name="robots" content="all"/>
+<meta name="reply-to" content="info@sup-infor.com"/>
+<meta name="owner" content="SUP-INFOR"/>
+<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
 
-  <base href="/" />
+<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
 
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
+<link rel="icon" type="image/png" href="assets/icon/icon.png" />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="stylesheet" href="styles.2e7e88d14acc156b93d3.css"></head>
+<link rel="stylesheet" href="styles.dc46ce05a94cdcc50f01.css"></head>
 
-<body>
+[/HEADER]
+
   <app-root></app-root>
-<script src="runtime.a0e2eb52229ec8b26cac.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="main.a180fbbcdaa0161e12f3.js" defer></script></body>
-
-</html>
+<script src="runtime.bafe019cd6cb52192f11.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.9bc6094971a77548f4b0.js" defer></script></body>

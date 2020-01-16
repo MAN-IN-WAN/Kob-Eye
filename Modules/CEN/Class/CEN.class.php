@@ -17,8 +17,17 @@ class CEN extends Module {
 	// liste d'entrées du GDN 
 	public static function GetGDN($args) {	
 		switch($args['mode']) {
+			case 'tlachia-anal':
+				return Codex::GetAnal($args);
+				
 			case 'codex':
 				return Codex::GetCodex($args);
+				
+			case 'tlachia-list':
+				return Codex::GetList($args);
+				
+			case 'tlachia':
+				return Codex::GetTlachia($args);
 				
 			case 'genor':
 				return Temoa::GetGenor($args);
@@ -51,12 +60,32 @@ class CEN extends Module {
 				return GDN::GetGDN($args);
 				
 			case 'pres':
+				$id = $args['id'];
+				$lang = $args['lang'];
+				$lang = strtoupper(substr($lang, 0, 1)).substr($lang, 1, 1);
+				
 				switch($args['pres']) {
-					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$args['id']);	break;
-					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	break;
+					case 'tlachia':
+						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
+						return $tla->GetDescr($args);
+						
+					case 'pres':
+						$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['id']);
+						switch($args['type']) {
+							case 'intro': $type = 'Texte'; break;
+							case 'pres': $type = 'Present'; break;
+							case 'thanks': $type = 'Remer'; break;
+							case 'credits': $type = 'Credit'; break;
+							case 'help': $type = 'Aide'; break;
+						}
+						$type .= $lang;
+						return array('text'=> $o->$type);
+						
+					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$id);	break;
+					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	break;
 					case 'comm': return GDN::GetComments($args);
 					case 'doc-read':
-						$dic = Sys::getOneData('CEN', 'Temoa/'.$args['id']);	
+						$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	
 						return array('text'=>$dic->DocHtml);
 				}
 				switch($args['lang']) {
@@ -82,6 +111,13 @@ class CEN extends Module {
 		}
 	}
 
-	
+//	public static function read_file($f) {
+//		$t = '';
+//		if($fh = fopen($f, "rb")) {
+//			$t = fread($fh, filesize($f));
+//			fclose($fh);
+//		}
+//		return($t);
+//	}
 	
 }

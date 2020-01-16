@@ -1,0 +1,79 @@
+<div class="{{ NOMDIV }} CarouselTotal">
+    <div class="CarouselFond">
+        {%  if TITREBLOCK is not empty %}<div class="titre">{{ TITREBLOC }}</div>{% endif %}
+        <div id="myCarousel" class="carousel slide ">
+            <!-- Indicators -->
+            {% if INDICATORS == true %}
+                <ol class="carousel-indicators">
+                    {% for C in 0..Cpt %}
+                        <li data-target="#myCarousel" data-slide-to="{{ Pos }}" class="active"></li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+
+                {% for e in spectacle %}
+                    <div class="item {% if active == 1 %}active{% elseif active == 0 %}{% endif %} itemObj">
+                        <div class="row">
+                            <div class="col-md-5 col-xs-5">
+                                <div class="imggauche">
+                                    {% if  e|length > 0 %}
+                                        <figure class="gdeimg"><img src="/{{ e.Logo }}" class="img-responsive"
+                                                                    alt="{{ e.Title }}" title="{{ e.Title }}"/></figure>
+                                    {% else %}
+                                        <h3>Très bientôt</h3>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- Controls -->
+                {% if PRECEDENT == true %}
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="icon-prev"></span></a>
+                {% endif %}
+                {% if SUIVANT == true %}
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next"></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{#<component is="style" type="text/css">#}
+{#    #cms-page {#}
+{#        background-color: #655155;#}
+{#    }#}
+{#</component>#}
+
+<script type="application/javascript">
+
+    $(document).ready(function () {
+        var currentitem = 0;
+        var itemlist = $('.itemObj');
+
+        function next() {
+            //désativer le précédent
+
+            try {
+                $(itemlist[currentitem]).removeClass('active');
+                $(itemlist[currentitem]).addClass('hiding');
+                console.log('item', itemlist[currentitem]);
+                //on désative la catéogrie en cours
+                $('#' + $(itemlist[currentitem]).attr('optcat')).removeClass('active');
+            } catch (err) {
+                console.error('pas de classe active pour ', itemlist[currentitem]);
+            }
+            if (currentitem == itemlist.length - 1) currentitem = 0;
+            else currentitem++;
+            //active le suivant
+            $(itemlist[currentitem]).addClass('active');
+            $(itemlist[currentitem]).removeClass('hiding');
+            $('#' + $(itemlist[currentitem]).attr('optcat')).addClass('active');
+            //console.log('item -> '+currentitem);
+
+        }
+
+        setInterval(next, 5000);
+    });
+</script>

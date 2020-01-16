@@ -1,0 +1,11 @@
+<div {% if NOMDIV is not empty %}id="{{ NOMDIV }}"{% endif %} class="partenaire {{ CSS }}">
+    <div class="row">
+    {% for partenaire in partenaires %}
+        <div class="col-md-{{ 12/NBCOL }}">
+            <h3 style="text-align: center; background-color: #a7c330">{{ partenaire.Titre }}</h3>
+            <img alt="" src="{{ partenaire.Image }}" width="360" height="210px" title="" />
+        </div>
+    {% endfor %}
+        </div>
+
+</div>

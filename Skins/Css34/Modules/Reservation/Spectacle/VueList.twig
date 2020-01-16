@@ -28,15 +28,20 @@
                 spectacles: [],
                 spectacle: {},
                 date: '',
+                appDate : '',
                 search: '',
                 dirty: 0,
                 first: true,
                 render: true,
                 busy: false,
+                timezone: '',
+                dpfr: vdp_translation_fr.js,
+                dateOrigin : ''
             };
         },
         components: {
             /*spectacleList*/
+            vuejsDatepicker
         },
         methods: {
             onSubmit: function (event) {
@@ -59,7 +64,7 @@
                     this.date = '';
                 } else
                     this.date = value;
-                this.getData();
+                //this.getData();
             },
             getData: function () {
                 var me = this;
@@ -103,6 +108,12 @@
             //reset css
             //$('.spectacles-list').addClass('spectacles-list-reset');
         },
+        created: function(){
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            this.genre = '';
+            this.date = {{ initDate }};
+            this.getData();
+        },
         watch: {
             spectacles: function (val) {
                 if (val.length) {
@@ -120,6 +131,27 @@
                         }, 100);
                     });
                 }
+            },
+            date: function(val){
+                if(this.dateOrigin == 'appDate') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                //console.log(val);
+                this.appDate = new Date(val*1000);
+                this.dateOrigin = 'date';
+                this.getData();
+            },
+            appDate: function(val){
+                console.log(val);
+                if(this.dateOrigin == 'date') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                console.log(val);
+                this.date = val.getTime() / 1000
+                this.dateOrigin = 'appDate';
+                this.getData();
             }
         }
     };

@@ -239,7 +239,8 @@ class PrintAdherent extends FPDF {
 		if($thi->rupture != 'D') $this->rupLib .= ' ' . $l['LibelleN'];
 		
 		$c = Sys::getOneData('Cadref', 'Classe/' . $l['ClasseId']);
-		$this->HeureDebut = $c->HeureDebut;
+		$this->Heure = $c->HeureDebut;
+		$this->Heure .= !empty($c->CycleDebut) ? ' ('.$c->CycleDebut.'-'.$c->CycleFin.')' : ''; 
 		$this->Jour = Sys::getOneData('Cadref', 'Jour/' . $c->JourId)->Jour;
 		$es = $c->getParents('Enseignant');
 		$ens = '';
@@ -261,11 +262,11 @@ class PrintAdherent extends FPDF {
 		$this->posy += 2;
 		$this->SetXY($this->left, $this->posy);
 		$this->SetFont('Arial', 'B', 10);
-		$this->Cell(90, 4, $this->cv($this->rupLib), 0, 0, 'L');
+		$this->Cell(85, 4, $this->cv($this->rupLib), 0, 0, 'L');
 
 		if($this->rupture == 'C' || $this->rupture == 'E') {
-			$this->Cell(20, 4, $this->cv($this->Jour), 0, 0, 'L');
-			$this->Cell(15, 4, $this->HeureDebut, 0, 0, 'L');
+			$this->Cell(17, 4, $this->cv($this->Jour), 0, 0, 'L');
+			$this->Cell(33, 4, $this->Heure, 0, 0, 'L');
 			$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
 		}
 
@@ -277,11 +278,11 @@ class PrintAdherent extends FPDF {
 		$this->SetXY($this->left + 5, $this->posy);
 		$this->SetFont('Arial', 'I', 10);
 		$this->Cell(20, 4, $this->rupVal, 0, 0, 'L');
-		$this->Cell(65, 4, $this->cv($this->rupLib), 0, 0, 'L');
+		$this->Cell(60, 4, $this->cv($this->rupLib), 0, 0, 'L');
 		
-			$this->Cell(20, 4, $this->cv($this->Jour), 0, 0, 'L');
-			$this->Cell(15, 4, $this->HeureDebut, 0, 0, 'L');
-			$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
+		$this->Cell(17, 4, $this->cv($this->Jour), 0, 0, 'L');
+		$this->Cell(33, 4, $this->Heure, 0, 0, 'L');
+//		$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
 		
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[0][0], 0, 0, $this->align[1]);
