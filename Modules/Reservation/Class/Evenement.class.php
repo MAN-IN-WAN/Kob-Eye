@@ -193,7 +193,9 @@ class Evenement extends genericClass {
 							$pers->Age = $params['age'][$n];
 							$pers->Accompagnateur = $params['accomp'][$n];
 							$pers->RSA = $params['rsa'][$n];
+							$pers->PMR = $params['pmr'][$n];
 							$pers->addParent($reservation);
+
 							$pers->Save();
 						}
 						$reservation->Save();

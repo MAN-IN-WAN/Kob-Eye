@@ -40,4 +40,16 @@
         <input type="text" class="form-control input-dark inputNewsletter" style="margin: 0 2px;"/>
         <a href="#facebooklink" class="facebooklink"><i class="fab fa-facebook-square fa-4x" style="color: #000;"></i></a>
     </div>
+    <div class="row" id="footerlinksder">
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc/Bottom?CODE=FOOTERDER_LEFT'))) }}
+        </div>
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc/Bottom?CODE=FOOTERDER_MIDDLE'))) }}
+        </div>
+        <div class="col-lg-4">
+            {{ include(template_from_string(module('Systeme/Bloc/Bottom?CODE=FOOTERDER_RIGHT'))) }}
+        </div>
+    </div>
+
 </div>

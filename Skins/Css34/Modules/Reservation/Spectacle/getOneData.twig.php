@@ -83,7 +83,7 @@ $curmen = '/sorties/';
 foreach ($vars['rows'] as $k=>$v){
 
     //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#fff';
+    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
     $v->genre = $genres[$v->Genre];
 
     //URL

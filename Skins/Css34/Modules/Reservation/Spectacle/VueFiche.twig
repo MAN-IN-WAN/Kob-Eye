@@ -72,7 +72,7 @@
             </div>
             <div class="col-lg-4" id="description">
                 <h1 :style="{backgroundColor: spectacle.Couleur}">{{ spectacle.Nom }}</h1>
-                <img :src="'/'+spectacle.Logo+'.limit.400x600.jpg'" class="img-responsive"/>
+                <img :src="'/'+spectacle.Logo" class="img-responsive"/>
                 <p v-html="spectacle.Resume"></p>
                 <div>
                     <h3>ACCES</h3>
@@ -114,6 +114,7 @@
             $route: function () {
                 console.log('before route watch',window.spec.spectacle);
                 var to = this.$route.params.url;
+                if (to == undefined)  return false;
                 if (window.spec.spectacle){
                     this.spectacle = window.spec.spectacle;
                     this.display = true;
