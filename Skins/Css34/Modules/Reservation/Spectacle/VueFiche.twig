@@ -33,7 +33,8 @@
                 </div>
                 <div class="row fiche-propriete">
                     <div class="col-lg-9">{{ spectacle.DateDebut }}</div>
-                    <div class="col-lg-3">{{ spectacle.Duree }} mins</div>
+                    <div v-if="parseInt(spectacle.Duree)" class="col-lg-3">{{ spectacle.Duree }} mins</div>
+                    <div v-else class="col-lg-3">Durée non communiquée</div>
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -46,7 +47,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="e in spectacle.events">
-                            <td>{{ e.DateDebut | Date}}</td>
+                            <td :inner-html.prop="e.DateDebut | timestamp"></td>
                             <td>{{ e.Salle.Nom }}</td>
                             <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
                             <td>

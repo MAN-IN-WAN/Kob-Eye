@@ -1,0 +1,153 @@
+<template>
+    <form v-on:submit.prevent="onSubmit">
+        <div class="row">
+            <div class="col-md-6">
+                {% for partenaire in partenaires %}
+                    <div>
+                        <h3 style="text-align: center; background-color: #a7c330">{{ partenaire.Titre }}</h3>
+                        <img alt="" src="{{ partenaire.Image }}" width="360" height="210px" title=""/>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6" id="filters">
+                {% from "Skins/Css34/Modules/Reservation/Organisation/Pagination.twig" import  template_pagination %}
+                {{ template_pagination() }}
+                {{ include(template_from_string(module('Reservation/Organisation/Filters'))) }}
+                <div id="organisation">
+                    {% from "Skins/Css34/Modules/Reservation/Organisation/ListItems.twig" import  organisation_item,template_organisation_item %}
+                    <div class="organisation-list organisation-list-reset">
+                        {{ template_organisation_item() }}
+                    </div>
+                </div>
+                {{ template_pagination() }}
+            </div>
+        </div>
+    </form>
+</template>l
+<script>
+    module.exports = {
+        name: 'reservation-partenaires',
+        template: '#partenaires',
+        data() {
+            return {
+                genre: '',
+                organisations: [],
+                organisation: {},
+                search: '',
+                dirty: 0,
+                first: true,
+                render: true,
+                busy: false,
+                searchTimeOut: '',
+                pagination: {
+                    total:0,
+                    current:1,
+                    max:0
+                }
+            };
+        },
+        methods: {
+            onSubmit: function (event) {
+                console.log('COMP submit detected display component', this.organisations);
+                this.getData();
+            },
+            getData: function () {
+                var me = this;
+                axios
+                    .get('/Reservation/Organisation/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
+                    .then(function (response) {
+                        me.render = false;
+                        me.resetData();
+                        me.dirty = true;
+                        Vue.nextTick(function () {
+                            me.addData(response.data.data);
+                            me.pagination.total = response.data.total;
+                            me.initPage();
+                            me.render = true;
+                            me.dirty = false;
+                            console.log('COMP rendu component', me.organisations);
+                        })
+                    });
+            },
+            resetData: function () {
+                var nb = this.organisations.length;
+                for (var i = 0; i < nb; i++)
+                    this.organisations.pop();
+                console.log('COMP CONTAINER: resetdata', this.organisations);
+            },
+            addData: function (tab) {
+                for (var i in tab)
+                    this.organisations.push(tab[i]);
+                console.log('COMP CONTAINER: addata', this.organisations);
+            },
+            // refreshIsotope: function () {
+            //     $('.spectacles-list').isotope('destroy');
+            //     $('.spectacles-list').isotope();
+            // },
+            goToFiche: function (organisation) {
+                console.log('gotofiche: ', organisation);
+                window.spec.organisation = organisation;
+                router.push({path: organisation.Url, params: {organisation: organisation}});
+            },
+            initPage: function() {
+                var total = this.pagination.total;
+                var size  = 40;
+                var currentPage = this.pagination.current;
+                this.pagination.max = Math.ceil(total/size);
+            },
+            showPage: function (n) {
+                var me = this;
+                if ( ( n != 1 ) && ( n != me.pagination.max ) && ( (n == me.pagination.current) || (n == (me.pagination.current - 1)) || (n == (me.pagination.current + 1 ))) ){
+                    return true;
+                }
+                return false
+            },
+            setPage(val){
+                this.pagination.current = val;
+                this.getData();
+            }
+        },
+        mounted: function () {
+            console.log('APP VUE > RESET CSS');
+            //reset css
+            //$('.spectacles-list').addClass('spectacles-list-reset');
+        },
+        created: function () {
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            this.getData();
+        },
+        watch: {
+            // organisations: function (val) {
+            //     if (val.length) {
+            //         setTimeout(function () {
+            //             console.log('COMP CONTAINER: after data', $('.organisations-list'));
+            //             $('.organisations-list').isotope('destroy');
+            //             $('.organisations-list').isotope({
+            //                 // set itemSelector so .grid-sizer is not used in layout
+            //                 itemSelector: '.card',
+            //                 percentPosition: true,
+            //                 masonry: {
+            //                     // use element for option
+            //                     columnWidth: '.card'
+            //                 }
+            //             }, 100);
+            //         });
+            //     }
+            // },
+            search: function(val){
+                var me = this;
+                if (me.searchTimeOut != ''){
+                    clearTimeout(me.searchTimeOut);
+                }
+                me.searchTimeOut = setTimeout(function (val){
+                    me.pagination.current = 1;
+                    me.getData();
+                    me.searchTimeOut = '';
+                },100);
+            }
+
+
+        }
+
+    }
+</script>

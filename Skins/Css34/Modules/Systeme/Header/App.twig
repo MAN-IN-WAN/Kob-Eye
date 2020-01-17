@@ -3,8 +3,10 @@ const router = new VueRouter({
     mode: 'history',
     routes:[
         {path: '/', component: window.httpVueLoader('/Reservation/Accueil/VueAccueil.vue')},
-        {path: '/sorties', component: window.httpVueLoader('/Reservation/Spectacle/VueList.vue')},
-        {path: '/sorties/:url', component: window.httpVueLoader('/Reservation/Spectacle/VueFiche.vue')},
+        {path: '/Sorties', component: window.httpVueLoader('/Reservation/Spectacle/VueList.vue')},
+        {path: '/Sorties/:url', component: window.httpVueLoader('/Reservation/Spectacle/VueFiche.vue')},
+        {path: '/Partenaires', component: window.httpVueLoader('/Reservation/Organisation/VuePart.vue')},
+        {path: '/Partenaires/:url', component: window.httpVueLoader('/Reservation/Organisation/VueFiche.vue')},
         {%  for menu in User.Menus %}
             {% if menu.Url!='' and menu.Url!='sorties' %}
             {path: '/{{ menu.Url }}', component: window.httpVueLoader('/{{ menu.Alias }}/VuePage.vue'+'?tms='+Date.now())},
@@ -15,12 +17,22 @@ const router = new VueRouter({
 
 //Declaration filtre
 Vue.filter('date', function (value) {
+if (value == '' || value == null || value == undefined) return N/A;
     var vals = value.split('/');
     var tmpDate = vals[2]+'-'+vals[1]+'-'+vals[0];
     var date = new Date(tmpDate);
     //console.error( date );
     return value;
 });
+Vue.filter('timestamp', function (value) {
+    var timstampjs = parseInt(value) * 1000;
+
+    var t = new Date(timstampjs).getHours() + ":" + new Date(timstampjs).getMinutes();
+    var d = new Date(timstampjs).toLocaleDateString("fr-FR");
+return (d + " <br> à " + t);
+
+});
+
 
 window.spec = new Vue({
         el: '#app',
@@ -28,6 +40,8 @@ window.spec = new Vue({
         genre: '',
         spectacles: [],
         spectacle: false,
+        organisations: [],
+        organisation: false,
         date: '',
         appDate : '',
         search: '',

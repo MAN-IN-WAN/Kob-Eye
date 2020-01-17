@@ -615,6 +615,7 @@ class Sys extends Root{
 					$this->AnalyseVars();
 					Parser::Init();
 					$data .= $this->getContenu();
+					$data = KeTwig::processTemplates($data);
 					print($data);
 				}
 				break;
