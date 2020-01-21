@@ -39,7 +39,7 @@ class PrintVisite extends FPDF {
 		$this->pageWidth = 0;
 		foreach($this->width[$mode] as $w) $this->pageWidth += $w;
 
-		$this->titre = "Visites Guidées CADREF";
+		$this->titre = "Visites Guidées ".Cadref::$UTL;
 		
 	}
 	

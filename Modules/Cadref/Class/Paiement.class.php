@@ -16,14 +16,14 @@ class Paiement extends genericClass
         // Récupération type de paiement
         $type = $this->getTypePaiement();
         if ($type == null) {
-            mail("paul@abtel.fr", "CADREF : Le type de paiement n'est pas défini.", print_r($_POST, true));
+            mail("paul@abtel.fr", Cadref::$UTL." : Le type de paiement n'est pas défini.", print_r($_POST, true));
             die("Le type de paiement n'est pas défini.");
         }
 
         // Chargement du plugin
         $plugin = $type->getPlugin();
         if ($plugin == null) {
-            mail("paul@abtel.fr", "CADREF : Ce type de paiement ne peut être pris en charge.", print_r($_POST, true));
+            mail("paul@abtel.fr", Cadref::$UTL." : Ce type de paiement ne peut être pris en charge.", print_r($_POST, true));
             die("Ce type de paiement ne peut être pris en charge.");
         }
 
@@ -31,7 +31,7 @@ class Paiement extends genericClass
         $results = $plugin->serveurAutoResponse($this, $commande);
         if ($results['etat'] == 0) {
 			if($result['status'] == '00000') {
-				mail("paul@abtel.fr", "CADREF : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
+				mail("paul@abtel.fr", Cadref::$UTL." : Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
 				die("Le paiement n'a pas pu être contrôlé.");
 			}
         }

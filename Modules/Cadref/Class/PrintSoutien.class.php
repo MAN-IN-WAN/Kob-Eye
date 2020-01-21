@@ -22,7 +22,7 @@ class PrintSoutien extends FPDF {
 		$this->width = array(40,25,25);
 		$this->align = array('L','R','R');
 
-		$this->titre = "CADREF : Liste des soutiens $annee-".($annee+1);
+		$this->titre = Cadref::$UTL." : Liste des soutiens $annee-".($annee+1);
 	}
 	
 	private function cv($txt) {

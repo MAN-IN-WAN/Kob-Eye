@@ -1,5 +1,6 @@
 <?php
 $annee = Cadref::$Annee;
+$utl = Cadref::$UTL;
 
 $vars['mode'] = 'public';
 $menu = Sys::$CurrentMenu->Url;
@@ -10,7 +11,7 @@ if($menu == 'ens_message') {
 	
 	$vars['sender'] = "Message de la part de ".$e->Prenom.' '.$e->Nom;
 
-	$to = array('C'=>'Cadref (Secrétariat)','T'=>'Tous mes élèves');
+	$to = array('C'=>$utl.' (Secrétariat)','T'=>'Tous mes élèves');
 	$sql = "
 select distinct c.Id, concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle,
 CycleDebut, CycleFin,c.HeureDebut,c.HeureFin,j.Jour
@@ -38,7 +39,7 @@ elseif($menu == 'adh_message') {
 
 	$vars['sender'] = "Message de la part de ".$a->Prenom.' '.$a->Nom;
 	
-	$to = array('C'=>'Cadref (Secrétariat)');
+	$to = array('C'=>$utl.' (Secrétariat)');
 	$sql = "
 select distinct Mail, Nom, Prenom
 from `##_Cadref-Inscription` i

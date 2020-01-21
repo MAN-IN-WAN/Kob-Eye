@@ -35,7 +35,7 @@ class PrintRecapitulatif extends FPDF {
 		$n = count($this->head);
 		for($i = 0; $i < $n; $i++) $this->largeur += $this->width[$i]; 
 
-		$this->titre = "CADREF : Récapitulatif Adhérents";
+		$this->titre = Cadref::$UTL." : Récapitulatif Adhérents";
 		if($nsold) $this->titre .= " (Non soldés)";
 	}
 	
