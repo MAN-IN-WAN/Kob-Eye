@@ -9,41 +9,18 @@ $vars['fields'][] = array(
     'name' => 'Url',
     'type' => 'varchar'
 );
-$vars['fields'][] = array(
-    'name' => 'Couleur',
-    'type' => 'color'
-);
-$vars['fields'][] = array(
-    'name' => 'big',
-    'type' => 'boolean'
-);
+
 //calcul offset / limit
-$offset = (isset($_GET['offset']))?$_GET['offset']:0;
-$limit = (isset($_GET['limit']))?$_GET['limit']:19;
+$offset = 0;
+$limit = 40;
 $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
-$date = (isset($_GET['date']))?$_GET['date']:'';
-$genre = (isset($_GET['genre']))?$_GET['genre']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
-$sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
+$sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array('Nom', 'ASC');
 $path = explode('/',$vars['Query'],2);
 $path = $path[1];
+$page =  (isset($_GET['page']))?$_GET['page']:1;
+$offset = ($page - 1) * $limit;
 
-if (!empty($date)){
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
-    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-    $filters.="&DateDebut>".$from; //.'&DateDebut<'.$to;
-}else{
-    $filters.="&DateDebut>".time();
-}
-if (!empty($genre)) $filters.="&Genre=".$genre;
-
-
-//GENRES
-$genres = array();
-$genrestmp = Sys::getData('Reservation','Genre');
-foreach ($genrestmp as $g){
-    $genres[$g->Nom] = $g;
-}
 
 //requete
 if(connection_aborted()){
@@ -90,22 +67,9 @@ foreach ($childrenelements as $childelem){
 }
 $vars['children'] = $getCchild;
 
-//CONFIG
-$nb = sizeof($vars['rows']);
-$nbbig = floor($nb/2)-1;
-
-//GESTION DES BIGS
-$big = array();
-for ($i=0; $i<$nbbig;$i++) {
-    $new = 0;
-    while ($new==0|in_array($new,$big)){
-        $new = random_int(0,$nb-3);
-    }
-    $big[] = $new;
-}
 
 //CURRENT MENU
-$curmen = '/sorties/';
+$curmen = '/partenaires/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
@@ -114,17 +78,8 @@ $curmen = '/sorties/';
 
 foreach ($vars['rows'] as $k=>$v){
 
-    //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
-
-    //GESTION DES BIGS
-    if (in_array($k,$big)){
-        $v->big = true;
-    }else $v->big = false;
-
     //URL
     $v->Url = $curmen.$v->Url;
-
     //LABEL
     $v->label = Utils::cleanJson($v->getFirstSearchOrder());
     if ($v->getSecondSearchOrder())
@@ -226,4 +181,3 @@ function endPacket(){
     flush();
 }
 //echo $GLOBALS['Chrono']->total();
-?>

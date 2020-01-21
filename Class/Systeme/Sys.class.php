@@ -11,7 +11,7 @@ class Sys extends Root{
 	static $remote_addr;
 	static $port;
 	static $user_agent;
-    static $allMenus;
+	static $allMenus;
 	//Initialisation Coeur
 	static $Modules;
 	static $BlocLoaded;
@@ -54,11 +54,11 @@ class Sys extends Root{
 	//Config
 	static $keywordsProcessing = true;
 	//Keywords
-    static $keywords = array();
+	static $keywords = array();
 
-    static $FORCE_INSERT = false;
-    static $NO_TEMPLATE = false;
-    static $REMOVE_COMMENT = true;
+	static $FORCE_INSERT = false;
+	static $NO_TEMPLATE = false;
+	static $REMOVE_COMMENT = true;
 
 //*************//
 //***ETAPE 1***//
@@ -74,7 +74,7 @@ class Sys extends Root{
 		Sys::$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))?$_SERVER["HTTP_USER_AGENT"]:"Unknown browser type";
 		date_default_timezone_set('Europe/Paris');
 		//Generation de la configuration
- 		$this->initConf();
+		$this->initConf();
 		//Initialisation du systeme de log
 		$this->Log = new Klog("Log/Systeme.log");
 		$this->Log->log("---------------------------------------- DEPART----------------------------------------");
@@ -86,9 +86,9 @@ class Sys extends Root{
 		$this->GetVarsToPhp();
 		$this->FilesVarsToPhp();
 		if ( !defined('DEBUG_INTERFACE') ){
-            define('DEBUG_INTERFACE',false);
+			define('DEBUG_INTERFACE',false);
 		} else {
-			
+
 		}
 
 		define('OBJECTCLASS_CATEGORY_DEFAULT',"none");
@@ -98,36 +98,36 @@ class Sys extends Root{
 //***ETAPE 2***//
 //*************//
 	/***********************************
-	* Initialisation et identification
-	***********************************/
+	 * Initialisation et identification
+	 ***********************************/
 
 	function Connect() {
 
 		//Intialisation des langages
-  		$this->initLanguages();
+		$this->initLanguages();
 		//Intialisation des modules
-  		$this->initModules();
+		$this->initModules();
 
-        //Sys::commitTransaction();
-        //Petit coommentaire sympa
-        if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){
-            foreach (Sys::$Modules as $K=>$M){
-                $M->loadSchema();
-                $M->Check();
-            }
-            die('UPDATE OK');
-        }
-        //Crï¿œtion de la connexion
+		//Sys::commitTransaction();
+		//Petit coommentaire sympa
+		if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){
+			foreach (Sys::$Modules as $K=>$M){
+				$M->loadSchema();
+				$M->Check();
+			}
+			die('UPDATE OK');
+		}
+		//Crï¿œtion de la connexion
 		$GLOBALS["Chrono"]->start("Connexion");
-  		$this->Connection =new Connection();
+		$this->Connection =new Connection();
 		$GLOBALS["Chrono"]->stop("Connexion");
 
-  		$this->registerVar("DefaultUser",MAIN_USER_NUM);
-  		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;
-  		if (isset(Sys::$User->Menus)) $this->Menus=Sys::$User->Menus;
-  		if (isset(Sys::$User->Access)) $this->Access=Sys::$User->Access;
+		$this->registerVar("DefaultUser",MAIN_USER_NUM);
+		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;
+		if (isset(Sys::$User->Menus)) $this->Menus=Sys::$User->Menus;
+		if (isset(Sys::$User->Access)) $this->Access=Sys::$User->Access;
 		//Configuration du Lien
- 		$this->configLien();
+		$this->configLien();
 		if(strtolower($this->Lien) == 'sitemap' && strtolower($this->type) == 'xml') $this->displaySitemap();
 		if(strtolower($this->Lien) == 'robots' && strtolower($this->type) == 'txt') $this->displayRobots();
 		//gestion des entetes specifiques
@@ -135,27 +135,27 @@ class Sys extends Root{
 			header('Ke-Url: '.$this->Lien);
 		}
 		//vérification des curcharges du schéma pour les roles de l'utilisateur
-        $this->moduleOverride();
+		$this->moduleOverride();
 		//post initialisation des modules
 		$this->postInitModules();
 	}
 	function moduleOverride() {
 		if (!is_object(Sys::$User)) return;
-        $roles = Sys::$User->getRoles();
-        foreach ($roles as $r){
-            //pour chaque module
-            foreach (Sys::$Modules as $n=>$module){
-                //echo 'Modules/'.$n.'/'.$n.'.'.$r.'.schema <br />';
-                if (file_exists('Modules/'.$n.'/'.$n.'.'.$r.'.schema')){
-                    //on envoi les modifications au module.
-                    $schemaUpdate = new xml2array('Modules/'.$n.'/'.$n.'.'.$r.'.schema');
-                    if (isset($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS'])) {
-                        $module->Db->updateSchema($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS']);
-                    }else die('Surcharge schema illisible: '.'Modules/'.$n.'/'.$n.'.'.$r.'.schema');
-                }
-            }
-        }
-    }
+		$roles = Sys::$User->getRoles();
+		foreach ($roles as $r){
+			//pour chaque module
+			foreach (Sys::$Modules as $n=>$module){
+				//echo 'Modules/'.$n.'/'.$n.'.'.$r.'.schema <br />';
+				if (file_exists('Modules/'.$n.'/'.$n.'.'.$r.'.schema')){
+					//on envoi les modifications au module.
+					$schemaUpdate = new xml2array('Modules/'.$n.'/'.$n.'.'.$r.'.schema');
+					if (isset($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS'])) {
+						$module->Db->updateSchema($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS']);
+					}else die('Surcharge schema illisible: '.'Modules/'.$n.'/'.$n.'.'.$r.'.schema');
+				}
+			}
+		}
+	}
 
 	//***********************************
 	//	Fonction D Initialisation
@@ -220,9 +220,9 @@ class Sys extends Root{
 		foreach ($Temp as $Mod) {
 			Sys::$Modules[$Mod["NAME"]]->init();
 		}
-/*		foreach ($Temp as $Mod) {
-			if (SCHEMA_CACHE)Sys::$Modules[$Mod["NAME"]]->saveCache();
-		}*/
+		/*		foreach ($Temp as $Mod) {
+                    if (SCHEMA_CACHE)Sys::$Modules[$Mod["NAME"]]->saveCache();
+                }*/
 	}
 	/**
 	 * postInitModules
@@ -239,7 +239,7 @@ class Sys extends Root{
 		$Temp = $this->Conf->get("GENERAL::LANGUAGE");
 		foreach ($Temp as $Tit=>$Lang) {
 			if (isset($Lang["DEFAULT"])&&$Lang["DEFAULT"]){
-				 $this->DefaultLanguage = $Lang["TITLE"];
+				$this->DefaultLanguage = $Lang["TITLE"];
 				$this->LangageDefaut = $Lang["TITLE"];
 				$this->CurrentLanguage = $Lang["TITLE"];
 			}
@@ -249,23 +249,23 @@ class Sys extends Root{
 	}
 
 	/***********************************
-	* Configuration des urls par defaut
-	***********************************/
+	 * Configuration des urls par defaut
+	 ***********************************/
 	function configLien() {
 		//Extraction de la partie significative de l'url
- 		$LienOrig = explode("?",Sys::$link);
- 		$LienOrig = explode("#",$LienOrig[0]);
+		$LienOrig = explode("?",Sys::$link);
+		$LienOrig = explode("#",$LienOrig[0]);
 		$LienOrig = $LienOrig[0];
 		//Suppression des slashs en debut de chaine
 		while (substr($LienOrig,0,1)=='/'){
 			$LienOrig = explode("/",$LienOrig,2);
 			$LienOrig = $LienOrig[1];
 		}
-		$this->setLink($LienOrig);        
-        $proto = (Sys::$port == '443')?"https":"http";
-        $this->registerVar("DomaineHttp","http://".Sys::$domain);
-        $this->registerVar("DomaineHttps","https://".Sys::$domain);
-        $this->registerVar("Domaine",$proto."://".Sys::$domain);
+		$this->setLink($LienOrig);
+		$proto = (Sys::$port == '443')?"https":"http";
+		$this->registerVar("DomaineHttp","http://".Sys::$domain);
+		$this->registerVar("DomaineHttps","https://".Sys::$domain);
+		$this->registerVar("Domaine",$proto."://".Sys::$domain);
 
 		$this->setDefault($this->Conf->get("GENERAL::SERVER::DEFAULT_LINK"));
 		//Test si l url definit un fichier ou un dossier
@@ -279,16 +279,16 @@ class Sys extends Root{
 			//C un dossier
 			$this->type="html";
 		}
-            
-        if ($this->type == 'download') {
-            $pos = strrpos($this->Lien, '.');
-            if ($pos !== FALSE) {
-                $this->type = substr($this->Lien, $pos+1);
-                header("Content-Disposition: attachment; filename=\"" . basename($this->Lien) . "\"");
-                $this->Lien = substr($this->Lien, 0, $pos);
-            }
-        }   
-        
+
+		if ($this->type == 'download') {
+			$pos = strrpos($this->Lien, '.');
+			if ($pos !== FALSE) {
+				$this->type = substr($this->Lien, $pos+1);
+				header("Content-Disposition: attachment; filename=\"" . basename($this->Lien) . "\"");
+				$this->Lien = substr($this->Lien, 0, $pos);
+			}
+		}
+
 		//-------------------------------------------------------------------//
 		//	SI LIEN VIDE !!!!!!!					     //
 		//   ICI GESTION DES CAS PAR DEFAUT !!!!!!!			     //
@@ -331,7 +331,7 @@ class Sys extends Root{
 		//Le menu par defaut le l'utilisateur est un menu du premier niveau ou le champ url est nul
 		if (isset($this->Menus)&&is_array($this->Menus))foreach ($this->Menus as $M) if ($M->Url=="") return $M;
 		//si pas de menu par defaut on prends le premier
-        if (isset($this->Menus)&&is_array($this->Menus)&&sizeof($this->Menus)) return $this->Menus[0];
+		if (isset($this->Menus)&&is_array($this->Menus)&&sizeof($this->Menus)) return $this->Menus[0];
 	}
 
 //*************//
@@ -355,8 +355,8 @@ class Sys extends Root{
 		$domain = Sys::$domain;
 		$site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
 		if($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
-            $this->type = 'json';
-        }
+			$this->type = 'json';
+		}
 		$detectmime = true;
 		switch($this->type){
 			case "jpg":if ($this->type=="jpg")header("Content-type:  image/jpg");$detectmime=false;
@@ -388,7 +388,7 @@ class Sys extends Root{
 						$this->FileNotFound($file);
 					}
 				}
-			break;
+				break;
 			case "mp3":if ($this->type=="mp3")header("Content-type: audio/mpeg");$detectmime=false;
 			case "wav":if ($this->type=="wav")header("Content-type: audio/x-wav");$detectmime=false;
 			case "mpeg":if ($this->type=="mpeg")header("Content-type: video/mpeg");$detectmime=false;
@@ -397,7 +397,7 @@ class Sys extends Root{
 			case "f4v":if ($this->type=="f4v")header("Content-type: video/mp4");$detectmime=false;
 			case "mp4":if ($this->type=="mp4")header("Content-type: video/mp4");$detectmime=false;
 			case "webm":if ($this->type=="webm")header("Content-type: video/webm");$detectmime=false;
-            case "wmv":if ($this->type=="wmv")header("Content-type: video/x-ms-wmv");$detectmime=false;
+			case "wmv":if ($this->type=="wmv")header("Content-type: video/x-ms-wmv");$detectmime=false;
 			case "flv":if ($this->type=="flv")header("Content-type: video/x-flv");$detectmime=false;
 			case "css":if ($this->type=="css")header("Content-type: text/css");$detectmime=false;
 			case "swf"://if ($this->type=="mp3")header("Content-type:  image/jpg");$detectmime=false;
@@ -409,12 +409,12 @@ class Sys extends Root{
 				$Temp = explode("/",$file);
 				$name = $Temp[sizeof($Temp)-1];
 				$this->output_file($file,$name,false,$detectmime);
-			break;
-            case "b64":
-            	header("Content-type:application/octet-stream");
-            	$detectmime=false;
-            	echo base64_encode( file_get_contents($this->Lien));
-            break;
+				break;
+			case "b64":
+				header("Content-type:application/octet-stream");
+				$detectmime=false;
+				echo base64_encode( file_get_contents($this->Lien));
+				break;
 			case "ods": if ($this->type=="ods") { header("Content-type:application/vnd.oasis.opendocument.spreadsheet");$detectmime=false;  }
 			case "ppt": if ($this->type=="ppt") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false; }
 			case "ppz": if ($this->type=="ppz") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false;  }
@@ -422,12 +422,12 @@ class Sys extends Root{
 			case "pot": if ($this->type=="pot") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false;  }
 			case "xmn":
 			case "lnn":
-            case "exe": if ($this->type=="exe") { header("Content-type:application/octet-stream");$detectmime=false;  }
-            case "dll": if ($this->type=="dll") { header("Content-type:application/octet-stream");$detectmime=false;  }
+			case "exe": if ($this->type=="exe") { header("Content-type:application/octet-stream");$detectmime=false;  }
+			case "dll": if ($this->type=="dll") { header("Content-type:application/octet-stream");$detectmime=false;  }
 			case "doc": if ($this->type=="doc") { header("Content-type:application/msword");$detectmime=false;  }
 			case "odt": if ($this->type=="odt") { header("Content-type:application/vnd.oasis.opendocument.text");$detectmime=false;  }
-            case "xlsx": if ($this->type=="xlsx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
-            case "docx": if ($this->type=="docx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
+			case "xlsx": if ($this->type=="xlsx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
+			case "docx": if ($this->type=="docx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
 			case "conf":
 				//Fichiers qui déclenchent un téléchargement
 				$this->setNavCache();
@@ -435,25 +435,25 @@ class Sys extends Root{
 				$Temp = explode("/",$file);
 				$name = $Temp[sizeof($Temp)-1];
 				$this->output_file($file,$name);
-			break;
-            case "vue":
-                header("Content-type: text/javascript; charset=".CHARSET_CODE."");
-                header("Accept-Ranges:bytes");
-                header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
-                header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE");
-                header("Access-Control-Allow-Origin: *");
-                $data = "";
-                $this->AnalyseVars();
-                Parser::Init();
-                $Skin = new Skin();
-                $this->CurrentSkin=$Skin;
-                $this->CurrentSkin->Template = false;
-                $data .= $this->getContenu();
-                $data = $Skin->ProcessLang($data);
-                $data = KeTwig::processTemplates($data);
+				break;
+			case "vue":
+				header("Content-type: text/javascript; charset=".CHARSET_CODE."");
+				header("Accept-Ranges:bytes");
+				header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
+				header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE");
+				header("Access-Control-Allow-Origin: *");
+				$data = "";
+				$this->AnalyseVars();
+				Parser::Init();
+				$Skin = new Skin();
+				$this->CurrentSkin=$Skin;
+				$this->CurrentSkin->Template = false;
+				$data .= $this->getContenu();
+				$data = KeTwig::processTemplates($data);
+				$data = $Skin->ProcessLang($data);
 
-                print($data);
-                break;
+				print($data);
+				break;
 			case "htrc":
 			case "json":
 				header("Content-type: text/json; charset=".CHARSET_CODE."");
@@ -465,29 +465,29 @@ class Sys extends Root{
 				$this->AnalyseVars();
 				Parser::Init();
 				$Skin = new Skin();
-				$this->CurrentSkin=$Skin; 
+				$this->CurrentSkin=$Skin;
 				$this->CurrentSkin->Template = false;
 				$data .= $this->getContenu();
+				$data = KeTwig::processTemplates($data);
 				$data = $Skin->ProcessLang($data);
-	            $data = KeTwig::processTemplates($data);
 
-    	        print($data);
-			break;
-		
+				print($data);
+				break;
+
 			case "xml":
 				header("Content-type: text/xml; charset=".CHARSET_CODE."");
 				$data = "";
 				$this->AnalyseVars();
 				Parser::Init();
 				$Skin = new Skin();
-				$this->CurrentSkin=$Skin; 
-				$this->CurrentSkin->Template = false;  
+				$this->CurrentSkin=$Skin;
+				$this->CurrentSkin->Template = false;
 				$data .= $this->getContenu();
+				$data = KeTwig::processTemplates($data);
 				$data = $Skin->ProcessLang($data);
-                $data = KeTwig::processTemplates($data);
 
-                print($data);
-			break;
+				print($data);
+				break;
 			case "soap":
 				if($this->Lien=="Systeme"){
 					if(isset($_GET["wsdl"])) {
@@ -497,7 +497,7 @@ class Sys extends Root{
 						break;
 					}
 					$this->AnalyseVars();
-					try { 
+					try {
 						$server = new SoapServer("Class/Rpc/appaloosa.xml",  array('trace' => 1, 'uri' => $this->Lien,'encoding'=>'UTF-8', 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
 						// On d�finit la classe qui va g�rer les requ�tes SOAP
 						$server -> setclass('WebService');
@@ -525,7 +525,7 @@ class Sys extends Root{
 					$this->AnalyseVars();
 					$wrpc->soapServer($this);
 				}
-			break;
+				break;
 			case "indd":if ($this->type=="indd")header('Content-type: application/pdf');
 			case "bin":if ($this->type=="bin")header("Content-type: binary/octet-stream;");
 			case "htm":if ($this->type=="htm")header("Content-type: text/html; charset=".CHARSET_CODE."");
@@ -541,48 +541,48 @@ class Sys extends Root{
 				}else{
 					//ON definie les variables d environnements
 					$Skin = new Skin();
-					$this->CurrentSkin=$Skin; 
+					$this->CurrentSkin=$Skin;
 					Sys::$Session->LastUrl = '/'.$this->Lien.'.'.$this->type;
 					$data = "";
 					$this->AnalyseVars();
 					Parser::Init();
 					$data .= $this->getContenu();
+					$data = KeTwig::processTemplates($data);
 					$data = $Skin->ProcessLang($data);
-                    $data = KeTwig::processTemplates($data);
 
-                    if (DEBUG_DISPLAY) $data.=KError::displayErrors();
+					if (DEBUG_DISPLAY) $data.=KError::displayErrors();
 					if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
 					print($data);
 				}
-			break;
-            case "raw":
-                $file = $this->Lien.'.'.$this->type;
-                if (@fopen(ROOT_DIR.$file,'r') ) {
-                    //si un fichier existe
-                    $file = $this->Lien.'.'.$this->type;
-                    $Temp = explode("/",$file);
-                    $name = $Temp[sizeof($Temp)-1];
-                    $this->output_file($file,$name,false,$detectmime);
-                }else{
-                    //ON definie les variables d environnements
-                    Sys::$NO_TEMPLATE = true;
-                    Sys::$REMOVE_COMMENT = false;
-                    $Skin = new Skin();
-                    $this->CurrentSkin=$Skin;
-                    Sys::$Session->LastUrl = '/'.$this->Lien.'.'.$this->type;
-                    $data = "";
-                    $this->AnalyseVars();
-                    Parser::Init();
-                    $data .= $this->getContenu();
-                    $data = $Skin->ProcessLang($data);
-                    $data = KeTwig::processTemplates($data);
+				break;
+			case "raw":
+				$file = $this->Lien.'.'.$this->type;
+				if (@fopen(ROOT_DIR.$file,'r') ) {
+					//si un fichier existe
+					$file = $this->Lien.'.'.$this->type;
+					$Temp = explode("/",$file);
+					$name = $Temp[sizeof($Temp)-1];
+					$this->output_file($file,$name,false,$detectmime);
+				}else{
+					//ON definie les variables d environnements
+					Sys::$NO_TEMPLATE = true;
+					Sys::$REMOVE_COMMENT = false;
+					$Skin = new Skin();
+					$this->CurrentSkin=$Skin;
+					Sys::$Session->LastUrl = '/'.$this->Lien.'.'.$this->type;
+					$data = "";
+					$this->AnalyseVars();
+					Parser::Init();
+					$data .= $this->getContenu();
+					$data = KeTwig::processTemplates($data);
+					$data = $Skin->ProcessLang($data);
 
-                    if (DEBUG_DISPLAY) $data.=KError::displayErrors();
-                    if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
-                    print($data);
-                }
-                break;
-				
+					if (DEBUG_DISPLAY) $data.=KError::displayErrors();
+					if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
+					print($data);
+				}
+				break;
+
 			case "prlv":
 				if($this->type=="prlv") {
 					header('Content-type: text/plain');
@@ -593,12 +593,12 @@ class Sys extends Root{
 					header('Content-type: application/pdf');
 					$this->Log->log("PDF -> ".$this->Lien);
 				}
-			case "xls": 
-				if ($this->type=="xls") { 
-					header("Content-type:application/vnd.ms-excel");$detectmime=false;  
+			case "xls":
+				if ($this->type=="xls") {
+					header("Content-type:application/vnd.ms-excel");$detectmime=false;
 					$this->Log->log("XLS -> ".$this->Lien);
 				}
-			case "csv": 
+			case "csv":
 				if ($this->type=="csv") {
 					header("Content-type: application/vnd.ms-excel; charset=".CHARSET_CODE."");
 					$this->Log->log("CSV -> ".$this->Lien);
@@ -615,9 +615,10 @@ class Sys extends Root{
 					$this->AnalyseVars();
 					Parser::Init();
 					$data .= $this->getContenu();
+					$data = KeTwig::processTemplates($data);
 					print($data);
 				}
-			break;
+				break;
 			case "print":
 				$this->AnalyseVars();
 				Parser::Init();
@@ -625,12 +626,12 @@ class Sys extends Root{
 				$data="<script>print()</script>";
 				header("Content-type: text/html; charset=".CHARSET_CODE."");
 				$Skin = new Skin();
-				$data .= $Skin->ProcessLang($this->getContenu());
-                $data = KeTwig::processTemplates($data);
+				$data .= KeTwig::processTemplates($this->getContenu());
+				$data = $Skin->ProcessLang($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				$this->Log->Log($GLOBALS["Chrono"]->total());
 				print($data);
-			break;
+				break;
 			case "htms":
 				//ON definie les variables d environnements
 				$this->AnalyseVars();
@@ -638,12 +639,13 @@ class Sys extends Root{
 				$this->Header = new Header();
 				header("Content-type: text/html; charset=".CHARSET_CODE."");
 				$Skin = new Skin();
-				$data = $Skin->ProcessLang($this->getContenu());
-                $data = KeTwig::processTemplates($data);
+				$data = $this->getContenu();
+				$data = KeTwig::processTemplates($data);
+				$data = $Skin->ProcessLang($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				$this->Log->Log($GLOBALS["Chrono"]->total());
 				print($data);
-			break;
+				break;
 
 			case "skin":
 				$this->Header = new Header();
@@ -652,11 +654,11 @@ class Sys extends Root{
 				Parser::Init('Skin');
 				$Skin->Generate();
 				$data=$Skin->Affich();
+				$data = KeTwig::processTemplates($data);
 				$data = $Skin->ProcessLang($data);
-                $data = KeTwig::processTemplates($data);
 				$data=$this->getHeader().$data.$this->getFooter();
 				print($data);
-			break;
+				break;
 			case "html":
 			default:
 // 				$this->Log->log("INIT START -> ".$this->Lien);
@@ -674,23 +676,23 @@ class Sys extends Root{
 					if ($this->Lien!='')Sys::$Session->LastUrl = '/'.$this->Lien;
 					Parser::Init();
 					$Skin = new Skin();
-					$this->CurrentSkin=$Skin; 
+					$this->CurrentSkin=$Skin;
 					//ON definie les variables d environnements
 					$this->AnalyseVars();
 					$Skin->Generate();
-					$data=$Skin->Affich();
- 					$Contenu =$this->getContenu();
- 					$data=Parser::ProcessData($data,$Contenu);
-                    $data = KeTwig::processTemplates($data);
- 					$data = $Skin->ProcessLang($data);
+					$data = $Skin->Affich();
+					$Contenu =$this->getContenu();
+					$data=Parser::ProcessData($data,$Contenu);
+					$data = KeTwig::processTemplates($data);
+					$data = $Skin->ProcessLang($data);
 					//On ajoute les erreurs
 					if (DEBUG_DISPLAY) $data.=KError::displayHtml();
- 					//On ajoute l entete
+					//On ajoute l entete
 					$data=$this->getHeader().$data.$this->getFooter();
 				}
 				if($this->type == "html" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
 				print($data);
-			break;
+				break;
 		}
 		if (isset($data))return $data;
 	}
@@ -700,8 +702,8 @@ class Sys extends Root{
 		die('Fichier ' .$file. ' non trouvé.');
 	}
 	/***********************************
-	* Analyse Url requete
-	***********************************/
+	 * Analyse Url requete
+	 ***********************************/
 	function AnalyseVars(){
 		//Ici on definit les variables globales necessaires.
 		$this->Query=$this->AnalyseMenu($this->Lien);
@@ -736,7 +738,7 @@ class Sys extends Root{
 					return $Result;
 				}
 			}elseif ($Url==$T){
-                Sys::$MenusFromUrl[]= $Tab[$i];
+				Sys::$MenusFromUrl[]= $Tab[$i];
 				return $Tab[$i];
 			}
 		}
@@ -761,7 +763,7 @@ class Sys extends Root{
 			for($j=$Results->Niveau+1;$j<sizeof($Menus);$j++) {
 				if ($Menus[$j]!="")$LienResult.="/".$Menus[$j];
 			}
- 			//echo "LIENRESULT--> ".$LienResult." NIVEAU ".$Results->Niveau;
+			//echo "LIENRESULT--> ".$LienResult." NIVEAU ".$Results->Niveau;
 			return $LienResult;
 		}
 		//TEST REQUETE DIRECTE
@@ -804,8 +806,8 @@ class Sys extends Root{
 	function PostVarsToPhp() {
 
 		$this->PostVars = $_POST;
-        if(!count($_POST)){
-            parse_str(file_get_contents("php://input"),$this->PostVars);
+		if(!count($_POST)){
+			parse_str(file_get_contents("php://input"),$this->PostVars);
 		}
 
 		//Resoplution des problemes d encodages dues a l AJAX
@@ -821,12 +823,12 @@ class Sys extends Root{
 			$this->RegVars["JSON"] = json_decode($_POST["data"]);
 		}
 	}
-	
+
 	function GetVarsToPhp() {
 		$this->GetVars = $_GET;
-        if(!count($_GET)){
-            parse_str(file_get_contents("php://input"),$this->PostVars);
-        }
+		if(!count($_GET)){
+			parse_str(file_get_contents("php://input"),$this->PostVars);
+		}
 	}
 
 	function GetVarsLink() {
@@ -882,10 +884,10 @@ class Sys extends Root{
 	}
 
 	function getContenu() {
-        if (!empty($this->Query)) {
-            $Tab = Module::splitQuery($this->Query);
-            if (isset($Tab[0]["Query"])) Process::RegisterTempVar('Query', $Tab[0]["Query"]);
-        }
+		if (!empty($this->Query)) {
+			$Tab = Module::splitQuery($this->Query);
+			if (isset($Tab[0]["Query"])) Process::RegisterTempVar('Query', $Tab[0]["Query"]);
+		}
 		//Recuperation des Donnï¿œes du Module
 		$Data = Sys::$Modules[$this->CurrentModule]->Affich($this->Query); //echo "ERREUR FICHEIR NON TROUVE";//$this->FileNotFound($this->Query);
 		return $Data;
@@ -899,18 +901,18 @@ class Sys extends Root{
 		$size = filesize($file);
 		$name = rawurldecode($name);
 
-        if(preg_match('@Opera(/| )([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT']))
-		//if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT']))
-		$UserBrowser = "Opera";
+		if(preg_match('@Opera(/| )([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT']))
+			//if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT']))
+			$UserBrowser = "Opera";
 		elseif (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT']))
-		//elseif (ereg('MSIE ([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT']))
-		$UserBrowser = "IE";
+			//elseif (ereg('MSIE ([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT']))
+			$UserBrowser = "IE";
 		else
-		$UserBrowser = '';
+			$UserBrowser = '';
 
 		/// important for download im most browser
-/*		$mime_type = ($UserBrowser == 'IE' || $UserBrowser == 'Opera') ?
-		'application/octetstream' : 'application/octet-stream';*/
+		/*		$mime_type = ($UserBrowser == 'IE' || $UserBrowser == 'Opera') ?
+                'application/octetstream' : 'application/octet-stream';*/
 		/*if ($detectmime)header('Content-Type: ' . mime_content_type($file));
 		header('Content-Length: ' . filesize($file));
 		header("Last-Modified: " . gmdate('D, d M Y H:i:s', time()-3600) . ' GMT');
@@ -938,19 +940,19 @@ class Sys extends Root{
 		$chunksize = 1*(1024*1024);
 		$this->bytes_send = 0;
 		//if (file_exists($file)){// = fopen($file, 'r')){
-			/*if(isset($_SERVER['HTTP_RANGE']))fseek($file, $range);
-			while(!feof($file) and (connection_status()==0)){
-				$buffer = fread($file, $chunksize);
-				print($buffer);//echo($buffer); // is also possible
-				ob_flush();
-				$this->bytes_send += strlen($buffer);
-				//sleep(1);//// decrease download speed
-			}
-			fclose($file);
-			ob_end_clean();*/
-			flush();
-			ob_clean();
-			readfile($file);
+		/*if(isset($_SERVER['HTTP_RANGE']))fseek($file, $range);
+        while(!feof($file) and (connection_status()==0)){
+            $buffer = fread($file, $chunksize);
+            print($buffer);//echo($buffer); // is also possible
+            ob_flush();
+            $this->bytes_send += strlen($buffer);
+            //sleep(1);//// decrease download speed
+        }
+        fclose($file);
+        ob_end_clean();*/
+		flush();
+		ob_clean();
+		readfile($file);
 		//}else	die('error can not open file');
 		//if(isset($new_length))$size = $new_length;
 	}
@@ -958,8 +960,8 @@ class Sys extends Root{
 	function saveGroupData($id){
 		$ModulesInv = array_keys(Sys::$Modules);
 		$Modules["Systeme"] = "Rien";
- 		for ($i=0;$i<count(Sys::$Modules);$i++){
-		//	echo "OK";
+		for ($i=0;$i<count(Sys::$Modules);$i++){
+			//	echo "OK";
 			if (method_exists(Sys::$Modules[$ModulesInv[$i]],"loadSchema")){
 				Sys::$Modules[$ModulesInv[$i]]->loadSchema();
 				if (method_exists(Sys::$Modules[$ModulesInv[$i]]->Db,"saveGroupData")){
@@ -997,12 +999,12 @@ class Sys extends Root{
 		return true;
 	}
 	/**
-	* searchInMenus Permet de retrouver le menu a partir d'un champ
-	* Recherche recursivement 
-	* @param Field Champ concerné par la recherche
-	* @param Value Valeur de la recherche
-	* @return Array
-	*/
+	 * searchInMenus Permet de retrouver le menu a partir d'un champ
+	 * Recherche recursivement
+	 * @param Field Champ concerné par la recherche
+	 * @param Value Valeur de la recherche
+	 * @return Array
+	 */
 	static public function searchInMenus($Field,$Value,$Url=Array(),$Tab=Array(),$Niv=0,$all=false){
 		//echo "Search $Field $Value $Niv \r\n";
 		//Sinon on continue a analyser le lien
@@ -1025,11 +1027,11 @@ class Sys extends Root{
 		return $Url;
 	}
 	/**
-	* GetMenu Permet de retrouver le menu a partir d'une requete sur les menus de l'utilisateur courant
-	* @param query Requete
-	* @param all permet une recherche sur la globalité des menus
-	* @return Array[String]
-	*/
+	 * GetMenu Permet de retrouver le menu a partir d'une requete sur les menus de l'utilisateur courant
+	 * @param query Requete
+	 * @param all permet une recherche sur la globalité des menus
+	 * @return Array[String]
+	 */
 	static public function getMenus($Query,$all = false,$strict=true){
 		//On analyse la requete
 		$Infos = Info::getInfos($Query);
@@ -1041,19 +1043,19 @@ class Sys extends Root{
 			//On recupere les détails de l'objet demandé dans le cas d'une recherche directe
 			if ($Infos["TypeSearch"]=="Direct"){
 				$Q = $Query;
-                if (!$strict) {
-                    //si pas strict alors on recherche
-                    $C = Sys::$Modules[$Infos['Module']]->callData($Q, false, 0, 1);
-                    if (isset($C) && is_array($C) && sizeof($C)) {
-                        $C = genericClass::createInstance($Infos['Module'], $C[0]);
-                        //Cas ou il s'agit d'un objet
-                        $Ap = Array();
-                        if ($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id != $Q)
-                            $Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id, "");
-                        if (isset($C->Url) && !empty($C->Url)) $Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Url, "");
-                        $up = (isset($C->Url)) ? $C->Url : $C->Id;
-                    }
-                }
+				if (!$strict) {
+					//si pas strict alors on recherche
+					$C = Sys::$Modules[$Infos['Module']]->callData($Q, false, 0, 1);
+					if (isset($C) && is_array($C) && sizeof($C)) {
+						$C = genericClass::createInstance($Infos['Module'], $C[0]);
+						//Cas ou il s'agit d'un objet
+						$Ap = Array();
+						if ($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id != $Q)
+							$Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id, "");
+						if (isset($C->Url) && !empty($C->Url)) $Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Url, "");
+						$up = (isset($C->Url)) ? $C->Url : $C->Id;
+					}
+				}
 			}
 			if (isset($Infos['Historique'][0]['DataSource'])&&(!$strict||$Infos["TypeSearch"]=="Interface")){
 				$rest = explode($Infos['Module'].'/'.$Infos['Historique'][0]['DataSource'].'/',$Query);
@@ -1064,19 +1066,19 @@ class Sys extends Root{
 		//cas child
 		if (isset($Infos["TypeSearch"])&&($Infos["NbHisto"]==1&&$Infos["TypeSearch"]=="Child")&&!$strict){
 			//dans ce cas la on extrait le module et la cible pour comparer avec les menus
-            
+
 		}
 
 		$Ap[] = Array($Query,"");
 		if ($all){
 			//récupération de la liste de l'ensemble des menus
-            if (!is_array(Sys::$allMenus) || !sizeof(Sys::$allMenus)) {
-                Sys::$allMenus = Sys::getData('Systeme', 'Menu/*', 0, 10000);
-                __autoload("Storproc");
-                Sys::$allMenus = StorProc::sortRecursivResult(Sys::$allMenus, "Menus");
-                Sys::$allMenus = Root::quickSort(Sys::$allMenus, "Ordre");
-            }
-            $Menus = Sys::$allMenus;
+			if (!is_array(Sys::$allMenus) || !sizeof(Sys::$allMenus)) {
+				Sys::$allMenus = Sys::getData('Systeme', 'Menu/*', 0, 10000);
+				__autoload("Storproc");
+				Sys::$allMenus = StorProc::sortRecursivResult(Sys::$allMenus, "Menus");
+				Sys::$allMenus = Root::quickSort(Sys::$allMenus, "Ordre");
+			}
+			$Menus = Sys::$allMenus;
 			$out=Array();
 		}else $Menus = NULL;
 		foreach ($Ap as $a){
@@ -1095,88 +1097,88 @@ class Sys extends Root{
 		else return Array();
 	}
 	/**
-	* GetMenu Permet de retrouver le menu a partir d'une requete sur les menus de l'utilisateur courant
-	* @param query Requete 
-	* @return String 
-	*/
+	 * GetMenu Permet de retrouver le menu a partir d'une requete sur les menus de l'utilisateur courant
+	 * @param query Requete
+	 * @return String
+	 */
 	static public function getMenu($Query, $strict = false){
 		$m = Sys::getMenus($Query,false,$strict);
 		$out='';
 		if ($m){
 			foreach ($m as $a) {
-                $out .= ((!empty($out)) ? '/' : '') . $a->Url;
-                if (isset($a->MenuParent)&&sizeof($a->MenuParent)&&is_object($a->MenuParent[0])){
-                	$out = $a->MenuParent[0]->Url.'/'.$out;
+				$out .= ((!empty($out)) ? '/' : '') . $a->Url;
+				if (isset($a->MenuParent)&&sizeof($a->MenuParent)&&is_object($a->MenuParent[0])){
+					$out = $a->MenuParent[0]->Url.'/'.$out;
 				}
-            }
+			}
 		}else{
 			$out = $Query;
 		}
 		return $out;
 	}
 	/**
-	* Get module
-	*/
+	 * Get module
+	 */
 	static function getModule($N){
 		return isset(Sys::$Modules[$N]) ? Sys::$Modules[$N] : false;
 	}
-	
+
 	/**
 	 * getOneData
 	 * Static call of callData with only one result
 	 * @return Object or null
 	 */
-	 static function getOneData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false){
-         $obj = explode('/',$Query,2);
-         $obj = $obj[0];
-         $RestQuery = $obj[1];
-         //on vérfiie la surchagre de getData
-         if (method_exists($obj, "getData")){
-             return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
-         }
-	 	$o= Sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
+	static function getOneData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false){
+		$obj = explode('/',$Query,2);
+		$obj = $obj[0];
+		$RestQuery = $obj[1];
+		//on vérfiie la surchagre de getData
+		if (method_exists($obj, "getData")){
+			return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
+		}
+		$o= Sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			return $o[0];
 		else return null;
-	 }
+	}
 
 	/**
 	 * getData
 	 * Static call of callData
 	 */
-	 static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false ){
-	 	if (!isset(Sys::$Modules[$Module])) return array();
-	 	$obj = explode('/',$Query,2);
-	 	$RestQuery = isset($obj[1]) ? $obj[1] : '';
-	 	$obj = $obj[0];
-	 	//on vérfiie la surchagre de getData
-		 if (method_exists($obj, "getData")){
-			 return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
-		 }
-	 	$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
+	static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false ){
+		if (!isset(Sys::$Modules[$Module])) return array();
+		$obj = explode('/',$Query,2);
+		$RestQuery = isset($obj[1]) ? $obj[1] : '';
+		$obj = $obj[0];
+		//on vérfiie la surchagre de getData
+		if (method_exists($obj, "getData")){
+			return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
+		}
+		$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			$o[$k] = genericClass::createInstance($Module,$t);
 		else $o = Array();
 		return $o;
-	 }
+	}
 
 	/**
 	 * getCount
 	 * Static call of callData
 	 */
-	 static function getCount($Module, $Query){
-	 	$obj = explode('/',$Query,2);
-	 	$RestQuery = null;
-	 	if(!empty( $obj[1]))
-	 		$RestQuery = $obj[1];
-	 	$obj = $obj[0];
-	 	//on vérfiie la surchagre de getCount
+	static function getCount($Module, $Query){
+		$obj = explode('/',$Query,2);
+		$RestQuery = null;
+		if(!empty( $obj[1]))
+			$RestQuery = $obj[1];
+		$obj = $obj[0];
+		//on vérfiie la surchagre de getCount
 		if (method_exists($obj, "getCount")){
 			return call_user_func($obj .'::getCount',$RestQuery);
 		}
-	 	$o= Sys::$Modules[$Module]->callData($Query, false, 0, 1000000, '', '', 'COUNT(DISTINCT(m.Id))', '' );
+		$o= Sys::$Modules[$Module]->callData($Query, false, 0, 1000000, '', '', 'COUNT(DISTINCT(m.Id))', '' );
 		return isset($o[0]) ? $o[0]['COUNT(DISTINCT(m.Id))'] : 0;
-	 }
+	}
 
 	/**
 	 * Affiche le sitemap et termine la page
@@ -1213,32 +1215,32 @@ class Sys extends Root{
 	}
 
 	/**********************************
-	* ETAPE 4
-	***********************************/
-    /**
-     * Cloture transaction
-     */
-    /*function CommitTransaction() {
+	 * ETAPE 4
+	 ***********************************/
+	/**
+	 * Cloture transaction
+	 */
+	/*function CommitTransaction() {
         if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
         if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
     }*/
-    public static function commitTransaction() {
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-    }
-    public static function startTransaction() {
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=0");
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
-    }
-    public static function autocommitTransaction() {
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
-        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-    }
-    /**
+	public static function commitTransaction() {
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+	}
+	public static function startTransaction() {
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=0");
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
+	}
+	public static function autocommitTransaction() {
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+		if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+	}
+	/**
 	 *
-	* Fermeture des connexions
-	*/
+	 * Fermeture des connexions
+	 */
 	function Close() {
 		foreach (Sys::$Modules as $Key=>$Mod){
 			if ($Mod->SchemaLoaded) {Sys::$Modules[$Key]->Db->close();}
@@ -1247,51 +1249,51 @@ class Sys extends Root{
 		if (is_object($this->Connection))$this->Connection->close();
 		if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
 
-        $Pages = array();
+		$Pages = array();
 
-        if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
-        //Gestion des mots clefs
-        foreach (Sys::$keywords as $k=>$m){
-            $t = Sys::getOneData('Systeme','Tag/Canonic='.$k);
-            $tmpPages = $m->Pages;
-            $tmpPoids = $m->Poids;
-            if (is_object($t)) {
-                $m=$t;
-            }
-            $m->Save();
-            if (is_array($tmpPages)){
-                foreach ($tmpPages as $p) {
-                    if (!isset($Pages[$p])) {
-                        $Pages[$p] = Sys::getOneData('Systeme', 'Page/' . $p);
-                    }
-                    $Pages[$p]->AddParent($m);
-                }
-            }
-        }
+		if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
+		//Gestion des mots clefs
+		foreach (Sys::$keywords as $k=>$m){
+			$t = Sys::getOneData('Systeme','Tag/Canonic='.$k);
+			$tmpPages = $m->Pages;
+			$tmpPoids = $m->Poids;
+			if (is_object($t)) {
+				$m=$t;
+			}
+			$m->Save();
+			if (is_array($tmpPages)){
+				foreach ($tmpPages as $p) {
+					if (!isset($Pages[$p])) {
+						$Pages[$p] = Sys::getOneData('Systeme', 'Page/' . $p);
+					}
+					$Pages[$p]->AddParent($m);
+				}
+			}
+		}
 
-        //Gestion des pages
-        foreach ($Pages as $page) $page->Save();
+		//Gestion des pages
+		foreach ($Pages as $page) $page->Save();
 
-        if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
+		if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
 
-        $this->Log->log("---------------------------------------- CLOSE----------------------------------------");
+		$this->Log->log("---------------------------------------- CLOSE----------------------------------------");
 		flush();
-        session_write_close();
+		session_write_close();
 	}
 
 	function restartTransaction(){
 		if (is_object($this->Db[0])){
 			$this->Db[0]->query("COMMIT");
-		} 
+		}
 		$this->connectSQL();
 	}
 	/**********************************
-	* TEMPLATES
-	***********************************/
+	 * TEMPLATES
+	 ***********************************/
 	/**
-	* getTemplates
-	* @return renvoie la liste des templates disponibles
-	*/
+	 * getTemplates
+	 * @return renvoie la liste des templates disponibles
+	 */
 	public function getTemplates() {
 		$dir = "Templates";
 		$out=Array();
@@ -1303,15 +1305,15 @@ class Sys extends Root{
 			}
 			closedir($handle);
 		}
-		return $out;	
+		return $out;
 	}
 	/**********************************
-	* SEARCH TAGS
-	***********************************/
+	 * SEARCH TAGS
+	 ***********************************/
 	/**
-	* getSearch
-	* @return renvoie la liste des resultats de recherches
-	*/
+	 * getSearch
+	 * @return renvoie la liste des resultats de recherches
+	 */
 	public function getSearch($Search) {
 		$S = Utils::Canonic($Search);
 		$domain =Sys::$domain;

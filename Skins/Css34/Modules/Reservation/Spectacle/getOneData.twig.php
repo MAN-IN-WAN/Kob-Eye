@@ -83,7 +83,7 @@ $curmen = '/sorties/';
 foreach ($vars['rows'] as $k=>$v){
 
     //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#fff';
+    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
     $v->genre = $genres[$v->Genre];
 
     //URL
@@ -117,7 +117,8 @@ foreach ($vars['rows'] as $k=>$v){
             case 'html':
             case 'raw':
                 //transformation des timestamps en format js
-                $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
+//                $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
+//                $v->{$f['name']} = htmlspecialchars_decode($v->{$f['name']});
                 //Clean des symboles twig
                 $v->{$f['name']} = str_replace('{{','{&zwnj;{', $v->{$f['name']});
                 $v->{$f['name']} = str_replace('}}','}&zwnj;}', $v->{$f['name']});

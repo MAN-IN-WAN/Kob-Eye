@@ -17,6 +17,10 @@
 //FONTS
 <link href="https://fonts.googleapis.com/css?family=Baloo&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+//DatePicker -> https://www.npmjs.com/package/vuejs-datepicker
+<script src="https://unpkg.com/vuejs-datepicker"></script>
+<script src="https://unpkg.com/vuejs-datepicker/dist/locale/translations/fr.js"></script>
 [/HEADER]
 
 //CUSTOM VUEJS

@@ -33,7 +33,8 @@
                 </div>
                 <div class="row fiche-propriete">
                     <div class="col-lg-9">{{ spectacle.DateDebut }}</div>
-                    <div class="col-lg-3">{{ spectacle.Duree }} mins</div>
+                    <div v-if="parseInt(spectacle.Duree)" class="col-lg-3">{{ spectacle.Duree }} mins</div>
+                    <div v-else class="col-lg-3">Durée non communiquée</div>
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -46,7 +47,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="e in spectacle.events">
-                            <td>{{ e.DateDebut }}</td>
+                            <td :inner-html.prop="e.DateDebut | timestamp"></td>
                             <td>{{ e.Salle.Nom }}</td>
                             <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
                             <td>
@@ -71,8 +72,8 @@
             </div>
             <div class="col-lg-4" id="description">
                 <h1 :style="{backgroundColor: spectacle.Couleur}">{{ spectacle.Nom }}</h1>
-                <img :src="'/'+spectacle.Logo+'.limit.400x600.jpg'" class="img-responsive"/>
-                <p >{{ spectacle.Resume }}</p>
+                <img :src="'/'+spectacle.Logo" class="img-responsive"/>
+                <p v-html="spectacle.Resume"></p>
                 <div>
                     <h3>ACCES</h3>
                     <p >{{ spectacle.Acces }}</p>
@@ -113,6 +114,7 @@
             $route: function () {
                 console.log('before route watch',window.spec.spectacle);
                 var to = this.$route.params.url;
+                if (to == undefined)  return false;
                 if (window.spec.spectacle){
                     this.spectacle = window.spec.spectacle;
                     this.display = true;
