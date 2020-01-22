@@ -1,0 +1,36 @@
+<!-- LoginUTL -->
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER]
+<meta name="author" content="Paul Gordon Fisher"/>
+<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+<script src="/Skins/AngularAdmin/assets/vendors/spin.js/spin.js"></script>
+<script src="/Skins/AngularAdmin/assets/vendors/spin.js/jquery.spin.js"></script>
+<link href="Skins/LoginCadref/Img/favicon_uatl.png" rel="icon" type="image/png">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+[/HEADER]
+
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header cadref-modal-header">
+				<div class="row">
+					<div class="col-md-6 cadref-header">
+						<img class="cadref-logo" src="/Skins/LoginCadref/Img/logo_uatl.png" alt="UATL">
+					</div>
+					<div class="col-md-6 cadref-header cadref-header-name">
+						<div class="cadref-name">
+							<span class="cadref-title">UATL</span>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="modal-body cadref-modal-body">
+                [DATA]
+            </div>
+        </div>
+    </div>
+</div>

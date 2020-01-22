@@ -309,7 +309,7 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 			case 'codex':		
 			case 'glyphe':		
 			case 'personne':		
-				$pres = $args['text'];
+				$pres = strtolower($args['text']);
 				break;
 			default:
 				$pres = str_replace('.', '_', strtolower($args['text']));
