@@ -148,7 +148,7 @@
 								<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ panierObj.Montant }]}</label>
 							</div>
 							<div class="col-md-2">
-								<label class="form-control-label cadref-label" style="line-height:1">Cotisation CADREF : {[{ panierObj.CotisationDue*1>0 ? '€ '+panierObj.CotisationDue : 'déjà réglée' }]}</label>
+								<label class="form-control-label cadref-label" style="line-height:1">Cotisation {{ UTL }} : {[{ panierObj.CotisationDue*1>0 ? '€ '+panierObj.CotisationDue : 'déjà réglée' }]}</label>
 							</div>
 							<div class="col-md-2" ng-if="panierObj.affSolde">
 								<label class="form-control-label cadref-label" style="line-height:1">Solde dû : {[{ '€ '+panierObj.Solde }]}</label>
@@ -196,7 +196,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-6">
-						<label class="form-control-label cadref-label">Cotisation CADREF {{ Annees }}</label>
+						<label class="form-control-label cadref-label">Cotisation {{ UTL }} {{ Annees }}</label>
 					</div>
 					<div class="col-md-6">
 						<label class="form-control-label cadref-label" ng-if="panierObj.CotisationDue*1">€ {[{ panierObj.CotisationDue }]}</label>

@@ -2,7 +2,11 @@
 
 class Cadref extends Module {
 
-	public static $Annee = null;
+	public static $UTL;
+	public static $TEL;
+	public static $MAIL;
+	public static $WEB;
+	public static $Annee;
 	public static $Cotisation = null;
 	public static $Group = null;
 
@@ -24,6 +28,12 @@ class Cadref extends Module {
 		self::$Cotisation = $annee->Cotisation;
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
+		$utl = Sys::getOneData('Cadref', 'Parametre/Domaine=UTL&SousDomaine=UTL&Parametre=UTL');
+		$utl = explode('|', $utl->Valeur);
+		self::$UTL = $utl[0];
+		self::$TEL = $utl[1];
+		self::$MAIL = $utl[2];
+		self::$WEB = $utl[3];
 
 		if(isset($_GET['classe'])) {
 			$_SESSION['classe'] = serialize(strtoupper($_GET['classe']));
@@ -191,9 +201,9 @@ class Cadref extends Module {
 			}
 			$data['success'] = 1;
 			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
-			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
+			if($u) $data['message'] = 'Votre espace '.Cadref::$UTL.' existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
 			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
-		} else $data['message'] = "Aucun adhérent ne correspond à ces critères.<br>Si vous ne parvenez pas à vous identifier veuillez contacter le CADREF au 04.66.36.99.44.";
+		} else $data['message'] = "Aucun adhérent ne correspond à ces critères.<br>Si vous ne parvenez pas à vous identifier veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
@@ -228,7 +238,7 @@ class Cadref extends Module {
 		
 		if(strpos($a->Mail, '@') > 0) {
 			$s = self::MailCivility($a);
-			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+			$s .= $new ? "Votre espace utilisateur vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
 			$s .= "Vos paramètres de connexion sont les suivants :<br /><br />";
 			$s .= "Code utilisateur : <strong>$num</strong><br />Mot de Passe : <strong>$pass</strong><br /><br />";
 			if($confirm) {
@@ -236,8 +246,8 @@ class Cadref extends Module {
 				$s .= 'Pensez à compléter les informations dans la rubrique "Info personnelles".<br /><br />';
 			}
 			$s .= self::MailSignature();
-			$params = array('Subject'=>($new ? 'CADREF : Bienvenue dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
-				'To'=>array($a->Mail,'contact@cadref.com'), 'Body'=>$s);
+			$params = array('Subject'=>($new ? Cadref::$UTL.' : Bienvenue dans votre nouvel espace utilisateur.' : Cadref::$UTL.' : Nouveau mot de passe.'),
+				'To'=>array($a->Mail,Cadref::$MAIL), 'Body'=>$s);
 			self::SendMessage($params);
 		}
 		$msg = "Code utilisateur: $num\nMote de passe: $pass\n";
@@ -298,11 +308,11 @@ class Cadref extends Module {
 		$s .= "Votre nouveau mot de passe est : <strong>$new</strong><br /><br />";
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
 		$s .= self::MailSignature();
-		$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
+		$params = array('Subject'=>(Cadref::$UTL.' : Changement de mot de passe.'),
+			'To'=>array($mail,Cadref::$MAIL), 'Body'=>$s);
 		self::SendMessage($params);
 
-		$msg = "CADREF : Changement de mot de passe.\nMot de passe: $new\n";
+		$msg = Cadref::$UTL." : Changement de mot de passe.\nMot de passe: $new\n";
 		$params = array('Telephone1'=>$tel1,'Telephone2'=>$tel2,'Message'=>$msg);
 		self::SendSms($params);
 		
@@ -341,7 +351,7 @@ class Cadref extends Module {
 		}
 		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
 		if(count($adh)) {
-			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br><br>Si vous êtes déjà adhérent utiliser l'option \"Activer mon compte\"<br>sinon veuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Il existe déjà un adhérent avec cette adresse mail.<br><br>Si vous êtes déjà adhérent utiliser l'option \"Activer mon compte\"<br>sinon veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
 			return json_encode($data);			
 		}
 		
@@ -383,7 +393,7 @@ class Cadref extends Module {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
-			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br><br>Si vous êtes déjà adhérent utiliser l'option \"Activer mon compte\"<br>sinon veuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Il existe déjà un adhérent avec ce numéro de téléphone.<br><br>Si vous êtes déjà adhérent utiliser l'option \"Activer mon compte\"<br>sinon veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
 			return json_encode($data);			
 		}
 		
@@ -394,7 +404,7 @@ class Cadref extends Module {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
 			$s = "Il existe déjà un adhérent avec ce nom et ce prénom.<br>";
-			$s .= "Si vous n'avez jamais été adhérent veuillez contacter le CADREF au 04.66.36.99.44.<br>";
+			$s .= "Si vous n'avez jamais été adhérent veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".<br>";
 			$s .= "Sinon veuiller utiliser l'option \"Activer mon compte\"";
 			$data['message'] = $s;
 			return json_encode($data);			
@@ -429,8 +439,8 @@ class Cadref extends Module {
 		$s .= "<strong><a href=\"https://gestion.cadref.com/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
 		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
 		$s .= self::MailSignature();
-		$params = array('Subject'=>('CADREF : Confirmation d\'enregistrement.'),
-			'To'=>array($mail,'contact@cadref.com'), 'Body'=>$s);
+		$params = array('Subject'=>(Cadref::$UTL.' : Confirmation d\'enregistrement.'),
+			'To'=>array($mail,Cadref::$MAIL), 'Body'=>$s);
 		self::SendMessage($params);
 
 		$data['success'] = 1;
@@ -451,7 +461,7 @@ class Cadref extends Module {
 		}
 		$a = Sys::getOneData('Cadref', 'Register/'.$info[0]);
 		if(!$a || $a->Mail != $info[1]) {
-			$data['message'] = "Une erreur c'est produite.<br />Veuillez contacter le CADREF au 04.66.36.99.44.";
+			$data['message'] = "Une erreur c'est produite.<br />Veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
 			return json_encode($data);
 		}
 		if($a->Confirme) {
@@ -892,9 +902,6 @@ where ce.Classe=$cid
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
 		return $p->Texte;
 		self::$MailLogo = $p->Valeur;
-//		$s = "<br /><br />A bientôt,<br />L'équipe du CADREF<br /><br />";
-//		$s .= '<img alt="CADREF" src="cid:cadref_logo">';
-//		return $s;
 	}
 
     public static function SendSms($params) {
@@ -910,14 +917,14 @@ where ce.Classe=$cid
 			$api_instance = new Isendpro\Api\SmsApi();
 			$smsrequest = new Isendpro\Model\SmsUniqueRequest();
 			$smsrequest["keyid"] = SMS_API;
-			$smsrequest["emetteur"] = 'CADREF';
+			$smsrequest["emetteur"] = Cadref::$UTL;
 			$smsrequest["num"] = $tel;
 			$smsrequest["sms"] = $params['Message'];
 			
 			try {
 				$api_instance->sendSms($smsrequest);
 			} catch (Exception $e) {
-				klog::l('CADREF ISendPro Exception :',print_r($e->getResponseObject(),1));
+				klog::l('ISendPro Exception :',print_r($e->getResponseObject(),1));
 			}
 		}
 

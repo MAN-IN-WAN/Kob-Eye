@@ -33,7 +33,7 @@ class PrintPresence extends FPDF {
 		$this->fin = $fin;
 		$this->mois = $mois;
 
-		$this->titre = "Fiche de présence CADREF";
+		$this->titre = "Fiche de présence ".Cadref::$UTL;
 	}
 	
 	private function cv($txt) {
