@@ -8,7 +8,7 @@
 <link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/spin.js"></script>
 <script src="/Skins/AngularAdmin/assets/vendors/spin.js/jquery.spin.js"></script>
-<link href="Skins/LoginCadref_UATL/Img/favicon_uatl.png" rel="icon" type="image/png">
+<link href="Skins/LoginCadref_UATL/Img/uatl-favicon.png" rel="icon" type="image/png">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 [/HEADER]
 
@@ -19,7 +19,7 @@
             <div class="modal-header cadref-modal-header">
 				<div class="row">
 					<div class="col-md-6 cadref-header">
-						<img class="cadref-logo" src="/Skins/LoginCadref_UATL/Img/logo_uatl.png" alt="UATL">
+						<img class="cadref-logo" src="/Skins/LoginCadref_UATL/Img/uatl-logo.jpg" alt="UATL">
 					</div>
 					<div class="col-md-6 cadref-header cadref-header-name">
 						<div class="cadref-name">
