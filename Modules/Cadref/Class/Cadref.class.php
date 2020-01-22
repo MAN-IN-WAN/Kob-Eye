@@ -874,6 +874,7 @@ where ce.Classe=$cid
 		if(!$adh) $e->description .= "\n".$p['CodeClasse'];
 		return $e;
 	}
+
 		
 	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');

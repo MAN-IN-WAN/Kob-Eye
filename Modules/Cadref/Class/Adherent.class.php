@@ -37,6 +37,7 @@ class Adherent extends genericClass {
 	}
 	
 	public function GetScanCount($annee) {
+		
 		if(Cadref::$UTL != 'CADREF') return array('scan'=>$n);
 			
 		$dd = strtotime('dmY','0108'.$annee);
@@ -1286,6 +1287,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 		}
 	}
+
 
 	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;
