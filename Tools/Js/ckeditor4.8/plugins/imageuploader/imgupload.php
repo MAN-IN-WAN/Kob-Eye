@@ -62,15 +62,21 @@ $filename = "$imgnumber$randomLetters.$ext";
 $target_file = $target_dir . $filename;
 $ckfile = $ckpath . $filename;
 $uploadOk = 1;
-$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if image file is a actual image or fake image
-$check = getimagesize($_FILES["upload"]["tmp_name"]);
-if($check !== false) {
-    $uploadOk = 1;
-} else {
-    echo "<script>alert('".$uploadimgerrors1."');</script>";
-    $uploadOk = 0;
+
+if (!in_array($ext, $exceptions)){
+    $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["upload"]["tmp_name"]);
+    if($check !== false) {
+        $uploadOk = 1;
+    } else {
+        echo "<script>alert('".$uploadimgerrors1."');</script>";
+        $uploadOk = 0;
+    }
+}else{
+    $imageFileType = 'exc';
 }
+
 // Check if file already exists
 if (file_exists($target_file)) {
     echo "<script>alert('".$uploadimgerrors2."');</script>";
@@ -84,7 +90,7 @@ if ($_FILES["upload"]["size"] > 20024000) {
 }
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" && $imageFileType != "ico" ) {
+&& $imageFileType != "gif" && $imageFileType != "ico"  && $imageFileType != "exc") {
     echo "<script>alert('".$uploadimgerrors4."');</script>";
     $uploadOk = 0;
 }

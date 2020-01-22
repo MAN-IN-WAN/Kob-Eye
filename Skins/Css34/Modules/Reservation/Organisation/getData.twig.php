@@ -69,7 +69,7 @@ $vars['children'] = $getCchild;
 
 
 //CURRENT MENU
-$curmen = '/partenaires/';
+$curmen = '/Partenaires/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);

@@ -15,7 +15,7 @@ function showImage(imgSrc, imgStyle) {
 }
 
 // Open editbar
-function showEditBar(imgSrc, imgStyle, imgID, imgName,funcNumber) {
+function showEditBar(imgSrc, imgStyle, imgID, imgName,funcNumber,hidevue) {
     var imgSrc = imgSrc;
     var imgStyle = imgStyle;
     var imgID = imgID;
@@ -29,10 +29,11 @@ function showEditBar(imgSrc, imgStyle, imgID, imgName,funcNumber) {
     
     $("#updates").css("visibility", "hidden"); 
     $("#updates").slideUp(150);
-    
     $("#editbarDelete").attr("onclick","deleteImg('" + imgName + "', '" + imgID + "');");
     $("#editbarUse").attr("onclick","useImage('" + imgSrc +"',"+ funcNumber+ ")");
     $("#editbarView").attr("onclick","showImage('" + imgSrc + "','" + imgStyle + "')");
+    hidevue = true;
+    if (hidevue) $("#editbarView").remove();
     $("#editbarDownload").attr("href", imgSrc);
 }
 

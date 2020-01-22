@@ -21,7 +21,8 @@
                 <img :src="'/'+spectacle.Logo+'.mini.300x320.jpg'" class="card-img-top img-responsive" alt="">
                 <div class="card-body" :style="{backgroundColor: spectacle.Couleur}">
                     <p class="card-text">{{ spectacle.Genre  }}</p>
-                    <p class="card-text">du {{ spectacle.DateDebut |date('d/m/Y H:i', timezone="Europe/Paris")  }} au {{ spectacle.DateFin |date('d/m/Y H:i', timezone="Europe/Paris")  }}</p>
+                    <p class="card-text" v-if="spectacle.DateDebut !== spectacle.DateFin">du {{ spectacle.DateDebut |date('d/m/Y H:i', timezone="Europe/Paris")  }} au {{ spectacle.DateFin |date('d/m/Y H:i', timezone="Europe/Paris")  }}</p>
+                    <p class="card-text" v-else>le {{ spectacle.DateDebut |date('d/m/Y H:i', timezone="Europe/Paris")  }}</p>
                     <p class="card-text">à {{ spectacle.Localisation  }}</p>
                     <h5 class="card-title">{{ spectacle.Nom  }}</h5>
                     <p class="card-text">{{ spectacle.Ville  }} - {{ spectacle.TypePublic  }}</p>

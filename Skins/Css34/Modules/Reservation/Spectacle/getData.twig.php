@@ -105,7 +105,7 @@ for ($i=0; $i<$nbbig;$i++) {
 }
 
 //CURRENT MENU
-$curmen = '/sorties/';
+$curmen = '/Sorties/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);

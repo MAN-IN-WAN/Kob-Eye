@@ -445,6 +445,7 @@ p{
 /****** CONTENU *******/
 #cms-page{
 	background-color: plum;
+	margin-bottom: 10px;
 }
 
 
@@ -472,3 +473,6 @@ p{
 #partenaires .autres {
 	padding:20px;
 }
+.Publicite.BlocImgCover figure { margin:-9px;}
+
+#cms-page.row { margin-left:-30px; margin-right: -30px;}
