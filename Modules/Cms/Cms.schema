@@ -9,6 +9,7 @@
 		</CATEGORY>
 		<CATEGORY title="Configuration" fold="1">
 			<PROPERTIES type="file"  fiche="1" form="1">Icone</PROPERTIES>
+			<PROPERTIES type="varchar"  fiche="1" description="Classe CSS" form="1">Classe</PROPERTIES>
 			<PROPERTIES type="int"  fiche="1" form="1">Ordre</PROPERTIES>
 			<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="0" auto="1" hidden="1">Template</PROPERTIES>
 			<FKEY card="0,1" data="Page,Id" fiche="1" form="1" >PageId</FKEY>

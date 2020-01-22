@@ -24,7 +24,7 @@ class Evenement extends genericClass {
 			$this->Nom = $S->Nom;
 			$S->Save();
 		}
-		if ($Valid) $this->Valide=1; else $this->Valide=0;
+//		if ($Valid) $this->Valide=1; else $this->Valide=0;
 		genericClass::Save();
 	}
 	

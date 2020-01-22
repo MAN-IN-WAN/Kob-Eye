@@ -158,7 +158,7 @@
     <br />
     <div class="hrNews"></div>
     <p class="description">
-        The default upload folder is <b>Skins/Public/Images</b>. You can't change it.
+        The default upload folder is <b>Home/Uploader</b>. You can't change it.
     </p> 
     <div class="hrNews hrNews2"></div>
 </div>

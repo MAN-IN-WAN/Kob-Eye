@@ -27,7 +27,7 @@ if(isset($_SESSION['username'])){
         $newpath = filter_input(INPUT_POST, 'newpath', FILTER_SANITIZE_STRING);
         $root = $_SERVER['DOCUMENT_ROOT'];
         $data = '
-    $useruploadfolder = "Skins/Public/Images";
+    $useruploadfolder = "Home/Uploader";
     $useruploadpath = $usersiteroot."$useruploadfolder/";
     $foldershistory[] = "'.$newpath.'";
         '.PHP_EOL;
@@ -155,9 +155,10 @@ $browserfolder = pathinfo("$_SERVER[REQUEST_URI]");
 $browserfolder = ltrim($browserfolder["dirname"], '/');
 $usersiteroot = substr($_SERVER["SCRIPT_FILENAME"], 0, (stripos($_SERVER["SCRIPT_FILENAME"], $_SERVER["SCRIPT_NAME"])+1));
 
-$useruploadfolder = "Skins/Public/Images";
+$useruploadfolder = "Home/Uploader";
 $useruploadpath = $usersiteroot."$useruploadfolder/";
 $foldershistory[] = $useruploadfolder;
+$exceptions = array('pdf', 'zip', 'docx');
 
 
 

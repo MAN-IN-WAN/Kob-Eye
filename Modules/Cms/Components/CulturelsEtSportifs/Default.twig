@@ -1,7 +1,7 @@
 <div>
     <ul>
-    {% for client in clients %}
-        <li>{{ client.Nom }}</li>
+    {% for organisation in organisations %}
+        <li><a href="{{ Lien }}/{{ organisation.Url }}">{{ organisation.Nom }}</a></li>
     {% endfor %}
     </ul>
 </div>

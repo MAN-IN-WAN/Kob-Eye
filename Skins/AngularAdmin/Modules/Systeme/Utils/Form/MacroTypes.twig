@@ -201,5 +201,5 @@
 
 /** CKEDITOR **/
 {% macro formCke(field,obj,id) %}
-    <textarea {% if not (id is empty) %}id="{{ id }}"{% endif %} ckeditor="options" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="{{ obj }}.{{ field.name }}" ng-trim="false"></textarea>
+    <textarea {% if not (id is empty) %}id="{{ id }}"{% endif %} ckeditor="ckFull" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="{{ obj }}.{{ field.name }}" ng-trim="false"></textarea>
 {% endmacro %}
