@@ -221,7 +221,7 @@ class Cadref extends Module {
 			$u = genericClass::createInstance('Systeme', 'User');
 			$u->addParent($g);
 			$u->Login = $num;
-			$u->Mail = $num.'@cadref.com';
+			$u->Mail = $num.'@utl.com';
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}
@@ -436,7 +436,7 @@ class Cadref extends Module {
 		$info = base64_encode($adh->Id.','.$mail.','.time());
 		$s = "Bonjour ".($sex == 'H' ? 'Monsieur' : 'Madame')." $pre $nom,<br /><br /><br />";
 		$s .= 'Appuyez sur le lien ci-dessous pour confirmer votre inscription :<br /><br />';
-		$s .= "<strong><a href=\"https://gestion.cadref.com/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
+		$s .= "<strong><a href=\"https://utl.abtel.cloud/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
 		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>(Cadref::$UTL.' : Confirmation d\'enregistrement.'),
@@ -692,7 +692,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		}
 		// cours
 		if($group != 'CADREF_ADMIN' && $group != 'CADREF_BENE') {
-			$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
 				$cd = 0;
@@ -761,7 +761,7 @@ select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance,v.W
 from `##_Cadref-Visite` v
 where v.DateVisite>=$start and v.DateVisite<=$end";
 
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
 			if(!$args->visites) continue;  // && !$p['rid']
@@ -874,11 +874,12 @@ where ce.Classe=$cid
 		if(!$adh) $e->description .= "\n".$p['CodeClasse'];
 		return $e;
 	}
+
 		
 	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-		else $m->From = "noreply@cadref.com";		
+		else $m->From = "noreply@uatl-eca.fr";	
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
 		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
 		

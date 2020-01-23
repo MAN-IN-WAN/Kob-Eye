@@ -37,6 +37,9 @@ class Adherent extends genericClass {
 	}
 	
 	public function GetScanCount($annee) {
+		
+		if(Cadref::$UTL != 'CADREF') return array('scan'=>$n);
+			
 		$dd = strtotime('dmY','0108'.$annee);
 		$df = strtotime('dmY','3107'.($annee+1));
 		
@@ -1285,6 +1288,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 	}
 
+
 	function PublicSendMessage($params) {
 		$annee = Cadref::$Annee;
 		$id = $this->Id;
@@ -1311,7 +1315,7 @@ where i.ClasseId=".substr($to, 2)." and a.Mail like '%@%'";
 				$args['To'] = array($r['Mail']);
 				$ret = Cadref::SendMessage($args);
 			}
-			$args['To'] = array('contact@cadref.com');
+			$args['To'] = array(Cadref::$MAIL);
 		}
 		else $args['To'] = array($to,Cadref::$MAIL);
 		
