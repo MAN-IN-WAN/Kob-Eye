@@ -468,9 +468,9 @@ class Spectacle extends genericClass {
 
 					$html .=  "<tr>
 								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
-								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
-								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
-								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateDebut)."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateFin)."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateCloture)."</td>
 								<td style='padding:5px 15px;'>".$salle->Nom."</td>
 								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
 							</tr>";
@@ -533,9 +533,9 @@ class Spectacle extends genericClass {
 
 					$html .=  "<tr>
 								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
-								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
-								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
-								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateDebut)."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateFin)."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateCloture)."</td>
 								<td style='padding:5px 15px;'>".$salle->Nom."</td>
 								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
 							</tr>";
@@ -604,7 +604,7 @@ class Spectacle extends genericClass {
 								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
 								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
 								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
-								<td style='padding:5px 15px;'>".$evt->DateCloture."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateCloture)."</td>
 								<td style='padding:5px 15px;'>".$salle->Nom."</td>
 								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>
 							</tr>";

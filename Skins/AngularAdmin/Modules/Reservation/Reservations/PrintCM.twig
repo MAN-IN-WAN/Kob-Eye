@@ -1,4 +1,4 @@
-<div id="ResaPrint" ng-init="printElem('ResaPrint','Contremarque')">
+<div id="ResaPrint" class="row" ng-init="printElem('ResaPrint','Contremarque')">
     <div class="ResaEntete">
         {% if Resa.TypeContreMarque == 2  %}
         <h1>{{ Spectacle.Nom }} <br /><span style="color:#ff0000;font-weight:bold;">Ce document n'a pas de valeur de billet car il s'agit d'une entrée libre. Il est à titre informatif et ne donne aucun accès prioritaire</span></h1>
@@ -8,8 +8,8 @@
             Pr&eacute;sentez-vous au guichet, muni de cette invitation, <strong>30 minutes avant le d&eacute;but de la repr&eacute;sentation</strong><br />(une pi&egrave;ce d'identit&eacute; peut vous &ecirc;tre demand&eacute;e).</div>
         {% endif %}
     </div>
-    <img src="/Skins/Public2012/Img/logo.jpg" alt="" style="margin:30px" />
-    <div class="ResaDroite">
+
+    <div class="col-lg-8" style="text-align: center">
         <div class="ResaDroiteInfo">
             <p class="ResaDroiteInfoImg">
                 {%  if Spectacle.Logo is not empty %}
@@ -52,8 +52,9 @@
             </p>
         </div>
     </div>
-    <div class="ResaGauche">
+    <div class="ResaGauche col-lg-4">
         <div class="ResaCulture">
+            <img src="/Skins/Public2012/Img/logo.jpg" alt="" style="margin:30px" />
             <p><span>{{ Societe }}</span></p>
             {{ adresse }}<br />
             {{ ville }}<br />

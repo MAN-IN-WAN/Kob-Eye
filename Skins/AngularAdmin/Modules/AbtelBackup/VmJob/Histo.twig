@@ -43,6 +43,12 @@
                         down: "fa fa-arrow-down"
                     }
                 });
+                //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+                $(".datetimepicker-init").on("dp.change", function() {
+                    var input = $(this).children('input').eq(0);
+                    input.trigger('change');
+                    input.trigger('input');
+                });
             });
         </script>
         <h3>Les dernières éxécutions</h3>
