@@ -1388,11 +1388,13 @@ class Server extends genericClass {
         if (!$this->_connection)$this->Connect();
         //génération des clefs publiques / privées
         try {
-            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". (($this->usePublicIP)?$this->IP:$this->InternalIP)."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->InternalIP);
+            $IP = $this->usePublicIP?$this->IP:$this->InternalIP;
+
+            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". $IP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $IP);
             //récupération et stockage des clefs
-            $stream2 =  Parc::localExec("cd .ssh && cat id_" . (($this->usePublicIP)?$this->IP:$this->InternalIP));
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $IP);
             $this->PrivateKey = $stream2;
-            $stream2 =  Parc::localExec("cd .ssh && cat id_" . (($this->usePublicIP)?$this->IP:$this->InternalIP) . ".pub");
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $IP . ".pub");
             $this->PublicKey = $stream2;
             //publication de la clef
             $stream3 = $this->remoteExec("[ -d /root/.ssh ] || mkdir /root/.ssh");
@@ -1472,7 +1474,7 @@ class Server extends genericClass {
     private function rawExec( $command,$activity=null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
-        $dio_stream = ssh2_fetch_stream($stream, SSH2_STREAM_STDDIO);
+        $dio_stream = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
         stream_set_blocking( $stream, TRUE );
         stream_set_blocking( $error_stream, TRUE );
         stream_set_blocking( $dio_stream, TRUE );
