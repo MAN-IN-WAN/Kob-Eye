@@ -43,7 +43,7 @@ class PrintReglement extends FPDF {
 //			$this->head[4] = '';
 //			$this->width[4] = 0.01;
 //		}
-		$this->titre = "CADREF : Règlements ";
+		$this->titre = Cadref::$UTL." : Règlements ";
 		switch($this->mode) {
 			case 0: $this->titre .= "du ".$this->debut." au ".$this->fin; break;
 			case 1: $this->titre .= "différés au ".$this->debut; break;

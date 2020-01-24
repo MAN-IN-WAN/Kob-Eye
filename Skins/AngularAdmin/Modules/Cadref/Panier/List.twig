@@ -179,6 +179,11 @@
 							down: "fa fa-arrow-down"
 						}
 					});
+					$('.datepicker-only-init').on('dp.change', function(e){
+						var input = $(this).children('input');
+						input.trigger('input'); // Use for Chrome/Firefox/Edge
+						input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
+					});
 					$('.timepicker-only-init').datetimepicker({
 						widgetPositioning: {
 							horizontal: 'left'
@@ -192,6 +197,11 @@
 							down: "fa fa-arrow-down"
 						}
 					});
+					$('.timepicker-only-init').on('dp.change', function(e){
+						var input = $(this).children('input');
+						input.trigger('input'); // Use for Chrome/Firefox/Edge
+						input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
+					});
 					$('.datetimepicker-init').datetimepicker({
 						widgetPositioning: {
 							horizontal: 'left'
@@ -203,6 +213,11 @@
 							up: "fa fa-arrow-up",
 							down: "fa fa-arrow-down"
 						}
+					});
+					$('.datetimepicker-init').on('dp.change', function(e){
+						var input = $(this).children('input');
+						input.trigger('input'); // Use for Chrome/Firefox/Edge
+						input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
 					});
 
 				</script>

@@ -151,10 +151,10 @@
                                     </span>
                                     </label>
                                     <p>Avant le :</p>
-                                    <label class="input-group timepicker-only-init">
+                                    <label class="input-group datetimepicker-init">
                                         <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
                                         <span class="input-group-addon">
-                                        <i class="icmn-clock"></i>
+                                        <i class="icmn-calendar"></i>
                                     </span>
                                     </label>
                                 {% else %}
@@ -223,6 +223,23 @@
                         up: "fa fa-arrow-up",
                         down: "fa fa-arrow-down"
                     }
+                });
+
+                //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+                $(".datepicker-only-init").on("dp.change", function() {
+                    var input = $(this).children('input').eq(0);
+                    input.trigger('change');
+                    input.trigger('input');
+                });
+                $(".timepicker-only-init").on("dp.change", function() {
+                    var input = $(this).children('input').eq(0);
+                    input.trigger('change');
+                    input.trigger('input');
+                });
+                $(".datetimepicker-init").on("dp.change", function() {
+                    var input = $(this).children('input').eq(0);
+                    input.trigger('change');
+                    input.trigger('input');
                 });
 
             </script>

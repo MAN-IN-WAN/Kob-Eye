@@ -423,6 +423,7 @@ class Host extends genericClass
     ';
                 $serv->putFileContent('/home/' . $this->NomLDAP . '/.bashrc', $f);
                 $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+                $serv->remoteExec('chmod -R 705 /home/' . $this->NomLDAP);
                 $act->Terminate(true);
             }catch (Exception $e){
                 $act->addDetails(print_r($e).'---->'.$e->getMessage());
@@ -935,6 +936,8 @@ class Host extends genericClass
                         $KEServer->remoteExec($cmd);
                     }catch (Exception $e){}
                     //$KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
+                    if (!$KEServer->folderExists('/home/ws'))
+                        $KEServer->remoteExec('mkdir /home/ws');
                     $KEServer->remoteExec('mv /home/'.$this->NomLDAP.' /home/ws/'.$this->NomLDAP);
                     $act->addDetails('-> Suppression des fichiers  OK');
                 }else $act->addDetails('-> Le dossier '."/home/".$this->NomLDAP.' n\'existe pas.'.$KEServer->folderExists('/home/'.$this->NomLDAP));

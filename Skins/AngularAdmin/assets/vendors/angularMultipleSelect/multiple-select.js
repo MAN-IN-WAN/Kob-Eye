@@ -14,7 +14,7 @@ angular.module("templates", []).run(["$templateCache", function($templateCache) 
 					<span ng-if=\"objectProperty != undefined && objectProperty != \'\'\">\r\n				\n\
 						{{findLabelById(id)}} \n\
 						<span class=\"remove\" ng-click=\"removeAddedValues(id)\">\r\n                \n\
-							<i class=\"glyphicon glyphicon-remove\">X</i>\n\
+							<i class=\"fa fa-remove\"></i>\n\
 						</span>&nbsp;\r\n			\n\
 					</span>\r\n        \n\
 				</li>\r\n        \n\
@@ -222,9 +222,11 @@ angular.module("templates", []).run(["$templateCache", function($templateCache) 
 							if(idx >= 0) return scope.modelLabels[idx];
 						} else {
 							var sa = scope.suggestionsArr;
-							var len = sa.length;
-							for(var idx =0; idx < len; idx++){
-								if(sa[idx].id == id) return sa[idx][prop];
+							if(sa) { // PGF 20200121 existance de sa
+								var len = sa.length;
+								for(var idx =0; idx < len; idx++){
+									if(sa[idx].id == id) return sa[idx][prop];
+								}
 							}
 						}
 						return 'N.D.';

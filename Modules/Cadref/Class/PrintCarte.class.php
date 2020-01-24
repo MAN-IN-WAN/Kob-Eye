@@ -103,7 +103,7 @@ class PrintCarte extends FPDF {
 		$this->MultiCell(70, 4, $s, 0, 'C');
 		$this->SetXY(70, $t + 78);
 		$this->SetFont('Arial', '', 11);
-		$s = $this->cv("www.cadref.com\ncontact@cadref.com");
+		$s = $this->cv(Cadref::$WEB."\n".Cadref::$MAIL);
 		$this->MultiCell(70, 4, $s, 0, 'C');
 
 		$s = getcwd().'/Skins/'.Sys::$Skin.'/Modules/Cadref/assets/img/cadref_logo_noir.png';

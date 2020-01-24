@@ -1,0 +1,42 @@
+{
+"total": "{{ total }}",
+"query": "{{ requete }}",
+"data": [
+
+{% for row in rows %}
+    {
+    "id":"{{ row.Id }}",
+    "creator":"{{ row.userCreate }}",
+    "label":"{{ row.label }}",
+    "description":{{ row.description | json_encode | raw }},
+    {% if recursiv %}
+        "_tail":{{ row.isTail }},
+    {% endif %}
+    {#"_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}",#}
+    "create":"{{ row.tmsCreate | date('d/m/Y H:i') }}",
+    "tmsCreate":"{{ row.tmsCreate }}",
+    "tmsEdit":"{{ row.tmsEdit }}"
+    {% for field in fields %}
+        {% if field.type == "boolean" %}
+            ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}
+        {% elseif field.type == "fkey" and field.card=='short' %}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) }}
+            ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+            ,"{{ field.objectName }}{{ field.name }}color": "{{ attribute(row,field.name~'color') }}"
+        {% else %}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
+        {% endif %}
+        {% if field.Values|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+        {% endif %}
+        {% if field.query|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+        {% endif %}
+    {% endfor %}
+    {% for child in children %}
+        ,"{{ child.name }}{{ child.objectName }}CLabel": "{{ attribute(row,child.objectName~'Clabel') | raw}}"
+    {% endfor %}
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}

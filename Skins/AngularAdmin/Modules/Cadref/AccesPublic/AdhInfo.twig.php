@@ -1,5 +1,6 @@
 <?php
 $vars['Annee'] = Cadref::$Annee;
+$vars['UTL'] = Cadref::$UTL;
 $vars['module'] = 'Cadref';
 $vars['objecttype'] = 'Adherent';
 $vars['identifier'] = $vars['module'].$vars['objecttype'];

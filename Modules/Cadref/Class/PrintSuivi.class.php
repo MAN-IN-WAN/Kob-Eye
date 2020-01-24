@@ -30,9 +30,9 @@ class PrintSuivi extends FPDF {
 		$this->Image($img,25,19,26,30);
 		$this->SetFont('Arial','',10);
 		$this->SetXY(20, 51);
-		$this->Cell(37, 4, 'www.cadref.com', 0, 1, 'C');
+		$this->Cell(37, 4, Cadref::$WEB, 0, 1, 'C');
 		$this->SetX(20);
-		$this->Cell(37, 4, 'contact@cadref.com', 0, 0, 'C');
+		$this->Cell(37, 4, Cadref::$MAIL, 0, 0, 'C');
 		
 		$this->SetFont('Arial','B',20);
 		$this->SetXY(140, 15);

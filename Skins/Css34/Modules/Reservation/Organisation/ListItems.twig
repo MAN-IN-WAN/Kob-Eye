@@ -1,0 +1,29 @@
+/** ITEM HELPER **/
+{% macro organisation_item(s,sc,g) %}
+    <a class="card {{ s.big }}" href="/{{ s.getUrl() }}">
+        <div class="spectacle-item">
+            <img src="/{{ s.Logo }}.mini.300x320.jpg" class="card-img-top img-responsive" alt="">
+            <div class="card-body" style="background-color:{{ s.Couleur }}">
+                <p class="card-text">{{ s.Genre }}</p>
+                <p class="card-text">du {{ s.DateDebut |date('d/m/Y H:i', timezone="Europe/Paris")}} au {{ s.DateFin |date('d/m/Y H:i', timezone="Europe/Paris")}}</p>
+                <p class="card-text">à {{ spectacle.Localisation  }}</p>
+                <h5 class="card-title">{{ s.Nom }}</h5>
+                <p class="card-text">{{ sc.Ville }} - {{ s.TypePublic }}</p>
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+{% macro template_organisation_item() %}
+    {% verbatim %}
+    <template id="organisations-list">
+        <a class="card" v-for="(organisation,index) in organisations" v-bind:key="index" :to="{path: organisation.Url, params: {organisation: organisation}}" v-on:click.prevent="goToFiche(organisation)">
+            <div class="organisation-item">
+<!--                <img v-if="organisation.Logo" :src="'/'+organisation.Logo+'.mini.300x320.jpg'" class="card-img-top img-responsive" alt="">-->
+                <div class="card-body">
+                    <h5 class="card-title">{{ organisation.Nom  }}</h5>
+                </div>
+            </div>
+        </a>
+    </template>
+    {% endverbatim %}
+{% endmacro %}

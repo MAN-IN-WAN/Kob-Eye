@@ -32,7 +32,7 @@ class Absence extends genericClass {
 		$jd = Sys::getOneData('Cadref', "Jour/".($w > 0 ? $w : 7))->Jour;
 		$w = date("w", $this->DateFin);
 		$jf = Sys::getOneData('Cadref', "Jour/".($w > 0 ? $w : 7))->Jour;
-		$s = "CADREF : Absence ".$e->Prenom.' '.$e->Nom;
+		$s = Cadref::$UTL." : Absence ".$e->Prenom.' '.$e->Nom;
 		$b = "<br /><br />Nous somme au regret de vous informoner de l'absence de votre enseignant ".$e->Prenom.' '.$e->Nom;
 		$h = "<br />du $jd ".date('d/m/Y H:i', $this->DateDebut);
 		$h .= "<br />au $jf ".date('d/m/Y H:i', $this->DateFin);
@@ -45,7 +45,7 @@ class Absence extends genericClass {
 		foreach($cs as $c) {
 			if($c->CheckAbsence($this->DateDebut, $this->DateFin)) {
 				$as = Sys::getData('Cadref', "Classe/".$c->Id.'/Adherent');
-				$params = array('Subject'=>$s, 'To'=>array('contact@cadref.com',$e->Mail), 'Body'=>$b.$h.$d);
+				$params = array('Subject'=>$s, 'To'=>array(Cadref::$MAIL,$e->Mail), 'Body'=>$b.$h.$d);
 				Cadref::SendMessage($params);			
 				foreach($as as $a) {
 					if($a->Mail) {

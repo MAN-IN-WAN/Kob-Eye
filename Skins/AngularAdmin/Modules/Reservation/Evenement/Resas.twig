@@ -114,6 +114,21 @@
                            </div>
                        </div>
                    </div>
+                   {# PMR #}
+                   <div class="row">
+                       <div class="col-md-8">
+                           <label class="form-control-label" for="l0">Personne à mobilité réduite</label>
+                           {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+                       </div>
+                       <div class="col-md-4">
+                           <div class="btn-group yesno">
+                               <label class="btn btn-default-outline" for="pmr_{{ i }}" ng-class="{active:ReservationEvenementfunction.args.pmr[{{ i }}]==1}">
+                                   <input type="checkbox" id="pmr_{{ i }}" class="form-control {% if attribute(funcTempVars.errFields.pmr,i) is defined %}error{% endif %}" ng-init="ReservationEvenementfunction.args.pmr[{{ i }}] = {% if not (attribute(funcTempVars.vals.pmr,i) is empty) %}true{% else %}false{% endif %};" ng-model="ReservationEvenementfunction.args.pmr[{{ i }}]" ng-checked="ReservationEvenementfunction.args.pmr[{{ i }}] == 1">
+                                   <i class="fa fa-check" aria-hidden="true"></i>
+                               </label>
+                           </div>
+                       </div>
+                   </div>
                </div>
            </div>
        </li>

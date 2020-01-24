@@ -39,7 +39,7 @@ class PrintAdherent extends FPDF {
 		$this->mode = $mode;
 		switch($mode) {
 			case 0:
-				$this->titre = "CADREF : Liste des adhérents ";
+				$this->titre = Cadref::$UTL." : Liste des adhérents ";
 				switch($adherent) {
 					case 'B': $this->titre .= '(Bureau) '; break;
 					case 'A': $this->titre .= '(Administrateurs) '; break;
@@ -51,10 +51,10 @@ class PrintAdherent extends FPDF {
 				}
 				break;
 			case 1:
-				$this->titre = "CADREF : Certificats médicaux invalides";
+				$this->titre = Cadref::$UTL." : Certificats médicaux invalides";
 				break;
 			case 2:
-				$this->titre = "CADREF : Fiches adhérents incomplètes";
+				$this->titre = Cadref::$UTL." : Fiches adhérents incomplètes";
 				break;
 		}
 

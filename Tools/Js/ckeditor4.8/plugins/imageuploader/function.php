@@ -19,7 +19,7 @@ function loadImages() {
         $files = array();
         //$files = glob("$dir*.{jpg,jpe,jpeg,png,gif,ico}", GLOB_BRACE);
         //if(empty($files)) {
-            findImages($dir,$files);
+            findImages($dir,$files,$exceptions);
         //}
         sort($files,SORT_STRING);
 
@@ -40,9 +40,16 @@ function loadImages() {
             $protocol = !empty($_SERVER['HTTPS']) ? 'https://' : 'http://';
             $site = $protocol. $_SERVER['SERVER_NAME'] .'/';
             $image_url = '/'.$image_directory."/".$image_basename;
-        
-            $size = getimagesize($image);
-            $image_height = $size[0];
+            $xc = false ;
+            if (!in_array($image_extension, $exceptions)){
+                $size = getimagesize($image);
+                $image_height = $size[0];
+                $mini = $image_url;
+            }else{
+                $image_height = 400;
+                $mini = '/ckeditor/plugins/imageuploader/download.png';
+                $xc = true;
+            }
             $file_size_byte = filesize($image);
             $file_size_kilobyte = ($file_size_byte/1024);
             $file_size_kilobyte_rounded = round($file_size_kilobyte,1);
@@ -65,10 +72,10 @@ function loadImages() {
             }
             if($file_style == "block") { ?>
                 <div class="fileDiv"
-                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo $_SESSION['CKEditorFuncNum']; ?>);"
+                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo $_SESSION['CKEditorFuncNum']?$_SESSION['CKEditorFuncNum']:0; ?><?php if($xc){echo ',true';} ?>);"
                      ondblclick="showImage('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>');"
                      data-imgid="<?php echo $count; ?>">
-                    <div class="imgDiv"><img class="fileImg lazy" data-original="<?php echo $image_url; ?>"></div>
+                    <div class="imgDiv"><img class="fileImg lazy" data-original="<?php echo $mini; ?>"></div>
                     <p class="fileDescription"><span class="fileMime"><?php echo $image_extension; ?></span> <?php echo $image_filename; ?><?php if($file_extens == "yes"){echo ".$image_extension";} ?></p>
                     <p class="fileTime"><?php echo date ("F d Y H:i", filemtime($image)); ?></p>
                     <p class="fileTime"><?php echo $filesizetemp; ?> KB</p>
@@ -114,18 +121,22 @@ function loadImages() {
     } 
 }
 
-function findImages($dir,&$array){
+function findImages($dir,&$array,$exceptions){
     $dir = rtrim($dir,'/');
     if ($handle = opendir($dir)) {
         // iterate over the directory entries
         while (false !== ($entry = readdir($handle))) {
             if($entry == "." || $entry == '..') continue;
             // match on extension
-            if (preg_match('/\.jpg|\.jpe|\.jpeg|\.png|\.gif|\.ico/i', $entry)) {
+            $excpattern = '';
+            foreach ($exceptions as $e){
+                $excpattern .= '|\.'.$e;
+            }
+            if (preg_match('/\.jpg|\.jpe|\.jpeg|\.png|\.gif|\.ico'.$excpattern.'/i', $entry)) {
                 array_push($array, $dir.'/'.$entry);
             } else {
                 if(is_dir($dir.'/'.$entry)){
-                    findImages($dir.'/'.$entry,$array);
+                    findImages($dir.'/'.$entry,$array,$exceptions);
                 }
             }
         }

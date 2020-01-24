@@ -436,6 +436,26 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 		console.log(toto);
 	}
 
+    // Sert à imprimer le contenu d'une div
+    $scope.printElem = function (elem, titre){
+        var mywindow = window.open('', 'PRINT', 'width=400,height=400');
+
+        mywindow.document.write('<html><head><title>' + titre  + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + titre  + '</h1>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+        mywindow.onload = function() {
+            mywindow.print();
+            mywindow.close();
+        }
+
+
+        return true;
+    }
 
 	// PGF 20190211 creation de stores
 	$rootScope.createStore = function(store, context) {

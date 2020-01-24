@@ -15,6 +15,7 @@ class Organisation extends genericClass {
             	}
             	//$Query,$recurs="",$Ofst="",$Limit="",$OrderType="",$OrderVar="",$Selection=""
         	}
+            return true;
     	}
     	//CREATION DE GROUPE
     	function createGroupe() {

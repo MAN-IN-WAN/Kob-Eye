@@ -24,7 +24,7 @@ class Evenement extends genericClass {
 			$this->Nom = $S->Nom;
 			$S->Save();
 		}
-		if ($Valid) $this->Valide=1; else $this->Valide=0;
+//		if ($Valid) $this->Valide=1; else $this->Valide=0;
 		genericClass::Save();
 	}
 	
@@ -193,7 +193,9 @@ class Evenement extends genericClass {
 							$pers->Age = $params['age'][$n];
 							$pers->Accompagnateur = $params['accomp'][$n];
 							$pers->RSA = $params['rsa'][$n];
+							$pers->PMR = $params['pmr'][$n];
 							$pers->addParent($reservation);
+
 							$pers->Save();
 						}
 						$reservation->Save();

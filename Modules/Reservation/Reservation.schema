@@ -6,16 +6,16 @@
 		<PROPERTIES type="varchar" fiche="1" form="1" >Adresse</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Code Postal">CodPos</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region/1949/Departement/*/Ville::Nom" Description="Ville">Ville</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region::Nom" Description="Région">Region</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="2" query="Geographie/Pays/6/Region/1949/Departement::Nom" Description="Département">Departement</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" query="Geographie/Pays/6/Region::Nom" Description="Région">Region</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1"  query="Geographie/Pays/6/Region/1949/Departement::Nom" Description="Département">Departement</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" Description="Téléphone">Tel</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" >Fax</PROPERTIES>
 		<PROPERTIES type="mailto" fiche="1" form="1" >Mail</PROPERTIES>
-		<PROPERTIES type="boolean" fiche="1" form="1" default="0" Description="Envoyer les rapports par mail automatiquement ?">EnvoiMail</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0" Description="Envoyer les rapports par mail automatiquement ?">EnvoiMail</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
 		<PROPERTIES type="text" fiche="1" form="1" >Commentaire</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/TypeOrganisation::Nom" Description="Type de structure culturelle">TypeOrganisation</PROPERTIES>
-		<PROPERTIES type="ref" fiche="1" form="1" queryRef="Systeme/Group" adminOnly="1">NumeroGroupe</PROPERTIES>
+		<PROPERTIES type="ref" list="1"  fiche="1" form="1" queryRef="Systeme/Group" adminOnly="1">NumeroGroupe</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des E-mails">ExportMail</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="Structures sociales"   Icon="/Skins/AdminV2/Img/IconAqua/Mail4.png" generateUrl="1" Class="Modules/Reservation/Class/Client.class.php" searchType="plaintext" Operations="add,edit,delete,ImprimeDoc,ExportMail::RESAS_ADMIN">
@@ -43,24 +43,24 @@
 		<FKEY card="0,n" data="Organisation,Id"  action="Link" Description="StructuresExclues">ClientsExclu</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="TypeOrganisation" driver="mysql" Dico="1">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" value="1::Sociales,2::Culturelles" searchOrder="2" adminOnly="1" hidden="1">Table</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar"  value="1::Sociales,2::Culturelles" searchOrder="2" adminOnly="1" hidden="1">Table</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Type" driver="mysql" Dico="1">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" value="1::Sociales,2::Culturelles" searchOrder="2" adminOnly="1" hidden="1">Table</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Reseau" driver="mysql" Dico="1">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar"  list="1" fiche="1" form="1" searchOrder="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Spectacle" driver="mysql" AccessPoint="1" Description="Spectacles"   Icon="/Skins/AdminV2/Img/IconAqua/Calendar.png" generateUrl="1" Class="Modules/Reservation/Class/Spectacle.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,genererLotEvenement::RESAS_ADMIN,Dupliquer::RESAS_ADMIN">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre du spectacle">Nom</PROPERTIES>
 		<PROPERTIES type="image" list="1" fiche="1" form="1" searchOrder="2">Logo</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Reservation/Genre::Nom" searchOrder="3" Description="Genre du spectacle">Genre</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date spectacle" Adminonly="1"  searchOrder="4" auto="1" >DateDebut</PROPERTIES>
-		<PROPERTIES type="date" fiche="1" form="1" Description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
+		<PROPERTIES type="datetime" list="1"  fiche="1" form="1" Description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="Adulte,Adulte et adolescent,Enfant,Tout public" searchOrder="5" Description="Type de public">TypePublic</PROPERTIES>
-		<PROPERTIES type="int" fiche="1" form="1" searchOrder="6" Description="Places disponibles">Disponibilite</PROPERTIES>
+		<PROPERTIES type="int"  list="1" fiche="1" form="1" searchOrder="6" Description="Places disponibles">Disponibilite</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="7" Description="Localité" auto="1" >Localisation</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" Description="Date de Fin" Adminonly="1" auto="1" >DateFin</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Durée en minutes">Duree</PROPERTIES>
@@ -112,7 +112,7 @@
 	<OBJECTCLASS title="Fonction" driver="mysql" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservations.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete">
+	<OBJECTCLASS title="Reservations" driver="mysql" AccessPoint="1" Description="Réservations" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png" Class="Modules/Reservation/Class/Reservations.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete,ImprimerCM">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="3" Description="Référence">Reference</PROPERTIES>
 		<PROPERTIES type="int" list="1" fiche="1" form="1" searchOrder="2" Description="Nombre de places">NbPlace</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1" searchOrder="1" Description="Titre du spectacle">TitreSpectacle</PROPERTIES>
@@ -121,6 +121,7 @@
 		<PROPERTIES type="boolean" fiche="1" form="1" Description="Impression de la contremarque" default="0">Imprimer</PROPERTIES>
 		<FKEY card="1,1" data="Client,Id" action="Link">ClientId</FKEY>
 		<FKEY card="0,n" data="Evenement,Id"  action="Link">EvenementId</FKEY>
+		<FUNCTION title="Imprimer Contremarque">ImprimerCM</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Personne" driver="mysql" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN" hideSelect="1">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" obligatoire="1">Nom</PROPERTIES>
@@ -129,6 +130,7 @@
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" obligatoire="1" values="0-7,8-13,14-26,27-40,41-60,60+">Age</PROPERTIES>
         <PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0">Accompagnateur</PROPERTIES>
         <PROPERTIES type="boolean" fiche="1" form="1" default="0">RSA</PROPERTIES>
+        <PROPERTIES type="boolean" fiche="1" form="1" default="0">PMR</PROPERTIES>
 		<FKEY card="1,n" data="Reservations,Id">ReservationId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Evenement"  logEvent="1" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,EnvoyerMail::RESAS_ADMIN,ExporterPersonne::RESAS_ADMIN,Reserver" hideSelect="1">
@@ -203,6 +205,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="BlocNavigation" driver="mysql" Dico="1" Description="Blocs de navigation">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="html" list="1" fiche="1" form="1" searchOrder="1">Text</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Icone (font-awesome)">Icone</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" list="1" searchOrder="2">Code</PROPERTIES>
 		<PROPERTIES type="image" fiche="1" form="1" list="1" description="Image de fond (600x300 minimum)">Image</PROPERTIES>

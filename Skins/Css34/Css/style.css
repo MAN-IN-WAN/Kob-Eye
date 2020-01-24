@@ -1,9 +1,35 @@
+body {
+	font-size:12px;
+	line-height: 20px;
+	cursor: pointer;
+
+}
 /** GLOBAL **/
 a,h1,h2,h3,h4,h5,h6,span{
 	font-family: 'Baloo', cursive;
 }
+
+h1 {
+	font-size:1.8em;
+}
+h2 {
+	font-size:1.7em;
+}
+h3 {
+	font-size:1.5em;
+}
+h4 {
+	font-size:1.3em;
+}
+h5 {
+	font-size:1.2em;
+}
+h6 {
+	font-size:1.1em;
+}
 p{
 	font-family: 'Open Sans', cursive;
+	font-size:1em;
 }
 
 /*****************************************************
@@ -65,7 +91,15 @@ p{
 	margin:0;
 	color: #0A246A;
 	line-height:1em;
+
 }
+#submenu .square h3 {
+	font-size:2em;
+}
+#submenu .square p{
+	font-size:1.17em;
+}
+
 #submenu a.square,#submenu a.square:hover, #submenu a.square:hover h3, #submenu a.square:hover p{
 	color: #0a5db8;
 	text-decoration: none;
@@ -171,6 +205,9 @@ p{
 	height:200px;
 	position: relative;
 	margin-bottom:20px;
+}
+#footerlinks h3 {
+	font-size:1.8em;
 }
 .to-bottom{
 	position: absolute;
@@ -363,7 +400,7 @@ p{
     color: #fff;
 }
 #spectacle-fiche #description > img {
-    width:100%;
+	object-fit: initial;
 }
 #spectacle-fiche #description > p {
     margin:10px 0 10px 0;
@@ -408,4 +445,34 @@ p{
 /****** CONTENU *******/
 #cms-page{
 	background-color: plum;
+	margin-bottom: 10px;
 }
+
+
+.BlocImgCover img {
+	object-fit: cover;
+	width:100%
+}
+.Bloc3Col {
+	margin: 20px;
+	padding:20px;
+	height:490px;
+	text-align:justify;
+	line-height: 2em;
+}
+.blocEcritureBlanc {
+	color:#fff;
+	text-align:left;
+	font-size: 1.2em;
+	line-height: 1.2em;
+}
+.blocEcritureBlanc h5{
+	font-size:1.1em;	color:#fff;
+}
+
+#partenaires .autres {
+	padding:20px;
+}
+.Publicite.BlocImgCover figure { margin:-9px;}
+
+#cms-page.row { margin-left:-30px; margin-right: -30px;}

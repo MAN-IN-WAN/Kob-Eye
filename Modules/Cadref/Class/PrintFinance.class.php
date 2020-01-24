@@ -31,7 +31,7 @@ class PrintFinance extends FPDF {
 		$this->width = array(18,75,10,20,20,20,20);
 		$this->align = array('L','L','R','R','R','R','R');
 
-		$this->titre = "CADREF : Rapport financier ";
+		$this->titre = Cadref::$UTL." : Rapport financier ";
 	}
 	
 	private function cv($txt) {

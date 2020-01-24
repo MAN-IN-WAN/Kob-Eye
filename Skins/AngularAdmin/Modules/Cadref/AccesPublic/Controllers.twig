@@ -137,6 +137,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$("#modal-Attachements").modal();
 	}
 	
+	$scope.$watch('CadrefAttachement.currentPage', function() {
+		$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
+	});
+
+	
 	$scope.autoUploader.onProgressAll = function(progress) {
 		$('#upload-progress').val(progress);
 	}

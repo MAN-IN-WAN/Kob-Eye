@@ -1,0 +1,70 @@
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroFiche.twig" import  fiche_properties %}
+<div class="page-content-inner">
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-heading">
+            <div class="pull-right">
+                    <button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">
+                        Modifier
+                    </button>
+            </div>
+            <h3 ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></h3>
+        </div>
+        <div class="panel-body  mode-material ">
+            {% if Interfaces.top %}
+                <div class="col-md-12 col-lg-4">
+                    <ng-map center="41,-87" zoom="6"></ng-map>
+                </div>
+            {% endif %}
+            {{  fiche_properties(fichefields,categories,CurrentUrl,'obj',Interfaces) }}
+        </div>
+        <!-- End child Panel -->
+    </section>
+    <!-- End Default Panel -->
+
+    <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true"  data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" ng-if="modalObj.errors">
+                        <ul>
+                            <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-warning" ng-if="modalObj.warning">
+                        <ul>
+                            <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-success" ng-if="modalObj.infos">
+                        <ul>
+                            <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                        </ul>
+                    </div>
+                    <div ng-if="modalObj.success == false">
+                        {{ include(template_from_string(module('Systeme/Utils/Form?Path='~CurrentObjQuery))) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer
+                    </button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">
+                        Annuler
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-if="modalObj.success == false"
+                            ng-click="modalSave()">__SAVE_MODAL_OBJ__
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>

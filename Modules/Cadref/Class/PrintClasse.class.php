@@ -20,7 +20,7 @@ class PrintClasse extends FPDF {
 		$this->width = array(22,90,25,20,30);
 		$this->align = array('L','L','L','L','L');
 
-		$this->titre = "CADREF : Liste des classes $annee-".($annee+1);
+		$this->titre = Cadref::$UTL." : Liste des classes $annee-".($annee+1);
 	}
 	
 	private function cv($txt) {

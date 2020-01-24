@@ -1,0 +1,160 @@
+<section class="center-block">
+	<h5 style="color:red">Réservée aux personnes n'ayant jamais été adhérent de l'UATL</h2>
+	<div id="msg"  class="alert alert-danger" hidden></div>
+	<h3>Tous les champs en rouge sont obligatoires</h3>
+	<div class="row" style="height:10px"></div>
+	<form method="POST" id="registerUser">
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Civilité</label>
+				</div>
+				<div class="col-md-9">
+					<select class="form-control cadref-input" name="Sexe" style="border-color:red">
+						<option value="H">Monsieur</option>
+						<option value="F">Madame</option>
+					</select>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Nom</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input " placeholder="Nom" id="CadrefNom" name="Nom" style="text-transform:uppercase; border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Prenom</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefMail" name="Prenom" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse" id="CadrefMail" name="Adresse1" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse (suite)</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse (suite)" id="CadrefMail" name="Adresse2"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Code postal" id="CadrefMail" name="CP" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Ville</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Ville" id="CadrefMail" name="Ville" style="text-transform:uppercase; border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Telephone</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone1" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Telephone</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone2"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Année de naissance</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Année" id="CadrefMail" name="Annee" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="Mail" style="border-color:red"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Confirmation adresse mail</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="MailConfirm" style="border-color:red"/>
+				</div>
+			</div>
+{#			<div class="row" style="height:2px"></div>
+			<div class="row" id="codeVerif">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Code de vérification</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Code de vérification" id="CadrefMail" name="MailVerif"/>
+				</div>
+			</div>
+#}			<div class="row" style="height:20px"></div>
+			<input type="submit" class="btn btn-success btn-block" id="Valider" name="Valider" value="Valider" />
+		</div>
+	</form>
+	<a href="/{{ classe }}" class="btn btn-warning btn-block" id="Annuler">Annuler</a>
+	<div class="spin-mask"></div>
+</section>
+<script>
+	$(document).ready(function (e) {
+		//$('#codeVerif').hide();
+		$('#registerUser').on('submit', function (e) {
+			e.preventDefault();
+			$('.spin-mask').spin().addClass('actif');
+			$.ajax({
+				dataType: "json",
+				url: "/Systeme/registerUser.json",
+				data: $('#registerUser').serialize(),
+				method: 'POST'
+			}).done(function (response) {
+				var resp = JSON.parse(response);
+				if (resp.success) {
+					$('#Valider').hide();
+					$('#Annuler').text('Continuer');
+					$('#msg').removeClass('alert-danger');
+					$('#msg').addClass('alert-success');
+				} 
+				$('#msg').html(resp.message);
+				$('#msg').show();
+				if(resp.message.indexOf('avec ce nom') > 0) $('#codeVerif').show();
+				$('.spin-mask').removeClass('actif').spin(false);
+			});
+		});
+	});
+</script>

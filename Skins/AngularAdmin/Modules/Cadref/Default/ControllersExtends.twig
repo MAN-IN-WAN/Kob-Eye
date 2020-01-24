@@ -198,6 +198,11 @@
 				}
 			}
 		}
+		
+		$scope.$watch('CadrefAttachement.currentPage', function() {
+			$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
+		});
+		
 
 		// ferme attachement edit section
 		$scope.attachementCloseEdit = function() {

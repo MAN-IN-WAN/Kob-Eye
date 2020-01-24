@@ -59,9 +59,12 @@
             },
             onDateClick: function (value) {
                 console.log('COMP click date detected display component', this.spectacles);
-                if (this.date == value) {
+                if (this.date === value) {
                     //unselect
-                    this.date = '';
+                    this.date = new Date();
+                    this.date.setHours(0,0,0);
+                    this.date.setMilliseconds(0);
+                    this.date = this.date/ 1000 + 86400;
                 } else
                     this.date = value;
                 //this.getData();

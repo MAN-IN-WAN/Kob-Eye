@@ -58,7 +58,7 @@ class Enseignant extends genericClass {
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
-					$params['Msg']['To'] = array('contact@cadref.com');
+					$params['Msg']['To'] = array(Cadref::$MAIL);
 					$ret = Cadref::SendMessage($params['Msg']);
 				}
 				else {
@@ -116,12 +116,12 @@ class Enseignant extends genericClass {
 			$s = Cadref::MailCivility($this);
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
 			$s .= Cadref::MailSignature();
-			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-				'To'=>array($this->Mail,'contact@cadref.com'),
+			$params = array('Subject'=>(Cadref::$UTL.' : Changement de mot de passe.'),
+				'To'=>array($this->Mail,Cadref::$MAIL),
 				'Body'=>$s);
 			Cadref::SendMessage($params);
 		}
-		$msg = "CADREF : Changement de mot de passe.\nCode utilisateur: ens".strtolower($this->Code)."\nMote de passe: $new\n";
+		$msg = Cadref::$UTL." : Changement de mot de passe.\nCode utilisateur: ens".strtolower($this->Code)."\nMote de passe: $new\n";
 		$params = array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$msg);
 		Cadref::SendSms($params);
 
@@ -139,11 +139,11 @@ class Enseignant extends genericClass {
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
 		$args['ReplyTo'] = array($this->Mail);
-		$args['From'] = 'contact@cadref.com';
+		$args['From'] = Cadref::$MAIL;
 		
 		$to = $params['Mail'];
 		if($to == 'C') {
-			$args['To'] = array('contact@cadref.com');
+			$args['To'] = array(Cadref::$MAIL);
 			Cadref::SendMessage($args);
 			return array('data'=>'Message envoyé');
 		}
@@ -167,7 +167,7 @@ where ce.EnseignantId=$id";
 			}
 		}
 		
-		$args['To'] = array('contact@cadref.com');
+		$args['To'] = array(Cadref::$MAIL);
 		$ret = Cadref::SendMessage($args);
 		
 //		$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
@@ -185,7 +185,7 @@ where ce.EnseignantId=$id";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if($mode == 'mail') {
-				$args = array('Subject'=>$obj['Sujet'], 'To'=>array('contact@cadref.com'), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+				$args = array('Subject'=>$obj['Sujet'], 'To'=>array(Cadref::$MAIL), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
 				Cadref::SendMessage($args);
 			}
 			foreach($pdo as $p) {

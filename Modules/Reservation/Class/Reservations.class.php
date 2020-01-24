@@ -517,5 +517,14 @@ class Reservations extends genericClass {
     }
 	
 
+    public function ImprimerCM(){
+        parent::Save();
+        return array(
+            'template' => 'PrintCM',
+            'funcTempVars' => array(
+                'Resa'=>$this
+            )
+        );
+    }
 }
-?>
+

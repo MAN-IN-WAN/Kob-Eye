@@ -57,7 +57,7 @@ class Codex extends genericClass {
 		}
 	}
 	
-	private static function getGlyphe($tbl, $whr) {
+	static private function getGlyphe($tbl, $whr) {
 		$ty = $tbl == 'Glyphe' ? ',Type' : '';
 		$sql = "select CodexId,Id,Cote,Lecture $ty from `##_CEN-$tbl` $whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -103,6 +103,15 @@ $whr";
 		return $dic;
 	}	
 	
+	static private function getCount(&$array, $table, $alias, $where) {
+		$sql = "select CodexId,count(*) as cnt from `##_CEN-$table` $alias $where";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$cnt = array();
+		foreach($pdo as $d) $cnt[$d['CodexId']] = $d['cnt'];
+		foreach($array as &$a) $a['count'] = $cnt[$a['codexId']]; 
+	}
+
 	private static function getDir($usr, $dir) {
 		return "/Home/$usr/CEN/Codex/$dir/";
 	}
@@ -179,6 +188,8 @@ union select distinct Theme as word from `##_CEN-PValeur` where $cdx Theme $mode
 				$whr = "where $cdx (Lecture $mode or Cote $mode) group by CodexId order by CodexId,Cote";
 				$gly = self::getGlyphe('Glyphe', $whr);
 				$per = self::getGlyphe('Personnage', $whr);
+				self::getCount($gly, 'Glyphe', '', $whr);
+				self::getCount($per, 'Personnage', '', $whr);
 				return array('glyphes'=>$gly, 'personnes'=>$per);
 
 			case 'glyphe-elem':
@@ -187,11 +198,12 @@ union select distinct Theme as word from `##_CEN-PValeur` where $cdx Theme $mode
 					$whr = "where CodexId in ($cdx) and Element like '% $el,%' order by CodexId,Cote";
 				}
 				else {
-				$id = $args['id'];
-				$whr = "where CodexId=$id and Element like '% $el,%' order by CodexId,Cote";
+					$id = $args['id'];
+					$whr = "where CodexId=$id and Element like '% $el,%' order by CodexId,Cote";
 				}
 				$gly = self::getGlyphe('Glyphe', $whr);
 				$per = self::getGlyphe('Personnage', $whr);
+				//self::getCount($dic, 'Element', 'e.', $whr);
 				return array('glyphes'=>$gly, 'personnes'=>$per);
 
 			case 'glyphe-detail':
@@ -246,6 +258,7 @@ union select Valeur from `##_CEN-PValeur` where CodexId=$id and Cote='$c' and Th
 				if($cdx) $cdx = "e.CodexId in ($cdx) and";
 				$whr = "where $cdx (e.Element $mode or e.Cote $mode or e.Theme $mode) $grp order by e.CodexId,e.Cote";
 				$dic = self::getTlaElement($whr);
+				if($grp) self::getCount($dic, 'Element', 'e', $whr);
 				return array('elements'=>$dic);
 
 			case 'element-detail':
@@ -282,7 +295,7 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 		foreach($pdo as $p)	$list[] = $p['word'];
 		return array('words'=>$list, 'sql'=>$sql);		
 	}
-
+	
 	function GetDescr($args) {
 		$dir = '/Home/'.$this->userCreate.'/CEN/Codex/'.$this->Repertoire.'/textes/';
 		$lgs = ['es','fr','en'];
@@ -294,17 +307,13 @@ union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mod
 		$type = $args['type'];
 		switch($type) {
 			case 'codex':		
-				switch($args['text']) {
-					case 'etude': $pres = 'document'; break;
-					case 'dict': $pres = 'text_dic'; break;
-					case 'biblio': $pres = 'biblio'; break;
-					case 'varia': $pres = 'v_expose'; break;
-					case 'thanx': $pres = 'remer_c'; break;
-					case 'credit': $pres = 'credits'; break;
-					case 'real': $pres = 'txt_reel'; $dir = '/Home/2/CEN/Codex/Aide/'; $lang = $lana; $les = '.aes'; break;
-				}
+			case 'glyphe':		
+			case 'personne':		
+				$pres = strtolower($args['text']);
 				break;
-			default: $pres = str_replace('.', '_', strtolower($args['text'])); break;
+			default:
+				$pres = str_replace('.', '_', strtolower($args['text']));
+				break;
 		}
 		$txt = '';
 		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
