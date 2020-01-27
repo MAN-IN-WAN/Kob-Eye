@@ -1164,6 +1164,26 @@ class genericClass extends Root {
 					}
 				}
 		}
+
+		//Gestion des acces dans le cas d'un getChildren
+        $accs = Sys::$User->Access;
+		foreach($accs as $acc){
+		    if(strpos($Type,$acc->ObjectClass) === 0 ){
+		        $res = array();
+                $oks = $this -> executeQuery(Process::searchAndReplaceVars($acc->Alias));
+                foreach($oks as $ok){
+                    $id = $ok['Id'];
+                    foreach ($Childs as $c){
+                        if($c->Id == $id) {
+                            $res[] = $c;
+                            break;
+                        }
+                    }
+                }
+                return $res;
+            }
+        }
+
 		return $Childs;
 	}
 	

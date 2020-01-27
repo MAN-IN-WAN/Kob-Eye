@@ -46,7 +46,10 @@ foreach ($vars['events'] as $k=>$v){
     //SALLE
     $v->salle = $v->getOneParent('Salle');
 }
-
+usort($vars['events'],function($a,$b){
+    if($a->DateDebut == $b->DateDebut) return 0;
+    return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
+});
 
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);

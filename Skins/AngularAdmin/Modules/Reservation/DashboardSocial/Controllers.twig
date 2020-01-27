@@ -63,6 +63,7 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     $scope.spMonth = 0;
     $scope.nbOrga = 0;
     $scope.nbCli = 0;
+    $scope.resAnnu = 0;
 
     $scope.ReservationClientStore.getCount().then(function(data){
         $scope.nbCli = data;
@@ -75,6 +76,9 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     });
     $scope.ReservationOrganisationStore.getCount().then(function(data){
         $scope.nbOrga = data;
+    });
+    $scope.ReservationReservationsStore.getCount('Dashboard').then(function(data){
+        $scope.resAnnu = data;
     });
 
     $interval(function(){
@@ -89,6 +93,9 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
         });
         $scope.ReservationOrganisationStore.getCount().then(function(data){
             $scope.nbOrga = data;
+        });
+        $scope.ReservationReservationsStore.getCount('Dashboard').then(function(data){
+            $scope.resAnnu = data;
         });
     },10000);
 

@@ -1,66 +1,78 @@
-<div id="ResaPrint" class="row" ng-init="printElem('ResaPrint','Contremarque')">
+<div id="ResaPrint" class="row" ng-init="printElem('ResaPrint','Contremarque')" style="padding: 25px;">
     <div class="ResaEntete">
         {% if Resa.TypeContreMarque == 2  %}
         <h1>{{ Spectacle.Nom }} <br /><span style="color:#ff0000;font-weight:bold;">Ce document n'a pas de valeur de billet car il s'agit d'une entrée libre. Il est à titre informatif et ne donne aucun accès prioritaire</span></h1>
         {% else %}
-        <h1>CONTREMARQUE {{ Spectacle.Nom }}</h1>
+        <h1 style="margin: 0;">CONTREMARQUE</h1>
+        <h2 style="margin-top: 0;">{{ Spectacle.Nom }}</h2>
         <div style="display:block;">Ce billet est &agrave; &eacute;changer contre <strong>{% if Resa.NbPlace == 1 %}{{ Resa.NbPlace }} invitation{% else %}{{ Resa.NbPlace }} invitations{% endif %}</strong> au lieu indiqu&eacute; ci-dessous, il est strictement personnel.<br />
             Pr&eacute;sentez-vous au guichet, muni de cette invitation, <strong>30 minutes avant le d&eacute;but de la repr&eacute;sentation</strong><br />(une pi&egrave;ce d'identit&eacute; peut vous &ecirc;tre demand&eacute;e).</div>
         {% endif %}
     </div>
-
-    <div class="col-lg-8" style="text-align: center">
-        <div class="ResaDroiteInfo">
-            <p class="ResaDroiteInfoImg">
-                {%  if Spectacle.Logo is not empty %}
-                <img src="/{{ Spectacle.Logo }}.limit.200x200.jpg" alt="{{ Spectacle.Nom }}" style="width:auto" />
-                {% else %}
-                <img src="/Skins/Publi2012/Img/Logo.jpg.limit.200x200.jpg" alt="Logo Cultures au coeur" style="width:auto" />
-                {% endif %}
-            </p>
-            <div class="">
-                <p><span>{{ Organisation.Nom }}</span> a le plaisir d'inviter:</p>
-                <ul>
-                    {% for P in Personne %}
-                    <li>{% if P.Sexe == 'Homme' %}M.{% else %}Mme{% endif %}&nbsp;{{ P.Nom }} {{ P.Prenom }}</li>
-                    {% endfor %}
-                </ul>
-                <p>Date : le {{ Evenement.DateDebut | date("d/m/Y") }} &agrave; {{ Evenement.DateDebut | date("H:i") }}</p>
-                <p>Cette invitation est relay&eacute;e par <span>{{Client.Nom}}</span></p>
-                <p>Valable pour <strong>{% if Resa.NbPlace == 1 %}{{ Resa.NbPlace }} invitation{% else %}{{ Resa.NbPlace }} invitations{% endif %}</strong> </p>
-                {%  if Spectacle.InformationReservation is not empty %}
-                <div>{{ Spectacle.InformationReservation | raw }}</div>
-                {% endif %}
-                {%  if Spectacle.Contremarque is not empty %}
-                <p class="TexteContremarque">{{ Spectacle.Contremarque }}</p>
-                {% endif %}
-            </div>
-        </div>
-        <div class="ResaDroiteAdresse">
-            <span>Lieu de la repr&eacute;sentation</span>
-            <p>
-                {% if Salle.Nom is not empty %}{{ Salle.Nom }}<br />{% endif %}
-                {% if Salle.Adresse is not empty %}{{ Salle.Adresse }} - {{ Salle.CodPos }} {{ Salle.Ville }}<br />{% endif %}
-                {% if Salle.TelResa is not empty %}Tel Resa : {{ Salle.TelResa }}<br />{% endif %}
-                {% if Salle.TelInfo is not empty %}Tel  {{ Salle.TelInfo }}<br />{% endif %}
-                {% if Salle.Fax is not empty %}Fax :{{ Salle.Fax }}<br />{% endif %}
-                {% if Salle.SiteWeb is not empty %}{{ Salle.SiteWeb }}<br />{% endif %}
-                {% if Salle.Handi == 1 %}
-                Cette salle b&eacute;n&eacute;ficie d'un acc&egrave;s handicap&eacute;s&nbsp;&nbsp;
-                <img src="/Skins/Social/Img/handi.jpg" style="width:15px;height:15px;border:none;"   alt="{{ Salle.Nom }}" title="{{ Salle.Nom }}" />
-                {% endif %}
-            </p>
-        </div>
-    </div>
-    <div class="ResaGauche col-lg-4">
-        <div class="ResaCulture">
-            <img src="/Skins/Public2012/Img/logo.jpg" alt="" style="margin:30px" />
-            <p><span>{{ Societe }}</span></p>
-            {{ adresse }}<br />
-            {{ ville }}<br />
-            {{ info }}<br />
-            <p>Tel/Fax : {{ tel }}</p>
-        </div>
-        <div class="ResaReference"><p>Ref : {{ Resa.Reference }}</p></div>
-    </div>
+    <table style="width: 100%;">
+        <tr style="width: 100%;">
+            <td style="width: 70%;">
+                <div class="ResaDroiteInfo">
+                    <div class="ResaDroiteInfoImg">
+                        {%  if Spectacle.Logo is not empty %}
+                            <img src="/{{ Spectacle.Logo }}.limit.200x200.jpg" alt="{{ Spectacle.Nom }}" style="width:auto" />
+                        {% else %}
+                            <img src="/Skins/Publi2012/Img/Logo.jpg.limit.200x200.jpg" alt="Logo Cultures au coeur" style="width:auto" />
+                        {% endif %}
+                    </div>
+                    <div style="margin-top: 25px;">
+                        <b>{{ Organisation.Nom }}</b> a le plaisir d'inviter:<br/>
+                        <ul>
+                            {% for P in Personne %}
+                                <li>{% if P.Sexe == 'Homme' %}M.{% else %}Mme{% endif %}&nbsp;{{ P.Nom }} {{ P.Prenom }}</li>
+                            {% endfor %}
+                        </ul>
+                        Date : le {{ Evenement.DateDebut | date("d/m/Y") }} &agrave; {{ Evenement.DateDebut | date("H:i") }}<br/>
+                        Cette invitation est relay&eacute;e par <span>{{Client.Nom}}</span><br/>
+                        Valable pour <strong>{% if Resa.NbPlace == 1 %}{{ Resa.NbPlace }} invitation{% else %}{{ Resa.NbPlace }} invitations{% endif %}</strong> <br/>
+                        {%  if Spectacle.InformationReservation is not empty %}
+                            <div id="infoResas" style="font-size: 12px;line-height: 12px;}">
+                                {{ Spectacle.InformationReservation | raw }}
+                            </div>
+                        {% endif %}
+                        {%  if Spectacle.Contremarque is not empty %}
+                            {{ Spectacle.Contremarque }}<br/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ResaDroiteAdresse">
+                    <span>Lieu de la repr&eacute;sentation</span>
+                    <div>
+                        {% if Salle.Nom is not empty %}{{ Salle.Nom }}<br />{% endif %}
+                        {% if Salle.Adresse is not empty %}{{ Salle.Adresse }} - {{ Salle.CodPos }} {{ Salle.Ville }}<br />{% endif %}
+                        {% if Salle.TelResa is not empty %}Tel Resa : {{ Salle.TelResa }}<br />{% endif %}
+                        {% if Salle.TelInfo is not empty %}Tel  {{ Salle.TelInfo }}<br />{% endif %}
+                        {% if Salle.Fax is not empty %}Fax :{{ Salle.Fax }}<br />{% endif %}
+                        {% if Salle.SiteWeb is not empty %}{{ Salle.SiteWeb }}<br />{% endif %}
+                        {% if Salle.Handi == 1 %}
+                            Cette salle b&eacute;n&eacute;ficie d'un acc&egrave;s handicap&eacute;s&nbsp;&nbsp;
+                            <img src="/Skins/Social/Img/handi.jpg" style="width:15px;height:15px;border:none;"   alt="{{ Salle.Nom }}" title="{{ Salle.Nom }}" />
+                        {% endif %}
+                    </div>
+                </div>
+            </td>
+            <td style="vertical-align: baseline;">
+                <div class="ResaGauche">
+                    <div class="ResaCulture">
+                        <img src="/Skins/Public2012/Img/logo.jpg" alt="" /><br />
+                        <div style="margin-top: 25px;">
+                            <span>{{ Societe }}</span><br/>
+                            {{ adresse }}<br />
+                            {{ ville }}<br />
+                            {{ info }}<br />
+                            Tel/Fax : {{ tel }}
+                        </div>
+                    </div>
+                    <div class="ResaReference">
+                        Ref : {{ Resa.Reference }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>

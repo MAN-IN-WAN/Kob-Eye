@@ -28,10 +28,14 @@ h6 {
 	font-size:1.1em;
 }
 p{
-	font-family: 'Open Sans', cursive;
+
 	font-size:1em;
 }
 
+.container{
+	width:1170px;
+	padding:0;
+}
 /*****************************************************
 *			HEADER									 *
  *****************************************************/
@@ -41,7 +45,7 @@ p{
 	padding: 0px;
 	background: #d7d7d7;
 	list-style:none;
-	height:3.4em;
+	height:3em;
 }
 #partenaires ul.partner {
 	margin: 0px;
@@ -61,6 +65,7 @@ p{
 	display: flex; /*1*/
 	flex-direction : row; /*2*/
 	justify-content: center; /*3*/
+	font-size: 1.5em;
 }
 #partenaires{
 	height: 70px;
@@ -81,11 +86,12 @@ p{
 	background-color: #ed69a3;
 }
 #submenu {
-	margin:10px 0 5px;
+	margin:10px -10px 0 5px;
 	background-color: #d7d7d7;
 }
 #submenu > .container{
-	width:1000px;
+	width:1170px;
+	padding:0 10px;
 }
 #submenu .square h3,#submenu .square p{
 	margin:0;
@@ -112,7 +118,14 @@ p{
 	color: white;
 	text-align: center;
 	line-height:1em;
+/*
+	a voir changement menu du haut
 	height:3.4em;
+ */
+
+	height: 3em;
+	font-size: 1.5em;
+
 }
 .espacepro a{
 	line-height:3.4em;
@@ -135,13 +148,19 @@ p{
 	border-radius: 0;
 	border-color: black;
 	border-width: 3px;
-	padding: 26px;
+	padding: 23px;
 	filter: unset;
+	margin-top:20px;
 }
 /** LOGO **/
 .logo{
+	/*
+	à voir pour caler tout le haut
 	text-align: center;
 	margin:10px;
+*/
+	text-align: left;
+	margin: 6px 66% 6px 0;
 }
 
 /*****************************************************
@@ -214,6 +233,7 @@ p{
 	bottom: 0;
 	width: 100%;
 }
+#footer .facebooklink { margin-top:-8px;display:block;}
 
 /*****************************************************
 *			SPECTACLE								 *
@@ -223,11 +243,11 @@ p{
 	margin-bottom:5px;
 }
 #content .container{
-    padding:0;
+ /*   padding:0;*/
 }
 #content .container form > div.row{
-    margin-left:0;
-    margin-right:0;
+   /* margin-left:0;
+    margin-right:0;*/
 }
 /*FILTERS*/
 #filters a.btn-css34{
@@ -444,10 +464,16 @@ p{
 
 /****** CONTENU *******/
 #cms-page{
-	background-color: plum;
+/*	background-color: plum;*/
 	margin-bottom: 10px;
+	padding: 10px;
 }
+#cms-page .row { margin:0;}
 
+#cms-page .col-md-12,
+#cms-page .col-lg-12,
+#cms-page .col-xs-12
+{ margin:0; padding:0;}
 
 .BlocImgCover img {
 	object-fit: cover;
@@ -456,7 +482,7 @@ p{
 .Bloc3Col {
 	margin: 20px;
 	padding:20px;
-	height:490px;
+	height:500px;
 	text-align:justify;
 	line-height: 2em;
 }
@@ -473,6 +499,12 @@ p{
 #partenaires .autres {
 	padding:20px;
 }
-.Publicite.BlocImgCover figure { margin:-9px;}
+/*.Publicite.BlocImgCover figure { margin:-9px;}*/
 
-#cms-page.row { margin-left:-30px; margin-right: -30px;}
+.dvContent .cms-col > .SaisieContenu.Contenu {
+	margin:10px -10px;
+}
+
+.dvContent .cms-col > .SaisieContenu.Contenu.blocPadding15 {
+	margin:10px 0;
+}

@@ -568,7 +568,7 @@
             var opts = $scope.{{ c.identifier }}.filters,
                 query = "";
             for ( var o in opts ) {
-                if(opts[o].value == undefined || opts[o].value == '' ) continue;
+                if(opts[o].value == undefined || opts[o].value == ' ' ) continue;
 
                 var value = opts[o].value;
                 if(Array.isArray(value)){
