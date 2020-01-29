@@ -36,7 +36,7 @@
                 {% else %}
                     <li>
                         <a class="left-menu-link" href="#/{{ m.Url }}">
-                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-home2{% endif %}"><!-- --></i>
+                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-home2{% endif %}" {% if(menuIcon) %}title="{{ m.Titre }}"{% endif %}><!-- --></i>
                             <span class="menu-top-hidden">{{ m.Titre }}</span>
                         </a>
                     </li>
