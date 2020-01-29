@@ -2,6 +2,8 @@
 
 class Codex extends genericClass {
 	
+	
+	
 
 	static function GetCodex($args) {
 		$type = $args['type'];
@@ -52,14 +54,14 @@ class Codex extends genericClass {
 				
 			case 'element':
 				$whr = "where e.CodexId=$id and e.Cote='$ext' order by e.Theme";
-				$dic = self::getTlaElement($whr);
+				$dic = self::getElementBasic($whr);
 				return array('elements'=>$dic);
 		}
 	}
 	
 	static private function getGlyphe($tbl, $whr) {
-		$ty = $tbl == 'Glyphe' ? ',Type' : '';
-		$sql = "select CodexId,Id,Cote,Lecture $ty from `##_CEN-$tbl` $whr";
+		$typ = $tbl == 'Glyphe' ? 'Type' : "'person' as Type";
+		$sql = "select CodexId,Id,Cote,Lecture,$typ from `##_CEN-$tbl` $whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -70,39 +72,85 @@ class Codex extends genericClass {
 		return $gly;
 	}
 	
-	static function getTlaElement($whr) {
-		$sql = "
-select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2
-from `##_CEN-Element` e
-left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element
-$whr";
+	static private function getElementBasic($whr) {
+		$sql = "select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,ifnull(v.Valeur,p.Valeur) as Valeur,f.Forme ".
+			"from `##_CEN-Element` e ".
+			"left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element ".
+			"left join `##_CEN-Valeur` v on v.CodexId=e.CodexId and v.Cote=e.Cote and v.Theme=e.Theme ".
+			"left join `##_CEN-PValeur` p on p.CodexId=e.CodexId and p.Cote=e.Cote and p.Theme=e.Theme ".
+			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
+			"$whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
-				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2']);
+				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
+				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
 		return $dic;
 	}	
 
-	static function getValeur($whr) {
-		$sql = "
-select e.CodexId,e.Id,e.Cote,e.Theme,e.Element,c.userCreate,c.Repertoire,c.Titre,v.Valeur
-from `##_CEN-Valeur` v
-inner join `##_CEN-Element` e on e.Cote=v.Cote
-inner join `##_CEN-Codex` c on c.Id=e.CodexId
-$whr";
+	static private function getElementValeur($whr) {
+		$sel = "select e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,v.Valeur,f.Forme from ";
+		$sel1 = "v inner join `##_CEN-Element` e on e.CodexId=v.CodexId and e.Cote=v.Cote and e.Theme=v.Theme ".
+			"left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element ".
+			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
+			"$whr";
+		$sql = "$sel `##_CEN-Valeur` $sel1 union $sel `##_CEN-PValeur` $sel1 order by codexId,Valeur,Element";
+
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
-				'element'=>trim($d['Element']), 'dir'=>self::getDir($d['userCreate'], $d['Repertoire']), 'title'=>strtolower($d['Titre']));
+				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
+				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
 		return $dic;
 	}	
 	
+	static function getElementForme($whr) {
+		$sql = "select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,ifnull(v.Valeur,p.Valeur) as Valeur,f.Forme ".
+			"from `##_CEN-Forme` f ".
+			"inner join `##_CEN-Element` e on e.CodexId=f.CodexId and e.Theme=f.Theme ".
+			"left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element ".
+			"left join `##_CEN-Valeur` v on v.CodexId=e.CodexId and v.Cote=e.Cote and v.Theme=e.Theme ".
+			"left join `##_CEN-PValeur` p on p.CodexId=e.CodexId and p.Cote=e.Cote and p.Theme=e.Theme ".
+			"$whr order by f.CodexId,e.Cote";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$dic = array();
+		foreach($pdo as $d) {
+			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
+				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
+				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
+		}
+		return $dic;
+	}	
+
+	static function getElementSens($whr) {
+		$sql = "select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,ifnull(v.Valeur,p.Valeur) as Valeur,f.Forme ".
+			"from `##_CEN-Sens` s ".
+			"inner join `##_CEN-Element` e on e.CodexId=s.CodexId and e.Element=s.Element ".
+			"left join `##_CEN-Valeur` v on v.CodexId=e.CodexId and v.Cote=e.Cote and v.Theme=e.Theme ".
+			"left join `##_CEN-PValeur` p on p.CodexId=e.CodexId and p.Cote=e.Cote and p.Theme=e.Theme ".
+			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
+			"$whr order by s.CodexId,e.Cote";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$dic = array();
+		foreach($pdo as $d) {
+			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
+				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
+				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
+		}
+		return $dic;
+	}	
+
 	static private function getCount(&$array, $table, $alias, $where) {
 		$sql = "select CodexId,count(*) as cnt from `##_CEN-$table` $alias $where";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -119,79 +167,142 @@ $whr";
 		$img = str_replace('+', '-', strtolower($code)).'.'.$ext;
 	}
 
-	// word list
-	static function GetList($args) {
-		$word = $args['word'];
-		$cdx = $args['codex'];
-		if($cdx == 'all' || $cdx == '' || $cdx == 'null') $cdx = '';
-		//else $cdx = "CodexId in ($cdx) and";
-
-		switch($args['search']) {
-			case 'start': $mode = "like '$word%'"; break;
-			case 'all': $mode = "= '$word'"; break;
-			case 'any': $mode = "like '%$word%'"; break;
-		}
-
-		$type = $args['type'];
-		switch($type) {
-			case 'glyphe':
-				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$sql = "
-select distinct Lecture as word from `##_CEN-Glyphe` where $cdx Lecture $mode
-union select distinct Cote as word from `##_CEN-Glyphe` where $cdx Cote $mode
-union select distinct Lecture as word from `##_CEN-Personnage` where $cdx Lecture $mode
-union select distinct Cote as word from `##_CEN-Personnage` where $cdx Cote $mode";
-				break;
-				
-			case 'element':
-				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$sql = "
-select distinct Element as word from `##_CEN-Element` where $cdx Element $mode
-union select distinct Cote as word from `##_CEN-Element` where $cdx Cote $mode
-union select distinct Theme as word from `##_CEN-Element` where $cdx Theme $mode";
-				break;
-				
-			case 'valeur':
-				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$sql = "
-select distinct Lecture as word from `##_CEN-Valeur` where $cdx Valeur $mode
-union select distinct Theme as word from `##_CEN-Valeur` where $cdx Theme $mode
-union select distinct Lecture as word from `##_CEN-PValeur` where $cdx Valeur $mode
-union select distinct Theme as word from `##_CEN-PValeur` where $cdx Theme $mode";
-				break;
-		}
-
+	
+	static private function wordList($sql) {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql)." order by word limit 15";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
 		return array('words'=>$list, 'sql'=>$sql);		
 	}
+	
 
 	// result
 	static function GetTlachia($args) {
 		$word = $args['word'];
 		$cdx = $args['codex'];
-		if($cdx == 'all' || $cdx == '' || $cdx == 'null') $cdx = '';
-		//else $cdx = "CodexId in ($cdx) and";
+		$list = $args['list'] == 'true';
 
-		switch($args['search']) {
+		$cond = json_decode($args['cond']);
+		if($cdx == 'all' || $cdx == '' || $cdx == 'null') $cdx = '';
+		
+		$type = isset($args['type']) ? $args['type'] : $cond->type;
+		$gly = $cond->glyphe;
+		$elm = $cond->element;
+		
+		$mode = '';
+		if($type == 'glyphe' && $gly == 'cote')
+			$mode = 'start';
+		elseif($type == 'element' && $elm == 'theme')
+			$mode = 'start';
+		else $mode = $cond->mode;
+		
+		switch($mode) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
 			case 'any': $mode = "like '%$word%'"; break;
 		}
 
-		$type = $args['type'];
 		switch($type) {
 			case 'glyphe':
 				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$whr = "where $cdx (Lecture $mode or Cote $mode) group by CodexId order by CodexId,Cote";
+				
+				if($gly == 'multiple') {
+					if($list) {
+						$sql = "select distinct Element as word from `##_CEN-Element` where $cdx Element like '$word%'";
+						return self::wordList($sql);
+					}
+					$mul = $cond->multiple;
+					if(!count($mul)) return array('glyphes'=>[], 'personnes'=>[]);
+					$whr = "";
+					foreach($mul as $m) {
+						$whr .= $whr ? " and" : "where $cdx";
+						$whr .= " Element like '% $m,%'";
+					}
+					$whr .= " order by CodexId,Cote";
+
+				}
+				else {
+					$fld = $gly == 'cote' ? 'Cote' : 'Lecture';
+					$whr = "where $cdx $fld $mode";
+					if($list) {
+						$sql = "select distinct $fld as word from `##_CEN-Glyphe` $whr ".
+							"union select distinct $fld as word from `##_CEN-Personnage` $whr ";
+						return self::wordList($sql);
+					}
+					$whr .= " group by CodexId order by CodexId,Cote";
+				}
+				
 				$gly = self::getGlyphe('Glyphe', $whr);
 				$per = self::getGlyphe('Personnage', $whr);
 				self::getCount($gly, 'Glyphe', '', $whr);
 				self::getCount($per, 'Personnage', '', $whr);
-				return array('glyphes'=>$gly, 'personnes'=>$per);
+				return array('glyphes'=>$gly, 'personnes'=>$per, 'w'=>$whr);
 
+			case 'element':			
+				if($list) {
+					if($cdx) $cdx = "a.CodexId in ($cdx) and";
+					switch($elm) {
+						case 'designation': 
+							$sql = "select distinct a.Element as word from `##_CEN-Element` a where $cdx a.Element $mode";
+							return self::wordList($sql);
+						case 'theme':
+							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+							$sql = "select distinct concat(a.Theme,' <i>',a.Element,'</i> ',b.$fld) as word ".
+								"from `##_CEN-Element` a left join `##_CEN-Sens` b on b.CodexId=a.CodexId and b.Element=a.Element ".
+								"where $cdx a.Theme $mode";
+							return self::wordList($sql);
+						case 'valeur':
+							$sel = "select distinct a.Valeur as word from";
+							$sel1 = "a inner join `##_CEN-Element` e on e.CodexId=a.CodexId and e.Theme=a.Theme ";
+							$sel1 .= "where $cdx a.Valeur $mode";
+							$sql = "$sel `##_CEN-Valeur` $sel1 union $sel `##_CEN-PValeur` $sel1 ";
+							return self::wordList($sql);
+						case 'forme':
+							$sql = "select distinct a.Forme as word from `##_CEN-Forme` a inner join `##_CEN-Element` e ".
+								"on e.CodexId=a.CodexId and e.Theme=a.Theme where $cdx cast(a.Forme as unsigned) = cast('$word' as unsigned) ";
+							return self::wordList($sql);
+						case 'traduction':
+							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+							$sql = "select distinct a.$fld as word from `##_CEN-Sens` a inner join `##_CEN-Element` e ".
+								"on e.CodexId=a.CodexId and e.Element=a.Element where $cdx a.$fld $mode";
+							return self::wordList($sql);
+					}
+				}
+
+				$whr = "where ".($cdx ? "e.CodexId in ($cdx) and" : "");
+				$sql = "";
+				
+				switch($elm) {
+					case 'designation': 
+						$whr .= " e.Element $mode"; break;
+					case 'theme':
+						$whr .= " e.Theme $mode"; break;
+					case 'valeur':
+						$grp = $cond->elements ? '' : "group by e.CodexId,v.Valeur,e.Element";
+						$whr .= " v.Valeur $mode $grp";
+						return array('elements'=>self::getElementValeur($whr));
+					case 'forme':
+						$grp = $cond->elements ? '' : "group by f.CodexId,f.Forme,e.Element";
+						$whr .= " cast(f.Forme as unsigned) = cast('$word' as unsigned) $grp";
+						return array('elements'=>self::getElementForme($whr));
+					case 'traduction':
+						$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+						$grp = $cond->elements ? '' : "group by f.CodexId,s.$fld,e.Element";
+						$whr .= " s.$fld $mode $grp";
+						return array('elements'=>self::getElementSens($whr));
+				}
+
+
+				
+				$grp = $cond->elements ? '' : 'group by e.CodexId';
+				$whr .= " $grp order by e.CodexId,e.Cote";
+				
+				$dic = self::getElementBasic($whr);
+				if($grp) self::getCount($dic, 'Element', 'e', $whr);
+				return array('elements'=>$dic);
+
+				
 			case 'glyphe-elem':
 				$el = $args['element'];
 				if($cdx) {
@@ -233,60 +344,35 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 
 
 				$whr = "where e.CodexId=$id and e.Cote='$cote' order by e.Theme";
-				$elm = self::getTlaElement($whr);
-				foreach($elm as &$l) {
-					$c = $l['cote'];
-					$t = $l['theme'];
-					$sql = "
-select Valeur from `##_CEN-Valeur` where CodexId=$id and Cote='$c' and Theme='$t'
-union select Valeur from `##_CEN-PValeur` where CodexId=$id and Cote='$c' and Theme='$t'
-";
-					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-					$val = '';
-					foreach($pdo as $p)	{
-						if($val) $val .=', ';
-						$val .= $p['Valeur'];
-					}
-					$l['valeur'] = $val;
-				}
-				
+				$elm = self::getElementBasic($whr);
 				return array('citations'=>$cit, 'elements'=>$elm, 'valSup'=>$valSup);
+
+			case 'glyphe-lecture':
+				$org = json_decode($args['glyphe']);
+				$cid = $org->codexId;
+				$gid = $org->id;
+				$tbl = $org->type == 'person' ? 'Personne' : 'Glyphe';
+				$whr = "where CodexId=$cid and Lecture $mode and Id<>$gid order by Cote";
+				$gly = self::getGlyphe($tbl, $whr);
+				return array('glyphe'=>$gly);
 				
-			case 'element':
-				$grp = $args['elements'] == 'true' ? '' : 'group by e.CodexId';
-				if($cdx) $cdx = "e.CodexId in ($cdx) and";
-				$whr = "where $cdx (e.Element $mode or e.Cote $mode or e.Theme $mode) $grp order by e.CodexId,e.Cote";
-				$dic = self::getTlaElement($whr);
-				if($grp) self::getCount($dic, 'Element', 'e', $whr);
-				return array('elements'=>$dic);
-
-			case 'element-detail':
-				$lang = $args['lang'];
-//				$elem = $args['element'];
-				$them = $args['theme'];
-				$id = $args['id'];
-				$sql = "
-select distinct Valeur from `##_CEN-Valeur` where CodexId=$id and Theme='$them'
-union select distinct Valeur from `##_CEN-PValeur` where CodexId=$id and Theme='$them'
-";
-				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-				$val = '';
-				foreach($pdo as $p)	{
-					if($val) $val .=', ';
-					$val .= $p['Valeur'];
-				}
-				return array('valeur'=>$val,'sql'=>$sql);
-
-			case 'valeur':
-				if($cdx) $cdx = "CodexId in ($cdx) and";
-				$sql = "
-select distinct Lecture as word from `##_CEN-Valeur` where $cdx Lecture $mode
-union select distinct Cote as word from `##_CEN-Valeur` where $cdx Lecture $mode
-union select distinct Lecture as word from `##_CEN-PValeur` where $cdx Lecture $mode
-union select distinct Cote as word from `##_CEN-PValeur` where $cdx Lecture $mode";
-				break;
+//			case 'element-detail':
+//				$lang = $args['lang'];
+////				$elem = $args['element'];
+//				$them = $args['theme'];
+//				$id = $args['id'];
+//				$sql = "
+//select distinct Valeur from `##_CEN-Valeur` where CodexId=$id and Theme='$them'
+//union select distinct Valeur from `##_CEN-PValeur` where CodexId=$id and Theme='$them'
+//";
+//				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+//				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+//				$val = '';
+//				foreach($pdo as $p)	{
+//					if($val) $val .=', ';
+//					$val .= $p['Valeur'];
+//				}
+//				return array('valeur'=>$val,'sql'=>$sql);
 		}
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql)." order by word limit 15";

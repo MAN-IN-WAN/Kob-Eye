@@ -123,6 +123,7 @@ class genericClass extends Root {
 					 break;*/
 					case "txt" :
 					case "text" :
+					case "longtext" :  //PGF 20200128
 					case "html" :
 					default :
 						return $this -> {$Data};
@@ -2824,6 +2825,7 @@ class genericClass extends Root {
 			switch ($p["Type"]) {
 				case "titre":
 				case "text":
+				case 'longtext':  //PGF 20200128
 				case "varchar":
 				/*case "metat":
 				case "metad":
@@ -3048,6 +3050,7 @@ class genericClass extends Root {
                     $o->{$f['name']} = $this->{$f['name']} ? 1 : 0;
                     break;
                 case 'text':
+				case 'longtext':  //PGF 20200128
                 case 'varchar':
                 case 'titre':
                 case 'html':

@@ -18,6 +18,11 @@
 		<PROPERTIES type="html" category="Aide" form="16" fiche="16" description="Intoduction Anglais">AideEn</PROPERTIES>
 	</OBJECTCLASS>
 
+	<OBJECTCLASS title="Attachement" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Attachements" hidden="0" Operations="add,edit,delete">
+		<PROPERTIES type="file" category="Description" list="2" form="2" fiche="2" description="Chemin d'accès">FilePath</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" list="2" form="2" fiche="2" description="Titre">Titre</PROPERTIES>
+	</OBJECTCLASS>
+
 	<OBJECTCLASS title="Regle" driver="mysql" AccessPoint="1" Description="Règle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="file" category="Description" form="5" fiche="5" description="Fichier">FilePath</PROPERTIES>
