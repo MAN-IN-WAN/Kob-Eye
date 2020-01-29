@@ -3,7 +3,7 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12">
                 <div class="widget widget-seven background-primary">
                     <a class="widget-body disabled" href="#/" >
                         <div class="widget-body-inner">
@@ -17,15 +17,29 @@
                     </a>
                 </div>
             </div>
-            <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12">
                 <div class="widget widget-seven background-success">
-                    <a class="widget-body" href="#/{{ Urls.spectacles }}" >
+                    <a class="widget-body disabled" href="#/" >
                         <div class="widget-body-inner">
                             <h5 class="text-uppercase" style="white-space: normal">Spectacles en cours:</h5>
                             <i class="counter-icon icmn-windows8"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-up5"></i>
                                 <span class="counter-init" >{[{ spMonth }]}</span>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12">
+                <div class="widget widget-seven background-warning">
+                    <a class="widget-body disabled" href="#/" >
+                        <div class="widget-body-inner">
+                            <h5 class="text-uppercase" style="white-space: normal">Reservation dans l'année:</h5>
+                            <i class="counter-icon icmn-windows8"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span class="counter-init" >{[{ resAnnu }]}</span>
                             </span>
                         </div>
                     </a>

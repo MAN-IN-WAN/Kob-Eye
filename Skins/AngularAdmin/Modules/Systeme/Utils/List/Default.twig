@@ -157,10 +157,10 @@
                                         </span>
                                     </label>
                                     <p>Avant le :</p>
-                                    <label class="input-group timepicker-only-init">
+                                    <label class="input-group datetimepicker-init">
                                         <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
                                         <span class="input-group-addon">
-                                            <i class="icmn-clock"></i>
+                                            <i class="icmn-calendar"></i>
                                         </span>
                                     </label>
                                 {% else %}
@@ -205,6 +205,12 @@
                         down: "fa fa-arrow-down"
                     }
                 });
+                $('.datepicker-only-init').on('dp.change', function(e){
+
+                    var input = $(this).children('input');
+                    input.trigger('input'); // Use for Chrome/Firefox/Edge
+                    input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
+                });
                 $('.timepicker-only-init').datetimepicker({
                     widgetPositioning: {
                         horizontal: 'left'
@@ -218,6 +224,12 @@
                         down: "fa fa-arrow-down"
                     }
                 });
+                $('.timepicker-only-init').on('dp.change', function(e){
+
+                    var input = $(this).children('input');
+                    input.trigger('input'); // Use for Chrome/Firefox/Edge
+                    input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
+                });
                 $('.datetimepicker-init').datetimepicker({
                     widgetPositioning: {
                         horizontal: 'left'
@@ -229,6 +241,12 @@
                         up: "fa fa-arrow-up",
                         down: "fa fa-arrow-down"
                     }
+                });
+                $('.datetimepicker-init').on('dp.change', function(e){
+
+                    var input = $(this).children('input');
+                    input.trigger('input'); // Use for Chrome/Firefox/Edge
+                    input.trigger('change');// Use for Chrome/Firefox/Edge + IE11
                 });
 
             </script>

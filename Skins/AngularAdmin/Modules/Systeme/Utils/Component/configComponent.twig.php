@@ -12,6 +12,5 @@ array_walk($vars['formfields'] ,function(&$a){
         $a['name'] = $a['Nom'];
         $a['type'] = $a['Type'];
 });
-//print_r($vars['formfields']);
-
+//var_dump($vars['formfields']);
 ?>

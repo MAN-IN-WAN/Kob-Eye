@@ -289,6 +289,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         for(var n=0; n< $scope.component.Proprietes.length; n++){
             var param = zone.querySelectorAll('[name="'+$scope.component.Proprietes[n].Nom+'"]')[0];
             $scope.modalObj[$scope.component.Proprietes[n].Nom] = param != undefined ? param.childNodes[0].nodeValue : '';
+            if ($scope.modalObj[$scope.component.Proprietes[n].Nom] === "false" && $scope.component.Proprietes[n].Type == "boolean")$scope.modalObj[$scope.component.Proprietes[n].Nom] = false;
+            if ($scope.modalObj[$scope.component.Proprietes[n].Nom] === "true" && $scope.component.Proprietes[n].Type == "boolean")$scope.modalObj[$scope.component.Proprietes[n].Nom] = true;
         }
 
         return true;
@@ -304,7 +306,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
             $scope.component.chemin.pop();
             $scope.component.chemin.push('Component.conf');
             $scope.component.chemin = $scope.component.chemin.join('/');
-            $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title;
+            $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title+'&tms='+Date.now();
             //console.log($scope.component);
         } else {
             return false;

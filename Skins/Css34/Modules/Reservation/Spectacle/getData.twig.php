@@ -28,35 +28,51 @@ $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Query'],2);
 $path = $path[1];
 
-if (!empty($date)){
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
-    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-    $filters.="&DateDebut>".$from; //.'&DateDebut<'.$to;
-}else{
-    $filters.="&DateDebut>".time();
-}
-if (!empty($genre)) $filters.="&Genre=".$genre;
-
-
-//GENRES
-$genres = array();
-$genrestmp = Sys::getData('Reservation','Genre');
-foreach ($genrestmp as $g){
-    $genres[$g->Nom] = $g;
-}
-
 //requete
 if(connection_aborted()){
     endPacket();
     exit;
 }
-$vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
+if (!empty($date)){
+    $vars['rows'] = array();
+    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
+    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
+    $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
+    foreach ($evts as $ev){
+        $spt = $ev->getOneParent('Spectacle');
+        if (!empty($genre)){
+            if($spt->Genre == $genre)
+                $vars['rows'][] = $spt;
+        } else{
+            $vars['rows'][] = $spt;
+        }
+    }
 
-if(count($sort)) {
-    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
-}else {
-    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
+
+}else{
+    $filters.="&DateDebut>".time();
+    if (!empty($genre)) $filters.="&Genre=".$genre;
+    $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
+
+    if(count($sort)) {
+        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
+    }else {
+        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
+    }
+
 }
+
+//GENRES
+$genres = array();
+$genrestmp = Sys::getData('Reservation','Genre');
+//traietement des genres post
+
+
+foreach ($genrestmp as $g){
+    $genres[$g->Nom] = $g;
+}
+
+
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);
 //souscription au push
@@ -111,7 +127,11 @@ $curmen = '/Sorties/';
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
     if (sizeof($mens))  $curmen = '/'.$mens[0]->Url.'/';
 }*/
-
+usort($vars['rows'],function($a,$b){
+    if($a->DateDebut == $b->DateDebut) return 0;
+    return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
+});
+$temp = array();
 foreach ($vars['rows'] as $k=>$v){
 
     //GENRES
@@ -206,7 +226,14 @@ foreach ($vars['rows'] as $k=>$v){
     if ($o->isRecursiv()){
         $v->isTail = ($v->isTail()) ? '1':'0';
     }
+    //On ne conserve que si l'on a des evenements liés aux spectacles.
+    if(count($v->getChildren('Evenement')))
+        $temp[$k] = $v;
 }
+
+$vars['rows'] = $temp;
+
+
 
 if ($o->isRecursiv()) {
     $vars['recursiv'] = true;

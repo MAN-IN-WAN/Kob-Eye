@@ -442,7 +442,6 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 
         mywindow.document.write('<html><head><title>' + titre  + '</title>');
         mywindow.document.write('</head><body >');
-        mywindow.document.write('<h1>' + titre  + '</h1>');
         mywindow.document.write(document.getElementById(elem).innerHTML);
         mywindow.document.write('</body></html>');
 
@@ -450,7 +449,7 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
         mywindow.focus(); // necessary for IE >= 10*/
         mywindow.onload = function() {
             mywindow.print();
-            mywindow.close();
+            //mywindow.close();
         }
 
 
