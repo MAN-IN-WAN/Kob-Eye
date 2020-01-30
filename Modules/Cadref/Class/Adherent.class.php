@@ -532,11 +532,14 @@ class Adherent extends genericClass {
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
-				$nonInscrit = isset($obj['NonInscrits']) ? $obj['NonInscrits'] : '';
+				$nonInscrit = isset($obj['NonInscrit']) ? $obj['NonInscrit'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$adherent = false;
+				
+				$noRupture =  $contenu == 'Q' || $rupture == 'S';
+				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit;
 				
 				
 /*
@@ -585,7 +588,8 @@ group by i.Antenne
 					return array('pdf'=>$file, 'sql'=>$sql);
 				}
 
-				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S' || $visite != '' || $visiteAnnee || $nonInscrit) {
+				if($noClasse) $antenne = '';
+				if($noClasse || $noRupture) {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
@@ -593,14 +597,9 @@ group by i.Antenne
 				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
 				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail,";
-				$sql .= $typAdh == 'S' || $nonInscrit  ? "'' as Delegue " : "c0.CodeClasse as Delegue ";
+				$sql .= $noClasse  ? "'' as Delegue " : "c0.CodeClasse as Delegue ";
 
-				if($nonInscrit) {
-					$last = $annee-4;
-					$sql .= "from `##_Cadref-Adherent` e ";
-					$whr = "and e.Inscription<'$annee' and e.Inscription>='$last' and Inactif=0 ";
-				}
-				else if($typAdh == 'S') {
+				if($typAdh == 'S') {
 					// adhérents sans inscription
 					$sql .= "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
 					$whr = "and aa.Cotisation>0 and aa.Reglement=aa.Cotisation and aa.Differe=0 and aa.Cours=0 ";
@@ -638,6 +637,11 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					$rupture = 'S';
 					//$contenu = 'A';
 				}
+				elseif($nonInscrit) {
+					$last = $annee-4;
+					$sql .= "from `##_Cadref-Adherent` e ";
+					$whr = "and e.Inscription<'$annee' and e.Inscription>='$last' and Inactif=0 ";
+				}
 				else {
 					// adhérents inscrits
 					$sql .= "
@@ -658,7 +662,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh == '' && $visite == '' && $visiteAnnee == '' && $nonInscrit == '') {
+				if(! $noClasse) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
 //					// type adherent
