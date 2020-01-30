@@ -64,5 +64,5 @@ if($vars['mode'] == 0) {
 	$vars['ruptures'] = array('D' => 'Disciplines', 'N' => 'Niveaux', 'C' => 'Classes', 'S' => 'Sans rupture');
 	$vars['contenu'] = array('' => '', 'E' => 'Elèves seulement', 'N' => 'Impression du nom', 'A' => 'Impression nom et adresse', 'Q' => 'Etiquettes');
 	$vars['mails'] = array('' => '', 'A' => 'Avec', 'S' => 'Sans');
-	$vars['attentes'] = array('' => '', 'I' => 'Inscrit', 'A' => 'Attente');
+	$vars['inscrits'] = array('' => '', 'I' => 'Inscrit', 'A' => 'Attente');
 }

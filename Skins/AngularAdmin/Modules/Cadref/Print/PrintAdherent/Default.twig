@@ -63,19 +63,6 @@
 										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
-												{{ label("Enseignant") }}
-											</div>
-											<div class="col-md-5">
-												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
-													{% for a,b in enseignants %}
-														<option value="{{ a }}">{{ b }}</option>
-													{% endfor %}
-												</select>
-											</div>
-										</div>
-										<div class="row" style="height:5px"></div>
-										<div class="row">
-											<div class="col-md-2">
 												{{ label("Visite") }}
 											</div>
 											<div class="col-md-5">
@@ -98,6 +85,19 @@
 														</select>
 													</div>
 												</div>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Enseignant") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
+													{% for a,b in enseignants %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
 											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
@@ -190,7 +190,7 @@
 														{{ label("Inscrits Attentes") }}
 													</div>
 													<div class="col-md-5">
-														<select class="form-control cadref-input" ng-model="obj.Attente" ng-init="obj.Attente=''">
+														<select class="form-control cadref-input" ng-model="obj.Inscrits" ng-init="obj.Inscrits=''">
 															{% for a,b in attentes %}
 																<option value="{{ a }}">{{ b }}</option>
 															{% endfor %}
@@ -203,6 +203,14 @@
 													</div>
 													<div class="col-md-5">
 														<switch ng-model="obj.OrdreAtt"></switch>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Non inscrits") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.NonInscrit"></switch>
 													</div>
 												</div>
 												<div class="row">
