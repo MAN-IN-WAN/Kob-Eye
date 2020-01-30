@@ -879,7 +879,7 @@ where ce.Classe=$cid
 	public static function SendMessage($params) {	
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-		else $m->From = "noreply@uatl-eca.fr";	
+		else $m->From = "noreply@cadref.com";	
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
 		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
 		
