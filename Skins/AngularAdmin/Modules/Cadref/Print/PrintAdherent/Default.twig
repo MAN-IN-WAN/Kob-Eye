@@ -207,10 +207,14 @@
 												</div>
 												<div class="row">
 													<div class="col-md-5">
-														{{ label("Non inscrits") }}
+														{{ label("Non inscrits depuis") }}
 													</div>
 													<div class="col-md-5">
-														<switch ng-model="obj.NonInscrit"></switch>
+														<select class="form-control cadref-input" ng-model="obj.NonInscrit" ng-init="obj.NonInscrit=''">
+															{% for v in noninscr %}
+																<option value="{{ v }}">{{ v }}</option>
+															{% endfor %}
+														</select>
 													</div>
 												</div>
 												<div class="row">

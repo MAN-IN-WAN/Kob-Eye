@@ -638,9 +638,8 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					//$contenu = 'A';
 				}
 				elseif($nonInscrit) {
-					$last = $annee-4;
 					$sql .= "from `##_Cadref-Adherent` e ";
-					$whr = "and e.Inscription<'$annee' and e.Inscription>='$last' and Inactif=0 ";
+					$whr = "and e.Inscription<'$annee' and e.Inscription>='$nonInscrit' and Inactif=0 ";
 				}
 				else {
 					// adhérents inscrits

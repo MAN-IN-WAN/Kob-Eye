@@ -65,4 +65,7 @@ if($vars['mode'] == 0) {
 	$vars['contenu'] = array('' => '', 'E' => 'Elèves seulement', 'N' => 'Impression du nom', 'A' => 'Impression nom et adresse', 'Q' => 'Etiquettes');
 	$vars['mails'] = array('' => '', 'A' => 'Avec', 'S' => 'Sans');
 	$vars['inscrits'] = array('' => '', 'I' => 'Inscrit', 'A' => 'Attente');
+	$tmp = array('');
+	for($a = $annee, $i = 0; $i < 4; $i++) $tmp[] = --$annee;
+	$vars['noninscr'] = $tmp;
 }
