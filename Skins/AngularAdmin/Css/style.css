@@ -1843,5 +1843,11 @@ nav.left-menu .left-menu-list li.submenu-title{
 	.icon-menu .jspContainer {
 		overflow: visible;
 	}
+	.icon-menu .jspScrollable .jspPane{
+		margin:0 !important; 
+	}
+	.icon-menu .jspScrollable .jspVerticalBar {
+		display: none;
+	}
 }
 

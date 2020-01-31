@@ -1,0 +1,150 @@
+<SCHEMA>
+	<OBJECTCLASS title="People" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="People" hidden="0" Operations="add,edit,delete" Class="Modules/Show/Class/People.class.php">
+		<PROPERTIES type="varchar" length="64" category="Description" list="2" form="2" fiche="2" description="First name">FirstName</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="1" form="1" fiche="1" description="Surname">Surname</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Birth year">BirthYear</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="2" form="2" fiche="2" description="Nationality">Nationality</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="2" form="2" fiche="2" description="Living Country">LivingCountry</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="2" form="2" fiche="2" description="Living City">LivingCity</PROPERTIES>
+
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Pressbook">Pressbook</PROPERTIES>
+
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Seen">Seen</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Votes</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Average">Average</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Comments</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Performance" driver="mysql" AccessPoint="1" Description="Presentation" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Performance.class.php">
+		<PROPERTIES type="varchar" length="255" searchOrder="1" category="Description" form="1" list="1" fiche="1">Title</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2">Teaser</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Summary">Summary</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
+
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Pressbook">Pressbook</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Price">Price</PROPERTIES>
+
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Persons">Person</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Crew">Crew</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Cast">Cast</PROPERTIES>
+
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Scenery">Scenery</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Instruments">Instruments</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Electricity">Instruments</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Lightning">Lightning</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Daylight">Daylight</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Night">Night</PROPERTIES>
+		<FKEY card="0,n" module="Show" data="Place,Id" form="1" fiche="1" >Place</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Dressing room">DressingRoom</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Surface">Surface</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Height">Height</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Special requirement">Requirement</PROPERTIES>
+
+		<FKEY card="1,1" module="Show" data="Category,Id" form="1" fiche="1" >CategoryId</FKEY>
+		<FKEY card="0,n" module="Show" data="Domain,Id" form="1" fiche="1" >Domaine</FKEY>
+		<FKEY card="0,n" module="Show" data="Genre,Id" form="1" fiche="1" >Genre</FKEY>
+		<FKEY card="0,n" module="Show" data="Language,Id" form="1" fiche="1" >Language</FKEY>
+		<FKEY card="1,1" module="Show" data="Public,Id" form="1" fiche="1" >PublicId</FKEY>
+		<FKEY card="1,1" module="Show" data="Maturity,Id" form="1" fiche="1" >MaturityId</FKEY>
+
+		<FKEY card="1,1" module="Show" data="Country,Id" form="1" fiche="1" >CountryId</FKEY>
+		<PROPERTIES type="varchar" length="64" category="Description" list="1" form="1" fiche="1" description="State">State</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="1" form="1" fiche="1" description="County">County</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" list="1" form="1" fiche="1" description="City">City</PROPERTIES>
+
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Seen">Seen</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Shared">Shared</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Votes</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Average">Average</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Comments</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Crew" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Crew" hidden="0" >
+		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<FKEY card="1,1" module="Show" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Medium" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Medium" hidden="0">
+		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<FKEY card="1,1" module="Show" data="MediumType,Id" form="1" fiche="1" >MediumTypeId</FKEY>
+		<PROPERTIES type="file" category="Description" form="1" list="1" fiche="1">Medium</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+		<FKEY card="0,n" module="Show" data="Performance,Id" form="1" fiche="1" >Performance</FKEY>
+		<FKEY card="0,n" module="Show" data="People,Id" form="1" fiche="1" >People</FKEY>
+		<FKEY card="0,n" module="Show" data="Place,Id" form="1" fiche="1" >Place</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Comments" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Crew" hidden="0" >
+		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Comments">Comments</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Vote</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="History" driver="mysql" order="id" AccessPoint="1" Description="Performance history"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Submition" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Submition" hidden="0" >
+		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" module="Show" data="User,Id" form="1" fiche="1" >UserId</FKEY>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+	<OBJECTCLASS title="Category" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Category</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Domain</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="CrewType" driver="mysql" AccessPoint="1" Description="CrewType" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">CrewType</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" searchOrder="1" category="Description" form="1" list="1" fiche="1">Type</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Maturity" driver="mysql" AccessPoint="1" Description="Maturity" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Maturity</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Public" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Public</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Genre" driver="mysql" AccessPoint="1" Description="Genre" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Genre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Language" driver="mysql" AccessPoint="1" Description="Language" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Place" driver="mysql" AccessPoint="1" Description="Language" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Place</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="MediumType" driver="mysql" AccessPoint="1" Description="Language" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">MediumType</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Logo</PROPERTIES>
+	</OBJECTCLASS>
+
+
+</SCHEMA>

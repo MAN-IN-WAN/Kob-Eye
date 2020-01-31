@@ -1,8 +1,21 @@
 {# fiche FicheAttachements #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+
+{% if associatif %}
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+{% else %}
 <div>
 	{% if not adherent %}<span class="cadref-ins-numero" ng-bind="attachementInfo.code"></span> {% endif %}<span class="cadref-ins-nom" ng-bind="attachementInfo.libelle"></span>
 </div>
+{% endif %}
 {% if not adherent %}
 	<div class="cadref-widget" ng-if="attachementInfo.mode!=''">
 		<div class="row">
@@ -76,7 +89,6 @@
 			</thead>
 			<tbody>
 				<tr dir-paginate="item in CadrefAttachement.data" pagination-context="children" current-page="CadrefAttachement.currentPage" items-per-page="15" pagination-id="CadrefAttachement-pagination">
-{#				<tr ng-repeat="item in CadrefAttachement.data" >#}
 					<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 					<td class="cadref-td typedatetime"><span class="label">{[{ item.DateModification }]}</span></td>
 					<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Titre }]}</span></td>
@@ -92,3 +104,10 @@
 		</table>
 	</div>
 </div>
+					
+{% if associatif %}
+		</div>
+	</section>
+</div>
+{% endif %}
+					

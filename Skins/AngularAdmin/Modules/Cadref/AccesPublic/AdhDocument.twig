@@ -1,0 +1,51 @@
+{# fiche inscriptions adherent #}
+<div class="page-content-inner">
+	<h3>Documents associatifs</h3>
+    <section class="panel">
+        <div class="panel-body cadref-public">
+            <div class="row no-gutters">		
+                <div class="col-md-12">
+					<section class="panel">
+{#						{% include 'Skins/AngularAdmin/Modules/Cadref/Attachement/FicheAttachements.twig' %}#}
+
+<div>
+	<div style="height:20px"></div>
+	<div class="form-group row">
+		<div class="col-lg-6 col-md-12">
+			<h5>Liste des documents</h5>
+		</div>
+		<div class="col-lg-6 col-md-12">
+			<dir-pagination-controls boundary-links="true" pagination-context="children" pagination-id="CadrefAttachementAsso-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+		</div>
+	</div>
+	<div class="listWrap">
+		<table class="table table-hover nowrap straight" id="CadrefAttachementAsso-table" width="100%" style="line-height:1">
+			<thead>
+				<tr>
+					<th title="Id" class="list-col-th-id" hidden>ID</th>
+					<th class="cadref-th">Date</th>
+					<th class="cadref-th">Titre</th>
+					<th class="cadref-th-btn"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr dir-paginate="item in CadrefAttachementAsso.data" pagination-context="children" current-page="CadrefAttachementAsso.currentPage" items-per-page="15" pagination-id="CadrefAttachementAsso-pagination">
+					<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+					<td class="cadref-td typedatetime"><span class="label">{[{ item.DateModification }]}</span></td>
+					<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Titre }]}</span></td>
+					<td  class="table-action cadref-td-btn">
+						<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-if="item.FilePath" title="Télécharger"></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+					</section>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
