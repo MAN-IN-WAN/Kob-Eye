@@ -1,0 +1,15 @@
+/** ITEM HELPER **/
+{% macro template_client_item() %}
+    {% verbatim %}
+    <template id="clients-list" class="padding1 padding3">
+        <a class="card" v-for="(client,index) in clients" v-bind:key="index" :to="{path: client.Url, params: {client: client}}" v-on:click.prevent="goToFiche(client)" v-bind:style="{backgroundColor:client.couleur}">
+            <div class="client-item" >
+                <div class="card-body">
+                    <h5 class="card-title">{{ client.Nom  }}</h5>
+                    <p class="lieu">  <i  v-if="client.Ville>'0'"  class="fas fa-map-signs" ><span class="laville">{{ client.Ville }}</span></i>  </p>
+                </div>
+            </div>
+        </a>
+    </template>
+    {% endverbatim %}
+{% endmacro %}

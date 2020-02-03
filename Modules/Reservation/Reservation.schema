@@ -33,11 +33,11 @@
 		<PROPERTIES type="varchar" fiche="1" form="1" >Mail</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" Description="Site internet">SiteWeb</PROPERTIES>
 		<PROPERTIES type="image" list="1" fiche="1" form="1" >Logo</PROPERTIES>
-		<PROPERTIES type="date" fiche="1" Description="Date Dernier Contact" Adminonly="1"  searchOrder="2">DateDernierContact</PROPERTIES>
+		<PROPERTIES type="date" Description="Date Dernier Contact" Adminonly="1"  searchOrder="2">DateDernierContact</PROPERTIES>
 		<PROPERTIES type="text" fiche="1" form="1" Description="Type de public suivi">TypePublicSuivi</PROPERTIES>
 		<PROPERTIES type="text" fiche="1" form="1" Description="Type d'actions menées">TypeAction</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" Description="Nombre de personnes suivies">PersonSuivi</PROPERTIES>
-		<PROPERTIES type="ref" fiche="1" form="1" queryRef="Systeme/Group" searchOrder="4" adminOnly="1">NumeroGroupe</PROPERTIES>
+		<PROPERTIES type="ref" queryRef="Systeme/Group" searchOrder="4" adminOnly="1">NumeroGroupe</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Imprimer les documents">ImprimeDoc</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des E-mails">ExportMail</FUNCTION>
 		<FKEY card="0,n" data="Organisation,Id"  action="Link" Description="StructuresExclues">ClientsExclu</FKEY>

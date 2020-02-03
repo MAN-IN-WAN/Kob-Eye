@@ -1,0 +1,12 @@
+
+{% macro template_pagination() %}
+<div class="pagination" v-if="pagination.max > 1">
+    <a href="" v-on:click.prevent="setPage(pagination.current -1)" class="page_button"> << </a>
+    <a href="" v-on:click.prevent="setPage(1)" v-bind:class="{ active: pagination.current == 1 }" class="page_button">1</a>
+    <span v-if="pagination.current > 3">...</span>
+    <a href="" v-for="n in pagination.max" v-if="showPage(n)" v-html="n"  v-on:click.prevent="setPage(n)"  v-bind:class="{ active: pagination.current == n }" class="page_button"></a>
+    <span v-if="pagination.current < (pagination.max - 2 )">...</span>
+    <a href="" v-html="pagination.max"  v-on:click.prevent="setPage(pagination.max)"  v-bind:class="{ active: pagination.current == pagination.max }" class="page_button"></a>
+    <a href="" v-on:click.prevent="setPage(pagination.current + 1)" class="page_button"> >> </a>
+</div>
+{% endmacro %}

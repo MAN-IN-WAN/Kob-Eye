@@ -8,7 +8,8 @@ class KeTwig{
     static $renderedTemplates = array();
     public static function initTwig() {
         KeTwig::$Loader = new Twig_Loader_Filesystem('.');
-        if (TWIG_CACHE) {
+
+        if (defined('TWIG_CACHE') && TWIG_CACHE) {
             $config = array(
                 'cache' => 'Data/Twig',
                 'debug' => true

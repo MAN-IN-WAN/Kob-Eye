@@ -1,0 +1,13 @@
+
+<div class="inscription"  v-if="!render">
+    {% if bloc.Lien is not empty  %}
+    <a href="{{ bloc.Lien }}" >
+        {%  endif %}
+        <h3>{{ bloc.Titre }}</h3>
+        {% if bloc.Lien is not empty  %}
+    </a>
+    {%  endif %}
+    <div>{{ bloc.Text | raw}}</div>
+    <input class="form-control input-dark inputNewsletter" type="text" />
+    <a href="" ><i aria-hidden="true" class="fa fa-envelope"></i></a>
+</div>

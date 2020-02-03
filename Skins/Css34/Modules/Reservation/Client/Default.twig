@@ -1,0 +1,5 @@
+{% if interface == 'List' %}
+    {{ include(template_from_string(module('Reservation/Client/ListBundle'))) }}
+{% else %}
+    {{ include(template_from_string(module('Reservation/Client/FicheBundle'))) }}
+{% endif %}

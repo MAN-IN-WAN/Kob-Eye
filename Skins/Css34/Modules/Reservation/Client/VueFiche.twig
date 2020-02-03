@@ -1,0 +1,64 @@
+<template>
+    {% verbatim %}
+        <div class="row " id="client-fiche" v-if="display">
+            <h1>{{ client.Nom }}</h1>
+            Adresse : {{ client.Adresse }}
+             {{ client.CodePos }}
+             {{ client.Ville }}
+             <p>{{ client.Tel }}</p>
+             <p>{{ client.Mail }}</p>
+        </div>
+    {% endverbatim %}
+</template>
+
+<script>
+    module.exports = {
+        name: 'client-fiche',
+        data: function () {
+            return {
+                loaded: false,
+                display: false,
+                currentUrl: '',
+                client: {Nom: 'cli'}
+            }
+        },
+        methods: {
+            getData: function (url) {
+                var me = this;
+                axios
+                    .get('/Reservation/Client/'+url+'/getOneData.json')
+                    .then(function (response) {
+                        me.client = response.data;
+                        me.loaded = true;
+                        me.display = true;
+                        //me.display = me.spectacle = me.spectacle.Url;
+                    });
+            }
+        },
+        watch : {
+            $route: function () {
+                console.log('before route watch',window.spec.client);
+                var to = this.$route.params.url;
+                if (window.spec.client){
+                    this.client = window.spec.client;
+                    this.display = true;
+                }else this.display = false;
+
+                if (!this.loaded||this.currentUrl!=to){
+                    this.loaded = false;
+                    this.getData(to);
+                }
+            }
+        },
+        mounted: function () {
+            var url = this.$route.params.url;
+            if (!this.loaded||this.currentUrl!=url){
+                this.loaded = false;
+                this.getData(url);
+            }
+        }
+    }
+</script>
+
+<style>
+</style>

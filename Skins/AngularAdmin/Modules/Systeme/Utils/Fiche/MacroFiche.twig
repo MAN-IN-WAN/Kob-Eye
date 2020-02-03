@@ -28,7 +28,15 @@
                         <div class="col-md-12 col-lg-6">
                             <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
                                 <div class="col-md-5 detail-label">
-                                    <label class="form-control-label"for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                                    <label class="form-control-label"for="l0">
+                                        {% if field.parentDescription is not empty %}
+                                            {{ field.parentDescription }}
+                                        {% elseif field.Description is not empty%}
+                                            {{ field.Description }}
+                                        {% else %}
+                                            {{ field.description }}
+                                        {% endif %}
+                                    </label>
                                 </div>
                                 <div class="col-md-7 detail-value">
                                     {% if field.type == "price" %}

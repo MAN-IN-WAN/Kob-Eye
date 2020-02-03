@@ -103,8 +103,8 @@
 
 /** IMAGE **/
 {% macro fimage(field,obj) %}
-    <p class="showImgFocus" ng-click="modalFocus('{{ field.name }}',{{ obj }},1);">
-        <img class="img-responsive" src="{[{ {{ obj }}.{{ field.name }} }]}.limit.250x40.jpg" alt="{{ field.listDescr }}" ng-if="{{ obj }}.{{ field.name }}"/>
+    <p class="showImgFocus" ng-click="modalFocus('{{ field.name }}',{{ obj }},1);"  ng-if="{{ obj }}.{{ field.name }}">
+        <img class="img-responsive" src="{[{ {{ obj }}.{{ field.name }} }]}.limit.250x40.jpg" alt="{{ field.listDescr }}"/>
     </p>
     <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" alt="{{ field.listDescr }}" ng-if="!{{ obj }}.{{ field.name }} "/>
 {% endmacro %}
