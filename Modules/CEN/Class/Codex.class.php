@@ -163,8 +163,14 @@ class Codex extends genericClass {
 	private static function getDir($usr, $dir) {
 		return "/Home/$usr/CEN/Codex/$dir/";
 	}
+	
+	private static function getCodexDir($id) {
+		$cx = Sys::getOneData('CEN', 'Codex/'.$id);
+		return self::getDir($cx->userCreate, $cx->Repertoire);
+	}
+	
 	private static function getImg($code, $ext) {
-		$img = str_replace('+', '-', strtolower($code)).'.'.$ext;
+		return str_replace('+', '-', strtolower($code)).'.'.$ext;
 	}
 
 	
@@ -179,7 +185,7 @@ class Codex extends genericClass {
 
 	// result
 	static function GetTlachia($args) {
-		$word = $args['word'];
+		$word = trim(strtolower($args['word']));
 		$cdx = $args['codex'];
 		$list = $args['list'] == 'true';
 
@@ -200,7 +206,7 @@ class Codex extends genericClass {
 		switch($mode) {
 			case 'start': $mode = "like '$word%'"; break;
 			case 'all': $mode = "= '$word'"; break;
-			case 'any': $mode = "like '%$word%'"; break;
+			default: $mode = "like '%$word%'"; break;
 		}
 
 		switch($type) {
@@ -408,12 +414,94 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		return array('text'=>$txt, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
 	
+	function GetTerm($args) {
+		$dir = '/Home/'.$this->userCreate.'/CEN/Codex/Aide/';
+		$lgs = ['es','fr','en'];
+		$lix = array_search($args['lang'], $lgs);
+		$lang = ['.aes','.afr','.aan'][$lix];
+		$les = '.aes';
+
+		$pres = str_replace('.', '_', strtolower($args['text']));
+		$txt = '';
+		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
+		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
+		$txt = utf8_encode(nl2br($txt));
+		return array('text'=>$txt); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
+	}
+
+	static private function getPicture($type, $p) {
+		$id = $p['CodexId'];
+		$cx = Sys::getOneData('CEN', 'Codex/'.$id);
+		$c = $type == 'element' ? str_replace('.', '_', $p['Theme']) : $p['Cote'];
+		$img = self::getDir($cx->userCreate, $cx->Repertoire).self::getImg($c, $type == 'element' ? 'bmp' : 'jpg');
+		return array('success'=>true, 'type'=>$type, 'id'=>$id, 'img'=>$img, 'codex'=>$cx->Titre);
+	}
+	
 	static public function GetAnal($args) {
 		$lang = $args['lang'];
-		$word = strtolower($args['word']);
-		if($args['norma']) $word = GDN::normalize($word);
+		$word = trim(strtolower($args['word']));
 		$id = $args['id'];
 		$cid = intval($id) ? "CodexId=$id and" : "";
+		
+		$ext = strtolower(substr($word, -4));
+		if($ext == '.jpg' || $ext == '.bmp') {
+			$img = self::getCodexDir($id).str_replace('+', '-', strtolower($word));
+			return array('success'=>true, 'type'=>'image', 'id'=>$id, 'img'=>$img);
+		}
+		
+		$cote = str_replace('+', '-', strtolower($word));
+		$sql = "select Cote,CodexId from `##_CEN-Planche` where $cid Cote='$cote' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo->rowCount()) {
+			$p = '';
+			foreach($pdo as $p) return self::getPicture('planche', $p);
+		}
+		
+		$sql = "select Cote,CodexId from `##_CEN-Zone` where $cid Cote='$cote' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo->rowCount()) {
+			$p = '';
+			foreach($pdo as $p); return self::getPicture('zone', $p);
+		}
+
+		$sql = "select Cote,CodexId from `##_CEN-Glyphe` where $cid Cote='$cote' ".
+			"union select Cote,CodexId from `##_CEN-Personnage` where $cid Cote='$cote' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo->rowCount()) {
+			$p = '';
+			foreach($pdo as $p); return self::getPicture('glyphe', $p);
+		}
+
+		$sql = "select Theme,CodexId from `##_CEN-Element` where $cid Theme='$cote' limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo->rowCount()) {
+			$p = '';
+			foreach($pdo as $p); return self::getPicture('element', $p);
+
+		}
+
+		switch($lang) {
+			case 'fr': $fld = "Terme"; $ext = 'afr'; break;
+			case 'es': $fld = "Espagnol"; $ext = 'aes'; break;
+			case 'fr': $fld = "Anglais"; $ext = 'aan'; break;
+		}
+		$w = CEN::removeAccents($word);
+		$sql = "select distinct $fld as term,Fichier from `##_CEN-Termino` where $cid ($fld like '%$w%') limit 15";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo->rowCount()) {
+			$lst = array();
+			foreach($pdo as $p) $lst[] = array('term'=>$p['term'], 'text'=>explode('.', $p['Fichier'])[0]);
+			return array('success'=>true, 'type'=>'term', 'term'=>$word, 'terms'=>$lst);
+		}	
+		
+		
+		
+		if($args['norma']) $word = GDN::normalize($word);
 		
 		
 		$sql = "select Trans from `##_CEN-Mot` where $cid (Paleo='$word' or Trans='$word') limit 1";
@@ -442,7 +530,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		$dir = self::getDir($d->userCreate, $d->Repertoire);
 		
 
-		return array('success'=>true, 'title'=>$cx->Titre, 'nahuatl'=>$word, 'trans'=>$tran, 'anal'=>$anal, 'roots'=>$rs);
+		return array('success'=>true, 'type'=>'anal', 'title'=>$cx->Titre, 'nahuatl'=>$word, 'trans'=>$tran, 'anal'=>$anal, 'roots'=>$rs);
 	}
 	
 	static private function getTrans($cid, $word, $lang) {
