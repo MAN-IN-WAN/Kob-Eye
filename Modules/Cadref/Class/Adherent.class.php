@@ -532,10 +532,14 @@ class Adherent extends genericClass {
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
+				$nonInscrit = isset($obj['NonInscrit']) ? $obj['NonInscrit'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$adherent = false;
+				
+				$noRupture =  $contenu == 'Q' || $rupture == 'S';
+				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit;
 				
 				
 /*
@@ -554,12 +558,6 @@ where Soutien>0 and Supprime=0 and Attente=0 and Annee='2019'
 )
 and i.Annee='2019' and i.Supprime=0 and i.Attente=0
 group by i.Antenne,s.Libelle
-
-
-
-
-
-
  */
 
 				if($soutien) {
@@ -590,19 +588,21 @@ group by i.Antenne
 					return array('pdf'=>$file, 'sql'=>$sql);
 				}
 
-				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S' || $visite != '' || $visiteAnnee) {
+				if($noClasse) $antenne = '';
+				if($noClasse || $noRupture) {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
 				}
 				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
-				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, c0.CodeClasse as Delegue";
+				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail,";
+				$sql .= $noClasse  ? "'' as Delegue " : "c0.CodeClasse as Delegue ";
 
 				if($typAdh == 'S') {
 					// adhérents sans inscription
-					$sql .= "from `##_Cadref-Adherent` e ";
-					$whr = "and e.Cotisation>0 and e.Reglement=e.Cotisation and e.Differe=0 and e.Montant=0 ";
+					$sql .= "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
+					$whr = "and aa.Cotisation>0 and aa.Reglement=aa.Cotisation and aa.Differe=0 and aa.Cours=0 ";
 				}
 				else if($typAdh != '') {
 					$sql .= "
@@ -637,6 +637,10 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					$rupture = 'S';
 					//$contenu = 'A';
 				}
+				elseif($nonInscrit) {
+					$sql .= "from `##_Cadref-Adherent` e ";
+					$whr = "and e.Inscription<'$annee' and e.Inscription>='$nonInscrit' and Inactif=0 ";
+				}
 				else {
 					// adhérents inscrits
 					$sql .= "
@@ -657,7 +661,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh == '' && $visite == '' && $visiteAnnee == '') {
+				if(! $noClasse) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
 //					// type adherent
@@ -678,9 +682,9 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 //					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
 
-					$attente = (isset($obj['Attente']) && $obj['Attente'] != '') ? $obj['Attente'] : '';
-					if($attente == 'I') $whr .= "and i.Attente=0 ";
-					elseif($attente == 'A') $whr .= "and i.Attente<>0 ";
+					$inscrits = (isset($obj['Inscrits']) && $obj['Inscrits'] != '') ? $obj['Inscrits'] : '';
+					if($inscrits == 'I') $whr .= "and i.Attente=0 ";
+					elseif($inscrits == 'A') $whr .= "and i.Attente<>0 ";
 
 					$lieu = (isset($obj['Lieu']) && $obj['Lieu'] != '') ? $obj['Lieu'] : '';
 					if($lieu != '') $whr .= "and c.Lieu='$lieu' ";
@@ -842,7 +846,7 @@ order by a.Nom, a.Prenom";
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
-			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $typAdh, $pages);
+			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $nonInscrit ? 'N' : $inscrits, $typAdh, $pages);
 			$pdf->SetAuthor("Cadref");
 			$pdf->SetTitle('Liste adherents');
 

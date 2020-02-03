@@ -17,6 +17,7 @@ switch(Sys::$CurrentMenu->Url) {
 			//'adh_visites'=>'AdhPanierVisite',
 			'adh_documents/adh_carte'=>'AdhCarte',
 			'adh_documents/adh_attestation'=>'AdhAttestation',
+			'adh_documents/adh_associatif'=>'AdhDocument',
 			'adh_message'=>'sendMessage',
 			'adh_panier'=>'AdhPanier',
 			'adh_site/adh_site_adherent'=>'AdhSiteAdherent',

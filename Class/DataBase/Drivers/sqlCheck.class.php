@@ -490,7 +490,7 @@ class sqlCheck{
 				break;
 			case "html":				//Champ html
 			case "bbcode":				//Champ bbcode
-				$Tab['type']="text";
+				$Tab['type']="longtext";
 				$Tab['special']='multi';
                                 $Tab['displayType']="block";
 				break;

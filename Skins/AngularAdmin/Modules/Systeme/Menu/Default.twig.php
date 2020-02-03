@@ -10,4 +10,6 @@ if(count(Sys::$User->Menus))
 //print_r(Sys::$User->Menus);
 $vars['user'] = Sys::$User;
 $vars['group'] = Sys::$User->Groups[0];
+
+$vars['menuIcon'] = Sys::isModule('Cadref');
 ?>

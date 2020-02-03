@@ -1102,7 +1102,7 @@ class ObjectClass extends Root{
             case "html":
             case "graph":
 			case "bin":
-				$Type="text";
+				$Type="longtext";    //PGF 20200128 replace "text"
 			break;
 			case "longtext":
 				$Type="longtext";

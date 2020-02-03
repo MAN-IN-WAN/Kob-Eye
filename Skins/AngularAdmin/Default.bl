@@ -260,7 +260,7 @@
 
 
 [/HEADER]
-[BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static" ng-controller="MainCtrl"[/BODY]
+[BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static [IF [!Systeme::isModule(Cadref)!]]icon-menu[/IF]" ng-controller="MainCtrl"[/BODY]
 [MODULE Systeme/Menu]
 [MODULE Systeme/Menu/MenuTop]
 

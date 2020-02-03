@@ -7,7 +7,7 @@ class PrintAdherent extends FPDF {
 	private $contenu;
 	private $rupture;
 	private $antenne;
-	private $attente;
+	private $inscrit;
 	private $adherent;
 	private $sauts;
 	private $head;
@@ -27,19 +27,24 @@ class PrintAdherent extends FPDF {
 	private $Heure = '';
 	private $Enseignant = '';
 
-	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $adherent, $pages) {
+	function PrintAdherent($mode, $contenu, $rupture, $antenne, $inscrits, $adherent, $pages) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
 		$this->contenu = $contenu;
 		$this->rupture = $rupture;
 		$this->adherent = $adherent;
+		$this->inscrits = $inscrits;
 		$this->sauts = $pages;
 
 		$this->mode = $mode;
 		switch($mode) {
 			case 0:
 				$this->titre = Cadref::$UTL." : Liste des adhérents ";
+				switch($inscrits) {
+					case 'A': $this->titre .= 'en attente '; break;
+					case 'N': $this->titre .= 'non inscrits '; break;
+				}
 				switch($adherent) {
 					case 'B': $this->titre .= '(Bureau) '; break;
 					case 'A': $this->titre .= '(Administrateurs) '; break;
