@@ -41,6 +41,7 @@
                     <th>DATE</th>
                     <th>LIEU</th>
                     <th>ADRESSE</th>
+                    <th>ACCÈS</th>
                     <th>TELEPHONE</th>
                     <th>WEB</th>
                     <th>DISPO</th>
@@ -49,16 +50,22 @@
                         <tr v-for="e in spectacle.events">
                             <td :inner-html.prop="e.DateDebut | timestamp"></td>
                             <td>{{ e.Salle.Nom }}</td>
-                            <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }}</td>
-                            <td>
+                            <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} {{ e.Salle.Handi }} </td>
+                            <td style="text-align: center">
+                                <i v-if="e.Salle.Handi=='1'"  class="fas fa-wheelchair" style="color:green;"></i>
+                                <i v-if="e.Salle.Handi=='0'"  class="fas fa-wheelchair" style="color:red;"></i>
+                                <i v-if="e.Salle.Handi=='-1'" class="fas fa-wheelchair" style="color:orange;"></i>
+                                <i v-if="e.Salle.Handi==''"   class="fas fa-wheelchair" style="color:red;"></i>
+                           </td>
+                            <td style="text-align: center">
                                 <a v-if="e.Structure.Tel!=''" :href="'tel:'+e.Structure.Tel"><i  class="fas fa-phone" style="color:green"></i></a>
                                 <i v-if="e.Structure.Tel==''" class="fas fa-times" style="color:red"></i>
                             </td>
-                            <td>
+                            <td style="text-align: center">
                                 <a v-if="e.Structure.SiteWeb!=''" :href="'http://'+e.Structure.SiteWeb" target="_blank"><i  class="fas fa-link" style="color:green"></i></a>
                                 <i v-if="e.Structure.SiteWeb==''" class="fas fa-times" style="color:red"></i>
                             </td>
-                            <td>
+                            <td style="text-align: center">
                                 <i v-if="e.NbPlace>0" class="fas fa-check" style="color:green"></i>
                                 <i v-if="e.NbPlace==0" class="fas fa-times" style="color:red"></i>
                             </td>

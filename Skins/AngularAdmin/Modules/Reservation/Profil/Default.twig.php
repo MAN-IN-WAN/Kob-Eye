@@ -77,12 +77,12 @@ foreach ($childs as $child){
         array_push($vars["ChildrenElements"],$child);
 }
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
-$vars['identifier'] = 'Reservation' . 'Client';
 if (is_object(Sys::$CurrentMenu))
     $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
 else $vars['CurrentUrl'] = $vars['Query'];
 
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
-$vars['CurrentObjQuery'] = 'Reservation/Client/935';
+$vars['CurrentObjQuery'] = 'Reservation/Client';
+
 

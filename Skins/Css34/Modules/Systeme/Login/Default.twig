@@ -1,29 +1,40 @@
 <div class="modal" id="login-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="">
-            <div class="modal-header">
-                <h5 class="modal-title">Login</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Identifiant</label>
-                    <input type="text" class="form-control" id="login" aria-describedby="emailHelp" placeholder="Saisissez votre identifiant" name="login">
-                    <small id="emailHelp" class="form-text text-muted">Saisissez votre identifant</small>
+            <div  class="login-espace-pro" >
+                <div class="col-login">
+                    {{ include(template_from_string(module('Systeme/Bloc/Login?CODE=LOGIN-LEFT'))) }}
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Mot de passe</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe" name="pass">
+                <div class="col-login">
+                    {{ include(template_from_string(module('Systeme/Bloc/Login?CODE=LOGIN-MIDDLE'))) }}
                 </div>
+                <div class="col-login">
+                    <form method="post" action="">
+                        <div class="modal-header">
+                            <i aria-hidden="true" class="fa fa-power-off"></i>
+                            <h5 class="modal-title">Espace Pro</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+{#                                <span aria-hidden="true">X</span>#}
+                                <i aria-hidden="true" class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Identifiant</label>
+                                <input type="text" class="form-control" id="login" aria-describedby="emailHelp" placeholder="Saisissez votre identifiant" name="login">
+{#                                <small id="emailHelp" class="form-text text-muted">Saisissez votre identifant</small>#}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Mot de passe</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe" name="pass">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Connexion</button>
+{#                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>#}
+                        </div>
+                    </form>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Se connecter</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-            </div>
-            </form>
         </div>
     </div>
 </div>

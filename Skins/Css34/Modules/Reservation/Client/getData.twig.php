@@ -12,7 +12,7 @@ $vars['fields'][] = array(
 
 //calcul offset / limit
 $offset = 0;
-$limit = 36;
+$limit = 42;
 $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array('Nom', 'ASC');
@@ -83,13 +83,10 @@ foreach ($genres as $g) {
     if (!empty($g->Couleur  )) $couleurs[]= $g->Couleur;
 }
 
-
 foreach ($vars['rows'] as $k=>$v){
-    // patchwork
     $v->Couleur = $couleurs[$index];
     $index++;
     if ($index > count($couleurs)) $index=0;
-
     //URL
     $v->Url = $curmen.$v->Url;
     //LABEL
@@ -185,6 +182,9 @@ if (sizeof($children)){
 
 
 $vars['total'] = Sys::getCount($info['Module'],$path.'/'.$filters);
+
+
+
 
 
 function endPacket(){

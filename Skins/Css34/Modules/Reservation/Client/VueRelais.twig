@@ -1,26 +1,15 @@
 <template>
     <form v-on:submit.prevent="onSubmit">
         <div class="row">
-            <div class="col-md-4" style="padding-right: 10px;padding-left:0;">
-                <h3 class="titre-partenaires">Liste partenaires officiels</h3>
-                {% for partenaire in partenaires %}
-                    <div class="card partenaires-item">
-                        <img src="{{ partenaire.Image }}" class="card-img-top " alt="">
-                        <div class="card-body" style="background-color:#0A246A; color:#fff;">
-                            <h3 style="text-align: center;">{{ partenaire.Titre }}</h3>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="col-md-8" id="filters">
-                <h3  class="titre-partenaires">Liste structures culturelles</h3>
-                {% from "Skins/Css34/Modules/Reservation/Organisation/Pagination.twig" import  template_pagination %}
+          <div class="col-md-12" id="filters">
+                <h3  class="titre-partenaires">Liste des relais sociaux</h3>
+                {% from "Skins/Css34/Modules/Reservation/Client/Pagination.twig" import  template_pagination %}
                 {{ template_pagination() }}
-                {{ include(template_from_string(module('Reservation/Organisation/Filters'))) }}
-                <div id="organisation" >
-                    {% from "Skins/Css34/Modules/Reservation/Organisation/ListItems.twig" import  organisation_item,template_organisation_item %}
-                    <div class="organisation-list organisation-list-reset" >
-                        {{ template_organisation_item() }}
+                {{ include(template_from_string(module('Reservation/Client/Filters'))) }}
+                <div id="client">
+                    {% from "Skins/Css34/Modules/Reservation/Client/ListItems.twig" import  client_item,template_client_item %}
+                    <div class="client-list client-list-reset">
+                        {{ template_client_item() }}
                     </div>
                 </div>
                 {{ template_pagination() }}
@@ -30,13 +19,13 @@
 </template>
 <script>
     module.exports = {
-        name: 'reservation-partenaires',
-        template: '#partenaires',
+        name: 'reservation-clients',
+        template: '#clients',
         data() {
             return {
                 genre: '',
-                organisations: [],
-                organisation: {},
+                clients: [],
+                client: {},
                 search: '',
                 dirty: 0,
                 first: true,
@@ -52,13 +41,13 @@
         },
         methods: {
             onSubmit: function (event) {
-                console.log('COMP submit detected display component', this.organisations);
+                console.log('COMP submit detected display component', this.clients);
                 this.getData();
             },
             getData: function () {
                 var me = this;
                 axios
-                    .get('/Reservation/Organisation/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
+                    .get('/Reservation/Client/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
                     .then(function (response) {
                         me.render = false;
                         me.resetData();
@@ -69,29 +58,29 @@
                             me.initPage();
                             me.render = true;
                             me.dirty = false;
-                            console.log('COMP rendu component', me.organisations);
+                            console.log('COMP rendu component', me.clients);
                         })
                     });
             },
             resetData: function () {
-                var nb = this.organisations.length;
+                var nb = this.clients.length;
                 for (var i = 0; i < nb; i++)
-                    this.organisations.pop();
-                console.log('COMP CONTAINER: resetdata', this.organisations);
+                    this.clients.pop();
+                console.log('COMP CONTAINER: resetdata', this.clients);
             },
             addData: function (tab) {
                 for (var i in tab)
-                    this.organisations.push(tab[i]);
-                console.log('COMP CONTAINER: addata', this.organisations);
+                    this.clients.push(tab[i]);
+                console.log('COMP CONTAINER: addata', this.clients);
             },
             // refreshIsotope: function () {
             //     $('.spectacles-list').isotope('destroy');
             //     $('.spectacles-list').isotope();
             // },
-            goToFiche: function (organisation) {
-                console.log('gotofiche: ', organisation);
-                window.spec.organisation = organisation;
-                router.push({path: organisation.Url, params: {organisation: organisation}});
+            goToFiche: function (client) {
+                console.log('gotofiche: ', client);
+                window.spec.client = client;
+                router.push({path: client.Url, params: {client: client}});
             },
             initPage: function() {
                 var total = this.pagination.total;
@@ -121,12 +110,12 @@
             this.getData();
         },
         watch: {
-            // organisations: function (val) {
+            // clients: function (val) {
             //     if (val.length) {
             //         setTimeout(function () {
-            //             console.log('COMP CONTAINER: after data', $('.organisations-list'));
-            //             $('.organisations-list').isotope('destroy');
-            //             $('.organisations-list').isotope({
+            //             console.log('COMP CONTAINER: after data', $('.clients-list'));
+            //             $('.clients-list').isotope('destroy');
+            //             $('.clients-list').isotope({
             //                 // set itemSelector so .grid-sizer is not used in layout
             //                 itemSelector: '.card',
             //                 percentPosition: true,

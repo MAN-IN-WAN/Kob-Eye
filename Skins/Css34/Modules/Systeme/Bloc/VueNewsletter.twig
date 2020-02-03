@@ -1,0 +1,110 @@
+<template>
+    <div class="nl ">
+        {% if bloc.Lien is not empty  %}
+        <a href="{{ bloc.Lien }}" >
+            {%  endif %}
+            <h3>{{ bloc.Titre }}</h3>
+            {% if bloc.Lien is not empty  %}
+        </a>
+        {%  endif %}
+        <div>{{ bloc.Text | raw}}</div>
+
+{#        Gestion des newsletter#}
+        <div v-if="!unsuscribe"  class="inscription">
+            <div v-if="!suscOk">
+                <input class="form-control input-dark inputNewsletter" type="text" v-model="newsAdress" v-bind:class="{ error: suscError }"/>
+                <a href="#" v-on:click.prevent="register"><i aria-hidden="true" class="fa fa-check"></i></a>
+                <span class="error" v-if="suscError" v-html="suscError"></span>
+            </div>
+            <div v-if="suscOk">
+                <div class="newsletterSuccess">
+                    Votre adresse a été enregistrée avec succès.
+                </div>
+            </div>
+            <a href="#" v-on:click.prevent="unsuscribe=true" class="unsuscribe">Je souhaite me désinscrire</a>
+        </div>
+
+        <div v-if="unsuscribe">
+            <div v-if="!unsuscOk">
+                <input class="form-control input-dark inputNewsletter" type="text" v-model="newsAdress"  v-bind:class="{ error: unsuscError }"/>
+                <a href="#" v-on:click.prevent="deregister"><i aria-hidden="true" class="fa fa-times"></i></a>
+                <span class="error" v-if="unsuscError" v-html="unsuscError"></span>
+            </div>
+            <div v-if="unsuscOk">
+                <div class="newsletterSuccess">
+                    Votre demande a été prise en compte.
+                </div>
+            </div>
+            <a href="#" v-on:click.prevent="unsuscribe=false" class="unsuscribe" >Je souhaite m'inscrire</a>
+        </div>
+    </div>
+</template>
+<script>
+    module.exports = {
+        name: 'footer-newsletter',
+        template: '#newsletter',
+        data (){
+            return {
+                render : true,
+                newsAdress : '',
+                suscOk : false,
+                suscError : false,
+                unsuscribe : false,
+                unsuscOk : false,
+                unsuscError : false,
+            };
+        },
+        methods: {
+            submit: function (event) {
+                console.log('COMP submit detected register newsletter',);
+                this.addSuscribe();
+            },
+            register: function () {
+                var me = this;
+                axios
+                    .get('/Systeme/Newsletter/Register.json?address=' + this.newsAdress )
+                    .then(function (response) {
+                        //console.log(response);
+                        if(response.data.success == 1) {
+                            me.suscOk = true;
+                            me.suscError = false;
+                        } else {
+                            me.suscError = 'Une erreur s\'est produite, veuillez réessayer.';
+                        }
+                        me.render = false;
+                        Vue.nextTick(function () {
+                            me.render = true;
+                            console.log('COMP rendu component');
+                        })
+                    });
+            },
+            deregister: function () {
+                var me = this;
+                axios
+                    .get('/Systeme/Newsletter/DeRegister.json?address=' + this.newsAdress )
+                    .then(function (response) {
+                        //console.log(response );
+                        if(response.data.success == 1) {
+                            me.unsuscOk = true;
+                            me.unsuscError = false;
+                        } else {
+                            me.unsuscError = 'Une erreur s\'est produite, veuillez réessayer.';
+                        }
+                        me.render = false;
+                        Vue.nextTick(function () {
+                            me.render = true;
+                            console.log('COMP rendu component');
+                        })
+                    });
+            },
+        },
+        mounted: function () {
+
+        },created: function(){
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+        },
+        watch: {
+
+        }
+    }
+</script>
