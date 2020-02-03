@@ -880,7 +880,7 @@ where ce.Classe=$cid
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
 		else {
-			$t = explodee('@', Cadref::$MAIL);
+			$t = explode('@', Cadref::$MAIL);
 			$m->From = "noreply@".$t[1];
 		}
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
