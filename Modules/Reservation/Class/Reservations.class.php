@@ -518,7 +518,12 @@ class Reservations extends genericClass {
 	
 
     public function ImprimerCM(){
+        if($this->Imprimer == 1)
+            return 'La contre-marque a déjà été imprimée';
+
+        $this->Imprimer = 1;
         parent::Save();
+
         return array(
             'template' => 'PrintCM',
             'funcTempVars' => array(

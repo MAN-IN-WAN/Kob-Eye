@@ -63,7 +63,7 @@
             getData: function () {
                 var me = this;
                 axios
-                    .get('/Reservation/Spectacle/getData.json?filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre)
+                    .get('/Reservation/Spectacle/getData.json?une=1&filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre)
                     .then(function (response) {
                         me.render = false;
                         me.resetData();

@@ -1,0 +1,9 @@
+<div class="timeline-container">
+    {% for d in dates %}
+    <a class="timeline-item" v-on:click.prevent="onDateClick('{{ d.value }}')"  href="?genre={{ genre }}&search={{ search }}&date={{ d.value }}" :class="{selected: date == '{{ d.value }}'}">
+        <span>{{ d.day }}</span>
+        <h6>{{ d.num }}</h6>
+    </a>
+    {% endfor %}
+</div>
+

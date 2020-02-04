@@ -20,6 +20,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="Structures sociales"   Icon="/Skins/AdminV2/Img/IconAqua/Mail4.png" generateUrl="1" Class="Modules/Reservation/Class/Client.class.php" searchType="plaintext" Operations="add,edit,delete,ImprimeDoc,ExportMail::RESAS_ADMIN">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" Description="Titre">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" default="1" Description="Adhésion en cours" listDescr="Adhésion" hasRole="RESAS_ADMIN">Adhesion</PROPERTIES>
 		<PROPERTIES type="boolean" fiche="1" form="1" Description="Imprimer Etiquette" default="0">Etiq</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/Type::Nom" Description="Type de structure">TypeStructure</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" query="Reservation/Reseau::Nom" Description="Réseau">Reseau</PROPERTIES>
@@ -82,7 +83,7 @@
 		<INTERFACES name="fiche_tab">
 			<FORM type="Template" urlPrefix="/Reservation/Spectacle/" urlSuffix="/Orga.htm" title="Structure culturelle organisatrice">Infos</FORM>
 		</INTERFACES>
-		<FKEY card="1,1" data="Organisation,Id">OrganisationId</FKEY>
+		<FKEY card="1,1" data="Organisation,Id"  fiche="1" form="1" description="Structure organisatrice" >OrganisationId</FKEY>
 		<RKEY card="0,n" data="Partenaire,Id">Partenaire</RKEY>
 		<!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
 		<FUNCTION title="Générer un lot d'evenements">genererLotEvenement</FUNCTION>
@@ -130,7 +131,7 @@
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" obligatoire="1" values="0-7,8-13,14-26,27-40,41-60,60+">Age</PROPERTIES>
         <PROPERTIES type="boolean" list="1" fiche="1" form="1" default="0">Accompagnateur</PROPERTIES>
         <PROPERTIES type="boolean" fiche="1" form="1" default="0">RSA</PROPERTIES>
-        <PROPERTIES type="boolean" fiche="1" form="1" default="0">PMR</PROPERTIES>
+        <PROPERTIES type="boolean"  list="1" fiche="1" form="1" default="0">PMR</PROPERTIES>
 		<FKEY card="1,n" data="Reservations,Id">ReservationId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Evenement"  logEvent="1" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,EnvoyerMail::RESAS_ADMIN,ExporterPersonne::RESAS_ADMIN,Reserver" hideSelect="1">
@@ -199,7 +200,9 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Partenaire" driver="mysql" AccessPoint="1" Description="Partenaires">
 		<PROPERTIES type="titre" list="1" fiche="1" form="1" searchOrder="1">Titre</PROPERTIES>
-		<PROPERTIES type="txt" fiche="1" form="1" searchOrder="2">Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" default="1" searchOrder="2" Description="Actif">Actif</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" list="1" form="1" searchOrder="3">Ordre</PROPERTIES>
+		<PROPERTIES type="txt" fiche="1" form="1" >Commentaires</PROPERTIES>
 		<PROPERTIES type="image" fiche="1" form="1" list="1" >Image</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" list="1" >Lien</PROPERTIES>
 	</OBJECTCLASS>
@@ -211,5 +214,6 @@
 		<PROPERTIES type="image" fiche="1" form="1" list="1" description="Image de fond (600x300 minimum)">Image</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" list="1" >Lien</PROPERTIES>
 		<PROPERTIES type="color" fiche="1" form="1" list="1" >Couleur</PROPERTIES>
+		<PROPERTIES type="boolean" fiche="1" form="1" default="0" Description="Ouvrir dans nouvel onglet">Externe</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

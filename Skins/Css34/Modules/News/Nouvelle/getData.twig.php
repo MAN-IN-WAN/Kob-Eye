@@ -19,11 +19,9 @@ $vars['fields'][] = array(
 );
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
-$limit = (isset($_GET['limit']))?$_GET['limit']:19;
-$filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
-$date = (isset($_GET['date']))?$_GET['date']:'';
-$une = (isset($_GET['une']))?$_GET['une']:false;
-$genre = (isset($_GET['genre']))?$_GET['genre']:'';
+$limit = (isset($_GET['limit']))?$_GET['limit']:20;
+/*$filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';*/
+$date = (isset($_GET['date']))?$_GET['date']:time();
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Query'],2);
@@ -34,55 +32,27 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
-//Cas filtré par date (frise)
-if (!empty($date)){
-    $vars['rows'] = array();
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
-    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-    $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
-    foreach ($evts as $ev){
-        $spt = $ev->getOneParent('Spectacle');
-        $ok = 1;
-        if (!empty($genre)){
-            if($spt->Genre != $genre)
-                $ok = false;
-        }
-        if ($une){
-            if(!$spt->AlaUne)
-                $ok = false;
-        }
+$vars['rows'] = array();
 
-        if($ok) {
-            $vars['rows'][] = $spt;
-        }
-    }
+//Gestion des dates bornes
+/*$month = date('m',$date);
+$year = date('Y',$date);
+$from = mktime(0,0,0,$month,1,$year);
+if($month == date('m') && $year == date('Y'))
+    $last = date('d') - 1;
+else
+    $last = date('t',$from);
+$to = mktime(0,0,0,$month,$last,$year);*/
+$year = date('Y',$date);
+$from = mktime(0,0,0,1,1,$year);
+$to = mktime(0,0,0,12,31,$year);
+$filters= 'tmsEdit>'.$from.'&tmsEdit<'.$to;
 
-
-}else{
-    $filters.="&DateDebut>".time();
-    if (!empty($genre)) $filters.="&Genre=".$genre;
-    if ($une) $filters.="&AlaUne=1";
-    $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
-
-    if(count($sort)) {
-        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
-    }else {
-        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
-    }
-
+if(count($sort)) {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
+}else {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
 }
-
-//GENRES
-$genres = array();
-$genrestmp = Sys::getData('Reservation','Genre');
-//traietement des genres post
-
-
-foreach ($genrestmp as $g){
-    $genres[$g->Nom] = $g;
-}
-
-
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);
 //souscription au push
@@ -116,41 +86,15 @@ foreach ($childrenelements as $childelem){
 }
 $vars['children'] = $getCchild;
 
-//CONFIG
-$nb = sizeof($vars['rows']);
-$nbbig = floor($nb/2)-1;
-
-//GESTION DES BIGS
-$big = array();
-for ($i=0; $i<$nbbig;$i++) {
-    $new = 0;
-    while ($new==0|in_array($new,$big)){
-        $new = random_int(0,$nb-3);
-    }
-    $big[] = $new;
-}
-
 //CURRENT MENU
-$curmen = '/Sorties/';
+$curmen = '/Evenement-passe/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
     if (sizeof($mens))  $curmen = '/'.$mens[0]->Url.'/';
 }*/
-usort($vars['rows'],function($a,$b){
-    if($a->DateDebut == $b->DateDebut) return 0;
-    return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
-});
-$temp = array();
+
 foreach ($vars['rows'] as $k=>$v){
-
-    //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
-
-    //GESTION DES BIGS
-    if (in_array($k,$big)){
-        $v->big = true;
-    }else $v->big = false;
 
     //URL
     $v->Url = $curmen.$v->Url;
@@ -236,12 +180,8 @@ foreach ($vars['rows'] as $k=>$v){
     if ($o->isRecursiv()){
         $v->isTail = ($v->isTail()) ? '1':'0';
     }
-    //On ne conserve que si l'on a des evenements liés aux spectacles.
-    if(count($v->getChildren('Evenement')))
-        $temp[$k] = $v;
 }
 
-$vars['rows'] = $temp;
 
 
 

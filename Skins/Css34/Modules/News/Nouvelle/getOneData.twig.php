@@ -3,12 +3,12 @@ session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $o->setView();
-$vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['fields'] = $o->getElementsByAttribute('fiche','',true);
 //CHAMPS SUPP
-$vars['fields'][] = array(
+/*$vars['fields'][] = array(
     'name' => 'Url',
     'type' => 'varchar'
-);
+);*/
 $vars['fields'][] = array(
     'name' => 'Couleur',
     'type' => 'color'
@@ -17,72 +17,20 @@ $vars['fields'][] = array(
     'name' => 'big',
     'type' => 'boolean'
 );
-//calcul offset / limit
-$offset = (isset($_GET['offset']))?$_GET['offset']:0;
-$limit = (isset($_GET['limit']))?$_GET['limit']:19;
-$filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
-$date = (isset($_GET['date']))?$_GET['date']:'';
-$une = (isset($_GET['une']))?$_GET['une']:false;
-$genre = (isset($_GET['genre']))?$_GET['genre']:'';
-$context = (isset($_GET['context']))?$_GET['context']:'default';
-$sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
-$path = explode('/',$vars['Query'],2);
-$path = $path[1];
+$path = explode('/',$vars['Query']);
+$module = array_shift($path);
+$path = implode('/',$path);
+
+
+
 
 //requete
 if(connection_aborted()){
     endPacket();
     exit;
 }
-//Cas filtré par date (frise)
-if (!empty($date)){
-    $vars['rows'] = array();
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
-    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-    $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
-    foreach ($evts as $ev){
-        $spt = $ev->getOneParent('Spectacle');
-        $ok = 1;
-        if (!empty($genre)){
-            if($spt->Genre != $genre)
-                $ok = false;
-        }
-        if ($une){
-            if(!$spt->AlaUne)
-                $ok = false;
-        }
-
-        if($ok) {
-            $vars['rows'][] = $spt;
-        }
-    }
-
-
-}else{
-    $filters.="&DateDebut>".time();
-    if (!empty($genre)) $filters.="&Genre=".$genre;
-    if ($une) $filters.="&AlaUne=1";
-    $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
-
-    if(count($sort)) {
-        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
-    }else {
-        $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
-    }
-
-}
-
-//GENRES
-$genres = array();
-$genrestmp = Sys::getData('Reservation','Genre');
-//traietement des genres post
-
-
-foreach ($genrestmp as $g){
-    $genres[$g->Nom] = $g;
-}
-
-
+$vars['requete'] = $path;
+$vars['rows'] = Sys::getData($module, $path );
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);
 //souscription au push
@@ -93,16 +41,6 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
-$interfaces = $o->getInterfaces();
-$children = array();
-foreach ($interfaces as $i){
-    foreach ($i as $form) {
-        if (isset($form['child'])) {
-            array_push($children, $form['child']);
-        }
-    }
-}
-
 $oc = $o->getObjectClass();
 $childrenelements = $oc->getChildElements();
 $getCchild = array();
@@ -116,44 +54,20 @@ foreach ($childrenelements as $childelem){
 }
 $vars['children'] = $getCchild;
 
-//CONFIG
-$nb = sizeof($vars['rows']);
-$nbbig = floor($nb/2)-1;
-
-//GESTION DES BIGS
-$big = array();
-for ($i=0; $i<$nbbig;$i++) {
-    $new = 0;
-    while ($new==0|in_array($new,$big)){
-        $new = random_int(0,$nb-3);
-    }
-    $big[] = $new;
-}
 
 //CURRENT MENU
-$curmen = '/Sorties/';
+$curmen = '/Evenement-passe/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
     if (sizeof($mens))  $curmen = '/'.$mens[0]->Url.'/';
 }*/
-usort($vars['rows'],function($a,$b){
-    if($a->DateDebut == $b->DateDebut) return 0;
-    return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
-});
-$temp = array();
+
 foreach ($vars['rows'] as $k=>$v){
-
-    //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
-
-    //GESTION DES BIGS
-    if (in_array($k,$big)){
-        $v->big = true;
-    }else $v->big = false;
-
     //URL
     $v->Url = $curmen.$v->Url;
+
+
 
     //LABEL
     $v->label = Utils::cleanJson($v->getFirstSearchOrder());
@@ -181,7 +95,8 @@ foreach ($vars['rows'] as $k=>$v){
             case 'html':
             case 'raw':
                 //transformation des timestamps en format js
-                $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
+//                $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
+//                $v->{$f['name']} = htmlspecialchars_decode($v->{$f['name']});
                 //Clean des symboles twig
                 $v->{$f['name']} = str_replace('{{','{&zwnj;{', $v->{$f['name']});
                 $v->{$f['name']} = str_replace('}}','}&zwnj;}', $v->{$f['name']});
@@ -236,14 +151,7 @@ foreach ($vars['rows'] as $k=>$v){
     if ($o->isRecursiv()){
         $v->isTail = ($v->isTail()) ? '1':'0';
     }
-    //On ne conserve que si l'on a des evenements liés aux spectacles.
-    if(count($v->getChildren('Evenement')))
-        $temp[$k] = $v;
 }
-
-$vars['rows'] = $temp;
-
-
 
 if ($o->isRecursiv()) {
     $vars['recursiv'] = true;

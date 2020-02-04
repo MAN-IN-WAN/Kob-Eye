@@ -1,0 +1,129 @@
+<template>
+    <form v-on:submit.prevent="onSubmit">
+        <div class="row">
+            <div class="col-lg-12 " style="padding: 0 5px;margin:5px 0">
+                {{ include(template_from_string(module('News/Nouvelle/Timeline'))) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" id="nouvelles">
+                {% from "Skins/Css34/Modules/News/Nouvelle/ListItem.twig" import  nouvelle_item,template_nouvelle_item %}
+                <div class="news-list news-list-reset">
+                    {{ template_nouvelle_item() }}
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+<script>
+    module.exports = {
+        name: 'nouvelle-container',
+        template: '#news',
+        data (){
+            return {
+                news: [],
+                nouvelle: {},
+                date: '',
+                appDate : '',
+                search: '',
+                dirty: 0,
+                first: true,
+                render: true,
+                busy: false,
+                timezone: '',
+                dpfr: vdp_translation_fr.js,
+                dateOrigin : ''
+            };
+        },
+        components: {
+            /*spectacleList*/
+            vuejsDatepicker
+        },
+        methods: {
+            onSubmit: function (event) {
+                console.log('COMP submit detected display component', this.news);
+                this.getData();
+            },
+            onDateClick: function (value) {
+                console.log('COMP click date detected display component', this.news);
+                if (this.date === value) {
+                    //unselect
+                    this.date = new Date();
+                    this.date.setHours(0,0,0);
+                    this.date.setMilliseconds(0);
+                    this.date = this.date/ 1000 + 86400;
+                } else
+                    this.date = value;
+                //this.getData();
+            },
+            getData: function () {
+                var me = this;
+                axios
+                    .get('/News/Nouvelle/getData.json?filters=~' + this.search + '&date=' + this.date)
+                    .then(function (response) {
+                        me.render = false;
+                        me.resetData();
+                        me.dirty = true;
+                        Vue.nextTick(function () {
+                            me.addData(response.data.data);
+                            me.render = true;
+                            me.dirty = false;
+                            console.log('COMP rendu component', me.news);
+                        })
+                    });
+            },
+            resetData: function () {
+                var nb = this.news.length;
+                for (var i = 0; i < nb; i++)
+                    this.news.pop();
+                console.log('COMP CONTAINER: resetdata', this.news);
+            },
+            addData: function (tab) {
+                for (var i in tab)
+                    this.news.push(tab[i]);
+                console.log('COMP CONTAINER: addata', this.news);
+            },
+            goToFiche: function (nouvelle){
+                console.log('gotofiche: ',nouvelle);
+                window.spec.nouvelle = nouvelle;
+                router.push({path: nouvelle.Url, params: {nouvelle:nouvelle}});
+            }
+        },
+        mounted: function () {
+            console.log('APP VUE > RESET CSS');
+            //reset css
+            //$('.spectacles-list').addClass('spectacles-list-reset');
+        },
+        created: function(){
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            this.date = {{ initDate }};
+            this.getData();
+        },
+        watch: {
+            date: function(val){
+                if(this.dateOrigin == 'appDate') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                //console.log(val);
+                this.appDate = new Date(val*1000);
+                this.dateOrigin = 'date';
+                this.getData();
+            },
+            appDate: function(val){
+                console.log(val);
+                if(this.dateOrigin == 'date') {
+                    this.dateOrigin = '';
+                    return false;
+                }
+                console.log(val);
+                this.date = val.getTime() / 1000;
+                this.dateOrigin = 'appDate';
+                this.getData();
+            }
+        }
+    };
+</script>
+<style>
+
+</style>
