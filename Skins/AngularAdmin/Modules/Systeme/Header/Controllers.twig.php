@@ -14,6 +14,7 @@ foreach (Sys::$User->Menus as $m){
             }
             $blinfo = Bloc::lookForInterface($tab, 'Skins/AngularAdmin/Modules', true);
             $tmp = array();
+
             if (!empty($blinfo)) {
                 //surcharge de controller
                 if (!isset($info['ObjectType'])) {
@@ -26,6 +27,7 @@ foreach (Sys::$User->Menus as $m){
                 
                 $vars["controllers"][$tmp['identifier']] = $tmp;
             } else if ($info['TypeSearch'] == "Child") {
+
                 $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
                 $tmp['store'] = true;
                 $tmp['name'] = $m->Url . $menu->Url;
@@ -82,6 +84,24 @@ foreach (Sys::$User->Menus as $m){
 
 
                 $tmp['parentelements'] = $obj->getParentElements();
+
+
+                if($info['NbHisto'] > 1){
+                    $tmp['initQuery'] = $info['Query'];
+                    if(!empty($info['LastDirect'])){
+                        $tmp['initParent'] = $info['ObjectType'];
+                        $tmpVals = explode('/',$info['LastDirect'],2);
+                        $tmpParent = Sys::getOneData($tmpVals[0],$tmpVals[1]);
+                        $tmp['initParentId'] = $tmpParent->Id;
+                        foreach($tmp['parentelements'] as $padre){
+                            if($padre['objectModule'] == $tmpParent->Module && $padre['objectName'] == $tmpParent->ObjectType){
+                                $tmp['initParent'] .= $padre['field'];
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 $vars["controllers"][$tmp['identifier']] = $tmp;
             }
 

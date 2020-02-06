@@ -66,6 +66,11 @@ $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
 
 foreach ($childs as $child){
+    $co = genericClass::createInstance($child['objectModule'], $child['objectName']);
+    $cobj = $co->getObjectClass();
+    $child['reflex'] = $cobj->isReflexive();
+
+
     if (
         //test role
          ((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&

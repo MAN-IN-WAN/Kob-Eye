@@ -18,46 +18,39 @@
                 <div class="input-group list-search">
                     <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
                     <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
-                    Rafraîchir
-                </a>
+                        <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh({% if context == 'children' %}'recursivchildren-'+obj.id{% else %}'{{ context }}'{% endif %})">
+                            Rafraîchir
+                        </a>
                         {% if operation.add %}
                             <a  href="javascript: void(0);" class="btn btn-warning" ng-click="{{ identifier }}add()">
-                    Ajouter
-                </a>
+                                Ajouter
+                            </a>
                         {% endif %}
                         {% if operation.export %}
                             <a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}export()">
-                    Exporter
-                </a>
+                                Exporter
+                            </a>
                         {% endif %}
                         {% if operation.delete %}
                             <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 1" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
-                Supprimer la sélection
-                </a>
+                                Supprimer la sélection
+                            </a>
                         {% endif %}
 
                         {% if context != 'children' %}
-                        <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}switchPanelFilters();">
-                    Filtres
-                </a>
+                            <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}switchPanelFilters();">
+                                Filtres
+                            </a>
                         {% endif %}
                         {% if context == 'children' %}
                             <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
-                    Selection
-                </a>
+                                Selection
+                            </a>
                         {% endif %}
-            </span>
+                    </span>
                 </div>
             </div>
-            <div class="col-lg-1 col-md-12">
-                <select class="form-control" ng-model="{{ identifier }}.pageLength" >
-                    <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
-                    <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
-                    <option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
-                    <option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
-                    <option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
-                </select>
+            <div class="col-lg-1 col-md-12" ng-init="{{ identifier }}.pageLength =  9999">
             </div>
 
             <div class="col-lg-2 col-md-12">
@@ -174,7 +167,7 @@
                 <table class="tree">
                     <tr>
                         <td class="list-col-td-folded">
-                            <a class="tree-icon"  ng-if="!item._tail" style="margin-right: 8px;"><span class="fa" ng-class="{'fa-plus-square': collapsed, 'fa-minus-square': !collapsed}"></span></a>
+                            <a class="tree-icon"  ng-if="!item._tail" style="margin:0;"><span class="fa" ng-class="{'fa-plus-square': collapsed, 'fa-minus-square': !collapsed}"></span></a>
                         </td>
                         <td  class="list-col-td-dark">
                             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
@@ -239,33 +232,34 @@
                         {% endfor %}
                         <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
                         <td  class="table-action">
-                            {% if Type == "Tail" %}
-                                <span class="input-group-btn">
-                        {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
-                                    {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
-                                    {% for fu in functions %}{{ fu.Nom }}
-                                        {% if attribute(operation,fu.Nom) %}
-                                            <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
-                                        {% endif %}
-                                    {% endfor %}
-                    </span>
-                            {% else %}
-                                <!-- Split button -->
-                                <div class="btn-group" uib-dropdown>
-                                    <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
-                                    <button type="button" class="btn btn-danger btn-sm " uib-dropdown-toggle>
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Split button!</span>
-                                    </button>
-                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                                        {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
-                                        {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
-                                        <li class="divider"></li>
-                                        {% for fu in functions %}
-                                            <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+                            {% if not Type == "Tail" %}
+                                <a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
+                            {% endif %}
+                            {% if operation.edit %}
+                                <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
+                            {% endif %}
+                            {% if operation.delete %}
+                                <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)" title="Supprimer"></a>
+                            {% endif %}
+                            {% if functions|length >0 %}
+                                {% set  fs = false %}
+                                {% for fu in functions %}
+                                    {% if attribute(operation,fu.Nom) %}
+                                        {% set  fs = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if fs %}
+                                    <div style="vertical-align: top;" uib-dropdown>
+                                        <button type="button" class="btn-abt btn-abt-func " uib-dropdown-toggle title="Fonctions"></button>
+                                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                                            {% for fu in functions %}
+                                                {% if attribute(operation,fu.Nom) %}
+                                                    <a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </td>
                     </tr>

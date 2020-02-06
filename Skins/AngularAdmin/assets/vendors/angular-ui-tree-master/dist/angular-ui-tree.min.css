@@ -158,14 +158,14 @@ tr.angular-ui-tree-empty {
     z-index: 2;
 }
 table.tree-header{
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
 table.tree{
     width:100%;
     margin:0;
 }
 table.tree tr td.table-action{
-    width:110px;
+    width:170px;
 }
 table.tree tr td.table-details{
     width:250px;
