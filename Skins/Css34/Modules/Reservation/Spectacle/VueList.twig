@@ -1,18 +1,23 @@
 <template>
     <form v-on:submit.prevent="onSubmit">
         <div class="row">
-            <div class="col-lg-12 " style="padding: 0 5px;margin:5px 0">
+            <div class="col-lg-12 hidden-xs " style="padding: 0;margin:0 0 10px;">
                 {{ include(template_from_string(module('Reservation/Timeline'))) }}
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-10" id="spectacle">
+            <div class="col-xs-12 hidden-lg hidden-md hidden-sm" id="filters">
+                {{ include(template_from_string(module('Reservation/Filters'))) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-xs-12" id="spectacle">
                 {% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item,template_spectacle_item %}
                 <div class="spectacles-list spectacles-list-reset">
                     {{ template_spectacle_item() }}
                 </div>
             </div>
-            <div class="col-lg-2" id="filters">
+            <div class="col-lg-2 hidden-xs" id="filters">
                 {{ include(template_from_string(module('Reservation/Filters'))) }}
             </div>
         </div>
@@ -24,6 +29,8 @@
         template: '#sorties',
         data (){
             return {
+                busy:false,
+                public: '',
                 genre: '',
                 spectacles: [],
                 spectacle: {},
@@ -48,6 +55,16 @@
                 console.log('COMP submit detected display component', this.spectacles);
                 this.getData();
             },
+            clearFilters: function (event) {
+                console.log('COMP submit detected display component', this.spectacles);
+                this.genre = "";
+                this.public = "";
+                this.date = {{ initDate }};
+                this.appDate = "";
+                this.dateOrigin = 'date';
+                this.search = "";
+                this.getData();
+            },
             onGenderClick: function (value) {
                 console.log('COMP click gender detected display component', value, this.spectacles);
                 if (this.genre == value) {
@@ -70,9 +87,11 @@
                 //this.getData();
             },
             getData: function () {
+
                 var me = this;
+                me.busy = true;
                 axios
-                    .get('/Reservation/Spectacle/getData.json?filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre)
+                    .get('/Reservation/Spectacle/getData.json?filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre+ '&public=' + this.public)
                     .then(function (response) {
                         me.render = false;
                         me.resetData();
@@ -81,6 +100,7 @@
                             me.addData(response.data.data);
                             me.render = true;
                             me.dirty = false;
+                            me.busy=false;
                             console.log('COMP rendu component', me.spectacles);
                         })
                     });

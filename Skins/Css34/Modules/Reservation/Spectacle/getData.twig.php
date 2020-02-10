@@ -24,7 +24,9 @@ $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
 $date = (isset($_GET['date']))?$_GET['date']:'';
 $une = (isset($_GET['une']))?$_GET['une']:false;
 $genre = (isset($_GET['genre']))?$_GET['genre']:'';
+$public = (isset($_GET['public']))?$_GET['public']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
+
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Query'],2);
 $path = $path[1];
@@ -39,28 +41,42 @@ if (!empty($date)){
     $vars['rows'] = array();
     $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
     $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
+//    print_r('Evenement/'. $filters. '&DateDebut>'.$from.'&DateDebut<'.$to);
     $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
     foreach ($evts as $ev){
         $spt = $ev->getOneParent('Spectacle');
         $ok = 1;
-        if (!empty($genre)){
-            if($spt->Genre != $genre)
+        if(!empty($filters)) {
+            $tmpFilters=ltrim($filters,'~');
+//            print_r($tmpFilters.'  '.$spt->Nom);
+            if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false) {
                 $ok = false;
+            }
+        }
+        if (!empty($genre)){
+            if($spt->Genre != $genre) {
+                $ok = false;
+            }
+        }
+        if (!empty($public)){
+            if($spt->TypePublic != $public) {
+                $ok = false;
+            }
         }
         if ($une){
-            if(!$spt->AlaUne)
+            if(!$spt->AlaUne) {
                 $ok = false;
+            }
         }
 
         if($ok) {
             $vars['rows'][] = $spt;
         }
     }
-
-
 }else{
     $filters.="&DateDebut>".time();
     if (!empty($genre)) $filters.="&Genre=".$genre;
+    if (!empty($public)) $filters.="&TypePublic=".$public;
     if ($une) $filters.="&AlaUne=1";
     $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
 

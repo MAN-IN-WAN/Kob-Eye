@@ -1,0 +1,146 @@
+<div class="blocContent">
+    {{ bloc.Text | raw}}
+</div>
+<h1>Contactez-nous</h1>
+<div class="row contactContenu">
+    <div class="alert alert-error col-md-12" v-if="error">
+        <strong>Veuillez remplir les champs obligatoires suivants :</strong>
+        <ul>
+            <li v-if="C_Calc_Error">Calcul de vérification erroné</li>
+            <li v-if="C_Nom_Error">Merci de renseigner votre Nom</li>
+            <li v-if="C_Mail_Error">Merci de renseigner votre adresse email</li>
+            <li v-if="C_Tel_Error">Merci de renseigner votre n° de téléphone</li>
+            <li v-if="C_Objet_Error">Merci de renseigner le sujet de votre demande</li>
+            <li v-if="C_Mess_Error">Merci de laisser votre message</li>
+            <li v-if="C_Code_Error">Merci de renseigner votre code postal</li>
+            <li v-if="C_Ville_Error">Merci de renseigner votre Ville</li>
+        </ul>
+    </div>
+    <div v-if="success">
+        <div class="alert alert-success">Message envoyé avec succès.</div>
+        <div class="alert alert-info">Un mail de confirmation vous a été adressé.</div>
+        <div class="row">
+            <input type="hidden" name="SendContact" value="1">
+            <div class="col-md-12 ">
+                <a href="/" class="btn btn-vert Envoyer">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+    <form  id="FormContact" v-on:submit.prevent="onSubmit" class="form-horizontal col-md-12" v-if="init">
+        <div class="row">
+            <div class="control-group" v-bind:class="{C_Nom_Error:error}">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Nom">Nom <span class="obligatoire">*</span></label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" id="C_Nom" name="C_Nom" class="Contact input-css34" style="text-transform:uppercase" value="" v-model="formData.nom" required/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group"  >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Prenom">Prénom</label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Prenom" class="Contact input-css34" value="" v-model="formData.prenom" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group" v-bind:class="{C_Mail_Error:error}">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Mail">Adresse e-mail <span class="obligatoire">*</span></label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-envelope"></i></span>
+                        <input type="text" id="C_Mail" name="C_Mail" value="" class="Contact input-css34" v-model="formData.mail" required/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group" >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Tel">Numéro de téléphone</label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Tel" class="Contact input-css34" value="" v-model="formData.phone"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group"  >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Adresse">Adresse</label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Adresse" id="C_Adresse" value="" class="Contact input-css34" v-model="formData.adresse" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group"  >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Code">Code postal </label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Code" id="C_Code" value=""  class="Contact input-css34" v-model="formData.cp" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group" >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Ville">Ville</label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Ville" id="C_Ville" value="" class="Contact input-css34" v-model="formData.ville" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="control-group"  >
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Objet">Sujet </label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input type="text" name="C_Objet" value=""  class="Contact input-css34" v-model="formData.objet" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group" v-bind:class="{C_Mess_Error:error}">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <label class="control-label" for="C_Mess">Message </label>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <textarea cols="20" rows="6" name="C_Mess" class="Contact input-css34"  v-model="formData.message"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="control-group last">
+                <div class="col-md-12 margeOP">
+                    <p>Les champs marqués (<span class="Obligatoire">*</span>) sont obligatoires.</p>
+                    <br />
+                    <div class="capt">
+                        <label class="control-label" for="C_Nom">Merci de résoudre l'opération suivante avant de valider <span class="obligatoire">*</span></label>
+                        <input class="Op input-css34" type="text" name="n3" id="n3" value="" maxlength="2" readonly="readonly" size="5" v-model="formData.a"/>
+                        <span>+</span>
+                        <input class="Op input-css34" type="text" name="n4" value="{{ random(9) }}" maxlength="2" readonly="readonly" size="5" v-model="formData.b"/>
+                        <span>=</span>
+                        <input class="Op input-css34" type="text" name="tot2" value=""  v-bind:class="{C_Calc_Error:error}" maxlength="2" required size="5" v-model="formData.c"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 sendContact">
+                <button type="submit" class="btn btn-primary submit-css34">Envoyer</button>
+            </div>
+        </div>
+    </form>
+</div>

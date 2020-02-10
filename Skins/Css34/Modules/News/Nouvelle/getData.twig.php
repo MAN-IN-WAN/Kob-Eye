@@ -46,7 +46,7 @@ $to = mktime(0,0,0,$month,$last,$year);*/
 $year = date('Y',$date);
 $from = mktime(0,0,0,1,1,$year);
 $to = mktime(0,0,0,12,31,$year);
-$filters= 'tmsEdit>'.$from.'&tmsEdit<'.$to;
+$filters= 'Date>'.$from.'&Date<'.$to;
 
 if(count($sort)) {
     $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);

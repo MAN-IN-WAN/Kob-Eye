@@ -16,7 +16,10 @@
 {% macro template_spectacle_item() %}
     {% verbatim %}
     <template id="spectacles-list">
-        <a class="card" :class="{big:spectacle.big }" v-for="(spectacle,index) in spectacles" v-bind:key="index" :to="{path: spectacle.Url, params: {spectacle: spectacle}}" v-on:click.prevent="goToFiche(spectacle)">
+        <div v-if="!spectacles.length && !busy" class="noItems">
+            Désolés, Aucun spectacle ne correspond à votre recherche
+        </div>
+         <a class="card" :class="{big:spectacle.big }" v-for="(spectacle,index) in spectacles" v-bind:key="index" :to="{path: spectacle.Url, params: {spectacle: spectacle}}" v-on:click.prevent="goToFiche(spectacle)">
             <div class="spectacle-item">
                 <img :src="'/'+spectacle.Logo+'.mini.300x320.jpg'" class="card-img-top img-responsive" alt="">
                 <div class="card-body" :style="{backgroundColor: spectacle.Couleur}">

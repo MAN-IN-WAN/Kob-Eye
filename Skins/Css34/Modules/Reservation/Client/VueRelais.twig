@@ -23,6 +23,7 @@
         template: '#clients',
         data() {
             return {
+                busy:false,
                 genre: '',
                 clients: [],
                 client: {},
@@ -46,6 +47,7 @@
             },
             getData: function () {
                 var me = this;
+                me.busy=true;
                 axios
                     .get('/Reservation/Client/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
                     .then(function (response) {
@@ -58,6 +60,7 @@
                             me.initPage();
                             me.render = true;
                             me.dirty = false;
+                            me.busy=false;
                             console.log('COMP rendu component', me.clients);
                         })
                     });

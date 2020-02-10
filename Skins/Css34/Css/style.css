@@ -52,7 +52,7 @@ p{
 }
 
 .nav a, #partenaires .partner a {
-	padding: 1em;
+	padding: 1em 0.9em;
 	display: block;
 	text-align:center;
 	text-decoration: none;
@@ -63,6 +63,7 @@ p{
 	flex-direction : row; /*2*/
 	justify-content: center; /*3*/
 	font-size: 1.5em;
+	margin-left: 0; /* pour ajuster le menu suite à ajout d'une page */
 }
 #partenaires{
 	height: 70px;
@@ -266,6 +267,20 @@ p{
 	filter: unset;
 	margin-top:20px;
 }
+.row.btn-retour {
+
+}
+.btn-retour a ,
+.btn-retour btn
+{
+	padding: 17px;
+	height: auto;
+	margin-bottom: 10px;
+	display: block;
+	font-size:1.5em;
+	text-transform: uppercase;
+	color:#fff;
+}
 /** LOGO **/
 .logo{
 	/*
@@ -284,25 +299,33 @@ p{
 .logo a img{
 	height: 100%;
 }
+
+
 /*****************************************************
 *			FOOTER									 *
  *****************************************************/
 /** NEWS */
+.noItems {
+	margin:10px;
+	color: #0A246A;
+	font-size:1.5em;
+}
 .home-news, .home-link{
 	display: block;
 	width:100%;
 	height:300px;
 }
 #footer .container{
-    padding:0 10px;
+   padding:0 10px;
 }
 #news, #liens{
 	margin-bottom:10px;
 }
 #news .col-lg-4, #liens .col-lg-6{
 	padding-right: 5px;
-	padding-left: 5px
+	padding-left: 5px;
 }
+
 .home-link > div {
 	background-size: cover;
 	filter: saturate(100%) contrast(1.6);
@@ -359,9 +382,10 @@ p{
 	position: relative;
 
 }
-#footer #newsletter .inscription a {
+#footer #newsletter .inscription a,
+#footer #newsletter .desinscription a{
 	position: absolute;
-	top: 0;
+	top: 4px;
 	right: 0;
 	bottom: 0;
 	padding: 10px 14px;
@@ -372,6 +396,7 @@ p{
 #footer #newsletter .inscription a.unsuscribe {
 	position:relative;
 	font-size: 1em;
+	text-align: right;
 }
 
 
@@ -492,7 +517,8 @@ p{
 
 /** organisation item **/
 div#organisation-fiche,
-div#client-fiche
+div#client-fiche ,
+div#news-fiche
 {
 	padding:15px;
 	background-color:#d2d2d2;
@@ -505,7 +531,7 @@ h3.titre-partenaires {
 }
 .partenaires-item {
 	width: 100%;
-	border:1px solid #0A246A;
+	border:1px solid #006caf;
 	margin: 0 0 10px 0;
 	display: block;
 	position: relative;
@@ -569,13 +595,21 @@ h3.titre-partenaires {
 	color: #d2d2d2;
 }
 #filters #organisation ,
-#filters #client
+#filters #client,
+#nouvelles
 {
 	clear:both;
 }
+#nouvelle-fiche {
+	background-color: #d2d2d2;
+	margin:10px 0;
+}
+
 
 .organisation-list.organisation-list-reset,
-.client-list.client-list-reset {
+.client-list.client-list-reset ,
+.news-list.news-list-reset
+{
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -583,8 +617,8 @@ h3.titre-partenaires {
 }
 
 #organisation a.card ,
-#client a.card
-{
+#client a.card,
+#nouvelles a.card {
 	display: flex;
 	align-items: center;
 	flex-direction: row;
@@ -606,7 +640,10 @@ h3.titre-partenaires {
 	width: calc(16.666% - 8.333px);
 }
 #organisation a.card .organisation-item ,
-#client a.card .client-item {
+#client a.card .client-item,
+#nouvelles a.card .news
+
+{
 	height: 100%;
 }
 
@@ -618,7 +655,9 @@ h3.titre-partenaires {
 }
 
 
-#client a.card .card-body {
+#client a.card .card-body,
+#nouvelles a.card .card-body
+{
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -678,9 +717,16 @@ h3.titre-partenaires {
 }
 
 /*FICHE*/
+#nouvelle-fiche {
+	margin-bottom: 10px;
+}
+#nouvelle-fiche h1 {
+	margin: 0 10px 5px 14px;
+}
+
 #spectacle-fiche{
     margin: 10px 0;
-    padding:0;
+    padding:0 15px; /* pour calage avec entete et pied bloc */
 }
 #spectacle-fiche .fiche-propriete{
     margin: 0;
@@ -747,7 +793,7 @@ h3.titre-partenaires {
 /** TIMELINE **/
 .timeline-container{
 	width:100%;
-	background-color: red;
+	/*background-color: red;*/
 	height:60px;
 	overflow: hidden;
 	display: flex; /*1*/
@@ -755,7 +801,7 @@ h3.titre-partenaires {
 	justify-content: flex-start; /*3*/
 }
 .timeline-item{
-	width: 40px;
+	width: 25%;
 	height: 60px;
 	display: block;
 	border: 1px solid #d2d2d2;
@@ -769,7 +815,7 @@ h3.titre-partenaires {
 	font-weight: lighter;
 }
 .timeline-item span{
-	margin-top: 13px;
+	margin-top: 7px;
 	line-height: 10px;
 	font-size: 8px;
 	color: #333;
@@ -778,6 +824,11 @@ h3.titre-partenaires {
 }
 .timeline-item.selected{
 	background-color:#ffdaa1;
+}
+.timeline-item span.Mois {
+	color:#006caf;
+	font-size: 1em;
+	margin-top: -5px;
 }
 
 /****** CONTENU *******/
@@ -894,12 +945,353 @@ div#cms-page {
 /*.Publicite.BlocImgCover figure { margin:-9px;}*/
 
 .dvContent .cms-col > .SaisieContenu.Contenu.blocPadding15 {
-	margin:10px 0;
+	margin:10px /*0*/;
 }
+
+/*** PAGE CONTACT **/
+table.Table-Contact {
+	width: 100%;
+}
+table.Table-Contact tr {
+	width: 100%;
+}
+table.Table-Contact td {
+	width: 30%;
+	padding:10px 10px 0 0;
+	vertical-align: top;
+}
+
+
+#FormContact input, textarea {
+	width: 100%;
+	border: 1px solid #337ab7;
+}
+
+.capt input {
+	border: 1px solid #337ab7;
+	text-align: center;
+}
+
+#FormContact label {
+	display: inline-block;
+	max-width: 100%;
+	/* margin-bottom: 5px; */
+	font-weight: bold;
+	color: #245580;
+}
+
+.contactContenu h1 {
+	color: #245580;
+}
+.SaisieContenu.Contenu.Contact h3 {
+	color: #245580;
+}
+
+
+/** RESPONSIVE ÉCRAN ORDI PORTABLE */
+
+@media screen and (max-width: 1280px) {
+
+	#login-modal .modal-dialog {
+		width:80%;
+	}
+	.nav .menu {
+		margin-left: 0;
+	}
+}
+
+/** RESPONSIVE ÉCRAN ORDI 17 P */
 
 @media screen and (max-width: 1400px) {
 
 	#login-modal .modal-dialog {
 		width:80%;
 	}
+	.nav .menu {
+		margin-left: 0;
+	}
 }
+
+/*** RESPONSIVE PORTABLE **/
+@media screen and (max-width: 479px) {
+
+	#app #content .container {
+		width: 100%;
+	}
+
+	#submenu .container {
+		height: 100%;
+		width: 100%;
+	}
+	#submenu .container .col-xs-3  {
+		width: 24%;
+	}
+	#submenu .square-container {
+		padding-right: 0;
+		padding-left: 0;
+	}
+	#submenu .square {
+		padding:5px 0;
+
+	}
+	#submenu > .container a h3
+	{
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		writing-mode: vertical-lr;
+		text-orientation: mixed;
+		padding:10px 20%;
+	}
+	#submenu > .container a p
+	{
+		padding:5px 8%;
+		font-size:1em;
+		display: flex;
+		flex-direction: revert;
+
+	}
+
+	/*** carré atelier formation...***/
+		#submenu .square {
+			padding: 5px 0;
+			width: 90%;
+			margin-left: 15px;
+			font-size: 0.99em;
+		}
+
+		/*** logo accueil ***/
+
+		.logo a img {
+			height: 100%;
+			margin-left: 7px;
+		}
+
+		.SaisieContenu.Contenu {
+			/*width: 30%;*/
+			text-align: justify;
+		}
+		.padding1{
+			padding-top: 0;
+		}
+		.padding2{
+			padding-right: 0;
+		}
+		.padding3{
+			padding-bottom: 0;
+		}
+		.padding4{
+			padding-left: 0;
+		}
+		.padding1 {
+			padding-right:10px;
+		}
+		.padding2	 {
+			padding-bottom:10px;
+		}
+		.padding3  {
+			padding-left:10px;
+		}
+		.padding4 {
+			padding-top:10px;
+		}
+
+
+		/*** zone recherche sous menu genre ***/
+	.input-css34, .select-css34, .submit-css34 {
+		display: block;
+		border: 2px solid black;
+		height: 3em;
+		padding: 5px;
+		line-height: 2em;
+		font-family: 'Baloo', cursive;
+		font-size: 13px;
+
+	}
+
+
+	/*** footer ***/
+
+		#footer .container {
+			padding: 0 10px;
+			width: 100%;
+		}
+
+
+		#partenaires {
+			margin: 20px 0px;
+		}
+
+		#partenaires {
+			height: 338px;
+		}
+
+		#partenaires ul.partner {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+		/*** bloc du bas ***/
+
+		.home-link > div {
+			background-size: cover;
+			filter: saturate(100%) contrast(1.6);
+			margin: 5px;
+		}
+
+		.home-link > a > i {
+			margin-left: -50px;
+			float: left;
+		}
+	.home-link > a {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: 17% 12% 17% 22%;
+		color: white;
+		text-decoration: none;
+		text-align: center;
+	}
+
+		.home-link > a > span {
+			display: block;
+			float: left;
+			text-align: right;
+			font-size: x-large;
+			margin: 0 0 0 -5px;
+			padding: 15px 5px;
+		}
+
+	.home-news, .home-link {
+		display: block;
+		height: 300px;
+	}
+
+
+
+
+
+
+		#footerlinks {
+			padding: 0 0px;
+		}
+
+		.btn-dark {
+			background-color: black;
+			background-image: none;
+			border-radius: 0;
+			display: block;
+			padding: 17px;
+			color: #fff;
+		}
+		.input-dark {
+			border-radius: 0;
+			border-color: black;
+			border-width: 3px;
+			padding: 23px;
+			filter: unset;
+			margin-top: 20px;
+		}
+
+		/*** partenaires en pied de page **/
+		#partenaires ul.partner {
+			height: auto;
+
+		}
+		#partenaires ul.partner li {
+			width:30%;
+		}
+
+		.partenaires-item {
+			border: 1px solid #006caf;
+			margin: 0 0 10px 0;
+			display: block;
+			position: relative;
+			height: 162px;
+		}
+		#filters h3 {
+			 float: none;
+			 width: 100%;
+		}
+
+		#filters .pagination {
+			padding-left: 10px;
+			float: right;
+			width: 40%;
+			text-align: right;
+			font-size: 1.2em;
+			height: 40px;
+			line-height: 40px;
+			margin: 0 0 10px 0;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+		#organisation a.card,
+		#client a.card {
+			width: calc(33.33% - 6.666px);
+		}
+		#organisation a.card h5.card-title,
+		#client a.card h5.card-title {
+				font-size:1em;
+		}
+
+
+		/* page Ateliers Formations */
+
+		#cms-page .row.cms-row {
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			align-items: flex-start;
+		}
+	    .SaisieContenu.Contenu.Bloc3Col {
+			width:100%;
+		}
+		.SaisieContenu.Contenu.Bloc3Col.padding1.padding4,
+		.SaisieContenu.Contenu.Bloc3Col.padding1.padding2
+		{
+			padding-left: 10px;
+		}
+
+
+		/* LISTE DES SPECTACLE ACCUEIL ET SORTIES */
+		.spectacles-list-reset > .card {
+			width:100% !important;
+		}
+
+
+
+	/* page spectacle */
+		#spectacle-fiche .fiche-propriete > .col-lg-3 {
+			margin: 10px 0 0 10px;
+			width: calc(25% - 10px);
+			font-size: 1em;
+			line-height: 2;
+		}
+
+		#spectacle-fiche .fiche-propriete > .col-lg-9:first-child {
+			margin: 10px 0 0 0;
+			width: calc(25%);
+		}
+
+		#spectacle-fiche .fiche-propriete > .col-lg-3:nth-child(2) {
+			width: calc(70%);
+		}
+
+/**************************-*/
+
+
+}
+/*
+
+Jusqu’à 479px : smartphone en portrait
+		   De 480px à 959px : smartphone en paysage, tablette en portrait et petite tablette en paysage
+De 960px à 1280px : tablette en paysage, écran d’ordinateur de taille petite et moyenne
+1281px et au delà : grand écran d’ordinateur (21″ et + en plein écran )
+
+Et dans les cas où votre design initial est basé sur une largeur de 1024px, il suffit de remplacer le point de rupture 960px par 1024px.
+
+ Donc pour résumer : 480px | 960px ou 1024px ( selon votre design )  | 1281px*/

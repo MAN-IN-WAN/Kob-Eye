@@ -1,18 +1,18 @@
 <template>
     <form v-on:submit.prevent="onSubmit">
         <div class="row">
-            <div class="col-md-4" style="padding-right: 10px;padding-left:0;">
+            <div class="col-md-4 col-xs-12" style="padding-right: 10px;padding-left:0;">
                 <h3 class="titre-partenaires">Liste partenaires officiels</h3>
                 {% for partenaire in partenaires %}
                     <div class="card partenaires-item">
                         <img src="{{ partenaire.Image }}" class="card-img-top " alt="">
-                        <div class="card-body" style="background-color:#0A246A; color:#fff;">
+                        <div class="card-body" style="background-color:#006caf; color:#fff;">
                             <h3 style="text-align: center;">{{ partenaire.Titre }}</h3>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <div class="col-md-8" id="filters">
+            <div class="col-md-8 col-xs-12" id="filters">
                 <h3  class="titre-partenaires">Liste structures culturelles</h3>
                 {% from "Skins/Css34/Modules/Reservation/Organisation/Pagination.twig" import  template_pagination %}
                 {{ template_pagination() }}
@@ -34,6 +34,7 @@
         template: '#partenaires',
         data() {
             return {
+                busy:false,
                 genre: '',
                 organisations: [],
                 organisation: {},
@@ -46,7 +47,8 @@
                 pagination: {
                     total:0,
                     current:1,
-                    max:0
+                    max:0,
+                    pagesize:42
                 }
             };
         },
@@ -57,6 +59,7 @@
             },
             getData: function () {
                 var me = this;
+                me.busy=true;
                 axios
                     .get('/Reservation/Organisation/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
                     .then(function (response) {
@@ -66,9 +69,11 @@
                         Vue.nextTick(function () {
                             me.addData(response.data.data);
                             me.pagination.total = response.data.total;
+                            me.pagination.pagesize = response.data.pageCount;
                             me.initPage();
                             me.render = true;
                             me.dirty = false;
+                            me.busy=false;
                             console.log('COMP rendu component', me.organisations);
                         })
                     });
@@ -95,7 +100,7 @@
             },
             initPage: function() {
                 var total = this.pagination.total;
-                var size  = 40;
+                var size  = this.pagination.pagesize;
                 var currentPage = this.pagination.current;
                 this.pagination.max = Math.ceil(total/size);
             },

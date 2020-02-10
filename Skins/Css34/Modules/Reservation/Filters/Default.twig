@@ -1,14 +1,21 @@
 {% for f in filters %}
-<a href="?genre={{ f.Nom }}&search={{ search }}&date={{ date }}" v-on:click.prevent="onGenderClick('{{ f.Nom }}')" class="btn btn-css34 {{ genre==f.Nom ? 'selected':'' }}" style="background-color: {{ f.Couleur }}" :class="{selected: genre == '{{ f.Nom }}'}">{{ f.Nom }}</a>
+<a href="?genre={{ f.Nom }}&search={{ search }}&date={{ date }}" v-on:click.prevent="onGenderClick('{{ f.Nom }}')" class="btn btn-css34 {{ genre==f.Nom ? 'selected':'' }} hidden-xs" style="background-color: {{ f.Couleur }}" :class="{selected: genre == '{{ f.Nom }}'}">{{ f.Nom }}</a>
 {% endfor %}
 <input type="text" name="search" class="input-css34" v-model="search" placeholder="Recherche" value="{{ search }}"/>
 {#<input type="date" name="date" class="input-css34" v-model="appDate" value="{{ appDate }}"/>#}
 <vuejs-datepicker :language="dpfr" v-model="appDate" name="appDate" :input-class="'input-css34'" :placeholder="'Date'"></vuejs-datepicker>
-<select name="genre" class="select-css34" v-model="genre">
-    <option value="">Aucun filtre</option>
+<select name="genre" class="select-css34 " v-model="genre">
+    <option value="">Aucun filtre genre</option>
     {% for f in allfilters %}
     <option value="{{ f.Nom }}" {{ genre == f.Nom ?'selected':'' }}>{{ f.Nom }}</option>
     {% endfor %}
 </select>
+<select name="public" class="select-css34  hidden-xs" v-model="public">
+    <option value="">Aucun filtre public</option>
+    {% for p in typePublic %}
+        <option value="{{ p }}" {{ public == p ?'selected':'' }}>{{ p }}</option>
+    {% endfor %}
+</select>
 <input type="submit" name="valid" class="submit-css34" value="recherche"/>
+<a href="#" class="submit-css34  hidden-xs"  v-on:click.prevent="clearFilters"><i class="fa fa-times"></i></a>
 <!--<button type="submit" name="valid" class="submit-css34" v-on:click.prevent="refreshIsotope()">refresh isotope</button>-->

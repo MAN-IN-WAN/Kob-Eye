@@ -12,8 +12,8 @@
 {% macro template_nouvelle_item() %}
     {% verbatim %}
     <template id="news">
-        <div v-if="!news.length" class="noNews">
-            Désolé,nous n'avons rien publié pendant cette période.
+        <div v-if="!news.length" class="noItems">
+            Désolés, Aucun évènement ne correspond à votre demande
         </div>
         <a class="card big"  v-for="(nouvelle,index) in news" v-bind:key="index" :to="{path: nouvelle.Url, params: {nouvelle: nouvelle}}" v-on:click.prevent="goToFiche(nouvelle)">
             <div class="nouvelle-item">
