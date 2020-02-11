@@ -112,6 +112,8 @@
                 return false
             },
             setPage(val){
+                if(val < 1) val = 1;
+                if(val > this.pagination.max) val = this.pagination.max;
                 this.pagination.current = val;
                 this.getData();
             }

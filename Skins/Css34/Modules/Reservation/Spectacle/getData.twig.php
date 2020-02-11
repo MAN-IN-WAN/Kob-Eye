@@ -36,48 +36,70 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
-//Cas filtré par date (frise)
-if (!empty($date)){
-    $vars['rows'] = array();
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
-    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-//    print_r('Evenement/'. $filters. '&DateDebut>'.$from.'&DateDebut<'.$to);
-    $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
-    foreach ($evts as $ev){
-        $spt = $ev->getOneParent('Spectacle');
-        $ok = 1;
-        if(!empty($filters)) {
-            $tmpFilters=ltrim($filters,'~');
-//            print_r($tmpFilters.'  '.$spt->Nom);
-            if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false) {
-                $ok = false;
-            }
-        }
-        if (!empty($genre)){
-            if($spt->Genre != $genre) {
-                $ok = false;
-            }
-        }
-        if (!empty($public)){
-            if($spt->TypePublic != $public) {
-                $ok = false;
-            }
-        }
-        if ($une){
-            if(!$spt->AlaUne) {
-                $ok = false;
-            }
-        }
 
-        if($ok) {
-            $vars['rows'][] = $spt;
+
+if (empty($date)){
+    $date = time();
+} else{ //Si on a une date on fait sauter le filtre a la une
+    $une = false;
+}
+
+$vars['rows'] = array();
+$from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
+if (!empty($genre) || $une ){
+    $to = mktime(23,59,59,date('m',$date),date('d',$date),3000);
+} else{
+    $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
+}
+
+//    print_r('Evenement/'. $filters. '&DateDebut>'.$from.'&DateDebut<'.$to);
+$evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
+foreach ($evts as $ev){
+    $spt = $ev->getOneParent('Spectacle');
+    if(!$spt) continue;
+    $ok = 1;
+    //On gere la recherche sur les titres
+    if(!empty($filters)) {
+        $tmpFilters=ltrim($filters,'~');
+//            print_r($tmpFilters.'  '.$spt->Nom);
+        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false) {
+            $ok = false;
         }
     }
-}else{
+    //On gere les filtres par genre
+    if (!empty($genre)){
+        if($spt->Genre != $genre) {
+            $ok = false;
+        }
+    }
+    //on gere les filtres par type de public
+    if (!empty($public)){
+        if($spt->TypePublic != $public) {
+            $ok = false;
+        }
+    }
+    //On gere les articles à la une
+    if ($une && empty($genre)){
+        if(!$spt->AlaUne) {
+            $ok = false;
+        }
+    }
+    //On evite les doubloins
+    foreach($vars['rows'] as $s){
+        if($s->Id == $spt->Id){
+            $ok = false;
+            break;
+        }
+    }
+    if($ok) {
+        $vars['rows'][] = $spt;
+    }
+}
+/*}else{
     $filters.="&DateDebut>".time();
     if (!empty($genre)) $filters.="&Genre=".$genre;
     if (!empty($public)) $filters.="&TypePublic=".$public;
-    if ($une) $filters.="&AlaUne=1";
+    //if ($une) $filters.="&AlaUne=1";
     $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
 
     if(count($sort)) {
@@ -86,7 +108,7 @@ if (!empty($date)){
         $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
     }
 
-}
+}*/
 
 //GENRES
 $genres = array();

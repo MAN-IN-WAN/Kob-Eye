@@ -13,6 +13,7 @@ $vars['fields'][] = array(
 //calcul offset / limit
 $offset = 0;
 $limit = 42;
+$vars['pageCount']=$limit;
 $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array('Nom', 'ASC');

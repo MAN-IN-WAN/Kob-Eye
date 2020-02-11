@@ -11,6 +11,7 @@ const router = new VueRouter({
             },}
     ]
 });
+import Slider from '@jeremyhamm/vue-slider'
 window.spec = new Vue({
     el: '#app',
     data: {
@@ -26,7 +27,8 @@ window.spec = new Vue({
     },
     router: router,
     components: {
-        headerMenu: window.httpVueLoader('/Systeme/Header/VueMenu.vue')
+        headerMenu: window.httpVueLoader('/Systeme/Header/VueMenu.vue'),
+        'slider': Slider
     }
 });
 

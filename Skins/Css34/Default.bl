@@ -21,6 +21,9 @@
 //DatePicker -> https://www.npmjs.com/package/vuejs-datepicker
 <script src="https://unpkg.com/vuejs-datepicker"></script>
 <script src="https://unpkg.com/vuejs-datepicker/dist/locale/translations/fr.js"></script>
+
+//Menu burger
+<script src="https://unpkg.com/vue-slider"></script>
 [/HEADER]
 
 //CUSTOM VUEJS
