@@ -92,6 +92,14 @@
 <!--                </div>-->
                 <div>
                     <h3>PARTENAIRES</h3>
+                    <div class="partList">
+                        <a :href="p.lien" v-for="p in spectacle.partenaires">
+                            <div>
+                                <img :src="'/'+p.image">
+                                <span v-html="p.titre"></span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 </div>
             </div>

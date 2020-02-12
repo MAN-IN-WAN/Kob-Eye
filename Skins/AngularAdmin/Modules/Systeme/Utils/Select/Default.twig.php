@@ -1,7 +1,15 @@
 <?php
 $info = Info::getInfos($vars['Path']);
-$infoParent = Info::getInfos($vars['Query']);
-$parent = genericClass::createInstance($info['Module'],$infoParent['ObjectType']);
+
+if(empty($vars['Object'])){
+    $infoParent = Info::getInfos($vars['Query']);
+    $parent = genericClass::createInstance($info['Module'],$infoParent['ObjectType']);
+} else{
+    $module = !empty($vars['Module']) ? $vars['Module'] : $info['Module'];
+    $parent = genericClass::createInstance($module,$vars['Object']);
+
+}
+
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $f = $parent->getElement($vars['FieldKey']);
 
