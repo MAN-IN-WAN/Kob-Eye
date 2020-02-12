@@ -534,12 +534,14 @@ class Adherent extends genericClass {
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
 				$nonInscrit = isset($obj['NonInscrit']) ? $obj['NonInscrit'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
+				$dons = isset($obj['Dons']) ? $obj['Dons'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$adherent = false;
 				
 				$noRupture =  $contenu == 'Q' || $rupture == 'S';
-				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit;
+				$entraide = $soutien || $dons;
+				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit || $entraide;
 				
 				
 /*
@@ -560,45 +562,48 @@ and i.Annee='2019' and i.Supprime=0 and i.Attente=0
 group by i.Antenne,s.Libelle
  */
 
-				if($soutien) {
-					require_once ('PrintSoutien.class.php');
-					
-					$sql = "
-select count(*) as cnt, sum(i.Soutien) as soutien, a.Libelle
-from `##_Cadref-Inscription` i
-inner join `##_Cadref-Antenne` a on a.Antenne=i.Antenne
-where i.Annee='$annee' and i.Soutien>0
-group by i.Antenne
-";
-					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-					if(! $pdo) return array('pdf'=>'', 'sql'=>$sql);
+//				if($soutien) {
+//					require_once ('PrintSoutien.class.php');
+//					
+//					$sql = "
+//select count(*) as cnt, sum(i.Soutien) as soutien, a.Libelle
+//from `##_Cadref-Inscription` i
+//inner join `##_Cadref-Antenne` a on a.Antenne=i.Antenne
+//where i.Annee='$annee' and i.Soutien>0
+//group by i.Antenne
+//";
+//					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+//					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+//					if(! $pdo) return array('pdf'=>'', 'sql'=>$sql);
+//
+//					$pdf = new PrintSoutien($annee);
+//					$pdf->SetAuthor("Cadref");
+//					$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',"Liste des soutiens"));
+//
+//					$pdf->AddPage();
+//					$pdf->PrintLines($pdo);
+//
+//					$file = '/Home/tmp/Soutien_'.date('YmdHis').'.pdf';
+//					$pdf->Output(getcwd().$file);
+//					$pdf->Close();
+//
+//					return array('pdf'=>$file, 'sql'=>$sql);
+//				}
 
-					$pdf = new PrintSoutien($annee);
-					$pdf->SetAuthor("Cadref");
-					$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',"Liste des soutiens"));
-
-					$pdf->AddPage();
-					$pdf->PrintLines($pdo);
-
-					$file = '/Home/tmp/Soutien_'.date('YmdHis').'.pdf';
-					$pdf->Output(getcwd().$file);
-					$pdf->Close();
-
-					return array('pdf'=>$file, 'sql'=>$sql);
-				}
-
+				
+				
 				if($noClasse) $antenne = '';
 				if($noClasse || $noRupture) {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
+					if($soutien) $rupture = 'A';
 				}
 				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
 				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail,";
 				$sql .= $noClasse  ? "'' as Delegue " : "c0.CodeClasse as Delegue ";
-
+				
 				if($typAdh == 'S') {
 					// adhérents sans inscription
 					$sql .= "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
@@ -641,8 +646,19 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					$sql .= "from `##_Cadref-Adherent` e ";
 					$whr = "and e.Inscription<'$annee' and e.Inscription>='$nonInscrit' and Inactif=0 ";
 				}
+				else if($dons) {
+					$sql .= ",aa.Dons as aide ".
+						"from `##_Cadref-Adherent` e ".
+						"inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'";
+					$whr = "and aa.Dons>0 ";
+				}
 				else {
 					// adhérents inscrits
+					if($soutien) {
+						$sql .= ", i.Soutien ";
+						$whr = "and i.Soutien>0 ";
+					}
+
 					$sql .= "
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -661,7 +677,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if(! $noClasse) {
+				if(! $noClasse || $soutien) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
 //					// type adherent
@@ -846,7 +862,7 @@ order by a.Nom, a.Prenom";
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
-			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $nonInscrit ? 'N' : $inscrits, $typAdh, $pages);
+			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $nonInscrit ? 'N' : $inscrits, $typAdh, $pages, $entraide);
 			$pdf->SetAuthor("Cadref");
 			$pdf->SetTitle('Liste adherents');
 

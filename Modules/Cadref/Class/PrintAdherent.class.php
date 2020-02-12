@@ -7,8 +7,11 @@ class PrintAdherent extends FPDF {
 	private $contenu;
 	private $rupture;
 	private $antenne;
-	private $inscrit;
+	private $inscrits;
+	private $aideRup = 0;
+	private $aideTot = 0;
 	private $adherent;
+	private $entraide;
 	private $sauts;
 	private $head;
 	private $align;
@@ -27,7 +30,7 @@ class PrintAdherent extends FPDF {
 	private $Heure = '';
 	private $Enseignant = '';
 
-	function PrintAdherent($mode, $contenu, $rupture, $antenne, $inscrits, $adherent, $pages) {
+	function PrintAdherent($mode, $contenu, $rupture, $antenne, $inscrits, $adherent, $pages, $entraide) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
@@ -36,6 +39,7 @@ class PrintAdherent extends FPDF {
 		$this->adherent = $adherent;
 		$this->inscrits = $inscrits;
 		$this->sauts = $pages;
+		$this->entraide = $entraide;
 
 		$this->mode = $mode;
 		switch($mode) {
@@ -118,10 +122,9 @@ class PrintAdherent extends FPDF {
 
 				$c = $l['CodeClasse'];
 				switch($this->rupture) {
-					case 'D': $r = substr($c, 0, 7);
-						break;
-					case 'N': $r = substr($c, 0, 9);
-						break;
+					case 'A': $r = substr($c, 0, 1); break;
+					case 'D': $r = substr($c, 0, 5); break;
+					case 'N': $r = substr($c, 0, 6); break;
 					case 'C':
 					case 'E':
 						$r = $c;

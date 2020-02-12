@@ -21,7 +21,7 @@
 	<OBJECTCLASS title="Performance" driver="mysql" AccessPoint="1" Description="Presentation" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Performance.class.php">
 		<PROPERTIES type="varchar" length="255" searchOrder="1" category="Description" form="1" list="1" fiche="1">Title</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2">Teaser</PROPERTIES>
-		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Summary">Summary</PROPERTIES>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Program / Summary">Summary</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
@@ -44,7 +44,10 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Height">Height</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Special requirement">Requirement</PROPERTIES>
 
+<!--
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Category::Id::Category" category="Description" description="Category">CategoryId</PROPERTIES>
+-->
+		<RKEY card="1,1" module="Show" data="Category,Id" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</PROPERTIES>
 		<RKEY card="0,n" module="Show" data="Domain,Id" form="1" fiche="1" >Domaine</RKEY>
 		<RKEY card="0,n" module="Show" data="Genre,Id" form="1" fiche="1" >Genre</RKEY>
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Language::Id::Language" category="Description" description="Language">LanguageId</PROPERTIES>
@@ -68,6 +71,7 @@
 		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
 		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/CrewType::Id::CrewType" category="Description" description="Crew type">CrewTypeId</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Playing</PROPERTIES>
 		<FKEY card="1,1" module="Show" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
 	</OBJECTCLASS>
 

@@ -1,6 +1,6 @@
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $timeout, $routeParams, $http, $window) {
 
-	$scope.obj = {Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}};
+	$scope.obj = {Rupture:'N', CurrentUrl:'{{ Url }}', Pieces:{data:[], mode:'', filePath:''}};
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
@@ -14,6 +14,13 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
 
+	$scope.checkSoutien = function(num) {
+		let o = $scope.obj;
+		if(num == 0) {
+			if(o.Soutien) o.Dons = false;
+		}
+		else if(o.Dons) o.Soutien = false
+	}
 	
 	$scope.pieceAdd = function() {
 		var p = $scope.obj.Pieces;

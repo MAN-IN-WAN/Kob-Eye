@@ -10,6 +10,7 @@
                 <div class="col-md-10">
 					<div class="row">
 						<div class="col-md-9" >
+							<form name="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Visite") }}
@@ -41,7 +42,7 @@
 								</div>
 								<div class="col-md-10" ng-if="!{{ o }}.Numero">
 									<div custom-select="a.id as a.label+'&nbsp;&nbsp;'+a.Nom+'&nbsp;&nbsp;'+a.Prenom for a in getSelectAdherent('CadrefAdherentStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 custom-select-options="{ 'async': true, 'filter':'', }" 
 										 ng-model="{{ o }}.AdherentAdherentId" 
 										 class="form-control cadref-input" 
 										 ng-title="{{ o }}.AdherentAdherentIdlabel+'&nbsp;&nbsp;'+obj.Nom+'&nbsp;&nbsp;'+obj.Prenom"
@@ -134,6 +135,7 @@
 							</div>
 							<div class="row" style="height:5px"></div>
 							{{ flinput(f.Notes, o) }}
+							</form>
 						</div>
 						{# block right #}                    
 						<div class="col-md-3">

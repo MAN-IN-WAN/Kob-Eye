@@ -1,21 +1,13 @@
 <?php
 
 class CEN extends Module {
-//	
-//	// description d'une application
-//	public static function GetPresentation($args) {
-//		$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['code']);
-//		switch($args['lang']) {
-//			case 'es': $pres = $o->TexteEs; break;
-//			case 'fr': $pres = $o->TexteFr; break;
-//			case 'en': $pres = $o->TexteEn; break;
-//		}
-//		return array('presentation'=>$pres);
-//	}
 
 	// liste d'entrées du CEN 
 	public static function GetCEN($args) {	
 		switch($args['mode']) {
+			case 'chacha':
+				return Chachalaca::Suff($args);
+
 			case 'tlachia-anal':
 				return Codex::GetAnal($args);
 				
@@ -27,6 +19,9 @@ class CEN extends Module {
 				
 			case 'tlachia':
 				return Codex::GetTlachia($args);
+				
+			case 'tlachia-real':
+				return Codex::GetReal($args);
 				
 			case 'genor':
 				return Temoa::GetGenor($args);
@@ -59,7 +54,6 @@ class CEN extends Module {
 				return GDN::GetGDN($args);
 				
 			case 'pres':
-//klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>",$args);
 				$id = $args['id'];
 				$lang = $args['lang'];
 				$lang = strtoupper(substr($lang, 0, 1)).substr($lang, 1, 1);
@@ -115,10 +109,17 @@ class CEN extends Module {
 		}
 	}
 
-	static function stripAccents($stripAccents){
-		return strtr($stripAccents,'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
-			                       'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+	public static function rmDir($dir, $root=true) {
+		$cwd = getcwd();
+		if(substr($dir, 0, strlen($cwd)+6) !== $cwd.'/Home/') return false;
+		
+		$files = array_diff(scandir($dir), array('.', '..')); 
+		foreach ($files as $file) { 
+			(is_dir("$dir/$file")) ? self::rmDir("$dir/$file") : unlink("$dir/$file"); 
+		}
+		if($root) rmdir($dir); 
 	}
+
 
 	public static function removeAccents($str) {
 		static $map = [
@@ -362,13 +363,5 @@ class CEN extends Module {
 		];
 		return strtr($str, $map);
 	}
-//	public static function read_file($f) {
-//		$t = '';
-//		if($fh = fopen($f, "rb")) {
-//			$t = fread($fh, filesize($f));
-//			fclose($fh);
-//		}
-//		return($t);
-//	}
 	
 }

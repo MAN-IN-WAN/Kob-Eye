@@ -436,7 +436,7 @@ class Cadref extends Module {
 		$info = base64_encode($adh->Id.','.$mail.','.time());
 		$s = "Bonjour ".($sex == 'H' ? 'Monsieur' : 'Madame')." $pre $nom,<br /><br /><br />";
 		$s .= 'Appuyez sur le lien ci-dessous pour confirmer votre inscription :<br /><br />';
-		$s .= "<strong><a href=\"https://utl.abtel.cloud/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
+		$s .= "<strong><a href=\"https://gestion.cadref.com/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
 		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>(Cadref::$UTL.' : Confirmation d\'enregistrement.'),
