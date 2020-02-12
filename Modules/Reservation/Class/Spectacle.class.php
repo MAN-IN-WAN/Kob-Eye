@@ -10,25 +10,30 @@ class Spectacle extends genericClass {
 			$di = 0;
 			$dc = time() * 10;
 
-			$Localisation="";$okdd=0;$okdf=0;$okdc=0;
+			$Localisation="";
+			$okdd=0;
+			$okdf=0;
+			$okdc=0;
 	
 								
 			for ($i=0;$i<sizeof($E);$i++){
 
 
-				if ($E[$i]["DateDebut"]>= time() and $dd > $E[$i]["DateDebut"]  ){
+				if ($dd > $E[$i]["DateDebut"]  ){
 					$dd = $E[$i]["DateDebut"];
 					$okdd=1;
 				}
 				if($E[$i]["DateFin"]>$df){
-					$df = $E[$i]["DateFin"];$okdf=1;
+					$df = $E[$i]["DateFin"];
+					$okdf=1;
 				}
 //				if ($E[$i]["DateDebut"]>time()&&$E[$i]["DateFin"]>time()) {
 				if ($E[$i]["DateFin"]>time()) {
 					$di+=$E[$i]["NbPlace"];
 				}
 				if($E[$i]["DateCloture"]<$dc&&$E[$i]["DateCloture"]>time()){
-					$dc = $E[$i]["DateCloture"];$okdc=1;
+					$dc = $E[$i]["DateCloture"];
+					$okdc=1;
 				}
 				//Recherche Ville
 				$V = Sys::$Modules["Reservation"]->callData("Reservation/Salle/Evenement/".$E[$i]["Id"]."");
@@ -73,7 +78,7 @@ class Spectacle extends genericClass {
 		$Message=false;
 		
 		// pour que l'initialisation ne soit jamais supérieure à une date de début probable (dixit Enguer!)
-		$DateDebut = mktime()*10;
+		$DateDebut = time()*10;
 
 		// 201602 : ajout pour comparaison 
 		$dc = $DateDebut;
@@ -83,12 +88,12 @@ class Spectacle extends genericClass {
 			// !!! 2017-01-04 => à mettre en place voir avec GC : test pour ne traiter que les évenements qui ne sont pas passés .....
 		//	if ($E[$i]["DateDebut"]<= mktime() and $DateFin >= mktime() ){
 				//Se sont terminés hier
-				if ($E[$i]["DateCloture"]>mktime()){
+				if ($E[$i]["DateCloture"]>time()){
 					$di+=$E[$i]["NbPlace"];
 				}
 				
 				//Se termine aujourd'hui
-				if ($E[$i]["DateCloture"]>mktime(0,0,0,date('m',mktime()),date('d',mktime()),date('Y',mktime()))&&$E[$i]["DateCloture"]<mktime(23,59,59,date('m',mktime()),date('d',mktime()),date('Y',mktime()))){
+				if ($E[$i]["DateCloture"]>mktime(0,0,0,date('m',time()),date('d',time()),date('Y',time()))&&$E[$i]["DateCloture"]<mktime(23,59,59,date('m',time()),date('d',time()),date('Y',time()))){
 					$Ev = genericClass::createInstance("Reservation",$E[$i]);
 					// 201602 : ajouts 
 					$messabtel.= "<br />je passe dans envoi du message<br />";
@@ -96,7 +101,7 @@ class Spectacle extends genericClass {
 				}
 	
 				// on remet la date du jour pour le début du spectacle pour les spectacles en cours
-				if ($E[$i]["DateDebut"]>= mktime() and $DateDebut > $E[$i]["DateDebut"] ){
+				if ($DateDebut > $E[$i]["DateDebut"] ){
 					$DateDebut = $E[$i]["DateDebut"];
 					
 				}
@@ -105,7 +110,7 @@ class Spectacle extends genericClass {
 			
 		}
 
-		if ($this->Disponibilite!=$di or $DateDebut!=0){
+		if ($this->Disponibilite!=$di or $DateDebut!=$dc){
 			$this->Disponibilite = $di;
 			$this->DateDebut = $DateDebut;
 			genericClass::Save();
@@ -586,8 +591,8 @@ class Spectacle extends genericClass {
 					$clo = $tmsFin - (86400*$params['clotureX']);
 
 					$evt = genericClass::createInstance('Reservation','Evenement');
-					$evt->DateDebut = $debut.' '.$params['heureDebut'];
-					$evt->DateFin = $fin.' '.$params['heureFin'];
+					$evt->DateDebut = $debut;
+					$evt->DateFin = $fin;
 					$evt->DateCloture = date('d/m/Y',$clo).' '.$params['clotureHM'];
 					$evt->Nom = $this->Nom;
 					$evt->NbPlace = $params['nbPlcEvt'];
@@ -602,8 +607,8 @@ class Spectacle extends genericClass {
 
 					$html .=  "<tr>
 								<td style='padding:5px 15px;'>". ($n + 1) ."</td>
-								<td style='padding:5px 15px;'>".$evt->DateDebut."</td>
-								<td style='padding:5px 15px;'>".$evt->DateFin."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateDebut)."</td>
+								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateFin)."</td>
 								<td style='padding:5px 15px;'>".date('d/m/Y à H:i:s',$evt->DateCloture)."</td>
 								<td style='padding:5px 15px;'>".$salle->Nom."</td>
 								<td style='padding:5px 15px;'>".$evt->NbPlace."</td>

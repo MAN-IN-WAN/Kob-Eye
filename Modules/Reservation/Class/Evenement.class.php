@@ -105,9 +105,9 @@ class Evenement extends genericClass {
 			require_once("Class/Lib/Mail.class.php");
 			$M = new Mail();
 			$M->Subject("[CULTUREETSPORTSOLIDAIRES34.FR] Rapport des reservations ".$S[0]["Nom"]." a la date du ".date("d/m/Y à H:i",$this->DateDebut)." ");
-			$M->To($Mail);
+		//	$M->To($Mail);
 			$M->Cc("myriam@abtel.fr");
-			$M->Cc("direction@cultureetsportsolidaires34.fr");
+			//$M->Cc("direction@cultureetsportsolidaires34.fr");
 			$M->From("noreply@cultureetsportsolidaires34.fr");
 			$M->Body($Mess);
 			$M->Send();
@@ -120,6 +120,14 @@ class Evenement extends genericClass {
 	}
 
 	public function Reserver($params){
+        $grp = Sys::$User->Groups[0];
+        $cli = Sys::getOneData('Reservation','Client/NumeroGroupe='.$grp->Id);
+
+		if(!$cli || !$cli->Adhesion){
+			$html ='<h2 class="alerteAdhesion">Vous ne pouvez pas réserver d\'invitations actuellement.</h2><div> Afin de continuer à bénéficier de notre dispositif, nous vous invitons à régulariser votre adhésion auprès de Culture et Sport Solidaires 34.<br/> Si besoin, vous pouvez nous joindre au <a href="tel:+33467422698">04 67 42 26 98</a></div>';
+			return $html;
+		}
+
 		$step = !empty($params['step'])? $params['step']:0;
 
 		switch($step){

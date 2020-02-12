@@ -60,7 +60,7 @@ L'équipe culture et sport solidaires 34.
 					<td  style="border:1px solid #cccccc;padding:5px;text-align:center;">[!LesResa::NbPlace!]</td>
 					<td  style="border:1px solid #cccccc;padding:5px;">
 						[STORPROC [!Query!]/Reservations/[!LesResa::Id!]/Personne|P]
-							[!P::Prenom!] [!P::Nom!]<br />
+							[!P::Prenom!] [!P::Nom!] [IF [!P::PMR!]!=0] : Personne  &agrave; Mobilit&eacute; r&eacute;duite[/IF]<br />
 						[/STORPROC]
 					</td>
 					<td  style="border:1px solid #cccccc;padding:5px;">[DATE d/m/Y][!LesResa::tmsCreate!][/DATE]</td>

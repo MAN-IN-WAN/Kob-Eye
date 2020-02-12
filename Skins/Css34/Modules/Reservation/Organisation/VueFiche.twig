@@ -2,9 +2,16 @@
     {% verbatim %}
         <div class="row" id="organisation-fiche" v-if="display">
             <h1>{{ organisation.Nom }}</h1>
-            Adresse : {{ organisation.Adresse }}
-             {{ organisation.CodePos }}
-             {{ organisation.Ville }}
+             <div v-if="organisation.Adresse == '-1'" class="t">Adresse : non communiquée </div>
+             <div v-else class="t" >Adresse : {{ organisation.Adresse }}</div>
+
+
+            <div v-if="!organisation.CodePos" style="display: none;"> </div>
+            <div v-else >{{ organisation.CodePos }}</div>
+
+            <div v-if="!organisation.Ville" style="display: none;"> </div>
+            <div v-else >{{ organisation.Ville }}</div>
+
              <p>{{ organisation.Tel }}</p>
              <p>{{ organisation.Mail }}</p>
         </div>

@@ -1,36 +1,57 @@
 <template>
     <div>
         <div id="mainmenu">
-            <div class="espacepro pull-right">
+            <div class="espacepro pull-right hidden-xs">
                 <a href="#" data-toggle="modal" data-target="#login-modal">Espace Pro</a>
             </div>
-            <nav class="nav" role="navigation">
-                <ul class="menu">
-                    {% for menu in menus %}
-                        <li><router-link to="/{{ menu.Url }}">{{ menu.Titre }}</router-link></li>
-                    {% endfor %}
-                </ul>
+            <nav class="nav " role="navigation">
+                <div >
+                    <ul class="menu">
+                        {% for menu in menus %}
+                            <li>
+                                <router-link to="/{{ menu.Url }}">{{ menu.Titre }}</router-link>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div id="wrap">
+                            <a href="#wrap" id="open">
+                                <img src="Skins/Css34/Css/images/UI-burger-menu-512.png" alt="testus" style="width:40px;height: 40px;">
+                            </a>
+                            <div id="close" style="background-color: #d7d7d7;width: 100%">
+                                <nav>
+                                <a href="#">×</a>
+                                <div>
+                                    {% for menu in menus %}
+                                        <span>
+                                            <a href="/{{ menu.Url }}">{{ menu.Titre }}</a>
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                                </nav>
+                            </div>
+                    </div>
+                </div>
             </nav>
         </div>
         <div id="submenu">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 submenu-container logo-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container logo-container">
                         <div class="logo">
-                            <router-link to="/"><img src="/{{ user.Avatar }}" class="img-responsive" /></router-link>
+                            <router-link to="/"><img src="/{{ user.Avatar }}" class="img-responsive"/></router-link>
                         </div>
                     </div>
-                    <div class="col-lg-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
                         <router-link to="/Ateliers" class="square blue">
                             {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-LEFT'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
                         <router-link class="square green" to="/Sorties">
-                                 {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-CENTER'))) }}
+                            {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-CENTER'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
                         <router-link class="square pink" to="/Formations">
                             {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-RIGHT'))) }}
                         </router-link>
@@ -41,14 +62,14 @@
     </div>
 </template>
 <script>
-module.exports = {
-    name: 'header-menu',
-    template: '#header',
-    data (){
-        return {
-            render: true
-        };
+    module.exports = {
+        name: 'header-menu',
+        template: '#header',
+        data() {
+            return {
+                render: true
+            };
+        }
     }
 
-}
 </script>

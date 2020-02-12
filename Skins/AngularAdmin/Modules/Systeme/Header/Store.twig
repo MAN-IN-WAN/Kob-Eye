@@ -425,6 +425,13 @@
                                     }
                                     resolve({{ st.identifier }}Store[context][idStore]);
                                 });
+                                loadRecursivChildren(data).then(function (obj){
+                                    if (idStore>-1){
+                                        obj._full = true;
+                                        {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],obj);
+                                    }
+                                    resolve({{ st.identifier }}Store[context][idStore]);
+                                });
                             }else{
                                 console.log(context+' >> store > {{ key }} > getOneData '+id+' retour',idStore,{{ st.identifier }}Store[context][idStore]);
                                 resolve({{ st.identifier }}Store[context][idStore]);

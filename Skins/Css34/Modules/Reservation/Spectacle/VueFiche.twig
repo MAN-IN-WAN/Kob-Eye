@@ -1,92 +1,98 @@
 <template>
     {% verbatim %}
-        <div class="row" id="spectacle-fiche" v-if="display">
-            <div class="col-lg-8">
-                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img :src="'/'+spectacle.Logo+'.limit.1000x1000.jpg'" alt="...">
-                            <div class="carousel-caption"></div>
-                        </div>
-                    </div>
-
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-                <div class="row fiche-propriete">
-                    <div class="col-lg-3" :style="{backgroundColor: spectacle.Couleur}" >{{ spectacle.Genre }}</div>
-                    <div class="col-lg-3">{{ spectacle.TypePublic }}</div>
-                    <div class="col-lg-6">{{ spectacle.Localisation }}</div>
-                </div>
-                <div class="row fiche-propriete">
-                    <div class="col-lg-9">{{ spectacle.DateDebut }}</div>
-                    <div v-if="parseInt(spectacle.Duree)" class="col-lg-3">{{ spectacle.Duree }} mins</div>
-                    <div v-else class="col-lg-3">Durée non communiquée</div>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    <th>DATE</th>
-                    <th>LIEU</th>
-                    <th>ADRESSE</th>
-                    <th>ACCÈS</th>
-                    <th>TELEPHONE</th>
-                    <th>WEB</th>
-                    <th>DISPO</th>
-                    </thead>
-                    <tbody>
-                        <tr v-for="e in spectacle.events">
-                            <td :inner-html.prop="e.DateDebut | timestamp"></td>
-                            <td>{{ e.Salle.Nom }}</td>
-                            <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} {{ e.Salle.Handi }} </td>
-                            <td style="text-align: center">
-                                <i v-if="e.Salle.Handi=='1'"  class="fas fa-wheelchair" style="color:green;"></i>
-                                <i v-if="e.Salle.Handi=='0'"  class="fas fa-wheelchair" style="color:red;"></i>
-                                <i v-if="e.Salle.Handi=='-1'" class="fas fa-wheelchair" style="color:orange;"></i>
-                                <i v-if="e.Salle.Handi==''"   class="fas fa-wheelchair" style="color:red;"></i>
-                           </td>
-                            <td style="text-align: center">
-                                <a v-if="e.Structure.Tel!=''" :href="'tel:'+e.Structure.Tel"><i  class="fas fa-phone" style="color:green"></i></a>
-                                <i v-if="e.Structure.Tel==''" class="fas fa-times" style="color:red"></i>
-                            </td>
-                            <td style="text-align: center">
-                                <a v-if="e.Structure.SiteWeb!=''" :href="'http://'+e.Structure.SiteWeb" target="_blank"><i  class="fas fa-link" style="color:green"></i></a>
-                                <i v-if="e.Structure.SiteWeb==''" class="fas fa-times" style="color:red"></i>
-                            </td>
-                            <td style="text-align: center">
-                                <i v-if="e.NbPlace>0" class="fas fa-check" style="color:green"></i>
-                                <i v-if="e.NbPlace==0" class="fas fa-times" style="color:red"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row fiche-propriete">
-                    <div class="col-lg-11" :style="{backgroundColor: spectacle.Couleur}" ><a href="#nogo" class="btn btn-css34">RESERVER*</a></div>
-                    <div class="col-lg-1"><i class="fas fa-print"></i></div>
-                </div>
+        <div id="spectacle-fiche" v-if="display">
+            <div class="row btn-retour">
+                <div class="pull-left" > <router-link :style="{backgroundColor: spectacle.Couleur}" :to="from.fullPath">Retour à la liste <i class="fas fa-reply"></i></router-link></div>
             </div>
-            <div class="col-lg-4" id="description">
-                <h1 :style="{backgroundColor: spectacle.Couleur}">{{ spectacle.Nom }}</h1>
-                <img :src="'/'+spectacle.Logo" class="img-responsive"/>
-                <p v-html="spectacle.Resume"></p>
-                <div>
-                    <h3>ACCES</h3>
-                    <p >{{ spectacle.Acces }}</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <img :src="'/'+spectacle.Logo+'.limit.1000x1000.jpg'" alt="...">
+                                <div class="carousel-caption"></div>
+                            </div>
+                        </div>
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="row fiche-propriete">
+                        <div class="col-lg-3" :style="{backgroundColor: spectacle.Couleur}" >{{ spectacle.Genre }}</div>
+                        <div class="col-lg-3">{{ spectacle.TypePublic }}</div>
+                        <div class="col-lg-6">{{ spectacle.Localisation }}</div>
+                    </div>
+                    <div class="row fiche-propriete">
+                        <div class="col-lg-9">{{ spectacle.DateDebut }}</div>
+                        <div v-if="parseInt(spectacle.Duree)" class="col-lg-3">{{ spectacle.Duree }} mins</div>
+                        <div v-else class="col-lg-3">Durée non communiquée</div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <th>DATE</th>
+                        <th>LIEU</th>
+                        <th>ADRESSE</th>
+                        <th>TELEPHONE</th>
+                        <th>ACCÈS</th>
+                        <th>WEB</th>
+                        <th>DISPO</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="e in spectacle.events">
+                                <td :inner-html.prop="e.DateDebut | timestamp"></td>
+                                <td>{{ e.Salle.Nom }}</td>
+                                <td>{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} {{ e.Salle.Handi }} </td>
+                                  <td style="text-align: center">
+                               <!--     <a v-if="e.Structure.Tel!=''" :href="'tel:'+e.Structure.Tel"><i  class="fas fa-phone" style="color:green"></i></a>
+                                    <i v-if="e.Structure.Tel==''" class="fas fa-times" style="color:red"></i>-->
+                                    {{ e.Structure.Tel }}
+                                </td>
+                                <td style="text-align: center">
+                                    <i v-if="e.Salle.Handi=='1'"  class="fas fa-wheelchair" style="color:green;"></i>
+                                    <i v-if="e.Salle.Handi=='0'"  class="fas fa-wheelchair" style="color:red;"></i>
+                                    <i v-if="e.Salle.Handi=='-1'" class="fas fa-wheelchair" style="color:orange;"></i>
+                                    <i v-if="e.Salle.Handi==''"   class="fas fa-wheelchair" style="color:red;"></i>
+                               </td>
+
+                                <td style="text-align: center">
+                                    <a v-if="e.Structure.SiteWeb!=''" :href="e.Structure.SiteWeb" target="_blank"><i  class="fas fa-link" style="color:green"></i></a>
+                                    <i v-if="e.Structure.SiteWeb==''" class="fas fa-times" style="color:red"></i>
+                                </td>
+                                <td style="text-align: center">
+                                    <i v-if="e.NbPlace>0" class="fas fa-check" style="color:green"></i>
+                                    <i v-if="e.NbPlace==0" class="fas fa-times" style="color:red"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row fiche-propriete">
+                        <div class="col-lg-11" :style="{backgroundColor: spectacle.Couleur}" ><a href="#nogo" class="btn btn-css34">RESERVER*</a></div>
+                        <div class="col-lg-1"><i class="fas fa-print"></i></div>
+                    </div>
                 </div>
+                <div class="col-lg-4" id="description">
+                    <h1 :style="{backgroundColor: spectacle.Couleur}">{{ spectacle.Nom }}</h1>
+                    <img :src="'/'+spectacle.Logo" class="img-responsive"/>
+                    <p v-html="spectacle.Resume"></p>
+<!--                <div>-->
+<!--                    <h3>ACCES</h3>-->
+<!--                    <p >{{ spectacle.Acces }}</p>-->
+<!--                </div>-->
                 <div>
                     <h3>PARTENAIRES</h3>
+                </div>
                 </div>
             </div>
         </div>
@@ -119,7 +125,7 @@
         },
         watch : {
             $route: function () {
-                console.log('before route watch',window.spec.spectacle);
+                console.log('before route watch',window.spec.spectacle,this.$route);
                 var to = this.$route.params.url;
                 if (to == undefined)  return false;
                 if (window.spec.spectacle){
@@ -139,6 +145,12 @@
                 this.loaded = false;
                 this.getData(url);
             }
+        },
+        beforeRouteEnter(to, from, next) {
+            next((vm) => {
+                vm.from = from;
+                console.log(from);
+            });
         }
     }
 </script>

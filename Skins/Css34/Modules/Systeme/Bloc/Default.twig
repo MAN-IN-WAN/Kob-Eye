@@ -13,7 +13,7 @@
 </style>
 <div class="home-link">
     <div style="background-image: url(/{{ bloc.Image }});" class="home-link" id="code{{ bloc.Code }}"></div>
-    <a href="{{ bloc.Lien }}" >
+    <a  href="{{ bloc.Lien }}"    {% if bloc.Externe == 1 %} target="_blank"  {%  endif %}>
         <i class="fas fa-{{ bloc.Icone }} fa-6x"></i>
         <span>{{ bloc.Titre }}</span>
     </a>

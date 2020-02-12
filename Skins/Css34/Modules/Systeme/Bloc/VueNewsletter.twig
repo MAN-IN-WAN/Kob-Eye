@@ -24,7 +24,7 @@
             <a href="#" v-on:click.prevent="unsuscribe=true" class="unsuscribe">Je souhaite me désinscrire</a>
         </div>
 
-        <div v-if="unsuscribe">
+        <div v-if="unsuscribe"  class="inscription">
             <div v-if="!unsuscOk">
                 <input class="form-control input-dark inputNewsletter" type="text" v-model="newsAdress"  v-bind:class="{ error: unsuscError }"/>
                 <a href="#" v-on:click.prevent="deregister"><i aria-hidden="true" class="fa fa-times"></i></a>

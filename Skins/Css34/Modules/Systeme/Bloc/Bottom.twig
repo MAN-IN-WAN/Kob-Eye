@@ -1,7 +1,7 @@
 
 <div>
     {% if bloc.Lien is not empty  %}
-    <a href="{{ bloc.Lien }}" >
+    <a href="{{ bloc.Lien }}"  {% if bloc.Externe == 1 %} target="_blank"  {%  endif %}>
         {%  endif %}
         <h3>{{ bloc.Titre }}</h3>
         {% if bloc.Lien is not empty  %}

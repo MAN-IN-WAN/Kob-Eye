@@ -1,0 +1,5 @@
+{% if interface == 'List' %}
+    {{ include(template_from_string(module('News/Nouvelle/ListBundle'))) }}
+{% else %}
+    {{ include(template_from_string(module('News/Nouvelle/FicheBundle'))) }}
+{% endif %}

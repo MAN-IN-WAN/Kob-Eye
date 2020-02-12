@@ -53,6 +53,7 @@ foreach ($parentelements as $f){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
     }elseif ($f['type']=='fkey' && $f['card']=='long' && isset($values->{$f["objectName"].$f["name"]})){
         $o->resetParents($f['objectName']);
+        if(!is_array($values->{$f["objectName"].$f["name"]})) $values->{$f["objectName"].$f["name"]} = array($values->{$f["objectName"].$f["name"]});
         foreach ($values->{$f["objectName"].$f["name"]} as $v)
             $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);
     }
