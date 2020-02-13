@@ -1,7 +1,7 @@
 <template>
     {% verbatim %}
         <div class="row " id="client-fiche" v-if="display">
-            <h1>aaa {{ client.Nom }}</h1>
+            <h1>{{ client.Nom }}</h1>
             Adresse : {{ client.Adresse }}
              {{ client.CodePos }}
              {{ client.Ville }}
@@ -10,7 +10,6 @@
         </div>
     {% endverbatim %}
 </template>
-
 <script>
     module.exports = {
         name: 'client-fiche',

@@ -439,7 +439,7 @@ class DbAnalyzer extends Root{
 		if (!isset($Tab[$NbEtape]['DataSource'])) return false;
 		if (!is_object($Obj))$Obj = $this->getByTitleOrFkey($Tab[$NbEtape]['DataSource'],$Tab[$NbEtape]['Module']);
 		else $Obj = $Obj->getLinkedObjectClass($Tab[$NbEtape]['DataSource'],$Tab[$NbEtape]['Module']);
-		$Parent=false;		
+		$Parent=false;
 		if (!is_object($Obj)){return false;}
 		//On teste la valeur de la paire en cours
 		if (!isset($Tab[$NbEtape]['Value'])||$Tab[$NbEtape]['Value']==''){

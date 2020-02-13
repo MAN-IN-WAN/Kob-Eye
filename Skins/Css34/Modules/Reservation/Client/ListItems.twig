@@ -5,7 +5,7 @@
         <div v-if="!clients.length && !busy" class="noItems">
             Désolés, Aucune structure ne correspond à votre recherche
         </div>
-        <a class="card" v-for="(client,index) in clients" v-bind:key="index" :to="{path: client.Url, params: {client: client}}" v-on:click.prevent="goToFiche(client)" v-bind:style="{backgroundColor:client.couleur}">
+        <a class="card" v-for="(client,index) in clients" v-bind:key="index" :to="{path: client.Url, params: {client: client} }" v-on:click.prevent="goToFiche(client)" v-bind:style="{backgroundColor:client.couleur}">
             <div class="client-item" >
                 <div class="card-body">
                     <h5 class="card-title">{{ client.Nom  }}</h5>

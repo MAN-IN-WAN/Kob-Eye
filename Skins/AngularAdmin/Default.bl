@@ -1,3 +1,14 @@
+
+[IF [!Lien!]!=]
+    [IF [!Lien!]!=Systeme/Deconnexion]
+        [REDIRECT][/REDIRECT]
+    [/IF]
+[/IF]
+
+
+
+
+
 [HTML]ng-app="cleanUI"[/HTML]
 [HEADER]
 [IF [!Systeme::isModule(Cadref)!]]

@@ -9,8 +9,8 @@ const router = new VueRouter({
         {path: '/Partenaires/:url', component: window.httpVueLoader('/Reservation/Organisation/VueFiche.vue')},
         {path: '/Relais-Sociaux', component: window.httpVueLoader('/Reservation/Client/VueRelais.vue')},
         {path: '/Relais-Sociaux/:url', component: window.httpVueLoader('/Reservation/Client/VueFiche.vue')},
-        {path: '/Evenement-passe', component: window.httpVueLoader('/News/Nouvelle/VueArchives.vue')},
-        {path: '/Evenement-passe/:url', component: window.httpVueLoader('/News/Nouvelle/VueFiche.vue')},
+        {path: '/Actualites-Passees', component: window.httpVueLoader('/News/Nouvelle/VueArchives.vue')},
+        {path: '/Actualites-Passees/:url', component: window.httpVueLoader('/News/Nouvelle/VueFiche.vue')},
         {path: '/Nouvelles', redirect : '/'},
         {path: '/Nouvelles/:url', component: window.httpVueLoader('/News/Nouvelle/VueFiche.vue')},
         {path: '/Contact', component: window.httpVueLoader('/Systeme/Utils/Contact/VueContact.vue')},
@@ -39,7 +39,7 @@ Vue.filter('timestamp', function (value) {
     return (d + " <br> à " + t);
 });
 
-
+const specId = { val:null };
 window.spec = new Vue({
         el: '#app',
         data: {
@@ -55,6 +55,7 @@ window.spec = new Vue({
         render: true,
         first: true,
         currentRoute: window.location.pathname,
+        specId
     },
     router: router,
     components: {
@@ -70,6 +71,16 @@ window.spec2 = new Vue({
     },
     components: {
         footerNewsletter : window.httpVueLoader('/Systeme/Bloc/VueNewsletter.vue')
+    }
+});
+window.spec3 = new Vue({
+    el: '#modalLogin',
+    data: {
+        render: true,
+        specId
+    },
+    components: {
+        modalLogin : window.httpVueLoader('/Systeme/Login/VueLogin.vue')
     }
 });
 
