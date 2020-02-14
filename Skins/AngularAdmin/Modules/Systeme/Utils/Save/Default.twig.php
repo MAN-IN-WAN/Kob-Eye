@@ -43,7 +43,9 @@ foreach ($formfields as $f){
     }elseif ($f['type']=='html'){
         $replace   = array("\r\n", "\n", "\r", "\t");
         $o->{$f["name"]} = str_replace($replace,'', $values->{$f["name"]});
-    }elseif (isset($values->{$f["name"]})) $o->{$f["name"]} = $values->{$f["name"]};
+    }elseif (isset($values->{$f["name"]})){
+        $o->Set($f["name"],$values->{$f["name"]});
+    }
 }
 
 $obj = $o->getObjectClass();
@@ -64,8 +66,6 @@ foreach ($values as $k=>$v){
         $o->{$k}=$v->{$k};
     }
 }
-
-
 
 
 if ($o->Verify()) {
