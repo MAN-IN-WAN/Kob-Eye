@@ -1,6 +1,6 @@
 
 
-{% macro form_properties(formfields,scopeObj) %}
+{% macro form_properties(formfields,scopeObj,ObjectType,Module) %}
 
     {% import "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroTypes.twig" as form %}
 
@@ -62,7 +62,7 @@
                         {% if field.type == "fkey" and field.card == "long" %}
                             <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name~'&FieldKey='~field.name~'&ParentObject='~ObjectType))) }}</div>
                         {% elseif field.type == "rkey" %}
-                            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
+                            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name~'&Object='~ObjectType~'&Module='~Module))) }}</div>
                         {% elseif field.type == "text" or field.type == "raw" or field.type == "templateconfig" or field.type == "metat" or field.type == "metad" or field.type == "metak" %}
                             {{ form.formAce(field,scopeObj,'input_'~field.name) }}
                             {% if  field.type == "metat" or field.type == "metad" or field.type == "metak" %}

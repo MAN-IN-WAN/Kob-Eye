@@ -9,26 +9,11 @@ $vars['fields'] = $o->getElementsByAttribute('fiche','',true);
     'name' => 'Url',
     'type' => 'varchar'
 );*/
-$vars['fields'][] = array(
-    'name' => 'Couleur',
-    'type' => 'color'
-);
-$vars['fields'][] = array(
-    'name' => 'big',
-    'type' => 'boolean'
-);
+
 $path = explode('/',$vars['Query']);
 $module = array_shift($path);
 $path = implode('/',$path);
 
-
-
-//GENRES
-$genres = array();
-$genrestmp = Sys::getData('Reservation','Genre');
-foreach ($genrestmp as $g){
-    $genres[$g->Nom] = $g;
-}
 //requete
 if(connection_aborted()){
     endPacket();
@@ -36,24 +21,6 @@ if(connection_aborted()){
 }
 $vars['requete'] = $path;
 $vars['rows'] = Sys::getData($module, $path );
-
-//STRUCTURE
-$vars['structure'] = $vars['rows'][0]->getOneParent('Organisation');
-
-//EVENEMENTS
-$vars['events'] = $vars['rows'][0]->getChildren('Evenement');
-foreach ($vars['events'] as $k=>$v){
-    //SALLE
-    $v->salle = $v->getOneParent('Salle');
-}
-usort($vars['events'],function($a,$b){
-    if($a->DateDebut == $b->DateDebut) return 0;
-    return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
-});
-
-//Partenaires
-$vars['partenaires'] = $vars['rows'][0]->getChildren('Partenaire/Actif=1');
-
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);
 //souscription au push
@@ -79,7 +46,7 @@ $vars['children'] = $getCchild;
 
 
 //CURRENT MENU
-$curmen = '/sorties/';
+$curmen = '/Partenaires/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
@@ -87,10 +54,6 @@ $curmen = '/sorties/';
 }*/
 
 foreach ($vars['rows'] as $k=>$v){
-
-    //GENRES
-    $v->Couleur = $genres[$v->Genre]->Couleur ? $genres[$v->Genre]->Couleur: '#d2d2d2';
-    $v->genre = $genres[$v->Genre];
 
     //URL
     $v->Url = $curmen.$v->Url;

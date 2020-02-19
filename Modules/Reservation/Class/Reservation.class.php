@@ -27,5 +27,11 @@ class Reservation extends Module{
                 break;
             }
         }
+
+        //Redirection pour l'acces structures sociales
+        if(!empty(Process::$TempVar['spectacle'])){
+            header('Location:: /#/'.Sys::getMenu('Reservation/Spectacle').'/'.Process::$TempVar['spectacle'],true,302);
+            die();
+        }
     }
 }

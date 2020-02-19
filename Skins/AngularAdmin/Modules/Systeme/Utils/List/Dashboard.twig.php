@@ -19,7 +19,13 @@ $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
 
 $vars['Module'] = $info['Module'];
 $vars['functions'] = $o->getFunctions();
-$vars['operation'] = $vars['ObjectClass']->getOperations();
+if(isset($vars['ope']) && $vars['ope'] == 0){
+    $vars['operation'] = array();
+}else{
+    //TODO : Restriction des operation si $vars['ope'] defini et non nul
+    $vars['operation'] = $vars['ObjectClass']->getOperations();
+}
+
 foreach($vars['operation'] as $k=>$op){
     if(is_array($op)){
         $ok = false;

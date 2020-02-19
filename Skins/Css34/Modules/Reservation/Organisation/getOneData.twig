@@ -31,44 +31,5 @@
     {% for child in children %}
         ,"{{ child.name }}{{ child.objectName }}CLabel": "{{ attribute(row,child.objectName~'Clabel') | raw}}"
     {% endfor %}
-    ,"events": [
-    {% for event in events %}
-        {
-            "id": {{ event.Id }},
-            "DateCloture": {{ event.DateCloture }},
-            "DateDebut": {{ event.DateDebut }},
-            "Nom": "{{ event.Nom }}",
-            "CodPos": "{{ event.CodPos }}",
-            "Ville": "{{ event.Ville }}",
-            "DateFin": {{ event.DateFin }},
-            "NbPlace": {{ event.NbPlace }},
-            "Valide": {{ event.Valide }},
-            "Salle": {
-                "id": {{ event.salle.Id }},
-                "Nom": "{{ event.salle.Nom }}",
-                "Adresse": "{{ event.salle.Adresse }}",
-                "Ville": "{{ event.salle.Ville }}",
-                "CodPos": "{{ event.salle.CodPos }}",
-                "Handi": "{{ event.salle.Handi }}"
-            },
-            "Structure": {
-                "Tel": "{{ structure.Tel }}",
-                "SiteWeb": "{{ structure.SiteWeb }}",
-                "Nom": "{{ structure.Nom }}"
-            }
-        }{% if not loop.last %},{% endif %}
-    {% endfor %}
-    ]
-    ,"partenaires": [
-    {% for part in partenaires %}
-        {
-        "id": {{ part.Id }},
-        "titre": "{{ part.Titre }}",
-        "ordre": {{ part.Ordre }},
-        "image": "{{ part.Image }}",
-        "lien": "{{ part.Lien }}"
-        }{% if not loop.last %},{% endif %}
-    {% endfor %}
-    ]
     }{% if not loop.last %},{% endif %}
 {% endfor %}

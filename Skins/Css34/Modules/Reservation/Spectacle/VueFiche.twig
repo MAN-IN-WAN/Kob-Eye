@@ -78,7 +78,9 @@
                         </tbody>
                     </table>
                     <div class="row fiche-propriete">
-                        <div class="col-lg-11" :style="{backgroundColor: spectacle.Couleur}" ><a href="#nogo" class="btn btn-css34">RESERVER*</a></div>
+                        <div class="col-lg-11" :style="{backgroundColor: spectacle.Couleur}" >
+                            <a href="#nogo" data-toggle="modal" data-target="#login-modal" class="btn btn-css34">RESERVER</a>
+                        </div>
                         <div class="col-lg-1"><i class="fas fa-print"></i></div>
                     </div>
                 </div>
@@ -92,6 +94,14 @@
 <!--                </div>-->
                 <div>
                     <h3>PARTENAIRES</h3>
+                    <div class="partList">
+                        <a :href="p.lien" v-for="p in spectacle.partenaires">
+                            <div>
+                                <img :src="'/'+p.image">
+                                <span v-html="p.titre"></span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -117,6 +127,7 @@
                     .get('/Reservation/Spectacle/'+url+'/getOneData.json')
                     .then(function (response) {
                         me.spectacle = response.data;
+                        me.$parent.$data.specId.val = me.spectacle.id;
                         me.loaded = true;
                         me.display = true;
                         //me.display = me.spectacle = me.spectacle.Url;
@@ -151,6 +162,10 @@
                 vm.from = from;
                 console.log(from);
             });
+        },
+        beforeRouteLeave (to, from , next) {
+            this.$parent.$data.specId.val = null;
+            next();
         }
     }
 </script>

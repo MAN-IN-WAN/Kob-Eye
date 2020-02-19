@@ -1,2 +1,2 @@
 <?php
-$vars['client'] = Sys::getData('Reservation','Client');
+$vars['clients'] = Sys::getData('Reservation','Client');

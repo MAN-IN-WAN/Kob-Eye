@@ -45,10 +45,13 @@ p {
 *			HEADER									 *
  *****************************************************/
 /* MENU */
+.nav {
+    background: #d7d7d7;
+}
 .nav ul {
     margin: 0px;
     padding: 0px;
-    background: #d7d7d7;
+
     list-style: none;
     height: 3em;
 }
@@ -75,7 +78,12 @@ p {
     font-size: 1.5em;
     margin-left: 0; /* pour ajuster le menu suite à ajout d'une page */
 }
-
+.nav .menu {
+    justify-content: space-between;
+}
+.nav .menu li a {
+    padding:1em 0;
+}
 #partenaires {
     height: 70px;
 }
@@ -175,17 +183,23 @@ p {
     height: 100%;
     width: 100%;
 }
-
 #login-modal .modal-dialog {
-    width: 50%;
-    padding: 10px;
-    margin-top: 70px;
+    top: 150px;
     color: #245580;
 }
 
+
+
 #login-modal .modal-dialog .modal-content {
     background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
+#login-modal .modal-dialog .modal-content .login-espace-pro form {
+    width: 100%;
+}
+
 
 
 #login-modal .modal-dialog .login-espace-pro {
@@ -198,7 +212,7 @@ p {
 
 #login-modal .modal-dialog .login-espace-pro .form-control {
     display: inline-block;
-    width: 50%;
+    width: 58%;
     text-align: right;
 }
 
@@ -211,14 +225,30 @@ p {
 }
 
 #login-modal .modal-dialog .login-espace-pro input {
-    display: inline-block;
-    width: 55%;
     margin-bottom: 5px;
     font-weight: normal;
     font-size: 1.2em;
-    text-align: right;
+    border: 1px solid #245580;
+    border-radius: 0;
+    background-color: #ffffff;
 }
 
+
+#modalLogin #login-modal .modal-footer {
+    border:none;
+    margin:0;
+    padding:0;
+
+}
+#login-modal .modal-dialog .login-espace-pro .modal-footer .btn-primary {
+    color: #fff;
+    background-color: #245580;
+    width: 58%;
+    border-radius: 0;
+    margin-right: 3px;
+    text-align: right;
+    background-image: none;
+}
 
 #login-modal .modal-dialog .login-espace-pro div.col-login {
     display: flex;
@@ -230,8 +260,8 @@ p {
     background-color: #fff;
     margin-bottom: 10px;
     text-align: left;
-    padding: 15px;
-    width: 33%;
+    padding: 10px;
+    width: calc(33.333% - 6.6666px);
 }
 
 #login-modal .modal-dialog .login-espace-pro div.col-login p:first-child {
@@ -261,22 +291,28 @@ p {
 
 #login-modal .modal-dialog .login-espace-pro .modal-header {
     border: none;
-    padding: 0 10px;
+    padding: 0;
+}
+#login-modal .modal-dialog .login-espace-pro .modal-body{
+    border: none;
+    padding: 0;
+}
+#login-modal .modal-dialog .login-espace-pro .modal-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
+/**** croix ****/
 
 #login-modal .modal-dialog .login-espace-pro .modal-header .close {
     margin-top: -2px;
     position: absolute;
-    top: -65px;
-    right: -15px;
-    border: 1px solid #000;
+    top: -60px;
     font-size: 4em;
     padding: 0 10px;
-    color: blue;
     background-color: #fff;
     opacity: 1;
-
+    right:0;
 }
 
 
@@ -522,6 +558,8 @@ p {
     right: 45%;
     font-size: 2em;
 }
+
+
 
 /*LIST*/
 
@@ -815,9 +853,14 @@ h3.titre-partenaires {
 }
 
 #spectacle-fiche {
-    margin: 10px 0;
+    margin: 0 0 10px 0;
     padding: 0 15px; /* pour calage avec entete et pied bloc */
 }
+
+#spectacle-fiche .carousel.slide img {
+    margin:auto;
+}
+
 
 #spectacle-fiche .fiche-propriete {
     margin: 0;
@@ -844,8 +887,9 @@ h3.titre-partenaires {
 
 #spectacle-fiche .fiche-propriete > .col-lg-3:first-child {
     margin: 10px 0 0 0;
-    width: calc(25%);
+    width: 100%;
     color: white;
+
 }
 
 #spectacle-fiche .fiche-propriete > .col-lg-9:first-child {
@@ -1400,20 +1444,38 @@ table.Table-Contact td {
 
     /* page spectacle */
     #spectacle-fiche .fiche-propriete > .col-lg-3 {
-        margin: 10px 0 0 10px;
-        width: calc(25% - 10px);
+        margin: 10px 0 0 0 /*10px*/;
+        width: 100% /* calc(25% - 10px);*/;
         font-size: 1em;
         line-height: 2;
     }
-
+/*
     #spectacle-fiche .fiche-propriete > .col-lg-9:first-child {
         margin: 10px 0 0 0;
         width: calc(25%);
-    }
+    }*/
 
+/*
     #spectacle-fiche .fiche-propriete > .col-lg-3:nth-child(2) {
         width: calc(70%);
+    }*/
+
+
+    spectacle-fiche .fiche-propriete > .col-lg-3:nth-child(2),
+    #spectacle-fiche .fiche-propriete > .col-lg-6,
+    #spectacle-fiche .fiche-propriete > .col-lg-9:first-child {
+        width: 100%;
+        margin: 10px 0 0 0;
     }
+
+    #spectacle-fiche .fiche-propriete > .col-lg-1 {
+        margin: 10px 0 10px 0;
+        width: 100%;
+    }
+
+
+
+
 
     #wrap {
 		display: flex!important;
@@ -1464,39 +1526,82 @@ Et dans les cas où votre design initial est basé sur une largeur de 1024px, il
     margin: 0;
     display: none;
     color: #f00;
-    transition: transform .4s cubic-bezier(.25, .1, .25, 1);
+    /*transition: transform .4s cubic-bezier(.25, .1, .25, 1);*/
+    -webkit-transition: all .5s ease-in;
+    transition: all .5s ease-in;
 }
 
 
 #wrap:target {
-    -webkit-transform: translate3d(10px, 0, 600px);
-    -moz-transform: translate3d(10px, 0, 600px);
-    -o-transform: translate3d(10px, 0, 600px);
-    -ms-transform: translate3d(10px, 0, 600px);
-    transform: translate3d(10px, 0, 600px);
+    /*-webkit-transform: translate3d(10px, 0, 1100px);*/
+    /*-moz-transform: translate3d(10px, 0, 1100px);*/
+    /*-o-transform: translate3d(10px, 0, 1100px);*/
+    /*-ms-transform: translate3d(10px, 0, 1100px);*/
+    /*transform: translate3d(10px, 0, 1100px);*/
 }
 
 #open,
 #close {
-    /*height: 44px;*/
-    /*text-align: right;*/
     display: block;
-    /*margin-right: -30px;*/
-    z-index: 10000;
 }
 
-#wrap:target #open,
-#wrap:not(:target) #close {
-    display: none;
-}
+/*#wrap:target #open,*/
+/*#wrap:not(:target) #close {*/
+/*    display: none;*/
+/*}*/
 
-#wrap:target #open {
-    display: none;
-}
+/*#wrap:target #open {*/
+/*    display: none;*/
+
+/*}*/
+
 
 #close a {
     color: black;
     text-decoration: none;
     display: block;
     z-index: 10000;
+}
+
+/*#bar{*/
+/*    border-bottom-style: solid;*/
+/*    border-top-style: solid;*/
+/*    border-bottom-color: black;*/
+/*    border-top-color: black;*/
+/*    border-top-right-radius: 2px;*/
+/*    border-top-left-radius: 2px;*/
+/*    width: 30px;*/
+/*    height: 15px;*/
+/*    display: block;*/
+/*}*/
+
+/*#bar2{*/
+/*    border-bottom-style: solid;*/
+/*    border-bottom-color: black;*/
+/*    border-bottom-right-radius: 2px;*/
+/*    border-bottom-left-radius: 2px;*/
+/*    width: 30px;*/
+/*    height: 13px;*/
+/*    display: block;*/
+
+/*}*/
+
+svg {
+    width: 30px;
+    display: block;
+}
+#wrap:target #float {
+    left: 0;
+}
+#float{
+    position:absolute;
+    left: -350px;
+    top:-20px;
+    width:80%;
+    z-index:1000;
+    background-color: white;
+    /*border: 1px solid black;*/
+    border-radius:7px;
+    box-shadow: 1px 1px black, -0.1em 0.1em 2em black;
+    -webkit-transition: left 0.5s linear;
 }
