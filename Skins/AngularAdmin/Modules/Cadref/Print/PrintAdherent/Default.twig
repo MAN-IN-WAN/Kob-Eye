@@ -79,6 +79,7 @@
 													</div>
 													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.VisiteAnnee" ng-init="obj.VisiteAnnee=''">
+															<option value=""></option>
 															{% for v,c in annees %}
 																<option value="{{ v }}">{{ v }}</option>
 															{% endfor %}

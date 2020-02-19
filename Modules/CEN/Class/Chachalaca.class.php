@@ -99,39 +99,358 @@ class Chachalaca extends genericClass {
 		return true;
 	}
 	
+	static private $suf_imp;
+	static private $pre_imp;
+	
 	static function Suff($args) {
 		$word = $args['word'];
 		
 		$m_premier = $word;
-		
-		// 38_1
-		$m_premier = self::redoublement($m_premier);
+
+		$r = Sys::getOneData('CEN', 'Regle/Code=CHACHALACA&Regle=SUF_IMPOSSIBLE');
+		self::$suf_imp = explode("\r\n", utf8_encode(file_get_contents(getcwd().'/'.$r->FilePath)));
+		$r = Sys::getOneData('CEN', 'Regle/Code=CHACHALACA&Regle=PREF_IMPOSSIBLE');
+		self::$pre_imp = explode("\r\n", utf8_encode(file_get_contents(getcwd().'/'.$r->FilePath)));
+
+		// 38_1  affiche le bouton
+		//$m_premier = self::redoublement($m_premier);
+
 		// 2_1 + 3_2 
-		$t61 = array();
 		$t62 = array();
-		self::suffixes($m_premier, $t61, $t62);
-//klog::l(">>>>>>>>>>2_1 61",$t61);
-//klog::l(">>>>>>>>>>2_1 62",$t62);
+		self::suffixes($m_premier, $t62);
 		// 3_2
 		$t61 = array();
 		foreach($t62 as $k => &$l) {
 			$t61[] = [$l[0], $l[1], '', '', ''];
+klog::l("t61  ".$l[0].', '.$l[1]);
 		}
-//klog::l(">>>>>>>>>>3_2 61 ns",$t61);
 		usort($t61, 'self::sort61c64');
-//klog::l(">>>>>>>>>>3_2 61 st",$t61);
 		// 4_3
 		$t60 = array();
 		self::generation($m_premier, $t61, $t60);
-//klog::l(">>>>>>>>>>4_3 60",$t60);
 		// 6_3
-		self::categorisation($t60);
-//klog::l(">>>>>>>>>>6_3 60",$t60);
-//		// 6_4
-		self::nettoyageSuff($t60);
-//klog::l(">>>>>>>>>>6-4 60",$t60);
+		self::categorisation($t60, false);
+		// 6_4
+		self::nettoyageSuf($t60);
+		// 4_4 + 5_5
+		$t3 = array();
+		$t3[] = $m_premier;
+		$t7 = array();
+		self::analyse($t60, $t7);
+		// 7_3
+		$t1 = array();
+		foreach($t7 as $l) $t1[] = [$l[1].$l[2],'',$l[4]];
+		// 6_4 (3_3)
+		self::nettoyageSuf($t1);
+
+		// PREFIXES ---------------------
+klog::l("PRFX----------");
 		
+		// 2_6
+		$t62 = array();
+		self::prefixes($m_premier, $t62);
+		// 3_1
+		$t60 = array();
+		self::nettoyage($t62, $t60);
+		// 4_1 + 5_2 
+		$t61 = array();
+		self::generation4_1($t60, $t62, $t61);
+		// 5_7
+		self::nettoyage5_2($t62);
+		// 6_1
+		self::categorisation($t62, true);
+		// 6_2
+		self::nettoyagePref($t62);
+		
+
 		return array('suf'=>$t60);
+	}
+	
+	
+	// 6_2
+	static private function nettoyagePref(&$t62) {
+		foreach(self::$pre_imp as $si) {
+			$cnd = explode("\t", $si);
+			foreach($cnd as &$c) $c = trim($c);
+			
+			foreach($t62 as &$l) {
+				if(empty($cnd[1]) && empty($cnd[2])) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					if($resultat1 !== false) $l[0] == '***';
+				}
+				else if(!empty($cnd[1]) && empty($cnd[3])) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					$resultat2 = strpos($l[3], $cnd[1]);
+					if($resultat1 !== false && $resultat2 !== false) $l[0] == '***';
+				}
+			}
+		}
+		
+		foreach($t62 as $k => &$l) {
+			klog::l("6_2 t62  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
+			if($l[0] == '***') unset($t62[$k]);
+		}
+		
+		usort($t62, 'self::sort62c71c72');
+		foreach($t62 as &$l) klog::l("6_2 t62+  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
+	}
+	
+	
+//	// 5_7
+//	static private function nettoyage5_7(&$t61) {
+//		foreach($t62 as &$l) {
+//			$ch = $l[0];
+//			self::remplaceUn($ch, '--', '-', 0);
+//			$l[0] = substr($ch, 0, 1) == '-' ? substr($ch, 1) : $ch;
+//			$ch = $l[2];
+//			self::remplaceUn($ch, '--', '-', 0);
+//			$l[2] = substr($ch, 0, 1) == '-' ? substr($ch, 1) : $ch;
+//		}
+//		usort($t61, 'self::sort62c68');
+//		$n = count($t61);
+//		for($i = 1; $i < $n; $i++) {
+//			if($t61[$i][0].$t61[$i][1].$t61[$i][2] == $t61[$i-1][0].$t61[$i-1][1].$t61[$i-1][2]) $t61[$i][3] = '***';
+//		}
+//		foreach($t61 as $k => &$l) {
+//			if($l[3] == '***') unset($t61[$k]);
+//			else klog::l("5_7 t62  $l[0], $l[1], $l[2]");
+//		}
+//	}
+	
+	// 5_2 (5_7)
+	static private function nettoyage5_2(&$t61) {
+		foreach($t61 as &$l) {
+			//$ch = $l[0];
+			$ch = str_replace('--', '-', $l[0]);  //self::remplaceUn($ch, '--', '-', 0);
+			$l[0] = substr($ch, 0, 1) == '-' ? substr($ch, 1) : $ch;
+			//$ch = $l[2];
+			$ch = str_replace('--', '-', $l[2]);  //self::remplaceUn($ch, '--', '-', 0);
+			$l[2] = substr($ch, 0, 1) == '-' ? substr($ch, 1) : $ch;
+		}
+		usort($t61, 'self::sort61c64');
+		$n = count($t61);
+		for($i = 1; $i < $n; $i++) {
+			if($t61[$i][0].$t61[$i][1].$t61[$i][2] == $t61[$i-1][0].$t61[$i-1][1].$t61[$i-1][2]) $t61[$i][3] = '***';
+		}
+		foreach($t61 as $k => &$l) {
+			if($l[3] == '***') unset($t61[$k]);
+			else klog::l("5_2 t61  $l[0], $l[1], $l[2]");
+		}
+	}
+	
+	// 4_1
+	static private function generation4_1(&$t60, &$t62, &$t61) {
+		$ttmp = array();
+		foreach($t62 as &$l2) {
+			$remplacement = $l2[1];
+			//$m_reste = $l2[3];
+			foreach($t60 as &$l0) {
+				$ch = $l0[0];
+				$m_reste = $l0[2];
+				$ch1 = $remplacement;
+				$ch2 = '-'.$remplacement.'-';
+				$nb = self::remplace($ch, $ch1, $ch2);
+				$s = $ch.$m_reste;
+				if(!isset($ttmp[$s])) {
+					$ttmp[$s] = 0;
+					$t61[] = [$ch, $m_reste, $ch.$m_reste, '', ''];
+klog::l("4_1 t61  $ch, $m_reste, $ch$m_reste");
+				}
+			}
+		}
+klog::l("-------------------");
+		self::nettoyage5_2($t61);
+//klog::l("-------------------");
+//		self::nettoyage5_2($t61);
+klog::l("-------------------");
+		
+		$t62 = array();
+		foreach($t60 as $l0) {
+			$remplacement = $l0[1];
+			//$m_reste = $l0[2];
+			foreach($t61 as $l1) {
+				$ch = $l1[0];
+				$m_reste = $l1[1];
+				$ch1 = $remplacement;
+				$ch2 = '-'.$remplacement.'-';
+				$nb = self::remplace($ch, $ch1, $ch2);
+				$s = $ch.$reste;
+				if(!isset($ttmp[$s])) {
+					$ttmp[$s] = 0;
+					$t62[$ch.$reste] = [$ch, $m_reste, $ch.$m_reste, '', '', '']; 
+klog::l("4_1 t62  $ch, $m_reste, $ch$m_reste");
+				}
+			}
+		}
+	}
+	
+	static private function remplace(&$ch, $chini, $chremp) {
+		$nb = 0;
+		$l = strlen($chini);
+		$pos = strpos($ch, $chini);
+		while($pos !== false && $nb < 10) {
+			$ch = substr($ch, 0, $pos).$chremp.substr($ch, $pos+$l);
+			$pos = strpos($ch, $chini, ($pos+$l+1));
+			$nb++;
+		}
+		return $nb;
+	}
+
+
+	// 3_1
+	static private function nettoyage(&$t62, &$t60) {
+		foreach($t62 as $k=>$l) {
+			if($l[0] == 't-' && strpos('lz', substr($l[2], 0, 1)) !== false) unset($t62[$k]);
+			if($l[0] == 'c-' && substr($l[2], 0, 1) == 'h') unset($t62[$k]);
+		}
+		usort($t62, 'self::sort62c71c72');
+		foreach($t62 as $l) {
+			$t60[] = [$l[0], $l[1], $l[2], ''];
+klog::l("3_1 t60: $l[0],  $l[1],  $l[2]");
+		}
+	}
+
+	// 2_6
+	static private function prefixes($m_premier, &$t62) {
+		$sql = "select Id from `##_CEN-Prefixe` where prefixe=:fix";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);	
+
+		$m_mot = $m_premier;
+		$long_entree = strlen($m_mot);
+		$trouve = 0;
+		$trouve_pas = 0;
+		$m_categorie = '';
+		$ttmp = array();
+		
+		for($ind_61 = 0; $ind_61 < $long_entree; $ind_61++) {
+			$m_entree = substr($m_mot, $ind_61);
+			$longueur = $long_entree-$ind_61;
+			for($ind_62 = 0; $ind_62 < 6; $ind_62++) {
+				$trouve = 0;
+				$long_coupe = $ind_62;
+				$point_coupe = 0;
+				$m_coupe = substr($m_entree, $point_coupe, $long_coupe);
+				$m_reste = substr($m_entree, $point_coupe+$long_coupe, $longueur);
+				$m_avant = substr($m_mot, 0, $ind_61);
+
+				if(!empty($m_avant)) $m_precedent = "$m_avant-$m_coupe-";
+				else $m_precedent = "$m_coupe-";
+
+				$pdo->execute(array(':fix'=>$m_coupe));
+				if($pdo->rowCount()) {
+					$s = "$m_precedent\t$m_coupe\t$m_reste";
+					if(!isset($ttmp[$s])) {
+						$ttmp[$s] = 0;
+						$t62[] = [$m_precedent, $m_coupe, $m_reste, $m_avant.$m_coupe, $m_categorie, ''];
+klog::l("2_6 t62  $m_precedent, $m_coupe, $m_reste, $m_avant$m_coupe, $m_categorie");
+					}
+					$trouve++;
+					$trouve_pas = 0;
+				}
+			} // Pour ind_62
+
+			if($trouve == 0) {
+				$trouve_pas++;
+				if($trouve_pas > 2) break;
+			}
+		} // Pour ind_61
+	}
+
+	// SUFFIXES -----------------------------
+	
+	// 5_5
+	static private function combinaison(&$t5, &$t7) {
+		for($nb_tour = 0; $nb_tour < 5; $nb_tour++) {
+			if(!count($t5[$nb_tour])) break;
+		}
+		
+		$affixes = '';
+		$categories = '';
+
+		$compteur = 0;
+		$nb_tour--;
+		self::combinaison2(0, $nb_tour, $t5, $t7, $affixes, $categories, $compteur);
+	}
+	static private function combinaison2($n, $mx, &$t5, &$t7, &$affixes, &$categories, &$compteur) {
+		$afx = "";
+		$cat = "";
+		foreach($t5[$n] as $l) {
+			$afx = $affixes.$l[0];
+			$cat = $categories.$l[2];
+			if($n < $mx) self::combinaison2($n+1, $mx, $t5, $t7, $afx, $cat, $compteur);
+			else {
+				$reste = $l[1];
+				$place_sep = strpos($reste, '-');
+				if($place_sep !== false) {
+					$racines = substr($reste, $place_sep-1);
+					$suffixes = substr($reste, $place_sep);
+				}
+				else {
+					$racines = $reste;
+					$suffixes = '';
+				}
+				$t7[] = ['', $racines, $afx, '', $cat];
+				$compteur++;
+klog::l("t7  $racines,  $afx, $cat");				
+			}
+		}
+	}
+
+
+	// 4_4
+	static private function analyse(&$t60, &$t7) {
+		$sql = "select Categorie,Decompo from `##_CEN-Suffixe` where Suffixe=:fix";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);	
+
+		
+		foreach($t60 as &$l) {
+			$t5 = array([],[],[],[],[]);
+			$m_prefixes = $l[0];
+			$cat_suf = $l[3];
+			$m_reste = $l[1];
+			
+			$debut = 0;
+			$cpteur = 0;
+			$m_analyse = $m_prefixes;
+			for(;;) {
+				$debut = strpos($m_analyse, '-', $debut);
+				if($debut === false) break;
+				$cpteur++;
+				$debut++;
+			}
+			$numcol = 0;
+			$nb_tour = 0;
+			$t_analyse = explode('-', $m_analyse);
+			$n_analyse = count($t_analyse);
+			while($numcol < $n_analyse && $nb_tour < $cpteur) {
+				$numcol++;
+				$ch = $t_analyse[$numcol];
+				$nb_pref = 0;				
+				$pdo->execute(array(':fix'=>$ch));
+				if($pdo->rowCount()) {
+					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
+					foreach($rs as $r) {
+						$cat_1 = $r['Categorie'];
+						$m_prefixe1 = $r['Decompo'];
+						$nb_pref++;
+						$t5[$nb_tour][] = [$m_prefixe1, $m_reste, '-'.$cat_1, $cat_suf];
+					}
+				}
+				$nb_tour++;
+			}
+for($i = 0; $i < 5; $i++) {
+	$t = $t5[$i];
+	for($j = 0; $j < count($t); $j++){
+		$u = $t[$j];
+		klog::l("t5[$i]  ".$u[0]."  ".$u[1]."  ".$u[2]);
+	}
+}
+
+			self::combinaison($t5, $t7);
+		}
+
 	}
 	
 	// 38_1
@@ -139,21 +458,22 @@ class Chachalaca extends genericClass {
 		return $m_premier;
 	}
 	
+	static private function sort62c68($a, $b) {
+		return strcmp($a[0], $b[0]);
+	}
 	static private function sort61c64($a, $b) {
 		return strcmp($a[0], $b[0]);
 	}
 	static private function sort60c63($a, $b) {
 		return strcmp($a[2], $b[2]);
 	}
+	static private function sort62c71c72($a, $b) {
+		return strcmp($a[3].$a[4], $b[3].$b[4]);
+	}
 	
 	// 6_4
-	static private function nettoyageSuff(&$t60) {
-		foreach($t60 as $k => $l) if(strpos($l[2], 'effacer') !== false) unset($t60[$k]);
-		
-		$r = Sys::getOneData('CEN', 'REGLE/Code=CHACHALACA&Regle=SUF_IMPOSSIBLE');
-		$suf_imp = explode("\r\n", file_get_contents($f->FilePath));
-		
-		foreach($suf_imp as $si) {
+	static private function nettoyageSuf(&$t60) {
+		foreach(self::$suf_imp as $si) {
 			$cnd = explode("\t", $si);
 			foreach($cnd as &$c) $c = trim($c);
 			
@@ -169,39 +489,21 @@ class Chachalaca extends genericClass {
 				}
 			}
 		}
-		$n = 0;
-		foreach($t60 as $l) if($l[0] == '***') $n++;
-		foreach($t60 as &$l) {
-			foreach($suf_imp as $si) {
-				$cnd = explode("\t", $si);
-				foreach($cnd as &$c) $c = trim($c);
-				
-				if(empty($cnd[1]) && empty($cnd[2])) {
-					$resultat1 = strpos($l[2], $cnd[0]);
-					if($resultat1 !== false) $l[0] == '***';
-				}
-				else if(!empty($cnd[1]) && empty($cnd[3])) {
-					$resultat1 = strpos($l[2], $cnd[0]);
-					$resultat2 = strpos($l[2], $cnd[1]);
-					if($resultat1 !== false && $resultat2 !== false) $l[0] == '***';
-				}
-			}
-		}
-		$n = 0;
-		foreach($t60 as $l) if($l[0] == '***') $n++;
 		
-		usort($t60, 'self::sort60c61');
 		foreach($t60 as $k => &$l) {
-			if(substr($l[0], 0, 1) == '-' || strpos($l[0], '***') !== false) unset($t60[$k]);
+			if($l[0] == '***' || substr($l[0], 0, 1) == '-') unset($t60[$k]);
 			else $l[1] = explode('-', $l[0])[0];
-			klog::l("t60+++  ".$l[0].",  ".$l[2].",  ".$l[3]);
 		}	
+		
+		usort($t60, 'self::sort60c63');
+		foreach($t60 as &$l) klog::l("6_4 t60  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
 	}
 	
 	
 	// 6_3
-	static private function categorisation(&$t60) {
-		$sql = "select Categorie from `##_CEN-Suffixe` where Suffixe=:fix";
+	static private function categorisation(&$t60, $pfx) {
+		$ps = $pfx ? 'Prefixe' : 'Suffixe';
+		$sql = "select Categorie from `##_CEN-$ps` where $ps=:fix";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);	
 
@@ -209,7 +511,7 @@ class Chachalaca extends genericClass {
 			$debut = 0;
 			$cpteur = 0;
 			$m_analyse = trim($l[0]);
-			klog::l("t60+  $m_analyse");
+klog::l('<<<'.$m_analyse.':');
 			for(;;) {
 				$debut = strpos($m_analyse, '-', $debut);
 				if($debut === false) break;
@@ -224,9 +526,10 @@ class Chachalaca extends genericClass {
 			$n_analyse = count($t_analyse);
 			while($numcol < $n_analyse && $nb_tour < $cpteur) {
 				$nb_tour++;
+				$ch = $t_analyse[$numcol+($pfx ? 0 : 1)];
 				$numcol++;
-				$ch = $t_analyse[$numcol];
-				$nb_pref = 0;				
+				$nb_pref = 0;
+klog::l('>>>'.$ch.':');
 				$pdo->execute(array(':fix'=>$ch));
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
@@ -238,22 +541,22 @@ class Chachalaca extends genericClass {
 						if($nb_tour == 1) $tout_cat .= $m_categorie;
 						else $tout_cat .= ' - '.$m_categorie;
 					}
-					else $tout_cat .= ' - ?';
+					else $tout_cat .= ' - ? ';
 				}
 				else $tout_cat = 'effacer';				
 			}
 			$l[2] = $tout_cat;
+klog::l("6_3-6_1 t60  $m_analyse  $tout_cat");
 		}
-		foreach($t60 as &$l) {
-			klog::l("t60++  ".$l[0].",  ".$l[2]);
-		}
+		foreach($t60 as $k => $l) if(strpos($l[2], 'effacer') !== false) unset($t60[$k]);
+
+foreach($t60 as &$l) klog::l("6_3-6_1 t60+  ".$l[0].",  ".$l[1].",  ".$l[2]);
+
 	}
 	
 	// 4_3
 	static private function generation($m_premier, &$t61, &$t60) {
 		foreach($t61 as $l) {
-klog::l("t61  ".$l[0].', '.$l[1]);
-
 			$m_suffixe = $l[1];
 			$debut = $cpteur = 0;
 			$pos = [0, 0, 0, 0, 0];
@@ -267,7 +570,7 @@ klog::l("t61  ".$l[0].', '.$l[1]);
 		foreach($t60 as &$l) {
 			$s = $l[0];
 			if(substr($s, -1, 1) == '-') $l[0] = substr($s, 0, strlen($s)-1);
-klog::l("t60  ".$l[0]);
+klog::l("4_3 t60  ".$l[0]);
 		}
 	}
 	
@@ -288,16 +591,17 @@ klog::l("t60  ".$l[0]);
 	
 	static private function remplaceUn(&$ch, $chini, $chremp, $posini) {
 		$p = strpos($ch, $chini, $posini);
-		if($p !== false) $ch = substr($ch, 0, $pos).$chremp.substr($ch, $pos+strlen($chini));
+		if($p !== false) $ch = substr($ch, 0, $p).$chremp.substr($ch, $p+strlen($chini));
 		return $pos;
 	}
 	
 	// 2_1
-	static private function suffixes($m_premier, &$t61, &$t62) {
+	static private function suffixes($m_premier, &$t62) {
 		$sql = "select Decompo from `##_CEN-Suffixe` where Suffixe=:fix";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);	
 
+		$ttmp = array();
 		$m_mot = $m_premier;
 		$long_entree = strlen($m_mot);
 
@@ -325,14 +629,16 @@ klog::l("t60  ".$l[0]);
 					}
 					else $m_precedent = "$m_avant-$m_coupe";
 
-					//HLitRecherche("suffixes","suffixe",Complète(m_coupe,20))
 					$pdo->execute(array(':fix'=>$m_coupe));
 					if($pdo->rowCount()) {
-						//$pdo->fetch(PDO::FETCH_ASSOC);
-						//TableAjoute("table62","-"+m_coupe+ TAB + m_coupe + TAB + m_avant + TAB + m_avant+ m_coupe + TAB + m_categorie)
-						$t61[] = ['-'.$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie];
-						if(!empty($m_avant.$m_coupe)) $t62["-$m_coupe\t$m_coupe\t$m_avant.$m_coupe"] = ['-'.$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie];
+						if(!empty($m_avant)) {
+							$s = "$m_coupe\t$m_avant";
+							if(!isset($ttmp[$s])) {
+								$ttmp[$s] = 0;
+								 $t62[] = ['-'.$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie, ''];
 klog::l("-$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie");
+							}
+						}
 						$trouve++;
 						$trouve_pas = 0;
 					}
@@ -351,33 +657,6 @@ klog::l("-$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie");
 				} // ind_62 >=0
 			} // Pour ind_62
 		} // Pour ind_61
-	}
-	
-	static private function fixes($word, $pre) {
-		$sql = "select Decompo from `##_CEN-Chachalaca` where ChachalacaId=:id and ".($pre ? 'prefixe' : 'Suffixe')."=:fix";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$smt = $GLOBALS['Systeme']->Db[0]->prepare($sql);
-		
-		$fix = array();
-		if($pre) {
-			for($l = strlen($word); $l; ) {
-				$s = substr($word, --$l);
-				$pdo->execute(array(':fix'=>$s));
-				if($pdo->rowCount()) {
-					$pdo->fetch(PDO::FETCH_ASSOC);
-					$fix[$s] = $dpo['Decompo'];
-				}
-			}
-			for($l = strlen($word), $i = 0; $i < $l; ) {
-				$s = substr($word, $l++);
-				$pdo->execute(array(':fix'=>$s));
-				if($pdo->rowCount()) {
-					$pdo->fetch(PDO::FETCH_ASSOC);
-					$fix[$s] = $dpo['Decompo'];
-				}
-			}
-		}
-		return $fix;
 	}
 	
 	

@@ -540,11 +540,11 @@ class Adherent extends genericClass {
 				$adherent = false;
 				
 				$noRupture =  $contenu == 'Q' || $rupture == 'S';
-				$entraide = $soutien || $dons;
-				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit || $entraide;
-				
+				$entraide = $soutien ? 'S' : ($dons ? 'D' : '');
+				$noClasse = $typAdh != '' || $visite != '' || $visiteAnnee || $nonInscrit || $dons;
 				
 /*
+// SOUTIEN PAR DISCDIPLINES
  select i.Antenne,s.Libelle,count(*)
 from `kob-Cadref-Inscription` i
 inner join `kob-Cadref-Classe` c on c.Id=i.ClasseId
@@ -597,7 +597,7 @@ group by i.Antenne,s.Libelle
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
-					if($soutien) $rupture = 'A';
+//					if($soutien) $rupture = 'A';
 				}
 				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
@@ -647,7 +647,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					$whr = "and e.Inscription<'$annee' and e.Inscription>='$nonInscrit' and Inactif=0 ";
 				}
 				else if($dons) {
-					$sql .= ",aa.Dons as aide ".
+					$sql .= ",aa.Dons,0 as Attente ".
 						"from `##_Cadref-Adherent` e ".
 						"inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'";
 					$whr = "and aa.Dons>0 ";
@@ -655,8 +655,9 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 				else {
 					// adhérents inscrits
 					if($soutien) {
-						$sql .= ", i.Soutien ";
+						$sql .= ",i.Soutien ";
 						$whr = "and i.Soutien>0 ";
+						$rupture = 'A';
 					}
 
 					$sql .= "

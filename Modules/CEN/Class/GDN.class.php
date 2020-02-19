@@ -115,7 +115,7 @@ order by  $sort";
 			$os[] = $o;
 		}
 		fclose($file);
-		usort($os, 'sortOrtho');
+		usort($os, 'self::sortOrtho');
 
 		$ch = $word;
 		foreach($os as $o) {
@@ -131,7 +131,10 @@ order by  $sort";
 		return $new;
 	}
 	
-	
+	static private function sortOrtho($a, $b) {
+		return intval($a[3]) - intval($b[3]);
+	}
+
 	private static function replOrtho(&$ch, $ch1, $ch2) {
 		$nb = 0;
 		$pos = strpos($ch, $ch1);
@@ -145,6 +148,3 @@ order by  $sort";
 	
 }
 
-function sortOrtho($a, $b) {
-	return intval($a[3]) - intval($b[3]);
-}

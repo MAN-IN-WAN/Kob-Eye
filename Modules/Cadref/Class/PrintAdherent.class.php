@@ -58,6 +58,8 @@ class PrintAdherent extends FPDF {
 					$this->antenne = Sys::getOneData('Cadref', 'Antenne/' . $antenne);
 					$this->titre .= ": " . $this->antenne->Libelle;
 				}
+				if($entraide == 'S') $this->titre .= " (Soutien)"; 
+				elseif($entraide == 'D') $this->titre .= " (Dons)".$entraide; 
 				break;
 			case 1:
 				$this->titre = Cadref::$UTL." : Certificats médicaux invalides";
@@ -135,7 +137,7 @@ class PrintAdherent extends FPDF {
 						$this->footRupture();
 						if($this->sauts && $this->rupture == 'C' && ($this->contenu == 'N' || $this->contenu == 'A')) $this->AddPage();
 					}
-					$this->headRupture($l);
+					if($this->rupture != 'E' && $this->rupture != 'A') $this->headRupture($l);
 					$this->rupVal = $r;
 				}
 			}
@@ -282,23 +284,25 @@ class PrintAdherent extends FPDF {
 	}
 
 	private function footRupture() {
-		$this->posy += 2;
-		$this->SetXY($this->left + 5, $this->posy);
-		$this->SetFont('Arial', 'I', 10);
-		$this->Cell(20, 4, $this->rupVal, 0, 0, 'L');
-		$this->Cell(60, 4, $this->cv($this->rupLib), 0, 0, 'L');
-		
-		$this->Cell(17, 4, $this->cv($this->Jour), 0, 0, 'L');
-		$this->Cell(33, 4, $this->Heure, 0, 0, 'L');
-//		$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
-		
-		$this->SetXY($this->width[0], $this->posy);
-		$this->Cell($this->width[1], 4, $this->totaux[0][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
-//		$this->Cell($this->width[2], 4, $this->totaux[0][1], 0, 0, $this->align[2]);
-//		$this->Cell($this->width[3], 4, $this->totaux[0][2], 0, 0, $this->align[3]);
-		$this->posy += 5;
+		if($this->rupture != 'A') {
+			$this->posy += 2;
+			$this->SetXY($this->left + 5, $this->posy);
+			$this->SetFont('Arial', 'I', 10);
+			$this->Cell(20, 4, $this->rupVal, 0, 0, 'L');
+			$this->Cell(60, 4, $this->cv($this->rupLib), 0, 0, 'L');
+
+			$this->Cell(17, 4, $this->cv($this->Jour), 0, 0, 'L').'+';
+			$this->Cell(33, 4, $this->Heure, 0, 0, 'L');
+	//		$this->Cell(75, 4, $this->cv($this->Enseignant), 0, 0, 'L');
+
+			$this->SetXY($this->width[0], $this->posy);
+			$this->Cell($this->width[1], 4, $this->totaux[0][0], 0, 0, $this->align[1]);
+			$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
+			$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
+	//		$this->Cell($this->width[2], 4, $this->totaux[0][1], 0, 0, $this->align[2]);
+	//		$this->Cell($this->width[3], 4, $this->totaux[0][2], 0, 0, $this->align[3]);
+			$this->posy += 5;
+		}
 
 		for($i = 0; $i < 3; $i++) {
 			$this->totaux[1][$i] += $this->totaux[0][$i];
