@@ -59,6 +59,9 @@ class CEN extends Module {
 				$lang = strtoupper(substr($lang, 0, 1)).substr($lang, 1, 1);
 				
 				switch($args['pres']) {
+					case 'chacha':
+						return Chachalaca::GetGrammar($args);
+						
 					case 'tlachia':
 						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
 						return $tla->GetDescr($args);

@@ -39,7 +39,7 @@ class GDN extends genericClass {
 		$nah = $args['nah'] == 'true';
 		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
-		if($nah && $args['norm'] == 'true') $word = self::normalize($word);
+		if($nah && $args['norm'] == 'true') $word = self::Normalize($word);
 		$dict = $args['dic'];
 		if($dict == 'all' || $dict == '' || $dict == 'null') $dict = '';
 		else $dict = "and DictionnaireId in ($dict)";
@@ -101,7 +101,7 @@ order by  $sort";
 		return array('text'=>$com);				
 	}
 	
-	static public function normalize($word) {
+	static public function Normalize($word) {
 		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
 			
 		$word = ' '.strtolower(trim($word)).' ';

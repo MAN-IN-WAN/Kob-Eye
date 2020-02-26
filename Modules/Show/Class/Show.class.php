@@ -3,15 +3,23 @@
 class Show extends Module {
 	
 	public static function GetShow($args) {
-		$dom = $args['dom'];
-		$sub = $args['sub'];
-		$typ = $args['typ'];
+		$mode = $args['mode'];
 
-		switch($mod) {
-			case 'perf': break;
+klog::l("GETSHOW >>>>>",$args);
+		switch($mode) {
+			case 'lang':
+				$l = array();
+				$rs = Sys::getData('Show', 'Translation/Language='.$args['lang'].'+Code=');
+				foreach($rs as $r) $l[] = [$r->Original, $r->Translation];
+				return array('lang'=>$l);
+				
+			case 'perf':
+				return Performance::getData($args);
+		
 			case 'peop': break;
 			case 'any': break;
 		}
+		return array('error'=>'mode unknown');
 	}
 
 	public static function removeAccents($str) {

@@ -312,12 +312,12 @@ class Codex extends genericClass {
 	}
 
 	
-	static private function wordList($sql) {
+	static private function wordList($word, $sql) {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql)." order by word limit 15";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list, 'sql'=>$sql);		
+		return array('word'=>$word, 'words'=>$list, 'sql'=>$sql);		
 	}
 	
 	static function GetReal($args) {
@@ -338,6 +338,8 @@ class Codex extends genericClass {
 		$word = trim(strtolower($args['word']));
 		$cdx = $args['codex'];
 		$list = $args['list'] == 'true';
+		
+		if($args['nah'] && $args['norma']) $word = GDN::Normalize($word);
 
 		$cond = json_decode($args['cond']);
 		if($cdx == 'all' || $cdx == '' || $cdx == 'null') $cdx = '';
@@ -366,7 +368,7 @@ class Codex extends genericClass {
 				if($gly == 'multiple') {
 					if($list) {
 						$sql = "select distinct Element as word from `##_CEN-Element` where $cdx Element like '$word%'";
-						return self::wordList($sql);
+						return self::wordList($word, $sql);
 					}
 					$mul = $cond->multiple;
 					if(!count($mul)) return array('glyphes'=>[], 'personnes'=>[]);
@@ -384,7 +386,7 @@ class Codex extends genericClass {
 					if($list) {
 						$sql = "select distinct $fld as word from `##_CEN-Glyphe` $whr ".
 							"union select distinct $fld as word from `##_CEN-Personnage` $whr ";
-						return self::wordList($sql);
+						return self::wordList($word, $sql);
 					}
 					$whr .= " group by CodexId order by CodexId,Cote";
 				}
@@ -393,7 +395,7 @@ class Codex extends genericClass {
 				$per = self::getGlyphe('Personnage', $whr);
 				self::getCount($gly, 'Glyphe', '', $whr);
 				self::getCount($per, 'Personnage', '', $whr);
-				return array('glyphes'=>$gly, 'personnes'=>$per, 'w'=>$whr);
+				return array('word'=>$word, 'glyphes'=>$gly, 'personnes'=>$per, 'w'=>$whr);
 
 			case 'element':			
 				if($list) {
@@ -401,28 +403,28 @@ class Codex extends genericClass {
 					switch($elm) {
 						case 'designation': 
 							$sql = "select distinct a.Element as word from `##_CEN-Element` a where $cdx a.Element $mode";
-							return self::wordList($sql);
+							return self::wordList($word, $sql);
 						case 'theme':
 							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
 							$sql = "select distinct concat(a.Theme,' <i>',a.Element,'</i> ',b.$fld) as word ".
 								"from `##_CEN-Element` a left join `##_CEN-Sens` b on b.CodexId=a.CodexId and b.Element=a.Element ".
 								"where $cdx a.Theme $mode";
-							return self::wordList($sql);
+							return self::wordList($word, $sql);
 						case 'valeur':
 							$sel = "select distinct a.Valeur as word from";
 							$sel1 = "a inner join `##_CEN-Element` e on e.CodexId=a.CodexId and e.Theme=a.Theme ";
 							$sel1 .= "where $cdx a.Valeur $mode";
 							$sql = "$sel `##_CEN-Valeur` $sel1 union $sel `##_CEN-PValeur` $sel1 ";
-							return self::wordList($sql);
+							return self::wordList($word, $sql);
 						case 'forme':
 							$sql = "select distinct a.Forme as word from `##_CEN-Forme` a inner join `##_CEN-Element` e ".
 								"on e.CodexId=a.CodexId and e.Theme=a.Theme where $cdx cast(a.Forme as unsigned) = cast('$word' as unsigned) ";
-							return self::wordList($sql);
+							return self::wordList($word, $sql);
 						case 'traduction':
 							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
 							$sql = "select distinct a.$fld as word from `##_CEN-Sens` a inner join `##_CEN-Element` e ".
 								"on e.CodexId=a.CodexId and e.Element=a.Element where $cdx a.$fld $mode";
-							return self::wordList($sql);
+							return self::wordList($word, $sql);
 					}
 				}
 
@@ -437,16 +439,16 @@ class Codex extends genericClass {
 					case 'valeur':
 						$grp = $cond->elements ? '' : "group by e.CodexId,v.Valeur,e.Element";
 						$whr .= " v.Valeur $mode $grp";
-						return array('elements'=>self::getElementValeur($whr));
+						return array('word'=>$word, 'elements'=>self::getElementValeur($whr));
 					case 'forme':
 						$grp = $cond->elements ? '' : "group by f.CodexId,f.Forme,e.Element";
 						$whr .= " cast(f.Forme as unsigned) = cast('$word' as unsigned) $grp";
-						return array('elements'=>self::getElementForme($whr));
+						return array('word'=>$word, 'elements'=>self::getElementForme($whr));
 					case 'traduction':
 						$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
 						$grp = $cond->elements ? '' : "group by f.CodexId,s.$fld,e.Element";
 						$whr .= " s.$fld $mode $grp";
-						return array('elements'=>self::getElementSens($whr));
+						return array('word'=>$word, 'elements'=>self::getElementSens($whr));
 				}
 
 
@@ -456,7 +458,7 @@ class Codex extends genericClass {
 				
 				$dic = self::getElementBasic($whr);
 				if($grp) self::getCount($dic, 'Element', 'e', $whr);
-				return array('elements'=>$dic);
+				return array('word'=>$word, 'elements'=>$dic);
 
 				
 			case 'glyphe-elem':
@@ -535,7 +537,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list, 'sql'=>$sql);		
+		return array('word'=>$word, 'words'=>$list, 'sql'=>$sql);		
 	}
 	
 	function GetDescr($args) {
@@ -595,83 +597,90 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 	
 	static public function GetAnal($args) {
 		$lang = $args['lang'];
+		$app = $args['app'];
 		$word = trim(strtolower($args['word']));
 		$id = $args['id'];
 		$cid = intval($id) ? "CodexId=$id and" : "";
 		
-		$ext = strtolower(substr($word, -4));
-		if($ext == '.jpg' || $ext == '.bmp') {
-			$img = self::getCodexDir($id).str_replace('+', '-', strtolower($word));
-			return array('success'=>true, 'type'=>'image', 'id'=>$id, 'img'=>$img);
+		if($app == 'tlachia') {
+			$ext = strtolower(substr($word, -4));
+			if($ext == '.jpg' || $ext == '.bmp') {
+				$img = self::getCodexDir($id).str_replace('+', '-', strtolower($word));
+				return array('success'=>true, 'type'=>'image', 'id'=>$id, 'img'=>$img);
+			}
+
+			$cote = str_replace('+', '-', strtolower($word));
+			$sql = "select Cote,CodexId from `##_CEN-Planche` where $cid Cote='$cote' limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$p = '';
+				foreach($pdo as $p) return self::getPicture('planche', $p);
+			}
+
+			$sql = "select Cote,CodexId from `##_CEN-Zone` where $cid Cote='$cote' limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$p = '';
+				foreach($pdo as $p); return self::getPicture('zone', $p);
+			}
+
+			$sql = "select Cote,CodexId from `##_CEN-Glyphe` where $cid Cote='$cote' ".
+				"union select Cote,CodexId from `##_CEN-Personnage` where $cid Cote='$cote' limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$p = '';
+				foreach($pdo as $p); return self::getPicture('glyphe', $p);
+			}
+
+			$sql = "select Theme,CodexId from `##_CEN-Element` where $cid Theme='$cote' limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$p = '';
+				foreach($pdo as $p); return self::getPicture('element', $p);
+
+			}
+
+			switch($lang) {
+				case 'fr': $fld = "Terme"; $ext = 'afr'; break;
+				case 'es': $fld = "Espagnol"; $ext = 'aes'; break;
+				case 'fr': $fld = "Anglais"; $ext = 'aan'; break;
+			}
+			$w = CEN::removeAccents($word);
+			$sql = "select distinct $fld as term,Fichier from `##_CEN-Termino` where $cid ($fld like '%$w%') limit 15";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$lst = array();
+				foreach($pdo as $p) $lst[] = array('term'=>$p['term'], 'text'=>explode('.', $p['Fichier'])[0]);
+				return array('success'=>true, 'type'=>'term', 'term'=>$word, 'terms'=>$lst);
+			}	
 		}
 		
-		$cote = str_replace('+', '-', strtolower($word));
-		$sql = "select Cote,CodexId from `##_CEN-Planche` where $cid Cote='$cote' limit 1";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo->rowCount()) {
-			$p = '';
-			foreach($pdo as $p) return self::getPicture('planche', $p);
-		}
-		
-		$sql = "select Cote,CodexId from `##_CEN-Zone` where $cid Cote='$cote' limit 1";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo->rowCount()) {
-			$p = '';
-			foreach($pdo as $p); return self::getPicture('zone', $p);
+		if($app == 'chachalaca') {
+			$ext = Chachalaca::CheckGrammar($word, $lang);
+			if($ext) return array('success'=>true, 'type'=>'grammar', 'term'=>$word, 'text'=>$word.$ext);
 		}
 
-		$sql = "select Cote,CodexId from `##_CEN-Glyphe` where $cid Cote='$cote' ".
-			"union select Cote,CodexId from `##_CEN-Personnage` where $cid Cote='$cote' limit 1";
+		
+		$norma = $args['norma'] ? GDN::Normalize($word) : $word;
+		
+		
+		$sql = "select Trans from `##_CEN-Mot` where $cid (Paleo='$norma' or Trans='$norma') limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo->rowCount()) {
-			$p = '';
-			foreach($pdo as $p); return self::getPicture('glyphe', $p);
-		}
-
-		$sql = "select Theme,CodexId from `##_CEN-Element` where $cid Theme='$cote' limit 1";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo->rowCount()) {
-			$p = '';
-			foreach($pdo as $p); return self::getPicture('element', $p);
-
-		}
-
-		switch($lang) {
-			case 'fr': $fld = "Terme"; $ext = 'afr'; break;
-			case 'es': $fld = "Espagnol"; $ext = 'aes'; break;
-			case 'fr': $fld = "Anglais"; $ext = 'aan'; break;
-		}
-		$w = CEN::removeAccents($word);
-		$sql = "select distinct $fld as term,Fichier from `##_CEN-Termino` where $cid ($fld like '%$w%') limit 15";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if($pdo->rowCount()) {
-			$lst = array();
-			foreach($pdo as $p) $lst[] = array('term'=>$p['term'], 'text'=>explode('.', $p['Fichier'])[0]);
-			return array('success'=>true, 'type'=>'term', 'term'=>$word, 'terms'=>$lst);
-		}	
-		
-		
-		
-		if($args['norma']) $word = GDN::normalize($word);
-		
-		
-		$sql = "select Trans from `##_CEN-Mot` where $cid (Paleo='$word' or Trans='$word') limit 1";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
+		if(!$pdo->rowCount()) return array('success'=>false, 'type'=>'undef', 'nahuatl'=>$word);		
 		foreach($pdo as $p) $word = $p['Trans'];
 		
 		$tran = self::getTrans($cid, $word, $lang);
 		
-		$sql = "select Decomposition,Racine1,Racine2,Racine3,Racine4,Racine5 from `##_CEN-Racine` where $cid Mot2='$word' limit 1";
+		$sql = "select Decomposition,Racine1,Racine2,Racine3,Racine4,Racine5 from `##_CEN-Racine` where $cid Mot2='$norma' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo->rowCount()) return array('success'=>false, 'nahuatl'=>$word);		
+		if(!$pdo->rowCount()) return array('success'=>false, 'type'=>'undef', 'nahuatl'=>$word);		
 		$rs = array();
 		foreach($pdo as $p) {
 			$anal = $p['Decomposition'];
@@ -685,8 +694,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		$cx = Sys::getOneData('CEN', 'Codex/'.$id);
 		$dir = self::getDir($d->Repertoire);
 		
-
-		return array('success'=>true, 'type'=>'anal', 'title'=>$cx->Titre, 'nahuatl'=>$word, 'trans'=>$tran, 'anal'=>$anal, 'roots'=>$rs);
+		return array('success'=>true, 'type'=>'anal', 'title'=>$cx->Titre, 'nahuatl'=>$norma, 'trans'=>$tran, 'anal'=>$anal, 'roots'=>$rs);
 	}
 	
 	static private function getTrans($cid, $word, $lang) {

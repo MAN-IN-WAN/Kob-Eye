@@ -38,18 +38,15 @@
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Lightning">Lightning</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Daylight">Daylight</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Night">Night</PROPERTIES>
-		<RKEY card="0,n" module="Show" data="Place,Id" form="1" fiche="1" >Place</RKEY>
+		<RKEY card="0,n" data="Place,Id" useKeyName="1" form="1" fiche="1" >Places</RKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Dressing room">DressingRoom</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Surface">Surface</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Height">Height</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Special requirement">Requirement</PROPERTIES>
 
-<!--
-		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Category::Id::Category" category="Description" description="Category">CategoryId</PROPERTIES>
--->
-		<RKEY card="1,1" module="Show" data="Category,Id" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</PROPERTIES>
-		<RKEY card="0,n" module="Show" data="Domain,Id" form="1" fiche="1" >Domaine</RKEY>
-		<RKEY card="0,n" module="Show" data="Genre,Id" form="1" fiche="1" >Genre</RKEY>
+		<FKEY card="1,1" data="Category,Id" useKeyName="1" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</FKEY>
+		<RKEY card="0,n" data="Domain,Id" useKeyName="1" form="1" fiche="1" >Domaines</RKEY>
+		<RKEY card="0,n" data="Genre,Id" useKeyName="1" form="1" fiche="1" >Genres</RKEY>
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Language::Id::Language" category="Description" description="Language">LanguageId</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Public::Id::Public" category="Description" description="Public">PublicId</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/Maturity::Id::Maturity" category="Description" description="Maturity">MaturityId</PROPERTIES>
@@ -68,31 +65,30 @@
 
 
 	<OBJECTCLASS title="Crew" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Crew" hidden="0" >
-		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
-		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" query="Show/CrewType::Id::CrewType" category="Description" description="Crew type">CrewTypeId</PROPERTIES>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Playing</PROPERTIES>
-		<FKEY card="1,1" module="Show" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
+		<FKEY card="1,1" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Medium" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Medium" hidden="0">
-		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
-		<FKEY card="1,1" module="Show" data="MediumType,Id" form="1" fiche="1" >MediumTypeId</FKEY>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+<!--		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>-->
+		<FKEY card="1,1" data="MediumType,Id" form="1" fiche="1" >MediumTypeId</FKEY>
 		<PROPERTIES type="file" category="Description" form="1" list="1" fiche="1">Medium</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Main picture">MainPicture</PROPERTIES>
 
-		<RKEY card="0,n" module="Show" data="Performance,Id" form="1" fiche="1" >Performance</RKEY>
-		<RKEY card="0,n" module="Show" data="People,Id" form="1" fiche="1" >People</RKEY>
-<!--		<RKEY card="0,n" module="Show" data="Place,Id" form="1" fiche="1" >Place</RKEY> -->
+		<RKEY card="0,n" data="Performance,Id" useKeyName="1" form="1" fiche="1" >Performances</RKEY>
+		<RKEY card="0,n" data="People,Id" useKeyName="1" form="1" fiche="1" >People</RKEY>
+		<RKEY card="0,n" data="Place,Id" useKeyName="1" form="1" fiche="1" >Places</RKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Comments" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Comments" hidden="0" >
-		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Comments">Comments</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Vote">Vote</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
@@ -100,15 +96,15 @@
 
 
 	<OBJECTCLASS title="History" driver="mysql" order="id" AccessPoint="1" Description="History"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" module="Show" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Submition" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Submited term" hidden="0" >
-		<FKEY card="1,1" module="Show" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" module="Show" data="User,Id" form="1" fiche="1" >UserId</FKEY>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<FKEY card="1,1" data="User,Id" form="1" fiche="1" >UserId</FKEY>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
@@ -161,12 +157,12 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="State" driver="mysql" AccessPoint="1" Description="State" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<FKEY card="1,1" module="Show" data="Country,Id" form="1" fiche="1" >CountryId</FKEY>
+		<FKEY card="1,1" data="Country,Id" form="1" fiche="1" >CountryId</FKEY>
 		<PROPERTIES type="varchar" length="128" searchOrder="2" category="Description" form="1" list="1" fiche="1">Sate</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="City" driver="mysql" AccessPoint="1" Description="City" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<FKEY card="1,1" module="Show" data="Sate,Id" form="1" fiche="1" >StateId</FKEY>
+		<FKEY card="1,1" data="Sate,Id" form="1" fiche="1" >StateId</FKEY>
 		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">City</PROPERTIES>
 	</OBJECTCLASS>
 
