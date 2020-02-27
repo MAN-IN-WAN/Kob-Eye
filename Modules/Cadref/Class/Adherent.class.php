@@ -878,13 +878,13 @@ order by a.Nom, a.Prenom";
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 	
-if($mode==1) {
-	foreach($pdo as $p) {
-		$a = Sys::getOneData('Cadref', 'Adherent/'.$p['Id']);
-		klog::l(">>>>>>>>>>>>>>>".$p['Id']." ".$a->Numero);
-		$a->GetScanCount('2019', true);
-	}
-}
+//if($mode==1) {
+//	foreach($pdo as $p) {
+//		$a = Sys::getOneData('Cadref', 'Adherent/'.$p['Id']);
+//		klog::l(">>>>>>>>>>>>>>>".$p['Id']." ".$a->Numero);
+//		$a->GetScanCount('2019', true);
+//	}
+//}
 
 			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $nonInscrit ? 'N' : $inscrits, $typAdh, $pages, $entraide);
 			$pdf->SetAuthor("Cadref");
