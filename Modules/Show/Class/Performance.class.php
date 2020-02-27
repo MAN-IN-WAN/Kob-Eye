@@ -20,12 +20,16 @@ class Performance extends genericClass {
 				$d->title = $p->Title;
 				$d->teaser = $p->Teaser;
 				$d->year = $p->Year;
-				$d->domain = '';
+
+				$rs = $p->getChildren('Domain');
+				$tmp = array();
+				foreach($rs as $r) $tmp[] = ['id'=>$r->Id, 'dom'=>$r->Domain];
+				$d->domain = $tmp;
 				
-				$ms = $p->getChildren('Medium/MediumTypeId=1');
-				$pict = array();
-				foreach($ms as $m) $pict[] = ['pict'=>$m->Medium, 'desc'=>$m->Description, 'year'=>$m->Year];
-				$d->picts = $pict;
+				$rs = $p->getChildren('Medium/MediumTypeId=1');
+				$tmp = array();
+				foreach($rs as $r) $tmp[] = ['id'=>$r->Id, 'pict'=>$r->Medium, 'desc'=>$r->Description, 'year'=>$r->Year];
+				$d->picts = $tmp;
 				
 				$perf[] = $d;
 	//klog::l(">>>>>>>>>",$p->getChildren('Domain'));

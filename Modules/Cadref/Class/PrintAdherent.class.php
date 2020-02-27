@@ -59,7 +59,7 @@ class PrintAdherent extends FPDF {
 					$this->titre .= ": " . $this->antenne->Libelle;
 				}
 				if($entraide == 'S') $this->titre .= " (Soutien)"; 
-				elseif($entraide == 'D') $this->titre .= " (Dons)".$entraide; 
+				elseif($entraide == 'D') $this->titre .= " (Dons)"; 
 				break;
 			case 1:
 				$this->titre = Cadref::$UTL." : Certificats médicaux invalides";
@@ -144,6 +144,8 @@ class PrintAdherent extends FPDF {
 			if($l['Attente']) $this->totaux[0][1] ++;
 			else $this->totaux[0][0] ++;
 			$this->totaux[0][2] ++;
+			
+			if($this->entraide) $this->aideRup += $this->entraide == 'S' ? $l['Soutien'] : $l['Dons'];
 
 			if($this->contenu == 'N' || $this->contenu == 'A') $this->printLine($l);
 		}
@@ -186,7 +188,7 @@ class PrintAdherent extends FPDF {
 				//else $s = 'C:'.substr($l['CodeClasse'], 6, 1);
 				break;
 			case 1:
-				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
+				$s = $l['DateCertificat']>0 ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
 				break;
 			case 2:
 				break;
@@ -232,10 +234,15 @@ class PrintAdherent extends FPDF {
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[1][0], 0, 0, $this->align[1]);
 
-		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
 //		$this->Cell($this->width[2], 4, $this->totaux[1][1], 0, 0, $this->align[2]);
 //		$this->Cell($this->width[3], 4, $this->totaux[1][2], 0, 0, $this->align[3]);
+		
+		if($this->entraide == 'S') {
+			$this->Cell(20, 4, $this->aideRup, 0, 0, 'R');
+			$this->aideTot += $this->aideRup;
+			$this->aideRup = 0;
+		}
+			
 		$this->posy += 5;
 
 		for($i = 0; $i < 3; $i++) {
@@ -319,10 +326,13 @@ class PrintAdherent extends FPDF {
 		$col = ($this->rupture == 'S' || $this->rupture == 'E') ? 0 : 2;
 		$this->SetXY($this->width[0], $this->posy);
 		$this->Cell($this->width[1], 4, $this->totaux[$col][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, '', 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, '', 0, 0, $this->align[3]);
 //		$this->Cell($this->width[2], 4, $this->totaux[$col][1], 0, 0, $this->align[2]);
 //		$this->Cell($this->width[3], 4, $this->totaux[$col][2], 0, 0, $this->align[3]);
+
+		if($this->entraide) {
+			$this->Cell(20, 4, $this->entraide == 'S' ? $this->aideTot : $this->aideRup, 0, 0, 'R');
+		}
+
 	}
 
 }

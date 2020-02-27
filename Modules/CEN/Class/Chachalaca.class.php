@@ -3,12 +3,12 @@
 class Chachalaca extends genericClass {
 
 	// structurer l'import :
-	var $imports = [
+	var $imports = array(
 		'd_'=>"`##_CEN-Entree`|(ChachalacaId,`tmsCreate`, `userCreate`, `tmsEdit`, `userEdit`, `uid`, `gid`, `umod`, `gmod`, `omod`,`Entree`, `Commentaire`, `Traduc`, `Nahuatl`, `Categorie`, `Racines`)",
 		'r_'=>"`##_CEN-Radix`|(ChachalacaId,`tmsCreate`, `userCreate`, `tmsEdit`, `userEdit`, `uid`, `gid`, `umod`, `gmod`, `omod`,`Nahuatl`, `Espagnol`, `Racines`, `Categorie`, `Source`, `Bases`, `Transit`, `RacineCat`)",
 		'prefixes'=>"`##_CEN-Prefixe`|(`tmsCreate`, `userCreate`, `tmsEdit`, `userEdit`, `uid`, `gid`, `umod`, `gmod`, `omod`,`Prefixe`, `Decompo`, `Couper`, `Categorie`, `Commentaire`, `NbCarac`, `CommentaireEs`)",
 		'suffixes'=>"`##_CEN-Suffixe`|(`tmsCreate`, `userCreate`, `tmsEdit`, `userEdit`, `uid`, `gid`, `umod`, `gmod`, `omod`,`Suffixe`, `Decompo`, `Couper`, `Categorie`, `Commentaire`, `NbCarac`, `CommentaireEs`)"
-	];
+	);
 
 	function Save() {
 		$zfile = $this->ZipFile;
@@ -126,12 +126,10 @@ class Chachalaca extends genericClass {
 	static function Suff($args) {
 		$word = $args['word'];
 
-		self::$suf_imp = self::getRules('SUF_IMPOSSIBLE');
-		self::$pre_imp = self::getRules('PREF_IMPOSSIBLE');
-		self::$pre_suf = self::getRules('PREF_SUF_IMPOSSIBLE');
 		self::$dicIds = '3';
 		self::$premier = $word;
 		
+		self::$suf_imp = self::getRules('SUF_IMPOSSIBLE');
 		// 38_1  affiche le bouton
 		//$m_premier = self::redoublement($m_premier);
 		// 2_1 + 3_2 
@@ -141,7 +139,7 @@ class Chachalaca extends genericClass {
 		// 3_2
 		$t61 = array();
 		foreach($t62 as $k=> &$l) {
-			$t61[] = [$l[0], $l[1], '', '', ''];
+			$t61[] = array($l[0], $l[1], '', '', '');
 			klog::l("3_2 t61  ".$l[0].', '.$l[1]);
 		}
 		usort($t61, 'self::sortC0');
@@ -171,14 +169,17 @@ class Chachalaca extends genericClass {
 		self::analyse4_4($t60, $t7);
 		// 7_3
 		$t1 = array();
-		foreach($t7 as $l) $t1[] = [$l[1].$l[2], $l[4], ''];
-		$t1[] = [self::$premier, '', ''];
+		foreach($t7 as $l) $t1[] = array($l[1].$l[2], $l[4], '');
+		$t1[] = array(self::$premier, '', '');
 		foreach($t1 as $l) klog::l("7_3 t1  ".$l[0]."  ".$l[1]);
 		// 6_4 (3_3)
 		self::conditionsSuf6_4($t1, false);
-		$t1[] = [self::$premier, '', ''];
+		$t1[] = array(self::$premier, '', '');
 		
-		
+		self::$suf_imp = '';
+		self::$pre_imp = self::getRules('PREF_IMPOSSIBLE');
+		self::$pre_suf = self::getRules('PREF_SUF_IMPOSSIBLE');
+
 
 		// PREFIXES ---------------------
 		klog::l("PRFX----------");
@@ -213,6 +214,9 @@ class Chachalaca extends genericClass {
 		self::traitement7_5($t1, $t7, $t61);
 		// 7_2
 		self::conditionPref7_1($t7, false);
+		
+		self::$pre_imp = '';
+		self::$pre_suf = '';
 
 		// RACINES ---------------------
 		klog::l("RADX----------");
@@ -247,8 +251,7 @@ class Chachalaca extends genericClass {
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 					foreach($rs as $r) {
-						$t1_1[] = [$r['Racines'], $r['Categorie']];
-//klog::l(">>>1  $a_chercher  ".$r['Racines']."  ".$r['Categorie']);
+						$t1_1[$r['Racines'].'|'.$r['Categorie']] = array($r['Racines'], $r['Categorie']);
 					}
 				}
 			}
@@ -259,85 +262,91 @@ class Chachalaca extends genericClass {
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 					foreach($rs as $r) {
-						$t2_1[] = [$r['Racines'], $r['Categorie'], ''];
-//klog::l(">>>2  $a_chercher  ".$r['Racines']."  ".$r['Categorie']);
+						$t2_1[$r['Racines'].'|'.$r['Categorie']] = array($r['Racines'], $r['Categorie'], '');
 					}
 				}
 			}
-			$long = $longeur-1;
+			$long = $longeur-2;
 			$debut = 0;
 			while($debut < $long) {
 				$debut++;
-				$reste = $longeur; //-$debut;
-				while($reste--) {
-					$a_chercher = substr($mot, $debut, $reste);
+				$reste = $longeur-$debut;
+				while($reste) {
+					//$reste--;
+					$a_chercher = substr($mot, $debut, $reste--);
+//klog::l(">>> $debut,  $reste,  $a_chercher");
 					$pdo->execute(array(':fix'=>$a_chercher));
-//klog::l("+++$debut  $reste  $a_chercher  ".$pdo->rowCount());
 					if($pdo->rowCount()) {
 						$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 						foreach($rs as $r) {
-							$t3_1[] = [$r['Racines'], $r['Categorie'], ''];
-//klog::l(">>>3  $a_chercher  ".$r['Racines']."  ".$r['Categorie']);
+							$t3_1[$r['Racines'].'|'.$r['Categorie']] = array($r['Racines'], $r['Categorie'], '');
 						}
 					}
 				}
 			}
-			$t3_1[] = ['xxx', 'xxx', ''];
+			$t3_1['xxx|xxx'] = array('xxx', 'xxx', '');
 			
-//klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
-			usort($t1_1, 'self::sortC0C1');
-			$o = null;
-			foreach($t1_1 as $k=>&$l11) {
-				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t1_1[$k]);
-				else $o = $l11;
-			}
-			$t1_1 = array_values($t1_1);
-			usort($t2_1, 'self::sortC0C1');
-			$o = null;
-			foreach($t2_1 as $k=>&$l11) {
-				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t2_1[$k]);
-				else $o = $l11;
-			}
-			$t2_1 = array_values($t2_1);
-			usort($t3_1, 'self::sortC0C1');
-			$o = null;
-			foreach($t3_1 as $k=>&$l11) {
-				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t3_1[$k]);
-				else $o = $l11;
-			}
-			$t3_1 = array_values($t3_1);
-klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
+
+//			usort($t1_1, 'self::sortC0C1');
+//			$o = null;
+//			foreach($t1_1 as $k=>&$l11) {
+//				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t1_1[$k]);
+//				else $o = $l11;
+//			}
+//			$t1_1 = array_values($t1_1);
+			
+//			usort($t2_1, 'self::sortC0C1');
+//			$o = null;
+//			foreach($t2_1 as $k=>&$l11) {
+//				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t2_1[$k]);
+//				else $o = $l11;
+//			}
+//			$t2_1 = array_values($t2_1);
+			
+//			usort($t3_1, 'self::sortC0C1');
+//			$o = null;
+//			foreach($t3_1 as $k=>&$l11) {
+//				if($o && $l11[0] == $o[0] && $l11[1] == $o[1]) unset($t3_1[$k]);
+//				else $o = $l11;
+//			}
+//			$t3_1 = array_values($t3_1);
+//			unset($l11);
+			
+//klog::l(">>>APRES $mot++++  b: ".count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 
 
-			$c1 = count($t1_1);
-			$c2 = count($t2_1);
-			$c3 = count($t3_1);
-			for($i1 = 0; $i1 < $c1;) {
-				$l11 = $t1_1[$i1++];
+			$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
+			$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
+
+			$i1 = $i2 = $i3 = 0;
+			foreach($t1_1 as &$l11) {
+				$i1++;
 				$racine1 = $l11[0];
 				$cat_1 = $l11[1];
-				for($i2 = 0; $i2 < $c2;) {
-					$l21 = $t2_1[$i2++];
+				
+				foreach($t2_1 as &$l21) {
+					$i2++;
 					$racine2 = $l21[0];
 					$cat_2 = $l21[1];
-					for($i3 = 0; $i3 < $c3;) {
-						$l31 = $t3_1[$i3++];
+					
+					foreach($t3_1 as &$l31) {
+						$i3++;
 						$racine3 = $l31[0];
-						$cat_3 = $l31[1];
+						//$cat_3 = $l31[1];
 						
 						if($racine1 == $mot) {
 							$decomposition = $racine1;
 							$m_categorie = $cat_1;
 							//$racine_1 = $racine1;
-							$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
-							$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
+							//$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
+							//$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
 							
 							$v0 = $l7[3].$sepa_cat1.$m_categorie.$sepa_cat2.$l7[4];
 							$v1 = $l7[0].$sepa_cat1.$decomposition;
 							$resultat = self::arraySearch($t5, 2, $v0);
 							if($resultat === false || strpos($t5[$resultat][0], $v1) === false) {
 								$nb_entree++;
-								$t5[] = [$v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', ''];
+								$t5[] = array($v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', '');
 							}
 						}
 						
@@ -347,15 +356,15 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 								$m_categorie = $cat_1.'-'.$cat_2;
 								//$racine_1 = $racine1;
 								//$racine_2 = $racine2;
-								$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
-								$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
+								//$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
+								//$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
 								
 								$v0 = $l7[3].$sepa_cat1.$m_categorie.$sepa_cat2.$l7[4];
 								$v1 = $l7[0].$sepa_cat1.$decomposition;
 								$resultat = self::arraySearch($t5, 2, $v0);
 								if($resultat === false || strpos($t5[$resultat][0], $v1) === false) {
 									$nb_entree++;
-									$t5[] = [$v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', ''];
+									$t5[] = array($v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', '');
 								}
 							}
 						}
@@ -366,15 +375,15 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 							//$racine_1 = $racine1;
 							//$racine_2 = $racine2;
 							//$racine_3 = $racine3;
-							$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
-							$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
+							//$sepa_cat1 = empty($l7[0]) ? '' : $sep_cat;
+							//$sepa_cat2 = empty($l7[2]) ? '' : $sep_cat;
 							
 							$v0 = $l7[3].$sepa_cat1.$m_categorie.$sepa_cat2.$l7[4];
 							$v1 = $l7[0].$sepa_cat1.$decomposition;
 							$resultat = self::arraySearch($t5, 2, $v0);
 							if($resultat === false || strpos($t5[$resultat][0], $v1) === false) {
 								$nb_entree++;
-								$t5[] = [$v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', ''];
+								$t5[] = array($v1.$sepa_cat2.$l7[2], "$i1 $i2 $i3", $v0, '', '');
 							}
 						}
 					}
@@ -386,18 +395,18 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 			$prefixe = $l[0];
 			$suffixe = $l[2];
 			$ensemble = substr($prefixe, 0, strlen($prefixe)-1).substr($suffixe, 1);
-			if($ensemble == self::$premier) $t5[] = [$l[0].$l[2], '', '', $l[3].$l[4], ''];
+			if($ensemble == self::$premier) $t5[] = array($l[0].$l[2], '', '', $l[3].$l[4], '');
 		}
 		
 		if(!count($t5)) {
-			$t5[] = [$m_entree, '', '', '', ''];
-			$t6[] = [$m_categorie, ''];
+			$t5[] = array($m_entree, '', '', '', '');
+			$t6[] = array($m_categorie, '');
 		}
 		
 		foreach($t5 as &$l) klog::l("8 t5  $l[0],  $l[1],  $l[2]");
 	}
 	
-	static private function arraySearch(&$arr, $col, $val) {
+	static private function arraySearch(&$arr, $col, &$val) {
 		foreach($arr as $k=>&$v) {
 			if($v[$col] == $val) return $k;
 		}
@@ -410,7 +419,7 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 	// 7_5
 	static private function traitement7_5(&$t1, &$t7, &$t61) {
 		$t61 = array();
-		foreach($t7 as $l) $t61[] = [$l[0], $l[1], $l[2], $l[3], $l[4]];
+		foreach($t7 as $l) $t61[] = array($l[0], $l[1], $l[2], $l[3], $l[4]);
 		
 		$suf_reste = '';
 		foreach($t61 as &$l0) {
@@ -428,16 +437,16 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 				$suf_sans = $ch;
 				$taille_suf_sans = strlen($suf_sans);
 				$taille_suf = strlen($suf);
-				if(!$taille_pref) $t7[] = [$pref, $suf_reste, $suf, $pref_cat, $suf_cat];
+				if(!$taille_pref) $t7[] = array($pref, $suf_reste, $suf, $pref_cat, $suf_cat);
 				elseif($taille_suf) {
 					if($taille_pref_reste >= $taille_suf_sans) {
 						$reste_def = $pref_reste.' ';
 						$reste_def = substr($reste_def, 0, strpos($reste_def, $suf_sans.' '));
-						$t7[] = [$pref, $reste_def, $suf, $pref_cat, $suf_cat];
+						$t7[] = array($pref, $reste_def, $suf, $pref_cat, $suf_cat);
 					}
 					else {
-						$t7[] = [$pref, $pref_reste, $suf, $pref_cat, $suf_cat];
-						$t7[] = [$pref, $suf_reste, $suf, $pref_cat, $suf_cat];
+						$t7[] = array($pref, $pref_reste, $suf, $pref_cat, $suf_cat);
+						$t7[] = array($pref, $suf_reste, $suf, $pref_cat, $suf_cat);
 					}
 				}
 			}
@@ -455,7 +464,7 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 				$suf = '';
 				$reste_def = $analyse;
 			}
-			$t7[] = ['', $reste_def, $suf, '', $suf_cat];
+			$t7[] = array('', $reste_def, $suf, '', $suf_cat);
 		}
 
 		foreach($t7 as &$l) {
@@ -496,7 +505,7 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 					$racines = $reste;
 					$suffixes = '';
 				}
-				$t7[] = [$afx, $racines, $suffixes, $cat, $l[3]];
+				$t7[] = array($afx, $racines, $suffixes, $cat, $l[3]);
 				$compteur++;
 				klog::l("5_3 t7  $afx,  $racines,  $suffixes,  $cat,  $l[3]");
 			}
@@ -510,7 +519,7 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);
 		
 		$t60 = array();
-		foreach($t62 as &$l) $t60[] = [$l[0], $l[1], '', ''];
+		foreach($t62 as &$l) $t60[] = array($l[0], $l[1], '', '');
 		
 		foreach($t60 as &$l) {
 			$t5 = array([], [], [], [], []);
@@ -541,7 +550,7 @@ klog::l(count($t1_1)."  ".count($t2_1)."  ".count($t3_1));
 						$cat_1 = $r['Categorie'];
 						$m_prefixe1 = $r['Decompo'];
 						$nb_pref++;
-						$t5[$nb_tour][] = [$m_prefixe1, $m_reste, $cat_1.'-', $cat_suf];
+						$t5[$nb_tour][] = array($m_prefixe1, $m_reste, $cat_1.'-', $cat_suf);
 					}
 				}
 				$nb_tour++;
@@ -680,7 +689,7 @@ for($i = 0; $i < 5; $i++) {
 				$s = $ch.$m_reste;
 				if(!isset($ttmp[$s])) {
 					$ttmp[$s] = 0;
-					$t61[] = [$ch, $m_reste, $s, '', ''];
+					$t61[] = array($ch, $m_reste, $s, '', '');
 					klog::l("4_1 t61  $ch, $m_reste, $s");
 				}
 			}
@@ -705,7 +714,7 @@ klog::l("-------------------");
 				$s = $ch.$m_reste;
 				if(!isset($ttmp[$s])) {
 					$ttmp[$s] = 0;
-					$t62[] = [$ch, $m_reste, $s, '', '', ''];
+					$t62[] = array($ch, $m_reste, $s, '', '', '');
 					klog::l("4_1 t62  $ch, $m_reste, $s");
 				}
 			}
@@ -733,7 +742,7 @@ klog::l("-------------------");
 		}
 		usort($t62, 'self::sortC3C4');
 		foreach($t62 as &$l) {
-			$t60[] = [$l[0], $l[1], $l[2], ''];
+			$t60[] = array($l[0], $l[1], $l[2], '');
 			klog::l("3_1 t60: $l[0],  $l[1],  $l[2]");
 		}
 	}
@@ -770,7 +779,7 @@ klog::l("-------------------");
 					$s = "$m_precedent\t$m_coupe\t$m_reste";
 					if(!isset($ttmp[$s])) {
 						$ttmp[$s] = 0;
-						$t62[] = [$m_precedent, $m_coupe, $m_reste, $m_avant.$m_coupe, $m_categorie, ''];
+						$t62[] = array($m_precedent, $m_coupe, $m_reste, $m_avant.$m_coupe, $m_categorie, '');
 klog::l("2_6 t62  $m_precedent, $m_coupe, $m_reste, $m_avant$m_coupe, $m_categorie");
 					}
 					$trouve++;
@@ -818,7 +827,7 @@ klog::l("2_6 t62  $m_precedent, $m_coupe, $m_reste, $m_avant$m_coupe, $m_categor
 					$racines = $reste;
 					$suffixes = '';
 				}
-				$t7[] = ['', $racines, $afx, '', $cat];
+				$t7[] = array('', $racines, $afx, '', $cat);
 				$compteur++;
 				klog::l("5_5 t7  $racines,  $afx, $cat");
 			}
@@ -860,7 +869,7 @@ klog::l("2_6 t62  $m_precedent, $m_coupe, $m_reste, $m_avant$m_coupe, $m_categor
 						$cat_1 = $r['Categorie'];
 						$m_prefixe1 = $r['Decompo'];
 						$nb_pref++;
-						$t5[$nb_tour][] = [$m_prefixe1, $m_reste, '-'.$cat_1, $cat_suf];
+						$t5[$nb_tour][] = array($m_prefixe1, $m_reste, '-'.$cat_1, $cat_suf);
 					}
 				}
 				$nb_tour++;
@@ -942,7 +951,7 @@ for($i = 0; $i < 5; $i++) {
 			if($k && $l[0] == $o[0] && $l[1] == $o[1]) unset($t62[$k]);
 			else $o = $l;
 		}
-		foreach($t62 as &$l) $t60[] = [$l[0], '', '', ''];
+		foreach($t62 as &$l) $t60[] = array($l[0], '', '', '');
 		
 		usort($t60, 'self::sortC0C1');
 foreach($t60 as &$l) klog::l("5_1 t60  ".$l[0]);
@@ -1107,12 +1116,12 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 	static private function generation4_5(&$t60, &$t61, &$t62) {
 		foreach($t60 as &$l0) {
 			$mot_liste = $l0[0];
-			$t62[] = [$mot_liste, '', '', '', '', ''];
+			$t62[] = array($mot_liste, '', '', '', '', '');
 
 			foreach($t61 as &$l1) {
 				$m_suffixe = $l1[1];
 				$debut = $cpteur = 0;
-				$pos = [0, 0, 0, 0, 0];
+				$pos = array(0, 0, 0, 0, 0);
 				for(; $cpteur < 5;) {
 					$debut = strpos($mot_liste, $m_suffixe, $debut);
 					if($debut === false) break;
@@ -1135,7 +1144,7 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 		foreach($t61 as &$l) {
 			$m_suffixe = $l[1];
 			$debut = $cpteur = 0;
-			$pos = [0, 0, 0, 0, 0];
+			$pos = array(0, 0, 0, 0, 0);
 			for(; $cpteur < 5;) {
 				$debut = strpos($m_premier, $m_suffixe, $debut);
 				if($debut === false) break;
@@ -1161,7 +1170,7 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 			for($p1 = $p0; $p1 >= 0; $p1--) {
 				$p = strpos($ch, $ch1, $pos[$p1]);
 				if($p !== false) $ch = substr($ch, 0, $p).$ch2.substr($ch, $p + $len);
-				$t60[] = [$ch, '', '', '', '', ''];
+				$t60[] = array($ch, '', '', '', '', '');
 			}
 		}
 	}
@@ -1211,7 +1220,7 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 							$s = "$m_coupe\t$m_avant";
 							if(!isset($ttmp[$s])) {
 								$ttmp[$s] = 0;
-								$t62[] = ['-'.$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie, ''];
+								$t62[] = array('-'.$m_coupe, $m_coupe, $m_avant, $m_avant.$m_coupe, $m_categorie, '');
 								klog::l("-$m_coupe, $m_coupe, $m_avant, $m_avant$m_coupe, $m_categorie");
 							}
 						}
@@ -1237,8 +1246,8 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 	static public function CheckGrammar($text, $lang) {
 		$dir = '/Home/2/CEN/Chachalaca/grammaire/';
 		$lix = array_search($lang, ['es','fr','en']);
-		$lang = ['.esp','.fra','.ang'][$lix];
-		if(file_exists(getcwd().$dir.$text.$lang)) return $lang;
+		$lg = ['.esp','.fra','.ang'][$lix];
+		if(file_exists(getcwd().$dir.$text.$lg)) return $lg;
 		if(file_exists(getcwd().$dir.$text.'.esp')) return '.esp';
 		return false;
 	}
@@ -1251,8 +1260,8 @@ klog::l("6_3 t60  ".$l[0].",  ".$l[2]);
 			case 'grammar':
 				$text = $args['text'];
 				if(empty($text)) $text = 'liste'.self::CheckGrammar('liste', $args['lang']);
-				$txt = file_get_contents(getcwd().$dir.$text);
-				$txt = utf8_encode(nl2br($txt));
+				$tmp = file_get_contents(getcwd().$dir.$text);
+				$txt = utf8_encode(nl2br($tmp));
 				return array('text'=>$txt);	
 				
 			case 'dict':
