@@ -56,7 +56,7 @@ $vars['children'] = $getCchild;
 
 
 //CURRENT MENU
-$curmen = '/Evenement-passe/';
+$curmen = '/Actualites-Passees/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);

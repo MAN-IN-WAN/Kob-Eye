@@ -1,7 +1,7 @@
 <template>
     <div class="modal" id="login-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog container" role="document">
+            <div class="modal-content ">
                 <div  class="login-espace-pro" >
                     <div class="col-login">
                         {{ include(template_from_string(module('Systeme/Bloc/Login?CODE=LOGIN-LEFT'))) }}
@@ -13,7 +13,7 @@
                         <form method="post" action="">
                             <div class="modal-header">
                                 <i aria-hidden="true" class="fa fa-power-off"></i>
-                                <h5 class="modal-title">Espace Pro</h5>
+                                <h3 class="modal-title">Espace Pro</h3>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     {#                                <span aria-hidden="true">X</span>#}
                                     <i aria-hidden="true" class="fa fa-times"></i>
