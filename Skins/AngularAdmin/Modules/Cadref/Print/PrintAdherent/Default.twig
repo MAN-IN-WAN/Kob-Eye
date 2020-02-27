@@ -79,6 +79,7 @@
 													</div>
 													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.VisiteAnnee" ng-init="obj.VisiteAnnee=''">
+															<option value=""></option>
 															{% for v,c in annees %}
 																<option value="{{ v }}">{{ v }}</option>
 															{% endfor %}
@@ -191,7 +192,7 @@
 													</div>
 													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.Inscrits" ng-init="obj.Inscrits=''">
-															{% for a,b in attentes %}
+															{% for a,b in inscrits %}
 																<option value="{{ a }}">{{ b }}</option>
 															{% endfor %}
 														</select>
@@ -234,7 +235,15 @@
 														{{ label("Soutien") }}
 													</div>
 													<div class="col-md-5">
-														<switch ng-model="obj.Soutien"></switch>
+														<switch ng-model="obj.Soutien" ng-change="checkSoutien(0)"></switch>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Dons") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Dons" ng-change="checkSoutien(1)"></switch>
 													</div>
 												</div>
 											</div>

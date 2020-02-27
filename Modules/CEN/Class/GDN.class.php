@@ -39,7 +39,7 @@ class GDN extends genericClass {
 		$nah = $args['nah'] == 'true';
 		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
-		if($nah && $args['norm'] == 'true') $word = self::normalize($word);
+		if($nah && $args['norm'] == 'true') $word = self::Normalize($word);
 		$dict = $args['dic'];
 		if($dict == 'all' || $dict == '' || $dict == 'null') $dict = '';
 		else $dict = "and DictionnaireId in ($dict)";
@@ -101,7 +101,7 @@ order by  $sort";
 		return array('text'=>$com);				
 	}
 	
-	static public function normalize($word) {
+	static public function Normalize($word) {
 		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
 			
 		$word = ' '.strtolower(trim($word)).' ';
@@ -115,7 +115,7 @@ order by  $sort";
 			$os[] = $o;
 		}
 		fclose($file);
-		usort($os, 'sortOrtho');
+		usort($os, 'self::sortOrtho');
 
 		$ch = $word;
 		foreach($os as $o) {
@@ -131,7 +131,10 @@ order by  $sort";
 		return $new;
 	}
 	
-	
+	static private function sortOrtho($a, $b) {
+		return intval($a[3]) - intval($b[3]);
+	}
+
 	private static function replOrtho(&$ch, $ch1, $ch2) {
 		$nb = 0;
 		$pos = strpos($ch, $ch1);
@@ -145,6 +148,3 @@ order by  $sort";
 	
 }
 
-function sortOrtho($a, $b) {
-	return intval($a[3]) - intval($b[3]);
-}

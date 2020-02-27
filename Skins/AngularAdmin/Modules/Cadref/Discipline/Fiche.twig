@@ -17,13 +17,13 @@
     </ul>
 
     <!-- Default Panel -->
-	<form name="CadrefContent">
     <section class="panel">
         <div class="panel-body">
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-7" >
+							<form name="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Section") }}
@@ -81,7 +81,7 @@
 									{{ ftext(f.Description, o, 'ckHtml') }}
 								</div>
 							</div>
-
+							</form>
 						</div>
 						{# block right #}                    
 						<div class="col-md-5">
@@ -106,5 +106,4 @@
 			</div>
 		</div>
 	</section>
-	</form>
 </div>

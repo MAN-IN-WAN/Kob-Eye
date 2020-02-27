@@ -2,4 +2,6 @@
 
 class People extends genericClass {
 	
+
+	
 }

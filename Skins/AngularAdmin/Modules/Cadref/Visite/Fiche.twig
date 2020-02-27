@@ -17,13 +17,13 @@
     </ul>
 
     <!-- Default Panel -->
-	<form name="CadrefContent">
     <section class="panel">
         <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
+							<form name="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Visite") }}
@@ -133,6 +133,7 @@
 								</div>
 							</div>
 							{% endif %}
+							</form>
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
@@ -168,7 +169,6 @@
 			</div>
 		</div>
     </section>
-	</form>
 </div>
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">

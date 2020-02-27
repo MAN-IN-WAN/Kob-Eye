@@ -671,7 +671,7 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 		$scope.obj.nonCotis = false;
 		$scope.obj.nonSolde = false;
 		$scope.obj.NotesAnnuelles = '';
-		$scope.obj.DateCertificat = '';
+		//$scope.obj.DateCertificat = '';
 		$scope.CotisationAnnuelle = 0;
 		$scope.adherentInfo = function() {
 			$scope.obj.adherentWait = true;
@@ -712,6 +712,7 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 			ajax.success(function(data) {
 				var o = $scope.obj;
 				o.ScanCount = data.data.scan;
+				//if(data.data.certif) $scope.obj.DateCertificat = data.data.certif;
 				try { $scope.$digest(); } catch(ex) {}
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1888,20 +1889,25 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 		$scope.localObj = {};
 		// hook sur CadrefReservationadd
 		$scope.CadrefReservationaddExt = $scope.CadrefReservationadd;
+		
 		$scope.CadrefReservationcallbackAdd = function(obj) {
 			var o = $scope.localObj = {};
             angular.copy(obj, o);
 			o.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
 			o.Utilisateur = "{{ Initiales }}";
 			o.Total = o.Prix = $scope.obj.Prix;
-		}
+{#			$timeout(function(){
+				console.log('+++',$('.axxx'));
+				$('.axxx').toggle()
+			},1000);
+#}		}
 		$scope.CadrefReservationadd = function() {
 			$scope.CadrefReservationaddExt($scope.CadrefReservationcallbackAdd);
 		}
 				
 		$scope.getSelectAdherent = function (store,search){
 			var s = $injector.get(store);
-			var c = search == '' ? '' : 'NomPrenom~'+search;
+			var c = search == '' ? '' : 'NomPrenom~'+search+'+Numero~'+search;
 			s.setFilters(c,'form');
 			return s.getData(1,'form');
 		}
