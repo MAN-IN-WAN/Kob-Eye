@@ -36,13 +36,13 @@ class Adherent extends genericClass {
 			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc);
 	}
 	
-	public function GetScanCount($annee) {
-		
+	
+	public function GetScanCount($annee, $save=false) {
 		if(Cadref::$UTL != 'CADREF') return array('scan'=>$n);
 			
-		$dd = strtotime('dmY','0108'.$annee);
-		$df = strtotime('dmY','3107'.($annee+1));
-		
+		$dd = strtotime($annee.'-08-01');
+		$df = strtotime(($annee+1).'-07-31');
+
 		$num = $this->Numero;
 		$data = array('sApiKey'=>'#ansicere68#', 'nId'=>$num);
 		$ch = curl_init("https://scan.cadref.com/api/member/");
@@ -62,17 +62,32 @@ class Adherent extends genericClass {
 		curl_close($ch);
 		
 		if($ret == '') return array('scan'=>0);
+
 		$o = json_decode($ret);
 		if($o->error == 'No result') return array('scan'=>0);
+		$certif = '';
+		$dtCert = 0;
 		$n = 0;
 		if(isset($o->response)) {
 			foreach($o->response->aResult as $r) {
 				//if(substr($r->DTY_DT_CREATION,6,4) == $annee) $n++;
-				$dc = strtotime('d/m/Y', $r->DTY_DT_CREATION);
-				if($dc >= $dd && $dc <= $df) $n++;
+				$d = $r->DTY_DT_CREATION;
+				$dc = strtotime(substr($d, 6).'-'.substr($d, 3, 2).'-'.substr($d, 0, 2));
+				if($dc >= $dd && $dc <= $df) {
+					$n++;
+					if(substr($r->DTY_CH_LABEL, 0 ,6) == 'Certif' || substr($r->DTY_CH_LABEL, 0 ,6) == 'Attest') {
+						$dtCert = $dc;
+						$certif = $r->DTY_DT_CREATION;
+					}
+				}
 			}
 		}
-		return array('scan'=>$n);
+		if($save && $dtCert && $this->DateCertificat <= 0) {
+			$this->DateCertificat = $dtCert;
+			$this->Save();
+klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->Numero);			
+		}
+		return array('scan'=>$n, 'certif'=>$certif);
 	}
 
 	// $mode :
@@ -749,7 +764,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				$rupture = 'E'; // enseignant
 				$antenne = 0;
 				$sql = "
-select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail,
+select distinct a.Id, a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail,
 a.DateCertificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
 from `##_Cadref-Adherent` a
 inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='$annee'
@@ -862,6 +877,14 @@ order by a.Nom, a.Prenom";
 		}
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
+	
+if($mode==1) {
+	foreach($pdo as $p) {
+		$a = Sys::getOneData('Cadref', 'Adherent/'.$p['Id']);
+		klog::l(">>>>>>>>>>>>>>>".$p['Id']." ".$a->Numero);
+		$a->GetScanCount('2019', true);
+	}
+}
 
 			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $nonInscrit ? 'N' : $inscrits, $typAdh, $pages, $entraide);
 			$pdf->SetAuthor("Cadref");

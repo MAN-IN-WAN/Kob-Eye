@@ -712,6 +712,7 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 			ajax.success(function(data) {
 				var o = $scope.obj;
 				o.ScanCount = data.data.scan;
+				//if(data.data.certif) $scope.obj.DateCertificat = data.data.certif;
 				try { $scope.$digest(); } catch(ex) {}
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
