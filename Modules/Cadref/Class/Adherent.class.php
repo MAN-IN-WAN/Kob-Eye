@@ -85,7 +85,7 @@ class Adherent extends genericClass {
 		if($save && $dtCert && $this->DateCertificat <= 0) {
 			$this->DateCertificat = $dtCert;
 			$this->Save();
-klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->Numero);			
+klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);			
 		}
 		return array('scan'=>$n, 'certif'=>$certif);
 	}
