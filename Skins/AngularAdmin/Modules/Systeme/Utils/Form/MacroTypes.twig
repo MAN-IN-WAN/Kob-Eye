@@ -34,7 +34,7 @@
         </select>
     {% elseif field.query %}
         <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
-            {% for v,k in field.query %}
+            {% for v,k in field.query | sort  %}
                 <option value="{{ v }}">{{ k }}</option>
             {% endfor %}
         </select>

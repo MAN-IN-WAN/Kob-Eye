@@ -233,6 +233,9 @@
     <!-- Apex Charts -->
     <script src="/Tools/Js/ApexChart/apexcharts.js"></script>
 
+    <!-- Angular Select 2 -->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-select2/dist/angular-select2.js"></script>
+
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]
