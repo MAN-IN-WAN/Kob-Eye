@@ -352,7 +352,7 @@
 		});
 
 		$scope.classeAnneeChange = function() {
-console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
+//console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 			if((typeof CadrefClasseStore.setGlobalFilter) === 'undefined') return;
 			//if(mode == undefined) mode = true;
 			
@@ -547,7 +547,7 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 		//-----------------------------
 		// MESSAGE
 		//-----------------------------
-		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
+		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: '', smsSize: ''};
 		$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 		$scope.pieceAdd = function() {
 			var p = $scope.msgObj.Pieces;
@@ -576,6 +576,11 @@ console.log("+++++++++++++++++++++++++++++++"+$scope.ListClasseAnnee);
 			$scope.msgObj.sendMode = mode;
 			var cf = $scope.Cadref{{ objecttype }}function.callNext;
 			$scope.Cadref{{ objecttype }}callFunction(cf.item,cf.nom,cf.title,cf.needConfirm,1);
+		}
+		
+		$scope.checkSmsSize = function(obj) {
+			let s = obj.SMS.length;
+			obj.smsSize = s ? ' '+s : '';
 		}
 		{% endif %}
 
