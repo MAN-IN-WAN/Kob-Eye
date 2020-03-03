@@ -35,10 +35,12 @@
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Site internet">SiteWeb</PROPERTIES>
 		<PROPERTIES type="image" list="1" fiche="1" form="1" >Logo</PROPERTIES>
 		<PROPERTIES type="date" description="Date Dernier Contact" Adminonly="1"  searchOrder="2">DateDernierContact</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Type de public suivi">TypePublicSuivi</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Type d'actions menées">TypeAction</PROPERTIES>
-		<PROPERTIES type="int" fiche="1" form="1" description="Nombre de personnes suivies">PersonSuivi</PROPERTIES>
-		<PROPERTIES type="ref" queryRef="Systeme/Group" searchOrder="4" adminOnly="1">NumeroGroupe</PROPERTIES>
+		<CATEGORY title="Informations" >
+			<PROPERTIES type="text" fiche="1" form="1" description="Type de public suivi">TypePublicSuivi</PROPERTIES>
+			<PROPERTIES type="text" fiche="1" form="1" description="Type d'actions menées">TypeAction</PROPERTIES>
+			<PROPERTIES type="int" fiche="1" form="1" description="Nombre de personnes suivies">PersonSuivi</PROPERTIES>
+		</CATEGORY>
+		<PROPERTIES type="ref" queryRef="Systeme/Group" fiche="1" form="1" searchOrder="4" adminOnly="1">NumeroGroupe</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Imprimer les documents">ImprimeDoc</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des E-mails">ExportMail</FUNCTION>
 		<FKEY card="0,n" data="Organisation,Id"  action="Link" description="StructuresExclues">ClientsExclu</FKEY>
@@ -62,21 +64,32 @@
 		<PROPERTIES type="datetime" list="1"  fiche="1" form="1" description="Prochaine date de cloture" Adminonly="1"  searchOrder="5" auto="1">ProchaineDateCloture</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="Adulte,Adulte et adolescent,Enfant,Tout public" searchOrder="5" description="Type de public">TypePublic</PROPERTIES>
 		<PROPERTIES type="int"  list="1" fiche="1" form="1" searchOrder="6" description="Places disponibles">Disponibilite</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="7" description="Localité" auto="1" >Localisation</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" description="Date de Fin" Adminonly="1" auto="1" >DateFin</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" description="Durée en minutes">Duree</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" description="Site internet">SiteWeb</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de sortie">TypeSortie</PROPERTIES>
-		<PROPERTIES type="boolean" list="1" fiche="1" form="1" description="Communiquer sur ce spectacle" default="0">AlaUne</PROPERTIES>
-		<PROPERTIES type="int" fiche="1" form="1" description="Utiliser la contremarque" values="0::Pas d'impression du tout,1::Contremarque normale,2::Impression ticket mais pas une contremarque" default="1">TypeContreMarque</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Texte Contremarque" >Contremarque</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Présentation">Presentation</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Video en iframe" >Video</PROPERTIES>
-		<PROPERTIES type="text" fiche="1" form="1" description="Information d'accès" >Acces</PROPERTIES>
-		<PROPERTIES type="bbcode" fiche="1" form="1" description="Résumé">Resume</PROPERTIES>
-		<PROPERTIES type="bbcode" fiche="1" form="1" description="Information de réservation">InformationReservation</PROPERTIES>
-		<PROPERTIES type="metat" fiche="1" form="1" category="Referencement">Title</PROPERTIES>
-		<PROPERTIES type="metad"  fiche="1" form="1" category="Referencement">Description</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" fiche="1" form="1" description="Spectacle à la Une" default="0">AlaUne</PROPERTIES>
+		<CATEGORY title="Acces" >
+			<PROPERTIES type="varchar" fiche="1" form="1" description="Site internet">SiteWeb</PROPERTIES>
+			<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="7" description="Localité" auto="1" >Localisation</PROPERTIES>
+			<PROPERTIES type="text" fiche="1" form="1" description="Information d'accès" >Acces</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Textes" >
+			<PROPERTIES type="html" fiche="1" form="1" description="Présentation">Presentation</PROPERTIES>
+			<PROPERTIES type="text" fiche="1" form="1" description="Video en iframe" >Video</PROPERTIES>
+			<PROPERTIES type="bbcode" fiche="1" form="1" description="Résumé">Resume</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Contremarque" >
+			<PROPERTIES type="int" fiche="1" form="1" description="Utiliser la contremarque" values="0::Pas d'impression du tout,1::Contremarque normale,2::Impression ticket mais pas une contremarque" default="1">TypeContreMarque</PROPERTIES>
+			<PROPERTIES type="text" fiche="1" form="1" description="Texte Contremarque" >Contremarque</PROPERTIES>
+			<PROPERTIES type="bbcode" fiche="1" form="1" description="Information de réservation">InformationReservation</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Partenaires" >
+			<RKEY card="0,n" data="Partenaire,Id" fiche="1" form="1">Partenaire</RKEY>
+		</CATEGORY>
+		<CATEGORY title="Referencement" >
+			<PROPERTIES type="metat" fiche="1" form="1" >Title</PROPERTIES>
+			<PROPERTIES type="metad"  fiche="1" form="1">Description</PROPERTIES>
+		</CATEGORY>
 		<INTERFACES name="fiche_middle">
 			<FORM type="Template" url="Reservation/Spectacle/Events" title="Dates et disponibilités du spectacle">Template</FORM>
 		</INTERFACES>
@@ -84,7 +97,7 @@
 			<FORM type="Template" urlPrefix="/Reservation/Spectacle/" urlSuffix="/Orga.htm" title="Structure culturelle organisatrice">Infos</FORM>
 		</INTERFACES>
 		<FKEY card="1,1" data="Organisation,Id"  fiche="1" form="1" description="Structure organisatrice" >OrganisationId</FKEY>
-		<RKEY card="0,n" data="Partenaire,Id" fiche="1" form="1">Partenaire</RKEY>
+
 		<!--		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">GenererEvenement</FUNCTION>-->
 		<FUNCTION title="Générer un lot d'evenements">genererLotEvenement</FUNCTION>
 		<FUNCTION title="Dupliquer">Dupliquer</FUNCTION>
@@ -144,7 +157,7 @@
 		<PROPERTIES type="int" list="1" fiche="1" form="1" listDescr="Places disponibles" description="Nombre de places" searchOrder="4">NbPlace</PROPERTIES>
 		<PROPERTIES type="boolean"  fiche="1" form="1" auto="1" description="Validité de l'évènement" default="1">Valide</PROPERTIES>
 		<FKEY card="1,1" data="Spectacle,Id" childrenHiddenSoft="1">SpectacleId</FKEY>
-		<FKEY card="1,1" data="Salle,Id">SalleId</FKEY>
+		<FKEY card="1,1" data="Salle,Id" form="1">SalleId</FKEY>
 		<FUNCTION title="Réserver">Reserver</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Envoyer E-mails">EnvoyerMail</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des personnes inscrites">ExporterPersonne</FUNCTION>

@@ -240,7 +240,7 @@ p {
     padding:0;
 
 }
-#login-modal .modal-dialog .login-espace-pro .modal-footer .btn-primary {
+#login-modal .modal-dialog .login-espace-pro .modal-footer .btn-primary, .SaisieContenu .btn.btn-primary {
     color: #fff;
     background-color: #245580;
     width: 58%;
@@ -380,6 +380,7 @@ p {
     margin: 10px;
     color: #0A246A;
     font-size: 1.5em;
+    column-span: all;
 }
 
 .home-news, .home-link {
@@ -865,7 +866,14 @@ h3.titre-partenaires {
 #spectacle-fiche .fiche-propriete {
     margin: 0;
 }
+#spectacle-fiche a.retourliste  {
 
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5em;
+    line-height: 47px;
+}
 #spectacle-fiche .fiche-propriete div {
     font-family: 'Baloo', cursive;
 }
@@ -882,12 +890,11 @@ h3.titre-partenaires {
 
 #spectacle-fiche .fiche-propriete > .col-lg-6 {
     margin: 10px 0 0 10px;
-    width: calc(50% - 10px);
+    width: calc(50%);
 }
 
 #spectacle-fiche .fiche-propriete > .col-lg-3:first-child {
     margin: 10px 0 0 0;
-    width: 100%;
     color: white;
 
 }
@@ -904,6 +911,13 @@ h3.titre-partenaires {
 
 #spectacle-fiche .fiche-propriete > .col-lg-11:first-child > a {
     color: #fff;
+
+    display: block;
+    width: 100%;
+    text-align: left;
+    height: 100%;
+    line-height: 34px;
+
 }
 
 #spectacle-fiche .col-lg-8 {
@@ -1126,23 +1140,17 @@ table.Table-Contact td {
     vertical-align: top;
 }
 
-
-#FormContact input, textarea {
-    width: 100%;
-    border: 1px solid #337ab7;
+textarea.Contact.input-css34 {
+    resize: none;
+    height: 200px;
 }
+
 
 .capt input {
-    border: 1px solid #337ab7;
+    /* border: 1px solid #337ab7; */
     text-align: center;
-}
-
-#FormContact label {
-    display: inline-block;
-    max-width: 100%;
-    /* margin-bottom: 5px; */
-    font-weight: bold;
-    color: #245580;
+    width: auto;
+    display: inline;
 }
 
 .contactContenu h1 {
@@ -1151,6 +1159,19 @@ table.Table-Contact td {
 
 .SaisieContenu.Contenu.Contact h3 {
     color: #245580;
+}
+
+.sendContact .btn-primary {
+    color: #fff;
+    background-color: #245580;
+    border-radius: 0;
+    text-align: center;
+    background-image: none;
+    border: none;
+}
+#FormContact{
+    padding-right: 0px!important;
+    padding-left: 0px!important;
 }
 
 
@@ -1182,6 +1203,9 @@ table.Table-Contact td {
 
 /*** RESPONSIVE PORTABLE **/
 @media screen and (max-width: 479px) {
+    .container {
+     width: auto;
+    }
 
     #app #content .container {
         width: 100%;
@@ -1313,7 +1337,7 @@ table.Table-Contact td {
     .home-link > div {
         background-size: cover;
         filter: saturate(100%) contrast(1.6);
-        margin: 5px;
+        margin: 5px 0;
     }
 
     .home-link > a > i {
@@ -1449,16 +1473,6 @@ table.Table-Contact td {
         font-size: 1em;
         line-height: 2;
     }
-/*
-    #spectacle-fiche .fiche-propriete > .col-lg-9:first-child {
-        margin: 10px 0 0 0;
-        width: calc(25%);
-    }*/
-
-/*
-    #spectacle-fiche .fiche-propriete > .col-lg-3:nth-child(2) {
-        width: calc(70%);
-    }*/
 
 
     spectacle-fiche .fiche-propriete > .col-lg-3:nth-child(2),
@@ -1473,9 +1487,23 @@ table.Table-Contact td {
         width: 100%;
     }
 
+    #spectacle-fiche #description {
+        padding: 0;
+    }
+    #spectacle-fiche #description h1,
+    #spectacle-fiche #description .Resume{
+        padding:10px;
+    }
+    #spectacle-fiche .col-lg-8 {
+        padding: 0 ;
+    }
+    #spectacle-fiche #description > p {
+        margin: 10px;
+    }
 
-
-
+    #spectacle-fiche .Partenaires {
+        margin: 10px;
+    }
 
     #wrap {
 		display: flex!important;
@@ -1485,8 +1513,18 @@ table.Table-Contact td {
 	}
 
     /**************************-*/
+  /*** PAGE CONTACT **/
+    .blocContent .blocContact {
+        margin: 10px;
+    }
+    .capt label {
+        display: block;
+    }
 
-
+     #nouvelles a.card {
+         width: 100%;
+         display: block;
+     }
 }
 
 /*
@@ -1502,7 +1540,19 @@ table.Table-Contact td {
 		display: none!important;
 	}
 
+}
 
+/* ecran pc 1440 */
+@media (min-width: 960px) and (max-width: 1440px) {
+
+
+    #mainmenu .espacepro {
+        margin-left: 10px;
+        width: 99px;
+        font-size: 1em;
+        padding: 6px;
+        height: 53px;
+    }
 }
 
 
@@ -1601,7 +1651,7 @@ svg {
     z-index:1000;
     background-color: white;
     /*border: 1px solid black;*/
-    border-radius:7px;
-    box-shadow: 1px 1px black, -0.1em 0.1em 2em black;
+    /*border-radius:7px;*/
+    /*box-shadow: 1px 1px black, -0.1em 0.1em 2em black;*/
     -webkit-transition: left 0.5s linear;
 }
