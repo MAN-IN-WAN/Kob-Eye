@@ -429,32 +429,36 @@ class Codex extends genericClass {
 				}
 
 				$whr = "where ".($cdx ? "e.CodexId in ($cdx) and" : "");
-				$sql = "";
+				$ord = '';
+				$sql = '';
 				
 				switch($elm) {
 					case 'designation': 
-						$whr .= " e.Element $mode"; break;
+						$whr .= " e.Element $mode"; $ord = "e.Element,e.CodexId,e.Cote"; break;
 					case 'theme':
-						$whr .= " e.Theme $mode"; break;
+						$whr .= " e.Theme $mode"; $ord = "e.Theme,e.CodexId,e.Cote "; break;
 					case 'valeur':
 						$grp = $cond->elements ? '' : "group by e.CodexId,v.Valeur,e.Element";
 						$whr .= " v.Valeur $mode $grp";
+						$ord = "v.Valeur,e.CodexId,e.Cote";
 						return array('word'=>$word, 'elements'=>self::getElementValeur($whr));
 					case 'forme':
 						$grp = $cond->elements ? '' : "group by f.CodexId,f.Forme,e.Element";
 						$whr .= " cast(f.Forme as unsigned) = cast('$word' as unsigned) $grp";
+						$ord = "e.CodexId,e.Cote";
 						return array('word'=>$word, 'elements'=>self::getElementForme($whr));
 					case 'traduction':
 						$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
 						$grp = $cond->elements ? '' : "group by f.CodexId,s.$fld,e.Element";
 						$whr .= " s.$fld $mode $grp";
+						$ord = "$fld,e.CodexId,e.Cote";
 						return array('word'=>$word, 'elements'=>self::getElementSens($whr));
 				}
 
 
 				
 				$grp = $cond->elements ? '' : 'group by e.CodexId';
-				$whr .= " $grp order by e.CodexId,e.Cote";
+				$whr .= " $grp order by $ord";
 				
 				$dic = self::getElementBasic($whr);
 				if($grp) self::getCount($dic, 'Element', 'e', $whr);
@@ -542,8 +546,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 	
 	function GetDescr($args) {
 		$dir = '/Home/2/CEN/Codex/'.$this->Repertoire.'/textes/';
-		$lgs = ['es','fr','en'];
-		$lix = array_search($args['lang'], $lgs);
+		$lix = array_search($args['lang'], ['es','fr','en']);
 		$lang = ['.esp','.fra','.ang'][$lix];
 		$les = '.esp';
 
@@ -566,7 +569,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 				break;
 		}
 		$txt = '';
-		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
+		$txt = file_get_contents(getcwd().$dir.$pres.$lang);
 		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
 		$txt = utf8_encode(nl2br($txt));
 		return array('text'=>$txt, 'xxx'=>getcwd().$dir.$pres.$lang);		

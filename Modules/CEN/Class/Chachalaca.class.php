@@ -130,7 +130,7 @@ class Chachalaca extends genericClass {
 	}
 
 	static function Suff($args) {
-		$word = $args['word'];
+		$word = strtolower(trim($args['word']));
 
 		self::$dicIds = '3';
 		self::$premier = $word;
@@ -270,7 +270,8 @@ class Chachalaca extends genericClass {
 		
 klog::l("************************");
 		$mor = array();
-		foreach($t5 as &$l) $mor[] = array('mor'=>$l[0], 'cat'=>$l[2]);
+		foreach($t5 as &$l) $mor[] = array('mor'=>$l[0], 'cat'=>$l[2], 'typ'=>$l[1], 
+			'grn'=>$l[5]=='ivertclair', 'red'=>$l[5]=='irougeclair', 'blu'=>$l[5]=='ibleuclair');
 		$trn = array();
 		foreach($t9 as &$l) $trn[] = array('ent'=>$l[0], 'trn'=>$l[1], 'cat'=>$l[2]);
 
@@ -280,12 +281,10 @@ klog::l("************************");
 	
 	// 48
 	static private function ordone48(&$t5) {
-		$sep_1 = '- +';
-		$sep_2 = '+ -';
 		foreach($t5 as &$l5) {
 			$morphologie = $l5[0];
-			$pos_1 = strpos($morphologie, $sep_1);
-			$pos_2 = strpos($morphologie, $sep_2);
+			$pos_1 = strpos($morphologie, '- +');
+			$pos_2 = strpos($morphologie, '+ -');
 			if($pos_1 !== false && $pos_2 !== false) $m_racines = trim(substr($morphologie, $pos_1+3, $pos_2-($pos_1+3)));
 			elseif($pos_1 === false && $pos_2 !== false) $m_racines = trim(substr($morphologie, 0,  $pos_2-2));
 			elseif($pos_1 !== false && $pos_2 === false) $m_racines = trim(substr($morphologie, $pos_1+3));
@@ -309,7 +308,7 @@ klog::l("************************");
 			$l5[4] = $cpteur;
 		}
 		usort($t5, 'self::sortC3C4');
-foreach($t5 as $l) klog::l("48 t5  $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5]");
+foreach($t5 as $l) klog::l("48 t5  $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5], $l[6]");
 	}
 	
 	
@@ -331,37 +330,37 @@ foreach($t5 as $l) klog::l("29 t5  $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5]
 	
 	static private function verifBase($pdo, $base_verif, $base_cond, &$t5) {
 		foreach($t5 as $k=>&$l) {
-			if(strpos($l[2], $base_verif) !== false) {
-				$racines = trim($l[0]);
-				$pos_1 = strpos('- +', $racines);
-				$pos_2 = strpos('+ -', $racines);
-				if($pos_1 !== false && $pos_2 !== false) $racines = trim(substr($racines, $pos_1+4, $pos_2-($pos_1+5)));
-				elseif($pos_1 === false && $pos_2 !== false) $racines = trim(substr($racines, 0,  $pos_2-2));
-				elseif($pos_1 !== false && $pos_2 === false) $racines = trim(substr($racines, $pos_1));
-				
-				$debut = $cpteur = $pos_tiret = 0;
-				for(;;) {
-					$debut = strpos($racines, '-', $debut);
-					if($debut === false) break;
-					$pos_tiret = $debut++;
-					$cpteur++;
-				}
-				
-				$resultat = strlen($racines);
-				$racine_v = substr($racines, $pos_tiret);
-				$a_trouver = 0;
-				
-				$ensemble_cond = '';
-				$pdo->execute(array(':rdx'=>$racine_v, ':cat'=>'r.v.'));
-				if($pdo->rowCount()) {
-					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
-					foreach($rs as $r) {
-						if(strpos($r['Bases'], $base_cond) !== false) $a_trouver++;
-						$ensemble_cond .= $base_verif.' / '.$base_cond.' / '.$racine_v.' / '.$r['Racine']; 
-					}
-					if($a_trouver == 0) $l[1] = '***';
-				}			
+			if(strpos($l[2], $base_verif) === false) continue;
+			
+			$racines = trim($l[0]);
+			$pos_1 = strpos($racines, '- +');
+			$pos_2 = strpos($racines, '+ -');
+			if($pos_1 !== false && $pos_2 !== false) $racines = trim(substr($racines, $pos_1+4, $pos_2-($pos_1+5)));
+			elseif($pos_1 === false && $pos_2 !== false) $racines = trim(substr($racines, 0,  $pos_2-1));
+			elseif($pos_1 !== false && $pos_2 === false) $racines = trim(substr($racines, $pos_1));
+
+			$debut = $cpteur = $pos_tiret = 0;
+			for(;;) {
+				$debut = strpos($racines, '-', $debut);
+				if($debut === false) break;
+				$pos_tiret = $debut++;
+				$cpteur++;
 			}
+
+			//$resultat = strlen($racines);
+			$racine_v = substr($racines, $pos_tiret);
+			$a_trouver = 0;
+
+//			$ensemble_cond = '';
+			$pdo->execute(array(':rdx'=>$racine_v, ':cat'=>'r.v.'));
+			if($pdo->rowCount()) {
+				$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
+				foreach($rs as $r) {
+					if(strpos($r['Bases'], $base_cond) !== false) $a_trouver++;
+//					$ensemble_cond .= $base_verif.' / '.$base_cond.' / '.$racine_v.' / '.$r['Racine']; 
+				}
+				if($a_trouver == 0) $l[1] = '***';
+			}			
 		}
 	}
 
@@ -392,7 +391,7 @@ foreach($t5 as $l) klog::l("29 t5  $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5]
 			}
 		}
 		usort($t9, 'self::sortC0C1');
-foreach($t9 as $k=>$l) klog::l("13-a t9  $k: $l[0],  $l[1],  $l[2]");
+//foreach($t9 as $k=>$l) klog::l("13-a t9  $k: $l[0],  $l[1],  $l[2]");
 		$o = null;
 		foreach($t9 as $k=>&$l9) {
 			if($o && $l9[0] == $o[0] && $l9[1] == $o[1]) unset($t9[$k]);
@@ -400,7 +399,7 @@ foreach($t9 as $k=>$l) klog::l("13-a t9  $k: $l[0],  $l[1],  $l[2]");
 
 		}
 		$t9 = array_values($t9);
-foreach($t9 as $k=>$l) klog::l("13 t9-b  $k: $l[0],  $l[1],  $l[2]");
+//foreach($t9 as $k=>$l) klog::l("13 t9-b  $k: $l[0],  $l[1],  $l[2]");
 		
 		if(count($t9)) {
 			if(strlen(trim($t5[0][0])) == 0) {
@@ -437,22 +436,20 @@ foreach($t9 as $k=>$l) klog::l("13-c t9  $k: $l[0],  $l[1],  $l[2]");
 	
 	// 12
 	static private function traduction12(&$t5, &$t8) {
-		$sep_1 = '- +';
-		$sep_2 = '+ -';
 		foreach($t5 as &$l5) {
 			$morphologie = $l5[0];
-			$pos_1 = strpos($morphologie, $sep_1);
-			$pos_2 = strpos($morphologie, $sep_2);
+			$pos_1 = strpos($morphologie, '- +');
+			$pos_2 = strpos($morphologie, '+ -');
 			if($pos_1 !== false && $pos_2 !== false) $m_racines = trim(substr($morphologie, $pos_1+3, $pos_2-($pos_1+3)));
-			elseif($pos_1 === false && $pos_2 !== false) $m_racines = trim(substr($morphologie, 0,  $pos_2-2));
+			elseif($pos_1 === false && $pos_2 !== false) $m_racines = trim(substr($morphologie, 0,  $pos_2-1));
 			elseif($pos_1 !== false && $pos_2 === false) $m_racines = trim(substr($morphologie, $pos_1+3));
 			else $m_racines = trim($morphologie);
 
 			$categorie = $l5[2];
-			$pos_1 = strpos($categorie, $sep_1);
-			$pos_2 = strpos($categorie, $sep_2);
+			$pos_1 = strpos($categorie, '- +');
+			$pos_2 = strpos($categorie, '+ -');
 			if($pos_1 !== false && $pos_2 !== false) $m_categorie = trim(substr($categorie, $pos_1+3, $pos_2-($pos_1+3)));
-			elseif($pos_1 === false && $pos_2 !== false) $m_categorie = trim(substr($categorie, 0,  $pos_2-2));
+			elseif($pos_1 === false && $pos_2 !== false) $m_categorie = trim(substr($categorie, 0,  $pos_2-1));
 			elseif($pos_1 !== false && $pos_2 === false) $m_categorie = trim(substr($categorie, $pos_1+3));
 			else $m_categorie = trim($categorie);
 			
@@ -577,16 +574,16 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 			//array_splice($t70, 0, 0, array('££££'));
 			$t70[] = array('££££', '', '', '', '', '', '');
 //			$t70 = array_values($t70);
-//foreach($t70 as $k=>$l) klog::l("12_2-c t70  $k: $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5],  $l[6]");
+foreach($t70 as $k=>$l) klog::l("12_2-c t70  $k: $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5],  $l[6]");
 
-			$col15 = $l5[1];
+			$old = $col15 = $l5[1];
 			$len70 = count($t70);
 			$ltst = count(self::$testes);
 			$n = $len70-1;
 			for($ii = 1; $ii < $n; $ii++) {
 				for($j = 0; $j < $ltst; ) {
 					$tst = self::$testes[$j++];
-					if(empty($tst[0]) || $tst[0] == '*') continue;
+					if(empty($tst[0]) || substr($tst[0],0,1) == '*') continue;
 
 					$source = '';
 					$switch = 0;
@@ -594,7 +591,7 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 					while($j < $ltst && $m_test == substr($tst[0], 0, strlen($tst[0])-2)) {
 						$s = $tst[1];
 						if(substr($s, 0, 2) != '//') {
-							$s = self::wd2php($s)."\n";
+							$s = self::wd2php($s);
 							if($switch && ($s == '}' || substr($s, 0, 5) == 'case ' || $s == 'default:')) {
 								$source .= "break;\n";
 								$switch++;
@@ -607,6 +604,11 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 //file_put_contents('/home/paul/tmp/src.php', "//-----\n$source", FILE_APPEND);
 					try {
 						eval($source);
+						if($col15 == '***') $test_fait = 1;
+//if($old != '***' && $col15 == '***') {
+//	klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$m_test : $morphologie : $categorie : $source");
+//	$old = '***';
+//}
 					} catch(Exception $e) {
 						klog::l("**********************".$e->getMessage());
 					}
