@@ -547,6 +547,7 @@ klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
 				$visiteAnnee = isset($obj['VisiteAnnee']) ? $obj['VisiteAnnee'] : '';
+				$inscrits = isset($obj['Inscrits']) ? $obj['Inscrits'] : '';
 				$nonInscrit = isset($obj['NonInscrit']) ? $obj['NonInscrit'] : '';
 				$soutien = isset($obj['Soutien']) ? $obj['Soutien'] : '';
 				$dons = isset($obj['Dons']) ? $obj['Dons'] : '';
@@ -643,9 +644,15 @@ left join `##_Cadref-Niveau` n on n.Id=c0.NiveauId ";
 				}
 				elseif($visite != '') {
 					$sql .= "
+,r.Attente,r.DateAttente
 from `##_Cadref-Adherent` e
 inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.VisiteId=$visite 
 left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
+					switch($inscrits) {
+						case 'I': $whr = "and r.Attente=0 and r.Supprime=0"; break;
+						case 'A': $whr = "and r.Attente<>0 and r.Supprime=0"; break;
+						default: $whr = "and r.Supprime=0";
+					}
 					$rupture = 'S';
 					//$contenu = 'A';
 				}
@@ -654,6 +661,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 from `##_Cadref-Adherent` e
 inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.Annee='$visiteAnnee' 
 left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
+					$whr = "and r.Supprime=0";
 					$rupture = 'S';
 					//$contenu = 'A';
 				}
@@ -714,7 +722,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 //					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
 
-					$inscrits = (isset($obj['Inscrits']) && $obj['Inscrits'] != '') ? $obj['Inscrits'] : '';
+					//$inscrits = (isset($obj['Inscrits']) && $obj['Inscrits'] != '') ? $obj['Inscrits'] : '';
 					if($inscrits == 'I') $whr .= "and i.Attente=0 ";
 					elseif($inscrits == 'A') $whr .= "and i.Attente<>0 ";
 
@@ -750,11 +758,11 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($whr != '') $sql .= "where ".substr($whr, 4);
 				if($adherent) {
 					if($contenu == 'Q') $sql .= "order by e.Nom, e.Prenom ";  // e.CP, e.Ville, 
-					else $sql .= "order by e.Nom, e.Prenom ";
+					else $sql .= " order by e.Nom, e.Prenom ";
 				}
 				else {
-					if(isset($obj['OrdreAtt']) && $obj['OrdreAtt']) $sql .= "order by i.DateAttente ";
-					else $sql .= "order by i.CodeClasse, e.Nom, e.Prenom ";
+					if(isset($obj['OrdreAtt']) && $obj['OrdreAtt']) $sql .= " order by i.DateAttente ";
+					else $sql .= " order by i.CodeClasse, e.Nom, e.Prenom ";
 				}
 				break;
 				
@@ -780,7 +788,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 				if($obj['mode'] == 'mail')
 					$sql .= " and a.Mail like '%@%' ";
 
-				$sql .= "order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
+				$sql .= " order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
 				
 			case 2: // fiches incomplètes
