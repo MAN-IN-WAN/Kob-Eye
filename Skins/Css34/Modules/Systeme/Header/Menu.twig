@@ -13,22 +13,22 @@
 <div id="submenu"  v-if="!render">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-xs-3  col-md-3">
+            <div class="col-lg-3 col-xs-3 col-md-3 col-sm-3">
                 <div class="logo">
                      <a href="/"><img src="/{{ user.Avatar }}" class="img-responsive" /></a>
                  </div>
             </div>
-            <div class="col-lg-3 col-xs-3  col-md-3">
+            <div class="col-lg-3 col-xs-3 col-md-3 col-sm-3">
                 <a class="square blue" href="/Ateliers">
                     {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-LEFT'))) }}
                 </a>
             </div>
-            <div class="col-lg-3 col-xs-3  col-md-3">
+            <div class="col-lg-3 col-xs-3 col-md-3 col-sm-3 ">
                 <a class="square green" href="/Sorties">
                     {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-CENTER'))) }}
                 </a>
             </div>
-            <div class="col-lg-3 col-xs-3  col-md-3">
+            <div class="col-lg-3 col-xs-3 col-md-3 col-sm-3">
                 <a class="square pink" href="/Formations">
                     {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-RIGHT'))) }}
                 </a>

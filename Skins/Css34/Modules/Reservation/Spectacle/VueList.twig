@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="onSubmit">
         <div class="row">
-            <div class="col-lg-12 hidden-xs " style="padding: 0;margin:0 0 10px;">
+            <div class="col-lg-12 hidden-xs col-sm-12" style="padding: 0;margin:0 0 10px;">
                 {{ include(template_from_string(module('Reservation/Timeline'))) }}
             </div>
         </div>
@@ -11,13 +11,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-10 col-xs-12" id="spectacle">
+            <div class="col-lg-10 col-xs-12 col-sm-12" id="spectacle">
                 {% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item,template_spectacle_item %}
                 <div class="spectacles-list spectacles-list-reset">
                     {{ template_spectacle_item() }}
                 </div>
             </div>
-            <div class="col-lg-2 hidden-xs" id="filters">
+            <div class="col-lg-2 col-sm-12 hidden-xs" id="filters">
                 {{ include(template_from_string(module('Reservation/Filters'))) }}
             </div>
         </div>
@@ -27,7 +27,7 @@
     module.exports = {
         name: 'spectacle-container',
         template: '#sorties',
-        data (){
+        data: function (){
             return {
                 busy:false,
                 public: '',
@@ -48,7 +48,7 @@
         },
         components: {
             /*spectacleList*/
-            vuejsDatepicker
+            vuejsDatepicker: vuejsDatepicker
         },
         methods: {
             onSubmit: function (event) {

@@ -43,7 +43,7 @@
     module.exports = {
         name: 'footer-newsletter',
         template: '#newsletter',
-        data (){
+        data: function(){
             return {
                 render : true,
                 newsAdress : '',
@@ -51,12 +51,12 @@
                 suscError : false,
                 unsuscribe : false,
                 unsuscOk : false,
-                unsuscError : false,
+                unsuscError : false
             };
         },
         methods: {
             submit: function (event) {
-                console.log('COMP submit detected register newsletter',);
+                console.log('COMP submit detected register newsletter');
                 this.addSuscribe();
             },
             register: function () {
@@ -99,12 +99,10 @@
             },
         },
         mounted: function () {
-
-        },created: function(){
-            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            console.log('>>>>>>>>>>>>>>>>>MOUNTED');
         },
-        watch: {
-
+        created: function(){
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
         }
     }
 </script>

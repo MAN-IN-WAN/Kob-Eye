@@ -1531,7 +1531,7 @@ textarea.Contact.input-css34 {
   ##Device = Tablets, Ipads (portrait)
   ##Screen = B/w 768px to 1024px
 */
-@media (min-width: 469px) and (max-width: 766px) {
+@media (min-width: 469px) and (max-width: 1024px) {
 
 	#wrap {
 		display: flex!important;
@@ -1539,8 +1539,17 @@ textarea.Contact.input-css34 {
 	.menu {
 		display: none!important;
 	}
-
+    #float{
+        position:absolute;
+        left: -350px;
+        top:-20px;
+        width:80%;
+        z-index:1000;
+        background-color: white;
+        -webkit-transition: left 0.5s linear;
+    }
 }
+
 
 /* ecran pc 1440 */
 @media (min-width: 960px) and (max-width: 1440px) {
@@ -1576,18 +1585,13 @@ Et dans les cas où votre design initial est basé sur une largeur de 1024px, il
     margin: 0;
     display: none;
     color: #f00;
-    /*transition: transform .4s cubic-bezier(.25, .1, .25, 1);*/
-    -webkit-transition: all .5s ease-in;
+     -webkit-transition: all .5s ease-in;
     transition: all .5s ease-in;
 }
 
 
 #wrap:target {
-    /*-webkit-transform: translate3d(10px, 0, 1100px);*/
-    /*-moz-transform: translate3d(10px, 0, 1100px);*/
-    /*-o-transform: translate3d(10px, 0, 1100px);*/
-    /*-ms-transform: translate3d(10px, 0, 1100px);*/
-    /*transform: translate3d(10px, 0, 1100px);*/
+
 }
 
 #open,
@@ -1595,15 +1599,7 @@ Et dans les cas où votre design initial est basé sur une largeur de 1024px, il
     display: block;
 }
 
-/*#wrap:target #open,*/
-/*#wrap:not(:target) #close {*/
-/*    display: none;*/
-/*}*/
 
-/*#wrap:target #open {*/
-/*    display: none;*/
-
-/*}*/
 
 
 #close a {
@@ -1613,28 +1609,7 @@ Et dans les cas où votre design initial est basé sur une largeur de 1024px, il
     z-index: 10000;
 }
 
-/*#bar{*/
-/*    border-bottom-style: solid;*/
-/*    border-top-style: solid;*/
-/*    border-bottom-color: black;*/
-/*    border-top-color: black;*/
-/*    border-top-right-radius: 2px;*/
-/*    border-top-left-radius: 2px;*/
-/*    width: 30px;*/
-/*    height: 15px;*/
-/*    display: block;*/
-/*}*/
 
-/*#bar2{*/
-/*    border-bottom-style: solid;*/
-/*    border-bottom-color: black;*/
-/*    border-bottom-right-radius: 2px;*/
-/*    border-bottom-left-radius: 2px;*/
-/*    width: 30px;*/
-/*    height: 13px;*/
-/*    display: block;*/
-
-/*}*/
 
 svg {
     width: 30px;
@@ -1643,6 +1618,7 @@ svg {
 #wrap:target #float {
     left: 0;
 }
+
 #float{
     position:absolute;
     left: -350px;
@@ -1650,8 +1626,33 @@ svg {
     width:80%;
     z-index:1000;
     background-color: white;
-    /*border: 1px solid black;*/
-    /*border-radius:7px;*/
-    /*box-shadow: 1px 1px black, -0.1em 0.1em 2em black;*/
     -webkit-transition: left 0.5s linear;
+}
+
+/* ecran pc 1440 */
+@media (min-width: 469px) and (max-width: 1024px) {
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    #float{
+        left: -830px;
+    }
+    #submenu .container {
+        width: 100%;
+    }
+
+    #submenu .container .col-sm-3 {
+        width: 24%;
+    }
+    .spectacles-list {
+        margin: 0;
+        column-count: 2;
+        column-gap: 0;
+    }
+
+
+    /* ADMIN */
+
 }

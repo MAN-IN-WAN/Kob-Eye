@@ -32,7 +32,7 @@
     module.exports = {
         name: 'reservation-partenaires',
         template: '#partenaires',
-        data() {
+        data: function() {
             return {
                 busy:false,
                 genre: '',
@@ -111,7 +111,7 @@
                 }
                 return false
             },
-            setPage(val){
+            setPage: function(val){
                 if(val < 1) val = 1;
                 if(val > this.pagination.max) val = this.pagination.max;
                 this.pagination.current = val;

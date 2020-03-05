@@ -50,22 +50,22 @@
         <div id="submenu">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container logo-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3  submenu-container logo-container">
                         <div class="logo">
                             <router-link to="/"><img src="/{{ user.Avatar }}" class="img-responsive"/></router-link>
                         </div>
                     </div>
-                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3 submenu-container square-container">
                         <router-link to="/Ateliers" class="square blue">
                             {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-LEFT'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3 submenu-container square-container">
                         <router-link class="square green" to="/Sorties">
                             {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-CENTER'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3  col-xs-3  col-md-3 submenu-container square-container">
+                    <div class="col-lg-3  col-xs-3  col-md-3   col-sm-3 submenu-container square-container">
                         <router-link class="square pink" to="/Formations">
                             {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-RIGHT'))) }}
                         </router-link>
@@ -79,7 +79,7 @@
     module.exports = {
         name: 'header-menu',
         template: '#header',
-        data() {
+        data: function() {
             return {
                 render: true
             };
