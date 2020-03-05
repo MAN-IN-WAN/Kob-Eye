@@ -69,15 +69,28 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 	
 	$scope.clearFunction = function() {
-		$scope.obj = {Annee:'{{ Annee }}', Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}};
+		$scope.obj = {Annee:'{{ Annee }}', Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}, smsSize:''};
 	}
+	
 	
 	$scope.sessionInfo = function() {
 		var args = {name: 'PrintAdherent'} ;
 		var ajax = $scope.{{ identifier }}callMethod(args,'{{ function }}Session');
 		ajax.success(
 			function(data) {
-				if(data.data) $scope.obj = data.data;
+				if(data.data) {
+//console.log('++++++++++++++>>>>>>>>>>>>>>>>>>>',data.data);
+					let d = data.data;
+					let o = $scope.obj;
+					o.Antenne = d.Antenne;
+					o.Enseignant = d.Enseignant;
+					o.Disc = d.Disc;
+					o.Rupture = d.Rupture;
+					o.Contenu = d.Contenu;
+					o.Sujet = d.Sujet;
+					o.Corps = d.Corps;
+					o.SMS = d.SMS;
+				}
 			}
 		).error(
 			function() {
@@ -88,7 +101,6 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 
 	$scope.checkSmsSize = function(obj) {
 		let s = obj.SMS;
-console.log('>>>>>>>'+s+':'+s.length+':'+obj.SMS.length);
 		obj.smsSize = s ? ' '+s : '';
 	}
 	
