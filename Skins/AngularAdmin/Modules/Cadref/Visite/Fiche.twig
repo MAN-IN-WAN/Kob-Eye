@@ -36,7 +36,7 @@
 								</div>
 								<div class="col-md-2">
 {#									{{ finput(f.Annee, o, not admin, '', 'width:50px') }}#}
-									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
+									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" ng-init="{{ o }}.Annee='{{ AnneeDern }}'" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
 										{% for v,c in annees %}
 											<option value="{{ v }}">{{ v }}</option>
 										{% endfor %}

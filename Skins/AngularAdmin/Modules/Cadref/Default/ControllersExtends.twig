@@ -145,9 +145,18 @@
 				}
 			}
 			obj[field+'IdLabel'] = '';
-		}
-		
+		}	
 		{% endif %}
+		
+		{% if objecttype == 'Visite' %}
+			var ajax = $scope.{{ ident }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(function(data) {
+				$scope.Enseignants = data.data.Enseignants;
+			}).error(function() {
+				console.error('>>>>>> error Method GetFormInfo ');
+			});
+		{% endif %}
+		
 
 		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
 
@@ -1679,7 +1688,7 @@
 					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleW = data.data.LibelleW;
-					$scope.CadrefContent.$dirty = d
+					$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 				}
 			).error(
 				function() {
@@ -1704,7 +1713,7 @@
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.Enseignants = data.data.Enseignants;
-					$scope.CadrefContent.$dirty = d
+					$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 				}
 			).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1860,10 +1869,7 @@
 			ajax.success(function(data) {
 				var d = $scope.CadrefContent.$dirty;
 				$scope.Enseignants = data.data.Enseignants;
-console.log(">>>>>>",data)
-				$timeout(function(){
-					$scope.CadrefContent.$dirty = d
-				},50);
+				$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 50);
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
@@ -1888,7 +1894,7 @@ console.log(">>>>>>",data)
 			$timeout(function(){
 				angular.element($('#displayVisite')).triggerHandler('click');
 				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
-			},0);
+			},10);
 		}
 		
 		// pour multi-select
