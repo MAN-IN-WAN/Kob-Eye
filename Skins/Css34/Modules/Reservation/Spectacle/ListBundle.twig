@@ -1,14 +1,14 @@
 <form v-on:submit.prevent="onSubmit">
     <div class="row">
-        <div class="col-lg-12 col-xs-12 " style="padding: 0 5px;margin:5px 0">
+        <div class="col-lg-12 col-xs-12 col-sm-12 " style="padding: 0 5px;margin:5px 0">
             {{ include(template_from_string(module('Reservation/Timeline'))) }}
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-10 col-xs-8" id="spectacle">
+        <div class="col-lg-10 col-xs-8  col-sm-8" id="spectacle">
             {{ include(template_from_string(module('Reservation/Spectacle/List'))) }}
         </div>
-        <div class="col-lg-2 col-xs-4" id="filters">
+        <div class="col-lg-2 col-xs-4  col-sm-4" id="filters">
             {{ include(template_from_string(module('Reservation/Filters'))) }}
         </div>
     </div>

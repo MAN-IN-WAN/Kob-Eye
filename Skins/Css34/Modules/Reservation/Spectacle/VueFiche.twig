@@ -157,13 +157,13 @@
                 this.getData(url);
             }
         },
-        beforeRouteEnter(to, from, next) {
-            next((vm) => {
+        beforeRouteEnter: function(to, from, next) {
+            next(function(vm){
                 vm.from = from;
                 console.log(from);
             });
         },
-        beforeRouteLeave (to, from , next) {
+        beforeRouteLeave : function(to, from , next) {
             this.$parent.$data.specId.val = null;
             next();
         }

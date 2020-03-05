@@ -6,13 +6,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-10 col-xs-12 " id="spectacle">
+            <div class="col-lg-10 col-sm-12  col-xs-12 " id="spectacle">
                 {% from "Skins/Css34/Modules/Reservation/Spectacle/ListItem.twig" import  spectacle_item,template_spectacle_item %}
                 <div class="spectacles-list spectacles-list-reset ">
                     {{ template_spectacle_item() }}
                 </div>
             </div>
-            <div class="col-lg-2 hidden-xs " id="filters">
+            <div class="col-lg-2 col-sm-12 hidden-xs " id="filters">
                 {{ include(template_from_string(module('Reservation/Filters'))) }}
             </div>
         </div>
@@ -22,7 +22,7 @@
     module.exports = {
         name: 'spectacle-home',
         template: '#sorties',
-        data (){
+        data : function (){
             return {
                 busy:false,
                 public: '',
@@ -42,7 +42,7 @@
         },
         components: {
             /*spectacleList*/
-            vuejsDatepicker
+            vuejsDatepicker: vuejsDatepicker
         },
         methods: {
             onSubmit: function (event) {

@@ -31,7 +31,7 @@ if(!$err){
     $Mail -> From( $data['mail']);
     $Mail -> ReplyTo($data['mail']);
     $Mail -> To($GLOBALS['Systeme']->Conf->get('MODULE::RESERVATION::MAIL'));
-    $Mail -> Bcc('web@abtel.fr');
+    /*$Mail -> Bcc('web@abtel.fr');*/
     $bloc = new Bloc();
     $mailContent = '
                     <strong>Objet de la demande</strong> : '.(!empty($data['objet'])?$data['objet']:'Non précisé').'<br/>
@@ -62,7 +62,7 @@ if(!$err){
     $Mail -> From($GLOBALS['Systeme']->Conf->get('MODULE::RESERVATION::MAIL') );
     $Mail -> ReplyTo($GLOBALS['Systeme']->Conf->get('MODULE::RESERVATION::MAIL'));
     $Mail -> To($data['mail']);
-    $Mail -> Bcc('web@abtel.fr');
+   /* $Mail -> Bcc('web@abtel.fr');*/
     $bloc = new Bloc();
     $mailContent = 'Bonjour '.$data['prenom'].' <span style="text-transform:uppercase">'.$data['nom'].'</span>,<br />
 					Nous avons bien reçu votre demande par email et vous remercions de votre confiance.<br />

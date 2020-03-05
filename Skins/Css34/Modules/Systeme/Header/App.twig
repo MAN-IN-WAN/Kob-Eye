@@ -55,13 +55,13 @@ window.spec = new Vue({
         render: true,
         first: true,
         currentRoute: window.location.pathname,
-        specId
+        specId :''
     },
     router: router,
     components: {
         headerMenu: window.httpVueLoader('/Systeme/Header/VueMenu.vue'),
         footerNewsletter : window.httpVueLoader('/Systeme/Bloc/VueNewsletter.vue'),
-        vuejsDatepicker
+        vuejsDatepicker:''
     }
 });
 window.spec2 = new Vue({
@@ -77,7 +77,7 @@ window.spec3 = new Vue({
     el: '#modalLogin',
     data: {
         render: true,
-        specId
+        specId:''
     },
     components: {
         modalLogin : window.httpVueLoader('/Systeme/Login/VueLogin.vue')
