@@ -219,14 +219,16 @@ class Codex extends genericClass {
 			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
 			"$whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-
+klog::l(">>>>>>>>>>>>>SQL");
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+klog::l(">>>>>>>>>>>>>LOOP");
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
 				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
 				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
+klog::l(">>>>>>>>>>>>>RET");
 		return $dic;
 	}	
 
@@ -278,14 +280,17 @@ class Codex extends genericClass {
 			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
 			"$whr order by s.CodexId,e.Cote";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-
+klog::l(">>>>>>>>>>>>>SQL");
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		
+klog::l(">>>>>>>>>>>>LOOP");
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
 				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
 				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
+klog::l("RET");
 		return $dic;
 	}	
 
@@ -431,12 +436,13 @@ class Codex extends genericClass {
 				$whr = "where ".($cdx ? "e.CodexId in ($cdx) and" : "");
 				$ord = '';
 				$sql = '';
+				$grp = '';
 				
 				switch($elm) {
 					case 'designation': 
-						$whr .= " e.Element $mode"; $ord = "e.Element,e.CodexId,e.Cote"; break;
+						$whr .= " e.Element $mode"; $ord = "e.Element,e.CodexId,e.Cote"; $grp = "e.CodexId,e.Element"; break;
 					case 'theme':
-						$whr .= " e.Theme $mode"; $ord = "e.Theme,e.CodexId,e.Cote "; break;
+						$whr .= " e.Theme $mode"; $ord = "e.Theme,e.CodexId,e.Cote "; $grp = "e.CodexId,e.Theme"; break;
 					case 'valeur':
 						$grp = $cond->elements ? '' : "group by e.CodexId,v.Valeur,e.Element";
 						$whr .= " v.Valeur $mode $grp";
@@ -457,7 +463,7 @@ class Codex extends genericClass {
 
 
 				
-				$grp = $cond->elements ? '' : 'group by e.CodexId';
+				$grp = $cond->elements ? '' : "group by $grp";
 				$whr .= " $grp order by $ord";
 				
 				$dic = self::getElementBasic($whr);

@@ -32,7 +32,7 @@ class GDN extends genericClass {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list, 'sql'=>$sql);
+		return array('words'=>$list); //, 'sql'=>$sql);
 	}
 
 	static function GetGDN($args) {

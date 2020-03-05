@@ -21,4 +21,4 @@
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime.edcfb85a0df670b1219f.js" defer></script><script src="polyfills-es5.1fbf10247479a03cb95d.js" nomodule defer></script><script src="polyfills.e7b7e15bfa4509170f42.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.adb5b9e670df71a752ea.js" defer></script></body>
+<script src="runtime.b06b0cf37b1eb9794a65.js" defer></script><script src="polyfills-es5.1fbf10247479a03cb95d.js" nomodule defer></script><script src="polyfills.e7b7e15bfa4509170f42.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.1748329352fbe99f368b.js" defer></script></body>
