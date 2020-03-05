@@ -1,6 +1,6 @@
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $timeout, $routeParams, $http, $window) {
 
-	$scope.obj = {Rupture:'N', CurrentUrl:'{{ Url }}', Pieces:{data:[], mode:'', filePath:''}, smsSize:''};
+	$scope.obj = {Annee:'{{ Annee }}', Rupture:'N', CurrentUrl:'{{ Url }}', Pieces:{data:[], mode:'', filePath:''}, smsSize:''};
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
@@ -69,7 +69,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 	
 	$scope.clearFunction = function() {
-		$scope.obj = {Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}};
+		$scope.obj = {Annee:'{{ Annee }}', Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}};
 	}
 	
 	$scope.sessionInfo = function() {
@@ -87,7 +87,8 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 
 	$scope.checkSmsSize = function(obj) {
-		let s = obj.SMS.length;
+		let s = obj.SMS;
+console.log('>>>>>>>'+s+':'+s.length+':'+obj.SMS.length);
 		obj.smsSize = s ? ' '+s : '';
 	}
 	
