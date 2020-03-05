@@ -1860,7 +1860,10 @@
 			ajax.success(function(data) {
 				var d = $scope.CadrefContent.$dirty;
 				$scope.Enseignants = data.data.Enseignants;
-				$scope.CadrefContent.$dirty = d
+console.log(">>>>>>",data)
+				$timeout(function(){
+					$scope.CadrefContent.$dirty = d
+				},50);
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});

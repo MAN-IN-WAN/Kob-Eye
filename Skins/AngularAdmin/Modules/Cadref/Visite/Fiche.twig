@@ -35,7 +35,12 @@
 									{{ label("Année") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.Annee, o, not admin, '', 'width:50px') }}
+{#									{{ finput(f.Annee, o, not admin, '', 'width:50px') }}#}
+									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
+										{% for v,c in annees %}
+											<option value="{{ v }}">{{ v }}</option>
+										{% endfor %}
+									</select>
 								</div>
 							</div>
 							{{ flinput(f.Libelle, o) }}
@@ -96,8 +101,14 @@
 									{{ label("Animateurs") }}
 								</div>
 								<div class="col-md-10">
-									<multiple-autocomplete class="form-control cadref-no-padding" 
+{#									<multiple-autocomplete class="form-control cadref-no-padding" 
 										ng-model="obj.EnseignantEnseignants"
+										object-property="label"
+										model-labels="obj.EnseignantEnseignantslibelle"
+										suggestions-arr="Enseignants">
+									</multiple-autocomplete>
+#}									<multiple-autocomplete class="form-control cadref-no-padding" 
+										ng-model="{{ o }}.EnseignantEnseignants"
 										object-property="label"
 										model-labels="obj.EnseignantEnseignantslibelle"
 										suggestions-arr="Enseignants">
