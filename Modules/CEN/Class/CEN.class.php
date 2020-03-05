@@ -5,8 +5,14 @@ class CEN extends Module {
 	// liste d'entrées du CEN 
 	public static function GetCEN($args) {	
 		switch($args['mode']) {
+			case 'chacha-dict':
+				return Chachalaca::GetDics();
+
+			case 'chacha-list':
+				return Chachalaca::GetList($args);
+
 			case 'chacha':
-				return Chachalaca::Suff($args);
+				return Chachalaca::GetMorpho($args);
 
 			case 'tlachia-anal':
 				return Codex::GetAnal($args);
@@ -108,7 +114,7 @@ class CEN extends Module {
 				return array('lang'=>$lang);
 
 			default:
-				return array('error'=>'mode inconnu:'.$args['mode']);
+				return array('error'=>'Mode inconnu:'.$args['mode']);
 		}
 	}
 

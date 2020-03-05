@@ -153,7 +153,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//-----------------------------
 	// MESSAGE
 	//-----------------------------
-	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
+	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: '', smsSize:''};
 	$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 	$scope.pieceAdd = function() {
 		var p = $scope.msgObj.Pieces;
@@ -192,6 +192,12 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+	
+	$scope.checkSmsSize = function(obj) {
+		let s = obj.SMS.length;
+		obj.smsSize = s ? ' '+s : '';
+	}
+
 	
 	{% if objecttype == 'Enseignant' %}
 	//--------------------------------

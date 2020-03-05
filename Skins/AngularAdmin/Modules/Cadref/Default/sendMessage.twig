@@ -58,10 +58,10 @@
 			<div style="height: 5px"></div>
 			<div class="row">
 				<div class="col-md-1">
-					{{ label('SMS') }}
-				</div>
+					<label class="form-control-label cadref-label" style="line-height:1">SMS{[{msgObj.smsSize}]}</label>
+				</div> 
 				<div class="col-md-10">
-					<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="msgObj.SMS"></textarea>
+					<textarea class="form-control cadref-input" maxlength="160" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="msgObj.SMS" ng-change="checkSmsSize(msgObj)"></textarea>
 				</div>
 			</div>
 			{% endif %}

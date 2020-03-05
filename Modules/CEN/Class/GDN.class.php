@@ -3,7 +3,7 @@
 class GDN extends genericClass {
 	
 	static function GetDics() {
-		$dics = Sys::getData('CEN', 'Dictionnaire', 0, 999, 'ASC', 'NOM');
+		$dics = Sys::getData('CEN', 'Dictionnaire', 0, 999, 'ASC', 'Nom');
 		$dicId= array();
 		$dic = array();
 		foreach($dics as $d) {
@@ -32,7 +32,7 @@ class GDN extends genericClass {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list, 'sql'=>$sql);
+		return array('words'=>$list); //, 'sql'=>$sql);
 	}
 
 	static function GetGDN($args) {
