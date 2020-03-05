@@ -15,7 +15,7 @@
 		}
 		$scope.saveFicheCadref = function(id) {
 			$scope.{{ ident }}saveExt($scope.{{ ident }}callbakSave);
-			if($scope.CadrefContent) $scope.CadrefContent.$dirty = false;
+			if($scope.CadrefContent) $scope.CadrefContent.$setPristine(); //.$dirty = false;
 		}
 
 		// controle les modifications dans les fiches
