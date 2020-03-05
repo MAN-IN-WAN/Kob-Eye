@@ -20,8 +20,8 @@
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
-						<form name="CadrefContent">
 						<div class="col-md-8" >
+						<form name="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Antenne") }}
@@ -242,9 +242,8 @@
 									{{ ftext(f.Notes, o) }}
 								</div>
 							</div>
-
-						</div>
 						</form>
+						</div>
 						{# block right #}                    
 						<div class="col-md-4" ng-if="{{ o }}.id">
 							<div class="row">

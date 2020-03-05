@@ -486,7 +486,7 @@
 					event.preventDefault();
 					return;
 				}
-				$scope.CadrefContent.$dirty = false;
+				$scope.CadrefContent.$setPristine(); //.$dirty = false;
 			}
 		});
 
@@ -1863,9 +1863,9 @@
 		//--------------------------------------
 
 		$scope.visiteInfo = function() {
+			$scope.CadrefContent.$dirty = false;
 $scope.$watch('CadrefContent.$dirty', function() { 
 console.log('++++++++++++++++++++++++',$scope.CadrefContent.$dirty);});
-			$scope.CadrefContent.$dirty = false;
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
