@@ -1870,8 +1870,9 @@ console.log('++++++++++++++++++++++++',$scope.CadrefContent.$dirty);});
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
 				var d = $scope.CadrefContent.$dirty;
+console.log('-----------------------',d);
 				$scope.Enseignants = data.data.Enseignants;
-				$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 50);
+				$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
