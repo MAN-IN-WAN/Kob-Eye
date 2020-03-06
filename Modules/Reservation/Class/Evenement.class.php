@@ -25,7 +25,7 @@ class Evenement extends genericClass {
 			$S->Save();
 		}
 //		if ($Valid) $this->Valide=1; else $this->Valide=0;
-		genericClass::Save();
+		return genericClass::Save();
 	}
 	
 	function Delete() {
@@ -105,9 +105,9 @@ class Evenement extends genericClass {
 			require_once("Class/Lib/Mail.class.php");
 			$M = new Mail();
 			$M->Subject("[CULTUREETSPORTSOLIDAIRES34.FR] Rapport des reservations ".$S[0]["Nom"]." a la date du ".date("d/m/Y à H:i",$this->DateDebut)." ");
-		//	$M->To($Mail);
+			$M->To($Mail);
 			$M->Cc("myriam@abtel.fr");
-			//$M->Cc("direction@cultureetsportsolidaires34.fr");
+			$M->Cc("direction@cultureetsportsolidaires34.fr");
 			$M->From("noreply@cultureetsportsolidaires34.fr");
 			$M->Body($Mess);
 			$M->Send();

@@ -280,18 +280,16 @@ class CompteMail extends genericClass
     public function getKEServer()
     {
         if (empty($this->Id)) {
-            $pars = array();
             foreach ($this->Parents as $p) {
                 if ($p['Titre'] == 'Server') {
                     $pa = Sys::getOneData('Parc', 'Server/' . $p['Id'], 0, 1, null, null, null, null, true);
-                    $pars[] = $pa;
+                    $this->_KEServer = $pa;
                 }
-
             }
-            $this->_KEServer = $pars;
-        }
-        if (!is_object($this->_KEServer)) {
-            $this->_KEServer = Sys::getOneData('Parc', 'Server/CompteMail/' . $this->Id, 0, 1, '', '', '', '', true);
+        } else{
+            if (!is_object($this->_KEServer)) {
+                $this->_KEServer = Sys::getOneData('Parc', 'Server/CompteMail/' . $this->Id, 0, 1, '', '', '', '', true);
+            }
         }
         if (!is_object($this->_KEServer)) {
             //retroune le serveur de mail par defaut
@@ -512,7 +510,6 @@ class CompteMail extends genericClass
             $this->AddError(array('Message' => 'Un compte mail doit être lié a un serveur.'));
             return false;
         }
-
 
         // Create a new Admin class and authenticate
         $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);

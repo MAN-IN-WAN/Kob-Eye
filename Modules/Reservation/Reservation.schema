@@ -111,7 +111,7 @@
 		<PROPERTIES type="order" fiche="1" list="1" form="1">Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="TypeSortie" driver="mysql" Dico="1">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" fiche="1" list="1" form="1">Nom</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Intervenant" driver="mysql" Operations="add,edit,delete">
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="3">Prenom</PROPERTIES>
@@ -133,7 +133,7 @@
 		<PROPERTIES type="text" fiche="1" form="1" description="Information de réservation">InformationReservation</PROPERTIES>
 		<PROPERTIES type="boolean" fiche="1" form="1" description="Utiliser la contremarque" default="1">TypeContreMarque</PROPERTIES>
 		<PROPERTIES type="boolean" fiche="1" form="1" description="Impression de la contremarque" default="0">Imprimer</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id" action="Link">ClientId</FKEY>
+		<FKEY card="1,1" data="Client,Id" action="Link" fiche="1" description="Structure sociale">ClientId</FKEY>
 		<FKEY card="0,n" data="Evenement,Id"  action="Link">EvenementId</FKEY>
 		<FUNCTION title="Imprimer Contremarque">ImprimerCM</FUNCTION>
 	</OBJECTCLASS>
@@ -166,7 +166,7 @@
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" searchOrder="1" description="Libellé">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" >Adresse</PROPERTIES>
 		<PROPERTIES type="int" fiche="1" form="1" description="Code Postal">CodPos</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Ville::Nom" description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" query="Geographie/Pays/6/Region/1949/Departement/*/Ville::Nom" description="Ville">Ville</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Téléphone">TelInfo</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Téléphone">TelResa</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Transport en commun">Transport</PROPERTIES>

@@ -53,7 +53,7 @@
                             <tr v-for="e in spectacle.events">
                                 <td :inner-html.prop="e.DateDebut | timestamp"></td>
                                 <td>{{ e.Salle.Nom }}</td>
-                                <td class="hidden-xs">{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} {{ e.Salle.Handi }} </td>
+                                <td class="hidden-xs">{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} <!--{{ e.Salle.Handi }} --> </td>
                                   <td style="text-align: center">
                                <!--     <a v-if="e.Structure.Tel!=''" :href="'tel:'+e.Structure.Tel"><i  class="fas fa-phone" style="color:green"></i></a>
                                     <i v-if="e.Structure.Tel==''" class="fas fa-times" style="color:red"></i>-->
@@ -92,8 +92,9 @@
 <!--                    <h3>ACCES</h3>-->
 <!--                    <p >{{ spectacle.Acces }}</p>-->
 <!--                </div>-->
-                    <div class="Partenaires">
+                    <p class="Partenaires">
                         <h3>PARTENAIRES</h3>
+                        <h3 class="titre-partenaires" :style="{backgroundColor: spectacle.Couleur, color: '#ffffff'}">{{ spectacle.OrganisationOrganisationIdlabel }}</h3>
                         <div class="partList">
                             <a :href="p.lien" v-for="p in spectacle.partenaires" >
                                 <div class="card partenaires-item" :style="{borderColor: spectacle.Couleur}">

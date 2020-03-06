@@ -23,7 +23,7 @@ L'équipe culture et sport solidaires 34.
 </p>
 
 	<div style="overflow:hidden; padding:5px">
-		<img src="/Skins/[!Systeme::Skin!]/Img/logo.jpg" alt="Logo" style="float:left;display:block;position:relative; height:100px"/>
+		<img src="/Skins/Css34/Css/images/css34-logo.jpg" alt="Logo" style="float:left;display:block;position:relative; height:100px"/>
 		<div style="margin-left:50px">
 			<h2 style="color:#000;font-family:Arial;color:#3F3F3F;font-weight:bold;margin:4px 0">Spectacle : [!Obj::Nom!]</h2>
 			<h4>Structure organisatrice : <span style="color:#E33654;"> [!MonOrg::Nom!]</span></h4>

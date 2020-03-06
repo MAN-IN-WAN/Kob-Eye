@@ -61,7 +61,7 @@
                 var me = this;
                 me.busy=true;
                 axios
-                    .get('/Reservation/Organisation/getData.json?filters=~' + this.search + '&page=' + this.pagination.current)
+                    .get('/Reservation/Organisation/getData.json?filters=~' + encodeURIComponent(this.search) + '&page=' + this.pagination.current)
                     .then(function (response) {
                         me.render = false;
                         me.resetData();
