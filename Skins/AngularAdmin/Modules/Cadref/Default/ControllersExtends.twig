@@ -15,7 +15,7 @@
 		}
 		$scope.saveFicheCadref = function(id) {
 			$scope.{{ ident }}saveExt($scope.{{ ident }}callbakSave);
-			if($scope.CadrefContent) $scope.CadrefContent.$dirty = false;
+			if($scope.CadrefContent) $scope.CadrefContent.$setPristine(); //.$dirty = false;
 		}
 
 		// controle les modifications dans les fiches
@@ -145,9 +145,18 @@
 				}
 			}
 			obj[field+'IdLabel'] = '';
-		}
-		
+		}	
 		{% endif %}
+		
+		{% if objecttype == 'Visite' %}
+			var ajax = $scope.{{ ident }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(function(data) {
+				$scope.Enseignants = data.data.Enseignants;
+			}).error(function() {
+				console.error('>>>>>> error Method GetFormInfo ');
+			});
+		{% endif %}
+		
 
 		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
 
@@ -477,6 +486,7 @@
 					event.preventDefault();
 					return;
 				}
+				$scope.CadrefContent.$setPristine(); //.$dirty = false;
 				$scope.CadrefContent.$dirty = false;
 			}
 		});
@@ -1679,7 +1689,7 @@
 					var d = $scope.CadrefContent.$dirty;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleW = data.data.LibelleW;
-					$scope.CadrefContent.$dirty = d
+					$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 				}
 			).error(
 				function() {
@@ -1704,7 +1714,7 @@
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.Enseignants = data.data.Enseignants;
-					$scope.CadrefContent.$dirty = d
+					$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 				}
 			).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
@@ -1855,12 +1865,15 @@
 
 		$scope.visiteInfo = function() {
 			$scope.CadrefContent.$dirty = false;
+$scope.$watch('CadrefContent.$dirty', function() { 
+console.log('++++++++++++++++++++++++',$scope.CadrefContent.$dirty);});
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
 				var d = $scope.CadrefContent.$dirty;
+console.log('-----------------------',d);
 				$scope.Enseignants = data.data.Enseignants;
-				$scope.CadrefContent.$dirty = d
+				$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
 			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
@@ -1885,7 +1898,7 @@
 			$timeout(function(){
 				angular.element($('#displayVisite')).triggerHandler('click');
 				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
-			},0);
+			},10);
 		}
 		
 		// pour multi-select

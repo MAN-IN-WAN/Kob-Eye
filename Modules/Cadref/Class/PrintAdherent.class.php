@@ -184,17 +184,21 @@ class PrintAdherent extends FPDF {
 //					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
 //					$s = $cls->CodeClasse;
 				}
-				//else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
+				else if($l['Attente']) {
+					$s = 'Att '.date('d/m H:i', $l['DateAttente']);
+					$this->SetTextColor(255,0,0);
+				}
 				//else $s = 'C:'.substr($l['CodeClasse'], 6, 1);
 				break;
 			case 1:
-				$s = $l['DateCertificat']>0 ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
+				$s = $l['DateCertificat']>0 ? date('d/m/y', $l['DateCertificat']) : 'N.D.';
 				break;
 			case 2:
 				break;
 		}
 		$this->SetXY($this->left + 176, $this->posy);
 		$this->Cell(25, 4, $s, 0, 0, 'L');
+		$this->SetTextColor(0,0,0);
 
 		if($this->contenu == 'A') {
 			$this->posy += 4;

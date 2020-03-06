@@ -15,13 +15,13 @@
         </li>
     </ul>
     <!-- Default Panel -->
-	<form name="CadrefContent">
     <section class="panel">
         <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
+						<form name="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Antenne") }}
@@ -94,7 +94,7 @@
 									{{ label("Année") }}
 								</div>
 								<div class="col-md-1">
-									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
+									<select class="form-control cadref-input" ng-model="{{ o }}.Annee" ng-init="{{ o }}.Annee='{{ AnneeDern }}'" style="width:74px" ng-class="{'cadref-highlight': {{ o }}.Annee==''}">
 										{% for v,c in annees %}
 											<option value="{{ v }}">{{ v }}</option>
 										{% endfor %}
@@ -242,7 +242,7 @@
 									{{ ftext(f.Notes, o) }}
 								</div>
 							</div>
-
+						</form>
 						</div>
 						{# block right #}                    
 						<div class="col-md-4" ng-if="{{ o }}.id">
@@ -276,6 +276,5 @@
 			</div>
 		</div>
 	</section>
-	</form>
 </div>
 
