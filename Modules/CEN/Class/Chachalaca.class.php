@@ -191,7 +191,7 @@ class Chachalaca extends genericClass {
 		// 6->6_3
 		self::categorisation6_3($t60);
 		// 6->6_4
-		self::conditionsSuf6_4($t60, true);
+		self::conditionsSuf6_4($t60);
 		$t61 = array();
 		$t62 = array();
 		// 4_4 + 5_5
@@ -204,8 +204,8 @@ class Chachalaca extends genericClass {
 		foreach($t7 as $l) $t1[] = array($l[1].$l[2], $l[4], '');
 		$t1[] = array(self::$premier, '', '');
 		foreach($t1 as $l) klog::l("7_3 t1  ".$l[0]."  ".$l[1]);
-		// 6_4 (3_3)
-		self::conditionsSuf6_4($t1, false);
+		// 3_3
+		self::conditionsSuf3_3($t1);
 		$t1[] = array(self::$premier, '', '');
 		
 		self::$suf_imp = '';
@@ -214,9 +214,12 @@ class Chachalaca extends genericClass {
 
 
 		// PREFIXES ---------------------
-		klog::l("PRFX----------");
+		klog::l("************* PRFX ****************");
 
 		// 2_6
+		$t7 = array();
+		$t60 = array();
+		$t61 = array();
 		$t62 = array();
 		self::prefixes2_6($t62);
 		// 3_1
@@ -230,22 +233,22 @@ class Chachalaca extends genericClass {
 		// 6_1
 		self::categorisation6_1($t62);
 		// 6_2
-		self::conditionPref6_2($t62, true);
+		self::conditionPref6_2($t62);
 		// 7_1
-		self::conditionPref7_1($t60, true);
+		self::conditionPref7_1($t60);
 		// 4_2 + 5_3
-		$t3 = array();
+//		$t3 = array();
 		$t7 = array();
 		self::analyse4_2($t62, $t60, $t7);
 		$t3[] = self::$premier;
 		// 7_2  ??????????????????????????????????????????????????????
-		self::conditionPref7_1($t7, false);
+		self::conditionPref7_2($t7);
 		// 6_5
-		self::conditionPref6_2($t7, false);
+		self::conditionPref6_5($t7);
 		// 7_5
 		self::traitement7_5($t1, $t7, $t61);
 		// 7_2
-		self::conditionPref7_1($t7, false);
+		self::conditionPref7_2($t7);
 		
 		self::$pre_imp = '';
 		self::$pre_suf = '';
@@ -1101,7 +1104,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 	// 7_5
 	static private function traitement7_5(&$t1, &$t7, &$t61) {
 		$t61 = array();
-		foreach($t7 as $l) $t61[] = array($l[0], $l[1], $l[2], $l[3], $l[4]);
+		foreach($t7 as $k=>&$l) $t61[] = array($l[0], $l[1], $l[2], $l[3], $l[4]);
 		
 		$suf_reste = '';
 		foreach($t61 as &$l0) {
@@ -1115,15 +1118,16 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 				$suf_cat = $l1[1];
 				$p = strpos($analyse, '-');
 				$suf = $p !== false ? substr($analyse, $p) : '';
-				$ch = str_replace('-', '', $suf);
-				$suf_sans = $ch;
+				$suf_sans = str_replace('-', '', $suf);
 				$taille_suf_sans = strlen($suf_sans);
 				$taille_suf = strlen($suf);
 				if(!$taille_pref) $t7[] = array($pref, $suf_reste, $suf, $pref_cat, $suf_cat);
 				elseif($taille_suf) {
 					if($taille_pref_reste >= $taille_suf_sans) {
-						$reste_def = $pref_reste.' ';
-						$reste_def = substr($reste_def, 0, strpos($reste_def, $suf_sans.' '));
+						$s = $pref_reste.' ';
+						$p = strpos($s, $suf_sans.' ');
+						$p = $p === false ? 0 : ($p > 0 ? $p-1 : 0);
+						$reste_def = substr($pref_reste, 0, $p);
 						$t7[] = array($pref, $reste_def, $suf, $pref_cat, $suf_cat);
 					}
 					else {
@@ -1134,6 +1138,11 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 			}
 		}
 		
+		klog::l("7_5 t7a  ---".count($t7));
+		foreach($t7 as &$l) {
+			klog::l("7_5 t7  $l[0], $l[1], $l[2], $l[3], $l[4]");
+		}
+
 		foreach($t1 as &$l) {
 			$analyse = $l[0];
 			$suf_cat = $l[1];
@@ -1149,10 +1158,11 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 			$t7[] = array('', $reste_def, $suf, '', $suf_cat);
 		}
 
-		klog::l("7_5 t7  ---".count($t7));
+		klog::l("7_5 t7b  ---".count($t7));
 		foreach($t7 as &$l) {
 			klog::l("7_5 t7  $l[0], $l[1], $l[2], $l[3], $l[4]");
 		}
+		die;
 	}
 
 	
@@ -1177,7 +1187,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 		foreach($t5[$n] as $l) {
 			$afx = $affixes.$l[0];
 			$cat = $categories.$l[2];
-			if($n < $mx) self::combinaison5_5b($n + 1, $mx, $t5, $t7, $afx, $cat, $compteur);
+			if($n < $mx) self::combinaison5_3b($n + 1, $mx, $t5, $t7, $afx, $cat, $compteur);
 			else {
 				$reste = $l[1];
 				$place_sep = strpos($reste, '-');
@@ -1195,7 +1205,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 		}
 	}
 	
-	// 4_4
+	// 4_2
 	static private function analyse4_2(&$t62, &$t60, &$t7) {
 		$sql = "select Categorie,Decompo from `##_CEN-Prefixe` where Prefixe=:fix";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -1212,6 +1222,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 
 			$debut = $cpteur = 0;
 			$m_analyse = $m_prefixes;
+//klog::l(">>>a:$m_analyse");
 			for(;;) {
 				$debut = strpos($m_analyse, '-', $debut);
 				if($debut === false) break;
@@ -1223,16 +1234,17 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 			$t_analyse = explode('-', $m_analyse);
 			$n_analyse = count($t_analyse);
 			while($numcol < $n_analyse && $nb_tour < $cpteur) {
-				$ch = $t_analyse[$numcol];
-				$numcol++;
+				$ch = $t_analyse[$numcol++];
+//klog::l(">>>b:$ch");
 				$nb_pref = 0;
 				$pdo->execute(array(':fix'=>$ch));
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 					foreach($rs as $r) {
+						$nb_pref++;
 						$cat_1 = $r['Categorie'];
 						$m_prefixe1 = $r['Decompo'];
-						$nb_pref++;
+//klog::l(">>>c:$m_prefixe1,  $cat_1");
 						$t5[$nb_tour][] = array($m_prefixe1, $m_reste, $cat_1.'-', $cat_suf);
 					}
 				}
@@ -1252,24 +1264,53 @@ for($i = 0; $i < 5; $i++) {
 	}
 
 
-	
-	static private function conditionPref7_1(&$t60, $mode) {
-		$col = $mode ? 2 : 3;
-
+	static private function conditionPref7_2(&$t7) {
 		foreach(self::$pre_suf as $cnd) {
+			$c1 = !empty($cnd[1]);
+			$c2 = !empty($cnd[2]);
+			foreach($t7 as &$l) {
+				if(!$c1 && !$c2) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					if($resultat1 !== false) $l[2] = '***';
+				}
+				else if($c1 && !$c2) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					$resultat2 = strpos($l[4], $cnd[1]);
+					if($resultat1 !== false && $resultat2 !== false) $l[2] = '***';
+				}
+				else if(!$c1 && $c2) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					$resultat2 = strpos($l[4], $cnd[2]);
+					if($resultat1 === false && $resultat2 !== false) $l[2] = '***';
+				}
+			}
+		}
+
+		foreach($t7 as $k=> &$l) if($l[2] == '***') unset($t7[$k]);
+		$t7 = array_values($t7);
+
+		usort($t7, 'self::sortC0C2C3C4');
+		klog::l("7_2 t7  ---".count($t7));
+		foreach($t7 as $k=>&$l) klog::l("7_2 t7  $k: ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3].",  ".$l[4]);
+	}
+	
+	static private function conditionPref7_1(&$t60) {
+		foreach(self::$pre_suf as $cnd) {
+			$c1 = !empty($cnd[1]);
+			$c2 = !empty($cnd[2]);
 			foreach($t60 as &$l) {
-				if(empty($cnd[1]) && empty($cnd[2])) {
-					$resultat1 = strpos($l[$col], $cnd[0]);
+				if(!$c1 && !$c2) {
+					$resultat1 = strpos($l[2], $cnd[0]);
 					if($resultat1 !== false) $l[0] = '***';
 				}
-				else if(!empty($cnd[1]) && empty($cnd[2])) {
-					$resultat1 = strpos($l[$col], $cnd[0]);
-					$resultat2 = strpos($l[$col+1], $cnd[1]);
+				else if($c1 && !$c2) {
+					$resultat1 = strpos($l[2], $cnd[0]);
+					$resultat2 = strpos($l[3], $cnd[1]);
 					if($resultat1 !== false && $resultat2 !== false) $l[0] = '***';
 				}
-				else if(empty($cnd[1]) && !empty($cnd[2])) {
-					$resultat1 = strpos($l[$col], $cnd[0]);
-					$resultat2 = strpos($l[$col+1], $cnd[2]);
+				else if(!$c1 && $c2) {
+					$resultat1 = strpos($l[2], $cnd[0]);
+					$resultat2 = strpos($l[3], $cnd[2]);
 					if($resultat1 !== false && $resultat2 === false) $l[0] = '***';
 				}
 			}
@@ -1283,34 +1324,58 @@ for($i = 0; $i < 5; $i++) {
 		foreach($t60 as $k=>&$l) klog::l("7_1 t60  $k: ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
 	}
 
-	// 6_2
-	static private function conditionPref6_2(&$t62, $mode) {
+
+	// 6_5
+	static private function conditionPref6_5(&$t7) {
 		foreach(self::$pre_imp as $cnd) {
-			foreach($t62 as &$l) {
-				if(empty($cnd[1]) && empty($cnd[2])) {
+			$c1 = !empty($cnd[1]);
+			$c2 = !empty($cnd[2]);
+			foreach($t7 as &$l) {
+				if(!$c1 && !$c2) {
 					$resultat1 = strpos($l[3], $cnd[0]);
-					if($resultat1 !== false) $l[0] = '***';
+					if($resultat1 !== false) $l[2] = '***';
 				}
-				else if(!empty($cnd[1]) && empty($cnd[2])) {
+				else if($c1 && !$c2) {
 					$resultat1 = strpos($l[3], $cnd[0]);
 					$resultat2 = strpos($l[3], $cnd[1]);
-					if($resultat1 !== false && $resultat2 !== false) $l[0] = '***';
+					if($resultat1 !== false && $resultat2 !== false) $l[2] = '***';
 				}
 			}
 		}
 
-		foreach($t62 as $k=> &$l) if($l[0] == '***') unset($t62[$k]);
-
-		if($mode) usort($t62, 'self::sortC3C4');
-		else {
-			usort($t62, 'self::sortC0C2C3C4');
-			$o = null;
-			foreach($t62 as $k=>&$l) {
-				if($o && $l[0] == $o[0] && $l[2] == $o[2] && $l[3] == $o[3] && $l[4] == $o[4]) unset($t62[$k]);
-				else $o = $l;
-			}
-			$t62 = array_values($t62);
+		foreach($t7 as $k=> &$l) if($l[2] == '***') unset($t7[$k]);
+		usort($t7, 'self::sortC0C2C3C4');
+		$o = null;
+		foreach($t7 as $k=>&$l) {
+			if($o && $l[0] == $o[0] && $l[2] == $o[2] && $l[3] == $o[3] && $l[4] == $o[4]) unset($t7[$k]);
+			else $o = $l;
 		}
+		$t7 = array_values($t7);
+		
+		klog::l("6_5 t7  ---".count($t7));
+		foreach($t7 as &$l) klog::l("6_5 t7  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3].",  ".$l[4]);
+	}
+
+	// 6_2
+	static private function conditionPref6_2(&$t62) {
+		foreach(self::$pre_imp as $cnd) {
+			$c1 = !empty($cnd[1]);
+			$c2 = !empty($cnd[2]);
+			foreach($t62 as &$l) {
+				if(!$c1 && !$c2) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					if($resultat1 !== false) $l[1] = '***';
+				}
+				else if($c1 && !$c2) {
+					$resultat1 = strpos($l[3], $cnd[0]);
+					$resultat2 = strpos($l[3], $cnd[1]);
+					if($resultat1 !== false && $resultat2 !== false) $l[1] = '***';
+				}
+			}
+		}
+
+		foreach($t62 as $k=> &$l) if($l[1] == '***') unset($t62[$k]);
+		usort($t62, 'self::sortC3C4');
 		
 		klog::l("6_2 t62  ---".count($t62));
 		foreach($t62 as &$l) klog::l("6_2 t62  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
@@ -1450,10 +1515,10 @@ klog::l("-------------------");
 
 		for($ind_61 = 0; $ind_61 < $long_entree; $ind_61++) {
 			$m_entree = substr($m_mot, $ind_61);
-			$longueur = $long_entree - $ind_61;
+			$longueur = strlen($m_entree); //$long_entree - $ind_61;
 			for($ind_62 = 0; $ind_62 < 6; $ind_62++) {
 				$trouve = 0;
-				$long_coupe = $ind_62;
+				$long_coupe = $ind_62+1;
 				$point_coupe = 0;
 				$m_coupe = substr($m_entree, $point_coupe, $long_coupe);
 				$m_reste = substr($m_entree, $point_coupe + $long_coupe, $longueur);
@@ -1462,9 +1527,10 @@ klog::l("-------------------");
 				if(!empty($m_avant)) $m_precedent = "$m_avant-$m_coupe-";
 				else $m_precedent = "$m_coupe-";
 
+//klog::l("<<<$ind_61  $ind_62  $m_avant  $m_coupe  $m_reste  $m_precedent");
 				$pdo->execute(array(':fix'=>$m_coupe));
 				if($pdo->rowCount()) {
-					$s = "$m_precedent\t$m_coupe\t$m_reste";
+					$s = "$m_precedent\t$m_coupe\t$m_reste\t$m_avant";
 					if(!isset($ttmp[$s])) {
 						$ttmp[$s] = 0;
 						$t62[] = array($m_precedent, $m_coupe, $m_reste, $m_avant.$m_coupe, $m_categorie, '');
@@ -1517,7 +1583,7 @@ klog::l("2_6 t62  $m_precedent, $m_coupe, $m_reste, $m_avant$m_coupe, $m_categor
 				}
 				$t7[] = array('', $racines, $afx, '', $cat);
 				$compteur++;
-				klog::l("5_5 t7  $racines,  $afx, $cat");
+				klog::l("5_5 t7  $racines,  $afx,  $cat");
 			}
 		}
 	}
@@ -1682,49 +1748,67 @@ for($i = 0; $i < 5; $i++) {
 		usort($t60, 'self::sortC0C1');
 foreach($t60 as &$l) klog::l("5_1 t60  ".$l[0]);
 	}
-
-	// 6_4
-	static private function conditionsSuf6_4(&$t60, $mode) {
-		$col = $mode ? 2 : 1;
-
+	
+	// 3_3
+	static private function conditionsSuf3_3(&$t1) {
 		foreach(self::$suf_imp as $cnd) {
 			foreach($t60 as &$l) {
 				if(empty($cnd[1]) && empty($cnd[2])) {
-					$resultat1 = strpos($l[$col], $cnd[0]);
+					$resultat1 = strpos($l[1], $cnd[0]);
 					if($resultat1 !== false) $l[0] = '***';
 				}
 				else if(!empty($cnd[1]) && empty($cnd[2])) {
-					$resultat1 = strpos($l[$col], $cnd[0]);
-					$resultat2 = strpos($l[$col], $cnd[1]);
+					$resultat1 = strpos($l[1], $cnd[0]);
+					$resultat2 = strpos($l[1], $cnd[1]);
 					if($resultat1 !== false && $resultat2 !== false) $l[0] = '***';
 				}
 			}
 		}
 
 
-		if($mode) {
-			foreach($t60 as $k=> &$l) {
-				if($l[0] == '***' || substr($l[0], 0, 1) == '-') unset($t60[$k]);
-				else $l[1] = explode('-', $l[0])[0];
-			}
+		foreach($t1 as $k=> &$l) if($l[0] == '***' || empty(trim($l[1]))) unset($t1[$k]);
+		$t1[] = array(self::$premier, '', '');
+		usort($t1, 'self::sortC0C1');
+		$o = null;
+		foreach($t1 as $k=>&$l) {
+			if($o && $l[0] == $o[0] && $l[1] == $o[1]) unset($t1[$k]);
+			else $o = $l;
 		}
-		else {
-			foreach($t60 as $k=> &$l) if($l[0] == '***' || empty($l[1])) unset($t60[$k]);
+		$t1 = array_values($t1);
 
-			usort($t60, 'self::sortC0C1');
-			$o = null;
-			foreach($t60 as $k=>&$l) {
-				if($o && $l[0] == $o[0] && $l[1] == $o[1]) unset($t60[$k]);
-				else $o = $l;
-			}
-		}
-		$t60 = array_values($t60);
-
-
-		usort($t60, 'self::sortC2');
-		klog::l("6_4-3_3 t60  ---".count($t60));
+		klog::l("3_3 t1  ---".count($t1));
 		foreach($t60 as &$l)
-			klog::l("6_4-3_3 t60  ".$l[0].",  ".$l[1].",  ".$l[2]);
+			klog::l("3_3 t1  ".$l[0].",  ".$l[1].",  ".$l[2]);
+
+	}
+
+
+	// 6_4
+	static private function conditionsSuf6_4(&$t60) {
+		foreach(self::$suf_imp as $cnd) {
+			foreach($t60 as &$l) {
+				if(empty($cnd[1]) && empty($cnd[2])) {
+					$resultat1 = strpos($l[2], $cnd[0]);
+					if($resultat1 !== false) $l[0] = '***';
+				}
+				else if(!empty($cnd[1]) && empty($cnd[2])) {
+					$resultat1 = strpos($l[2], $cnd[0]);
+					$resultat2 = strpos($l[2], $cnd[1]);
+					if($resultat1 !== false && $resultat2 !== false) $l[0] = '***';
+				}
+			}
+		}
+
+
+
+		foreach($t60 as $k=> &$l) {
+			if($l[0] == '***' || strpos($l[0], 0, 1) == '-') unset($t60[$k]);
+			else $l[1] = explode('-', $l[0])[0];
+		}
+		usort($t60, 'self::sortC2');
+		klog::l("6_4 t60  ---".count($t60));
+		foreach($t60 as &$l)
+			klog::l("6_4 t60  ".$l[0].",  ".$l[1].",  ".$l[2]);
 
 	}
 	
@@ -1782,7 +1866,6 @@ foreach($t60 as &$l) klog::l("5_1 t60  ".$l[0]);
 
 		klog::l("6_1 t62  ---".count($t62));
 		foreach($t62 as &$l) klog::l("6_1 t62  ".$l[0].",  ".$l[1].",  ".$l[2].",  ".$l[3]);
-		
 	}
 
 

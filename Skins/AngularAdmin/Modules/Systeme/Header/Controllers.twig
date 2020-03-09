@@ -978,7 +978,8 @@
             $scope.obj = data;
             if($scope.obj.id == undefined) $scope.displayFiche = false;
 
-
+			// event when getOneData is completed
+			//$rootScope.$broadcast('{{ c.identifier }}StoreOneData',{obj: $scope.obj});
 
             //call function
             $scope.{{ c.identifier }}callFunction = function (obj,name,title,needConfirm,follow){
