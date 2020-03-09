@@ -23,7 +23,7 @@
 		<FUNCTION title="Envoyer un mail d'avertissement" type="form">MailAvertissement</FUNCTION>
 		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
-		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
+		<FUNCTION title="Importation de comptes emails" type="form">importMultipleMails</FUNCTION>
 		<FUNCTION title="Migration des comptes mail vers..." type="form">doMigrationMail</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id" form="1" fiche="1" list="1" hasRole="PARC_TECHNICIEN" description="Revendeur">RevendeurId</FKEY>

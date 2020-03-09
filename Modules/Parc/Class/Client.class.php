@@ -366,7 +366,45 @@ class Parc_Client extends genericClass {
     /**
      * importEmails
      * Function permettant d'importer et de créer des comptes clients en masse.
-     * Au format: email;pass;COS;quota
+     * Au format: email;pass;COS;quota[;host]
+     */
+    public function importMultipleMails($args){
+        $step = isset($args['step']) ? $args['step'] : 0;
+
+        switch ($step) {
+            case 1 :
+
+                if($this->importEmails($args['emails'])){
+                    return array(
+                        'data' => 'Importation réalisée avec succès'
+                    );
+                } else{
+                    return array(
+                        'data' => 'Oups , réessayez...',
+                        'success' => false,
+                        'errors' => $this->Error
+                    );
+                }
+
+                break;
+            default:
+                return array(
+                    'template' => 'multiCreateEmails',
+                    'step' => 1,
+                    'callNext' => array(
+                        'nom' => 'importMultipleMails',
+                        'title' => 'Importation des comptes email',
+                        'needConfirm' => true,
+                        'item' => 'obj'
+                    )
+                );
+        }
+    }
+
+    /**
+     * importEmails
+     * Function permettant d'importer et de créer des comptes clients en masse.
+     * Au format: email;pass;COS;quota[;host]
      */
     public function importEmails($emails){
         $srv = Sys::getOneData('Parc','Server/defaultMailServer=1');
@@ -388,7 +426,7 @@ class Parc_Client extends genericClass {
             $email = $e[0];
             $pass = $e[1];
             $cos = $e[2];
-            $quota = ($e[3]>1000)?$e[3]*1024:1024;
+            $quota = ($e[3])?$e[3]*1024:1024;
             if (empty($email)||empty($pass)||empty($cos)) {
                 $error = true;
                 $this->addError(Array('Message' => 'Compte email incomplet ' . $email . ' ' . $pass . ' ' . $cos . ' ' . $quota));
@@ -415,6 +453,12 @@ class Parc_Client extends genericClass {
             $pass = $e[1];
             $cos = $e[2];
             $quota = ($e[3])?$e[3]*1024:1024;
+            $tmpSrv = $srv;
+            if(isset($e[4])){
+                $host = $e[4];
+                $tmpSrv =  Sys::getOneData('Parc','Server/DNSNom='.$host);
+            }
+
             if (Sys::getCount('Parc','CompteMail/Adresse='.$email)){
                 $compte = Sys::getOneData('Parc','CompteMail/Adresse='.$email);
             }else {
@@ -424,8 +468,9 @@ class Parc_Client extends genericClass {
             $compte->Pass = $pass;
             $compte->COS = $cos;
             $compte->Quota = $quota;
+            $compte->Nom = explode('@',$email)[0];
             $compte->addParent($this);
-            $compte->addParent($srv);
+            $compte->addParent($tmpSrv);
             if ($compte->Verify()){
                 if (!$compte->Save()){
                     $this->Error = array_merge($this->Error,$compte->Error);

@@ -62,9 +62,10 @@ foreach ($evts as $ev){
     if(!empty($filters)) {
         $tmpFilters=ltrim($filters,'~');
 //            print_r($tmpFilters.'  '.$spt->Nom);
-        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false) {
+        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false && strpos(strtolower($spt->Localisation),strtolower($tmpFilters)) === false) {
             $ok = false;
         }
+
     }
     //On gere les filtres par genre
     if (!empty($genre)){

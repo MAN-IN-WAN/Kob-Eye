@@ -643,6 +643,7 @@ div#news-fiche {
 
 h3.titre-partenaires {
     margin: 0 0 10px 0;
+    padding:0 10px;
     height: 40px;
     line-height: 40px;
 }
@@ -761,7 +762,11 @@ h3.titre-partenaires {
     cursor: pointer;
     color: #2a3133;
 }
-
+#nouvelles a.card div ,
+#client a.card div,
+#organisation a.card div {
+    width: 100%;
+}
 #client a.card {
     color: #000;
     width: calc(16.666% - 8.333px);
@@ -1201,7 +1206,7 @@ textarea.Contact.input-css34 {
     }
 }
 
-/*** RESPONSIVE PORTABLE **/
+/*** RESPONSIVE TELEPHONE PORTABLE **/
 @media screen and (max-width: 479px) {
     .container {
      width: auto;
@@ -1525,6 +1530,27 @@ textarea.Contact.input-css34 {
          width: 100%;
          display: block;
      }
+
+    #login-modal .modal-dialog .login-espace-pro div.col-login {
+        display: block;
+        align-items: initial;
+        flex-direction: initial;
+        justify-content: left;
+        position: relative;
+        float: none;
+        background-color: #fff;
+        margin-bottom: 10px;
+        text-align: left;
+        padding: 10px;
+        width: 100%;
+        min-height: 236px;
+    }
+    .uniquepc {
+        font-size: 2em;
+        line-height: 1.5em;
+
+    }
+
 }
 
 /*
@@ -1548,6 +1574,8 @@ textarea.Contact.input-css34 {
         background-color: white;
         -webkit-transition: left 0.5s linear;
     }
+
+
 }
 
 
@@ -1629,7 +1657,7 @@ svg {
     -webkit-transition: left 0.5s linear;
 }
 
-/* ecran pc 1440 */
+/* ecran tablette portrait */
 @media (min-width: 469px) and (max-width: 1024px) {
     .container {
         width: 100%;
@@ -1651,7 +1679,6 @@ svg {
         column-count: 2;
         column-gap: 0;
     }
-
 
     /* ADMIN */
 

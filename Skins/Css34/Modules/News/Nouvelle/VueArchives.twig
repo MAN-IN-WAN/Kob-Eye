@@ -19,7 +19,7 @@
     module.exports = {
         name: 'nouvelle-container',
         template: '#news',
-        data (){
+        data: function (){
             return {
                 news: [],
                 nouvelle: {},
@@ -37,7 +37,7 @@
         },
         components: {
             /*spectacleList*/
-            vuejsDatepicker
+            vuejsDatepicker : vuejsDatepicker
         },
         methods: {
             onSubmit: function (event) {

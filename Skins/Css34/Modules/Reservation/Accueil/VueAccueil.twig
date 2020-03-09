@@ -81,7 +81,7 @@
                 var me = this;
                 me.busy = true;
                 axios
-                    .get('/Reservation/Spectacle/getData.json?une=1&filters=~' + this.search + '&date=' + this.date + '&genre=' + this.genre + '&public=' + this.public)
+                    .get('/Reservation/Spectacle/getData.json?une=1&filters=~' + encodeURIComponent(this.search) + '&date=' + this.date + '&genre=' + encodeURIComponent(this.genre) + '&public=' + encodeURIComponent(this.public))
                     .then(function (response) {
                         me.render = false;
                         me.resetData();

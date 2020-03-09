@@ -9,7 +9,7 @@
                     <div class="col-login">
                         {{ include(template_from_string(module('Systeme/Bloc/Login?CODE=LOGIN-MIDDLE'))) }}
                     </div>
-                    <div class="col-login">
+                    <div class="col-login  hidden-xs">
                         <form method="post" action="">
                             <div class="modal-header">
                                 <i aria-hidden="true" class="fa fa-power-off"></i>
@@ -36,6 +36,17 @@
                                 {#                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>#}
                             </div>
                         </form>
+                    </div>
+                    <div class="col-login hidden-lg hidden-md hidden-sm">
+                        <div class="modal-header">
+                            <i aria-hidden="true" class="fa fa-power-off"></i>
+                            <h5 class="modal-title">Espace Pro</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                {#                                <span aria-hidden="true">X</span>#}
+                                <i aria-hidden="true" class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body uniquepc">Espace Pro uniquement accessible par ordinateur</div>
                     </div>
                 </div>
             </div>
