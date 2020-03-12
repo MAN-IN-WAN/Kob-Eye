@@ -232,6 +232,18 @@
 												</div>
 												<div class="row">
 													<div class="col-md-5">
+														{{ label("SMS 06-07") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Tel06" ng-init="obj.Tel06=''">
+															{% for a,b in mails %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
 														{{ label("Soutien") }}
 													</div>
 													<div class="col-md-5">

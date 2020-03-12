@@ -701,6 +701,10 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
+				$tel06 = (isset($obj['Tel06']) && $obj['Tel06'] != '') ? $obj['Tel06'] : '';
+				if($tel06 == 'A') $whr .= "and (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
+				elseif($tel06 == 'S') $whr .= "and not (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
+				
 				if(! $noClasse || $soutien) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
