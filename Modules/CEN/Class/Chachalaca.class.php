@@ -244,7 +244,7 @@ class Chachalaca extends genericClass {
 		$t7 = array();
 		self::analyse4_2($t62, $t60, $t7);
 		$t3[] = self::$premier;
-		// 7_2  ??????????????????????????????????????????????????????
+		// 7_2
 		self::conditionPref7_2($t7);
 		// 6_5
 		self::conditionPref6_5($t7);
@@ -305,7 +305,8 @@ class Chachalaca extends genericClass {
 			$cm |= $c == 'ivertclair' ? 2 : 0;
 			$cm |= $c == 'irougeclair' ? 4 : 0;
 			$rgb |= $cm;
-			$mor[] = array('mor'=>$l[0], 'cat'=>$l[2], 'typ'=>$l[1], 'rgb'=>$cm, 'r'=>($c=='irougeclair'), 'g'=>($c=='ivertclair'), 'b'=>($c=='ibleuclair'));
+			$mor[] = array('mor'=>$l[0], 'cat'=>$l[2], 'typ'=>trim($l[1]), 
+				'rgb'=>$cm, 'r'=>($c=='irougeclair'), 'g'=>($c=='ivertclair'), 'b'=>($c=='ibleuclair'));
 		}
 		$trn = array();
 		foreach($t9 as &$l) $trn[] = array('ent'=>$l[0], 'trn'=>$l[1], 'cat'=>$l[2]);
@@ -527,16 +528,32 @@ foreach($t8 as $k=>$l) klog::l("12 t8  $k: $l[0],  $l[1],  $l[2]");
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);
 		
+//		foreach($t5 as &$l5) $l5[1] = '';
+
 		$nb_tour = 0;
 		$ch1 = '+';
 		$ch2 = '';
 		foreach($t5 as &$l5) {
 			$t70 = array();
 			$t70[] = array('££££', '', '', '', '', '', '');
-			$l[1] = '';
-			$nb_objet = $nb_r_nominale = $nb_causatif = $nb_applicatif = $nb_suf_possed = $nb_pref_pos = $m_nb_morph = 0;
-			$nb_suf_particip = $nb_tot_objet = $nb_objet_def = $nb_reflechi = $nb_passif = $nb_suf_nomina = $nb_hum = 0;
-			$nb_pref_refl_indef = $nb_suf_adj = $nb_causatif_applicatif = 0;
+			$l5[1] = '';
+			$nb_objet = 0;
+			$nb_r_nominale = 0;
+			$nb_causatif = 0;
+			$nb_applicatif = 0;
+			$nb_suf_possed = 0;
+			$nb_pref_pos = 0;
+			$m_nb_morph = 0;
+			$nb_suf_particip = 0;
+			$nb_tot_objet = 0;
+			$nb_objet_def = 0;
+			$nb_reflechi = 0;
+			$nb_passif = 0;
+			$nb_suf_nomina = 0;
+			$nb_hum = 0;
+			$nb_pref_refl_indef = 0;
+			$nb_suf_adj = 0;
+			$nb_causatif_applicatif = 0;
 			
 			$morphologie = trim($l5[0]);
 			$ms = explode('-', $morphologie);
@@ -626,10 +643,14 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 //foreach($t70 as $k=>$l) klog::l("12_2-c t70  $k: $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5],  $l[6]");
 //foreach($t70 as $k=>$l) klog::l("12_2-c t70  $k: $l[2],  $l[4]");
 			
-file_put_contents('/home/paul/tmp/src.php', "<?php\n");
+//file_put_contents('/home/paul/tmp/src.php', "<?php\n");
 
 			$col15 = $l5[1];
 //$old = $col15;
+//if($morphologie=='c-om- + pehualti') {
+//	klog::l("---  $morphologie : $nb_causatif_applicatif : $nb_tot_objet : $nb_r_nominale : $nb_objet_def");
+//	foreach($t70 as $k=>$l) klog::l("---  $k: $l[0],  $l[2],  $l[6]");
+//}
 			$len70 = count($t70);
 			$ltst = count(self::$testes);
 			$n = $len70-1;
@@ -663,16 +684,16 @@ file_put_contents('/home/paul/tmp/src.php', "<?php\n");
 						$tst = self::$testes[$j++];
 					}
 					$test_fait = 0;
-file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_APPEND);
+//file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_APPEND);
 					try {
 						eval($source);
 						if($col15 == '***') $test_fait = 1;
-//if($old != '***' && $col15 == '***') {
-//	klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$m_test : $morphologie : $categorie : $source");
-//	$old = '***';
+//if($old != $col15) {
+//	klog::l(">>>12_2 : $m_test : $col15 : $morphologie : $categorie");
+//	$old = $col15;
 //}
-					} catch(Exception $e) {
-						klog::l("**********************".$e->getMessage());
+					} catch(ParseError $e) {
+						klog::l("**********************$m_test\n$source\n".$e->getMessage());
 					}
 					$res = '';
 				}
@@ -686,7 +707,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 		klog::l("12_2 t5  ---".count($t5));
 		foreach($t5 as &$l) klog::l("12_2 t5  $l[0],  $l[1],  $l[2],  $l[3],  $l[4],  $l[5]");
 	}
-	
+
 	
 	static private function wd2php($w) {
 		$w = strtolower($w);
@@ -714,16 +735,18 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 			$s = str_replace(' <> ', ' != ', $s);
 			$w = 'if('.$s.') {';
 		}
-		$w = preg_replace('/origines\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][4]', $w);
-		$w = preg_replace('/categories\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][2]', $w);
-		$w = preg_replace('/bases\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][5]', $w);
-		$w = preg_replace('/morphemes\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][3]', $w);
 		$w = preg_replace('/nb_morph\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][0]', $w);
-		$w = preg_replace('/transitifs\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][0]', $w);
+		$w = preg_replace('/categories\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][2]', $w);
+		$w = preg_replace('/morphemes\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][3]', $w);
+		$w = preg_replace('/origines\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][4]', $w);
+		$w = preg_replace('/bases\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][5]', $w);
+		$w = preg_replace('/transitifs\[([\$\+\-\.\d\w\(\)]*)\]/', '$t70[$1][6]', $w);
+		
 		$w = str_replace('col15[j]', '$col15', $w);
-		$w = str_replace('$col15 \= $col15 \+', '$col15 .=', $w);
+		$w = preg_replace('/^\$col15 \= \$col15 \+ (.*)$/', '\$col15 .= $1;', $w);
 		$w = preg_replace('/^\$col15 \= (.*)$/', '\$col15 = $1;', $w);
-		$w = preg_replace('/^\$col15 \.\= (.*)$/', '\$col15 .= $1;', $w);
+		//$w = preg_replace('/^\$col15 \.\= (.*)$/', '\$col15 .= $1;', $w);
+		
 		$w = preg_replace('/^test_fait = (.*)$/', '\$test_fait = $1;', $w);
 		$w = preg_replace('/^table5\[j\]..couleur = (.*)$/', '\$l5[5] = "$1";', $w);
 		$w = str_replace('table70..occurrence', '$len70-1', $w);
@@ -900,7 +923,7 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 	// 8
 	static private function racines8(&$t7, &$t5) {
 		$ids = self::$dicIds;
-		$sql = "select Racines,Categorie from `##_CEN-Radix` where ChachalacaId=$ids and Racines=:fix";
+		$sql = "select Racines,Categorie from `##_CEN-Radix` where Racines=:fix and ChachalacaId=$ids";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql);
 		
@@ -912,9 +935,9 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 		
 		$nb_entree = 0;
 		$sep_cat = ' + ';
-		$tmp1 = array();
-		$tmp2 = array();
-		$tmp3 = array();
+//		$tmp1 = array();
+//		$tmp2 = array();
+//		$tmp3 = array();
 
 		foreach($t7 as &$l7) {
 			$mot = trim($l7[1]);
@@ -927,11 +950,11 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 					foreach($rs as $r) {
-						$k = $r['Racines'].'|'.$r['Categorie'];
-						if(true || !isset($tmp1[$k])) {
-							$tmp1[$k] = 0;
+//						$k = $r['Racines'].'|'.$r['Categorie'];
+//						if(true || !isset($tmp1[$k])) {
+//							$tmp1[$k] = 0;
 							$t1_1[] = array($r['Racines'], $r['Categorie']);
-						}
+//						}
 					}
 				}
 			}
@@ -942,11 +965,11 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 				if($pdo->rowCount()) {
 					$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 					foreach($rs as $r) {
-						$k = $r['Racines'].'|'.$r['Categorie'];
-						if(true || !isset($tmp2[$k])) {
-							$tmp2[$k] = 0;
+//						$k = $r['Racines'].'|'.$r['Categorie'];
+//						if(true || !isset($tmp2[$k])) {
+//							$tmp2[$k] = 0;
 							$t2_1[] = array($r['Racines'], $r['Categorie'], '');
-						}
+//						}
 					}
 				}
 			}
@@ -963,11 +986,11 @@ file_put_contents('/home/paul/tmp/src.php', "//------- $m_test\n$source", FILE_A
 					if($pdo->rowCount()) {
 						$rs = $pdo->fetchAll(PDO::FETCH_ASSOC);
 						foreach($rs as $r) {
-							$k = $r['Racines'].'|'.$r['Categorie'];
-							if(true || !isset($tmp3[$k])) {
-								$tmp3[$k] = 0;
+//							$k = $r['Racines'].'|'.$r['Categorie'];
+//							if(true || !isset($tmp3[$k])) {
+//								$tmp3[$k] = 0;
 								$t3_1[] = array($r['Racines'], $r['Categorie'], '');
-							}
+//							}
 						}
 					}
 				}

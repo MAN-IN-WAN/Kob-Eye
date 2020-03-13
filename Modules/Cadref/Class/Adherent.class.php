@@ -553,6 +553,7 @@ klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);
 				$dons = isset($obj['Dons']) ? $obj['Dons'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
+				$misc = isset($obj['Misc']) ? $obj['Misc'] : '';
 				$adherent = false;
 				
 				$noRupture =  $contenu == 'Q' || $rupture == 'S';
@@ -704,6 +705,8 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				$tel06 = (isset($obj['Tel06']) && $obj['Tel06'] != '') ? $obj['Tel06'] : '';
 				if($tel06 == 'A') $whr .= "and (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
 				elseif($tel06 == 'S') $whr .= "and not (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
+				
+				if($misc) $whr .= "and (misc is null or misc='') ";
 				
 				if(! $noClasse || $soutien) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";

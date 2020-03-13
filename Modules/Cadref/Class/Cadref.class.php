@@ -857,7 +857,7 @@ where ce.Classe=$cid
 		foreach($pdo1 as $p1) {
 			$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
 			if($adh) {
-				$eid = $p1['EnseignantId'];
+				$eid = $p1['Id'];
 				foreach($absences as $a) {
 					if($a->cid == $cid && $a->eid == $eid) {
 						$hd = strtotime($e->start);

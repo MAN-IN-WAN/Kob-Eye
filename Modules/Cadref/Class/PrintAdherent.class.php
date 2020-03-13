@@ -141,7 +141,7 @@ class PrintAdherent extends FPDF {
 					$this->rupVal = $r;
 				}
 			}
-			if($l['Attente']) $this->totaux[0][1] ++;
+			if(isset($l['Attente']) && $l['Attente']) $this->totaux[0][1] ++;
 			else $this->totaux[0][0] ++;
 			$this->totaux[0][2] ++;
 			
