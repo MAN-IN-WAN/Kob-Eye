@@ -856,7 +856,7 @@ order by a.Nom, a.Prenom";
 				$params = array('Telephone1'=>$a['Telephone1'],'Telephone2'=>$a['Telephone2'],'Message'=>$obj['SMS']);
 				Cadref::SendSms($params);
 			}
-			Cadref::SendSmsAdmin($pages);
+			Cadref::SendSmsAdmin($params);
 			return true;
 		}
 		if($obj['mode'] == 'export') {
