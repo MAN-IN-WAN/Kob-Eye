@@ -100,13 +100,17 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	// store Attachement
 	$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
 
+	$scope.CadrefAttachementAsso = $rootScope.createStore(CadrefAttachementStore, 'children');
+	$scope.CadrefAttachementAsso.store.setFilters('Associatif=1', 'children');
+	$scope.CadrefAttachementAsso.store.getData(1,'children');
+
 	// ouverture fenetre attachements
 	$scope.attachementObj;
 	$scope.attachementInfo;
 	$scope.attachementsOpen = function(item, origine) {
 		$('#upload-progress').val(0);
 		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
-		var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
+		var o = $scope.attachementInfo = {origine:origine, mode:'', classeId:0, visiteId:0, associatif:0, code:'', libelle: ''};
 		switch(origine){
 			case 'classe':
 				o.classeId = item.id;
@@ -117,7 +121,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			case 'inscription':
 				o.classeId = item.clsId; //item.ClasseClasseId;
 				o.code = item.CodeClasse;
-				o.libelle = item.LibelleS+' / '+item.LibelleD+' '+item.LibelleN;
+				o.libelle = item.LibelleD+' '+item.LibelleN;
 				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
 				break;
 			case 'visite':
@@ -149,7 +153,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//-----------------------------
 	// MESSAGE
 	//-----------------------------
-	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: ''};
+	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: '', smsSize:''};
 	$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
 	$scope.pieceAdd = function() {
 		var p = $scope.msgObj.Pieces;
@@ -188,6 +192,12 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+	
+	$scope.checkSmsSize = function(obj) {
+		let s = obj.SMS.length;
+		obj.smsSize = s ? ' '+s : '';
+	}
+
 	
 	{% if objecttype == 'Enseignant' %}
 	//--------------------------------

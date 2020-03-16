@@ -34,7 +34,7 @@
         </select>
     {% elseif field.query %}
         <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
-            {% for v,k in field.query %}
+            {% for v,k in field.query | sort  %}
                 <option value="{{ v }}">{{ k }}</option>
             {% endfor %}
         </select>
@@ -176,10 +176,15 @@
                     <div class="col-md-9">
                         Name: <span ng-bind="item.file.name"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="text-align:right;">
                         <button ng-click="item.upload()" class="btn btn-success btn-left" title="Envoyer"><i class="icmn-file-upload "></i></button>
                         <button ng-click="item.remove()" class="btn btn-danger btn-right" Title="Annuler"><i class="icmn-bin "></i></button>
                     </div>
+					{% if field.progress %}
+						<div class="col-md-12">
+							<progress class="upProgres" max="100" value="{[{ item.progress }]}" style="width:100%;"></progress>
+						</div>
+					{% endif %}
                 </div>
 
 

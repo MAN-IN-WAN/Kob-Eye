@@ -75,9 +75,23 @@
                 selectall: false
             }
         }
+        {% if not c.initQuery is empty  %}
+            $scope.{{ c.identifier }}.store.setQuery('{{ c.initQuery }}','default');
+        {% endif %}
 
+        $scope.$watch(function($scope){
+            return $scope.{{ c.identifier }}.store.busy['default'];
+        }, function() {
+            if($scope.{{ c.identifier }}.store.busy['default']){
+                console.log('busy');
+                $('.page-content-inner').spin();
+            }else{
+                console.log('pas busy');
+                $('.page-content-inner').spin(false);
+            }
+        });
 
-        //Gestion des erreurs sur les  suppressions qui nont pas lieu danss un modal.
+        //Gestion des erreurs sur les  suppressions qui nont pas lieu dans un modal.
         $scope.$watch(function($scope){
             return $scope.{{ c.identifier }}.store.getErrors();
         }, function() {
@@ -684,6 +698,10 @@
             $scope.modalObj = {{ c.identifier }}Store.getNewData();
             $scope.modalObj.success = false;
             $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
+            {% if not c.initParent is empty %}
+                $scope.modalObj.{{c.initParent}} = {{c.initParentId}};
+            {% endif %}
+
             $("#modal-{{ c.identifier }}").modal();
 			if(callback != undefined) callback($scope.modalObj);
         }
@@ -791,6 +809,8 @@
 
         $scope.toggleChildren = function (scope) {
             console.log('toggle children');
+            var padre = $(scope.$element).closest('.angular-ui-tree');
+            padre.spin();
             if (!scope.$nodeScope.$modelValue.children) {
                 {{ c.identifier }}Store.loadRecursivChildren(scope.$nodeScope.$modelValue).then(function(data) {
                     scope.$nodeScope.$modelValue.children = data.children;
@@ -799,11 +819,13 @@
                         scope.$nodeScope.$modelValue.expanded = true;
                         scope.toggle();
                     }
+                    padre.spin(false);
                 });
             } else {
                 if (scope.$nodeScope.$modelValue.children.length > 0) {
                     scope.toggle();
                 }
+                padre.spin(false);
             }
         }
 
@@ -956,7 +978,8 @@
             $scope.obj = data;
             if($scope.obj.id == undefined) $scope.displayFiche = false;
 
-
+			// event when getOneData is completed
+			//$rootScope.$broadcast('{{ c.identifier }}StoreOneData',{obj: $scope.obj});
 
             //call function
             $scope.{{ c.identifier }}callFunction = function (obj,name,title,needConfirm,follow){
@@ -1195,17 +1218,31 @@
 
 
                 //FORMULAIRE CHILDREN
-                $scope.{{ child.objectModule }}{{ child.objectName }} = {
-                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
-                    store: {{ child.objectModule }}{{ child.objectName }}Store,
-                    filter: '',
-                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('children'),
-                    currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.children,
-                    itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
-                    selected: {
-                        selectall: false
+                {% if child.reflexive %}
+                    $scope.{{ child.objectModule }}{{ child.objectName }} = {
+                        data : {{ child.objectModule }}{{ child.objectName }}Store.data['recursivchildren-'+$scope.obj.id],
+                        store: {{ child.objectModule }}{{ child.objectName }}Store,
+                        filter: '',
+                        pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('recursivchildren-'+$scope.obj.id),
+                        currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage['recursivchildren-'+$scope.obj.id],
+                        itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                        selected: {
+                            selectall: false
+                        }
                     }
-                }
+                {% else %}
+                    $scope.{{ child.objectModule }}{{ child.objectName }} = {
+                        data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
+                        store: {{ child.objectModule }}{{ child.objectName }}Store,
+                        filter: '',
+                        pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength('children'),
+                        currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.children,
+                        itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                        selected: {
+                            selectall: false
+                        }
+                    }
+                {% endif %}
                 $scope.{{ child.objectModule }}{{ child.objectName }}refresh = function (context){
                     {{ child.objectModule }}{{ child.objectName }}Store.refresh(context);
                 }
@@ -1672,6 +1709,8 @@
 
                 $scope.toggleChildren = function (scope) {
                     console.log('toggle children');
+                    var padre = $(scope.$element).closest('.angular-ui-tree');
+                    padre.spin();
                     if (!scope.$nodeScope.$modelValue.children) {
                         {{ c.identifier }}Store.loadRecursivChildren(scope.$nodeScope.$modelValue).then(function(data) {
                             scope.$nodeScope.$modelValue.children = data.children;
@@ -1680,11 +1719,13 @@
                                 scope.$nodeScope.$modelValue.expanded = true;
                                 scope.toggle();
                             }
+                            padre.spin(false);
                         });
                     } else {
                         if (scope.$nodeScope.$modelValue.children.length > 0) {
                             scope.toggle();
                         }
+                        padre.spin(false);
                     }
                 }
 

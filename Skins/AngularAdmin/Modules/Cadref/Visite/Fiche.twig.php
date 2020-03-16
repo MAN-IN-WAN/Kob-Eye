@@ -50,6 +50,15 @@ $vars['operation'] = $vars['ObjectClass']->getOperations();
 $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
 
+$tmp = array();
+$ans = Sys::getData('Cadref', 'Annee');
+foreach($ans as $an) {
+	$tmp[$an->Annee] = $an->EnCours;
+	$vars['AnneeDern'] = $an->Annee;
+}
+$vars['annees'] = $tmp;
+
+
 foreach($childs as $child) {
 	if(
 	//test role

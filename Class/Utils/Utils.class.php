@@ -28,7 +28,7 @@ class Utils {
 		$Params = strtolower($Params);
 		return $Params;	
 	}
-	static function  getTodayEvening($P) {
+	static function  getTodayEvening() {
 		$h=23;
 		$m=59;
 		$s=59;
@@ -37,7 +37,7 @@ class Utils {
 		$A=date('Y');
 		return mktime($h,$m,$s,$M,$J,$A);
 	}
-	static function  getTodayMorning($P) {
+	static function  getTodayMorning() {
 		$h=0;
 		$m=0;
 		$s=0;

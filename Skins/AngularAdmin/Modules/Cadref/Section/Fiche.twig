@@ -16,15 +16,16 @@
         </li>
     </ul>
     <!-- Default Panel -->
-	<form name="CadrefContent">
     <section class="panel">
         <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
-							{{ flinput(f.Section, o, false, 'AA', 'width:60px; text-transform:uppercase;', true) }}
-							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;', true) }}
+							<form name="CadrefContent">
+								{{ flinput(f.Section, o, false, 'AA', 'width:60px; text-transform:uppercase;', true) }}
+								{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;', true) }}
+							</form>
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
@@ -50,6 +51,5 @@
 			</div>
 		</div>
     </section>
-	</form>
 </div>
 

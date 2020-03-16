@@ -1,14 +1,14 @@
 <SCHEMA>
-	<OBJECTCLASS title="Group" driver="mysql"  master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php" cache="1">
-		<PROPERTIES type="private"  searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1" listDescr="Nom" list="1">Nom</PROPERTIES>
-		<PROPERTIES type="private"  searchOrder="2" category="Intitulé">Commentaire</PROPERTIES>
+	<OBJECTCLASS title="Group" driver="mysql"  master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php" cache="1" Operations="add,edit,delete,exportMenus::PARC_TECHNICIEN,importMenus::PARC_TECHNICIEN">
+		<PROPERTIES type="private" list="1" fiche="1" form="1" searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="private" fiche="1" form="1" searchOrder="2" category="Intitulé">Commentaire</PROPERTIES>
 		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
 		<PROPERTIES type="image" category="Intégration" description="Arrière plan">ArrierePlan</PROPERTIES>
 		<PROPERTIES type="color" category="Intégration" description="Couleur Arrière plan">Couleur</PROPERTIES>
 		<FKEY card="0,n" data="Role,Id" category="Intégration" description="Rôles">RoleId</FKEY>
 		<FKEY card="0,1" data="Group,Id" category="Intégration" description="Groupe parent">GroupParent</FKEY>
-		<FUNCTION>exportMenus</FUNCTION>
-		<FUNCTION>importMenus</FUNCTION>
+		<FUNCTION title="Exporter les menus">exportMenus</FUNCTION>
+		<FUNCTION title="Importer les menus">importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<!-- API Key -->
 	<OBJECTCLASS title="ApiKey" driver="mysql" AccessPoint="1" Icon="[None]" Description="Clef Api" Class="Modules/Systeme/Class/ApiKey.class.php">
@@ -16,7 +16,7 @@
 		<PROPERTIES type="text" searchOrder="2">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="User" driver="mysql" logEvent="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Utilisateurs" Heritage="0" Class="Modules/Systeme/Class/User.class.php">
+	<OBJECTCLASS title="User" driver="mysql" logEvent="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Utilisateurs" Heritage="0" Class="Modules/Systeme/Class/User.class.php"  Operations="add,edit,delete,exportMenus::PARC_TECHNICIEN,importMenus::PARC_TECHNICIEN">
 		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion"  form="1" list="1" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="0" category="Contact" list="2" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar"  length="10" searchOrder="3" obligatoire="0" category="Contact" fiche="3" >Initiales</PROPERTIES>
@@ -49,8 +49,8 @@
 		<!--<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>-->
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
 		<FKEY card="0,1" data="ApiKey,Id">ApiKeyId</FKEY>
-		<FUNCTION>exportMenus</FUNCTION>
-		<FUNCTION>importMenus</FUNCTION>
+		<FUNCTION title="Exporter les menus">exportMenus</FUNCTION>
+		<FUNCTION title="Importer les menus">importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" listDescr="Domaine" list="1">Domaine</PROPERTIES>
@@ -131,7 +131,7 @@
 		<PROPERTIES type="int" values="0::READ,1::READ-WRITE" default="0" category="Definition">Rights</PROPERTIES>
 		<FKEY card="0,n" data="Role,Id" description="Role list" category="Config">RoleId</FKEY>
 		<FKEY card="0,n" data="User,Id" description="User list" category="Config">UserId</FKEY>
-		<FKEY card="0,n" data="Group,Id" description="Group list" category="Config">GroupId</FKEY>
+		<FKEY card="0,n" data="Group,Id" description="Group list" category="Config"  hasRole="PARC_TECHNICIEN">GroupId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Config" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/brick.png">
 		<PROPERTIES type="varchar" searchOrder="1" query="Explorateur/_Dossier/Skins/_Dossier::Nom">Skin</PROPERTIES>
@@ -343,7 +343,7 @@
         <PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
         <PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7"  form="1">TaskFunction</PROPERTIES>
-		<PROPERTIES category="Fonction" type="varchar" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" length="1024" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
         <PROPERTIES type="varchar"  fiche="1" form="1" description="Identifiant du thread en cours">ThreadId</PROPERTIES>
 		<PROPERTIES type="progress" list="1" fiche="1" listDescr="Progression">Progression</PROPERTIES>
 		<PROPERTIES type="graph" fiche="1" listDescr="Données graphique">Graph</PROPERTIES>

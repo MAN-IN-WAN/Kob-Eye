@@ -351,6 +351,8 @@ span.cadref-info {
 	color: #0190da;
 }
 
+
+/*
 .menu-static nav.left-menu + nav.top-menu {
 	margin-left:200px;
 }
@@ -381,6 +383,9 @@ nav.left-menu .logo-container {
 nav.left-menu .logo-container .logo {
     max-width: 200px;
 }
+*/
+
+
 
 .panel-body.cadref-public {
 	padding: 5px 5px 5px 5px;
@@ -390,4 +395,13 @@ nav.left-menu .logo-container .logo {
     position: relative;
     width: 100%;
     overflow: auto !important;
+}
+
+.cwt__footer {
+	padding: 0px 60px 25px;
+}
+
+.cwt__footer__bottom {
+	margin-top: 10px;
+    padding-top: 20px;
 }

@@ -86,7 +86,12 @@
                 <a class="nav-link {% if loop.first and not Interfaces.fiche_tab %}active{% endif %}"
                    href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}"
                    role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b>
-                    ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                    {% if child.reflex %}
+                        ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total['recursivchildren-'+obj.id] }]})
+                    {% else %}
+                        ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})
+                    {% endif %}
+                    </a>
             </li>
         {% endfor %}
         {% if browseable %}

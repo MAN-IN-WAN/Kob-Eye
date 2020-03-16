@@ -234,6 +234,7 @@
 		<PROPERTIES type="date" auto="1" category="Description" list="3" form="2" description="Date de modification">DateModification</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Téléchargements">Downloads</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Accès public">Public</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Document associatif">Associatif</PROPERTIES>
 	</OBJECTCLASS>
 
 

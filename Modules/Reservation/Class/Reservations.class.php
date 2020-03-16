@@ -24,14 +24,14 @@ class Reservations extends genericClass
             $this->TitreSpectacle = $S[0]["Nom"];
             $this->InformationReservation = $S[0]["InformationReservation"];
             $this->TypeContreMarque = $S[0]["TypeContreMarque"];
-            $res = genericClass::Save();
+            genericClass::Save();
         } else {
             //Verification du nombre place disponible
             if ($this->Verify()) {
                 $Delta = $this->NbPlace;
                 $Tab = Sys::$Modules["Reservation"]->callData("Reservation/Reservations/" . $this->Id . "/Personne", "", 0, 1, "", "", "COUNT(DISTINCT(m.Id))");
                 $this->NbPlace = $Tab[0]["COUNT(DISTINCT(m.Id))"];
-                $res = genericClass::Save();
+                genericClass::Save();
                 //Decompte des places sur l'evenement associé
                 $Delta = $this->NbPlace - $Delta;
                 if ($Delta > 0) {
@@ -42,12 +42,6 @@ class Reservations extends genericClass
                 }
             }
         }
-        if (empty($this->Date)) {
-            $E = Sys::$Modules["Reservation"]->callData("Reservation/Evenement/Reservations/" . $this->Id, "", 0, 1);
-            $this->Date = $E[0]["DateDebut"];
-            $res = genericClass::Save();
-        }
-        return  $res ;
     }
 
     function Verify()
@@ -365,7 +359,7 @@ class Reservations extends genericClass
      * Retourne un tableau associatif structure => nombre de résa / nombre de places réservées
      * @return  Tableau associatif
      */
-    public static function getTabStructures()
+    public function getTabStructures()
     {
         $sql = "SELECT c.Id, c.Nom, c.Tel, c.Mail, COUNT(r.Id) as NbResa, SUM(r.NbPlace) as NbPlaces
                 FROM `" . MAIN_DB_PREFIX . "Reservation-Client` c

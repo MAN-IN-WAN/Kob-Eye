@@ -7,7 +7,7 @@ class Group extends genericClass{
 	function Save(){
 		$New=false;
 		if ($this->Id==NULL) $New = true;
-		parent::Save();
+		$res = parent::Save();
 		//Detection de la nature du pere (ne fonctionne que pour le niveau deux)
 		$ROLE=false;
 		$Gr = Sys::$Modules["Systeme"]->callData("Group/*/Group/Group/".$this->Id);
@@ -63,6 +63,8 @@ class Group extends genericClass{
 				}
 			break;
 		}
+
+		return $res;
 	}
 
 	/**

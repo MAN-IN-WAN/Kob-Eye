@@ -1,4 +1,4 @@
-<nav class="left-menu cadref-menu" left-menu ng-class="{'hidden-left-menu': hideLeftMenu}">
+<nav class="left-menu left-menu ng-class="{'hidden-left-menu': hideLeftMenu}">
     <div class="logo-container" {% if group.Couleur %}style="background-color:{{ group.Couleur }} !important;"{% endif %}>
         <a href="#/TableauDeBord" class="logo">
 			{% if group.ArrierePlan %}
@@ -10,15 +10,18 @@
     </div>
     <div class="left-menu-inner scroll-pane">
         <ul class="left-menu-list left-menu-list-root list-unstyled">
-            <li class="left-menu-list-submenu">
+{#            <li class="left-menu-list-submenu">#}
             {%  for m in menus %}
                 {% if m.getSubMenus()|length > 0 %}
                     <li class="left-menu-list-submenu">
                         <a class="left-menu-link" href="javascript: void(0);">
                             <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-files-empty2{% endif %}"><!-- --></i>
-                            {{ m.Titre }}
+                            <span>{{ m.Titre }}</span>
                         </a>
                         <ul class="left-menu-list list-unstyled">
+							<li class="submenu-title">
+								{{ m.Titre }}
+							</li>
                             {% for m2 in m.getSubMenus() %}
                                 {% if m2.Affiche %}
                                 <li>
@@ -33,7 +36,7 @@
                 {% else %}
                     <li>
                         <a class="left-menu-link" href="#/{{ m.Url }}">
-                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-home2{% endif %}"><!-- --></i>
+                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-home2{% endif %}" {% if(menuIcon) %}title="{{ m.Titre }}"{% endif %}><!-- --></i>
                             <span class="menu-top-hidden">{{ m.Titre }}</span>
                         </a>
                     </li>

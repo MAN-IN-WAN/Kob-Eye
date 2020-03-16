@@ -1,0 +1,60 @@
+app.controller('{{ identifier }}Ctrl', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http, ReservationClientStore) {
+    $scope.currentStore = ReservationClientStore;
+    ReservationClientStore.getOneData({{cli}},'fiche',true).then(function (data) {
+        console.log('{{ identifier }} >> Fiche >> receive obj definition', data);
+        $scope.obj = data;
+    });
+
+    $scope.modify = function (obj){
+        console.log('edit ',obj.id);
+        ReservationClientStore.getOneData(obj.id,'fiche',false).then(function (data) {
+            data.success = false;
+            $scope.obj =  angular.copy(data);
+            $scope.modalObj = angular.copy(data);
+            $scope.modalObj.title = 'Modifier Structure Sociale'+data.label;
+            console.log('edit obj copy',$scope.modalObj);
+        });
+        $("#modalfiche-Profil").modal();
+    }
+
+    $scope.modalSave = function (callback){
+        console.log('save ',$scope.modalObj);
+        //affichage spinner
+        $('#modalfiche-Profil .modal-dialog').spin();
+        ReservationClientStore.saveData($scope.modalObj).then(function (data) {
+            $('#modalfiche-Profil .modal-dialog').spin(false);
+            if (data.success){
+                $scope.modalObj = data.data;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+                $scope.modalObj = $scope.obj
+                if (!data.warning.length&&!data.success.length) {
+                    var modfic = $("#modalfiche-Profil");
+                    modfic.modal('toggle');
+                    if(callback != undefined) {
+                        if(modfic[0] == undefined) callback(data);
+                        else modfic.on('hidden.bs.modal', function(e) {
+                            callback(data);
+                        });
+                    }
+                }
+                ReservationClientStoreStore.refresh();
+            }else {
+                //gestion des erreurs
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+                $scope.modalObj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.modalObj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+});

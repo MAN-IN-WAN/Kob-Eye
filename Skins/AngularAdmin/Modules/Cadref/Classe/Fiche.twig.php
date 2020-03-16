@@ -59,6 +59,7 @@ $tmp = array();
 $ans = Sys::getData('Cadref', 'Annee');
 foreach($ans as $an) {
 	$tmp[$an->Annee] = $an->EnCours;
+	$vars['AnneeDern'] = $an->Annee;
 }
 $vars['annees'] = $tmp;
 

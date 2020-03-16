@@ -19,4 +19,5 @@ class Cms extends Module {
         $Bloc->init();
         return $Bloc;
     }
+
 }

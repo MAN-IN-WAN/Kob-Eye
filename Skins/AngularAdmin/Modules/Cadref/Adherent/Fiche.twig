@@ -18,13 +18,13 @@
 		</ul>
 	</div>
     <!-- Default Panel -->
-	<form name="CadrefContent" id="CadrefContent">
     <section class="panel">
         <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div {% if Create %}class="col-md-12"{% else %}class="col-md-8"{% endif %} >
+							<form name="CadrefContent" id="CadrefContent">
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Numéro") }}
@@ -321,6 +321,7 @@
 									{{ ftext(f.Notes, o) }}
 								</div>
 							</div>
+						</form>
 						</div>
 						{# block right #}    
 						{% if Create==0 %}
@@ -380,7 +381,7 @@
 											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.Solde" ng-init="{{ o }}.Solde=0" readonly ng-class="{'cadref-highlight': {{ o }}.nonSolde}"/>
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.Solde" ng-init="{{ o }}.Solde=0; ckedPristine()" readonly ng-class="{'cadref-highlight': {{ o }}.nonSolde}"/>
 												</div>
 											</td>
 										</tr>
@@ -434,7 +435,6 @@
 			</div>
 		</div>
     </section>
-	</form>
 </div>
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" modal-movable role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">

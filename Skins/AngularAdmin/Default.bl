@@ -1,3 +1,14 @@
+
+[IF [!Lien!]!=]
+    [IF [!Lien!]!=Systeme/Deconnexion]
+        [REDIRECT][/REDIRECT]
+    [/IF]
+[/IF]
+
+
+
+
+
 [HTML]ng-app="cleanUI"[/HTML]
 [HEADER]
 [IF [!Systeme::isModule(Cadref)!]]
@@ -222,6 +233,9 @@
     <!-- Apex Charts -->
     <script src="/Tools/Js/ApexChart/apexcharts.js"></script>
 
+    <!-- Angular Select 2 -->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-select2/dist/angular-select2.js"></script>
+
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]
@@ -260,7 +274,7 @@
 
 
 [/HEADER]
-[BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static" ng-controller="MainCtrl"[/BODY]
+[BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static [IF [!Systeme::isModule(Cadref)!]]icon-menu[/IF]" ng-controller="MainCtrl"[/BODY]
 [MODULE Systeme/Menu]
 [MODULE Systeme/Menu/MenuTop]
 

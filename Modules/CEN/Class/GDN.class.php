@@ -3,7 +3,7 @@
 class GDN extends genericClass {
 	
 	static function GetDics() {
-		$dics = Sys::getData('CEN', 'Dictionnaire', 0, 999, 'ASC', 'NOM');
+		$dics = Sys::getData('CEN', 'Dictionnaire', 0, 999, 'ASC', 'Nom');
 		$dicId= array();
 		$dic = array();
 		foreach($dics as $d) {
@@ -32,14 +32,14 @@ class GDN extends genericClass {
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$list = array();
 		foreach($pdo as $p)	$list[] = $p['word'];
-		return array('words'=>$list, 'sql'=>$sql);
+		return array('words'=>$list); //, 'sql'=>$sql);
 	}
 
 	static function GetGDN($args) {
 		$nah = $args['nah'] == 'true';
 		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
-		if($nah && $args['norm'] == 'true') $word = self::normalize($word);
+		if($nah && $args['norm'] == 'true') $word = self::Normalize($word);
 		$dict = $args['dic'];
 		if($dict == 'all' || $dict == '' || $dict == 'null') $dict = '';
 		else $dict = "and DictionnaireId in ($dict)";
@@ -101,7 +101,7 @@ order by  $sort";
 		return array('text'=>$com);				
 	}
 	
-	static public function normalize($word) {
+	static public function Normalize($word) {
 		$r = Sys::getOneData('CEN', 'Regle/Code=GDN');
 			
 		$word = ' '.strtolower(trim($word)).' ';
@@ -115,7 +115,7 @@ order by  $sort";
 			$os[] = $o;
 		}
 		fclose($file);
-		usort($os, 'sortOrtho');
+		usort($os, 'self::sortOrtho');
 
 		$ch = $word;
 		foreach($os as $o) {
@@ -131,7 +131,10 @@ order by  $sort";
 		return $new;
 	}
 	
-	
+	static private function sortOrtho($a, $b) {
+		return intval($a[3]) - intval($b[3]);
+	}
+
 	private static function replOrtho(&$ch, $ch1, $ch2) {
 		$nb = 0;
 		$pos = strpos($ch, $ch1);
@@ -145,6 +148,3 @@ order by  $sort";
 	
 }
 
-function sortOrtho($a, $b) {
-	return intval($a[3]) - intval($b[3]);
-}

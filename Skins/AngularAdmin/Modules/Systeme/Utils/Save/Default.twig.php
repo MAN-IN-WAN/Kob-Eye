@@ -43,7 +43,9 @@ foreach ($formfields as $f){
     }elseif ($f['type']=='html'){
         $replace   = array("\r\n", "\n", "\r", "\t");
         $o->{$f["name"]} = str_replace($replace,'', $values->{$f["name"]});
-    }elseif (isset($values->{$f["name"]})) $o->{$f["name"]} = $values->{$f["name"]};
+    }elseif (isset($values->{$f["name"]})){
+        $o->Set($f["name"],$values->{$f["name"]});
+    }
 }
 
 $obj = $o->getObjectClass();
@@ -53,6 +55,7 @@ foreach ($parentelements as $f){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
     }elseif ($f['type']=='fkey' && $f['card']=='long' && isset($values->{$f["objectName"].$f["name"]})){
         $o->resetParents($f['objectName']);
+        if(!is_array($values->{$f["objectName"].$f["name"]})) $values->{$f["objectName"].$f["name"]} = array($values->{$f["objectName"].$f["name"]});
         foreach ($values->{$f["objectName"].$f["name"]} as $v)
             $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);
     }
@@ -63,8 +66,6 @@ foreach ($values as $k=>$v){
         $o->{$k}=$v->{$k};
     }
 }
-
-
 
 
 if ($o->Verify()) {

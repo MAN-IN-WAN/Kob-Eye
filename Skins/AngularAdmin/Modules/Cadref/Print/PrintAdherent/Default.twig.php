@@ -61,8 +61,13 @@ if($vars['mode'] == 0) {
 	$vars['jours'] = $tmp;
 	
 
-	$vars['ruptures'] = array('D' => 'Disciplines', 'N' => 'Niveaux', 'C' => 'Classes', 'S' => 'Sans rupture');
+	$vars['ruptures'] = array('A'=>'Antenne', 'D' => 'Disciplines', 'N' => 'Niveaux', 'C' => 'Classes', 'S' => 'Sans rupture');
 	$vars['contenu'] = array('' => '', 'E' => 'Elèves seulement', 'N' => 'Impression du nom', 'A' => 'Impression nom et adresse', 'Q' => 'Etiquettes');
-	$vars['mails'] = array('' => '', 'A' => 'Avec', 'S' => 'Sans');
-	$vars['attentes'] = array('' => '', 'I' => 'Inscrit', 'A' => 'Attente');
+	$vars['mails'] = array('' => 'Indifférent', 'A' => 'Avec', 'S' => 'Sans');
+	$vars['inscrits'] = array('' => 'Tous', 'I' => 'Inscrit', 'A' => 'Attente');
+	$tmp = array('');
+	for($a = $annee, $i = 0; $i < 4; $i++) $tmp[] = --$annee;
+	$vars['noninscr'] = $tmp;
+	
+	$vars['initiales'] = Sys::$User->Initiales;
 }

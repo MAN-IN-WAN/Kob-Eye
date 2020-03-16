@@ -12,7 +12,9 @@ $context = (isset($_GET['context']))?$_GET['context']:'default';
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
-
+if(strpos($context,'recursivchildren-') === 0){
+    $limit = 100000;
+}
 
 //requete
 if(connection_aborted()){

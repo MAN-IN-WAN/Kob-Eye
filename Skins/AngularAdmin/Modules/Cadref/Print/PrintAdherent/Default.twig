@@ -63,19 +63,6 @@
 										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
-												{{ label("Enseignant") }}
-											</div>
-											<div class="col-md-5">
-												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
-													{% for a,b in enseignants %}
-														<option value="{{ a }}">{{ b }}</option>
-													{% endfor %}
-												</select>
-											</div>
-										</div>
-										<div class="row" style="height:5px"></div>
-										<div class="row">
-											<div class="col-md-2">
 												{{ label("Visite") }}
 											</div>
 											<div class="col-md-5">
@@ -92,12 +79,26 @@
 													</div>
 													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.VisiteAnnee" ng-init="obj.VisiteAnnee=''">
+															<option value=""></option>
 															{% for v,c in annees %}
 																<option value="{{ v }}">{{ v }}</option>
 															{% endfor %}
 														</select>
 													</div>
 												</div>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Enseignant") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
+													{% for a,b in enseignants %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
 											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
@@ -190,8 +191,8 @@
 														{{ label("Inscrits Attentes") }}
 													</div>
 													<div class="col-md-5">
-														<select class="form-control cadref-input" ng-model="obj.Attente" ng-init="obj.Attente=''">
-															{% for a,b in attentes %}
+														<select class="form-control cadref-input" ng-model="obj.Inscrits" ng-init="obj.Inscrits=''">
+															{% for a,b in inscrits %}
 																<option value="{{ a }}">{{ b }}</option>
 															{% endfor %}
 														</select>
@@ -203,6 +204,18 @@
 													</div>
 													<div class="col-md-5">
 														<switch ng-model="obj.OrdreAtt"></switch>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Non inscrits depuis") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.NonInscrit" ng-init="obj.NonInscrit=''">
+															{% for v in noninscr %}
+																<option value="{{ v }}">{{ v }}</option>
+															{% endfor %}
+														</select>
 													</div>
 												</div>
 												<div class="row">
@@ -219,12 +232,42 @@
 												</div>
 												<div class="row">
 													<div class="col-md-5">
+														{{ label("SMS 06-07") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Tel06" ng-init="obj.Tel06=''">
+															{% for a,b in mails %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
 														{{ label("Soutien") }}
 													</div>
 													<div class="col-md-5">
-														<switch ng-model="obj.Soutien"></switch>
+														<switch ng-model="obj.Soutien" ng-change="checkSoutien(0)"></switch>
 													</div>
 												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Dons") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Dons" ng-change="checkSoutien(1)"></switch>
+													</div>
+												</div>
+												{% if initiales == 'ADM' %}
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Misc") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Misc"></switch>
+													</div>
+												</div>
+												{% endif %}
 											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
@@ -384,10 +427,10 @@
 										<div style="height: 5px"></div>
 										<div class="row">
 											<div class="col-md-1">
-												{{ label('SMS') }}
+												<label class="form-control-label cadref-label" style="line-height:1">SMS{[{obj.smsSize}]}</label>
 											</div>
 											<div class="col-md-11">
-												<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="obj.SMS"></textarea>
+												<textarea class="form-control cadref-input" maxlength="149" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="obj.SMS" ng-change="checkSmsSize(obj)"></textarea>
 											</div>
 										</div>
 										<div style="height: 5px"></div>

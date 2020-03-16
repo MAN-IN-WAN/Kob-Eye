@@ -125,13 +125,20 @@ class Temoa extends genericClass {
 		$occur = 0;
 		$docs = array();
 		if($o) {
+			$r = '';
+			$t = null;
 			foreach($o as $a) {
 				//$a->text = strtolower($a->text);
-				$t = Sys::getOneData('CEN', 'Temoa/Code='.$a->doc);
+				if($r !==  $a->doc) {
+					$r = $a->doc;
+					$t = Sys::getOneData('CEN', 'Temoa/Code='.$r);
+				}
 				$a->id = $t->Id;
 				$docs[$t->Id] = '';
 				$a->title = $t->Nom;
 				$occur += $a->count;
+				$a->pict = $t->DocPictCount > 0;
+				$a->trad = !empty($t->Trad1Html) || !empty($t->Trad2Html);
 			}
 		}
 		$ret = array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));	

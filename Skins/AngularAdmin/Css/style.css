@@ -1755,4 +1755,99 @@ TimeLIne actions
     word-break: break-word;
 }
 
+nav.left-menu .left-menu-list li.submenu-title{
+	display: none;
+}
+
+:root{
+	--left-menu-width:60px;
+	--footer-margin:calc(var(--left-menu-width) + 16px);
+}
+
+@media(min-width: 768px) {
+	
+    .icon-menu nav.left-menu{
+		width:	var(--left-menu-width);
+	}
+	.icon-menu nav.left-menu + * + .page-content{
+		margin-left: var(--left-menu-width);
+	}
+	.icon-menu nav.left-menu + * + * + .cwt__footer {
+		margin-left: var(--footer-margin);
+	}
+	.icon-menu nav.left-menu .logo-container{
+		padding: 9px;
+		width: var(--left-menu-width);
+	}
+	.icon-menu.menu-static nav.left-menu + nav.top-menu{
+		margin-left: var(--left-menu-width);
+	}
+	.icon-menu nav.left-menu .left-menu-inner{
+		overflow: visible !important;
+	}
+	
+	.icon-menu nav.left-menu .left-menu-list li.submenu-title{
+		display: block;
+		color: #fff;
+		font-weight: 600;
+		text-align: center;
+		border-bottom: 1px solid #4e4e4e;
+		margin-bottom: 10px;
+	}
+	.icon-menu nav.left-menu .left-menu-list li .left-menu-link{
+		padding: 0;
+		text-align: center;
+	}
+	.icon-menu .left-menu-link span{
+		display: none;
+	}
+	.icon-menu nav.left-menu .left-menu-list li .left-menu-link .left-menu-link-icon{
+		width:50px;
+	}
+	.icon-menu nav.left-menu .left-menu-list li .left-menu-link .left-menu-link-icon{
+		font-size: 2.5rem;
+	}
+	.icon-menu nav.left-menu .left-menu-list li{
+		margin-bottom: 10px;
+		padding: 15px 0;
+		position: relative;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu > .left-menu-link:after{
+		right: 4px;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu.left-menu-list-opened > .left-menu-link:after{
+		transform: initial;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu:hover .left-menu-list{
+		display: block !important;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu .left-menu-list{
+		position: absolute;
+		z-index: 1000;
+		top: 0;
+		left: var(--left-menu-width);
+		padding: 0 25px;
+		width:	230px;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu .left-menu-list li {
+		margin-bottom: 0;
+		padding: 5px;
+	}
+	.icon-menu nav.left-menu .left-menu-list li.left-menu-list-submenu .left-menu-list li .left-menu-link {
+		text-align: left;
+	}
+	.icon-menu.theme-dark nav.left-menu .left-menu-list li .left-menu-link:hover{
+		background:#585565;
+	}
+	
+	.icon-menu .jspContainer {
+		overflow: visible;
+	}
+	.icon-menu .jspScrollable .jspPane{
+		margin:0 !important; 
+	}
+	.icon-menu .jspScrollable .jspVerticalBar {
+		display: none;
+	}
+}
 

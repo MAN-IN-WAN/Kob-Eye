@@ -205,11 +205,13 @@ class Systeme extends Module {
                     // Can no longer use $db because it will be closed by the child
                     // Instead, make a new MySQL connection for ourselves to work with
                     $GLOBALS['Systeme']->connectSQL(true);
-                    Server::$_LDAP = null;
+					if(class_exists('Server'))
+						Server::$_LDAP = null;
                 } else {
                     echo 'début du thread '.posix_getpid()."\n";
                     $GLOBALS['Systeme']->connectSQL(true);
-                    Server::$_LDAP = null;
+					if(class_exists('Server'))
+						Server::$_LDAP = null;
                     // We are the child
                     // Do something with the inherited connection here
                     // It will get closed upon exit
