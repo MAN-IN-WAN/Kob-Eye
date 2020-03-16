@@ -1,0 +1,7 @@
+{% from "Skins/Css34/Modules/News/Nouvelle/ListItem.twig" import  nouvelle_item %}
+
+<div v-if="!render"  class="news-list" id="news">
+    {% for n in news %}
+        {{ nouvelle_item(n,sc,g) }}
+    {% endfor %}
+</div>

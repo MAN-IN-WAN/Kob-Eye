@@ -1,0 +1,28 @@
+/** ITEM HELPER **/
+{% macro nouvelle_item(s,sc,g) %}
+    <a class="card big" href="/{{ s.getUrl() }}">
+        <div class="nouvelle-item">
+            <div class="card-body">
+                <h2 class="card-text">{{ s.Titre  }}</h2>
+                <p class="card-text">{{ s.Chapo  }}</p>
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+{% macro template_nouvelle_item() %}
+    {% verbatim %}
+    <template id="news">
+        <div v-if="!news.length" class="noItems">
+            Désolés, Aucun évènement ne correspond à votre demande
+        </div>
+        <a class="card big"  v-for="(nouvelle,index) in news" v-bind:key="index" :to="{path: nouvelle.Url, params: {nouvelle: nouvelle}}" v-on:click.prevent="goToFiche(nouvelle)">
+            <div class="nouvelle-item">
+                <div class="card-body">
+                    <h2 class="card-text">{{ nouvelle.Titre  }}</h2>
+                    <p class="card-text">{{ nouvelle.Chapo  }}</p>
+                </div>
+            </div>
+        </a>
+    </template>
+    {% endverbatim %}
+{% endmacro %}

@@ -1,0 +1,14 @@
+<div>
+    {% if bloc.Lien is not empty  %}
+    <a href="{{ bloc.Lien }}"  {% if bloc.Externe == 1 %} target="_blank"  {%  endif %}>
+        {%  endif %}
+        {% if bloc.Icone is not empty  %}
+            <i aria-hidden="true" class="fa fa-{{ bloc.Icone }}"></i>
+        {%  endif %}
+        <h3>{{ bloc.Titre }}</h3>
+        {% if bloc.Lien is not empty  %}
+    </a>
+    {%  endif %}
+    <div>{{ bloc.Text | raw}}</div>
+
+</div>

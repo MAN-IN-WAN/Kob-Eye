@@ -28,7 +28,7 @@ class Organisation extends genericClass {
 	        genericClass::Save();
     	}
 
-	function ImprimeEtiquette2 ($CodePos, $Ville , $Dept,  $Actives, $Etiquettes) {
+	 static function ImprimeEtiquette2 ($CodePos, $Ville , $Dept,  $Actives, $Etiquettes) {
 
 		require_once "Class/Lib/FPDF.class.php";
 		$pdf=new FPDF();
@@ -39,12 +39,8 @@ class Organisation extends genericClass {
 		$pdf->marge_basse=0;
 
 		if ($CodePos!='') $filtre = "CodPos='" . $CodePos . "'" ;
-		if ($Ville!='') $filtreV .= "Ville='" . $Ville . "'" ;
-		if ($filtreV!='') $filtre .= " and " ;
-		$filtre .=  $filtreV;
-		if ($Dept!='') $filtreD .= " Departement='" . $Dept . "'" ;
-		if ($filtre!='') $filtre .= " and " ;
- 		$filtre .=  $filtreD;
+		if ($Ville!='') $filtre = "Ville='" . $Ville . "'" ;
+		if ($Dept!='') $filtre = " Departement='" . $Dept . "'" ;
 		if ($Etiquettes!='3') {
 			if ($filtre!='') $filtre .= " and ";
 			$filtre .= " Etiq='" . $Etiquettes. "'";
@@ -55,7 +51,8 @@ class Organisation extends genericClass {
 
 
 		$GLOBALS["Systeme"]->connectSQL();
-	    	$req = $GLOBALS["Systeme"]->Db[0]->query( $sql );
+
+        $req = $GLOBALS["Systeme"]->Db[0]->query( $sql );
 		$res = $req->fetchALL ( PDO::FETCH_ASSOC );
 		$nbetiq=16;
         	foreach($res as $resa) {

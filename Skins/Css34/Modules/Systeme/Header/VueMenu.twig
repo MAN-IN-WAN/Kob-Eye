@@ -4,41 +4,70 @@
             <div class="espacepro pull-right">
                 <a href="#" data-toggle="modal" data-target="#login-modal">Espace Pro</a>
             </div>
-            <nav class="nav" role="navigation">
-                <ul class="menu">
-                    {% for menu in menus %}
-                        <li><router-link to="/{{ menu.Url }}">{{ menu.Titre }}</router-link></li>
-                    {% endfor %}
-                </ul>
+            <nav class="nav " role="navigation">
+                <div class="container">
+                    <ul class="menu ">
+                        {% for menu in menus %}
+                            <li>
+                                <router-link to="/{{ menu.Url }}">{{ menu.Titre }}</router-link>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div id="wrap" style="flex-direction: column">
+{#                                <img src="Skins/Css34/Css/images/UI-burger-menu-512.png" alt="menu" style="width:40px;height: 40px;">#}{#css#}
+                        <div id="open">
+                            <a href="#wrap" id="open">
+                                <svg viewBox="0 0 100 80" width="40" height="40">
+                                    <rect width="100" height="20" rx="8"></rect>
+                                    <rect y="30" width="100" height="20" rx="8"></rect>
+                                    <rect y="60" width="100" height="20" rx="8"></rect>
+                                </svg>
+                            </a>
+                        </div>
+
+                            <div id="close" style="background-color: #d7d7d7;width: 100%">
+                                <div id="float">
+                                    <a href="#">
+{#                                        <svg viewBox="0 0 100 80" width="40" height="40">#}
+{#                                            <rect width='50' height='15' transform='translate(35 25) rotate(48)' />#}
+{#                                            <rect width='50' height='15' transform='translate(68 35) rotate(130)' />#}
+{#                                            <rect width='50' height='15' transform='translate(10 35) skewY(-42)' />#}
+{#                                            <rect width='50' height='15' transform='translate(10 -10) skewY(42)' />#}
+{#                                        </svg>#}
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    {% for menu in menus %}
+                                        <span>
+                                            <a href="/{{ menu.Url }}">{{ menu.Titre }}</a>
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                    </div>
+                </div>
             </nav>
         </div>
         <div id="submenu">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3  submenu-container logo-container">
                         <div class="logo">
-                            <router-link to="/"><a href="/"><img src="/{{ user.Avatar }}" class="img-responsive" /></a></router-link>
+                            <router-link to="/"><img src="/{{ user.Avatar }}" class="img-responsive"/></router-link>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3 submenu-container square-container">
                         <router-link to="/Ateliers" class="square blue">
-                            <h3>Ateliers</h3>
-                            <p>de pratique artistique<br/>
-                                et sportive</p>
+                            {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-LEFT'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3  col-xs-3  col-md-3  col-sm-3 submenu-container square-container">
                         <router-link class="square green" to="/Sorties">
-                            <h3>Sorties</h3>
-                            <p>musique, sport, théatre, danse,<br/>
-                                exposition ...</p>
+                            {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-CENTER'))) }}
                         </router-link>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3  col-xs-3  col-md-3   col-sm-3 submenu-container square-container">
                         <router-link class="square pink" to="/Formations">
-                            <h3>Formations</h3>
-                            <p>Initiation à la médiation culturelle :<br/>
-                                culture et insertion sociale</p>
+                            {{ include(template_from_string(module('Systeme/Bloc/Menu?CODE=MENU-RIGHT'))) }}
                         </router-link>
                     </div>
                 </div>
@@ -47,14 +76,14 @@
     </div>
 </template>
 <script>
-module.exports = {
-    name: 'header-menu',
-    template: '#header',
-    data (){
-        return {
-            render: true
-        };
+    module.exports = {
+        name: 'header-menu',
+        template: '#header',
+        data: function() {
+            return {
+                render: true
+            };
+        }
     }
 
-}
 </script>

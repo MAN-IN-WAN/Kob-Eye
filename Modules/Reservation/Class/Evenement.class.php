@@ -25,7 +25,7 @@ class Evenement extends genericClass {
 			$S->Save();
 		}
 //		if ($Valid) $this->Valide=1; else $this->Valide=0;
-		genericClass::Save();
+		return genericClass::Save();
 	}
 	
 	function Delete() {
@@ -120,6 +120,14 @@ class Evenement extends genericClass {
 	}
 
 	public function Reserver($params){
+        $grp = Sys::$User->Groups[0];
+        $cli = Sys::getOneData('Reservation','Client/NumeroGroupe='.$grp->Id);
+
+		if(!$cli || !$cli->Adhesion){
+			$html ='<h2 class="alerteAdhesion">Vous ne pouvez pas réserver d\'invitations actuellement.</h2><div> Afin de continuer à bénéficier de notre dispositif, nous vous invitons à régulariser votre adhésion auprès de Culture et Sport Solidaires 34.<br/> Si besoin, vous pouvez nous joindre au <a href="tel:+33467422698">04 67 42 26 98</a></div>';
+			return $html;
+		}
+
 		$step = !empty($params['step'])? $params['step']:0;
 
 		switch($step){
@@ -254,5 +262,6 @@ class Evenement extends genericClass {
 				);
 		}
 	}
+
 }
 ?>

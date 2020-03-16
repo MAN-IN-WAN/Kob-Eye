@@ -22,8 +22,11 @@ $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:19;
 $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
 $date = (isset($_GET['date']))?$_GET['date']:'';
+$une = (isset($_GET['une']))?$_GET['une']:false;
 $genre = (isset($_GET['genre']))?$_GET['genre']:'';
+$public = (isset($_GET['public']))?$_GET['public']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
+
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Query'],2);
 $path = $path[1];
@@ -33,25 +36,71 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
-if (!empty($date)){
-    $vars['rows'] = array();
-    $from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
+
+
+if (empty($date)){
+    $date = time();
+} else{ //Si on a une date on fait sauter le filtre a la une
+    $une = false;
+}
+
+$vars['rows'] = array();
+$from = mktime(0,0,0,date('m',$date),date('d',$date),date('Y',$date));
+if (!empty($genre) || $une ){
+    $to = mktime(23,59,59,date('m',$date),date('d',$date),3000);
+} else{
     $to = mktime(23,59,59,date('m',$date),date('d',$date),date('Y',$date));
-    $evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
-    foreach ($evts as $ev){
-        $spt = $ev->getOneParent('Spectacle');
-        if (!empty($genre)){
-            if($spt->Genre == $genre)
-                $vars['rows'][] = $spt;
-        } else{
-            $vars['rows'][] = $spt;
+}
+
+//    print_r('Evenement/'. $filters. '&DateDebut>'.$from.'&DateDebut<'.$to);
+$evts = Sys::getData('Reservation','Evenement/DateDebut>'.$from.'&DateDebut<'.$to);
+foreach ($evts as $ev){
+    $spt = $ev->getOneParent('Spectacle');
+    if(!$spt) continue;
+    $ok = 1;
+    //On gere la recherche sur les titres
+    if(!empty($filters)) {
+        $tmpFilters=ltrim($filters,'~');
+//            print_r($tmpFilters.'  '.$spt->Nom);
+        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false && strpos(strtolower($spt->Localisation),strtolower($tmpFilters)) === false) {
+            $ok = false;
+        }
+
+    }
+    //On gere les filtres par genre
+    if (!empty($genre)){
+        if($spt->Genre != $genre) {
+            $ok = false;
         }
     }
-
-
-}else{
+    //on gere les filtres par type de public
+    if (!empty($public)){
+        if($spt->TypePublic != $public) {
+            $ok = false;
+        }
+    }
+    //On gere les articles à la une
+    if ($une && empty($genre)){
+        if(!$spt->AlaUne) {
+            $ok = false;
+        }
+    }
+    //On evite les doubloins
+    foreach($vars['rows'] as $s){
+        if($s->Id == $spt->Id){
+            $ok = false;
+            break;
+        }
+    }
+    if($ok) {
+        $vars['rows'][] = $spt;
+    }
+}
+/*}else{
     $filters.="&DateDebut>".time();
     if (!empty($genre)) $filters.="&Genre=".$genre;
+    if (!empty($public)) $filters.="&TypePublic=".$public;
+    //if ($une) $filters.="&AlaUne=1";
     $vars['requete'] = $info['Module'].'/'.$path . '/' . $filters;
 
     if(count($sort)) {
@@ -60,7 +109,7 @@ if (!empty($date)){
         $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
     }
 
-}
+}*/
 
 //GENRES
 $genres = array();

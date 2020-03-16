@@ -48,13 +48,25 @@
                 "Nom": "{{ event.salle.Nom }}",
                 "Adresse": "{{ event.salle.Adresse }}",
                 "Ville": "{{ event.salle.Ville }}",
-                "CodPos": "{{ event.salle.CodPos }}"
+                "CodPos": "{{ event.salle.CodPos }}",
+                "Handi": "{{ event.salle.Handi }}"
             },
             "Structure": {
                 "Tel": "{{ structure.Tel }}",
                 "SiteWeb": "{{ structure.SiteWeb }}",
                 "Nom": "{{ structure.Nom }}"
             }
+        }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+    ,"partenaires": [
+    {% for part in partenaires %}
+        {
+        "id": {{ part.Id }},
+        "titre": "{{ part.Titre }}",
+        "ordre": {{ part.Ordre }},
+        "image": "{{ part.Image }}",
+        "lien": "{{ part.Lien }}"
         }{% if not loop.last %},{% endif %}
     {% endfor %}
     ]

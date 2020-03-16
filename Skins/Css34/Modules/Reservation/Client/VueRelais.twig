@@ -1,0 +1,153 @@
+<template>
+    <form v-on:submit.prevent="onSubmit">
+        <div class="row">
+          <div class="col-md-12" id="filters">
+                <h3  class="titre-partenaires">Liste des relais sociaux</h3>
+                {% from "Skins/Css34/Modules/Reservation/Client/Pagination.twig" import  template_pagination %}
+                {{ template_pagination() }}
+                {{ include(template_from_string(module('Reservation/Client/Filters'))) }}
+                <div id="client">
+                    {% from "Skins/Css34/Modules/Reservation/Client/ListItems.twig" import  client_item,template_client_item %}
+                    <div class="client-list client-list-reset">
+                        {{ template_client_item() }}
+                    </div>
+                </div>
+                {{ template_pagination() }}
+            </div>
+        </div>
+    </form>
+</template>
+<script>
+    module.exports = {
+        name: 'reservation-clients',
+        template: '#clients',
+        data: function() {
+            return {
+                busy:false,
+                genre: '',
+                clients: [],
+                client: {},
+                search: '',
+                dirty: 0,
+                first: true,
+                render: true,
+                busy: false,
+                searchTimeOut: '',
+                pagination: {
+                    total:0,
+                    current:1,
+                    max:0,
+                    pagesize:42
+                }
+            };
+        },
+        methods: {
+            onSubmit: function (event) {
+                console.log('COMP submit detected display component', this.clients);
+                this.getData();
+            },
+            getData: function () {
+                var me = this;
+                me.busy=true;
+                axios
+                    .get('/Reservation/Client/getData.json?filters=~' + encodeURIComponent(this.search) + '&page=' + this.pagination.current)
+                    .then(function (response) {
+                        me.render = false;
+                        me.resetData();
+                        me.dirty = true;
+                        Vue.nextTick(function () {
+                            me.addData(response.data.data);
+                            me.pagination.total = response.data.total;
+                            me.pagination.pagesize = response.data.pageCount;
+                            me.initPage();
+                            me.render = true;
+                            me.dirty = false;
+                            me.busy=false;
+                            console.log('COMP rendu component', me.clients);
+                        })
+                    });
+            },
+            resetData: function () {
+                var nb = this.clients.length;
+                for (var i = 0; i < nb; i++)
+                    this.clients.pop();
+                console.log('COMP CONTAINER: resetdata', this.clients);
+            },
+            addData: function (tab) {
+                for (var i in tab)
+                    this.clients.push(tab[i]);
+                console.log('COMP CONTAINER: addata', this.clients);
+            },
+            // refreshIsotope: function () {
+            //     $('.spectacles-list').isotope('destroy');
+            //     $('.spectacles-list').isotope();
+            // },
+            goToFiche: function (client) {
+                console.log('gotofiche: ', client);
+                window.spec.client = client;
+                router.push({path: client.Url, params: {client: client}});
+            },
+            initPage: function() {
+                var total = this.pagination.total;
+                var size  = this.pagination.pagesize;
+                var currentPage = this.pagination.current;
+                this.pagination.max = Math.ceil(total/size);
+            },
+            showPage: function (n) {
+                var me = this;
+                if ( ( n != 1 ) && ( n != me.pagination.max ) && ( (n == me.pagination.current) || (n == (me.pagination.current - 1)) || (n == (me.pagination.current + 1 ))) ){
+                    return true;
+                }
+                return false
+            },
+            setPage: function(val){
+                if(val < 1) val = 1;
+                if(val > this.pagination.max) val = this.pagination.max;
+                this.pagination.current = val;
+                this.getData();
+            }
+        },
+        mounted: function () {
+            console.log('APP VUE > RESET CSS');
+            //reset css
+            //$('.spectacles-list').addClass('spectacles-list-reset');
+        },
+        created: function () {
+            console.log('>>>>>>>>>>>>>>>>>CREATED');
+            this.getData();
+        },
+        watch: {
+            // clients: function (val) {
+            //     if (val.length) {
+            //         setTimeout(function () {
+            //             console.log('COMP CONTAINER: after data', $('.clients-list'));
+            //             $('.clients-list').isotope('destroy');
+            //             $('.clients-list').isotope({
+            //                 // set itemSelector so .grid-sizer is not used in layout
+            //                 itemSelector: '.card',
+            //                 percentPosition: true,
+            //                 masonry: {
+            //                     // use element for option
+            //                     columnWidth: '.card'
+            //                 }
+            //             }, 100);
+            //         });
+            //     }
+            // },
+            search: function(val){
+                var me = this;
+                if (me.searchTimeOut != ''){
+                    clearTimeout(me.searchTimeOut);
+                }
+                me.searchTimeOut = setTimeout(function (val){
+                    me.pagination.current = 1;
+                    me.getData();
+                    me.searchTimeOut = '';
+                },100);
+            }
+
+
+        }
+
+    }
+</script>

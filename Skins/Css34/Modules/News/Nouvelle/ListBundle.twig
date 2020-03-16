@@ -1,0 +1,15 @@
+<form v-on:submit.prevent="onSubmit">
+    <div class="row">
+        <div class="col-lg-12 " style="padding:0;margin:5px 0;">
+            {{ include(template_from_string(module('News/Nouvelle/Timeline'))) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10" id="spectacle">
+            {{ include(template_from_string(module('News/Nouvelle/List'))) }}
+        </div>
+        <div class="col-lg-2" id="filters">
+            {{ include(template_from_string(module('News/Nouvelle/Filters'))) }}
+        </div>
+    </div>
+</form>

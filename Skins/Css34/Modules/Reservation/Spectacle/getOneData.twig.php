@@ -51,6 +51,9 @@ usort($vars['events'],function($a,$b){
     return ($a->DateDebut > $b->DateDebut) ? 1 : -1;
 });
 
+//Partenaires
+$vars['partenaires'] = $vars['rows'][0]->getChildren('Partenaire/Actif=1');
+
 
 $ids= array_map(function($i){return $i->Id;},$vars['rows']);
 //souscription au push

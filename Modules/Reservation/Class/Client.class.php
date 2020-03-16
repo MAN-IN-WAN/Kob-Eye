@@ -133,7 +133,7 @@ FROM `cult-Reservation-Reservations` AS R left join `cult-Reservation-Client` as
 		
 	}
 	
-	function ImprimeEtiquette2 ($CodePos, $Ville , $Dept,  $Actives, $Etiquettes) {
+	static function ImprimeEtiquette2 ($CodePos, $Ville , $Dept,  $Actives, $Etiquettes) {
 
 		require_once "Class/Lib/FPDF.class.php";
 		$pdf=new FPDF();
@@ -143,17 +143,14 @@ FROM `cult-Reservation-Reservations` AS R left join `cult-Reservation-Client` as
 		$pdf->marge_haute=0;
 		$pdf->marge_basse=0;
 
-		if ($CodePos!='') $filtre = "CodPos='" . $CodePos . "'" ;
-		if ($Ville!='') $filtreV .= "Ville='" . $Ville . "'" ;
-		if ($filtreV!='') $filtre .= " and " ;
-		$filtre .=  $filtreV;
-		if ($Dept!='') $filtreD .= " Departement='" . $Dept . "'" ;
-		if ($filtre!='') $filtre .= " and " ;
- 		$filtre .=  $filtreD;
-		if ($Etiquettes!='3') {
-			if ($filtre!='') $filtre .= " and ";
-			$filtre .= " Etiq='" . $Etiquettes. "'";
-		}
+        if ($CodePos!='') $filtre = "CodPos='" . $CodePos . "'" ;
+        if ($Ville!='') $filtre = "Ville='" . $Ville . "'" ;
+        if ($Dept!='') $filtre = " Departement='" . $Dept . "'" ;
+        if ($Etiquettes!='3') {
+            if ($filtre!='') $filtre .= " and ";
+            $filtre .= " Etiq='" . $Etiquettes. "'";
+        }
+
 		$sql = "SELECT * FROM `cult-Reservation-Client` ";
 		if ($filtre!='') $sql .= " WHERE ".$filtre . " ;";
 		
@@ -182,7 +179,9 @@ FROM `cult-Reservation-Reservations` AS R left join `cult-Reservation-Client` as
 					//echo "ici 2 - " . $req->Tot . "<br />"; 
 				}
 */
+
 				$sql2 = "SELECT  R.Id  as Tot FROM `cult-Reservation-Reservations` AS R left join `cult-Reservation-Client` as C  on C.Id = R.ClientId where  R.ClientId=" . $resa['Id'] . " and R.tmsCreate>=".$DateDebut . " and R.tmsCreate<=" .$DateFin;
+
 				$req2 = $GLOBALS["Systeme"]->Db[0]->query( $sql2 );
 				$res2 = $req2->fetchALL ( PDO::FETCH_ASSOC );
 				if ($Actives=='1')  {

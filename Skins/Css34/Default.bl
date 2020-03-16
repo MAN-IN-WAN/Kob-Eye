@@ -14,6 +14,8 @@
 
 //EXTERNAL CDN
 [HEADER]
+
+
 //FONTS
 <link href="https://fonts.googleapis.com/css?family=Baloo&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
@@ -21,6 +23,11 @@
 //DatePicker -> https://www.npmjs.com/package/vuejs-datepicker
 <script src="https://unpkg.com/vuejs-datepicker"></script>
 <script src="https://unpkg.com/vuejs-datepicker/dist/locale/translations/fr.js"></script>
+
+//Menu burger
+<script src="https://unpkg.com/vue-slider"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script> 
 [/HEADER]
 
 //CUSTOM VUEJS
@@ -48,6 +55,23 @@
 <div id="footer">
     [MODULE Systeme/Footer]
 </div>
-[MODULE Systeme/Login]
+<div>
+    <div id="modalLogin">
+        <modal-login :sid="specId"></modal-login>
+        [MODULE Systeme/Login]
+    </div>
+</div>
 //<!--<script type="text/javascript" src="/Skins/Css34/Js/vuejs.js"></script>-->
 <script type="text/javascript" src="/Systeme/Header/App.vue"></script>
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.abtel.fr/" : "http://piwik.abtel.fr/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 8);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.abtel.fr/piwik.php?idsite=8" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->

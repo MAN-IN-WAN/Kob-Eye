@@ -12,7 +12,9 @@ $vars['fields'][] = array(
 
 //calcul offset / limit
 $offset = 0;
-$limit = 40;
+$cpt = Sys::getCount('Reservation','Partenaire/Actif=1');
+$limit = $cpt*4;
+$vars['pageCount']=$limit;
 $filters = (isset($_GET['filters'])&&$_GET['filters']!='~')?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array('Nom', 'ASC');
@@ -75,8 +77,20 @@ $curmen = '/Partenaires/';
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
     if (sizeof($mens))  $curmen = '/'.$mens[0]->Url.'/';
 }*/
+// PERMET DE FAIRE UN PATCHWORK DE COULEUR POUR LES PARTENAIRES
+$index = 0;
+$genres = Sys::getData('Reservation','Genre');
+$couleurs =array();
+foreach ($genres as $g) {
+    if (!empty($g->Couleur  )) $couleurs[]= $g->Couleur;
+}
+
 
 foreach ($vars['rows'] as $k=>$v){
+    // patchwork
+    $v->Couleur = $couleurs[$index];
+    $index++;
+    if ($index > count($couleurs)) $index=0;
 
     //URL
     $v->Url = $curmen.$v->Url;
