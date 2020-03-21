@@ -19,7 +19,14 @@ const router = new VueRouter({
             {path: '/{{ menu.Url }}', component: window.httpVueLoader('/{{ menu.Alias }}/VuePage.vue'+'?tms='+Date.now())},
             {% endif %}
         {% endfor %}
-    ]
+    ],
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    }
 });
 
 //Declaration filtre
