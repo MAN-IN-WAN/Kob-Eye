@@ -1545,7 +1545,8 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		$montant = 0;
-		foreach($pdo as $r) {
+		if(! $pdo) klog::l("ERROR CADREF : Adherent.class cours ajoutés : ".sql);
+		else foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			if(!$r['cWeb'] || !$r['nWeb']) {
 				$r['bloque'] = 1;
@@ -1627,7 +1628,8 @@ where r.AdherentId=$adhId and r.Annee='$annee'
 order by v.DateVisite";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
-		foreach($pdo as $r) {
+		if(! $pdo) klog::l("ERROR CADREF : Adherent.class visites deja inscrites : ".sql);
+		else foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			$r['classe'] = 'label-success';
 			switch($r['Supprime']) {
@@ -1718,9 +1720,9 @@ where ce.Visite=:cid";
 		$annee = Cadref::$Annee;
 		$filter = str_replace('&', '', $obj['Filter']);
 		$adhId = $this->Id;
-		$antId = $obj['AntenneId'];
-		$secId = $obj['SectionId'];
-		$disId = $obj['DisciplineId'];
+		$antId = isset($obj['AntenneId']) ? $obj['AntenneId'] : '';
+		$secId = isset($obj['SectionId']) ? $obj['SectionId'] : '';
+		$disId = isset($obj['DisciplineId']) ? $obj['DisciplineId'] : '';
 		switch($mode) {
 			case 'antenne':
 				$sql = "

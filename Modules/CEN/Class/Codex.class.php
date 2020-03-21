@@ -219,16 +219,13 @@ class Codex extends genericClass {
 			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
 			"$whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l(">>>>>>>>>>>>>SQL");
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-klog::l(">>>>>>>>>>>>>LOOP");
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
 				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
 				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
-klog::l(">>>>>>>>>>>>>RET");
 		return $dic;
 	}	
 
@@ -280,17 +277,13 @@ klog::l(">>>>>>>>>>>>>RET");
 			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
 			"$whr order by s.CodexId,e.Cote";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l(">>>>>>>>>>>>>SQL");
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		
-klog::l(">>>>>>>>>>>>LOOP");
 		$dic = array();
 		foreach($pdo as $d) {
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
 				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
 				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
 		}
-klog::l("RET");
 		return $dic;
 	}	
 
@@ -559,8 +552,8 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		$type = $args['type'];
 		switch($type) {
 			case 'codex':		
-			case 'glyphe':		
-			case 'personne':		
+			//case 'glyphe':		
+			//case 'personne':		
 				$pres = strtolower($args['text']);
 				break;
 			case 'graphie':
@@ -578,10 +571,10 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		$txt = file_get_contents(getcwd().$dir.$pres.$lang);
 		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
 		$txt = utf8_encode(nl2br($txt));
-		return array('text'=>$txt, 'xxx'=>getcwd().$dir.$pres.$lang);		
+		return array('text'=>$txt); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
 	
-	function GetTerm($args) {
+	static public function GetTerm($args) {
 		$dir = '/Home/2/CEN/Codex/Aide/';
 		$lgs = ['es','fr','en'];
 		$lix = array_search($args['lang'], $lgs);
@@ -709,7 +702,6 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 	static private function getTrans($cid, $word, $lang) {
 		$sql = "select Sens,Sens2,Sens3 from `##_CEN-Sens` where $cid Element='$word' limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-//klog::l($sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(!$pdo->rowCount()) return '';
 		
