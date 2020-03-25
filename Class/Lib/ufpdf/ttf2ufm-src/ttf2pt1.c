@@ -482,7 +482,7 @@ static struct uni_language uni_lang[]= {
     { "hu_","pl_","cz_","si_","sk_" },
     'A'
   },
-  { /* by Rièardas Èepas <rch@WriteMe.Com> */
+  { /* by Riï¿½ardas ï¿½epas <rch@WriteMe.Com> */
     { unicode_latin4 }, 
     0, /* no name-based mapping */
     "latin4",

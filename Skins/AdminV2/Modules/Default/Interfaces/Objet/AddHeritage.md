@@ -15,7 +15,7 @@
 		<br/><br/>Type:
 		<select name="Heritage_TypePropriete">
 			<option value="VARCHAR">Chaine
-			<option value="INT">Valeur numérique
+			<option value="INT">Valeur numï¿½rique
 			<option value="TEXT">Texte
 			<option value="BOOLEAN">Oui/Non
 		</select><br/><br/>

@@ -63,6 +63,7 @@ class CompteMail extends genericClass
             //$this->Delete();
             return false;
         }
+        $this->addParent($this->getKEServer());
 
         parent::Save();
 

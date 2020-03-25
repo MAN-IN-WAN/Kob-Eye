@@ -1,1 +1,28 @@
-.lofadvafooter {color: #bec1c6;padding: 20px 0;}.lofadvafooter a{color: #bec1c6;}.lofadvafooter .lof-position{}.lofadvafooter .lof-position .lof-block {}.lofadvafooter .lof-position .lof-block-wrap{padding: 0 10px 0 0;}.lofadvafooter .lof-position .lof-block-wrap h2{	color: #fff; 	padding: 8px 0; margin-bottom: 8px;	font-size: 18px;}.lofadvafooter .lof-position .lof-block .lof-block-wrap p{}.lofadvafooter .lof-position .lof-block .lof-block-wrap ul{list-style: none;}.lofadvafooter .lof-position .lof-block .lof-block-wrap li.item,.lofadvafooter .lof-position .lof-block .lof-block-wrap li.link{	background: url("images/bullet-link.png") no-repeat scroll 0 center transparent;    padding: 7px 0 7px 12px;}.lofadvafooter .lof-position .lof-block .lof-block-wrap li.item a,.lofadvafooter .lof-position .lof-block .lof-block-wrap li.link a{color: #bec1c6;}.lofadvafooter #lofadva-pos-1 .lof-block-wrap h2{	float: left;    font-size: 27px;    padding: 0;    text-transform: uppercase;}#lofadva-pos-1 .lof-block-wrap{	margin-top: -88px;}
+.lofadvafooter {color: #bec1c6;padding: 20px 0;}
+.lofadvafooter a{color: #bec1c6;}
+.lofadvafooter .lof-position{}
+.lofadvafooter .lof-position .lof-block {}
+.lofadvafooter .lof-position .lof-block-wrap{padding: 0 10px 0 0;}
+.lofadvafooter .lof-position .lof-block-wrap h2{
+	color: #fff; 
+	padding: 8px 0; margin-bottom: 8px;
+	font-size: 18px;
+}
+.lofadvafooter .lof-position .lof-block .lof-block-wrap p{}
+.lofadvafooter .lof-position .lof-block .lof-block-wrap ul{list-style: none;}
+.lofadvafooter .lof-position .lof-block .lof-block-wrap li.item,
+.lofadvafooter .lof-position .lof-block .lof-block-wrap li.link{
+	background: url("images/bullet-link.png") no-repeat scroll 0 center transparent;
+    padding: 7px 0 7px 12px;
+}
+.lofadvafooter .lof-position .lof-block .lof-block-wrap li.item a,
+.lofadvafooter .lof-position .lof-block .lof-block-wrap li.link a{color: #bec1c6;}
+.lofadvafooter #lofadva-pos-1 .lof-block-wrap h2{
+	float: left;
+    font-size: 27px;
+    padding: 0;
+    text-transform: uppercase;
+}
+#lofadva-pos-1 .lof-block-wrap{
+	margin-top: -88px;
+}

@@ -226,7 +226,7 @@
 			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Mail" formCondition="{{ scopeObj }}.Mail == 1">
-			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1" >defaultMailServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1" fiche="1">defaultMailServer</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de serveur mail" form="1" fiche="1" listDescr="Type" default="Web" values="Mbx,Mta,Proxy,Ldap,AllInOne::All-in-one,Policyd,Drive,Docs">MailType</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1" formCondition="({{ scopeObj }}.MailType == 'Mbx' || {{ scopeObj }}.MailType == 'AllInOne')">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1" formCondition="({{ scopeObj }}.MailType == 'Mbx' || {{ scopeObj }}.MailType == 'AllInOne')">mailAdminPassword</PROPERTIES>
@@ -259,7 +259,7 @@
 		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
 		<FUNCTION title="Configuration du serveur">createConfigTask</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN,addServerHostTask::PARC_TECHNICIEN,delServerHostTask::PARC_TECHNICIEN,syncHostTask::PARC_TECHNICIEN">
+	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php" Operations="edit,add::PARC_TECHNICIEN,delete::PARC_TECHNICIEN,emptyProxyCacheTask,createBackupTask,cloneHost,getSize::PARC_TECHNICIEN,moveHostTask::PARC_TECHNICIEN,createInstanceFromHost::PARC_TECHNICIEN,createRotateTask::PARC_TECHNICIEN,addServerHostTask::PARC_TECHNICIEN,delServerHostTask::PARC_TECHNICIEN,syncHostTask::PARC_TECHNICIEN">
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>

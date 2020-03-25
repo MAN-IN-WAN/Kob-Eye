@@ -52,7 +52,7 @@ class Host extends genericClass
         //creation apachedefault
         $aps = Sys::getCount('Parc','Host/'.$this->Id.'/Apache');
 
-        if ($aps<4)
+        if (empty($aps))
             $this->createDefaultApache();
 
         //creation defaultftp

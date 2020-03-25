@@ -73,7 +73,7 @@
 	</table>
 	[IF [!Objet::Referent!]!=faux]
 		<div style="padding:10px;margin-left:7%;margin-top:10px;margin-bottom:10px;width:30%;border:1px solid black;">
-		<div>Pour modifier les autres propri&eacute;t&eacute;s, assurez vous d'avoir les droits suffisants sur   [!Objet::Referent!] n°[!Objet::Liaison!] (dans le module [!Objet::ReferentModule!]), et rendez vous ici:</div>
+		<div>Pour modifier les autres propri&eacute;t&eacute;s, assurez vous d'avoir les droits suffisants sur   [!Objet::Referent!] nï¿½[!Objet::Liaison!] (dans le module [!Objet::ReferentModule!]), et rendez vous ici:</div>
 		<div style="margin:10px;"> <a class="FauxBoutonBlanc" href="/[!Objet::ReferentModule!]/[!Objet::Referent!]/[!Objet::Liaison!]/Modifier" style="margin:10px;"> Y acc&eacute;der</a></div>
 		</div>
 	[/IF]
