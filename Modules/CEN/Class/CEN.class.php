@@ -8,6 +8,15 @@ class CEN extends Module {
 			case 'chacha-dict':
 				return Chachalaca::GetDics();
 
+			case 'chacha-colour':
+				return Chachalaca::GetColour($args);
+
+			case 'chacha-trans':
+				return Chachalaca::GetTrans($args);
+
+			case 'chacha-entry':
+				return Chachalaca::GetEntry($args);
+
 			case 'chacha-list':
 				return Chachalaca::GetList($args);
 
@@ -72,9 +81,10 @@ class CEN extends Module {
 						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
 						return $tla->GetDescr($args);
 						
+					case 'terms':
 					case 'term':
-						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
-						return $tla->GetTerm($args);
+						//$tla = Sys::getOneData('CEN', 'Codex/'.$id);
+						return Codex::GetTerm($args);
 
 					case 'pres':
 						$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['id']);
@@ -107,11 +117,13 @@ class CEN extends Module {
 				break;
 			
 			case 'lang';
-				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
+				$lang = Sys::getOneData('CEN', 'Regle/Code=LANGUE');
 				$lang = file_get_contents($lang->FilePath);
 				$lang = utf8_encode($lang);
 				$lang = str_replace("\r\n", "\n", $lang);
-				return array('lang'=>$lang);
+				$rules = Sys::getOneData('CEN', 'Regle/Code=CONDITIONS');
+				$rules = file_get_contents($rules->FilePath);
+				return array('lang'=>$lang, 'rules'=>$rules);
 
 			default:
 				return array('error'=>'Mode inconnu:'.$args['mode']);

@@ -1,7 +1,7 @@
 <?php
 $vars['Annee'] = Cadref::$Annee;
 $vars['module'] = 'Cadref';
-$menu = Sys::$CurrentMenu->Url;
+$menu = is_object(Sys::$CurrentMenu) ? Sys::$CurrentMenu->Url : '';
 $login = Sys::$User->Login;
 
 $vars['benevole'] = 0;

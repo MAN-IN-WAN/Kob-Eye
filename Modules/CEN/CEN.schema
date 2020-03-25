@@ -434,7 +434,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Prefixe" driver="mysql" order="Nom" AccessPoint="1" Description="Prefixe" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<FKEY card="1,1" module="CEN" data="Chachalaca,Id" form="1" fiche="1" >ChachalacaId</FKEY>	
+		<!--<FKEY card="1,1" module="CEN" data="Chachalaca,Id" form="1" fiche="1" >ChachalacaId</FKEY>-->	
 		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Prefixe</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Decompo</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" searchOrder="2" category="Description" form="3" list="3" fiche="3">Couper</PROPERTIES>
@@ -445,7 +445,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Suffixe" driver="mysql" order="Nom" AccessPoint="1" Description="Suffixe" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<FKEY card="1,1" module="CEN" data="Chachalaca,Id" form="1" fiche="1" >ChachalacaId</FKEY>	
+		<!--<FKEY card="1,1" module="CEN" data="Chachalaca,Id" form="1" fiche="1" >ChachalacaId</FKEY>-->	
 		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Suffixe</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Decompo</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" searchOrder="2" category="Description" form="3" list="3" fiche="3">Couper</PROPERTIES>
