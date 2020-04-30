@@ -34,7 +34,7 @@ function modifValeur(obj, valeur) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 function verifMontantBien() {
-	// Vérification du contenu des champs
+	// Vï¿½rification du contenu des champs
 	formBien = document.formbien;
 	
 	ok = true;
@@ -101,7 +101,7 @@ function calculBien(form) {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 function verifMontantLoc() {
-	// Vérification du contenu des champs
+	// Vï¿½rification du contenu des champs
 	formLoc = document.formlocataire;
 	
 	ok = true;

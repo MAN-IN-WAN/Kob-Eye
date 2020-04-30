@@ -6,7 +6,7 @@
  * @version 1.0
  * @date 2011-02-18
  * @author DEMONTE Jean-Baptiste <jbdemonte@gmail.com>
- * @copyright © Digitick <www.digitick.net> 2011
+ * @copyright ï¿½ Digitick <www.digitick.net> 2011
  * @license GNU Lesser General Public License v3.0
  * 
  * Why this tool ?
