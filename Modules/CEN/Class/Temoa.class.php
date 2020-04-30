@@ -6,7 +6,8 @@ class Temoa extends genericClass {
 	function Save() {
 		$fok = $this->ZipFile != '';
 		$id = $this->Id;
-		if($id) {
+		
+		if( FALSE && $id) {
 			$old = Sys::getOneData('CEN', "Temoa/$id");
 			if($this->ZipFile == $old->ZipFile) $fok = false;
 		}
@@ -28,7 +29,8 @@ class Temoa extends genericClass {
 
 			$temoa = new temoa2\Temoa();
 			$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-//			$this->DocText = addslashes($temoa->GetText($f.".rtf"));
+			
+			klog::l($f);
 
 			$this->DocHtml = ($temoa->GetHTML($f.".rtf"));
 			$this->DocNoteCount = $temoa->GetNoteCount();
@@ -86,7 +88,7 @@ class Temoa extends genericClass {
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
 		$ortho = $args['ortho'];
-
+		
 		$sql = "select Code,ZipFile from `##_CEN-Temoa` where 1 $corpus";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -97,11 +99,12 @@ class Temoa extends genericClass {
 			$corpus .= getcwd()."/Home/$t[1]/CEN/Temoa/$c/$c.rtf;";
 		}
 		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-
+		
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$ret = $temoa->SetCorpus($corpus);
 		$temoa->SetOrtho($ortho);
+
 
 		$genor = false;
 		if($args['arrows']) $temoa->AddArrows($args['arrows']);
@@ -128,11 +131,14 @@ class Temoa extends genericClass {
 			$r = '';
 			$t = null;
 			foreach($o as $a) {
-				//$a->text = strtolower($a->text);
 				if($r !==  $a->doc) {
 					$r = $a->doc;
 					$t = Sys::getOneData('CEN', 'Temoa/Code='.$r);
 				}
+				$a->text = preg_replace_callback("/&#([0-9]+);/u", function($m) {
+					return iconv('cp1250', 'utf-8', chr($m[1]));
+				}, $a->text);
+				//$a->text = html_entity_decode($a->text, ENT_NOQUOTES | ENT_HTML401, UTF-8);
 				$a->id = $t->Id;
 				$docs[$t->Id] = '';
 				$a->title = $t->Nom;
@@ -157,22 +163,6 @@ class Temoa extends genericClass {
 			$docId[$d->Id] = $d->Nom;
 		}
 		
-//		$filt = array();
-//		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-//		$rul = file_get_contents(getcwd().'/'.$rule->FilePath);
-//		$p = strpos($rul, '[Filters]');
-//		$p = strpos($rul, "\n", $p);
-//		$rul = substr($rul, $p+1);
-//		while(substr($rul, 0, 1) != '[') {
-//			$p = strpos($rul, "\n");
-//			$f = trim(substr($rul, 0, $p));
-//			if($f) {
-//				$q = strpos($f, '=');
-//				$filt[] = substr($f, 0, $q);
-//			}
-//			$rul = substr($rul, $p+1);
-//		}
-			
 		return array('documentsId'=>$docId, 'documents'=>$doc,); // 'filters'=>$filt);		
 	}
 	
@@ -190,23 +180,6 @@ class Temoa extends genericClass {
 		$trd = $t->Trad1Html != '';
 		$tr2 = $t->Trad2Html != '';
 		
-//		$c = $t->Code;
-//		$a = explode('/', $t->ZipFile);
-//		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
-//		$trd = file_exists($f."_trad.rtf");
-//		$tr2 = file_exists($f."_trad2.rtf");
-//		
-//		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-//		$temoa = new temoa2\Temoa();
-//		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-//		$doc = $temoa->GetHTML($f.".rtf");
-//		$not = $temoa->GetNoteCount();
-//		$mrk = $temoa->GetMarksJson();
-//		$lin = $temoa->GetLinesJson();
-//		if(!$temoa->GetPicts($f.'_esp.rtf')) $temoa->GetPicts($f.'_fra.rtf');
-//		$pic = $temoa->GetPictCount();
-//		unset($temoa);
-
 		$mark = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$line = json_decode($lin, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		
@@ -225,26 +198,6 @@ class Temoa extends genericClass {
 			case 2: $not .= $t->Trad2Notes; break;
 		}
 		
-//		$c = $t->Code;
-//		$a = explode('/', $t->ZipFile);
-//		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
-//
-//		switch($args['num']) {
-//			case 0: $f .= ".rtf"; break;
-//			case 1: $f .= "_trad.rtf"; break;
-//			case 2: $f .= "_trad2.rtf"; break;
-//			case 3: $f .= "_trad3.rtf"; break;
-//		}
-//		
-//		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-//		$temoa = new temoa2\Temoa();
-//		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-//		$doc = $temoa->GetHTML($f);
-//		$not = $temoa->GetNotesJson();
-//		unset($temoa);
-//		
-//		file_put_contents("/home/paul/tmp/notes.json", $not);
-		
 		$note = json_decode($not, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		foreach($note as &$n) $n->text = utf8_encode($n->text);
 		return array('notes'=>$note);
@@ -261,18 +214,6 @@ class Temoa extends genericClass {
 		$c = $t->Code;
 		$a = explode('/', $t->ZipFile);
 		$d = "/Home/$a[1]/CEN/Temoa/$c/";
-//		$f = getcwd()."$d$c";
-//		
-//		$file = $f.'_esp.rtf';
-//		if(!file_exists($file)) {
-//			$file = $f.'_fra.rtf';
-//			if(!file_exists($file)) return array('picts'=>array());
-//		}
-//
-//		$temoa = new temoa2\Temoa();
-//		$temoa->GetPicts($file);
-//		$pic = $temoa->GetPictsJson();
-//		unset($temoa);
 		
 		$pict = json_decode($pic, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		foreach($pict as $p) {
@@ -303,25 +244,6 @@ class Temoa extends genericClass {
 				break;
 		}
 		
-//		$c = $t->Code;
-//		$a = explode('/', $t->ZipFile);
-//		$f = getcwd()."/Home/$a[1]/CEN/Temoa/$c/$c";
-//		
-//		switch($args['trad']) {
-//			case 0: $f .= "_trad.rtf"; break;
-//			case 1: $f .= "_trad2.rtf"; break;
-//			case 2: $f .= "_trad3.rtf"; break;
-//		}
-//		
-//		$rule = Sys::getOneData('CEN', 'Regle/Code=Temoa');
-//		$temoa = new temoa2\Temoa();
-//		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
-//		$doc = $temoa->GetHTML($f);
-//		$not = $temoa->GetNoteCount();
-//		$mrk = $temoa->GetMarksJson();
-//		$lin = $temoa->GetLinesJson();
-//		unset($temoa);
-		
 		$mark = json_decode($mrk, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 		$line = json_decode($lin, false, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
@@ -335,7 +257,6 @@ class Temoa extends genericClass {
 		$temoa = new temoa2\Temoa();
 		$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 		$temoa->AddArrows($args['arrows']);
-		//$temoa->AddArrow('tlatoani');
 		$g = $temoa->GetGenorJson($args['level']);
 		unset($temoa);
 		

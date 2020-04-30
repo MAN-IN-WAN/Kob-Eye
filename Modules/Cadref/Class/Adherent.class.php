@@ -1359,7 +1359,8 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		$args['Cc'] = array($this->Mail);
 		$args['ReplyTo'] = array($this->Mail);
-		$args['From'] = Cadref::$MAIL;
+		$t = explode('@', Cadref::$MAIL);
+		$args['From'] = "noreply@".$t[1];
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array(Cadref::$MAIL);

@@ -139,7 +139,8 @@ class Enseignant extends genericClass {
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
 		$args['ReplyTo'] = array($this->Mail);
-		$args['From'] = Cadref::$MAIL;
+		$t = explode('@', Cadref::$MAIL);
+		$args['From'] = "noreply@".$t[1];
 		
 		$to = $params['Mail'];
 		if($to == 'C') {

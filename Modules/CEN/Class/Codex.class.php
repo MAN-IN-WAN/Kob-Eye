@@ -586,7 +586,7 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 		if(file_exists(getcwd().$dir.$pres.$lang)) $txt = file_get_contents(getcwd().$dir.$pres.$lang);
 		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
 		$txt = utf8_encode(nl2br($txt));
-		return array('text'=>$txt); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
+		return array('text'=>CEN::fontSize($txt)); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
 
 	static private function getPicture($type, $p) {
@@ -649,16 +649,17 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 			switch($lang) {
 				case 'fr': $fld = "Terme"; $ext = 'afr'; break;
 				case 'es': $fld = "Espagnol"; $ext = 'aes'; break;
-				case 'fr': $fld = "Anglais"; $ext = 'aan'; break;
+				case 'en': $fld = "Anglais"; $ext = 'aan'; break;
 			}
 			$w = CEN::removeAccents($word);
 			$sql = "select distinct $fld as term,Fichier from `##_CEN-Termino` where $cid ($fld like '%$w%') limit 15";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if(!$pdo) return array('success'=>false, 'sql'=>$sql);
 			if($pdo->rowCount()) {
 				$lst = array();
 				foreach($pdo as $p) $lst[] = array('term'=>$p['term'], 'text'=>explode('.', $p['Fichier'])[0]);
-				return array('success'=>true, 'type'=>'term', 'term'=>$word, 'terms'=>$lst);
+				return array('success'=>true, 'type'=>'terms', 'term'=>$word, 'terms'=>$lst);
 			}	
 		}
 		
