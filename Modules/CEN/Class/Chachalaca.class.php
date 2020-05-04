@@ -2393,7 +2393,7 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 				if(empty($text)) $text = 'liste'.self::CheckGrammar('liste', $args['lang']);
 				$tmp = file_get_contents(getcwd().$dir.$text);
 				$txt = utf8_encode(nl2br($tmp));
-				return array('text'=>$txt);
+				return array('text'=>CEN::fontSize($txt));
 				
 			case 'affixe':
 				$txt = '';
@@ -2405,7 +2405,7 @@ if(self::$error) klog::l(">>>>ERROR: ".self::$error);
 				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 				foreach($pdo as $p) $txt = $p['Commentaire'];
-				return array('text'=>$txt);
+				return array('text'=>CEN::fontSize($txt));
 				
 			case 'dict':
 				break;

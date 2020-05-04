@@ -7,6 +7,14 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
+			case 'login':
+				klog::l(">>> show login >>>",Sys::$User);
+				return array('pseudo'=>Sys::$User->Initiales);
+				
+			case 'logout':
+				$cnx = genericClass::createInstance('Systeme', 'Connexion');
+				return array('pseudo'=>'');
+				
 			case 'lang':
 				$l = array();
 				$rs = Sys::getData('Show', 'Translation/Language='.$args['lang'].'+Code=');
@@ -14,7 +22,7 @@ klog::l("GETSHOW >>>>>",$args);
 				return array('lang'=>$l);
 				
 			case 'perf':
-				return Performance::getData($args);
+				return Performance::GetPerf($args);
 		
 			case 'peop': break;
 			case 'any': break;
