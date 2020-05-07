@@ -467,7 +467,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}else{
-			$entry['apacheOptions'] = Array('Require all granted');
+			//$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -515,14 +515,14 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
         if (!$this->ProxyPageSpeed) {
             foreach ($webs as $web) {
                 if (!empty($web->InternalIP)) {
-                    $entry['apacheProxy'] .= 'server ' . $web->InternalIP . ";\n";
-                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . ";\n";
+                    $entry['apacheProxy'] .= 'server ' . $web->InternalIP . " fail_timeout=600s;\n";
+                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . " fail_timeout=600s;\n";
                 }
             }
         }else{
             foreach ($webs as $web) {
                 if (!empty($web->InternalIP))
-                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . ";\n";
+                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . " fail_timeout=600s;\n";
             }
 
             $pref = '';
@@ -532,7 +532,7 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             $pxs = Sys::getData('Parc',$pref.'Server/PageSpeed=1',0,100,'','','','',true);
             foreach ($pxs as $px) {
                 if (!empty($px->InternalIP))
-                    $entry['apacheProxy'] .= 'server ' . $px->InternalIP . ";\n";
+                    $entry['apacheProxy'] .= 'server ' . $px->InternalIP . " fail_timeout=600s;\n";
             }
 
         }
