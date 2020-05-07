@@ -1315,6 +1315,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 	}
 
 	function SendMessage($params) {
+klog::l("eeee",$params);
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
@@ -1332,6 +1333,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail'],Cadref::$MAIL);
+					$params['Msg']['ReplyTo'] = array(Cadref::$MAIL);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
@@ -1360,7 +1362,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Cc'] = array($this->Mail);
 		$args['ReplyTo'] = array($this->Mail);
 		$t = explode('@', Cadref::$MAIL);
-		$args['From'] = "noreply@".$t[1];
+		$args['From'] = "adherent@".$t[1];
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array(Cadref::$MAIL);

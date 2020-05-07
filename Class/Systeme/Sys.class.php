@@ -646,6 +646,17 @@ class Sys extends Root{
 				$this->Log->Log($GLOBALS["Chrono"]->total());
 				print($data);
 				break;
+			
+			//PGF 20200506 iOS application
+			case 'ipa': if($this->type == 'ipa') header("Content-type: application/octet-stream;");
+			case 'plist': if($this->type == 'plist') header("Content-type: text/xml;");
+				//Fichiers qui déclenchent un téléchargement (copié depuis exe...)
+				$this->setNavCache();
+				$file = $this->Lien.'.'.$this->type;
+				$Temp = explode("/",$file);
+				$name = $Temp[sizeof($Temp)-1];
+				$this->output_file($file,$name);
+				break;
 
 			case "skin":
 				$this->Header = new Header();

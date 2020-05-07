@@ -878,11 +878,13 @@ where ce.Classe=$cid
 
 		
 	public static function SendMessage($params) {	
+		
+klog::l("mmmmmmmmm",$params);
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
 		else {
 			$t = explode('@', Cadref::$MAIL);
-			$m->From = "noreply@".$t[1];
+			$m->From = "gestion@".$t[1];
 		}
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
 		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);

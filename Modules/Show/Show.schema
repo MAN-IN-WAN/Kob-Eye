@@ -108,14 +108,6 @@
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Submition" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Submited term" hidden="0" >
-		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
-		<FKEY card="1,1" data="User,Id" form="1" fiche="1" >UserId</FKEY>
-		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Description">Description</PROPERTIES>
-		<PROPERTIES type="varchar" length="2" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
-	</OBJECTCLASS>
-
 
 
 	<OBJECTCLASS title="Category" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
@@ -177,6 +169,34 @@
 		<PROPERTIES type="varchar" length="8" searchOrder="3" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" searchOrder="2" category="Description" form="1" list="1" fiche="1">Original</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" category="Description" form="1" list="1" fiche="1">Translation</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Submition" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Submited term" hidden="0" >
+		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >UserId</FKEY>
+		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Message" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Message" hidden="0" >
+		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >FromId</FKEY>
+		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >ToId</FKEY>
+		<FKEY card="0,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
+		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Message">Message</PROPERTIES>
+		<PROPERTIES type="date" category="Description" form="1" list="1" fiche="1">MessageDate</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="FavPerformance" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Favourite performance" hidden="0" >
+		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >UserId</FKEY>
+		<PROPERTIES type="int" default="0" form="1" fiche="1" >PerformanceId</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="FavUser" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Favourite user" hidden="0" >
+		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >UserId</FKEY>
+		<PROPERTIES type="int" default="0" form="1" fiche="1" >FavUserId</PROPERTIES>
 	</OBJECTCLASS>
 
 </SCHEMA>
