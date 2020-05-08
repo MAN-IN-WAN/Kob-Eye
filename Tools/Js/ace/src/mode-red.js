@@ -5,7 +5,6 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
 var RedHighlightRules = function() {
-
     var compoundKeywords = "";        
 
     this.$rules = {
@@ -30,7 +29,7 @@ var RedHighlightRules = function() {
             {token : "string.tag", regex : /</, next : "tag"},
             {token : "string", regex : /"/, next  : "string"},
             {token : "string.other", regex : "{", next  : "string.other"},
-            {token : "comment", regex : "comment [[{]", next : "comment"},
+            {token : "comment", regex : "comment [{]", next : "comment"},
             {token : "comment",  regex : /;.+$/},
             {token : "paren.map-start", regex : "#\\("},
             {token : "paren.block-start", regex : "[\\[]"},
@@ -394,7 +393,7 @@ oop.inherits(Mode, TextMode);
 (function() {
 
     this.lineCommentStart = ";";
-	this.blockCommentStart = "comment {";
+    this.blockComment = { start: "comment {", end: "}" };
 
     this.getNextLineIndent = function(state, line, tab) {
         var indent = this.$getIndent(line);
@@ -441,3 +440,11 @@ oop.inherits(Mode, TextMode);
 
 exports.Mode = Mode;
 });
+                (function() {
+                    window.require(["ace/mode/red"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            

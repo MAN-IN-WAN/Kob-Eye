@@ -171,7 +171,7 @@ var SwiftHighlightRules = function() {
                 error: /\\./,
                 multiline: false
             }),
-            comments({type: "c", nestable: true}),
+            comments(),
             {
                  regex: /@[a-zA-Z_$][a-zA-Z_$\d\u0080-\ufffe]*/,
                  token: "variable.parameter"
@@ -380,3 +380,11 @@ oop.inherits(Mode, TextMode);
 
 exports.Mode = Mode;
 });
+                (function() {
+                    window.require(["ace/mode/swift"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            

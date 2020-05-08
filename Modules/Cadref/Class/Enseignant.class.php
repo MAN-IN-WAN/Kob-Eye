@@ -56,6 +56,7 @@ klog::l("eeee",$params);
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail'],Cadref::$MAIL);
+					$params['Msg']['From'] = Cadref::$MAIL_ADM;
 					$params['Msg']['ReplyTo'] = array(Cadref::$MAIL);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
@@ -141,8 +142,7 @@ klog::l("eeee",$params);
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
 		$args['ReplyTo'] = array($this->Mail);
-		$t = explode('@', Cadref::$MAIL);
-		$args['From'] = "cours@".$t[1];
+		$args['From'] = Cadref::$MAIL_ENS;
 		
 		$to = $params['Mail'];
 		if($to == 'C') {
