@@ -1169,7 +1169,7 @@ class genericClass extends Root {
 		//Gestion des acces dans le cas d'un getChildren
         $accs = Sys::$User->Access;
 		foreach($accs as $acc){
-		    if(strpos($Type,$acc->ObjectClass) === 0 ){
+		    if( strpos($Type,$acc->ObjectClass.'/') === 0 || $Type == $acc->ObjectClass ){
 		        $res = array();
                 $oks = $this -> executeQuery(Process::searchAndReplaceVars($acc->Alias));
                 foreach($oks as $ok){
