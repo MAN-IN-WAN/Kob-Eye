@@ -689,25 +689,25 @@
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du modèle" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
 		<CATEGORY title="Menu">
 			<PROPERTIES type="boolean" description="Afficher le menu" list="1" form="1" fiche="1" listDescr="Afficher Menu" default="1">MenuAffiche</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="6" description="Titre du menu" form="1" fiche="1" listDescr="Titre Menu">MenuTitre</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="7" description="Url du menu" form="1" fiche="1" listDescr="Url Menu">MenuUrl</PROPERTIES>
 		</CATEGORY>
-		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="0" auto="1" hidden="1">Template</PROPERTIES>
-		<FKEY card="1,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
+		<FKEY card="1,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ParametreMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Parametre MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du Paramètre" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="1" description="Type de Paramètre" list="1" form="1" fiche="1" listDescr="Type" values="int::Entier,varchar::Texte,html::Texte Long,image::Image,color::Couleur,menu::Menu">Type</PROPERTIES>
-		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
-		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" form="10" fiche="1" list="1" >MiniSiteId</FKEY>
-		<FKEY card="0,1" data="PageMiniSite,Id" description="Page de minisite" listDescr="Page MiniSite" form="10" fiche="1" list="1" >PageMiniSiteId</FKEY>
+		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
+		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" fiche="1" list="1" >MiniSiteId</FKEY>
+		<FKEY card="0,1" data="PageMiniSite,Id" description="Page de minisite" listDescr="Page MiniSite" fiche="1" list="1" >PageMiniSiteId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ValeurMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Valeur MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="text" searchOrder="1" obligatoire="1" description="Valeur" list="1" form="1" fiche="1" listDescr="Valeur">Valeur</PROPERTIES>
-		<FKEY card="1,1" data="ParametreMiniSite,Id" description="Parametre de MiniSite" listDescr="Parametre" form="10" fiche="1" list="1" >ParametreMiniSiteId</FKEY>
+		<FKEY card="1,1" data="ParametreMiniSite,Id" description="Parametre de MiniSite" listDescr="Parametre" fiche="1" list="1" >ParametreMiniSiteId</FKEY>
 		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" form="10" fiche="1" list="1" >MiniSiteId</FKEY>
 	</OBJECTCLASS>
 

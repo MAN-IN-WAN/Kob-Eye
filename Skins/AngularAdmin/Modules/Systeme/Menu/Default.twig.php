@@ -12,4 +12,3 @@ $vars['user'] = Sys::$User;
 $vars['group'] = Sys::$User->Groups[0];
 
 $vars['menuIcon'] = Sys::isModule('Cadref');
-?>
