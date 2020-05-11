@@ -121,7 +121,11 @@
 									{{ label("Description") }}
 								</div>
 								<div class="col-md-10">
-									{{ ftext(f.Description, o, 'html') }}
+									<textarea ckeditor="ckHtml" id="ckedVisite" contenteditable="false" class="form-control cadref-input" 
+									style="width:100%;height:50px;min-height:50px;white-space: pre-wrap;"
+									ng-model="{{ o }}.Description" ng-trim="false">
+									</textarea>
+{#									{{ ftext(f.Description, o, 'html') }}#}
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>

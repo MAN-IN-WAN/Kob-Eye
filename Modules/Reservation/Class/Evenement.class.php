@@ -262,5 +262,6 @@ class Evenement extends genericClass {
 				);
 		}
 	}
+
 }
 ?>

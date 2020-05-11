@@ -232,6 +232,18 @@
 												</div>
 												<div class="row">
 													<div class="col-md-5">
+														{{ label("SMS 06-07") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Tel06" ng-init="obj.Tel06=''">
+															{% for a,b in mails %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
 														{{ label("Soutien") }}
 													</div>
 													<div class="col-md-5">
@@ -246,6 +258,16 @@
 														<switch ng-model="obj.Dons" ng-change="checkSoutien(1)"></switch>
 													</div>
 												</div>
+												{% if initiales == 'ADM' %}
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Misc") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Misc"></switch>
+													</div>
+												</div>
+												{% endif %}
 											</div>
 										</div>
 										<div class="row" style="height:5px"></div>
@@ -408,7 +430,7 @@
 												<label class="form-control-label cadref-label" style="line-height:1">SMS{[{obj.smsSize}]}</label>
 											</div>
 											<div class="col-md-11">
-												<textarea class="form-control cadref-input" maxlength="160" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="obj.SMS" ng-change="checkSmsSize(obj)"></textarea>
+												<textarea class="form-control cadref-input" maxlength="149" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="obj.SMS" ng-change="checkSmsSize(obj)"></textarea>
 											</div>
 										</div>
 										<div style="height: 5px"></div>

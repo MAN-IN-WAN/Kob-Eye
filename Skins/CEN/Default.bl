@@ -15,10 +15,20 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="google-site-verification" content="qLF2HIoPOyYDF427fYDBG9GZY6DcsOZN9vS3gqGDA6k" />
 
-<link rel="stylesheet" href="styles.2a1bec471ac52fa25284.css"></head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163672775-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-163672775-1');
+</script>
+
+<link rel="stylesheet" href="styles.5c4a59525056e67f52f8.css"></head>
 
 [/HEADER]
-
   <app-root></app-root>
-<script src="runtime.b06b0cf37b1eb9794a65.js" defer></script><script src="polyfills-es5.1fbf10247479a03cb95d.js" nomodule defer></script><script src="polyfills.e7b7e15bfa4509170f42.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.1748329352fbe99f368b.js" defer></script></body>
+
+<script src="runtime.c4ad2e63001157044817.js" defer></script><script src="polyfills-es5.1fbf10247479a03cb95d.js" nomodule defer></script><script src="polyfills.e7b7e15bfa4509170f42.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.86792f2919b7208e73ac.js" defer></script></body>

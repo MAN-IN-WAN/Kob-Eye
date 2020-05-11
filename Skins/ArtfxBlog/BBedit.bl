@@ -3,32 +3,32 @@
 		<div class="bbeditorbuttons">
 			<img src="[2]/bbcode_bold.png" onclick="BBEdit[1].addTag('[b]', '[/b]');" alt="Gras [b]Texte[/b]" title="Gras [b]Texte[/b]" />
 			<img src="[2]/bbcode_italic.png" onclick="BBEdit[1].addTag('[i]','[/i]');" alt="Italique [i]Italique[/i]" title="Italique [i]Italique[/i]" />
-			<img src="[2]/bbcode_underline.png" onclick="BBEdit[1].addTag('[s]','[/s]');" alt="Souligné [s]Souligné[/s]" title="Souligné [s]Souligné[/s]" />
-			<img src="[2]/bbcode_strikeout.png" onclick="BBEdit[1].addTag('[barre]','[/barre]');" alt="Barré [strike]Barré[/strike]" title="Barré [barre]Barré[/barre]" />
+			<img src="[2]/bbcode_underline.png" onclick="BBEdit[1].addTag('[s]','[/s]');" alt="Soulignï¿½ [s]Soulignï¿½[/s]" title="Soulignï¿½ [s]Soulignï¿½[/s]" />
+			<img src="[2]/bbcode_strikeout.png" onclick="BBEdit[1].addTag('[barre]','[/barre]');" alt="Barrï¿½ [strike]Barrï¿½[/strike]" title="Barrï¿½ [barre]Barrï¿½[/barre]" />
 		</div>
 		<div class="bbeditorbuttons">
 			<img src="[2]/bbcode_mail.png" onclick="BBEdit[1].addTag('[email]','[/email]');" alt="Courriel [email=nobody@nobody.org]Nom[/email]" title="Courriel [email=nobody@nobody.org]Nom[/email]" />
 			<img src="[2]/bbcode_link.png" onclick="BBEdit[1].addTag('[url]','[/url]');" alt="Lien [url=http://www.website.com]Texte[/url]" title="Lien [url=http://www.website.com]Texte[/url]" />
 			//<img src="[2]/bbcode_image.png" onclick="BBEditorAddTag('text', '[img]', '[/img]');" alt="Image [img]http://www.website.com/image.jpg[/img]" title="Image [img]http://www.website.com/image.jpg[/img]" /><a href="" onclick="BBEditorAddTag('text', '[img]', '[/img]'); return false;" accesskey="i"></a>
-			//<img src="[2]/bbcode_repository.png" onclick="BBEditorRepository(this, 'text_repository', 'text');" alt="Insérer une image en provenance du site" title="Insérer une image en provenance du site" />
+			//<img src="[2]/bbcode_repository.png" onclick="BBEditorRepository(this, 'text_repository', 'text');" alt="Insï¿½rer une image en provenance du site" title="Insï¿½rer une image en provenance du site" />
 		</div>
 		<div class="bbeditorbuttons">
-			<img src="[2]/bbcode_alignleft.png" onclick="BBEdit[1].addTag('[align=left]', '[/align]');" alt="Aligné à gauche [align=left]Texte[/align]" title="Aligné à gauche [align=left]Texte[/align]" />
-			<img src="[2]/bbcode_aligncenter.png" onclick="BBEdit[1].addTag('[align=center]', '[/align]');" alt="Centré [align=center]Texte[/align]" title="Centré [align=center]Texte[/align]" />
-			<img src="[2]/bbcode_alignright.png" onclick="BBEdit[1].addTag('[align=right]', '[/align]');" alt="Aligné à droite [align=right]Texte[/align]" title="Aligné à droite [align=right]Texte[/align]" />
+			<img src="[2]/bbcode_alignleft.png" onclick="BBEdit[1].addTag('[align=left]', '[/align]');" alt="Alignï¿½ ï¿½ gauche [align=left]Texte[/align]" title="Alignï¿½ ï¿½ gauche [align=left]Texte[/align]" />
+			<img src="[2]/bbcode_aligncenter.png" onclick="BBEdit[1].addTag('[align=center]', '[/align]');" alt="Centrï¿½ [align=center]Texte[/align]" title="Centrï¿½ [align=center]Texte[/align]" />
+			<img src="[2]/bbcode_alignright.png" onclick="BBEdit[1].addTag('[align=right]', '[/align]');" alt="Alignï¿½ ï¿½ droite [align=right]Texte[/align]" title="Alignï¿½ ï¿½ droite [align=right]Texte[/align]" />
 			<img src="[2]/bbcode_alignjustify.png" onclick="BBEdit[1].addTag('[align=justify]', '[/align]');" alt="Toute la largeur [align=justify]Texte[/text]" title="Toute la largeur [align=justify]Texte[/text]" />
 		</div>
 		<div class="bbeditorbuttons">
 			<img src="[2]/bbcode_color.png" id="colorPicker[1]" alt="Couleur [color=#000000]Text[/color]" title="Couleur [color=#000000]Text[/color]" />
-			<img src="[2]/bbcode_preview.png" onclick="BBEdit[1].preview();" alt="Prévisualisation" title="Prévisualisation" />
+			<img src="[2]/bbcode_preview.png" onclick="BBEdit[1].preview();" alt="Prï¿½visualisation" title="Prï¿½visualisation" />
 		</div>
 		<div class="bbeditorbuttons">
-			<img src="[2]/bbcode_selectall.png" onclick="BBEdit[1].selectAll();" alt="Tout sélectionner" title="Tout sélectionner" /> 
+			<img src="[2]/bbcode_selectall.png" onclick="BBEdit[1].selectAll();" alt="Tout sï¿½lectionner" title="Tout sï¿½lectionner" /> 
 			<img src="[2]/bbcode_clear.png" onclick="BBEdit[1].clear()" alt="Tout effacer" title="Tout effacer" />
 		</div>
 		<div class="bbeditorbuttons">
 			<img src="[2]/bbcode_list.png" onclick="BBEdit[1].addTag('[list=square][item]', '[/item][/list]');" alt="Liste [list=square][item]BlaBla[/item][/list]" title="Liste [list=square][item]BlaBla[/item][/list]" />
-			<img src="[2]/bbcode_listdecimal.png" onclick="BBEdit[1].addTag('[list=decimal][item]', '[/item][/list]');" alt="Liste Numérotée [list=decimal][item]BlaBla[/item][/list]" title="Liste Numérotée [list=decimal][item]BlaBla[/item][/list]" />
+			<img src="[2]/bbcode_listdecimal.png" onclick="BBEdit[1].addTag('[list=decimal][item]', '[/item][/list]');" alt="Liste Numï¿½rotï¿½e [list=decimal][item]BlaBla[/item][/list]" title="Liste Numï¿½rotï¿½e [list=decimal][item]BlaBla[/item][/list]" />
 		</div>
 		<div class="bbeditorbuttons">
 			<img src="[2]/bbcode_quote.png" onclick="BBEdit[1].addTag('[quote]', '[/quote]');" alt="Citation [quote=name]Texte[/quote]" title="Citation [quote=name]Texte[/quote]" />

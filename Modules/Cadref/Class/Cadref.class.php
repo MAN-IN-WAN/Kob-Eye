@@ -5,6 +5,10 @@ class Cadref extends Module {
 	public static $UTL;
 	public static $TEL;
 	public static $MAIL;
+	public static $MAIL_ADH;
+	public static $MAIL_ADM;
+	public static $MAIL_ENS;
+	public static $MAIL_LET;
 	public static $WEB;
 	public static $Annee;
 	public static $Cotisation = null;
@@ -34,6 +38,13 @@ class Cadref extends Module {
 		self::$TEL = $utl[1];
 		self::$MAIL = $utl[2];
 		self::$WEB = $utl[3];
+		
+		$d = explode('@', self::$MAIL);
+		$d = $d[1];
+		self::$MAIL_ADH = 'adherent@'.$d;
+		self::$MAIL_ADM = 'gestion@'.$d;
+		self::$MAIL_ENS = 'cours@'.$d;
+		self::$MAIL_LET = 'noreply@'.$d;
 
 		if(isset($_GET['classe'])) {
 			$_SESSION['classe'] = serialize(strtoupper($_GET['classe']));
@@ -857,7 +868,7 @@ where ce.Classe=$cid
 		foreach($pdo1 as $p1) {
 			$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
 			if($adh) {
-				$eid = $p1['EnseignantId'];
+				$eid = $p1['Id'];
 				foreach($absences as $a) {
 					if($a->cid == $cid && $a->eid == $eid) {
 						$hd = strtotime($e->start);
@@ -878,12 +889,12 @@ where ce.Classe=$cid
 
 		
 	public static function SendMessage($params) {	
+		
+klog::l("mmmmmmmmm",$params);
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-		else {
-			$t = explode('@', Cadref::$MAIL);
-			$m->From = "noreply@".$t[1];
-		}
+		else $m->From = self::$MAIL_LET;
+
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
 		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
 		

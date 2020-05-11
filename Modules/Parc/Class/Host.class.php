@@ -52,7 +52,7 @@ class Host extends genericClass
         //creation apachedefault
         $aps = Sys::getCount('Parc','Host/'.$this->Id.'/Apache');
 
-        if ($aps<4)
+        if (empty($aps))
             $this->createDefaultApache();
 
         //creation defaultftp
@@ -69,7 +69,7 @@ class Host extends genericClass
         $this->createTaskConfigHost();
 
         //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
-        if ($this->Password!=$old->Password&&$old){
+        if ($old&&$this->Password!=$old->Password){
             $bdd = $this->getOneChild('Bdd');
             if ($bdd){
                 $bdd->checkDatabase();

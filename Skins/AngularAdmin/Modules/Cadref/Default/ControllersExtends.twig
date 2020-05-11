@@ -447,7 +447,7 @@
 		
 	});
 
-//***********************
+//*********************** FICHE
 	
 	// Cadref form controller {{ objecttype }}
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
@@ -478,6 +478,7 @@
 		
 		// controle les modifications dans les fiches
 		$scope.$on('$routeChangeStart', function(event, next, current) {
+			console.log('++++++++++++++++X',$scope.CadrefContent.$dirty);
 			if($scope.CadrefContent && $scope.CadrefContent.$dirty) {
 				var ok = confirm("Données modifiées.\nVoulez-vous annuler les modifications ?");
 				if(! ok) {
@@ -487,9 +488,24 @@
 					return;
 				}
 				$scope.CadrefContent.$setPristine(); //.$dirty = false;
-				$scope.CadrefContent.$dirty = false;
+				//$scope.CadrefContent.$dirty = false;
 			}
 		});
+		
+{#		CKEDITOR.on('instanceReady', function(ev) {
+			console.log('++++++++++++++++0',ev.editor.checkDirty());
+			$timeout(function(){
+				console.log('++++++++++++++++1',ev.editor.checkDirty());
+				ev.editor.resetDirty();
+				console.log('++++++++++++++++2',ev.editor.checkDirty());
+				if($scope.CadrefContent) $scope.CadrefContent.$setPristine();
+				console.log('++++++++++++++++3',$scope.CadrefContent.$dirty);
+			}, 100);
+			$timeout(function(){
+			console.log('++++++++++++++++4',ev.editor.checkDirty());
+			},200);
+		});
+#}
 
 		// selectionne le contenu
 		$scope.selectAllContent = function($event) {
@@ -1863,18 +1879,19 @@
 		// VISITE RESERVATION
 		//--------------------------------------
 
+		
 		$scope.visiteInfo = function() {
-			$scope.CadrefContent.$dirty = false;
-$scope.$watch('CadrefContent.$dirty', function() { 
-console.log('++++++++++++++++++++++++',$scope.CadrefContent.$dirty);});
+			//$scope.CadrefContent.$dirty = false;
+			
 			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(function(data) {
-				var d = $scope.CadrefContent.$dirty;
-console.log('-----------------------',d);
+				//var d = $scope.CadrefContent.$dirty;
 				$scope.Enseignants = data.data.Enseignants;
-				$timeout(function(){ $scope.CadrefContent.$dirty = d; }, 100);
-			}).error(function() {
+{#				$timeout(function(){
+					$scope.CadrefContent.$dirty = false;
+				}, 10);
+#}			}).error(function() {
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			});
 		}

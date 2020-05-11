@@ -1,1 +1,76 @@
-<?xml version="1.0" encoding="UTF-8"?><urlset      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"><url>  <loc>http://blog.artfx.fr/</loc>  <priority>1.00</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Accueil</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Categories</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Archives</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Contact</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Blog/Categorie/_Coup-de-coeur</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Blog/Categorie/_Manifestations</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Blog/Categorie/_Techniques</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Blog/Categorie/_Portraits</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Blog/Categorie/_Cinema-et-FX</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Mentions-legales</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>  <loc>http://blog.artfx.fr/Mentions-legales</loc>  <priority>0.80</priority>  <changefreq>weekly</changefreq></url><url>	<loc>http://blog.artfx.fr/Blog/Post/Rss.xml</loc>	<priority>0.80</priority>	<changefreq>weekly</changefreq></url></urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>http://blog.artfx.fr/</loc>
+  <priority>1.00</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Accueil</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Categories</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Archives</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Contact</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Blog/Categorie/_Coup-de-coeur</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Blog/Categorie/_Manifestations</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Blog/Categorie/_Techniques</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Blog/Categorie/_Portraits</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Blog/Categorie/_Cinema-et-FX</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Mentions-legales</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>http://blog.artfx.fr/Mentions-legales</loc>
+  <priority>0.80</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+	<loc>http://blog.artfx.fr/Blog/Post/Rss.xml</loc>
+	<priority>0.80</priority>
+	<changefreq>weekly</changefreq>
+</url>
+</urlset>

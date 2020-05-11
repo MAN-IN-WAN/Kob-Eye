@@ -68,4 +68,6 @@ if($vars['mode'] == 0) {
 	$tmp = array('');
 	for($a = $annee, $i = 0; $i < 4; $i++) $tmp[] = --$annee;
 	$vars['noninscr'] = $tmp;
+	
+	$vars['initiales'] = Sys::$User->Initiales;
 }

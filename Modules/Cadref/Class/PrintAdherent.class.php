@@ -141,7 +141,7 @@ class PrintAdherent extends FPDF {
 					$this->rupVal = $r;
 				}
 			}
-			if($l['Attente']) $this->totaux[0][1] ++;
+			if(isset($l['Attente']) && $l['Attente']) $this->totaux[0][1] ++;
 			else $this->totaux[0][0] ++;
 			$this->totaux[0][2] ++;
 			
@@ -184,7 +184,7 @@ class PrintAdherent extends FPDF {
 //					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
 //					$s = $cls->CodeClasse;
 				}
-				else if($l['Attente']) {
+				else if(isset($l['Attente']) && $l['Attente']) {
 					$s = 'Att '.date('d/m H:i', $l['DateAttente']);
 					$this->SetTextColor(255,0,0);
 				}
@@ -257,7 +257,7 @@ class PrintAdherent extends FPDF {
 
 	private function headRupture($l) {
 		$this->rupLib = $l['LibelleD'];
-		if($thi->rupture != 'D') $this->rupLib .= ' ' . $l['LibelleN'];
+		if($this->rupture != 'D') $this->rupLib .= ' ' . $l['LibelleN'];
 		
 		$c = Sys::getOneData('Cadref', 'Classe/' . $l['ClasseId']);
 		$this->Heure = $c->HeureDebut;

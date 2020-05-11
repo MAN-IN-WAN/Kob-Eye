@@ -1,8 +1,8 @@
-ulli	olli	début.	2
-cholul	cholol	début.	0
-chulul	cholol	début.	0
-toÇi	toci	début.	0
-toçi	toci	début.	0
+ulli	olli	dï¿½but.	2
+cholul	cholol	dï¿½but.	0
+chulul	cholol	dï¿½but.	0
+toï¿½i	toci	dï¿½but.	0
+toï¿½i	toci	dï¿½but.	0
 yulu	yollo	indif.	2
 yuhual	yohual	indif.	1
 chiia	chiya	indif.	1
@@ -10,58 +10,58 @@ oio	oyo	indif.	2
 tulu	tolo	indif.	2
 tutu	toto	indif.	2
 tuto	toto	indif.	2
-tecçiz	tecciz	indif.	0
-tecÇiz	tecciz	indif.	0
+tecï¿½iz	tecciz	indif.	0
+tecï¿½iz	tecciz	indif.	0
 yutl	yotl	indif.	2
-guas	huax	début.	0
-guax	huax	début.	0
-çump	tzomp	indif.	0
-Çump	tzomp	indif.	0
-çunp	tzomp	indif.	0
-Çunp	tzomp	indif.	0
+guas	huax	dï¿½but.	0
+guax	huax	dï¿½but.	0
+ï¿½ump	tzomp	indif.	0
+ï¿½ump	tzomp	indif.	0
+ï¿½unp	tzomp	indif.	0
+ï¿½unp	tzomp	indif.	0
 go	co	fin.	1
 cuyu	coyo	indif.	2
 coyu	coyo	indif.	2
-Çic	cic	début.	0
-çic	cic	début.	0
+ï¿½ic	cic	dï¿½but.	0
+ï¿½ic	cic	dï¿½but.	0
 osto	ozto	indif.	2
 pul	pol	indif.	2
 tucp	tocp	indif.	2
 yupi	yopi	indif.	2
 cuhuay	cohuay		indif.	2
 yucan	yocan	indif.	2
-ÇeÇe	cece	début.	0
-çeçe	cece	début.	0
-Çe	ce	entier.	0
-çe	ce	entier.	0
-Çen	cen	début.	0
-çen	cen	début.	0
-Çem	cen	début.	0
-çem	cen	début.	0
+ï¿½eï¿½e	cece	dï¿½but.	0
+ï¿½eï¿½e	cece	dï¿½but.	0
+ï¿½e	ce	entier.	0
+ï¿½e	ce	entier.	0
+ï¿½en	cen	dï¿½but.	0
+ï¿½en	cen	dï¿½but.	0
+ï¿½em	cen	dï¿½but.	0
+ï¿½em	cen	dï¿½but.	0
 gatl	catl	fin.	0
 tengo	tenco	fin.	0
-Çintli	tzintli	fin.	0
-çintli	tzintli	fin.	0
-Çitli	citli	fin.	0
-çitli	citli	fin.	0
-Çingo	tzinco	fin.	0
-çingo	tzinco	fin.	0
-Çinga	tzinca	fin.	0
-çinga	tzinca	fin.	0
-çihua	cihua	indif.	0
-Çihua	cihua	indif.	0
+ï¿½intli	tzintli	fin.	0
+ï¿½intli	tzintli	fin.	0
+ï¿½itli	citli	fin.	0
+ï¿½itli	citli	fin.	0
+ï¿½ingo	tzinco	fin.	0
+ï¿½ingo	tzinco	fin.	0
+ï¿½inga	tzinca	fin.	0
+ï¿½inga	tzinca	fin.	0
+ï¿½ihua	cihua	indif.	0
+ï¿½ihua	cihua	indif.	0
 tuch	toch	indif.	1	
-§	s	indif.	4	
+ï¿½	s	indif.	4	
 +	 	indif.	1	
 -		indif.	1	
 *lu	lo	indif.	2	*
 [		indif.	1	
 ]		indif.	1	
 _		indif.	1	
-á	a	indif.	1	
-à	a	indif.	1	
-â	a	indif.	1	
-ä	a	indif.	1	
+ï¿½	a	indif.	1	
+ï¿½	a	indif.	1	
+ï¿½	a	indif.	1	
+ï¿½	a	indif.	1	
 aia	aya	indif.	2	
 aie	aye	indif.	2	
 aiu	ayo	indif.	2	
@@ -70,16 +70,16 @@ aua	ahua	indif.	2	*
 aue	ahue	indif.	2	
 aui	ahui	indif.	2	*
 aze	ace	indif.	3	*
-ç	z	indif.	1	*
-Ç	z	indif.	1	*
+ï¿½	z	indif.	1	*
+ï¿½	z	indif.	1	*
 c$	ch	indif.	3	*
 cazti	casti	indif.	3	*
 ch	c$	indif.	1	*
 cioa	cihua	indif.	2	
 cihoa	cihua	indif.	2	
 cul	col	indif.	2	
-ë	e	indif.	1	
-é	e	indif.	1	*
+ï¿½	e	indif.	1	
+ï¿½	e	indif.	1	*
 ee	ehe	indif.	1	
 eia	eya	indif.	2	
 eoa	ehua	indif.	1	
@@ -88,32 +88,32 @@ eui	ehui	indif.	2	*
 euy	ehui	indif.	2	*
 g	h	indif.	1	*
 h		fin.	2	*
-ha	a	début.	2	
+ha	a	dï¿½but.	2	
 hc	c	indif.	2	*
-he	e	début.	2	
-hi	i	début.	2	
+he	e	dï¿½but.	2	
+hi	i	dï¿½but.	2	
 hia	hya	indif.	2	chalchiuhiacamitl
 hm	m	indif.	2	*
 hn	n	indif.	2	*
-ho	o	début.	2	
+ho	o	dï¿½but.	2	
 hp	p	indif.	2	*
 hq	q	indif.	2	*
 ht	t	indif.	2	*
 hx	x	indif.	2	*
 hz	z	indif.	2	*
-ia	ya	début.	2	*
-ie	ye	début.	2	*
+ia	ya	dï¿½but.	2	*
+ie	ye	dï¿½but.	2	*
 iie	iye	indif.	2	
-io	yo	début.	2	*
+io	yo	dï¿½but.	2	*
 iui	ihui	indif.	2	*
 lui	lhui	indif.	1	
 lvi	lhui	indif.	1	
 mu	mo	indif.	2	*
 np	mp	indif.	2	
 nu	no	indif.	2	*
-ó	o	indif.	1	
-ô	o	indif.	1	
-ö	o	indif.	1	
+ï¿½	o	indif.	1	
+ï¿½	o	indif.	1	
+ï¿½	o	indif.	1	
 o$	o	indif.	3	
 oal	ohual	indif.	2	*
 oia	oya	indif.	2	
@@ -137,16 +137,16 @@ teui	tehui	indif.	1
 teue	tehu	indif.	1	
 teu$	teue	indif.	3	
 tul	tol	indif.	2	
-û	u	indif.	1	
+ï¿½	u	indif.	1	
 u$	uh	indif.	3	*
-ua	hua	début.	2	*
-ue	hue	début.	2	*
+ua	hua	dï¿½but.	2	*
+ue	hue	dï¿½but.	2	*
 ueue	uehue	indif.	3	
 uh	u$	indif.	1	*
-ui	hui	début.	2	*
+ui	hui	dï¿½but.	2	*
 uio	uyo	indif.	2	
 uiui	uihui	indif.	2	ihuiuitztli
-uo	huo	début.	2	*
+uo	huo	dï¿½but.	2	*
 uz	oz	indif.	2	*
 v	hu	indif.	1	
 via	huia	indif.	2	*
@@ -162,9 +162,9 @@ yq	iq	indif.	2	*
 yt	it	indif.	2	*
 yx	ix	indif.	2	*
 yz	iz	indif.	2	*
-ze	ce	début.	2	*
+ze	ce	dï¿½but.	2	*
 zen	cen	indif.	3	*
-zi	ci	début.	2	*
+zi	ci	dï¿½but.	2	*
 zu	zo	indif.	2	*
 ka	ca	indif.	1	
 ki	qui	indif.	1	

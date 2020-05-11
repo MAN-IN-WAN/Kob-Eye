@@ -133,8 +133,9 @@
 		<PROPERTIES type="text" fiche="1" form="1" description="Information de réservation">InformationReservation</PROPERTIES>
 		<PROPERTIES type="boolean" fiche="1" form="1" description="Utiliser la contremarque" default="1">TypeContreMarque</PROPERTIES>
 		<PROPERTIES type="boolean" fiche="1" form="1" description="Impression de la contremarque" default="0">Imprimer</PROPERTIES>
+		<PROPERTIES type="datetime" list="8" fiche="1"  listDescr="Date de l'événement" description="Date de l'événement"  searchOrder="4" >Date</PROPERTIES>
 		<FKEY card="1,1" data="Client,Id" action="Link" fiche="1" description="Structure sociale">ClientId</FKEY>
-		<FKEY card="0,n" data="Evenement,Id"  action="Link">EvenementId</FKEY>
+		<FKEY card="0,n" data="Evenement,Id"   action="Link">EvenementId</FKEY>
 		<FUNCTION title="Imprimer Contremarque">ImprimerCM</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Personne" driver="mysql" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN" hideSelect="1">
@@ -147,7 +148,7 @@
         <PROPERTIES type="boolean"  list="1" fiche="1" form="1" default="0">PMR</PROPERTIES>
 		<FKEY card="1,n" data="Reservations,Id">ReservationId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Evenement"  logEvent="1" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,EnvoyerMail::RESAS_ADMIN,ExporterPersonne::RESAS_ADMIN,Reserver" hideSelect="1">
+	<OBJECTCLASS title="Evenement"  logEvent="1" driver="mysql" Description="Afficher les événements" Class="Modules/Reservation/Class/Evenement.class.php" searchType="plaintext" Operations="add::RESAS_ADMIN,edit::RESAS_ADMIN,delete::RESAS_ADMIN,EnvoyerMail::RESAS_ADMIN,ExporterPersonne::RESAS_ADMIN,Reserver,EnvoyerMailAnnulation::RESAS_ADMIN" hideSelect="1">
 		<PROPERTIES type="datetime" list="3" fiche="1" form="1" listDescr="Date de cloture des réservations" description="Date de cloture des réservations" searchOrder="1" >DateCloture</PROPERTIES>
 		<PROPERTIES type="datetime" list="2" fiche="1" form="1" obligatoire="1" listDescr="Date de l'événement" description="Date de début"  searchOrder="3" >DateDebut</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" auto="1"  description="Titre du spectacle" >Nom</PROPERTIES>
@@ -160,6 +161,7 @@
 		<FKEY card="1,1" data="Salle,Id" form="1">SalleId</FKEY>
 		<FUNCTION title="Réserver">Reserver</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Envoyer E-mails">EnvoyerMail</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Envoyer E-mails d'annulation au client">EnvoyerMailAnnulation</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png" title="Exporter la liste des personnes inscrites">ExporterPersonne</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Salle" driver="mysql" Description="Salles" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" generateUrl="1" searchType="plaintext" >

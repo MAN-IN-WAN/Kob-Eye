@@ -1383,14 +1383,18 @@ class Server extends genericClass {
      * Insttalation des clefs ssh
      * @return bool
      */
-    public function installSshKey() {
+    public function installSshKey($reset = false) {
         //connexion par login/pass
         if (!$this->_connection)$this->Connect();
         //génération des clefs publiques / privées
         try {
             $IP = $this->usePublicIP?$this->IP:$this->InternalIP;
+            if($reset) {
+                Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_" . $IP . "* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $IP);
+            } else{
+                Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && if [ ! -f 'id_" . $IP . "' ]; then /usr/bin/ssh-keygen  -N \"\" -f id_" . $IP ."; fi");
+            }
 
-            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". $IP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $IP);
             //récupération et stockage des clefs
             $stream2 =  Parc::localExec("cd .ssh && cat id_" . $IP);
             $this->PrivateKey = $stream2;
@@ -1561,7 +1565,7 @@ class Server extends genericClass {
         $act = $task->createActivity('Execution de synchronisation');
         $act->addDetails('/usr/bin/ldap2service');
         try {
-            $this->remoteExec('/usr/bin/ldap2service', $act);
+            $out = $this->remoteExec('/usr/bin/ldap2service', $act);
             $act->addDetails('après exec');
             //on vérifie quand mêmle la date
             $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');

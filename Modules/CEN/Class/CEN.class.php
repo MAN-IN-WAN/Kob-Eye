@@ -8,6 +8,15 @@ class CEN extends Module {
 			case 'chacha-dict':
 				return Chachalaca::GetDics();
 
+			case 'chacha-colour':
+				return Chachalaca::GetColour($args);
+
+			case 'chacha-trans':
+				return Chachalaca::GetTrans($args);
+
+			case 'chacha-entry':
+				return Chachalaca::GetEntry($args);
+
 			case 'chacha-list':
 				return Chachalaca::GetList($args);
 
@@ -72,28 +81,38 @@ class CEN extends Module {
 						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
 						return $tla->GetDescr($args);
 						
+					case 'terms':
 					case 'term':
-						$tla = Sys::getOneData('CEN', 'Codex/'.$id);
-						return $tla->GetTerm($args);
+						//$tla = Sys::getOneData('CEN', 'Codex/'.$id);
+						return Codex::GetTerm($args);
 
 					case 'pres':
-						$o = Sys::getOneData('CEN', 'Presentation/Code='.$args['id']);
+						$type = $args['type'];
+						if($type == 'confidence' || $type == 'confidenciality') $id = 'CONFIDENCE';
+						$o = Sys::getOneData('CEN', 'Presentation/Code='.$id);
 						switch($args['type']) {
+							case 'confidenciality':
+							case 'confidence':
 							case 'intro': $type = 'Texte'; break;
 							case 'pres': $type = 'Present'; break;
 							case 'thanks': $type = 'Remer'; break;
 							case 'credits': $type = 'Credit'; break;
 							case 'help': $type = 'Aide'; break;
 						}
-						$type .= $lang;
-						return array('text'=> $o->$type);
+						$type0 = $type.$lang;
+						$tmp = $o->$type0;
+						if(empty($tmp)) {
+							$type0 = $type.'Es';
+							$tmp = $o->$type0;
+						}
+						return array('text'=> self::fontSize($tmp));
 						
 					case 'dic':	$dic = Sys::getOneData('CEN', 'Dictionnaire/'.$id);	break;
 					case 'doc':	$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	break;
 					case 'comm': return GDN::GetComments($args);
 					case 'doc-read':
 						$dic = Sys::getOneData('CEN', 'Temoa/'.$id);	
-						return array('text'=>$dic->DocHtml);
+						return array('text'=>self::fontSize($dic->DocHtml));
 				}
 				switch($args['lang']) {
 					case 'es': $pres = $dic->PresentationEs; break;
@@ -101,17 +120,19 @@ class CEN extends Module {
 					case 'en': $pres = $dic->PresentationEn; break;
 				}
 				if(empty($pres)) $pres = $dic->PresentationEs;
-				return array('text'=>$pres);
+				return array('text'=>self::fontSize($pres));
 				
 			case 'norm':
 				break;
 			
 			case 'lang';
-				$lang = Sys::getOneData('CEN', 'Regle/Code=Langue');
+				$lang = Sys::getOneData('CEN', 'Regle/Code=LANGUE');
 				$lang = file_get_contents($lang->FilePath);
 				$lang = utf8_encode($lang);
 				$lang = str_replace("\r\n", "\n", $lang);
-				return array('lang'=>$lang);
+				$rules = Sys::getOneData('CEN', 'Regle/Code=CONDITIONS');
+				$rules = file_get_contents($rules->FilePath);
+				return array('lang'=>$lang, 'rules'=>$rules);
 
 			default:
 				return array('error'=>'Mode inconnu:'.$args['mode']);
@@ -129,7 +150,25 @@ class CEN extends Module {
 		if($root) rmdir($dir); 
 	}
 
-
+	
+	public static function fontSize($txt) {
+		return preg_replace_callback('/font-size:([0-9\.]*)([\ \%a-z]*)/',
+        function ($ms) {
+			$p = 100;
+			$v = $ms[1];
+            switch(trim($ms[2])) {
+				case 'pt': $p = $v/12; break;
+				case 'px': $p = $v/16; break;
+				case 'em': $p = $v; break;
+				case '%': $p = $v/100;
+			}
+			$p = round($p*100, 0);
+			return "font-size:$p%";
+        },
+        $txt);
+	}
+	
+//  /([àáâãäåąāăǎǻ)|([])|([çčć])|([èéêë])|([ìíîï])|([ñ])|([òóôõöø])|([ß])|([ùúûü])|([ÿ])|([æ])/
 	public static function removeAccents($str) {
 		static $map = [
         // single letters

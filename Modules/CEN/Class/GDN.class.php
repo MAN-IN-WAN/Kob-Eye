@@ -98,7 +98,7 @@ order by  $sort";
 			$com = preg_replace('/ \$/', '</i>', $com, 1);
 			$pos = strpos($com, '$ ');
 		}
-		return array('text'=>$com);				
+		return array('text'=>CEN::fontSize($com));				
 	}
 	
 	static public function Normalize($word) {

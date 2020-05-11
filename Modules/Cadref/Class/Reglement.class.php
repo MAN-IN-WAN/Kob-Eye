@@ -288,7 +288,7 @@ where DateReglement>=$ddeb and DateReglement<$dfin and ModeReglement='P' and Mon
 		$time = time();
 		$remet = Cadref::GetParametre('BANQUE', 'COMPTE', 'REMETTANT')->Valeur;
 		$tmp = substr(date("d/m/Y H:i:s", $time).$remet,0,35);
-		$tmp1 = date("Y-m-j\Th:i:s", $time);
+		$tmp1 = date("Y-m-d\Th:i:s", $time);
 		$Sepa = $this->formate($cPrl0,[$tmp,$tmp1,$nbre,$total,$remet]);
 
 		$nSeq = 0;

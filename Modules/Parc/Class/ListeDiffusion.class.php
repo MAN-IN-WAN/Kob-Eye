@@ -18,6 +18,7 @@ class ListeDiffusion extends genericClass {
             $this->addError(array('Message'=>'Compte client introuvable.'));
             return false;
         }
+        $this->addParent($client);
 
         if(!$synchro){
             parent::Save();

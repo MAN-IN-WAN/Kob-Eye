@@ -79,7 +79,6 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		ajax.success(
 			function(data) {
 				if(data.data) {
-//console.log('++++++++++++++>>>>>>>>>>>>>>>>>>>',data.data);
 					let d = data.data;
 					let o = $scope.obj;
 					o.Antenne = d.Antenne;
@@ -100,7 +99,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	}
 
 	$scope.checkSmsSize = function(obj) {
-		let s = obj.SMS;
+		let s = obj.SMS.length;
 		obj.smsSize = s ? ' '+s : '';
 	}
 	

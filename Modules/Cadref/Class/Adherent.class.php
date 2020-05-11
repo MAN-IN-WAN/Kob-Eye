@@ -553,6 +553,7 @@ klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);
 				$dons = isset($obj['Dons']) ? $obj['Dons'] : '';
 				$pages = isset($obj['Pages']) ? $obj['Pages'] : '';
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
+				$misc = isset($obj['Misc']) ? $obj['Misc'] : '';
 				$adherent = false;
 				
 				$noRupture =  $contenu == 'Q' || $rupture == 'S';
@@ -701,6 +702,12 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
+				$tel06 = (isset($obj['Tel06']) && $obj['Tel06'] != '') ? $obj['Tel06'] : '';
+				if($tel06 == 'A') $whr .= "and (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
+				elseif($tel06 == 'S') $whr .= "and not (e.Telephone1 regexp '^0[6-7].*$' or e.Telephone2 regexp '^0[6-7].*$') ";
+				
+				if($misc) $whr .= "and (misc is null or misc='') ";
+				
 				if(! $noClasse || $soutien) {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
@@ -849,7 +856,7 @@ order by a.Nom, a.Prenom";
 				$params = array('Telephone1'=>$a['Telephone1'],'Telephone2'=>$a['Telephone2'],'Message'=>$obj['SMS']);
 				Cadref::SendSms($params);
 			}
-			Cadref::SendSmsAdmin($pages);
+			Cadref::SendSmsAdmin($params);
 			return true;
 		}
 		if($obj['mode'] == 'export') {
@@ -1101,7 +1108,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 			if($mode == 'mail') {
-				$this->sendAttestation($pdo, $annee, $fisc);
+				$this->sendAttestation($pdo, $annee, $fisc, false);
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
 			else {
@@ -1138,7 +1145,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 
 					if($mode == 'mail') {
 						if($suivi) $this->sendSuivi($suivi, $pdo, $annee);
-						else $this->sendAttestation($pdo, $annee, $fisc);
+						else $this->sendAttestation($pdo, $annee, $fisc, $id);
 						return array('step'=>2, 'data'=>'Message envoyé.');
 					}
 					
@@ -1175,7 +1182,9 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 		return $file;
 	}
 
-	private function sendAttestation($pdo, $annee, $fisc) {
+	private function sendAttestation($pdo, $annee, $fisc, $id) {
+		$from = '';
+		$reply = '';
 		$an = $annee.'-'.($annee+1);
 		$sub = Cadref::$UTL." : Attestation fiscale";
 		$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
@@ -1184,11 +1193,19 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 		foreach($pdo as $p) {
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 			$b = Cadref::MailCivility($p).$bod;
-			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+			$to = array($p['Mail']);
+			if($id) {
+				$to[] = Cadref::$MAIL;
+				$from = Cadref::$MAIL_ADM;
+				$reply = array(Cadref::$MAIL);
+			}
+			$args = array('From'=>$from, 'To'=>$to, 'ReplyTo'=>$reply, 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);
 		}
-		$args = array('To'=>array(Cadref::$MAIL), 'Subject'=>$sub, 'Body'=>$bod);
-		Cadref::SendMessage($args);
+		if(! $id) {
+			$args = array('To'=>array(Cadref::$MAIL), 'Subject'=>$sub, 'Body'=>$bod);
+			Cadref::SendMessage($args);
+		}
 	}
 
 	private function imprimeSuivi($suivi, $list, $annee) {
@@ -1325,6 +1342,8 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail'],Cadref::$MAIL);
+					$params['Msg']['From'] = Cadref::$MAIL_ADM;
+					$params['Msg']['ReplyTo'] = array(Cadref::$MAIL);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
@@ -1352,7 +1371,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		$args['Cc'] = array($this->Mail);
 		$args['ReplyTo'] = array($this->Mail);
-		$args['From'] = Cadref::$MAIL;
+		$args['From'] = Cadref::$MAIL_ADH;
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array(Cadref::$MAIL);
@@ -1538,7 +1557,8 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
 		$montant = 0;
-		foreach($pdo as $r) {
+		if(! $pdo) klog::l("ERROR CADREF : Adherent.class cours ajoutés : ".sql);
+		else foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			if(!$r['cWeb'] || !$r['nWeb']) {
 				$r['bloque'] = 1;
@@ -1620,7 +1640,8 @@ where r.AdherentId=$adhId and r.Annee='$annee'
 order by v.DateVisite";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
-		foreach($pdo as $r) {
+		if(! $pdo) klog::l("ERROR CADREF : Adherent.class visites deja inscrites : ".sql);
+		else foreach($pdo as $r) {
 			$r['bloque'] = 0;
 			$r['classe'] = 'label-success';
 			switch($r['Supprime']) {
@@ -1711,9 +1732,9 @@ where ce.Visite=:cid";
 		$annee = Cadref::$Annee;
 		$filter = str_replace('&', '', $obj['Filter']);
 		$adhId = $this->Id;
-		$antId = $obj['AntenneId'];
-		$secId = $obj['SectionId'];
-		$disId = $obj['DisciplineId'];
+		$antId = isset($obj['AntenneId']) ? $obj['AntenneId'] : '';
+		$secId = isset($obj['SectionId']) ? $obj['SectionId'] : '';
+		$disId = isset($obj['DisciplineId']) ? $obj['DisciplineId'] : '';
 		switch($mode) {
 			case 'antenne':
 				$sql = "
