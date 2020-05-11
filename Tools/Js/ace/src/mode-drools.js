@@ -66,7 +66,8 @@ var JavaHighlightRules = function() {
     "catch|extends|int|short|try|" +
     "char|final|interface|static|void|" +
     "class|finally|long|strictfp|volatile|" +
-    "const|float|native|super|while"
+    "const|float|native|super|while|" +
+    "var"
     );
 
     var buildinConstants = ("null|Infinity|NaN|undefined");
@@ -105,7 +106,6 @@ var JavaHighlightRules = function() {
         "constant.language": buildinConstants,
         "support.function": langClasses
     }, "identifier");
-
     this.$rules = {
         "start" : [
             {
@@ -228,7 +228,6 @@ var DroolsHighlightRules = function() {
         "support.class" : langClasses,
         "support.function" : "retract|update|modify|insert"
     }, "identifier");
-
     var stringRules = function() {
       return [{
         token : "string", // single line
@@ -455,3 +454,11 @@ oop.inherits(Mode, TextMode);
 exports.Mode = Mode;
 
 });
+                (function() {
+                    window.require(["ace/mode/drools"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            

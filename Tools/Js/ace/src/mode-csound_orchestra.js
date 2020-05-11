@@ -613,6 +613,7 @@ var PythonHighlightRules = function() {
     var keywordMapper = this.createKeywordMapper({
         "invalid.deprecated": "debugger",
         "support.function": builtinFunctions,
+        "variable.language": "self|cls",
         "constant.language": builtinConstants,
         "keyword": keywords
     }, "identifier");
@@ -855,12 +856,9 @@ var CsoundOrchestraHighlightRules = function() {
         "MixerSetLevel",
         "MixerSetLevel_i",
         "OSCinit",
-        "OSCinitM",
         "OSClisten",
         "OSCraw",
         "OSCsend",
-        "OSCsendA",
-        "OSCsend_lo",
         "S",
         "STKBandedWG",
         "STKBeeThree",
@@ -959,9 +957,11 @@ var CsoundOrchestraHighlightRules = function() {
         "chnclear",
         "chnexport",
         "chnget",
+        "chngetks",
         "chnmix",
         "chnparams",
         "chnset",
+        "chnsetks",
         "chuap",
         "clear",
         "clfilt",
@@ -1538,6 +1538,7 @@ var CsoundOrchestraHighlightRules = function() {
         "midion",
         "midion2",
         "midiout",
+        "midiout_i",
         "midipgm",
         "midipitchbend",
         "midipolyaftertouch",
@@ -2019,6 +2020,7 @@ var CsoundOrchestraHighlightRules = function() {
         "sprintfk",
         "spsend",
         "sqrt",
+        "squinewave",
         "statevar",
         "stix",
         "strcat",
@@ -2321,10 +2323,6 @@ var CsoundOrchestraHighlightRules = function() {
         "lentab",
         "maxtab",
         "mintab",
-        "pop",
-        "pop_f",
-        "push",
-        "push_f",
         "scalet",
         "sndload",
         "soundout",
@@ -2338,7 +2336,6 @@ var CsoundOrchestraHighlightRules = function() {
         "specscal",
         "specsum",
         "spectrum",
-        "stack",
         "sumtab",
         "tabgen",
         "tabmap",
@@ -2672,3 +2669,11 @@ oop.inherits(Mode, TextMode);
 
 exports.Mode = Mode;
 });
+                (function() {
+                    window.require(["ace/mode/csound_orchestra"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            

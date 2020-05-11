@@ -5,6 +5,10 @@ class Performance extends genericClass {
 	
 	public static function GetPerf($args) {
 		$cond = $args['cond'];
+		
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		$id = $usr->Id;
 
 		if($cond->type == 'preview') {
 			$perf = array();
@@ -27,6 +31,8 @@ class Performance extends genericClass {
 				if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
 				$d->picts = $picts;
 				$d->pict = $main;
+				
+				$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$id&PerformanceId=".$p->Id) : 0;
 				
 				$perf[] = $d;
 			}
@@ -105,5 +111,25 @@ class Performance extends genericClass {
 			$nam = trim($r['FirstName'].' '.$r['MiddleName'].' '.$r['Surname']);
 			$tmp[] = ['id'=>$r[Id], 'name'=>$name, 'playing'=>$r['Playing']];
 		}
+	}
+	
+	public static function SetFavourite($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false);
+		
+		$uid = $usr->Id; 
+		$show = $args['show'];
+		
+		if($show->fav) {
+			$fav = genericClass::createInstance('Show', 'FavPerformance');
+			$fav->addParent($usr);
+			$fav->PerformanceId = $show->id;
+			$fav->Save();
+		}
+		else {
+			$fav = Sys::getOneData('Show', "FavPerformance/UserId=$uid&PerformanceId=".$show->id);
+			if($fav) $fav->Delete();
+		}
+		return array('success'=>true);
 	}
 }

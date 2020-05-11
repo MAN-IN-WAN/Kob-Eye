@@ -1108,7 +1108,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 			if($mode == 'mail') {
-				$this->sendAttestation($pdo, $annee, $fisc);
+				$this->sendAttestation($pdo, $annee, $fisc, false);
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
 			else {
@@ -1145,7 +1145,7 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 
 					if($mode == 'mail') {
 						if($suivi) $this->sendSuivi($suivi, $pdo, $annee);
-						else $this->sendAttestation($pdo, $annee, $fisc);
+						else $this->sendAttestation($pdo, $annee, $fisc, $id);
 						return array('step'=>2, 'data'=>'Message envoyé.');
 					}
 					
@@ -1182,7 +1182,9 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 		return $file;
 	}
 
-	private function sendAttestation($pdo, $annee, $fisc) {
+	private function sendAttestation($pdo, $annee, $fisc, $id) {
+		$from = '';
+		$reply = '';
 		$an = $annee.'-'.($annee+1);
 		$sub = Cadref::$UTL." : Attestation fiscale";
 		$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
@@ -1191,11 +1193,19 @@ left join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 		foreach($pdo as $p) {
 			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 			$b = Cadref::MailCivility($p).$bod;
-			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+			$to = array($p['Mail']);
+			if($id) {
+				$to[] = Cadref::$MAIL;
+				$from = Cadref::$MAIL_ADM;
+				$reply = array(Cadref::$MAIL);
+			}
+			$args = array('From'=>$from, 'To'=>$to, 'ReplyTo'=>$reply, 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 			if(MSG_ADH) Cadref::SendMessage($args);
 		}
-		$args = array('To'=>array(Cadref::$MAIL), 'Subject'=>$sub, 'Body'=>$bod);
-		Cadref::SendMessage($args);
+		if(! $id) {
+			$args = array('To'=>array(Cadref::$MAIL), 'Subject'=>$sub, 'Body'=>$bod);
+			Cadref::SendMessage($args);
+		}
 	}
 
 	private function imprimeSuivi($suivi, $list, $annee) {
@@ -1332,6 +1342,8 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail'],Cadref::$MAIL);
+					$params['Msg']['From'] = Cadref::$MAIL_ADM;
+					$params['Msg']['ReplyTo'] = array(Cadref::$MAIL);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
@@ -1359,8 +1371,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		$args['Attachments'] = $params['Msg']['Pieces']['data'];
 		$args['Cc'] = array($this->Mail);
 		$args['ReplyTo'] = array($this->Mail);
-		$t = explode('@', Cadref::$MAIL);
-		$args['From'] = "noreply@".$t[1];
+		$args['From'] = Cadref::$MAIL_ADH;
 		
 		$to = $params['Mail'];
 		if($to == 'C') $args['To'] = array(Cadref::$MAIL);

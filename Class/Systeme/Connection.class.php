@@ -255,6 +255,14 @@ class Connection extends Root{
 			$this->Mobile = true;
 			$t=true;
 		}
+		// PGF 20200403 ionic
+		if(!$t){
+			$data = json_decode(file_get_contents("php://input"),true);
+			if(is_array($data) && isset($data[PHP_SESSION_NAME])){
+				$this->SessId  = $data[PHP_SESSION_NAME];
+				$t=true;
+			}
+		}
 		if ($t) return true ;else  return false;
 	}
 	public function DetectToken(){

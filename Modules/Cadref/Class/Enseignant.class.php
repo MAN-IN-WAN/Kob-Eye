@@ -38,6 +38,7 @@ class Enseignant extends genericClass {
 	}
 
 	public function SendMessage($params) {
+klog::l("eeee",$params);
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
@@ -54,12 +55,14 @@ class Enseignant extends genericClass {
 				);
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
-					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['To'] = array($params['Msg']['Mail'],Cadref::$MAIL);
+					$params['Msg']['From'] = Cadref::$MAIL_ADM;
+					$params['Msg']['ReplyTo'] = array(Cadref::$MAIL);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
-					$params['Msg']['To'] = array(Cadref::$MAIL);
-					$ret = Cadref::SendMessage($params['Msg']);
+					//$params['Msg']['To'] = array(Cadref::$MAIL);
+					//$ret = Cadref::SendMessage($params['Msg']);
 				}
 				else {
 					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
@@ -139,8 +142,7 @@ class Enseignant extends genericClass {
 		$args['Body'] = $params['Sender']."<br /><br />".$params['Body'];
 		$args['Attachments'] = $params['Pieces']['data'];
 		$args['ReplyTo'] = array($this->Mail);
-		$t = explode('@', Cadref::$MAIL);
-		$args['From'] = "noreply@".$t[1];
+		$args['From'] = Cadref::$MAIL_ENS;
 		
 		$to = $params['Mail'];
 		if($to == 'C') {

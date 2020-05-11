@@ -8,12 +8,14 @@ class Show extends Module {
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
 			case 'login':
-				klog::l(">>> show login >>>",Sys::$User);
-				return array('pseudo'=>Sys::$User->Initiales);
+				return self::logUser();
+				
+			case 'register':
+				return self::registerUser($args);
 				
 			case 'logout':
 				$cnx = genericClass::createInstance('Systeme', 'Connexion');
-				return array('pseudo'=>'');
+				return array('token'=>'', 'pseudo'=>'');
 				
 			case 'lang':
 				$l = array();
@@ -23,12 +25,47 @@ klog::l("GETSHOW >>>>>",$args);
 				
 			case 'perf':
 				return Performance::GetPerf($args);
+				
+			case 'favourite':
+				return Performance::SetFavourite($args);
 		
 			case 'peop': break;
 			case 'any': break;
 		}
 		return array('error'=>'mode unknown');
 	}
+	
+	private static function logUser() {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false);
+		
+		$id = $usr->Id;
+		$msg = 0; // Sys::getCount('Show', 'Message/UserId='.$id);
+		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
+		$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
+		return array('success'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 'nickname'=>Sys::$User->Initiales, 'msg'=>$msg, 'fav'=>$fav);
+	}
+	
+	private static function registerUser($args) {
+		$c = $args['credentials'];
+		$n = Sys::getCount('Systeme', 'User/Initiales='.$c->nickname);
+		if($n) return array('success'=>false, 'msg'=>'Nickname already in use');
+		$n = Sys::getCount('Systeme', 'User/Mail='.$c->email);
+		if($n) return array('success'=>false, 'msg'=>'Email address already in use');
+		
+		$g = Sys::getOneData('Systeme', 'Group/Nom=SHOW');
+		$u = genericClass::createInstance('Systeme', 'User');
+		$u->addParent($g);
+		$u->Login = $c->email;
+		$u->Mail = $c->email;
+		$u->Initiales = $c->nickname;
+
+		$u->Pass = '[md5]'.md5($c->pass);
+		$u->Save();
+		
+		return array('success'=>true);
+	}
+	
 
 	public static function removeAccents($str) {
 		static $map = [
