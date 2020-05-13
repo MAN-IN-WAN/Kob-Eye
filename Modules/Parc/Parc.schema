@@ -688,7 +688,7 @@
         <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
+	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" browseable="1" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
 		<CATEGORY title="Menu">

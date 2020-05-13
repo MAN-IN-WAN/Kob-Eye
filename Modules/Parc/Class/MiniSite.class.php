@@ -54,7 +54,7 @@ public function Save(){
     }
 
     //Check du site et création le cas échéant
-    $sit = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
+    $sit = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
     if(!$sit) {
         $sit =  genericClass::createInstance('Systeme','Site');
         $sit->Domaine = $fullDomain;
@@ -77,7 +77,7 @@ public function Save(){
         $params = $mod->getChildren('ParametreMiniSite/Type=menu');
         foreach ($params as $p){
             $val = $p->getOneChild('ValeurMiniSite');
-            $men = json_decode($val->Valeur);
+            $men = json_decode($val->Valeur,true);
             $menus[] = $men;
         }
 
@@ -92,7 +92,7 @@ public function Save(){
         }
 
         //clean des url
-        foreach($menus as $menu){
+        foreach($menus as &$menu){
             $menu->Url = strtolower($menu->Url);
             $menu->Url = Utils::checkSyntaxe($menu->Url);
         }
@@ -144,9 +144,9 @@ public function Save(){
         }
         foreach ($menus as $m){
             $men = genericClass::createInstance('Systeme','Menu');
-            $men->Titre = $m->Titre;
-            $men->Url = $m->Url;
-            $men->Alias = $m->Alias;
+            $men->Titre = $m['Titre'];
+            $men->Url = $m['Url'];
+            $men->Alias = $m['Alias'];
             $men->addParent($par);
             if(!$men->Save()) {
                 $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
@@ -208,7 +208,7 @@ public function Save(){
 
 public function Delete(){
 
-    $site = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
+    $site = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
     if($site){
         $user = $site->getOneParent('User');
         if($user){
