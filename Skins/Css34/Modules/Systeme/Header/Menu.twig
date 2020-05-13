@@ -10,6 +10,36 @@
         </ul>
     </nav>
 </div>
+<script>
+    function closePop() {
+        document.getElementById("myModal").style.display = "none";
+    }
+</script>
+<div id="myModal" class="modal fade in" role="dialog" style="display: block;padding-left: 17px;">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="closePop()">&times;</button>
+                <h4 class="modal-title">Information Coronavirus</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bonjour à toutes et à tous,<br><br>
+                    En raison des mesures de prévention annoncées par le gouvernement, nos bureaux seront
+                    fermés jusqu'à nouvel ordre.<br><br>
+                    Vous pouvez bien évidemment nous contacter par mail à l'adresse suivante :
+                    direction@css34.fr ou en cas d'urgence uniquement, joindre le 07.60.00.54.74.<br><br>
+                    Nous vous invitons à consulter notre site ou notre page facebook pour rester informés.
+                    A très vite !!<br><br>
+                    L'équipe de CSS34.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closePop()">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="submenu"  v-if="!render">
     <div class="container">
         <div class="row">
