@@ -236,6 +236,24 @@ class Menu extends genericClass {
 	 	}
 		return $out;
 	 }
+    /*
+    * getMainMenus
+    * return the main menu list
+    * @return Array ( genericClass )
+    */
+    public function getMainSubMenus (){
+        $subs = $this->getSubMenus();
+        $out = Array();
+        //Recherche parmis les menus systeme
+        if (is_array($subs)){
+            foreach ($subs as $m){
+                if ($m->Affiche && $m->MenuPrincipal){
+                    array_push($out,$m);
+                }
+            }
+        }
+        return $out;
+    }
 	/*
 	 * getTopMenus
 	 * return the top menu list

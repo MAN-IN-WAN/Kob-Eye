@@ -7,6 +7,7 @@ public function Save(){
 
     $skin = 'Minisite';
     $menus = array(array('Url'=>'','Titre'=>$this->Nom,'Alias'=>''));
+    $domPref = 'www';
 
 
     parent::Save();
@@ -20,6 +21,23 @@ public function Save(){
             return false;
         }
     }
+
+    $ds = explode('.',$this->Domaine);
+    if(count($ds)  == 1  ){
+        $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
+        $this->addError(Array("Message"=>'Un minisite nécéssite un domaine valide'));
+        return false;
+    }
+    if(count($ds)  == 2  ){
+        $fullDomain = $domPref.'.'.$this->Domaine;
+    }
+    if(count($ds)  > 2  ){
+        $fullDomain = $this->Domaine;
+        $domPref = implode('.',array_splice($ds,-2));
+    }
+
+
+
     //Check du domaine
     $dom = Sys::getOneData('Parc','Domain/Url='.$this->Domaine);
     if($dom) {
@@ -36,10 +54,10 @@ public function Save(){
     }
 
     //Check du site et création le cas échéant
-    $sit = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
+    $sit = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
     if(!$sit) {
         $sit =  genericClass::createInstance('Systeme','Site');
-        $sit->Domaine = 'www.'.$this->Domaine;
+        $sit->Domaine = $fullDomain;
         if(!$sit->Save(true)) {
             $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
             $this->addError(Array("Message"=>'Une Erreur est survenue lors de la création du site :'.$sit->Error[0]['Message']));
@@ -59,7 +77,7 @@ public function Save(){
         $params = $mod->getChildren('ParametreMiniSite/Type=menu');
         foreach ($params as $p){
             $val = $p->getOneChild('ValeurMiniSite');
-            $men = json_decode($val->Valeur);
+            $men = json_decode($val->Valeur,true);
             $menus[] = $men;
         }
 
@@ -74,7 +92,7 @@ public function Save(){
         }
 
         //clean des url
-        foreach($menus as $menu){
+        foreach($menus as &$menu){
             $menu->Url = strtolower($menu->Url);
             $menu->Url = Utils::checkSyntaxe($menu->Url);
         }
@@ -126,9 +144,9 @@ public function Save(){
         }
         foreach ($menus as $m){
             $men = genericClass::createInstance('Systeme','Menu');
-            $men->Titre = $m["Titre"];
-            $men->Url = $m["Url"];
-            $men->Alias = $m["Alias"];
+            $men->Titre = $m['Titre'];
+            $men->Url = $m['Url'];
+            $men->Alias = $m['Alias'];
             $men->addParent($par);
             if(!$men->Save()) {
                 $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
@@ -156,16 +174,16 @@ public function Save(){
 
     if($dom) {
         $upd = false;
-        $A = $dom->getOneChild('Subdomain/Url=A:');
+        $A = $dom->getOneChild('Subdomain/Nom=A:');
         if (!$A) {
             $upd = true;
         } else {
             $A->IP = '158.255.102.117';
             $A->Save();
         }
-        $www = $dom->getOneChild('CNAME/Dnsdomainname=www');
+        $www = $dom->getOneChild('CNAME/Dnsdomainname='.$domPref);
         if (!$www) {
-            $www = $dom->getOneChild('Subdomain/Url=A:www');
+            $www = $dom->getOneChild('Subdomain/Url='.$domPref);
             if (!$www) {
                 $upd = true;
             } else {
@@ -190,7 +208,7 @@ public function Save(){
 
 public function Delete(){
 
-    $site = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
+    $site = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
     if($site){
         $user = $site->getOneParent('User');
         if($user){
