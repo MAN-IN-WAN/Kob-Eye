@@ -968,6 +968,11 @@ klog::l("mmmmmmmmm",$params);
 		}
 	}
 	
+	public static function cv2win($txt) {
+		return iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $txt);
+	}
+	
+	
 	
 
 }

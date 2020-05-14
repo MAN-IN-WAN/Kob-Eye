@@ -294,6 +294,28 @@ order by i.CodeClasse
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('pdf'=>'', 'sql'=>$sql);
+		
+		if($obj['mode'] == 'export') {
+			$file = 'Home/tmp/RapportFinancier_'.date('YmdHis').'.csv';
+			$f = fopen($file, 'w');
+			$s = '"Classe";"Libellé";"Inscrits";"Prix";"Remise";"Nb remises";"Soutien";"Nb soutiens";"Total"';
+			fwrite($f, Cadref::cv2win("$s\n"));
+			
+			foreach($pdo as $p) {
+				$s = '"'.$p['CodeClasse'].'";';
+				$s .= '"'.$p['libelleD'].' '.$p['libelleN'].'";';
+				$s .= $p['inscrits'].';';
+				$s .= $p['Prix'].';';
+				$s .= $p['red'].';';
+				$s .= $p['nred'].';';
+				$s .= $p['red2'].';';
+				$s .= $p['nred2'].';';
+				$s .= $p['total']-$p['red']-$p['red2'].';';
+				fwrite($f, Cadref::cv2win("$s\n"));
+			}
+			fclose($f);
+			return array('csv'=>$file, 'sql'=>$sql);
+		}
 			
 		$pdf = new PrintFinance($nbcot,$cotis);
 		$pdf->SetAuthor("Cadref");

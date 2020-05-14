@@ -8,37 +8,71 @@ class Performance extends genericClass {
 		
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
-		$id = $usr->Id;
+		$uid = $usr->Id;
 
-		if($cond->type == 'preview') {
-			$perf = array();
-			$o = Sys::getOneData('Show', 'Category/Category='.$cond->cat);
-			$ps = $o->getChildren('Performance');
-			foreach($ps as $p) {
-				$d = new stdClass();
-				$d->id = $p->Id;
-				$d->title = $p->Title;
-				$d->subtitle = $p->Subtitle;
-				$d->year = $p->Year;
-				if($p->MaturityId) {
-					$t = Sys::getOneData('Show', 'Maturity/'.$p->MaturityId);
-					$d->maturity = $t->Maturity.'+';
-				}
-				else $d->maturity = 'NR';
-				$d->domains = $dom = self::getArray($o->getChildren('Domain'), 'Domain');
-				$main = '';
-				$picts = self::getPictures($p, $main);
-				if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
-				$d->picts = $picts;
-				$d->pict = $main;
-				
-				$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$id&PerformanceId=".$p->Id) : 0;
-				
-				$perf[] = $d;
-			}
-			return array('cat'=>$cond->cat, 'count'=>count($perf), 'data'=>$perf);
+		if($cond->type == 'preview') return sels::getPreview($cond, $logged, $uid);
+		if($cond->type == 'details') return sels::getDetails($cond, $logged, $uid);
+		return array();
+	}
+	
+	private static function getPreview($cond, $logged, $uid) {
+
+		$sql = "select s.Id,s.Title,s.Subtitle,s.CategoryId,s.MaturityId,s.`Year`,c.Category,mt.Maturity,cy.Country";
+		$frm = " from `kob-Show-Performance` s "
+				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
+				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+				."left join `kob-Show-Country` cy on cy.Id=s.CountryId ";
+
+		$whr = ' where 1';
+		switch($cond->mode) {
+			case 1: $whr .= "and s.userCreate=$uid"; break;
+			case 2: $frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$id"; break;
+			case 3:
+				if($conf->cat) $whr .= " and s.CategoryId in ($conf->cat)";
+				if($conf->year) $whr .= " and s.Year='$conf->year'";
+				if($conf->dom) $frm .= " inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($conf->dom)";
+				if($conf->genre) $frm .= "inner join `kob-Show-PerformanceGenres` pg on pd.PerformanceId=s.Id and pg.Genre in ($conf->genre)";
+				if($conf->crew) $frm .= " inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($conf->crew)";
 		}
-		if($cond->type == 'details') {
+		
+		$sql .= $frm.$whr." order by s.CategoryId,s.tmsEdit";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
+		
+		$perf = ['count'=>0, 'data'=>[]];
+		$acat = [];
+		$rcat = 0;
+		$ncat = '';
+		foreach($ps as $p) {
+			$cat = $p->CategoryId;
+			if($cat != $rcat) {
+				if($rcat) $perf['data'][] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
+				$acat = [];
+				$rcat = $cat;
+				$ncat = $p->Category;
+			}
+			$d = new stdClass();
+			$d->id = $p->Id;
+			$d->title = $p->Title;
+			$d->subtitle = $p->Subtitle;
+			$d->year = $p->Year;
+			$d->maturity = $p->MaturityId ? $p->Maturity.'+' : 'NR';
+			$d->domains = $dom = self::getArray($o->getChildren('Domain'), 'Domain');
+			$main = '';
+			$picts = self::getPictures($p, $main);
+			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
+			$d->picts = $picts;
+			$d->pict = $main;
+
+			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
+
+			$acat[] = $d;
+		}
+		if($rcat) $perf['cat'][] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
+		return ['success'=>true, 'perf'=>$perf];
+	}
+
+	private static function getDetails($cond, $logged, $uid) {
 			$id = $cond->id;
 
 			$o = Sys::getOneData('Show', "Performance/$id");
@@ -70,9 +104,7 @@ class Performance extends genericClass {
 				'summary'=>$o->Summary, 'descriton'=>$o->Description, 
 				'category'=>$cat, 'domains'=>$dom, 'genres'=>$gen, 'duration'=>$o->Duration,
 				'maturity'=>$mat, 'public'=>$pub, 'picts'=>$picts, 'pict'=>$main, 'crew'=>$crew];
-			return ['show'=>$d];
-		}
-		return array();
+			return ['success'=>true, 'show'=>$d];
 	}
 	
 	private static function getArray($rs, $field) {
