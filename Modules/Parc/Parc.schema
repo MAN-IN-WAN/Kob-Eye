@@ -786,7 +786,7 @@
 		<FKEY data="Instance,Id" form="1" fiche="1" card="0,1"  popup="1" >InstanceId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="VersionLogiciel" driver="mysql" Description="Version des applicatifs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/VersionLogiciel.class.php" AccessPoint="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack,KobEye,OwnCloud,Prestashop,Pydio,Symfony,Wordpress" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack,KobEye,NextCloud,Prestashop,Pydio,Symfony,Wordpress" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">Version</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type" values="dev,pre-prod,prod,depotlocal" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" listDescr="">Fichier</PROPERTIES>
@@ -828,6 +828,7 @@
 		<PROPERTIES type="boolean" description="Infrastructure par défaut" form="1" hasRole="PARC_TECHNICIEN" list="1">Default</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type d'Infra" list="1" form="1" fiche="1" listDescr="Type" default="Web" values="Web,Mail">Type</PROPERTIES>
 		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN" list="1">ClientId</FKEY>
+		<FKEY data="Revendeur,Id" card="0,n" inline="1" description="Revendeur" hasRole="PARC_TECHNICIEN" list="1">RevendeurId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Certificate" driver="mysql" Description="Certificats par défaut" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Domaine" list="1" form="1" fiche="1" listDescr="Domaine">Domain</PROPERTIES>
