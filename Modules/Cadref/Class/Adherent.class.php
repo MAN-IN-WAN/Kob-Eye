@@ -860,34 +860,53 @@ order by a.Nom, a.Prenom";
 			return true;
 		}
 		if($obj['mode'] == 'export') {
+			$del = strpos('NAQ', $contenu) !== false;
 			$file = 'Home/tmp/ListeAdherent_'.date('YmdHis').'.csv';
 			$f = fopen($file, 'w');
-			$s = '"Numéro";"Nom";"Prénom";"Adresse1";"Adresse2";"CP";"Ville";"Téléphone1";"Téléphone2";"Mail";"Délégué"';
-			if($obj['Rupture'] != 'S') $s .= ';"Classe";"Discipline";"Niveau";"Attente";"Date attente"';
-			$s .= "\n";
-			fwrite($f, $s);
-			foreach($pdo as $a) {
-				$s = '"'.$a['Numero'].'";';
-				$s .= '"'.$a['Nom'].'";';
-				$s .= '"'.$a['Prenom'].'";';
-				$s .= $this->dblCotes(['Adresse1']).';';
-				$s .= $this->dblCotes($a['Adresse2']).';';
-				$s .= '"'.$a['CP'].'";';
-				$s .= '"'.$a['Ville'].'";';
-				$s .= '"'.$a['Telephone1'].'";';
-				$s .= '"'.$a['Telephone2'].'";';
-				$s .= '"'.$a['Mail'].'";';
-				$s .= '"'.$a['Delegue'].'"';
-				if($obj['Rupture'] != 'S') {
-					$s .= ';';
-					$s .= '"'.$a['CodeClasse'].'";';
-					$s .= $this->dblCotes($a['LibelleD'].' '.$a['LibelleN']).';';
-					$s .= '"'.($a['Attente'] ? 'O' : 'N').'";';
-					$s .= '"'.($a['Attente'] ? date('d/m/Y H:i',$a['DateAttente']) : '').'"';
-				}
-				$s .= "\n";
-				fwrite($f, $s);
+			if($det) {
+				$s = '"Numéro";"Nom";"Prénom";"Adresse1";"Adresse2";"CP";"Ville";"Téléphone1";"Téléphone2";"Mail";"Délégué"';
+				if($obj['Rupture'] != 'S') $s .= ';"Classe";"Discipline";"Niveau";"Attente";"Date attente"';
 			}
+			else $s = '"Classe";"Libellé";"Jour";"Heures";"Cycle";"Enseignant";"Inscrits"';
+			fwrite($f, Cadref::cv2win("$s\n"));
+			
+			$rclas = '';
+			$inscr = 0;
+			
+			foreach($pdo as $a) {
+				if($det) {
+					$s = '"'.$a['Numero'].'";';
+					$s .= '"'.$a['Nom'].'";';
+					$s .= '"'.$a['Prenom'].'";';
+					$s .= $this->dblCotes(['Adresse1']).';';
+					$s .= $this->dblCotes($a['Adresse2']).';';
+					$s .= '"'.$a['CP'].'";';
+					$s .= '"'.$a['Ville'].'";';
+					$s .= '"'.$a['Telephone1'].'";';
+					$s .= '"'.$a['Telephone2'].'";';
+					$s .= '"'.$a['Mail'].'";';
+					$s .= '"'.$a['Delegue'].'"';
+					if($obj['Rupture'] != 'S') {
+						$s .= ';';
+						$s .= '"'.$a['CodeClasse'].'";';
+						$s .= $this->dblCotes($a['LibelleD'].' '.$a['LibelleN']).';';
+						$s .= '"'.($a['Attente'] ? 'O' : 'N').'";';
+						$s .= '"'.($a['Attente'] ? date('d/m/Y H:i',$a['DateAttente']) : '').'"';
+					}
+					fwrite($f, Cadref::cv2win("$s\n"));
+				}
+				else {
+					$clas = $a['ClasseId'];
+					if($clas != $rclas) {
+						if($rclas) $this->exportClasse($f, $rclas, $libe, $inscr);
+						$rclas = $clas;
+						$libe = $a['LibelleD'].' '.$a['LibelleN'];
+						$inscr = 0;
+					}
+					$inscr++;
+				}
+			}
+			if(!$det && $rclas) $this->exportClasse($f, $rclas, $libe, $inscr);
 			fclose($f);
 			return array('csv'=>$file, 'sql'=>$sql);
 		}
@@ -929,6 +948,22 @@ order by a.Nom, a.Prenom";
 		}
 
 		return array('pdf'=>$file, 'sql'=>$sql);
+	}
+	
+	private function exportClasse($file, $clas, $libe, $inscr) {
+		$c = Sys::getOneData('Cadref', 'Classe/'.$clas);
+		$cod = $c->CodeClasse;
+		$deb = $c->HeureDebut.'-'.$c->HeureFin;
+		$cyc = !empty($c->CycleDebut) ? $c->CycleDebut.'-'.$c->CycleFin : ''; 
+		$jou = Sys::getOneData('Cadref', 'Jour/' . $c->JourId)->Jour;
+		$es = $c->getParents('Enseignant');
+		$ens = '';
+		foreach($es as $e) {
+			if($ens != '') $ens .= ", ";
+			$ens .= $e->Nom;
+		}
+		$s = "\"$cod\";\"$libe\";\"$jou\";\"$deb\";\"$cyc\";\"$ens\";\"$inscr\";\n";
+		fwrite($file, Cadref::cv2win($s));
 	}
 	
 	private function dblCotes($s) {
