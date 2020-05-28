@@ -574,7 +574,7 @@ class Parc_Client extends genericClass {
                 return array('task' => $task, 'title' => 'Progression de l\'inventaire');
                 break;
             default:
-                return array('template' => "listSrv", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
+                return array('template' => "listSrvCli", 'step' => 1, 'callNext' => array('nom' => 'doMigrationMail', 'title' => 'Progression'),'errors' => $this->Error);
         }
     }
     /**
