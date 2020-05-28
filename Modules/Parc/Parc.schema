@@ -183,6 +183,7 @@
 		<FILTER name="Serveurs Web" color="primary">Web=1</FILTER>
 		<FILTER name="Serveurs SQL" color="secondary">Sql=1</FILTER>
 		<FILTER name="Serveurs Mail" color="secondary">Mail=1</FILTER>
+		<FILTER name="Serveurs Parc" color="secondary">Parc=1</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" quickview="1" list="1" fiche="1" listDescr="Nom" form="1">Nom</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="1" quickview="1" list="1" fiche="1" listDescr="Status" values="0::Non intialisé,1::Connecté,2::Configuré" form="1">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" quickview="1" list="1" fiche="1" listDescr="Nom DNS" form="1">DNSNom</PROPERTIES>
@@ -211,6 +212,7 @@
 			<PROPERTIES type="boolean" searchOrder="10" fiche="1" form="1">MailInBlack</PROPERTIES>
 			<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1"  listDescr="Proxy" form="1">Proxy</PROPERTIES>
 			<PROPERTIES type="boolean" searchOrder="12" quickview="1" fiche="1"  list="1" listDescr="PageSpeed" form="1">PageSpeed</PROPERTIES>
+			<PROPERTIES type="boolean" searchOrder="13" fiche="1"  form="1">Parc</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Web" formCondition="{{ scopeObj }}.Web == 1">
 			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1" >defaultWebServer</PROPERTIES>
@@ -235,6 +237,12 @@
 		<CATEGORY title="MailInBlack" formCondition="{{ scopeObj }}.MailInBlack == 1">
 			<PROPERTIES type="varchar" description="User MIB" form="1">MIBUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass MIB" form="1">MIBPass</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Parc" formCondition="{{ scopeObj }}.Parc == 1">
+			<PROPERTIES type="boolean" fiche="1" form="1">ALS</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1">Minisite</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1" formCondition="({{ scopeObj }}.Minisite == 1">MinisiteDefault</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1">Principal</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -687,6 +695,7 @@
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
+		<FKEY card="0,1" data="Server,Id" description="Serveur" listDescr="Serveur" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" browseable="1" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
