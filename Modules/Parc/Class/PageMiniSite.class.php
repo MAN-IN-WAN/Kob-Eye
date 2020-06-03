@@ -1,6 +1,28 @@
 <?php
 
 class PageMiniSite extends genericClass{
+    public function Save() {
+        $modele = $this->getOneParent('ModeleMiniSite');
+        $ms = $modele->getChildren('MiniSite');
+        foreach ($ms as $m){
+           $m->Save(true);
+        }
+
+        return parent::Save();
+    }
+
+    public function Delete() {
+        parent::Delete();
+
+        $modele = $this->getOneParent('ModeleMiniSite');
+        $ms = $modele->getChildren('MiniSite');
+        foreach ($ms as $m){
+            $m->Save(true);
+        }
+
+        return true;
+    }
+
 
     public function getParams($full=false){
         $params = $this->getChildren('ParametreMiniSite');
