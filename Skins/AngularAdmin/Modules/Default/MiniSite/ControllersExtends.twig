@@ -1,8 +1,13 @@
-app.controller('ServicesMinisiteCtrlExtends', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
+app.controller('ParcMiniSiteCtrlExtends', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
 
 $scope.cliId = {{ Client.Id }};
 $scope.forceDisplayList = {{ forceDisplayList }};
 
 
+});
+
+app.controller('ParcMiniSiteFicheCtrlExtends', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
+
+$scope.paramsMS = [{'Nom':'Test','type':'varchar'}];
 
 });

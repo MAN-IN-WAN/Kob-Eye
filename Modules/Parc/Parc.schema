@@ -656,6 +656,10 @@
 	<OBJECTCLASS title="ModeleMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Modele de MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ModeleMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du modèle" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" list="1" form="1" fiche="1" listDescr="Skin">Skin</PROPERTIES>
+		<CATEGORY title="Menu">
+			<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
+			<PROPERTIES type="alias"  fiche="1" form="1">Alias</PROPERTIES>
+		</CATEGORY>
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
@@ -690,17 +694,21 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" browseable="1" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
 		<CATEGORY title="Menu">
 			<PROPERTIES type="boolean" description="Afficher le menu" list="1" form="1" fiche="1" listDescr="Afficher Menu" default="1">MenuAffiche</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="6" description="Titre du menu" form="1" fiche="1" listDescr="Titre Menu">MenuTitre</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="7" description="Url du menu" form="1" fiche="1" listDescr="Url Menu">MenuUrl</PROPERTIES>
+			<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
+			<PROPERTIES type="alias"  fiche="1" form="1">Alias</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ParametreMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Parametre MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du Paramètre" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" description="Type de Paramètre" list="1" form="1" fiche="1" listDescr="Type" values="int::Entier,varchar::Texte,html::Texte Long,image::Image,color::Couleur,menu::Menu">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du Paramètre" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" description="Type de Paramètre" list="1" form="1" fiche="1" listDescr="Type" values="int::Entier,varchar::Texte,html::Texte Long,image::Image,color::Couleur,menu::Menu,file::Fichier,boolean:Booléen">Type</PROPERTIES>
+		<PROPERTIES type="html"  description="Aide du Paramètre" form="1" fiche="1"  listDescr="Nom">Aide</PROPERTIES>
+		<PROPERTIES type="order"  fiche="1" form="1" list="1" description="Ordre" listDescr="Ordre">Order</PROPERTIES>
+		<PROPERTIES type="varchar" description="Categorie du Paramètre" list="1" form="1" fiche="1" listDescr="Catégorie">Categorie</PROPERTIES>
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
 		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" fiche="1" list="1" >MiniSiteId</FKEY>
 		<FKEY card="0,1" data="PageMiniSite,Id" description="Page de minisite" listDescr="Page MiniSite" fiche="1" list="1" >PageMiniSiteId</FKEY>
@@ -786,7 +794,7 @@
 		<FKEY data="Instance,Id" form="1" fiche="1" card="0,1"  popup="1" >InstanceId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="VersionLogiciel" driver="mysql" Description="Version des applicatifs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/VersionLogiciel.class.php" AccessPoint="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack,KobEye,OwnCloud,Prestashop,Pydio,Symfony,Wordpress" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack,KobEye,NextCloud,Prestashop,Pydio,Symfony,Wordpress" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">Version</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type" values="dev,pre-prod,prod,depotlocal" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" listDescr="">Fichier</PROPERTIES>
@@ -828,6 +836,7 @@
 		<PROPERTIES type="boolean" description="Infrastructure par défaut" form="1" hasRole="PARC_TECHNICIEN" list="1">Default</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type d'Infra" list="1" form="1" fiche="1" listDescr="Type" default="Web" values="Web,Mail">Type</PROPERTIES>
 		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN" list="1">ClientId</FKEY>
+		<FKEY data="Revendeur,Id" card="0,n" inline="1" description="Revendeur" hasRole="PARC_TECHNICIEN" list="1">RevendeurId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Certificate" driver="mysql" Description="Certificats par défaut" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Domaine" list="1" form="1" fiche="1" listDescr="Domaine">Domain</PROPERTIES>
