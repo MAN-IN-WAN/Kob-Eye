@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div ng-if="attachementInfo.classeId>0 || attachementInfo.visiteId>0">
-					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm?Type={{ Type }}'"></ng-include>
                 </div>
             </div>
         </div>

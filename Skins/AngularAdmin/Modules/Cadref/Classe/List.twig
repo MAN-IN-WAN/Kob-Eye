@@ -187,7 +187,7 @@
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<button class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" title="Pièces jointes" 
-						  ng-click="attachementsOpen(item, 'classe')">{[{ item.Attachements }]}
+						  ng-click="attachementsOpen(item, 'classe', '{{Type}}')">{[{ item.Attachements }]}
 					</button>
 				</td>
 

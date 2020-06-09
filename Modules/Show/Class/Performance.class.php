@@ -10,8 +10,8 @@ class Performance extends genericClass {
 		$logged = ! $usr->Public;
 		$uid = $usr->Id;
 
-		if($cond->type == 'preview') return sels::getPreview($cond, $logged, $uid);
-		if($cond->type == 'details') return sels::getDetails($cond, $logged, $uid);
+		if($cond->type == 'preview') return self::getPreview($cond, $logged, $uid);
+		if($cond->type == 'details') return self::getDetails($cond, $logged, $uid);
 		return array();
 	}
 	
@@ -25,39 +25,48 @@ class Performance extends genericClass {
 
 		$whr = ' where 1';
 		switch($cond->mode) {
-			case 1: $whr .= "and s.userCreate=$uid"; break;
-			case 2: $frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$id"; break;
+			case 1: $whr .= " and s.userCreate=$uid"; break;
+			case 2: $frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid"; break;
 			case 3:
-				if($conf->cat) $whr .= " and s.CategoryId in ($conf->cat)";
-				if($conf->year) $whr .= " and s.Year='$conf->year'";
-				if($conf->dom) $frm .= " inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($conf->dom)";
-				if($conf->genre) $frm .= "inner join `kob-Show-PerformanceGenres` pg on pd.PerformanceId=s.Id and pg.Genre in ($conf->genre)";
-				if($conf->crew) $frm .= " inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($conf->crew)";
+				if($cond->cat) $whr .= " and s.CategoryId in ($cond->cat)";
+				if($cond->year) $whr .= " and s.Year='$cond->year'";
+				if($cond->dom) $frm .= " inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($cond->dom)";
+				if($cond->genre) $frm .= "inner join `kob-Show-PerformanceGenres` pg on pd.PerformanceId=s.Id and pg.Genre in ($cond->genre)";
+				if($cond->crew) $frm .= " inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew)";
 		}
 		
-		$sql .= $frm.$whr." order by s.CategoryId,s.tmsEdit";
+		$sql .= $frm.$whr." order by c.Category,s.tmsEdit";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
-		$perf = ['count'=>0, 'data'=>[]];
+		$favs = [];
+		$data = [];
 		$acat = [];
 		$rcat = 0;
 		$ncat = '';
-		foreach($ps as $p) {
+		foreach($ps as $r) {
+			$p = genericClass::createInstance('Show', 'Performance');
+			$p->initFromId($r['Id']);
 			$cat = $p->CategoryId;
 			if($cat != $rcat) {
-				if($rcat) $perf['data'][] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
+				if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
 				$acat = [];
 				$rcat = $cat;
-				$ncat = $p->Category;
+				$ncat = $r['Category'];
 			}
 			$d = new stdClass();
 			$d->id = $p->Id;
+			$d->mine = $logged && $p->userCreate == $uid;
 			$d->title = $p->Title;
 			$d->subtitle = $p->Subtitle;
 			$d->year = $p->Year;
-			$d->maturity = $p->MaturityId ? $p->Maturity.'+' : 'NR';
-			$d->domains = $dom = self::getArray($o->getChildren('Domain'), 'Domain');
+			$d->category = $cat;
+			$d->Country = $r['Country'];
+			$d->maturity = $p->MaturityId ? $r['Maturity'].'+' : 'NR';
+			$d->domains = $dom = self::getArray($p->getChildren('Domain'), 'Domain');
+			$d->votes = $p->Votes;
+			$d->rating = $p->Rating;
+			$d->comments = $p->Comments;
 			$main = '';
 			$picts = self::getPictures($p, $main);
 			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
@@ -67,16 +76,22 @@ class Performance extends genericClass {
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
 
 			$acat[] = $d;
+			if($d->fav && $cond->mode == 0) $favs[] = $d;
 		}
-		if($rcat) $perf['cat'][] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
-		return ['success'=>true, 'perf'=>$perf];
+		if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
+		if(count($favs)) {
+			klog::l(count($data));
+			array_splice($data, 0, 0, [['count'=>count($favs), 'name'=>'Favourites', 'id'=>0, 'data'=>$favs]]);
+			klog::l(count($data));
+		}
+		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'sql'=>$sql];
 	}
 
 	private static function getDetails($cond, $logged, $uid) {
 			$id = $cond->id;
 
 			$o = Sys::getOneData('Show', "Performance/$id");
-			$cat = self::getArray($o->getParents('Category'), 'Category');
+			//$cat = self::getArray($o->getParents('Category'), 'Category');
 			$dom = self::getArray($o->getChildren('Domain'), 'Domain');
 			$gen = self::getArray($o->getChildren('Genre'), 'Genre');
 			
@@ -86,7 +101,9 @@ class Performance extends genericClass {
 			}
 			else $mat = 'NR';
 
-//			$tmp = $o->getChildren('Maturity');
+			
+			
+			
 //			$mat = count($tmp) ? $tmp[0]->Maturity : 'NR';
 			$pub = self::getArray($o->getChildren('Public'), 'Public');
 			$plan = self::getArray($o->getChildren('Language'), 'Language');
@@ -102,15 +119,15 @@ class Performance extends genericClass {
 			
 			$d = ['id'=>$id, 'title'=>$o->Title, 'subtitle'=>$o->Subtitle, 'year'=>$o->Year,
 				'summary'=>$o->Summary, 'descriton'=>$o->Description, 
-				'category'=>$cat, 'domains'=>$dom, 'genres'=>$gen, 'duration'=>$o->Duration,
+				'domains'=>$dom, 'genres'=>$gen, 'duration'=>$o->Duration,
 				'maturity'=>$mat, 'public'=>$pub, 'picts'=>$picts, 'pict'=>$main, 'crew'=>$crew];
-			return ['success'=>true, 'show'=>$d];
+			return ['success'=>true, 'logged'=>$logged, 'show'=>$d];
 	}
 	
 	private static function getArray($rs, $field) {
 		$tmp = array();
-		foreach($rs as $r) $tmp[] = ['id'=>$r->Id, 'name'=>$r->$field];
-		return array('count'=>count($tmp), 'data'=>$tmp);
+		foreach($rs as $r) $tmp[] = $r->Id; // ['id'=>$r->Id, 'name'=>$r->$field];
+		return $tmp; //array('count'=>count($tmp), 'data'=>$tmp);
 	}
 
 //	private static function getChildrenList($parent, $children) {
@@ -147,7 +164,7 @@ class Performance extends genericClass {
 	
 	public static function SetFavourite($args) {
 		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>false);
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
 		$uid = $usr->Id; 
 		$show = $args['show'];
@@ -162,6 +179,6 @@ class Performance extends genericClass {
 			$fav = Sys::getOneData('Show', "FavPerformance/UserId=$uid&PerformanceId=".$show->id);
 			if($fav) $fav->Delete();
 		}
-		return array('success'=>true);
+		return array('success'=>true, 'logged'=>true);
 	}
 }

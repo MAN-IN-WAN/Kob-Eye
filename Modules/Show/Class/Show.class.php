@@ -15,13 +15,17 @@ klog::l("GETSHOW >>>>>",$args);
 				
 			case 'logout':
 				$cnx = genericClass::createInstance('Systeme', 'Connexion');
-				return array('token'=>'', 'pseudo'=>'');
+				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 				
 			case 'lang':
 				$l = array();
 				$rs = Sys::getData('Show', 'Translation/Language='.$args['lang'].'+Code=');
 				foreach($rs as $r) $l[] = [$r->Original, $r->Translation];
-				return array('lang'=>$l);
+				$c = self::getObjsArray('Category');
+				$d = self::getObjsArray('Domain');
+				$g = self::getObjsArray('Genre');
+				$m = self::getObjsArray('Maturity');
+				return array('success'=>true, 'logged'=>!Sys::$User->Public, 'lang'=>$l, 'cat'=>$c, 'dom'=>$d, 'gen'=>$g, 'mat'=>$m);
 				
 			case 'perf':
 				return Performance::GetPerf($args);
@@ -35,15 +39,22 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('error'=>'mode unknown');
 	}
 	
+	public static function getObjsArray($name, $query='') {
+		$rs = Sys::getData('Show', $query ? $query : $name);
+		$arr = [];
+		foreach($rs as $r) $arr[$r->Id] = $r->$name;
+		return $arr; //['count'=>count($arr), 'data'=>$arr];
+	}
+		
 	private static function logUser() {
 		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>false);
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
 		$id = $usr->Id;
 		$msg = 0; // Sys::getCount('Show', 'Message/UserId='.$id);
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
 		$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return array('success'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 'nickname'=>Sys::$User->Initiales, 'msg'=>$msg, 'fav'=>$fav);
+		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 'nickname'=>Sys::$User->Initiales, 'msg'=>$msg, 'fav'=>$fav);
 	}
 	
 	private static function registerUser($args) {

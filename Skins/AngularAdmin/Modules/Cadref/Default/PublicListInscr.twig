@@ -57,7 +57,11 @@
         </div>
     </div>
 </div>
-#}<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+#}
+
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+
+{#<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -72,3 +76,4 @@
         </div>
     </div>
 </div>
+#}

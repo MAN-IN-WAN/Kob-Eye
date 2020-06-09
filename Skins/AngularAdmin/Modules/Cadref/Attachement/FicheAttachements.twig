@@ -1,6 +1,5 @@
 {# fiche FicheAttachements #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
-
 {% if associatif %}
 <div class="page-content-inner">
     <section class="panel">
@@ -40,13 +39,38 @@
 							   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attachement' }],
 							   removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'attachementObj.FilePath' }" 
 							   ng-init="up_AttachementFilePath = angular.copy(autoUploader)" uploader="up_AttachementFilePath" style="display:none;"
-							   />
+						>
 					</div>
 				</div>
+					
+				{% if Type != '' %}	
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Classes sélectionnées') }}
+					</div>
+					<div class="col-md-10">
+						<div class="listWrap">
+							<table class="table table-hover" width="100%">
+								<tbody>
+									<tr ng-repeat="item in attachementInfo.classes" >
+										<td><input type="checkbox" ng-model="item.selected" ng-click="attachementSelClasse()"></td>
+										<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.CodeClasse }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleA }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				{% endif %}
 				<div class="row">
 					<div class="col-md-12">
-						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && attachementObj.FilePath!=''" ng-click="attachementSave()" title="Enregister"></a>
-						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj)" style="float:right" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && attachementObj.FilePath!='' && attachementInfo.selected" ng-click="attachementSave('{{ Type }}')" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj, '{{ Type }}')" style="float:right" title="Supprimer"></a>
 						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="attachementCloseEdit()" title="Annuler"></a>
 					</div>
 				</div>						

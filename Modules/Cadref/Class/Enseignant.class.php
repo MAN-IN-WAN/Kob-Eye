@@ -38,7 +38,6 @@ class Enseignant extends genericClass {
 	}
 
 	public function SendMessage($params) {
-klog::l("eeee",$params);
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:

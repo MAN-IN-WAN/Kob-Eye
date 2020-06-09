@@ -158,7 +158,7 @@
 		{% endif %}
 		
 
-		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
+		{% if objecttype == 'Classe' or objecttype == 'Visite'%} {# or objecttype == 'Enseignant' %}#}
 
 		//-----------------------------
 		// ATTACHEMENT
@@ -170,9 +170,10 @@
 		$scope.attachementObj;
 		$scope.attachementInfo;
 		$scope.attachementsOpen = function(item, origine) {
+console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			$('#upload-progress').val(0);
 			if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
-			var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
+			var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: '', classes:[]};
 			switch(origine){
 				case 'classe':
 					o.classeId = item.id;
@@ -201,16 +202,20 @@
 			}
 			$scope.CadrefAttachement.store.getData(1, 'children');
 			$("#modal-Attachements").modal();
-			if($scope.autoUploader != undefined && $scope.autoUploader.onProgressAll == undefined) {
-				$scope.autoUploader.onProgressAll = function(progress) {
-					$('#upload-progress').val(progress);
-				}
+
+			$scope.autoUploader.onProgressAll = function(progress) {
+				$('#upload-progress').val(progress);
 			}
 		}
 		
 		$scope.$watch('CadrefAttachement.currentPage', function() {
 			$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
 		});
+		
+		
+		// charge les classes pour un enseigant
+		$scope.attachementClasseList = function(item, origine) {
+		}
 		
 
 		// ferme attachement edit section
@@ -447,7 +452,7 @@
 		
 	});
 
-//*********************** FICHE
+//*********************** FICHE ********************************************************************
 	
 	// Cadref form controller {{ objecttype }}
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
@@ -2196,7 +2201,184 @@
 			if(data.data.data) swal("Messages envoyés", "", "success");
 			else swal("Messages non envoyés", "L'absence ne coïncide pas avec un cours à venir", "warning");
 		}
+		
+		//-----------------------------
+		// ATTACHEMENT
+		//-----------------------------
+		// store Attachement
+		$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
+
+		// ouverture fenetre attachements
+		$scope.attachementObj;
+		$scope.attachementInfo;
+		$scope.attachementsOpen = function(item, origine) {
+			$('#upload-progress').val(0);
+			if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
+			let o = $scope.attachementInfo = {origine:origine, mode:'', classeId:0, visiteId:0, code:'', libelle:'', classes:[], selected:0};
+			switch(origine){
+				case 'classe':
+					o.classeId = item.id;
+					o.code = item.CodeClasse;
+					o.libelle = item.LibelleD+' '+item.LibelleN;
+					$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+					break;
+				case 'inscription':
+					o.classeId = item.ClasseClasseId;
+					o.code = item.CodeClasse;
+					o.libelle = item.LibelleS+' / '+item.LibelleD+' '+item.LibelleN;
+					$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+					break;
+				case 'visite':
+					o.visiteId = item.id;
+					o.code = item.Visite;
+					o.libelle = item.Libelle;
+					$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+					break;
+				case 'reservation':
+					o.visiteId = item.VisiteVisiteId;
+					o.code = item.Visite;
+					o.libelle = item.Libelle;
+					$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+					break;
+			}
+			$scope.CadrefAttachement.store.getData(1, 'children');
+			$("#modal-Attachements").modal();
+
+			$scope.autoUploader.onProgressAll = function(progress) {
+				$('#upload-progress').val(progress);
+			}
+		}
+		
+		$scope.$watch('CadrefAttachement.currentPage', function() {
+			$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
+		});
+		
+
+		// ferme attachement edit section
+		$scope.attachementCloseEdit = function() {
+			$scope.attachementInfo.mode = '';
+		}
+		
+		// selection d'une classe
+		$scope.attachementSelClasse = function() {
+			let o = $scope.attachementInfo;
+			o.selected = 0;
+			for(let item of o.classes) if(item.selected) o.selected++;
+		}
+		
+		// liste des classes avec selection
+		$scope.attachementClasses = async function(item) {
+			let ids = [];
+			if(item) { 
+				let params = {
+					name: 'GetAttachements',
+					query: 'Cadref/Attachement/'+item.id,
+					args : '',
+					explodeArgs: false,
+					tms : Date.now(),
+				};
+				let data = await $http.post('/Cadref/Attachement/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+				ids = data.data.data.ids;
+			}
+					
+			let o = $scope.attachementInfo;
+			o.classes = [];
+			if(o.origine != 'classe') return;
+			for(let item of $scope.CadrefClasse.data) {
+				item.selected = false;
+				item.attach = 0;
+				if(item) {
+					let tmp = ids.filter(it => it.classe === item.id);
+					if(tmp.length) {
+						item.selected = true;
+						item.attach = tmp[0].attach;
+					}
+				}
+				o.classes.push(item);
+			}
+			o.selected = ids.length;
+			try { $scope.$digest(); } catch(ex) {}
+		}
+
+		// ajout attachement
+		$scope.attachementAdd = function() {
+			let i = $scope.attachementInfo;
+			let o = $scope.attachementObj = CadrefAttachementStore.getNewData();
+			o.ClasseClasseId = i.classeId;
+			o.VisiteVisiteId = i.visiteId;
+			i.mode = 'add';
+			$scope.attachementClasses(null);
+		}
+
+		// modification attachement
+		$scope.attachementModify = function(item) {
+			let i = $scope.attachementInfo;
+			let o = $scope.attachementObj = {};
+			angular.copy(item, o);
+			o.ClasseClasseId = i.classeId;
+			o.VisiteVisiteId = i.visiteId;
+			i.mode = 'edit';
+			$scope.attachementClasses(item);		
+		}
+
+		// sauve attachements multiples
+		$scope.attachementSave = function(type, del) {
+			$('#settings').spin();
+			let i = $scope.attachementInfo;
+			if(type && i.origine == 'classe') {
+				let cls = []
+				for(let item of i.classes) if(item.selected || item.attach)
+					cls.push({classe:item.id, attach:item.attach, selected:(del === true ? false : item.selected)});
+
+				let params = {
+					name: 'SaveAttachements',
+					query: 'Cadref/Attachement/',
+					args : {attach:$scope.attachementObj, ids:cls},
+					explodeArgs: false,
+					tms : Date.now(),
+				};
+				$http.post('/Cadref/Attachement//Method.json',{"Func":JSON.stringify(params)})
+				.then(function(data) {
+					$('#settings').spin(false);
+					$scope.attachementInfo.mode = '';
+				});
+				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+i.classeId+'/Attachement', 'children');
+				$scope.CadrefAttachement.store.getData(1, 'children');
+				try { $scope.$digest(); } catch(ex) {}
+			}
+			else {			
+				CadrefAttachementStore.saveData($scope.attachementObj)
+				.then(function (data) {
+					$('#settings').spin(false);
+					$scope.attachementInfo.mode = '';
+				});
+			}
+		}
+
+		// suppression attachement
+		$scope.attachementDelete = function(item, type) {
+			swal({
+					title: "Effacer l'attachement",
+					text: "Cette suppression sera définitive. ",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonClass: "btn-danger",
+					cancelButtonText: "Annuler",
+					confirmButtonText: "Oui, supprimer !",
+					closeOnConfirm: true
+				},
+				function(){
+					if(type && $scope.attachementInfo.origine == 'classe') $scope.attachementSave(type, true);
+					else {
+						CadrefAttachementStore.deleteOneData(item.id,'all');
+						$scope.attachementInfo.mode = '';
+					}
+				}
+			);
+		}
 		{% endif %}
+
+
 
 		{% if objecttype == 'Lieu' %}
 		//--------------------------------------
