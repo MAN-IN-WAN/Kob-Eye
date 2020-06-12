@@ -42,6 +42,14 @@
 						>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Lien externe') }}
+					</div>
+					<div class="col-md-10">
+						<input type="text" placeholder="http://..." class="form-control cadref-input" maxlength="255" ng-model="attachementObj.LienExterne"/>
+					</div>
+				</div>
 					
 				{% if Type != '' %}	
 				<div class="row">

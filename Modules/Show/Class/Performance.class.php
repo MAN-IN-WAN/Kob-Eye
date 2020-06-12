@@ -118,6 +118,7 @@ class Performance extends genericClass {
 			$crew = self::getCrew($o, '');
 			
 			$d = ['id'=>$id, 'title'=>$o->Title, 'subtitle'=>$o->Subtitle, 'year'=>$o->Year,
+				'mine'=>($logged && $o->userCreate == $uid), 'votes'=>$o->Votes, 'rating'=>$o->Rating, 'comments'=>$o->Comments, 
 				'summary'=>$o->Summary, 'descriton'=>$o->Description, 
 				'domains'=>$dom, 'genres'=>$gen, 'duration'=>$o->Duration,
 				'maturity'=>$mat, 'public'=>$pub, 'picts'=>$picts, 'pict'=>$main, 'crew'=>$crew];

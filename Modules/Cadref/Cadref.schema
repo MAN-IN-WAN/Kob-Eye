@@ -230,6 +230,7 @@
 		<FKEY card="0,1" module="Cadref" data="Classe,Id" category="Description" list="2" form="2" fiche="1" description="Classe">ClasseId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Visite,Id" category="Description" form="1" fiche="1" description="Visite">VisiteId</FKEY>
 		<PROPERTIES type="file" category="Description" list="2" form="2" fiche="2" description="Chemin d'accès">FilePath</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" list="2" form="2" fiche="2" description="Lien externe">LienExterne</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" list="2" form="2" fiche="2" description="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="date" auto="1" category="Description" list="3" form="2" description="Date de modification">DateModification</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Téléchargements">Downloads</PROPERTIES>
