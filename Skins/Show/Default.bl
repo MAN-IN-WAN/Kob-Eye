@@ -1,11 +1,11 @@
 [HEADER]
 <base href="/" />
 
-<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
-<meta name="reply-to" content="info@sup-infor.com"/>
-<meta name="owner" content="SUP-INFOR"/>
-<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
+<meta name="reply-to" content="paul@polgo.ooo"/>
+<meta name="owner" content="POLGO"/>
+<meta name="keywords" content="Shows, Theatre, Music, Dance"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
@@ -16,9 +16,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="stylesheet" href="styles.9e1d7f21e9affc5bc3b9.css"></head>
+<link rel="stylesheet" href="styles.b587745c2aef7a0238e4.css"></head>
 
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime.07d333d6df27e6e69ede.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.82274b3bfa54af5b5f41.js" defer></script></body>
+<script src="runtime-es2015.3ddd8f7c0df45899112e.js" type="module"></script><script src="runtime-es5.3ddd8f7c0df45899112e.js" nomodule defer></script><script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script><script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script><script src="main-es2015.010df4826095341c00b6.js" type="module"></script><script src="main-es5.010df4826095341c00b6.js" nomodule defer></script></body>
+
