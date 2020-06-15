@@ -23,10 +23,19 @@ class Performance extends genericClass {
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
 				."left join `kob-Show-Country` cy on cy.Id=s.CountryId ";
 
+		$group = false;
+		$name = '';
 		$whr = ' where 1';
 		switch($cond->mode) {
-			case 1: $whr .= " and s.userCreate=$uid"; break;
-			case 2: $frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid"; break;
+			case 0: $group = true; break;
+			case 1:
+				$whr .= " and s.userCreate=$uid";
+				$name = 'My shows';
+				break;
+			case 2: 
+				$frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid";
+				$name = 'Favourites';
+				break;
 			case 3:
 				if($cond->cat) $whr .= " and s.CategoryId in ($cond->cat)";
 				if($cond->year) $whr .= " and s.Year='$cond->year'";
@@ -35,7 +44,7 @@ class Performance extends genericClass {
 				if($cond->crew) $frm .= " inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew)";
 		}
 		
-		$sql .= $frm.$whr." order by c.Category,s.tmsEdit";
+		$sql .= $frm.$whr.' order by '.($group ? 'c.Category,' : '').'s.tmsEdit desc';
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -43,12 +52,12 @@ class Performance extends genericClass {
 		$data = [];
 		$acat = [];
 		$rcat = 0;
-		$ncat = '';
+		$ncat = $name;
 		foreach($ps as $r) {
 			$p = genericClass::createInstance('Show', 'Performance');
 			$p->initFromId($r['Id']);
 			$cat = $p->CategoryId;
-			if($cat != $rcat) {
+			if($group && $cat != $rcat) {
 				if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
 				$acat = [];
 				$rcat = $cat;
@@ -76,15 +85,12 @@ class Performance extends genericClass {
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
 
 			$acat[] = $d;
-			if($d->fav && $cond->mode == 0) $favs[] = $d;
+			if($group && $d->fav && $cond->mode == 0) $favs[] = $d;
 		}
-		if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
-		if(count($favs)) {
-			klog::l(count($data));
-			array_splice($data, 0, 0, [['count'=>count($favs), 'name'=>'Favourites', 'id'=>0, 'data'=>$favs]]);
-			klog::l(count($data));
-		}
-		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'sql'=>$sql];
+		if(count($acat)) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
+		if(count($favs)) array_splice($data, 0, 0, [['count'=>count($favs), 'name'=>'Favourites', 'id'=>-1, 'data'=>$favs]]);
+
+		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'group'=>$group, 'sql'=>$sql];
 	}
 
 	private static function getDetails($cond, $logged, $uid) {
