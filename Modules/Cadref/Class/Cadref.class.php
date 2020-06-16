@@ -912,6 +912,7 @@ klog::l("mmmmmmmmm",$params);
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
 		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
+klog::l('MMMMMMMMMMMMM',$m);
 	}
 	
 	public static function MailCivility($a) {
