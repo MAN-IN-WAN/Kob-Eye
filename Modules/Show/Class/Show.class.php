@@ -70,13 +70,93 @@ klog::l("GETSHOW >>>>>",$args);
 		$u->Login = $c->email;
 		$u->Mail = $c->email;
 		$u->Initiales = $c->nickname;
-
+		$u->Actif = 0;
 		$u->Pass = '[md5]'.md5($c->pass);
 		$u->Save();
-		
+
+		$host = $_SERVER['HTTP_ORIGIN'];
+		$info = base64_encode($u->Id.','.$mail.','.time());
+		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+		$s .= 'Click on the link below to confirm your registration :<br /><br />';
+		$s .= "<strong><a href=\"$host/Show/Adherent/confirmRegistration?info=$info\">Confirm registration</a></strong><br /><br />";
+		$s .= "This link will be active for 48 hours.<br /><br />";
+		$s .= self::MailSignature();
+		$params = array('Subject'=>(Cadref::$UTL.' : Confirmation d\'enregistrement.'),
+			'To'=>array($mail,Cadref::$MAIL), 'Body'=>$s);
+		self::SendMessage($params);
+
 		return array('success'=>true);
 	}
 	
+	
+	public static function RegisterConfirmation() {
+		$data = array('success'=>0,'message'=>"Une erreur c'est produite : Le lien est incorrect.");
+
+		$get = isset($_GET['info']) ? trim($_GET['info']) : '';
+		if($get == '') return json_encode($data);
+		$info = explode(',', base64_decode($get));
+		if(count($info) != 3) return json_encode($data);	
+		if(($info[2]+2*86400) < time()) {
+			$data['message'] = "Une erreur c'est produite : Le lien est expiré.";
+			return json_encode($data);
+		}
+		$u = Sys::getOneData('Cadref', 'User/'.$info[0]);
+		if(!$a || $a->Mail != $info[1]) {
+			$data['message'] = "Une erreur c'est produite.<br />Veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
+			return json_encode($data);
+		}
+		if($a->Confirme) {
+			$data['message'] = "Vous avez déjà confirmé votre la création de votre compte.<br />Vous avez dû recevoir un mail contenant vos identifiants.";
+			return json_encode($data);
+		}
+
+		$u->Actif = 1;
+		$a->Save();
+		$data['success'] = 1;
+		$data['message'] = 'Votre code utilisateur et votre mot de passe vous ont été envoyés par email.';
+		return json_encode($data);
+	}
+
+	
+	public static function MailSignature() {
+		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+		return $p->Texte;
+		self::$MailLogo = $p->Valeur;
+	}
+	
+	public static function SendMessage($params) {
+		$m = genericClass::createInstance('Systeme', 'MailQueue');
+		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
+		else $m->From = self::$MAIL_LET;
+
+		if(isset($params['To'])) $m->To = implode(',', $params['To']);
+		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
+		
+		$m->Subject = $params['Subject'];
+		$m->Body = $params['Body'];
+		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
+		
+		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+		$m->EmbeddedImages = $p->Valeur;
+		$m->Save();
+		return $m->Id;
+	}
+
+	public static function GetParametre($dom, $sdom, $par) {
+		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+	}
+	public static function SetParametre($dom, $sdom, $par, $val, $txt='') {
+		$p = Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+		if(!$p) {
+			$p = genericClass::createInstance('Cadref', 'Parametre');
+			$p->Domaine = $dom;
+			$p->SousDomaine = $sdom;
+			$p->Parametre = $par;
+		}
+		$p->Valeur = $val;
+		$p->Texte = $txt;
+		$p->Save();
+	}
 
 	public static function removeAccents($str) {
 		static $map = [

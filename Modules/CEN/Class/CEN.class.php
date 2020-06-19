@@ -126,13 +126,15 @@ class CEN extends Module {
 				break;
 			
 			case 'lang';
+				$vers = Sys::getOneData('CEN', 'Regle/Code=VERSION');
+				$vers = $vers->Regle;
 				$lang = Sys::getOneData('CEN', 'Regle/Code=LANGUE');
 				$lang = file_get_contents($lang->FilePath);
 				$lang = utf8_encode($lang);
 				$lang = str_replace("\r\n", "\n", $lang);
 				$rules = Sys::getOneData('CEN', 'Regle/Code=CONDITIONS');
 				$rules = file_get_contents($rules->FilePath);
-				return array('lang'=>$lang, 'rules'=>$rules);
+				return array('lang'=>$lang, 'rules'=>$rules, 'version'=>$vers);
 
 			default:
 				return array('error'=>'Mode inconnu:'.$args['mode']);

@@ -29,9 +29,6 @@ class Attachement extends genericClass {
 		
 		foreach($ids as $item) {
 			$o = genericClass::createInstance('Cadref', 'Attachement');
-			$o->FilePath = $att['FilePath'];
-			$o->Titre = $att['Titre'];
-			$o->LienExterne = $att['LienExterne'];
 			$id = $item['attach'];
 			if($id) $o->initFromId($id);
 			else {
@@ -39,6 +36,9 @@ class Attachement extends genericClass {
 				$classe->initFromId($item['classe']);
 				$o->addParent($classe);
 			}
+			$o->FilePath = $att['FilePath'];
+			$o->Titre = $att['Titre'];
+			$o->LienExterne = $att['LienExterne'];
 			if($item['selected']) $o->Save();
 			elseif($id) $o->Delete();
 		}

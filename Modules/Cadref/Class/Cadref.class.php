@@ -895,9 +895,7 @@ where ce.Classe=$cid
 	}
 
 		
-	public static function SendMessage($params) {	
-		
-klog::l("mmmmmmmmm",$params);
+	public static function SendMessage($params) {
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
 		else $m->From = self::$MAIL_LET;
@@ -912,7 +910,7 @@ klog::l("mmmmmmmmm",$params);
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
 		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
-klog::l('MMMMMMMMMMMMM',$m);
+		return $m->Id;
 	}
 	
 	public static function MailCivility($a) {

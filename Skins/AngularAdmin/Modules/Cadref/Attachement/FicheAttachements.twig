@@ -47,7 +47,7 @@
 						{{ label('Lien externe') }}
 					</div>
 					<div class="col-md-10">
-						<input type="text" placeholder="http://..." class="form-control cadref-input" maxlength="255" ng-model="attachementObj.LienExterne"/>
+						<input type="text" placeholder="https://..." class="form-control cadref-input" maxlength="1024" ng-model="attachementObj.LienExterne"/>
 					</div>
 				</div>
 					
@@ -77,7 +77,7 @@
 				{% endif %}
 				<div class="row">
 					<div class="col-md-12">
-						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && attachementObj.FilePath!='' && attachementInfo.selected" ng-click="attachementSave('{{ Type }}')" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && (attachementObj.FilePath!='' || attachementObj.LienExterne!='') && attachementInfo.selected" ng-click="attachementSave('{{ Type }}')" title="Enregister"></a>
 						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj, '{{ Type }}')" style="float:right" title="Supprimer"></a>
 						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="attachementCloseEdit()" title="Annuler"></a>
 					</div>
@@ -125,9 +125,9 @@
 					<td class="cadref-td typedatetime"><span class="label">{[{ item.DateModification }]}</span></td>
 					<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Titre }]}</span></td>
 					<td  class="table-action cadref-td-btn">
-						<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-click="attachementCloseEdit()" ng-if="item.FilePath" title="Télécharger"></a>
+						<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.LienExterne || item.FilePath }]}" target="_blank" ng-click="attachementCloseEdit()" ng-if="item.FilePath || item.LienExterne" title="Télécharger"></a>
 						{% if not adherent %}
-							<a class="btn-abt cadref-btn-upload btn-warning" href="" ng-click="attachementModify(item)" ng-if="!item.FilePath" title="Modifier"></a>
+{#							<a class="btn-abt cadref-btn-upload btn-warning" href="" ng-click="attachementModify(item)" ng-if="!item.FilePath" title="Modifier"></a>#}
 							<a class="btn-abt btn-abt-nfo btn-primary" href="" ng-click="attachementModify(item)" title="Modifier"></a>
 						{% endif %}
 					</td>
