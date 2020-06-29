@@ -75,14 +75,13 @@ klog::l("GETSHOW >>>>>",$args);
 		$u->Save();
 
 		$host = $_SERVER['HTTP_ORIGIN'];
-		$info = base64_encode($u->Id.','.$mail.','.time());
+		$info = base64_encode($u->Id.','.$c->email.','.time());
 		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
 		$s .= 'Click on the link below to confirm your registration :<br /><br />';
-		$s .= "<strong><a href=\"$host/Show/Adherent/confirmRegistration?info=$info\">Confirm registration</a></strong><br /><br />";
+		$s .= "<strong><a href=\"$host/Show/register/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 		$s .= "This link will be active for 48 hours.<br /><br />";
 		$s .= self::MailSignature();
-		$params = array('Subject'=>(Cadref::$UTL.' : Confirmation d\'enregistrement.'),
-			'To'=>array($mail,Cadref::$MAIL), 'Body'=>$s);
+		$params = array('Subject'=>'show.ooo : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
 		self::SendMessage($params);
 
 		return array('success'=>true);
@@ -90,315 +89,98 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	
 	public static function RegisterConfirmation() {
-		$data = array('success'=>0,'message'=>"Une erreur c'est produite : Le lien est incorrect.");
+		$data = array('success'=>0,'message'=>"Incorrect link.");
 
 		$get = isset($_GET['info']) ? trim($_GET['info']) : '';
 		if($get == '') return json_encode($data);
 		$info = explode(',', base64_decode($get));
 		if(count($info) != 3) return json_encode($data);	
 		if(($info[2]+2*86400) < time()) {
-			$data['message'] = "Une erreur c'est produite : Le lien est expiré.";
+			$data['message'] = "This link has expired.";
 			return json_encode($data);
 		}
-		$u = Sys::getOneData('Cadref', 'User/'.$info[0]);
-		if(!$a || $a->Mail != $info[1]) {
-			$data['message'] = "Une erreur c'est produite.<br />Veuillez contacter le ".Cadref::$UTL." au ".Cadref::$TEL.".";
+		
+		$u = Sys::getOneData('System', 'User/'.$info[0]);
+		if(!$u || $u->Mail != $info[1]) {
+			$data['message'] = "An error has occurred. Try to register again";
 			return json_encode($data);
 		}
-		if($a->Confirme) {
-			$data['message'] = "Vous avez déjà confirmé votre la création de votre compte.<br />Vous avez dû recevoir un mail contenant vos identifiants.";
+		if($u->Actif) {
+			$data['message'] = "Your registration has already been confirmed.";
 			return json_encode($data);
 		}
 
 		$u->Actif = 1;
-		$a->Save();
+		$u->Save();
 		$data['success'] = 1;
-		$data['message'] = 'Votre code utilisateur et votre mot de passe vous ont été envoyés par email.';
+		$data['message'] = 'Your registration has been confirmed.<br />Welcome on show.ooo.';
 		return json_encode($data);
 	}
 
 	
 	public static function MailSignature() {
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		return $p->Texte;
-		self::$MailLogo = $p->Valeur;
+		return '';
 	}
 	
+//	public static function SendMessage($params) {
+//		$m = genericClass::createInstance('Systeme', 'MailQueue');
+//		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
+//		else $m->From = 'show@polgo.ooo';
+//
+//		if(isset($params['To'])) $m->To = implode(',', $params['To']);
+//		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
+//		
+//		$m->Subject = $params['Subject'];
+//		$m->Body = $params['Body'];
+//		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
+//		
+//		//$m->EmbeddedImages = '';
+//		$m->Save();
+//		return $m->Id;
+//	}
+	
 	public static function SendMessage($params) {
-		$m = genericClass::createInstance('Systeme', 'MailQueue');
-		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-		else $m->From = self::$MAIL_LET;
+		require_once('Class/Lib/Mail.class.php');
 
-		if(isset($params['To'])) $m->To = implode(',', $params['To']);
-		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
-		
-		$m->Subject = $params['Subject'];
-		$m->Body = $params['Body'];
-		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
-		
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		$m->EmbeddedImages = $p->Valeur;
-		$m->Save();
-		return $m->Id;
-	}
-
-	public static function GetParametre($dom, $sdom, $par) {
-		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
-	}
-	public static function SetParametre($dom, $sdom, $par, $val, $txt='') {
-		$p = Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
-		if(!$p) {
-			$p = genericClass::createInstance('Cadref', 'Parametre');
-			$p->Domaine = $dom;
-			$p->SousDomaine = $sdom;
-			$p->Parametre = $par;
+		$Mail = new Mail();
+		if(isset($params['From']) && !empty($params['From'])) $Mail->From = $params['From'];
+		else $Mail->From = 'show@polgo.ooo';
+		$Mail->Subject($params['Subject']);
+		if(isset($params['To'])) {
+			foreach($params['To'] as $to)
+				$Mail->To($to);
 		}
-		$p->Valeur = $val;
-		$p->Texte = $txt;
-		$p->Save();
+		if(isset($params['ReplyTo'])) {
+			foreach($params['ReplyTo'] as $to)
+				$Mail->ReplyTo($to);
+		}
+		if(isset($params['Cc'])) {
+			foreach($params['Cc'] as $to)
+				$Mail->Cc($to);
+		}
+		if(isset($params['Bcc'])) {
+			foreach($params['Bcc'] as $to)
+				$Mail->Bcc($to);
+		}
+		$bloc = new Bloc();
+		$bloc->setFromVar("Mail", $params['Body'], array("BEACON"=>"BLOC"));
+		$Pr = new Process();
+		$bloc->init($Pr);
+		$bloc->generate($Pr);
+		$Mail->Body($bloc->Affich());
+		
+		if($params['Attachments']) {
+			foreach($params['Attachments'] as $att) {
+				$a = explode('|',$att);
+				$Mail->Attach($a[0], $a[1]);
+			}
+		}
+		if($params['EmbeddedImages']) {
+			foreach($params['EmbeddedImages'] as $att) {
+				$a = explode('|',$att);
+				$Mail->EmbeddedImage($a[0], $a[1]);
+			}
+		}
+		$ret = $Mail->Send();
 	}
-
-	public static function removeAccents($str) {
-		static $map = [
-        // single letters
-        'à' => 'a',
-        'á' => 'a',
-        'â' => 'a',
-        'ã' => 'a',
-        'ä' => 'a',
-        'ą' => 'a',
-        'å' => 'a',
-        'ā' => 'a',
-        'ă' => 'a',
-        'ǎ' => 'a',
-        'ǻ' => 'a',
-        'À' => 'A',
-        'Á' => 'A',
-        'Â' => 'A',
-        'Ã' => 'A',
-        'Ä' => 'A',
-        'Ą' => 'A',
-        'Å' => 'A',
-        'Ā' => 'A',
-        'Ă' => 'A',
-        'Ǎ' => 'A',
-        'Ǻ' => 'A',
-
-
-        'ç' => 'c',
-        'ć' => 'c',
-        'ĉ' => 'c',
-        'ċ' => 'c',
-        'č' => 'c',
-        'Ç' => 'C',
-        'Ć' => 'C',
-        'Ĉ' => 'C',
-        'Ċ' => 'C',
-        'Č' => 'C',
-
-        'ď' => 'd',
-        'đ' => 'd',
-        'Ð' => 'D',
-        'Ď' => 'D',
-        'Đ' => 'D',
-
-
-        'è' => 'e',
-        'é' => 'e',
-        'ê' => 'e',
-        'ë' => 'e',
-        'ę' => 'e',
-        'ē' => 'e',
-        'ĕ' => 'e',
-        'ė' => 'e',
-        'ě' => 'e',
-        'È' => 'E',
-        'É' => 'E',
-        'Ê' => 'E',
-        'Ë' => 'E',
-        'Ę' => 'E',
-        'Ē' => 'E',
-        'Ĕ' => 'E',
-        'Ė' => 'E',
-        'Ě' => 'E',
-
-        'ƒ' => 'f',
-
-
-        'ĝ' => 'g',
-        'ğ' => 'g',
-        'ġ' => 'g',
-        'ģ' => 'g',
-        'Ĝ' => 'G',
-        'Ğ' => 'G',
-        'Ġ' => 'G',
-        'Ģ' => 'G',
-
-
-        'ĥ' => 'h',
-        'ħ' => 'h',
-        'Ĥ' => 'H',
-        'Ħ' => 'H',
-
-        'ì' => 'i',
-        'í' => 'i',
-        'î' => 'i',
-        'ï' => 'i',
-        'ĩ' => 'i',
-        'ī' => 'i',
-        'ĭ' => 'i',
-        'į' => 'i',
-        'ſ' => 'i',
-        'ǐ' => 'i',
-        'Ì' => 'I',
-        'Í' => 'I',
-        'Î' => 'I',
-        'Ï' => 'I',
-        'Ĩ' => 'I',
-        'Ī' => 'I',
-        'Ĭ' => 'I',
-        'Į' => 'I',
-        'İ' => 'I',
-        'Ǐ' => 'I',
-
-        'ĵ' => 'j',
-        'Ĵ' => 'J',
-
-        'ķ' => 'k',
-        'Ķ' => 'K',
-
-
-        'ł' => 'l',
-        'ĺ' => 'l',
-        'ļ' => 'l',
-        'ľ' => 'l',
-        'ŀ' => 'l',
-        'Ł' => 'L',
-        'Ĺ' => 'L',
-        'Ļ' => 'L',
-        'Ľ' => 'L',
-        'Ŀ' => 'L',
-
-
-        'ñ' => 'n',
-        'ń' => 'n',
-        'ņ' => 'n',
-        'ň' => 'n',
-        'ŉ' => 'n',
-        'Ñ' => 'N',
-        'Ń' => 'N',
-        'Ņ' => 'N',
-        'Ň' => 'N',
-
-        'ò' => 'o',
-        'ó' => 'o',
-        'ô' => 'o',
-        'õ' => 'o',
-        'ö' => 'o',
-        'ð' => 'o',
-        'ø' => 'o',
-        'ō' => 'o',
-        'ŏ' => 'o',
-        'ő' => 'o',
-        'ơ' => 'o',
-        'ǒ' => 'o',
-        'ǿ' => 'o',
-        'Ò' => 'O',
-        'Ó' => 'O',
-        'Ô' => 'O',
-        'Õ' => 'O',
-        'Ö' => 'O',
-        'Ø' => 'O',
-        'Ō' => 'O',
-        'Ŏ' => 'O',
-        'Ő' => 'O',
-        'Ơ' => 'O',
-        'Ǒ' => 'O',
-        'Ǿ' => 'O',
-
-
-        'ŕ' => 'r',
-        'ŗ' => 'r',
-        'ř' => 'r',
-        'Ŕ' => 'R',
-        'Ŗ' => 'R',
-        'Ř' => 'R',
-
-
-        'ś' => 's',
-        'š' => 's',
-        'ŝ' => 's',
-        'ş' => 's',
-        'Ś' => 'S',
-        'Š' => 'S',
-        'Ŝ' => 'S',
-        'Ş' => 'S',
-
-        'ţ' => 't',
-        'ť' => 't',
-        'ŧ' => 't',
-        'Ţ' => 'T',
-        'Ť' => 'T',
-        'Ŧ' => 'T',
-
-
-        'ù' => 'u',
-        'ú' => 'u',
-        'û' => 'u',
-        'ü' => 'u',
-        'ũ' => 'u',
-        'ū' => 'u',
-        'ŭ' => 'u',
-        'ů' => 'u',
-        'ű' => 'u',
-        'ų' => 'u',
-        'ư' => 'u',
-        'ǔ' => 'u',
-        'ǖ' => 'u',
-        'ǘ' => 'u',
-        'ǚ' => 'u',
-        'ǜ' => 'u',
-        'Ù' => 'U',
-        'Ú' => 'U',
-        'Û' => 'U',
-        'Ü' => 'U',
-        'Ũ' => 'U',
-        'Ū' => 'U',
-        'Ŭ' => 'U',
-        'Ů' => 'U',
-        'Ű' => 'U',
-        'Ų' => 'U',
-        'Ư' => 'U',
-        'Ǔ' => 'U',
-        'Ǖ' => 'U',
-        'Ǘ' => 'U',
-        'Ǚ' => 'U',
-        'Ǜ' => 'U',
-
-
-        'ŵ' => 'w',
-        'Ŵ' => 'W',
-
-        'ý' => 'y',
-        'ÿ' => 'y',
-        'ŷ' => 'y',
-        'Ý' => 'Y',
-        'Ÿ' => 'Y',
-        'Ŷ' => 'Y',
-
-        'ż' => 'z',
-        'ź' => 'z',
-        'ž' => 'z',
-        'Ż' => 'Z',
-        'Ź' => 'Z',
-        'Ž' => 'Z',
-
-
-        // accentuated ligatures
-        'Ǽ' => 'A',
-        'ǽ' => 'a',
-		];
-		return strtr($str, $map);
-	}
-
 }

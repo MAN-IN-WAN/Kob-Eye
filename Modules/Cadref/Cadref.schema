@@ -147,6 +147,7 @@
 		<PROPERTIES type="date" category="Tarif" list="4" form="20" fiche="20" description="Date réduction 1">DateReduction1</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="21" fiche="21" description="Réduction 2">Reduction2</PROPERTIES>
 		<PROPERTIES type="date" category="Tarif" list="4" form="22" fiche="22" description="Date réduction 2">DateReduction2</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="21" fiche="21" description="Avoir 2020">AvoirReporte</PROPERTIES>
 
 		<PROPERTIES type="text" category="Autre" form="23" fiche="23" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="int" default="0" auto="1" category="Description" list="24" form="24" description="Attachements">Attachements</PROPERTIES>
@@ -324,6 +325,9 @@
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Solde">Solde</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Dons">Dons</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Dons">AvoirReporte</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Dons">AvoirDu</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Dons">AvoirUtilise</PROPERTIES>
 		<PROPERTIES type="text" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>

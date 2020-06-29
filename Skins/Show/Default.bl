@@ -1,5 +1,5 @@
 [HEADER]
-<base href="/" />
+<base href="/s/" />
 
 <meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
@@ -16,10 +16,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="stylesheet" href="styles.b587745c2aef7a0238e4.css"></head>
+<link rel="stylesheet" href="styles.b587745c2aef7a0238e4.css">
 
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime-es2015.3ddd8f7c0df45899112e.js" type="module"></script><script src="runtime-es5.3ddd8f7c0df45899112e.js" nomodule defer></script><script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script><script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script><script src="main-es2015.c9904c57426eefb6d7c7.js" type="module"></script><script src="main-es5.c9904c57426eefb6d7c7.js" nomodule defer></script></body>
-
+<script src="runtime-es2015.16723852ba8eebc3e728.js" type="module"></script>
+<script src="runtime-es5.16723852ba8eebc3e728.js" nomodule defer></script>
+<script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script>
+<script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script>
+<script src="main-es2015.7899344d220c97068927.js" type="module"></script>
+<script src="main-es5.7899344d220c97068927.js" nomodule defer></script>

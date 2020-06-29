@@ -1,11 +1,12 @@
 [HEADER]
 <base href="/" />
 
-<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<meta name="author" content="Marc Thouvenot"/>
+<meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
 <meta name="reply-to" content="info@sup-infor.com"/>
 <meta name="owner" content="SUP-INFOR"/>
-<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
+<meta name="keywords" content="nahuatl, otomi, mixtèque, maya, caribe, Breton, Chimalpahin, Chimalpopoca, aztèque, mexica, mexicain, mexican, mexico, Mexique, glyphes, glifos, glyphs, écriture, escritura, writing, pictographique, pictographic, paléographie, paleografia, paleographies traductions, traducciones, étude, dictionnaire, diccionarios, progr ammes informatiques, programas, pohua, temoa, tlachia, Codex de Florence, Bibliothèque Nationale de France, Bnf, Telleriano-Remensis, Cozcatzin, Xolotl, Testeriano, Azcatitlan, Quinatzin, Tlotzin, Tepechpan, Vergara, Mexicayotl, Techialoyan, Leyenda de los soles, Castillo, Cuauhtitlan, hiéroglyphe, épigraphie, précolombien, mésoamérique, Edition, publication"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
@@ -27,9 +28,14 @@
 </script>
 
 
-<link rel="stylesheet" href="styles.1af0cb9c58c1b31c6a1a.css"></head>
+<link rel="stylesheet" href="styles.af20ad9afbece3fc0df6.css">
+
 
 [/HEADER]
   <app-root></app-root>
 
-<script src="runtime.fddfb856553cceb7acb1.js" defer></script><script src="polyfills-es5.bcfcea40ae6fb56b16f1.js" nomodule defer></script><script src="polyfills.a56f450282126a6bde16.js" defer></script><script src="main.e9a3874975ba7c306657.js" defer></script></body>
+<script src="runtime.30d512f334f81c40f233.js" defer></script>
+<script src="polyfills-es5.63322a01e5e05e81f089.js" nomodule defer></script>
+<script src="polyfills.acdee76fc0fc64ea424e.js" defer></script>
+<script src="main.f3220c11bfa0001a5c7e.js" defer></script>
+
