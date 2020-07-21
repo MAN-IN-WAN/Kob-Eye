@@ -4,6 +4,7 @@ class CEN extends Module {
 
 	// liste d'entrées du CEN 
 	public static function GetCEN($args) {	
+//klog::l("GetCEN", $args);
 		switch($args['mode']) {
 			case 'chacha-dict':
 				return Chachalaca::GetDics();

@@ -11,19 +11,15 @@
 <meta name="format-detection" content="telephone=no" />
 <meta name="msapplication-tap-highlight" content="no" />
 
-<link rel="icon" type="image/png" href="assets/icon/icon.png" />
+<link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="stylesheet" href="styles.b587745c2aef7a0238e4.css">
+<link rel="stylesheet" href="styles.06a547e772259146fa6a.css">
 
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime-es2015.16723852ba8eebc3e728.js" type="module"></script>
-<script src="runtime-es5.16723852ba8eebc3e728.js" nomodule defer></script>
-<script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script>
-<script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script>
-<script src="main-es2015.7899344d220c97068927.js" type="module"></script>
-<script src="main-es5.7899344d220c97068927.js" nomodule defer></script>
+
+<script src="runtime-es2015.5170c5989b516571ad77.js" type="module"></script><script src="runtime-es5.5170c5989b516571ad77.js" nomodule defer></script><script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script><script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script><script src="main-es2015.d00c5080765240718463.js" type="module"></script><script src="main-es5.d00c5080765240718463.js" nomodule defer></script>

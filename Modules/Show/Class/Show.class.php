@@ -2,13 +2,51 @@
 
 class Show extends Module {
 	
+//	public static function CheckLogged() {
+//		$usr = Sys::$User;
+//		return($usr->Public);
+//	}
+	
 	public static function GetShow($args) {
 		$mode = $args['mode'];
 
+
+
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
+			
+			case 'status':
+				return self::Status();
+			
+			case 'messages':
+				return Message::Messages($args);
+			
+			case 'dialog':
+				return Message::Dialog($args);
+			
+			case 'msg':
+				return Message::AddMsg($args);
+			
+			case 'image':
+				return Performance::LoadImage($args);
+				
+			case 'del-pict':
+				return Performance::DelPict($args);
+			
+			case 'add-link':
+				return Performance::AddLink($args);
+			
+			case 'del-link':
+				return Performance::DelLink($args);
+			
+			case 'save-perf':
+				return Performance::SavePerf($args);
+				
 			case 'login':
 				return self::logUser();
+				
+			case 'confirm':
+				return self::registerConfirm($args);
 				
 			case 'register':
 				return self::registerUser($args);
@@ -17,15 +55,33 @@ klog::l("GETSHOW >>>>>",$args);
 				$cnx = genericClass::createInstance('Systeme', 'Connexion');
 				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 				
-			case 'lang':
-				$l = array();
-				$rs = Sys::getData('Show', 'Translation/Language='.$args['lang'].'+Code=');
-				foreach($rs as $r) $l[] = [$r->Original, $r->Translation];
-				$c = self::getObjsArray('Category');
-				$d = self::getObjsArray('Domain');
-				$g = self::getObjsArray('Genre');
-				$m = self::getObjsArray('Maturity');
-				return array('success'=>true, 'logged'=>!Sys::$User->Public, 'lang'=>$l, 'cat'=>$c, 'dom'=>$d, 'gen'=>$g, 'mat'=>$m);
+			case 'init':
+				$usr = Sys::$User;
+				$logged = !$usr->Public;
+				$msg = $logged ? self::newMessages($usr->Id) : 0;
+				$trn = self::getTranslation($args['translation']);
+				$cat = self::getObjsArray('Category');
+				$dom = self::getObjsArray('Domain');
+				$gen = self::getObjsArray('Genre');
+				$mat = self::getObjsArray('Maturity');
+				$lng = self::getObjsArray('Language');
+				//$cry = self::getObjsArray('Country', '', true);
+				//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
+				return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'countries'=>$cry,
+						'domains'=>$dom, 'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
+						'translation'=>$trn, 'messages'=>$msg);
+								
+			case 'param':
+				$id = $args['id'];
+				$flt = $args['filter'];
+				switch($args['type']) {
+					case 'translation': $data = self::getTranslation($id); break;
+					case 'countries': $data = self::getObjsArray('Country', "/Country~$flt", true); break;
+					case 'states': $data = self::getObjsArray('State', "/CountryId=$id&State~$flt", true); break;
+					case 'cities': $data = self::getObjsArray('City', '/StateId='.$id, true); break;
+				}
+				return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
+				
 				
 			case 'perf':
 				return Performance::GetPerf($args);
@@ -39,10 +95,23 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('error'=>'mode unknown');
 	}
 	
-	public static function getObjsArray($name, $query='') {
-		$rs = Sys::getData('Show', $query ? $query : $name);
-		$arr = [];
-		foreach($rs as $r) $arr[$r->Id] = $r->$name;
+	private static function getTranslation($lang) {
+		$trn = [];
+		$rs = Sys::getData('Show', "Translation/Language=$lang+Code=");
+		foreach($rs as $r) $trn[] = [$r->Original, $r->Translation];
+		return $trn;
+	}
+	
+	public static function getObjsArray($name, $query='', $obj=false) {
+		//sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar)
+		$rs = Sys::getData('Show', $name.$query, 0, 9999, 'ASC', $name, "Id,$name");
+		$arr = array();
+		if($obj) {
+			foreach($rs as $r) $arr[] = ['id'=>$r->Id, 'name'=>$r->$name];
+		}
+		else {
+			foreach($rs as $r) $arr[$r->Id] = $r->$name;
+		}
 		return $arr; //['count'=>count($arr), 'data'=>$arr];
 	}
 		
@@ -51,10 +120,25 @@ klog::l("GETSHOW >>>>>",$args);
 		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
 		$id = $usr->Id;
-		$msg = 0; // Sys::getCount('Show', 'Message/UserId='.$id);
+		$msg = self::newMessages($id);
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
-		$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 'nickname'=>Sys::$User->Initiales, 'msg'=>$msg, 'fav'=>$fav);
+		//$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
+		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 
+				'id'=>$usr->Id, 'nickname'=>Sys::$User->Initiales, 'messages'=>$msg, 'favourites'=>$fav);
+	}
+	
+	public static function Status() {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>true, 'logged'=>false, 'messages'=>0);
+		return array('success'=>true, 'logged'=>true, 'messages'=>self::newMessages($usr->Id));
+	}
+	
+	private static function newMessages($id) {
+		$sql = "select count(*) as cnt from `kob-Show-Message` where ToId=$id and Status=0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$r = $rs->fetch(PDO::FETCH_ASSOC);
+		return $r['cnt'];
 	}
 	
 	private static function registerUser($args) {
@@ -78,7 +162,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = base64_encode($u->Id.','.$c->email.','.time());
 		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
 		$s .= 'Click on the link below to confirm your registration :<br /><br />';
-		$s .= "<strong><a href=\"$host/Show/register/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
+		$s .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 		$s .= "This link will be active for 48 hours.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>'show.ooo : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
@@ -88,33 +172,37 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 	
 	
-	public static function RegisterConfirmation() {
+	private static function registerConfirm($args) {
 		$data = array('success'=>0,'message'=>"Incorrect link.");
 
-		$get = isset($_GET['info']) ? trim($_GET['info']) : '';
-		if($get == '') return json_encode($data);
+		$get = isset($args['info']) ? trim($args['info']) : '';
+		if($get == '') return $data;
+		
+		
 		$info = explode(',', base64_decode($get));
-		if(count($info) != 3) return json_encode($data);	
+		if(count($info) != 3) return $data;	
 		if(($info[2]+2*86400) < time()) {
 			$data['message'] = "This link has expired.";
-			return json_encode($data);
+			return $data;
 		}
 		
-		$u = Sys::getOneData('System', 'User/'.$info[0]);
+		$u = Sys::getOneData('Systeme', 'User/'.$info[0]);
 		if(!$u || $u->Mail != $info[1]) {
 			$data['message'] = "An error has occurred. Try to register again";
-			return json_encode($data);
+			return $data;
 		}
+		$data['success'] = 1;
+		$data['mail'] = $info[1];
 		if($u->Actif) {
-			$data['message'] = "Your registration has already been confirmed.";
-			return json_encode($data);
+			$data['message'] = "Your registration has already been confirmed.<br />Welcome on show.ooo.";
+			return $data;
 		}
 
 		$u->Actif = 1;
 		$u->Save();
-		$data['success'] = 1;
+//		$data['success'] = 1;
 		$data['message'] = 'Your registration has been confirmed.<br />Welcome on show.ooo.';
-		return json_encode($data);
+		return $data;
 	}
 
 	
@@ -143,8 +231,8 @@ klog::l("GETSHOW >>>>>",$args);
 		require_once('Class/Lib/Mail.class.php');
 
 		$Mail = new Mail();
-		if(isset($params['From']) && !empty($params['From'])) $Mail->From = $params['From'];
-		else $Mail->From = 'show@polgo.ooo';
+		if(isset($params['From']) && !empty($params['From'])) $Mail->From($params['From']);
+		else $Mail->From('info@shows.zone');
 		$Mail->Subject($params['Subject']);
 		if(isset($params['To'])) {
 			foreach($params['To'] as $to)

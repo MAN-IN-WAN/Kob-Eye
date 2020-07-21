@@ -1,50 +1,146 @@
 <?php
 
 class Performance extends genericClass {
+	
+	public static function SavePerf($args) {
+		$s = $args['show'];
+		$id = $s->id;
+		$dom = [];
+		$gen = [];
+		$o = genericClass::createInstance('Show', 'Performance');
+		if($id) {
+			$o->initFromId($id);
+			$dom = self::getArray($o->getChildren('Domain'), 'Domain');
+			$gen = self::getArray($o->getChildren('Genre'), 'Genre');
+		}
+		
+		$o->Title = $s->title;
+		$o->Subtitle = $s->subtitle;
+		$o->Summary = $s->summary;
+		$o->Year = $s->year;
+		$o->Duration = $s->duration;
+		$o->CategoryId = $s->categoryId;
+		$o->MaturityId = $s->maturityId;
+		$o->CountryId = $s->countryId;
+		$o->StateId = $s->stateId;
+		$o->CityId = $s->cityId;
+		self::setChildren($o, 'Domain', $dom, $s->domains);
+		self::setChildren($o, 'Genre', $gen, $s->genres);
+		self::setChildren($o, 'Language', $gen, $s->languages);
+		
+		$o->Save();
+//klog::l(">>>>>>>>><",$o);
+		return array('success'=>1, 'id'=>$o->Id);
+	}
+	
+	private static function setChildren($obj, $child, $old, $new) {
+		foreach($new as $k0=>$v) {
+			$k1 = array_search($v, $old, true);
+			if($k1 !== false) unset($old[$k0]);
+			else $obj->addChild($child, $v);
+		}
+		foreach($old as $v) $obj->delChild($child, $v);
+	}
+		
+	public static function LoadImage($args) {
+		//klog::l('www',)
+		$data = base64_decode(explode(',', $args['data'])[1]);
+		$name = $args['file'];
+		$id = $args['show'];
+		$file = "Home/2/Show/$id/$name";
+		file_put_contents(getcwd()."/$file", $data);
+		$p = Sys::getOneData('Show', 'Performance/'.$id);
+		$t = Sys::getOneData('Show', 'MediumType/1');
+		$m = genericClass::createInstance('Show', 'Medium');
+		$m->Medium = $file;
+		$m->addParent($p);
+		$m->addParent($t);
+		$m->Save();
 
+		$main = '';
+		$picts = self::getPictures($p, $main);
+		
+		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'picts'=>$picts, 'pict'=>$main);
+	}
+	
 	
 	public static function GetPerf($args) {
 		$cond = $args['cond'];
-		
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		$uid = $usr->Id;
 
-		if($cond->type == 'preview') return self::getPreview($cond, $logged, $uid);
-		if($cond->type == 'details') return self::getDetails($cond, $logged, $uid);
+		switch($cond->type) {
+			case 'preview':
+				return self::getPreview($cond, $logged, $uid);
+			case 'details':
+				return self::getDetails($cond, $logged, $uid);
+		}
 		return array();
 	}
 	
 	private static function getPreview($cond, $logged, $uid) {
 
-		$sql = "select s.Id,s.Title,s.Subtitle,s.CategoryId,s.MaturityId,s.`Year`,c.Category,mt.Maturity,cy.Country";
-		$frm = " from `kob-Show-Performance` s "
-				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
-				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-				."left join `kob-Show-Country` cy on cy.Id=s.CountryId ";
+		$sql = "select s.Id,c.Category,mt.Maturity "; //,cr.Country ";
+		$frm = "from `kob-Show-Performance` s ";
+		$join = "left join `kob-Show-Category` c on c.Id=s.CategoryId "
+				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
+				//."left join `kob-Show-Country` cr on cy.Id=s.CountryId ";
 
 		$group = false;
 		$name = '';
-		$whr = ' where 1';
+		$whr = "where countryId=$cond->country ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
-				$whr .= " and s.userCreate=$uid";
+				$whr .= "and s.userCreate=$uid ";
 				$name = 'My shows';
 				break;
 			case 2: 
-				$frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid";
+				$frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
 				$name = 'Favourites';
 				break;
 			case 3:
-				if($cond->cat) $whr .= " and s.CategoryId in ($cond->cat)";
-				if($cond->year) $whr .= " and s.Year='$cond->year'";
-				if($cond->dom) $frm .= " inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($cond->dom)";
-				if($cond->genre) $frm .= "inner join `kob-Show-PerformanceGenres` pg on pd.PerformanceId=s.Id and pg.Genre in ($cond->genre)";
-				if($cond->crew) $frm .= " inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew)";
-		}
+				if($cond->category) $whr .= "and s.CategoryId in ($cond->category) ";
+				if($cond->year) $whr .= "and s.Year='$cond->year' ";
+				if($cond->domain) $join .= "inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($cond->domain) ";
+				if($cond->genre) $join .= "inner join `kob-Show-PerformanceGenres` pg on pd.PerformanceId=s.Id and pg.Genre in ($cond->genre) ";
+				if($cond->crew) $join .= "inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew) ";
+				if($cond->maturity) $whr .= "and s.MaturityId<>0 and s.MaturityId".($cond->more ? '>=' : '<=')."$cond->maturity ";
+				if($cond->state) $whr .= "and s.StateId in ($cond->state) ";
+				if($cond->city) $whr .= "and s.StateId in ($cond->city) ";
+				if($cond->crew) {
+					$frm = "from `kob-Show-Crew` w "
+						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
+					$whr .= "and w.PeopleId=$cond->crew ";
+				}
+				break;
+			case 4:
+				$txt = $cond->text;
+				$sql = "select s.Id,c.Category,mt.Maturity,s.tmsEdit "
+					."from `kob-Show-Performance` s "
+					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
+					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+					."where s.CountryId=75 and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
+					."union "
+					."select s.Id,c.Category,mt.Maturity,s.tmsEdit "
+					."from `kob-Show-People` p "
+					."inner join `kob-Show-Crew` w on w.PeopleId=p.Id "
+					."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId "
+					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
+					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=75 "
+					."union "
+					."select s.Id,c.Category,mt.Maturity,s.tmsEdit "
+					."from `kob-Show-Crew` w "
+					."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId "
+					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
+					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+					."where MATCH (Role) AGAINST ('$txt*'  in boolean mode) and s.CountryId=75 "
+					."order by tmsEdit, Id desc";
+		} 
 		
-		$sql .= $frm.$whr.' order by '.($group ? 'c.Category,' : '').'s.tmsEdit desc';
+		if($cond->mode != 4) $sql .= $frm.$join.$whr.' order by '.($group ? 'c.Category,' : '').'s.tmsEdit desc, s.Id desc';
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -68,18 +164,21 @@ class Performance extends genericClass {
 			$d->mine = $logged && $p->userCreate == $uid;
 			$d->title = $p->Title;
 			$d->subtitle = $p->Subtitle;
-			$d->year = $p->Year;
-			$d->category = $cat;
-			$d->Country = $r['Country'];
-			$d->maturity = $p->MaturityId ? $r['Maturity'].'+' : 'NR';
-			$d->domains = $dom = self::getArray($p->getChildren('Domain'), 'Domain');
+			//$d->year = $p->Year;
+			$d->categoryId = $cat;
+			$d->category = $r['Category'];
+			$d->countryId = $p->CountryId;
+			//$d->country = $r['Country'];
+			//$d->MaturityId = $p->MaturityId;
+			$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
+			//$d->domains = $dom = self::getArray($p->getChildren('Domain'), 'Domain');
 			$d->votes = $p->Votes;
 			$d->rating = $p->Rating;
 			$d->comments = $p->Comments;
 			$main = '';
 			$picts = self::getPictures($p, $main);
 			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
-			$d->picts = $picts;
+			//$d->picts = $picts;
 			$d->pict = $main;
 
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
@@ -94,41 +193,57 @@ class Performance extends genericClass {
 	}
 
 	private static function getDetails($cond, $logged, $uid) {
-			$id = $cond->id;
-
-			$o = Sys::getOneData('Show', "Performance/$id");
-			//$cat = self::getArray($o->getParents('Category'), 'Category');
-			$dom = self::getArray($o->getChildren('Domain'), 'Domain');
-			$gen = self::getArray($o->getChildren('Genre'), 'Genre');
-			
-			if($o->MaturityId) {
-				$tmp = Sys::getOneData('Show', 'Maturity/'.$o->MaturityId);
-				$mat = $tmp->Maturity.'+';
-			}
-			else $mat = 'NR';
-
-			
-			
-			
-//			$mat = count($tmp) ? $tmp[0]->Maturity : 'NR';
-			$pub = self::getArray($o->getChildren('Public'), 'Public');
-			$plan = self::getArray($o->getChildren('Language'), 'Language');
-//			$dom = self::getChildrenList($o, 'Domain');
-//			$gen = self::getChildrenList($o, 'Genre');
-//			$cs = $o->getChildren('Maturity');
-//			$mat = count($cs) ? $cs[0]->Maturity : ''; 
-//			$cs = $o->getChildren('Public');
-//			$pub = count($cs) ?$cs[0]->Public : '';
-			$main = '';
-			$picts = self::getPictures($o, $main);
-			$crew = self::getCrew($o, '');
-			
-			$d = ['id'=>$id, 'title'=>$o->Title, 'subtitle'=>$o->Subtitle, 'year'=>$o->Year,
-				'mine'=>($logged && $o->userCreate == $uid), 'votes'=>$o->Votes, 'rating'=>$o->Rating, 'comments'=>$o->Comments, 
-				'summary'=>$o->Summary, 'descriton'=>$o->Description, 
-				'domains'=>$dom, 'genres'=>$gen, 'duration'=>$o->Duration,
-				'maturity'=>$mat, 'public'=>$pub, 'picts'=>$picts, 'pict'=>$main, 'crew'=>$crew];
-			return ['success'=>true, 'logged'=>$logged, 'show'=>$d];
+		$id = $cond->id;
+		$p = Sys::getOneData('Show', "Performance/$id");
+		
+		$sql = "select c.Category,mt.Maturity,cr.Country,st.State,cy.City,u.Initiales "
+				."from `kob-Show-Performance` s "
+				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
+				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+				."left join `kob-Show-Country` cr on cr.Id=s.CountryId "
+				."left join `kob-Show-State` st on st.Id=s.StateId "
+				."left join `kob-Show-City` cy on cy.Id=s.CityId "
+				."left join `kob-Systeme-User` u on u.Id=s.userCreate "
+				."where s.Id=$id limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$r = $rs->fetch(PDO::FETCH_ASSOC);
+				
+		$d = new stdClass();
+		$d->id = $p->Id;
+		$d->uid = $p->userCreate;
+		$d->user = $r['Initiales'];
+		$d->mine = $logged && $p->userCreate == $uid;
+		$d->title = $p->Title;
+		$d->subtitle = $p->Subtitle;
+		$d->summary = $p->Summary;
+		$d->description = $p->Description;
+		$d->year = $p->Year;
+		$d->duration = $p->Duration;
+		$d->categoryId = $p->CategoryId;
+		$d->category = $r['Category'];		
+		$d->maturityId = $p->MaturityId;
+		$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
+		$d->domains = $dom = self::getArray($p->getChildren('Domain'), 'Domain');
+		$d->genres = $dom = self::getArray($p->getChildren('Genre'), 'Genre');
+		$d->publics = $dom = self::getArray($p->getChildren('Public'), 'Public');
+		$d->languages = $dom = self::getArray($p->getChildren('Language'), 'Language');
+		$d->countryId = $p->CountryId;
+		$d->country = $r['Country'];
+		$d->stateId = $p->StateId;
+		$d->state = $r['State'];
+		$d->cityId = $p->CityId;
+		$d->city = $r['City'];		
+		$d->votes = $p->Votes;
+		$d->rating = $p->Rating;
+		$d->comments = $p->Comments;	
+		$main = '';
+		$d->picts = self::getPictures($p, $main);
+		$d->pict = $main;
+		$d->links = self::getLinks($p);
+		$d->crew = self::getCrew($p, '');
+		
+		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'sql'=>$sql];
 	}
 	
 	private static function getArray($rs, $field) {
@@ -154,19 +269,72 @@ class Performance extends genericClass {
 		}
 		return array('count'=>count($tmp), 'data'=>$tmp);
 	}
-	
-	private static function getCrew($parent, $mode) {
-		$sql = "select p.Id,p.FisrtName,p.MiddleName,p.Surname,c.Playing "
-			."from `##_Show-Crew` c "
-			."inner join `##_Show-People` p on p.Id=c.PeopleId "
-			."where c.Id=".$parent->Id;
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+
+	private static function getLinks($parent) {
+		$rs = $parent->getChildren('Medium/MediumTypeId!=1');
 		$tmp = array();
 		foreach($rs as $r) {
-			$nam = trim($r['FirstName'].' '.$r['MiddleName'].' '.$r['Surname']);
-			$tmp[] = ['id'=>$r[Id], 'name'=>$name, 'playing'=>$r['Playing']];
+			$a = explode('/', $r->Medium);
+			$h = $a[2];
+			if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
+			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h];
 		}
+		return array('count'=>count($tmp), 'data'=>$tmp);
+	}
+	
+	public static function AddLink($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$m = genericClass::createInstance('Show', 'Medium');
+		$m->Medium = $args['URL'];
+		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
+		$m->addParent($p);
+		$m->Save();
+		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
+	}
+
+	public static function DelLink($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$m = genericClass::createInstance('Show', 'Medium');
+		$m->initFromId($args['id']);
+		$m->Delete();
+		
+		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
+		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
+	}
+
+	public static function DelPict($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$m = genericClass::createInstance('Show', 'Medium');
+		$m->initFromId($args['id']);
+		$m->Delete();
+		
+		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
+		$main = '';
+		$pict = self::getPictures($p, $main);
+		return ['success'=>true, 'logged'=>true, 'picts'=>$picts, 'pict'=>$main];
+	}
+
+	private static function getCrew($parent, $mode) {
+		$sql = "select p.Id,p.Name,c.Role "
+			."from `##_Show-Crew` c "
+			."inner join `##_Show-People` p on p.Id=c.PeopleId "
+			."where c.PerformanceId=".$parent->Id;
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$tmp = array();
+		foreach($rs as $r) {
+			$tmp[] = ['id'=>$r[Id], 'name'=>$r['Name'], 'role'=>$r['Role']];
+		}
+		return $tmp;
 	}
 	
 	public static function SetFavourite($args) {
@@ -176,16 +344,19 @@ class Performance extends genericClass {
 		$uid = $usr->Id; 
 		$show = $args['show'];
 		
+		$fav = Sys::getData('Show', "FavPerformance/UserId=$uid&PerformanceId=".$show->id);
 		if($show->fav) {
-			$fav = genericClass::createInstance('Show', 'FavPerformance');
-			$fav->addParent($usr);
-			$fav->PerformanceId = $show->id;
-			$fav->Save();
+			if(!$fav || !count($fav)) {
+				$fav = genericClass::createInstance('Show', 'FavPerformance');
+				$fav->addParent($usr);
+				$fav->PerformanceId = $show->id;
+				$fav->Save();
+			}
 		}
 		else {
-			$fav = Sys::getOneData('Show', "FavPerformance/UserId=$uid&PerformanceId=".$show->id);
-			if($fav) $fav->Delete();
+			foreach($fav as $f) $f->Delete();
 		}
-		return array('success'=>true, 'logged'=>true);
+		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$uid);
+		return array('success'=>true, 'logged'=>true, 'favourites'=>$fav);
 	}
 }

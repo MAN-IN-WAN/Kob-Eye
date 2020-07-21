@@ -860,7 +860,7 @@ order by a.Nom, a.Prenom";
 			return true;
 		}
 		if($obj['mode'] == 'export') {
-			$del = strpos('NAQ', $contenu) !== false;
+			$det = strpos('NAQ', $contenu) !== false;
 			$file = 'Home/tmp/ListeAdherent_'.date('YmdHis').'.csv';
 			$f = fopen($file, 'w');
 			if($det) {
