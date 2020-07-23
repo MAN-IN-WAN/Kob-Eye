@@ -5,7 +5,7 @@ class Message extends genericClass {
 	public static function Messages($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
-		if(!$logged) return ['success'=>false, 'logged'=>false];
+		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		
 		$sql = "select p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m.MessageDate) as dt "
 			."from `kob-Show-Message` m "

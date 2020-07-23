@@ -15,6 +15,12 @@ class Show extends Module {
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
 			
+			case 'add-role':
+				return Performance::AddRole($args);
+
+			case 'del-role':
+				return Performance::DelRole($args);
+			
 			case 'status':
 				return self::Status();
 			
@@ -52,7 +58,7 @@ klog::l("GETSHOW >>>>>",$args);
 				return self::registerUser($args);
 				
 			case 'logout':
-				$cnx = genericClass::createInstance('Systeme', 'Connexion');
+				$GLOBALS['Systeme']->Connection->Disconnect();
 				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 				
 			case 'init':

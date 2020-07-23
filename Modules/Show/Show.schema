@@ -87,6 +87,7 @@
 		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
 		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<PROPERTIES type="varchar" length="255" form="16" fiche="16" >Role</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" form="16" fiche="16" >Name</PROPERTIES>
 		<FKEY card="0,1" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
 	</OBJECTCLASS>
 

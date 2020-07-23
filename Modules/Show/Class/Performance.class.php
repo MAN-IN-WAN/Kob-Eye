@@ -109,10 +109,15 @@ class Performance extends genericClass {
 				if($cond->maturity) $whr .= "and s.MaturityId<>0 and s.MaturityId".($cond->more ? '>=' : '<=')."$cond->maturity ";
 				if($cond->state) $whr .= "and s.StateId in ($cond->state) ";
 				if($cond->city) $whr .= "and s.StateId in ($cond->city) ";
-				if($cond->crew) {
+				if($cond->name) {
 					$frm = "from `kob-Show-Crew` w "
 						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
-					$whr .= "and w.PeopleId=$cond->crew ";
+					$whr .= "and match (name) against ('$cond->name') ";
+				}
+				if($cond->role) {
+					$frm = "from `kob-Show-Crew` w "
+						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
+					$whr .= "and match (role) against ('$cond->role') ";
 				}
 				break;
 			case 4:
@@ -241,7 +246,7 @@ class Performance extends genericClass {
 		$d->picts = self::getPictures($p, $main);
 		$d->pict = $main;
 		$d->links = self::getLinks($p);
-		$d->crew = self::getCrew($p, '');
+		$d->crew = self::getCrew($p);
 		
 		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'sql'=>$sql];
 	}
@@ -274,9 +279,12 @@ class Performance extends genericClass {
 		$rs = $parent->getChildren('Medium/MediumTypeId!=1');
 		$tmp = array();
 		foreach($rs as $r) {
-			$a = explode('/', $r->Medium);
-			$h = $a[2];
-			if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
+			if($r->Description) $h = $r->Description;
+			else {
+				$a = explode('/', $r->Medium);
+				$h = $a[2];
+				if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
+			}
 			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h];
 		}
 		return array('count'=>count($tmp), 'data'=>$tmp);
@@ -287,11 +295,20 @@ class Performance extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];
 		
-		$m = genericClass::createInstance('Show', 'Medium');
-		$m->Medium = $args['URL'];
-		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
-		$m->addParent($p);
+		$link = $args['link'];
+		$pid = $args['perfId'];
+		$p = Sys::getOneData('Show', 'Performance/'.$pid);
+		if($link->id) $m = Sys::getOneData('Show', 'Medium/'.$link->id);
+		else {
+			$m = genericClass::createInstance('Show', 'Medium');
+			$m->addParent($p);
+			$t = Sys::getOneData('Show', 'MediumType/9');
+			$m->addParent($t);
+		}
+		$m->Medium = $link->url;
+		$m->Description = $link->title;
 		$m->Save();
+		
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
 
@@ -300,11 +317,12 @@ class Performance extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];
 		
-		$m = genericClass::createInstance('Show', 'Medium');
-		$m->initFromId($args['id']);
+		$id = $args['id'];
+		$pid = $args['perfId'];
+		$p = Sys::getOneData('Show', 'Performance/'.$pid);
+		$m = Sys::getOneData('Show', 'Crew/'.$id);
 		$m->Delete();
-		
-		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
+
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
 
@@ -323,11 +341,12 @@ class Performance extends genericClass {
 		return ['success'=>true, 'logged'=>true, 'picts'=>$picts, 'pict'=>$main];
 	}
 
-	private static function getCrew($parent, $mode) {
-		$sql = "select p.Id,p.Name,c.Role "
-			."from `##_Show-Crew` c "
-			."inner join `##_Show-People` p on p.Id=c.PeopleId "
-			."where c.PerformanceId=".$parent->Id;
+	private static function getCrew($parent) {
+//		$sql = "select p.Id,p.Name,c.Role "
+//			."from `##_Show-Crew` c "
+//			."inner join `##_Show-People` p on p.Id=c.PeopleId "
+//			."where c.PerformanceId=".$parent->Id;
+		$sql = "select Id,Name,Role from `##_Show-Crew` where PerformanceId=".$parent->Id;
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$tmp = array();
@@ -358,5 +377,37 @@ class Performance extends genericClass {
 		}
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$uid);
 		return array('success'=>true, 'logged'=>true, 'favourites'=>$fav);
+	}
+	
+	public static function AddRole($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
+		
+		$role = $args['role'];
+		$pid = $args['perfId'];
+		$p = Sys::getOneData('Show', 'Performance/'.$pid);
+		if($role->id) $cw = Sys::getOneData('Show', 'Crew/'.$role->id);
+		else {
+			$cw = genericClass::createInstance('Show', 'Crew');
+			$cw->addParent($p);
+		}
+		$cw->Name = $role->name;
+		$cw->Role = $role->role;
+		$cw->Save();
+	//klog::l("ROLE",$cw);
+		return ['success'=>true, 'logged'=>true, 'crew'=>self::getCrew($p)];
+	}
+	
+	public static function DelRole($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
+		
+		$id = $args['id'];
+		$pid = $args['perfId'];
+		$p = Sys::getOneData('Show', 'Performance/'.$pid);
+		$cw = Sys::getOneData('Show', 'Crew/'.$id);
+		$cw->Delete();
+		
+		return ['success'=>true, 'logged'=>true, 'crew'=>self::getCrew($p)];
 	}
 }
