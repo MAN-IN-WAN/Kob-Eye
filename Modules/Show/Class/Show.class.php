@@ -150,9 +150,9 @@ klog::l("GETSHOW >>>>>",$args);
 	private static function registerUser($args) {
 		$c = $args['credentials'];
 		$n = Sys::getCount('Systeme', 'User/Initiales='.$c->nickname);
-		if($n) return array('success'=>false, 'msg'=>'Nickname already in use');
+		if($n > 0) return array('success'=>false, 'msg'=>'Nickname already in use');
 		$n = Sys::getCount('Systeme', 'User/Mail='.$c->email);
-		if($n) return array('success'=>false, 'msg'=>'Email address already in use');
+		if($n > 0) return array('success'=>false, 'msg'=>'Email address already in use');
 		
 		$g = Sys::getOneData('Systeme', 'Group/Nom=SHOW');
 		$u = genericClass::createInstance('Systeme', 'User');
