@@ -25,6 +25,7 @@ class Adherent extends genericClass {
 	function GetFormInfo($annee) {
 		$c = !$this->CheckCertificat();
 		$s = $this->getOneChild('AdherentAnnee/Annee='.$annee);
+		if(!$s) $s = genericClass::createInstance('Cadref', 'AdherentAnnee');
 		$cc = '';
 		if($s->ClasseId) {
 			$cl = Sys::getOneData('Cadref', 'Classe/'.$s->ClasseId);
