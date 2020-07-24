@@ -62,11 +62,13 @@ klog::l("GETSHOW >>>>>",$args);
 				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 				
 			case 'init':
-				$ip = $_SERVER['REMOTE_ADDR'];
-				if($ip == '127.0.0.1') $ip = '82.64.39.104';
-
+				$ip = $_SERVER['REMOTE_ADDR']; 
 				$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-klog::l(">>>>>>$ip ",$geo);
+				if($geo->geoplugin_status == 404) {
+					$ip = '82.64.39.104';
+					$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+				}
+//klog::l(">>>>>>$ip ",$geo);
 				$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 				$lang = 'FR';
 				$cry = ['lang'=>$lang, 'name'=>$geo->geoplugin_countryName, 'id'=>$tmp->Id];
