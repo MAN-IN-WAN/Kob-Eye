@@ -39,7 +39,7 @@ class Adherent extends genericClass {
 	
 	
 	public function GetScanCount($annee, $save=false) {
-		if(Cadref::$UTL != 'CADREF') return array('scan'=>$n);
+		if(Cadref::$UTL != 'CADREF') return array('scan'=>0);
 			
 		$dd = strtotime($annee.'-08-01');
 		$df = strtotime(($annee+1).'-07-31');
@@ -1371,7 +1371,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 					'callNext'=>array(
 						'nom'=>'SendMessage',
 						'title'=>'Message suite',
-						'args'=>array('civilite'=>$s),
+						'args'=>array(), //'civilite'=>$s),
 						'needConfirm'=>false
 					)
 				);

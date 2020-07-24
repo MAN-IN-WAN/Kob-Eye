@@ -605,6 +605,7 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 
 		$scope.messageSend = function(mode) {
 			$scope.msgObj.sendMode = mode;
+			$scope.Cadref{{ objecttype }}function.args.Msg = $scope.msgObj;
 			var cf = $scope.Cadref{{ objecttype }}function.callNext;
 			$scope.Cadref{{ objecttype }}callFunction(cf.item,cf.nom,cf.title,cf.needConfirm,1);
 		}

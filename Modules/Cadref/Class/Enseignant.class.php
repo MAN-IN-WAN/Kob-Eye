@@ -38,6 +38,9 @@ class Enseignant extends genericClass {
 	}
 
 	public function SendMessage($params) {
+		
+klog::l("sendmessage",$params);
+		
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
@@ -48,7 +51,7 @@ class Enseignant extends genericClass {
 					'callNext'=>array(
 						'nom'=>'SendMessage',
 						'title'=>'Message suite',
-						'args'=>array('civilite'=>$s),
+						'args'=>array(), //'civilite'=>$s),
 						'needConfirm'=>false
 					)
 				);

@@ -2,9 +2,12 @@
 $annee = Cadref::$Annee;
 $utl = Cadref::$UTL;
 
+$to = [];
 $vars['mode'] = 'public';
 $menu = Sys::$CurrentMenu->Url;
 if($menu == 'ens_message') {
+	$vars['objecttype'] = 'Enseignant';
+	
 	$n = substr(Sys::$User->Login, 3, 3);
 	$e = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 	$id = $e->Id;
@@ -33,6 +36,8 @@ where ce.EnseignantId=$id and c.Annee='$annee'
 	}
 }
 elseif($menu == 'adh_message') {
+	$vars['objecttype'] = 'Adherent';
+	
 	$n = Sys::$User->Login;
 	$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 	$id = $a->Id;
