@@ -72,7 +72,7 @@ foreach ($vars['rows'] as $k=>$v){
     if ($v->getSecondSearchOrder())
         $v->description = $v->getSecondSearchOrder();
 	
-    if(isset($vars['fields'])) foreach ($vars['fields'] as $f){
+    if(isset($vars['fields']) && gettype($vars['fields'])=='array') foreach ($vars['fields'] as $f){
         switch ($f['type']){
             case 'date':
                 //transformation des timestamps en format js
