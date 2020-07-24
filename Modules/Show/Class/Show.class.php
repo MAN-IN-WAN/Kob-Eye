@@ -62,6 +62,14 @@ klog::l("GETSHOW >>>>>",$args);
 				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 				
 			case 'init':
+				$ip = $_SERVER['REMOTE_ADDR'];
+				if($ip == '127.0.0.1') $ip = '82.64.39.104';
+
+				$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+				$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
+				$lang = 'FR';
+				$cry = ['lang'=>$lang, 'name'=>$geo->geoplugin_countryName, 'id'=>$tmp->Id];
+				
 				$usr = Sys::$User;
 				$logged = !$usr->Public;
 				$msg = $logged ? self::newMessages($usr->Id) : 0;
@@ -73,7 +81,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$lng = self::getObjsArray('Language');
 				//$cry = self::getObjsArray('Country', '', true);
 				//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
-				return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'countries'=>$cry,
+				return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'country'=>$cry,
 						'domains'=>$dom, 'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
 						'translation'=>$trn, 'messages'=>$msg);
 								
