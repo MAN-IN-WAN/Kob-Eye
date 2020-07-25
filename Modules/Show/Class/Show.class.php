@@ -15,102 +15,93 @@ class Show extends Module {
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
 			
-			case 'add-role':
-				return Performance::AddRole($args);
-
-			case 'del-role':
-				return Performance::DelRole($args);
-			
-			case 'status':
-				return self::Status();
-			
-			case 'messages':
-				return Message::Messages($args);
-			
-			case 'dialog':
-				return Message::Dialog($args);
-			
-			case 'msg':
-				return Message::AddMsg($args);
-			
-			case 'image':
-				return Performance::LoadImage($args);
-				
-			case 'del-pict':
-				return Performance::DelPict($args);
-			
-			case 'add-link':
-				return Performance::AddLink($args);
-			
-			case 'del-link':
-				return Performance::DelLink($args);
-			
-			case 'save-perf':
-				return Performance::SavePerf($args);
-				
-			case 'login':
-				return self::logUser();
-				
-			case 'confirm':
-				return self::registerConfirm($args);
-				
-			case 'register':
-				return self::registerUser($args);
-				
-			case 'logout':
-				$GLOBALS['Systeme']->Connection->Disconnect();
-				return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
-				
-			case 'init':
-				$ip = $_SERVER['REMOTE_ADDR']; 
-				$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-				if($geo->geoplugin_status == 404) {
-					$ip = '82.64.39.104';
-					$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-				}
-//klog::l(">>>>>>$ip ",$geo);
-				$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
-				$lang = 'FR';
-				$cry = ['lang'=>$lang, 'name'=>$geo->geoplugin_countryName, 'id'=>$tmp->Id];
-				
-				$usr = Sys::$User;
-				$logged = !$usr->Public;
-				$msg = $logged ? self::newMessages($usr->Id) : 0;
-				$trn = self::getTranslation($args['translation']);
-				$cat = self::getObjsArray('Category');
-				$dom = self::getObjsArray('Domain');
-				$gen = self::getObjsArray('Genre');
-				$mat = self::getObjsArray('Maturity');
-				$lng = self::getObjsArray('Language');
-				//$cry = self::getObjsArray('Country', '', true);
-				//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
-				return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'country'=>$cry,
-						'domains'=>$dom, 'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
-						'translation'=>$trn, 'messages'=>$msg);
-								
-			case 'param':
-				$id = $args['id'];
-				$flt = $args['filter'];
-				switch($args['type']) {
-					case 'translation': $data = self::getTranslation($id); break;
-					case 'countries': $data = self::getObjsArray('Country', "/Country~$flt", true); break;
-					case 'states': $data = self::getObjsArray('State', "/CountryId=$id&State~$flt", true); break;
-					case 'cities': $data = self::getObjsArray('City', '/StateId='.$id, true); break;
-				}
-				return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
-				
-				
-			case 'perf':
-				return Performance::GetPerf($args);
-				
-			case 'favourite':
-				return Performance::SetFavourite($args);
-		
-			case 'peop': break;
-			case 'any': break;
+			case 'lost-pwd': return self::lostPwd($args);			
+			case 'add-role': return Performance::AddRole($args);
+			case 'del-role': return Performance::DelRole($args);
+			case 'status': return self::Status();
+			case 'messages': return Message::Messages($args);
+			case 'dialog': return Message::Dialog($args);
+			case 'msg': return Message::AddMsg($args);
+			case 'image': return Performance::LoadImage($args);
+			case 'del-pict': return Performance::DelPict($args);
+			case 'add-link': return Performance::AddLink($args);
+			case 'del-link': return Performance::DelLink($args);
+			case 'save-perf': return Performance::SavePerf($args);
+			case 'del-perf': return Performance::DeletePerf($args);
+			case 'login': return self::logUser();
+			case 'confirm': return self::registerConfirm($args);
+			case 'register': return self::registerUser($args);
+			case 'logout': return self::logout($args);
+			case 'init': return self::initShow($args);			
+			case 'param': return self::param($args);
+			case 'perf': return Performance::GetPerf($args);
+			case 'favourite': return Performance::SetFavourite($args);
 		}
 		return array('error'=>'mode unknown');
 	}
+	
+	private static function lostPwd($args) {
+		$m = $args['email'];
+		if(!filter_var($m, FILTER_VALIDATE_EMAIL)) return ['success'=>false, 'err'=>'Invalid email format'];
+		$u = Sys::getOneData('Show', 'User/Login='.$m);
+		if(!$u) return ['success'=>false, 'err'=>'User not found'];
+		$usr = genericClass::createInstance('Systeme', 'User');
+		$usr->initFromId($u->Id);
+		$ok = false;
+		$gs = $usr->getParents('Group');
+		foreach($gs as $g) {
+			if($g->Nom == 'SHOW') $ok = true;
+		}
+		if(!$ok) return ['success'=>false, 'err'=>'User not found'];
+		return ['success'=>true];
+	}
+
+	private static function logout($args) {
+		$GLOBALS['Systeme']->Connection->Disconnect();
+		return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
+	}
+
+	private static function param($args) {
+		$id = $args['id'];
+		$flt = $args['filter'];
+		switch($args['type']) {
+			case 'translation': $data = self::getTranslation($id); break;
+			case 'countries': $data = self::getObjsArray('Country', "/Country~$flt", true); break;
+			case 'states': $data = self::getObjsArray('State', "/CountryId=$id&State~$flt", true); break;
+			case 'cities': $data = self::getObjsArray('City', '/StateId='.$id, true); break;
+		}
+		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
+	}
+
+	private static function initShow($args) {
+		$ip = $_SERVER['REMOTE_ADDR']; 
+		$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+		if($geo->geoplugin_status == 404) {
+			$ip = '82.64.39.104';
+			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+		}
+//klog::l(">>>>>>$ip ",$geo);
+		$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
+		$lang = 'FR';
+		$langName = 'French';
+		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$geo->geoplugin_countryName, 'countyId'=>$tmp->Id];
+
+		$usr = Sys::$User;
+		$logged = !$usr->Public;
+		$msg = $logged ? self::newMessages($usr->Id) : 0;
+		$trn = self::getTranslation($args['translation']);
+		$cat = self::getObjsArray('Category');
+		$dom = self::getObjsArray('Domain');
+		$gen = self::getObjsArray('Genre');
+		$mat = self::getObjsArray('Maturity');
+		$lng = self::getObjsArray('Language');
+		//$cry = self::getObjsArray('Country', '', true);
+		//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
+		return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'country'=>$cry,
+				'domains'=>$dom, 'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
+				'translation'=>$trn, 'messages'=>$msg);
+	}
+	
 	
 	private static function getTranslation($lang) {
 		$trn = [];

@@ -91,7 +91,7 @@
 		<FKEY card="0,1" data="CrewType,Id" form="1" fiche="1" >CrewTypeId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Medium" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Medium" hidden="0">
+	<OBJECTCLASS title="Medium" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Medium" hidden="0" Class="Modules/Show/Class/Medium.class.php">
 		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
 		<FKEY card="1,1" data="People,Id" form="1" fiche="1" >PeopleId</FKEY>
 		<FKEY card="1,1" data="MediumType,Id" form="1" fiche="1" >MediumTypeId</FKEY>

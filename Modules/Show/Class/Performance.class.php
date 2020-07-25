@@ -12,25 +12,53 @@ class Performance extends genericClass {
 			$o->initFromId($id);
 			$dom = self::getArray($o->getChildren('Domain'), 'Domain');
 			$gen = self::getArray($o->getChildren('Genre'), 'Genre');
+			$lng = self::getArray($o->getChildren('Language'), 'Language');
 		}
 		
 		$o->Title = $s->title;
 		$o->Subtitle = $s->subtitle;
 		$o->Summary = $s->summary;
+		$o->Description = $s->description;
 		$o->Year = $s->year;
 		$o->Duration = $s->duration;
-		$o->CategoryId = $s->categoryId;
 		$o->MaturityId = $s->maturityId;
 		$o->CountryId = $s->countryId;
 		$o->StateId = $s->stateId;
 		$o->CityId = $s->cityId;
+		self::setChild($o, 'Category', $s->categoryId);
 		self::setChildren($o, 'Domain', $dom, $s->domains);
 		self::setChildren($o, 'Genre', $gen, $s->genres);
-		self::setChildren($o, 'Language', $gen, $s->languages);
+		self::setChildren($o, 'Language', $lng, $s->languages);
 		
 		$o->Save();
-//klog::l(">>>>>>>>><",$o);
 		return array('success'=>1, 'id'=>$o->Id);
+	}
+	
+	public static function DeletePerf($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$id = $args['id'];
+		$o = genericClass::createInstance('Show', 'Performance');
+		$o->initFromId($id);
+		$cs = $o->getChildren('Domain');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Genre');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Language');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Crew');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Medium');
+		foreach($cs as $c) $c->Delete();
+		return array('success'=>1);
+	}
+
+	
+	private static function setChild($obj, $child, $id) {
+		$c = Sys::getOneData('Show', "$child/$id");
+		if($c) $obj->addParent($c);
 	}
 	
 	private static function setChildren($obj, $child, $old, $new) {
@@ -47,6 +75,7 @@ class Performance extends genericClass {
 		$data = base64_decode(explode(',', $args['data'])[1]);
 		$name = $args['file'];
 		$id = $args['show'];
+		mkdir("Home/2/Show/$id");
 		$file = "Home/2/Show/$id/$name";
 		file_put_contents(getcwd()."/$file", $data);
 		$p = Sys::getOneData('Show', 'Performance/'.$id);
@@ -271,6 +300,18 @@ class Performance extends genericClass {
 		
 		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'sql'=>$sql];
 	}
+	
+//	private static function getDuration($dur) {
+//		$mins = explode('-', $dur);
+//		$dur = '';
+//		foreach($mins as $min) {
+//		    $h = floor($min / 60);
+//			$m = ($min % 60);
+//			if($dur) $dur .= '-';
+//			$dur .= sprintf('%d:%02d', $h, $m);
+//		}
+//		return $dur;
+//	}
 	
 	private static function getArray($rs, $field) {
 		$tmp = array();
