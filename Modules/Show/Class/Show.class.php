@@ -84,7 +84,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 		$lang = 'FR';
 		$langName = 'French';
-		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$geo->geoplugin_countryName, 'countyId'=>$tmp->Id];
+		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$geo->geoplugin_countryName, 'countryId'=>$tmp->Id];
 
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
