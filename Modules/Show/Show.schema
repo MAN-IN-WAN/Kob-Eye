@@ -149,6 +149,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Genre" driver="mysql" AccessPoint="1" Description="Genre" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<FKEY card="1,1" data="Category,Id" form="1" fiche="1" >CategoryId</FKEY>
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Genre</PROPERTIES>
 	</OBJECTCLASS>
 

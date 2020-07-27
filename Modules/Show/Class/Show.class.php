@@ -69,7 +69,8 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'countries': $data = self::getObjsArray('Country', "Country like '$flt%'", true); break;
 			case 'states': $data = self::getObjsArray('State', "CountryId=$id and State like '$flt%'", true); break;
 			case 'cities': $data = self::getObjsArray('City', "StateId=$id", true); break;
-			case 'domains': $data = self::getObjsArray('Domain', "CategoryId=$id", false); break;
+			//case 'domains': $data = self::getObjsArray('Domain', "CategoryId=$id", false); break;
+			case 'genres': $data = self::getObjsArray('Genre', "CategoryId=$id", false); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -93,7 +94,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$trn = self::getTranslation($args['translation']);
 		$cat = self::getObjsArray('Category');
 		//$dom = self::getObjsArray('Domain');
-		$gen = self::getObjsArray('Genre');
+		//$gen = self::getObjsArray('Genre');
 		$mat = self::getObjsArray('Maturity');
 		$lng = self::getObjsArray('Language');
 		//$cry = self::getObjsArray('Country', '', true);
