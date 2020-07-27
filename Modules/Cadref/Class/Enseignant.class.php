@@ -38,9 +38,6 @@ class Enseignant extends genericClass {
 	}
 
 	public function SendMessage($params) {
-		
-klog::l("sendmessage",$params);
-		
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
@@ -158,7 +155,7 @@ select Mail, Telephone1, Telephone2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Inscription` i on i.ClasseId=ce.Classe and i.Annee='$annee'
 inner join `##_Cadref-Adherent` a on a.Id=i.AdherentId
-where ce.EnseignantId=$id";
+where ce.EnseignantId=$id and i.Supprime=0";
 		if($to != 'T') $sql .= " and ce.Classe=$to";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);

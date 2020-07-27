@@ -17,10 +17,11 @@ if($menu == 'ens_message') {
 	$to = array('C'=>$utl.' (Secrétariat)','T'=>'Tous mes élèves');
 	$sql = "
 select distinct c.Id, concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle,
-CycleDebut, CycleFin,c.HeureDebut,c.HeureFin,j.Jour
+CycleDebut, CycleFin,c.HeureDebut,c.HeureFin,j.Jour,a.LibelleCourt
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
@@ -30,7 +31,7 @@ where ce.EnseignantId=$id and c.Annee='$annee'
 	$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 	$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 	foreach($pdo as $p) {
-		$s = $p['Libelle'].'  '.$p['Jour'].' '.$p['HeureDebut'].'-'.$p['HeureFin'];
+		$s = $p['LibelleCourt'].', '.$p['Libelle'].',  '.$p['Jour'].' '.$p['HeureDebut'].'-'.$p['HeureFin'];
 		if($p['CycleDebut']) $s .= '  ('.$p['CycleDebut'].'-'.$p['CycleFin'].')';
 		$to[$p['Id']] = $s;
 	}

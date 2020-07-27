@@ -66,9 +66,10 @@ klog::l("GETSHOW >>>>>",$args);
 		$flt = $args['filter'];
 		switch($args['type']) {
 			case 'translation': $data = self::getTranslation($id); break;
-			case 'countries': $data = self::getObjsArray('Country', "/Country~$flt", true); break;
-			case 'states': $data = self::getObjsArray('State', "/CountryId=$id&State~$flt", true); break;
-			case 'cities': $data = self::getObjsArray('City', '/StateId='.$id, true); break;
+			case 'countries': $data = self::getObjsArray('Country', "Country like '$flt%'", true); break;
+			case 'states': $data = self::getObjsArray('State', "CountryId=$id and State like '$flt%'", true); break;
+			case 'cities': $data = self::getObjsArray('City', "StateId=$id", true); break;
+			case 'domains': $data = self::getObjsArray('Domain', "CategoryId=$id", false); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -91,14 +92,14 @@ klog::l("GETSHOW >>>>>",$args);
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
 		$trn = self::getTranslation($args['translation']);
 		$cat = self::getObjsArray('Category');
-		$dom = self::getObjsArray('Domain');
+		//$dom = self::getObjsArray('Domain');
 		$gen = self::getObjsArray('Genre');
 		$mat = self::getObjsArray('Maturity');
 		$lng = self::getObjsArray('Language');
 		//$cry = self::getObjsArray('Country', '', true);
 		//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
 		return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'country'=>$cry,
-				'domains'=>$dom, 'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
+				'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
 				'translation'=>$trn, 'messages'=>$msg);
 	}
 	
@@ -111,14 +112,18 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 	
 	public static function getObjsArray($name, $query='', $obj=false) {
-		//sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar)
-		$rs = Sys::getData('Show', $name.$query, 0, 9999, 'ASC', $name, "Id,$name");
+		$sql = "select Id,$name from `kob-Show-$name`";
+		if($query) $sql .= " where $query";
+		$sql .= " order by $name";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+
 		$arr = array();
 		if($obj) {
-			foreach($rs as $r) $arr[] = ['id'=>$r->Id, 'name'=>$r->$name];
+			foreach($rs as $r) $arr[] = ['id'=>$r['Id'], 'name'=>$r[$name]];
 		}
 		else {
-			foreach($rs as $r) $arr[$r->Id] = $r->$name;
+			foreach($rs as $r) $arr[$r['Id']] = $r[$name];
 		}
 		return $arr; //['count'=>count($arr), 'data'=>$arr];
 	}

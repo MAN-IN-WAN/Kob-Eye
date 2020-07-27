@@ -298,8 +298,9 @@ class Performance extends genericClass {
 		$d->pict = $main;
 		$d->links = self::getLinks($p);
 		$d->crew = self::getCrew($p);
+		$dom = Show::getObjsArray('Domain', 'CategoryId='.$d->categoryId);
 		
-		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'sql'=>$sql];
+		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'domains'=>$dom, 'sql'=>$sql];
 	}
 	
 //	private static function getDuration($dur) {

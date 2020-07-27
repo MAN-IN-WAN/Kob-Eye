@@ -556,6 +556,7 @@ klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);
 				$antenne = isset($obj['Antenne']) ? $obj['Antenne'] : '';
 				$misc = isset($obj['Misc']) ? $obj['Misc'] : '';
 				$adherent = false;
+				$copieEns = false;
 				
 				$noRupture =  $contenu == 'Q' || $rupture == 'S';
 				$entraide = $soutien ? 'S' : ($dons ? 'D' : '');
@@ -609,6 +610,7 @@ group by i.Antenne,s.Libelle
 //				}
 
 				
+				$whr = "where 1 ";
 				
 				if($noClasse) $antenne = '';
 				if($noClasse || $noRupture) {
@@ -624,11 +626,11 @@ group by i.Antenne,s.Libelle
 				
 				if($typAdh == 'S') {
 					// adhérents sans inscription
-					$sql .= "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
+					$frm = "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
 					$whr = "and aa.Cotisation>0 and aa.Reglement=aa.Cotisation and aa.Differe=0 and aa.Cours=0 ";
 				}
 				else if($typAdh != '') {
-					$sql .= "
+					$frm = "
 from `##_Cadref-Adherent` e
 inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'
 left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId 
@@ -645,8 +647,8 @@ left join `##_Cadref-Niveau` n on n.Id=c0.NiveauId ";
 					}
 				}
 				elseif($visite != '') {
-					$sql .= "
-,r.Attente,r.DateAttente
+					$sql .= ",r.Attente,r.DateAttente ";
+					$frm = "
 from `##_Cadref-Adherent` e
 inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.VisiteId=$visite 
 left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
@@ -659,7 +661,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					//$contenu = 'A';
 				}
 				elseif($visiteAnnee != '') {
-					$sql .= "
+					$frm = "
 from `##_Cadref-Adherent` e
 inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.Annee='$visiteAnnee' 
 left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
@@ -668,12 +670,12 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 					//$contenu = 'A';
 				}
 				elseif($nonInscrit) {
-					$sql .= "from `##_Cadref-Adherent` e ";
+					$frm = "from `##_Cadref-Adherent` e ";
 					$whr = "and e.Inscription<'$annee' and e.Inscription>='$nonInscrit' and Inactif=0 ";
 				}
 				else if($dons) {
-					$sql .= ",aa.Dons,0 as Attente ".
-						"from `##_Cadref-Adherent` e ".
+					$sql .= ",aa.Dons,0 as Attente ";
+					$frm = "from `##_Cadref-Adherent` e ".
 						"inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'";
 					$whr = "and aa.Dons>0 ";
 				}
@@ -685,7 +687,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=e.ClasseId ";
 						$rupture = 'A';
 					}
 
-					$sql .= "
+					$frm = "
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -758,19 +760,22 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 								$w .= "i.CodeClasse like '".$disc[$i]."%' ";
 							}
 						}
-						if($w != '') $whr .= $w.") ";
+						if($w != '') {
+							$whr .= $w.") ";
+							$copieEns = true;
+						}
 					}
 				}
 
 				//requete sql
-				if($whr != '') $sql .= "where ".substr($whr, 4);
+				//if($whr != '') $sql .= "where ".substr($whr, 4);
 				if($adherent) {
-					if($contenu == 'Q') $sql .= "order by e.Nom, e.Prenom ";  // e.CP, e.Ville, 
-					else $sql .= " order by e.Nom, e.Prenom ";
+					if($contenu == 'Q') $ord = "order by e.Nom, e.Prenom ";  // e.CP, e.Ville, 
+					else $ord = " order by e.Nom, e.Prenom ";
 				}
 				else {
-					if(isset($obj['OrdreAtt']) && $obj['OrdreAtt']) $sql .= " order by i.DateAttente ";
-					else $sql .= " order by i.CodeClasse, e.Nom, e.Prenom ";
+					if(isset($obj['OrdreAtt']) && $obj['OrdreAtt']) $ord = " order by i.DateAttente ";
+					else $ord = " order by i.CodeClasse, e.Nom, e.Prenom ";
 				}
 				break;
 				
@@ -797,6 +802,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 					$sql .= " and a.Mail like '%@%' ";
 
 				$sql .= " order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
+				$frm = $whr = $ord = "";
 				break;
 				
 			case 2: // fiches incomplètes
@@ -809,11 +815,13 @@ select a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail
 from `##_Cadref-Adherent` a
 where a.Annee='$annee' and (a.Origine='' or a.SituationId='' or a.ProfessionId='' or a.Sexe='' or a.Naissance='')
 order by a.Nom, a.Prenom";
+				$frm = $whr = $ord = "";
 				break;
 		}
 
 
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$sql0 = $sql;
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$frm.$whr.$ord);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
@@ -848,9 +856,23 @@ order by a.Nom, a.Prenom";
 				$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
 				Cadref::SendMessage($args);				
 			}
+			
+			if($mode == 0 && $obj['CopieEns'] && substr($sql0, 0, 19) == 'select i.CodeClasse') {
+				$sql1 = "select distinct en.Mail,en.Nom,en.Prenom,'' as Sexe ";
+				$frm1 = $frm." inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId "
+					."inner join `##_Cadref-Enseignant` en on en.Id=ce.EnseignantId ";
+				$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1.$frm1.$whr);
+
+				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql1);
+				foreach($pdo as $a) {
+					if(strpos($a['Mail'], '@') === false) continue;
+					$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
+					Cadref::SendMessage($args);				
+				}				
+			}
 			$args = array('Subject'=>$subj, 'To'=>array(Cadref::$MAIL), 'Body'=>$body, 'Attachments'=>$att);
 			Cadref::SendMessage($args);				
-			return true;
+			return ['sql'=>$sql];
 		}
 		if($obj['mode'] == 'sms') {
 			foreach($pdo as $a) {
