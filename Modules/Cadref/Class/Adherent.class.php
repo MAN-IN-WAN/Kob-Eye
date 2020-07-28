@@ -696,7 +696,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId
 left join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'
 left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 					if($enseignant) {
-						$sql .= "inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
+						$frm .= "inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
 						$whr .= "and ce.EnseignantId=$enseignant ";
 					}
 				}
