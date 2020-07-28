@@ -169,6 +169,7 @@
 	<OBJECTCLASS title="Country" driver="mysql" AccessPoint="1" Description="Country" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<PROPERTIES type="varchar" length="2" searchOrder="2" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">Country</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" form="1" list="1" fiche="1">PhoneCode</PROPERTIES>
 	</OBJECTCLASS>
 

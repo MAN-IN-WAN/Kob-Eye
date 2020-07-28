@@ -15,6 +15,7 @@ class Show extends Module {
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {
 			
+			case 'change-pwd': return self::changePwd($args);			
 			case 'lost-pwd': return self::lostPwd($args);			
 			case 'add-role': return Performance::AddRole($args);
 			case 'del-role': return Performance::DelRole($args);
@@ -40,22 +41,6 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('error'=>'mode unknown');
 	}
 	
-	private static function lostPwd($args) {
-		$m = $args['email'];
-		if(!filter_var($m, FILTER_VALIDATE_EMAIL)) return ['success'=>false, 'err'=>'Invalid email format'];
-		$u = Sys::getOneData('Show', 'User/Login='.$m);
-		if(!$u) return ['success'=>false, 'err'=>'User not found'];
-		$usr = genericClass::createInstance('Systeme', 'User');
-		$usr->initFromId($u->Id);
-		$ok = false;
-		$gs = $usr->getParents('Group');
-		foreach($gs as $g) {
-			if($g->Nom == 'SHOW') $ok = true;
-		}
-		if(!$ok) return ['success'=>false, 'err'=>'User not found'];
-		return ['success'=>true];
-	}
-
 	private static function logout($args) {
 		$GLOBALS['Systeme']->Connection->Disconnect();
 		return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
@@ -82,11 +67,20 @@ klog::l("GETSHOW >>>>>",$args);
 			$ip = '82.64.39.104';
 			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
 		}
-//klog::l(">>>>>>$ip ",$geo);
-		$tmp = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
-		$lang = 'FR';
+
 		$langName = 'French';
-		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$geo->geoplugin_countryName, 'countryId'=>$tmp->Id];
+		$country = 'France';
+		$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
+		if($cy) {
+			$country = $cy->Country;
+			$langName = $cy->Language;
+		}
+		switch($langName) {
+			case 'English': $lang = 'EN'; break;
+			case 'French': $lang = 'FR'; break;
+			case 'Spanish': $lang = 'ES'; break;
+		}
+		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$cy->Id];
 
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
@@ -179,12 +173,66 @@ klog::l("GETSHOW >>>>>",$args);
 		$s .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 		$s .= "This link will be active for 48 hours.<br /><br />";
 		$s .= self::MailSignature();
-		$params = array('Subject'=>'show.ooo : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
+		$params = array('Subject'=>'www.shows.zone : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
 		self::SendMessage($params);
 
 		return array('success'=>true);
 	}
 	
+
+	private static function lostPwd($args) {
+		$mail = $args['email'];
+		if(!filter_var($mail, FILTER_VALIDATE_EMAIL)) return ['success'=>false, 'err'=>'Invalid email format'];
+		$u = Sys::getOneData('Show', 'User/Login='.$mail);
+		if(!$u) return ['success'=>false, 'err'=>'User not found'];
+		$usr = genericClass::createInstance('Systeme', 'User');
+		$usr->initFromId($u->Id);
+		$ok = false;
+		$gs = $usr->getParents('Group');
+		foreach($gs as $g) {
+			if($g->Nom == 'SHOW') $ok = true;
+		}
+		if(!$ok) return ['success'=>false, 'err'=>'User not found'];
+		
+		$host = $_SERVER['HTTP_ORIGIN'];
+		$info = base64_encode($mail.','.time());
+		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+		$s .= 'Click on the link below to change your password :<br /><br />';
+		$s .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
+		$s .= "This link will be active for 24 hours.<br /><br />";
+		$s .= self::MailSignature();
+		$params = array('Subject'=>'www.shows.zone : Change password.', 'To'=>array($mail), 'Body'=>$s);
+		self::SendMessage($params);		
+		
+		return ['success'=>true];
+	}
+
+	private static function changePwd($args) {
+		$cred = $args['credentials'];
+		if($cred->id) {
+			$usr = Sys::$User;
+			if($usr->Id != $cred->id) return ['success'=>false, 'err'=>'Wrong user'];
+			if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect confirmation'];
+			if($usr->Pass != '[md5]'.md5($cred->old)) return ['success'=>false, 'err'=>'Invalid password'];
+			$usr->Pass = '[md5]'.md5($cred->pass);
+			$usr->Save();
+			return ['success'=>true];
+		} 
+				
+		$data = array('success'=>false, 'err'=>"Incorrect link.");
+		
+		$get = isset($cred->info) ? trim($cred->info) : '';
+		if($get == '') return $data;
+		$info = explode(',', base64_decode($get));
+		if(count($info) != 2) return $data;	
+		if(($info[1]+86400) < time()) return ['success'=>false, 'err'=>'This link has expired'];
+		$u = Sys::getOneData('Systeme', 'User/Login='.$info[0]);
+		if(!$u || $u->Mail != $info[0]) return ['success'=>false, 'err'=>'Incorrect user'];
+		if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect confirmation'];
+		$u->Pass = '[md5]'.md5($cred->pass);
+		$u->Save();
+		return ['success'=>true];
+	}
 	
 	private static function registerConfirm($args) {
 		$data = array('success'=>0,'message'=>"Incorrect link.");
