@@ -3,6 +3,7 @@
 class Performance extends genericClass {
 	
 	public static function SavePerf($args) {
+		$lang = $args['lang'];
 		$s = $args['show'];
 		$id = $s->id;
 		$dom = [];
@@ -10,8 +11,8 @@ class Performance extends genericClass {
 		$o = genericClass::createInstance('Show', 'Performance');
 		if($id) {
 			$o->initFromId($id);
-			$gen = self::getChildrenArray($o, 'Genre');
-			$lng = self::getChildrenArray($o, 'Language');
+			$gen = self::getChildrenArray($o, 'Genre', $lang);
+			$lng = self::getChildrenArray($o, 'Language', $lang);
 		}
 		
 		$o->Title = $s->title;
@@ -113,10 +114,10 @@ class Performance extends genericClass {
 		$join = "left join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
 				//."left join `kob-Show-Country` cr on cy.Id=s.CountryId ";
-
+		$cry = $cond->country;
 		$group = false;
 		$name = '';
-		$whr = "where countryId=$cond->country ";
+		$whr = "where countryId=$cry ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
@@ -128,6 +129,7 @@ class Performance extends genericClass {
 				$name = 'Favourites';
 				break;
 			case 3:
+				$name = 'Search';
 				if($cond->category) $whr .= "and s.CategoryId in ($cond->category) ";
 				if($cond->user) $whr .= "and s.userCreate=$cond->user ";
 				if($cond->year) $whr .= "and s.Year='$cond->year' ";
@@ -150,26 +152,36 @@ class Performance extends genericClass {
 				break;
 			case 4:
 				$txt = $cond->text;
-				$sql = "select s.Id,c.Category$lang,mt.Maturity,s.tmsEdit "
+				$name = 'Search: '.$txt;
+				$sql = "select s.Id,c.Category$lang,mt.Maturity "
 					."from `kob-Show-Performance` s "
 					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
 					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
 					."where s.Id in ( "
 					."select s.Id "
 					."from `kob-Show-Performance` s "
-					."where s.CountryId=75 and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
+					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
 					."union "
 					."select s.Id "
 					."from `kob-Show-Crew` c "
 					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=75 "
+					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=$cry "
 					."union "
 					."select s.Id "
 					."from `kob-Show-Crew` c "
 					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=75 "
+					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
+					."union "
+					."select s.Id from `kob-Show-Category` c "
+					."inner join `kob-Show-Performance` s on s.CategoryId=c.id "
+					."where c.Category$lang like '$txt%' and s.CountryId=$cry "
+					."union "
+					."select s.Id from `kob-Show-Genre` g "
+					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
+					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
+					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
 					.") "
-					."order by s.tmsEdit ";
+					."order by s.tmsEdit,s.Id desc";
 					break;
 		} 
 		
@@ -274,27 +286,16 @@ class Performance extends genericClass {
 		
 		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'genres'=>$gnr, 'sql'=>$sql];
 	}
-	
-//	private static function getDuration($dur) {
-//		$mins = explode('-', $dur);
-//		$dur = '';
-//		foreach($mins as $min) {
-//		    $h = floor($min / 60);
-//			$m = ($min % 60);
-//			if($dur) $dur .= '-';
-//			$dur .= sprintf('%d:%02d', $h, $m);
-//		}
-//		return $dur;
-//	}
+
 	
 	private static function getChildrenArray($parent, $name, $lang) {
 		$table = $name.'s';
-		$sql = "select $name$lang from `kob-Show-Performance$table` where PerformanceId=$parent->Id order by $name$lang";
+		$sql = "select $name from `kob-Show-Performance$table` where PerformanceId=$parent->Id";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 
 		$tmp = array();
-		foreach($rs as $r) $tmp[] = $r[$name.$lang];
+		foreach($rs as $r) $tmp[] = $r[$name];
 		return $tmp;
 	}
 
