@@ -141,7 +141,9 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Public" driver="mysql" AccessPoint="1" Description="Public" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Public</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PublicEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PublicFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PublicES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Genre" driver="mysql" AccessPoint="1" Description="Genre" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
