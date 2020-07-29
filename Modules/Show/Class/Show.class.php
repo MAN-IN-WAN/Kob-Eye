@@ -2,19 +2,20 @@
 
 class Show extends Module {
 	
+	public static $Lang = '';
+	
 //	public static function CheckLogged() {
 //		$usr = Sys::$User;
 //		return($usr->Public);
 //	}
 	
 	public static function GetShow($args) {
+		if(isset($args['lang']) && $args['lang']) self::$Lang = $args['lang'];
+		
 		$mode = $args['mode'];
 
-
-
 klog::l("GETSHOW >>>>>",$args);
-		switch($mode) {
-			
+		switch($mode) {			
 			case 'change-pwd': return self::changePwd($args);			
 			case 'lost-pwd': return self::lostPwd($args);			
 			case 'add-role': return Performance::AddRole($args);
@@ -34,6 +35,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'register': return self::registerUser($args);
 			case 'logout': return self::logout($args);
 			case 'init': return self::initShow($args);			
+			case 'lang': return self::loadLang($args);			
 			case 'param': return self::param($args);
 			case 'perf': return Performance::GetPerf($args);
 			case 'favourite': return Performance::SetFavourite($args);
@@ -49,78 +51,84 @@ klog::l("GETSHOW >>>>>",$args);
 	private static function param($args) {
 		$id = $args['id'];
 		$flt = $args['filter'];
+		$lang = $args['lang'];
 		switch($args['type']) {
-			case 'translation': $data = self::getTranslation($id); break;
-			case 'countries': $data = self::getObjsArray('Country', "Country like '$flt%'", true); break;
-			case 'states': $data = self::getObjsArray('State', "CountryId=$id and State like '$flt%'", true); break;
-			case 'cities': $data = self::getObjsArray('City', "StateId=$id", true); break;
-			//case 'domains': $data = self::getObjsArray('Domain', "CategoryId=$id", false); break;
-			case 'genres': $data = self::getObjsArray('Genre', "CategoryId=$id", false); break;
+			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
+			case 'states': $data = self::getObjsArray('State', "CountryId=$id and State like '%$flt%'", true, ''); break;
+			case 'cities': $data = self::getObjsArray('City', "StateId=$id", true, ''); break;
+			case 'genres': $data = self::getObjsArray('Genre', "CategoryId=$id", false, $lang); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
 
 	private static function initShow($args) {
-		$ip = $_SERVER['REMOTE_ADDR']; 
-		$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-		if($geo->geoplugin_status == 404) {
-			$ip = '82.64.39.104';
+		$first = $args['first'];
+		$lang = $args['lang'];
+		$langName = $args['langName'];
+		$country = $args['country'];
+		$countryId = $args['countryId'];
+		
+		if($first) {
+			$ip = $_SERVER['REMOTE_ADDR']; 
 			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+			if($geo->geoplugin_status == 200) {
+				$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
+				if($cy) {
+					$countryId = $cy->Id;
+					$country = $cy->Country;
+					$langName = $cy->Language;
+				}
+			}
+			switch($langName) {
+				case 'English': $lang = 'EN'; break;
+				case 'French': $lang = 'FR'; break;
+				case 'Spanish': $lang = 'ES'; break;
+			}
 		}
-
-		$langName = 'French';
-		$country = 'France';
-		$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
-		if($cy) {
-			$country = $cy->Country;
-			$langName = $cy->Language;
-		}
-		switch($langName) {
-			case 'English': $lang = 'EN'; break;
-			case 'French': $lang = 'FR'; break;
-			case 'Spanish': $lang = 'ES'; break;
-		}
-		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$cy->Id];
+		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId];
 
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
-		$trn = self::getTranslation($args['translation']);
-		$cat = self::getObjsArray('Category');
-		//$dom = self::getObjsArray('Domain');
-		//$gen = self::getObjsArray('Genre');
-		$mat = self::getObjsArray('Maturity');
-		$lng = self::getObjsArray('Language');
-		//$cry = self::getObjsArray('Country', '', true);
-		//$stt = self::getObjsArray('State', '/CountryId='.$args['country']);
-		return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'country'=>$cry,
-				'genres'=>$gen, 'maturities'=>$mat, 'languages'=>$lng, 
-				'translation'=>$trn, 'messages'=>$msg);
+		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'messages'=>$msg);
+	}
+	
+	private static function loadLang($args) {
+		$lang = $args['lang'];
+		$usr = Sys::$User;
+		$logged = !$usr->Public;
+		$msg = $logged ? self::newMessages($usr->Id) : 0;
+		$trn = self::getTranslation($lang);
+		$cat = self::getObjsArray('Category', '', false, $lang);
+		$mat = self::getObjsArray('Maturity', '', false, '');
+		$lng = self::getObjsArray('Language', '', false, $lang);
+		return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'maturities'=>$mat, 'languages'=>$lng, 
+				'translation'=>$trn);
 	}
 	
 	
 	private static function getTranslation($lang) {
 		$trn = [];
-		$rs = Sys::getData('Show', "Translation/Language=$lang+Code=");
+		$rs = Sys::getData('Show', "Translation/Language=$lang");
 		foreach($rs as $r) $trn[] = [$r->Original, $r->Translation];
 		return $trn;
 	}
 	
-	public static function getObjsArray($name, $query='', $obj=false) {
-		$sql = "select Id,$name from `kob-Show-$name`";
+	public static function getObjsArray($name, $query, $obj, $lang) {
+		$sql = "select Id,$name$lang from `kob-Show-$name`";
 		if($query) $sql .= " where $query";
-		$sql .= " order by $name";
+		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 
 		$arr = array();
 		if($obj) {
-			foreach($rs as $r) $arr[] = ['id'=>$r['Id'], 'name'=>$r[$name]];
+			foreach($rs as $r) $arr[] = ['id'=>$r['Id'], 'name'=>$r[$name.$lang]];
 		}
 		else {
-			foreach($rs as $r) $arr[$r['Id']] = $r[$name];
+			foreach($rs as $r) $arr[$r['Id']] = $r[$name.$lang];
 		}
-		return $arr; //['count'=>count($arr), 'data'=>$arr];
+		return $arr;
 	}
 		
 	private static function logUser() {
@@ -131,8 +139,8 @@ klog::l("GETSHOW >>>>>",$args);
 		$msg = self::newMessages($id);
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
 		//$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'surname'=>$usr->Nom, 'name'=>$usr->Prenom, 
-				'id'=>$usr->Id, 'nickname'=>Sys::$User->Initiales, 'messages'=>$msg, 'favourites'=>$fav);
+		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 
+				'id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'messages'=>$msg, 'favourites'=>$fav);
 	}
 	
 	public static function Status() {
@@ -172,6 +180,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$s .= 'Click on the link below to confirm your registration :<br /><br />';
 		$s .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 		$s .= "This link will be active for 48 hours.<br /><br />";
+		$s .= "Please complete user information in Menu/My account.<br /><br />";
 		$s .= self::MailSignature();
 		$params = array('Subject'=>'www.shows.zone : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
 		self::SendMessage($params);

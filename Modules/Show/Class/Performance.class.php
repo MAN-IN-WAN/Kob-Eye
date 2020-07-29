@@ -10,7 +10,6 @@ class Performance extends genericClass {
 		$o = genericClass::createInstance('Show', 'Performance');
 		if($id) {
 			$o->initFromId($id);
-			//$dom = self::getChildrenArray($o, 'Domain');
 			$gen = self::getChildrenArray($o, 'Genre');
 			$lng = self::getChildrenArray($o, 'Language');
 		}
@@ -26,7 +25,6 @@ class Performance extends genericClass {
 		$o->StateId = $s->stateId;
 		$o->CityId = $s->cityId;
 		self::setChild($o, 'Category', $s->categoryId);
-		//self::setChildren($o, 'Domain', $dom, $s->domains);
 		self::setChildren($o, 'Genre', $gen, $s->genres);
 		self::setChildren($o, 'Language', $lng, $s->languages);
 		
@@ -42,8 +40,6 @@ class Performance extends genericClass {
 		$id = $args['id'];
 		$o = genericClass::createInstance('Show', 'Performance');
 		$o->initFromId($id);
-		//$cs = $o->getChildren('Domain');
-		//foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Genre');
 		foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Language');
@@ -96,22 +92,23 @@ class Performance extends genericClass {
 	
 	public static function GetPerf($args) {
 		$cond = $args['cond'];
+		$lang = $args['lang'];
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		$uid = $usr->Id;
 
 		switch($cond->type) {
 			case 'preview':
-				return self::getPreview($cond, $logged, $uid);
+				return self::getPreview($cond, $logged, $uid, $lang);
 			case 'details':
-				return self::getDetails($cond, $logged, $uid);
+				return self::getDetails($cond, $logged, $uid, $lang);
 		}
 		return array();
 	}
 	
-	private static function getPreview($cond, $logged, $uid) {
+	private static function getPreview($cond, $logged, $uid, $lang) {
 
-		$sql = "select s.Id,c.Category,mt.Maturity "; //,cr.Country ";
+		$sql = "select s.Id,c.Category$lang,mt.Maturity "; //,cr.Country ";
 		$frm = "from `kob-Show-Performance` s ";
 		$join = "left join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
@@ -134,7 +131,6 @@ class Performance extends genericClass {
 				if($cond->category) $whr .= "and s.CategoryId in ($cond->category) ";
 				if($cond->user) $whr .= "and s.userCreate=$cond->user ";
 				if($cond->year) $whr .= "and s.Year='$cond->year' ";
-				//if($cond->domain) $join .= "inner join `kob-Show-PerformanceDomains` pd on pd.PerformanceId=s.Id and pd.Domain in ($cond->domain) ";
 				if($cond->genre) $join .= "inner join `kob-Show-PerformanceGenres` pg on pg.PerformanceId=s.Id and pg.Genre in ($cond->genre) ";
 				if($cond->language) $join .= "inner join `kob-Show-PerformanceLanguages` pl on pl.PerformanceId=s.Id and pl.Language in ($cond->language) ";
 				//if($cond->crew) $join .= "inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew) ";
@@ -154,28 +150,7 @@ class Performance extends genericClass {
 				break;
 			case 4:
 				$txt = $cond->text;
-//				$sql = "select s.Id,c.Category,mt.Maturity,s.tmsEdit "
-//					."from `kob-Show-Performance` s "
-//					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-//					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-//					."where s.CountryId=$cond->country and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
-//					."union "
-//					."select s.Id,c.Category,mt.Maturity,s.tmsEdit "
-//					."from `kob-Show-People` p "
-//					."inner join `kob-Show-Crew` w on w.PeopleId=p.Id "
-//					."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId "
-//					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-//					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-//					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=$cond->country "
-//					."union "
-//					."select s.Id,c.Category,mt.Maturity,s.tmsEdit "
-//					."from `kob-Show-Crew` w "
-//					."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId "
-//					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-//					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-//					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cond->country "
-//					."order by tmsEdit, Id desc";
-				$sql = "select s.Id,c.Category,mt.Maturity,s.tmsEdit "
+				$sql = "select s.Id,c.Category$lang,mt.Maturity,s.tmsEdit "
 					."from `kob-Show-Performance` s "
 					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
 					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
@@ -198,7 +173,7 @@ class Performance extends genericClass {
 					break;
 		} 
 		
-		if($cond->mode != 4) $sql .= $frm.$join.$whr.' order by '.($group ? 'c.Category,' : '').'s.tmsEdit desc, s.Id desc';
+		if($cond->mode != 4) $sql .= $frm.$join.$whr.' order by '.($group ? "c.Category$lang," : '').'s.tmsEdit desc, s.Id desc';
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -215,29 +190,24 @@ class Performance extends genericClass {
 				if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
 				$acat = [];
 				$rcat = $cat;
-				$ncat = $r['Category'];
+				$ncat = $r["Category$lang"];
 			}
 			$d = new stdClass();
 			$d->id = $p->Id;
 			$d->mine = $logged && $p->userCreate == $uid;
 			$d->title = $p->Title;
 			$d->subtitle = $p->Subtitle;
-			//$d->year = $p->Year;
+			$d->year = $p->Year;
 			$d->categoryId = $cat;
-			$d->category = $r['Category'];
+			$d->category = $r["Category$lang"];
 			$d->countryId = $p->CountryId;
-			//$d->country = $r['Country'];
-			//$d->MaturityId = $p->MaturityId;
 			$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
-			//$d->domains = $dom = self::getChildrenArray($p, 'Domain');
-			//$d->genres = $dom = self::getChildrenArray($p, 'Genre');
 			$d->votes = $p->Votes;
 			$d->rating = $p->Rating;
 			$d->comments = $p->Comments;
 			$main = '';
 			$picts = self::getPictures($p, $main);
 			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
-			//$d->picts = $picts;
 			$d->pict = $main;
 
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
@@ -251,11 +221,11 @@ class Performance extends genericClass {
 		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'group'=>$group, 'sql'=>$sql];
 	}
 
-	private static function getDetails($cond, $logged, $uid) {
+	private static function getDetails($cond, $logged, $uid, $lang) {
 		$id = $cond->id;
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
-		$sql = "select c.Category,mt.Maturity,cr.Country,st.State,cy.City,u.Initiales "
+		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales "
 				."from `kob-Show-Performance` s "
 				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
@@ -280,15 +250,14 @@ class Performance extends genericClass {
 		$d->year = $p->Year;
 		$d->duration = $p->Duration;
 		$d->categoryId = $p->CategoryId;
-		$d->category = $r['Category'];		
+		$d->category = $r["Category$lang"];		
 		$d->maturityId = $p->MaturityId;
 		$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
-		//$d->domains = $dom = self::getChildrenArray($p, 'Domain');
-		$d->genres = $dom = self::getChildrenArray($p, 'Genre');
-		$d->publics = $dom = self::getChildrenArray($p, 'Public');
-		$d->languages = $dom = self::getChildrenArray($p, 'Language');
+		$d->genres = $dom = self::getChildrenArray($p, 'Genre', $lang);
+		$d->publics = $dom = self::getChildrenArray($p, 'Public', $lang);
+		$d->languages = $dom = self::getChildrenArray($p, 'Language', $lang);
 		$d->countryId = $p->CountryId;
-		$d->country = $r['Country'];
+		$d->country = $r["Country$lang"];
 		$d->stateId = $p->StateId;
 		$d->state = $r['State'];
 		$d->cityId = $p->CityId;
@@ -301,8 +270,7 @@ class Performance extends genericClass {
 		$d->pict = $main;
 		$d->links = self::getLinks($p);
 		$d->crew = self::getCrew($p);
-		//$dom = Show::getObjsArray('Domain', 'CategoryId='.$d->categoryId);
-		$gnr = Show::getObjsArray('Genre', 'CategoryId='.$d->categoryId);
+		$gnr = Show::getObjsArray('Genre', 'CategoryId='.$d->categoryId, false, $lang);
 		
 		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'genres'=>$gnr, 'sql'=>$sql];
 	}
@@ -319,14 +287,14 @@ class Performance extends genericClass {
 //		return $dur;
 //	}
 	
-	private static function getChildrenArray($parent, $name) {
+	private static function getChildrenArray($parent, $name, $lang) {
 		$table = $name.'s';
-		$sql = "select $name from `kob-Show-Performance$table` where PerformanceId=$parent->Id order by $name";
+		$sql = "select $name$lang from `kob-Show-Performance$table` where PerformanceId=$parent->Id order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 
 		$tmp = array();
-		foreach($rs as $r) $tmp[] = $r[$name];
+		foreach($rs as $r) $tmp[] = $r[$name.$lang];
 		return $tmp;
 	}
 

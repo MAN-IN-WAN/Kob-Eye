@@ -59,7 +59,6 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 		<PROPERTIES type="varchar" length="16" category="Description" list="2" form="2" fiche="2" description="Duration">Duration</PROPERTIES>
 		<FKEY card="1,1" data="Category,Id" useKeyName="1" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</FKEY>
-		<RKEY card="0,n" data="Domain,Id" useKeyName="1" form="1" fiche="1" >Domains</RKEY>
 		<RKEY card="0,n" data="Genre,Id" useKeyName="1" form="1" fiche="1" >Genres</RKEY>
 
 		<RKEY card="0,n" data="Language,Id" useKeyName="1" form="1" fiche="1" >Languages</RKEY>
@@ -127,12 +126,9 @@
 
 
 	<OBJECTCLASS title="Category" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Category</PROPERTIES>
-	</OBJECTCLASS>
-
-	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" Description="Domain" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<FKEY card="1,1" data="Category,Id" form="1" fiche="1" >CategoryId</FKEY>
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Domain</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="CrewType" driver="mysql" AccessPoint="1" Description="CrewType" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
@@ -150,15 +146,21 @@
 
 	<OBJECTCLASS title="Genre" driver="mysql" AccessPoint="1" Description="Genre" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<FKEY card="1,1" data="Category,Id" form="1" fiche="1" >CategoryId</FKEY>
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Genre</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">GenreEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">GenreFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">GenreES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Language" driver="mysql" AccessPoint="1" Description="Language" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">LanguageEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">LanguageFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">LanguageES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Place" driver="mysql" AccessPoint="1" Description="Place" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Place</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="MediumType" driver="mysql" AccessPoint="1" Description="MediumType" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
@@ -168,7 +170,9 @@
 
 	<OBJECTCLASS title="Country" driver="mysql" AccessPoint="1" Description="Country" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<PROPERTIES type="varchar" length="2" searchOrder="2" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
-		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">Country</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">CountryEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">CountryFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">CountryES</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" form="1" list="1" fiche="1">PhoneCode</PROPERTIES>
 	</OBJECTCLASS>
@@ -187,7 +191,6 @@
 
 	<OBJECTCLASS title="Translation" driver="mysql" AccessPoint="1" Description="Translation" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<PROPERTIES type="varchar" length="2" searchOrder="1" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
-		<PROPERTIES type="varchar" length="8" searchOrder="3" category="Description" form="1" list="1" fiche="1">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" searchOrder="2" category="Description" form="1" list="1" fiche="1">Original</PROPERTIES>
 		<PROPERTIES type="varchar" length="128" category="Description" form="1" list="1" fiche="1">Translation</PROPERTIES>
 	</OBJECTCLASS>
