@@ -16,6 +16,9 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'account': return self::saveUser($args);	
+			case 'nickname': return self::checkNickname($args);	
+			case 'email': return self::checkEMail($args);			
 			case 'change-pwd': return self::changePwd($args);			
 			case 'lost-pwd': return self::lostPwd($args);			
 			case 'add-role': return Performance::AddRole($args);
@@ -40,7 +43,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'perf': return Performance::GetPerf($args);
 			case 'favourite': return Performance::SetFavourite($args);
 		}
-		return array('error'=>'mode unknown');
+		return array('err'=>'mode unknown');
 	}
 	
 	private static function logout($args) {
@@ -50,13 +53,17 @@ klog::l("GETSHOW >>>>>",$args);
 
 	private static function param($args) {
 		$id = $args['id'];
+		$eqid = '';
+		if(strpos($id, ',')) $eqid = " in ($id)";
+		else $eqid = "=$id";
+		
 		$flt = $args['filter'];
 		$lang = $args['lang'];
 		switch($args['type']) {
 			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
-			case 'states': $data = self::getObjsArray('State', "CountryId=$id and State like '%$flt%'", true, ''); break;
-			case 'cities': $data = self::getObjsArray('City', "StateId=$id", true, ''); break;
-			case 'genres': $data = self::getObjsArray('Genre', "CategoryId=$id", false, $lang); break;
+			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
+			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
+			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -106,7 +113,35 @@ klog::l("GETSHOW >>>>>",$args);
 				'translation'=>$trn);
 	}
 	
+	private static function saveUser($args) {
+		$acc = $args['account'];
+		$ret = self::checkNickname(['nickname'=>$acc->nickname, 'id'=>$acc->id]);
+		if(!$ret['success']) return $ret;
+		$ret = self::checkEMail(['email'=>$acc->email, 'id'=>$acc->id]);
+		if(!$ret['success']) return $ret;
+		$usr = Sys::$User;
+		$usr->Initiales = $acc->nickname;
+		$usr->Mail = $acc->email;
+		$usr->Nom = $acc->name;
+		$usr->Tel = $acc->phone;
+		$usr->Save();
+		return ['success'=>true];
+	}
+
+	private static function checkNickname($args) {
+		$usr = Sys::getOneData('Systeme', 'User/Initiales='.$args['nickname'].'&Id!='.$args['id']);
+		$exists = $usr !== false && $usr !== null;
+		if($exists) return ['success'=>false, 'err'=>'This nickname already exists'];
+		return ['success'=>true];
+	}
 	
+	private static function checkEMail($args) {
+		$usr = Sys::getOneData('Systeme', 'User/Login='.$args['email'].'&Id!='.$args['id']);
+		$exists = $usr !== false && $usr !== null;
+		if($exists) return ['success'=>false, 'err'=>'This email already exists'];
+		return ['success'=>true];
+	}
+
 	private static function getTranslation($lang) {
 		$trn = [];
 		$rs = Sys::getData('Show', "Translation/Language=$lang");
@@ -188,6 +223,14 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('success'=>true);
 	}
 	
+	
+	private static function checkGroup($usr) {
+		$gs = $usr->getParents('Group');
+		foreach($gs as $g) {
+			if($g->Nom == 'SHOW') return true;
+		}
+		return false;
+	}
 
 	private static function lostPwd($args) {
 		$mail = $args['email'];
@@ -196,11 +239,7 @@ klog::l("GETSHOW >>>>>",$args);
 		if(!$u) return ['success'=>false, 'err'=>'User not found'];
 		$usr = genericClass::createInstance('Systeme', 'User');
 		$usr->initFromId($u->Id);
-		$ok = false;
-		$gs = $usr->getParents('Group');
-		foreach($gs as $g) {
-			if($g->Nom == 'SHOW') $ok = true;
-		}
+		$ok = self::checkGroup($usr);
 		if(!$ok) return ['success'=>false, 'err'=>'User not found'];
 		
 		$host = $_SERVER['HTTP_ORIGIN'];
@@ -220,15 +259,15 @@ klog::l("GETSHOW >>>>>",$args);
 		$cred = $args['credentials'];
 		if($cred->id) {
 			$usr = Sys::$User;
-			if($usr->Id != $cred->id) return ['success'=>false, 'err'=>'Wrong user'];
-			if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect confirmation'];
+			if($usr->Id != $cred->id) return ['success'=>false, 'err'=>'Incorrect user'];
+			if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect mail confirmation'];
 			if($usr->Pass != '[md5]'.md5($cred->old)) return ['success'=>false, 'err'=>'Invalid password'];
 			$usr->Pass = '[md5]'.md5($cred->pass);
 			$usr->Save();
 			return ['success'=>true];
 		} 
 				
-		$data = array('success'=>false, 'err'=>"Incorrect link.");
+		$data = array('success'=>false, 'err'=>"Incorrect link");
 		
 		$get = isset($cred->info) ? trim($cred->info) : '';
 		if($get == '') return $data;
@@ -237,14 +276,14 @@ klog::l("GETSHOW >>>>>",$args);
 		if(($info[1]+86400) < time()) return ['success'=>false, 'err'=>'This link has expired'];
 		$u = Sys::getOneData('Systeme', 'User/Login='.$info[0]);
 		if(!$u || $u->Mail != $info[0]) return ['success'=>false, 'err'=>'Incorrect user'];
-		if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect confirmation'];
+		if($cred->pass != $cred->pass2) return ['success'=>false, 'err'=>'Incorrect mail confirmation'];
 		$u->Pass = '[md5]'.md5($cred->pass);
 		$u->Save();
 		return ['success'=>true];
 	}
 	
 	private static function registerConfirm($args) {
-		$data = array('success'=>0,'message'=>"Incorrect link.");
+		$data = array('success'=>0,'message'=>"Incorrect link");
 
 		$get = isset($args['info']) ? trim($args['info']) : '';
 		if($get == '') return $data;
@@ -253,7 +292,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = explode(',', base64_decode($get));
 		if(count($info) != 3) return $data;	
 		if(($info[2]+2*86400) < time()) {
-			$data['message'] = "This link has expired.";
+			$data['message'] = "This link has expired";
 			return $data;
 		}
 		

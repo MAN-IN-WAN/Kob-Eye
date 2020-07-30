@@ -109,15 +109,15 @@ class Performance extends genericClass {
 	
 	private static function getPreview($cond, $logged, $uid, $lang) {
 
-		$sql = "select s.Id,c.Category$lang,mt.Maturity "; //,cr.Country ";
+		$sql = "select s.Id,c.Category$lang,mt.Maturity ";
 		$frm = "from `kob-Show-Performance` s ";
-		$join = "left join `kob-Show-Category` c on c.Id=s.CategoryId "
+		$join = "inner join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
-				//."left join `kob-Show-Country` cr on cy.Id=s.CountryId ";
+
 		$cry = $cond->country;
 		$group = false;
 		$name = '';
-		$whr = "where countryId=$cry ";
+		$whr = "and countryId=$cry ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
@@ -149,15 +149,10 @@ class Performance extends genericClass {
 						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
 					$whr .= "and match (role) against ('$cond->role') ";
 				}
-				break;
-			case 4:
 				$txt = $cond->text;
-				$name = 'Search: '.$txt;
-				$sql = "select s.Id,c.Category$lang,mt.Maturity "
-					."from `kob-Show-Performance` s "
-					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-					."where s.Id in ( "
+				if($txt) {
+					$name .= ": $txt";
+					$whr = "and s.Id in ( "
 					."select s.Id "
 					."from `kob-Show-Performance` s "
 					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
@@ -180,12 +175,41 @@ class Performance extends genericClass {
 					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
 					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
 					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
-					.") "
-					."order by s.tmsEdit,s.Id desc";
-					break;
+					.") ".$whr;
+				}
+//				$sql = "select s.Id,c.Category$lang,mt.Maturity "
+//					."from `kob-Show-Performance` s "
+//					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
+//					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
+//					."where s.Id in ( "
+//					."select s.Id "
+//					."from `kob-Show-Performance` s "
+//					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
+//					."union "
+//					."select s.Id "
+//					."from `kob-Show-Crew` c "
+//					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
+//					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=$cry "
+//					."union "
+//					."select s.Id "
+//					."from `kob-Show-Crew` c "
+//					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
+//					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
+//					."union "
+//					."select s.Id from `kob-Show-Category` c "
+//					."inner join `kob-Show-Performance` s on s.CategoryId=c.id "
+//					."where c.Category$lang like '$txt%' and s.CountryId=$cry "
+//					."union "
+//					."select s.Id from `kob-Show-Genre` g "
+//					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
+//					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
+//					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
+//					.") "
+//					."order by s.tmsEdit,s.Id desc";
+//					break;
 		} 
 		
-		if($cond->mode != 4) $sql .= $frm.$join.$whr.' order by '.($group ? "c.Category$lang," : '').'s.tmsEdit desc, s.Id desc';
+		$sql .= $frm.$join." where ".substr($whr, 3).' order by '.($group ? "c.Category$lang," : '').'s.tmsEdit desc, s.Id desc';
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
