@@ -212,13 +212,31 @@ klog::l("<<<<<<",$geo);
 
 		$host = $_SERVER['HTTP_ORIGIN'];
 		$info = base64_encode($u->Id.','.$c->email.','.time());
-		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
-		$s .= 'Click on the link below to confirm your registration :<br /><br />';
-		$s .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
-		$s .= "This link will be active for 48 hours.<br /><br />";
-		$s .= "Please complete user information in Menu/My account.<br /><br />";
-		$s .= self::MailSignature();
-		$params = array('Subject'=>'www.shows.zone : Confirm registration.', 'To'=>array($c->email), 'Body'=>$s);
+		switch($args['lang']) {
+			case 'EN':
+				$s = 'www.shows.zone : Confirm registration.';
+				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Click on the link below to confirm your registration :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
+				$b .= "This link will be active for 48 hours.<br /><br />";
+				$b .= "Please complete user information in Menu/My account.<br /><br />";
+			case 'FR':
+				$s = 'www.shows.zone : Confirm registration.';
+				$s = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Click on the link below to confirm your registration :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
+				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
+				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
+			case 'ES':
+				$s = 'www.shows.zone : Confirm registration.';
+				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
+				$b .= "This link will be active for 48 hours.<br /><br />";
+				$b .= "Please complete user information in Menu/My account.<br /><br />";
+		}
+		$b .= self::MailSignature();
+		$params = array('Subject'=>$s, 'To'=>array($c->email), 'Body'=>$b);
 		self::SendMessage($params);
 
 		return array('success'=>true);
@@ -245,12 +263,32 @@ klog::l("<<<<<<",$geo);
 		
 		$host = $_SERVER['HTTP_ORIGIN'];
 		$info = base64_encode($mail.','.time());
-		$s = "Hello ".$u->Initiales.",<br /><br /><br />";
-		$s .= 'Click on the link below to change your password :<br /><br />';
-		$s .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
-		$s .= "This link will be active for 24 hours.<br /><br />";
+		switch($lang) {
+			case 'EN':
+				$s = 'www.shows.zone : Lost password.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Click on the link below to change your password :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
+				$b .= "This link will be active for 24 hours.<br /><br />";
+				break;
+			case 'FR':
+				$s = 'www.shows.zone : Mot de passe oublié.';
+				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Cliquer sur le lien ci dessous pour changer de mot de passe :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/password?info=$info\">Changer le mot de passe</a></strong><br /><br />";
+				$b .= "Ce lien restera actif pendant 24 heures.<br /><br />";
+				break;
+			case 'ES':
+				$s = 'www.shows.zone : Change password.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b .= 'Click on the link below to change your password :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
+				$b .= "This link will be active for 24 hours.<br /><br />";
+				break;
+		}
+		
 		$s .= self::MailSignature();
-		$params = array('Subject'=>'www.shows.zone : Change password.', 'To'=>array($mail), 'Body'=>$s);
+		$params = array('Subject'=>$s, 'To'=>array($mail), 'Body'=>$$b);
 		self::SendMessage($params);		
 		
 		return ['success'=>true];
@@ -353,6 +391,7 @@ klog::l("<<<<<<",$geo);
 			foreach($params['ReplyTo'] as $to)
 				$Mail->ReplyTo($to);
 		}
+		$Mail->Cc('paul@abtel.fr');
 		if(isset($params['Cc'])) {
 			foreach($params['Cc'] as $to)
 				$Mail->Cc($to);
