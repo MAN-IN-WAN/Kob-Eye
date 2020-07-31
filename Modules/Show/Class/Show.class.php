@@ -83,14 +83,15 @@ klog::l("<<<<<<",$geo);
 				$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 				if($cy) {
 					$countryId = $cy->Id;
-					$country = $cy->Country;
 					$langName = $cy->Language;
+					switch($langName) {
+						case 'English': $lang = 'EN'; break;
+						case 'French': $lang = 'FR'; break;
+						case 'Spanish': $lang = 'ES'; break;
+					}
+					$fld = "Country$lang";
+					$country = $cy->$fld;
 				}
-			}
-			switch($langName) {
-				case 'English': $lang = 'EN'; break;
-				case 'French': $lang = 'FR'; break;
-				case 'Spanish': $lang = 'ES'; break;
 			}
 		}
 		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId];
