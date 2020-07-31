@@ -78,6 +78,7 @@ klog::l("GETSHOW >>>>>",$args);
 		if($first) {
 			$ip = $_SERVER['REMOTE_ADDR']; 
 			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
+klog::l("<<<<<<",$geo);
 			if($geo->geoplugin_status == 200) {
 				$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 				if($cy) {
