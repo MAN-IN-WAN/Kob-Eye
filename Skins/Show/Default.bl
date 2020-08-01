@@ -1,11 +1,13 @@
 [HEADER]
 <base href="/s/" />
 
+<title>Share your performances: Theatre, Dance, Music</title>
+<meta name="description" content=""/>
 <meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
-<meta name="reply-to" content="paul@polgo.ooo"/>
-<meta name="owner" content="POLGO"/>
-<meta name="keywords" content="Shows, Theatre, Music, Dance"/>
+<meta name="reply-to" content="paul.gordon.fisher@gmail.com"/>
+<meta name="owner" content="Paul Gordon Fisher"/>
+<meta name="keywords" content="Performance, Show, Theatre, Music, Dance, Play, Théâtre, Musique, Partage, Share"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
@@ -22,7 +24,7 @@
 
   <app-root></app-root>
 
-<script src="runtime-es2015.46d9f97dbdc42bf1a18e.js" type="module"></script><script src="runtime-es5.46d9f97dbdc42bf1a18e.js" nomodule defer></script><script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script><script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script><script src="main-es2015.69bb4f9a4adcec5c9cd2.js" type="module"></script><script src="main-es5.69bb4f9a4adcec5c9cd2.js" nomodule defer></script>
+<script src="runtime-es2015.1beea0a981c806f66e23.js" type="module"></script><script src="runtime-es5.1beea0a981c806f66e23.js" nomodule defer></script><script src="polyfills-es5.9cd47f4d9b38be382f04.js" nomodule defer></script><script src="polyfills-es2015.0a12d9fd31bcca967008.js" type="module"></script><script src="main-es2015.9a68da27c33bffb7e978.js" type="module"></script><script src="main-es5.9a68da27c33bffb7e978.js" nomodule defer></script>
 
 
 
