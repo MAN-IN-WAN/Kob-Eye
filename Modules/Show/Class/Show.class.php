@@ -92,8 +92,8 @@ klog::l("GETSHOW >>>>>",$args);
 					$langName = $cy->Language;
 					switch($langName) {
 						case 'English': $lang = 'EN'; break;
-						case 'Français': $lang = 'FR'; break;
-						case 'Español': $lang = 'ES'; break;
+						case 'French': $lang = 'FR'; $langName = 'Français'; break;
+						case 'Spanish': $lang = 'ES'; $langName = 'Español'; break;
 					}
 					$fld = "Country$lang";
 					$country = $cy->$fld;
@@ -107,6 +107,8 @@ klog::l("GETSHOW >>>>>",$args);
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
 		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'messages'=>$msg);
 	}
+	
+	
 	
 	private static function loadLang($args) {
 		$lang = $args['lang'];
