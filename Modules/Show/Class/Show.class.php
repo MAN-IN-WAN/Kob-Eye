@@ -16,6 +16,7 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'privacy': return self::privacy($args);	
 			case 'account': return self::saveUser($args);	
 			case 'nickname': return self::checkNickname($args);	
 			case 'email': return self::checkEMail($args);			
@@ -29,6 +30,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'msg': return Message::AddMsg($args);
 			case 'image': return Performance::LoadImage($args);
 			case 'del-pict': return Performance::DelPict($args);
+			case 'main-pict': return Performance::MainPict($args);
 			case 'add-link': return Performance::AddLink($args);
 			case 'del-link': return Performance::DelLink($args);
 			case 'save-perf': return Performance::SavePerf($args);
@@ -44,6 +46,11 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'favourite': return Performance::SetFavourite($args);
 		}
 		return array('err'=>'mode unknown');
+	}
+
+	private static function privacy($args) {
+		$a = Sys::getOneData('Redaction', 'Article/Titre=SHOW');
+		return ['success'=>true, 'text'=>$a->Contenu];
 	}
 	
 	private static function logout($args) {

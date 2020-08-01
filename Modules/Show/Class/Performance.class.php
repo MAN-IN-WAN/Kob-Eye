@@ -159,29 +159,20 @@ class Performance extends genericClass {
 					."union "
 					."select s.Id "
 					."from `kob-Show-Crew` c "
-					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=$cry "
+					."where MATCH (Name) AGAINST ('$txt') "
 					."union "
 					."select s.Id "
 					."from `kob-Show-Crew` c "
-					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
+					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) "
 					."union "
 					."select s.Id from `kob-Show-Category` c "
-					."inner join `kob-Show-Performance` s on s.CategoryId=c.id "
-					."where c.Category$lang like '$txt%' and s.CountryId=$cry "
+					."where c.Category$lang like '$txt%' "
 					."union "
-					."select s.Id from `kob-Show-Genre` g "
+					."select pg.PerformanceId as Id from `kob-Show-Genre` g "
 					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
-					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
-					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
+					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) "
 					.") ".$whr;
-				}
-//				$sql = "select s.Id,c.Category$lang,mt.Maturity "
-//					."from `kob-Show-Performance` s "
-//					."inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-//					."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-//					."where s.Id in ( "
+//					$whr = "and s.Id in ( "
 //					."select s.Id "
 //					."from `kob-Show-Performance` s "
 //					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
@@ -204,9 +195,8 @@ class Performance extends genericClass {
 //					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
 //					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
 //					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
-//					.") "
-//					."order by s.tmsEdit,s.Id desc";
-//					break;
+//					.") ".$whr;
+				}
 		} 
 		
 		$sql .= $frm.$join." where ".substr($whr, 3).' order by '.($group ? "c.Category$lang," : '').'s.tmsEdit desc, s.Id desc';
@@ -336,7 +326,7 @@ class Performance extends genericClass {
 		$tmp = array();
 		foreach($rs as $r) {
 			if(empty($main) || $r->MainPicture) $main = $r->Medium;
-			$tmp[] = ['id'=>$r->Id, 'pict'=>$r->Medium, 'title'=>$r->Description, 'subtitle'=>'', 'year'=>$r->Year];
+			$tmp[] = ['id'=>$r->Id, 'pict'=>$r->Medium, 'main'=>($r->MainPicture?true:false), 'title'=>$r->Description, 'subtitle'=>'', 'year'=>$r->Year];
 		}
 		return array('count'=>count($tmp), 'data'=>$tmp);
 	}
@@ -405,6 +395,29 @@ class Performance extends genericClass {
 		$main = '';
 		$pict = self::getPictures($p, $main);
 		return ['success'=>true, 'logged'=>true, 'picts'=>$picts, 'pict'=>$main];
+	}
+
+	public static function MainPict($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$id = $args['id'];
+		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
+		$ms = $p->getChildren('Medium');
+		foreach($ms as $m) {
+			if($m->Id == $id) {
+				if(!$m->MainPicture) {
+					$m->MainPicture = 1;
+					$m->Save();
+				}
+			}
+			else if($m->MainPicture) {
+				$m->MainPicture = 0;
+				$m->Save();
+			}
+		}
+		return ['success'=>true, 'logged'=>true];
 	}
 
 	private static function getCrew($parent) {
