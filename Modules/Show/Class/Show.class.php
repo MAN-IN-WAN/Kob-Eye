@@ -85,7 +85,6 @@ klog::l("GETSHOW >>>>>",$args);
 		if($first) {
 			$ip = $_SERVER['REMOTE_ADDR']; 
 			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-klog::l("<<<<<<",$geo);
 			if($geo->geoplugin_status == 200) {
 				$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 				if($cy) {
@@ -93,8 +92,8 @@ klog::l("<<<<<<",$geo);
 					$langName = $cy->Language;
 					switch($langName) {
 						case 'English': $lang = 'EN'; break;
-						case 'French': $lang = 'FR'; break;
-						case 'Spanish': $lang = 'ES'; break;
+						case 'Français': $lang = 'FR'; break;
+						case 'Español': $lang = 'ES'; break;
 					}
 					$fld = "Country$lang";
 					$country = $cy->$fld;
@@ -164,7 +163,6 @@ klog::l("<<<<<<",$geo);
 		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
-klog::l($sql);
 
 		$arr = array();
 		if($obj) {
