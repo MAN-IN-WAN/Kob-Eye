@@ -164,6 +164,7 @@ klog::l("<<<<<<",$geo);
 		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+klog::l($sql);
 
 		$arr = array();
 		if($obj) {
