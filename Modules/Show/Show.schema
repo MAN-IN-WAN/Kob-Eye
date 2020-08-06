@@ -60,6 +60,7 @@
 		<PROPERTIES type="varchar" length="16" category="Description" list="2" form="2" fiche="2" description="Duration">Duration</PROPERTIES>
 		<FKEY card="1,1" data="Category,Id" useKeyName="1" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</FKEY>
 		<RKEY card="0,n" data="Genre,Id" useKeyName="1" form="1" fiche="1" >Genres</RKEY>
+		<RKEY card="0,n" data="Event,Id" useKeyName="1" form="1" fiche="1" >Events</RKEY>
 
 		<RKEY card="0,n" data="Language,Id" useKeyName="1" form="1" fiche="1" >Languages</RKEY>
 		<RKEY card="0,n" data="Public,Id" useKeyName="1" form="1" fiche="1" >Publics</RKEY>
@@ -163,6 +164,12 @@
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceEN</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceFR</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">PlaceES</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Event" driver="mysql" AccessPoint="1" Description="Event" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">EventEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">EventFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">EventES</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="MediumType" driver="mysql" AccessPoint="1" Description="MediumType" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >

@@ -16,6 +16,8 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'comments': return Performance::Comments($args);
+			case 'ratings': return Performance::Ratings($args);
 			case 'privacy': return self::privacy($args);	
 			case 'account': return self::saveUser($args);	
 			case 'nickname': return self::checkNickname($args);	
@@ -47,7 +49,7 @@ klog::l("GETSHOW >>>>>",$args);
 		}
 		return array('err'=>'mode unknown');
 	}
-
+	
 	private static function privacy($args) {
 		$a = Sys::getOneData('Redaction', 'Article/Titre=SHOW');
 		return ['success'=>true, 'text'=>$a->Contenu];
@@ -162,7 +164,6 @@ klog::l("GETSHOW >>>>>",$args);
 	public static function getObjsArray($name, $query, $obj, $lang) {
 		$sql = "select Id,$name$lang from `kob-Show-$name`";
 		if($query) $sql .= " where $query";
-		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 

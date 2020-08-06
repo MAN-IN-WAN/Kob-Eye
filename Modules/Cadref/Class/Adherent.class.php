@@ -857,7 +857,7 @@ order by a.Nom, a.Prenom";
 				Cadref::SendMessage($args);				
 			}
 			
-			if($mode == 0 && $obj['CopieEns'] && substr($sql0, 0, 19) == 'select i.CodeClasse') {
+			if($mode == 0 && $obj['CopieEns'] && strpos($whr, 'i.CodeClasse like') !== false) {
 				$sql1 = "select distinct en.Mail,en.Nom,en.Prenom,'' as Sexe ";
 				$frm1 = $frm." inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId "
 					."inner join `##_Cadref-Enseignant` en on en.Id=ce.EnseignantId ";

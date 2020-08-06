@@ -18,22 +18,16 @@ class Message extends genericClass {
 		
 		$msgs = [];
 		foreach($rs as $r) {
-			$dt = $r['dt'];
-			$gap = time() - $dt;
-			if($gap >= 15768000) $tim = date('M Y', $dt);
-			elseif($gap >= 518400) $tim = date('d M', $dt);
-			else $tim = date('D H:i', $dt);
-			
 			$d = new stdClass();
 			$d->id = $r['Id'];
 			$d->title = $r['Title'];
 			$d->uid = $r['FromId'];
 			$d->user = $r['Initiales'];
 			$d->count = $r['cnt'];
-			$d->time = $tim;
+			$d->time = $r['dt'];
 			$msgs[] = $d;
 		}
-		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs];
+		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql];
 	}
 	
 	public static function Dialog($args) {

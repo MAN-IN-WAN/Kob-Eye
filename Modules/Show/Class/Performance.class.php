@@ -2,6 +2,57 @@
 
 class Performance extends genericClass {
 	
+	public static function Comments($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+
+		$id = $args['id'];
+		$stars = $args['stars'];
+		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales "
+			."from `##_Show-Comments` c "
+			."inner join `##_Systeme-User` u on u.Id=c.UserId "
+			."where c.PerformanceId=$id "; 
+		if($stars) $sql .= "and c.Vote=$stars ";
+		$sql .= "order by c.CommentsDate desc";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+
+		$tmp = array();
+		foreach($rs as $r) {
+			$tmp[] = ['vote'=>$r['Vote'], 'text'=>$r['Comments'], 'time'=>$r['CommentsDate'],
+				'user'=>$r['Initiales'], 'userId'=>$r['Id']];
+		}
+		return ['success'=>true, 'comments'=>$tmp];
+	}
+	
+	public static function Ratings($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$id = $args['id'];
+		$sql = "select Vote,count(*) as cnt from `##_Show-Comments` where PerformanceId=$id group by Vote";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+
+		$tmp = array();
+		$tot = 0;
+		for($n = 5; $n > 0; $n--) $tmp[$n] = 0;
+		foreach($rs as $r) {
+			$tot += $r['cnt'];
+			$tmp[$r['Vote']] = $r['cnt'];
+		}
+		$arr = [];
+		for($n = 5; $n > 0; $n--) {
+			$v = $tmp[$n];
+			$c = $tot > 0 ? $v/$tot : 0;
+			$arr[] = ['stars'=>$n, 'votes'=>$v, 'coef'=>$c, 'prct'=>round($c*100)];
+		}
+		
+		return array('success'=>1, 'ratings'=>$arr);
+	}
+	
 	public static function SavePerf($args) {
 		$lang = $args['lang'];
 		$s = $args['show'];
@@ -220,7 +271,7 @@ class Performance extends genericClass {
 			}
 			$d = new stdClass();
 			$d->id = $p->Id;
-			$d->mine = $logged && $p->userCreate == $uid;
+			$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 			$d->title = $p->Title;
 			$d->subtitle = $p->Subtitle;
 			$d->year = $p->Year;
@@ -229,7 +280,7 @@ class Performance extends genericClass {
 			$d->countryId = $p->CountryId;
 			$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
 			$d->votes = $p->Votes;
-			$d->rating = $p->Rating;
+			$d->rating = round($p->Rating, 1);
 			$d->comments = $p->Comments;
 			$main = '';
 			$picts = self::getPictures($p, $main);
@@ -268,7 +319,7 @@ class Performance extends genericClass {
 		$d->id = $p->Id;
 		$d->uid = $p->userCreate;
 		$d->user = $r['Initiales'];
-		$d->mine = $logged && $p->userCreate == $uid;
+		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
 		$d->subtitle = $p->Subtitle;
 		$d->summary = $p->Summary;
@@ -289,7 +340,7 @@ class Performance extends genericClass {
 		$d->cityId = $p->CityId;
 		$d->city = $r['City'];		
 		$d->votes = $p->Votes;
-		$d->rating = $p->Rating;
+		$d->rating = round($p->Rating, 1);
 		$d->comments = $p->Comments;	
 		$main = '';
 		$d->picts = self::getPictures($p, $main);
