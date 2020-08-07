@@ -7,21 +7,13 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		
-		$sql = "select p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m.MessageDate) as dt "
-			."from `kob-Show-Message` m "
-			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
-			."inner join `kob-Systeme-User`u on u.Id=p.userCreate "
-			."where m.ToId=$usr->Id or m.FromId=$usr->Id "
-			."group by p.Id order by dt";
-		
-		
 		$sql = "select distinct p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
-			."and ((m1.FromId=m.FromId and m1.ToId=34) or (m1.FromId=34 and m1.ToId=m.FromId)) "
+			."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
 			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
 			."inner join `kob-Systeme-User`u on u.Id=p.userCreate "
-			."where m.ToId=34 "
+			."where m.ToId=$usr->Id "
 			."group by p.Id order by dt desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
