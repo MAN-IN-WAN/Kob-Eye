@@ -2,7 +2,13 @@
 
 class Performance extends genericClass {
 	
-	public static function Comments($args) {
+	
+	function Save() {
+		if($this->Id) $this->ComputeVotes();
+		return parent::Save();
+	}
+	
+	public static function GetComments($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];
@@ -26,7 +32,59 @@ class Performance extends genericClass {
 		return ['success'=>true, 'comments'=>$tmp];
 	}
 	
-	public static function Ratings($args) {
+	public static function GetVote($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		
+		$id = $args['show'];
+		$sql = "select Id,Vote,Comments from `##_Show-Comments` where PerformanceId=$id and UserId=$usr->Id limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$r = $rs->fetch(PDO::FETCH_ASSOC);
+		$vote = ['id'=>$r ? $r['Id'] : 0, 'show'=>$id, 'user'=>$usr->Id, 'vote'=>$r ? $r['Vote'] : 0, 'text'=>$r ? $r['Comments'] : ''];
+		return ['success'=>true, 'vote'=>$vote];
+	}
+		
+	public static function SetVote($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+			
+		$vote = $args['vote'];
+		$p = Sys::getOneData('Show', 'Performance/'.$vote->show);
+		if($vote->id) $c = Sys::getOneData('Show', 'Comments/'.$vote->id);
+		else {
+			$c = genericClass::createInstance('Show', 'Comments');
+klog::l("xxxxxxxxxxxxxxx",$c);
+			$c->addParent($p);
+			$c->addParent($usr);
+		}
+		$c->Vote = $vote->vote;
+		$c->Comments = $vote->text;
+		$c->Save();
+		$p->ComputeVotes();
+		$p->Save();
+		
+		return ['success'=>true, 'votes'=>$p->Votes, 'comments'=>$p->Comments, 'rating'=>$p->Rating];
+	}
+
+	function ComputeVotes() {
+		$votes = $comments = 0;
+		$rating = 0;
+		$cs = $this->getChildren('Comments');
+		foreach($cs as $c) {
+			$votes++;
+			if($c->Comments) $comments++;
+			$rating += $c->Vote;
+		}
+		$rating = round($rating/$votes,1);
+		$this->Votes = $votes;
+		$this->Comments = $comments;
+		$this->Rating = $rating;
+	}
+
+	public static function GetRatings($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];

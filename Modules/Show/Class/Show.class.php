@@ -16,8 +16,10 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
-			case 'comments': return Performance::Comments($args);
-			case 'ratings': return Performance::Ratings($args);
+			case 'vote': return Performance::SetVote($args);
+			case 'get-vote': return Performance::GetVote($args);
+			case 'comments': return Performance::GetComments($args);
+			case 'ratings': return Performance::GetRatings($args);
 			case 'privacy': return self::privacy($args);	
 			case 'account': return self::saveUser($args);	
 			case 'nickname': return self::checkNickname($args);	
