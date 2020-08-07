@@ -11,8 +11,18 @@ class Message extends genericClass {
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
 			."inner join `kob-Systeme-User`u on u.Id=p.userCreate "
-			."where m.ToId=$usr->Id "
+			."where m.ToId=$usr->Id or m.FromId=$usr->Id "
 			."group by p.Id order by dt";
+		
+		
+		$sql = "select distinct p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt "
+			."from `kob-Show-Message` m "
+			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
+			."and ((m1.FromId=m.FromId and m1.ToId=34) or (m1.FromId=34 and m1.ToId=m.FromId)) "
+			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
+			."inner join `kob-Systeme-User`u on u.Id=p.userCreate "
+			."where m.ToId=34 "
+			."group by p.Id order by dt desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -55,11 +65,11 @@ class Message extends genericClass {
 			$msgs[] = $d;
 		}
 		
-		$sql = "update `kob-Show-Message` set status=1 where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u)) and status=0";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql);
+		$sql1 = "update `kob-Show-Message` set status=1 where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u)) and status=0";
+		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		
-		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs];
+		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql];
 	}
 	
 	public static function AddMsg($args) {

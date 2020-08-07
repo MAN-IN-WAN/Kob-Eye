@@ -83,11 +83,13 @@ klog::l("GETSHOW >>>>>",$args);
 		$langName = $args['langName'];
 		$country = $args['country'];
 		$countryId = $args['countryId'];
+		$utcOffset = "+0200";
 		
 		if($first) {
 			$ip = $_SERVER['REMOTE_ADDR']; 
+			if($ip == '127.0.0.1') $ip = "185.87.66.101";
 			$geo = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-			if($geo->geoplugin_status == 200) {
+			if($geo->geoplugin_status == 200 || $geo->geoplugin_status == 206) {
 				$cy = Sys::getOneData('Show', 'Country/Code='.$geo->geoplugin_countryCode);
 				if($cy) {
 					$countryId = $cy->Id;
@@ -100,9 +102,10 @@ klog::l("GETSHOW >>>>>",$args);
 					$fld = "Country$lang";
 					$country = $cy->$fld;
 				}
+				$utcOffset = self::getGmtOffset($geo->geoplugin_timezone);
 			}
 		}
-		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId];
+		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId, 'utcOffset'=>$utcOffset];
 
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
@@ -430,5 +433,17 @@ klog::l("GETSHOW >>>>>",$args);
 			}
 		}
 		$ret = $Mail->Send();
+	}
+
+	private static function getGmtOffset($timezone){
+		$userTimeZone = new DateTimeZone($timezone);
+		$offset = $userTimeZone->getOffset(new DateTime("now",new DateTimeZone('GMT'))); // Offset in seconds
+		$seconds = abs($offset);
+		$sign = $offset > 0 ? '+' : '-';
+		$hours = floor($seconds / 3600);
+		$mins = floor($seconds / 60 % 60);
+		$secs = floor($seconds % 60);
+		return sprintf("$sign%02d:%02d", $hours, $mins);
+//		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
 	}
 }
