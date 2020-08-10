@@ -1764,6 +1764,25 @@ nav.left-menu .left-menu-list li.submenu-title{
 	--footer-margin:calc(var(--left-menu-width) + 16px);
 }
 
+/**
+Gestion des minisites
+
+ */
+
+.nothingHere{
+    padding: 15px;
+}
+.msParamsWrap{
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.msParams{
+    list-style-type: none;
+    margin-bottom: 15px;
+}
+
+
 @media(min-width: 768px) {
 	
     .icon-menu nav.left-menu{

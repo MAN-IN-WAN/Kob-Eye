@@ -1,8 +1,153 @@
-app.controller('ServicesMinisiteCtrlExtends', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
+app.controller('ParcMiniSiteCtrlExtends', function($location, $scope, $rootScope,$http,$timeout) {
 
 $scope.cliId = {{ Client.Id }};
 $scope.forceDisplayList = {{ forceDisplayList }};
 
 
+});
+
+app.controller('ParcMiniSiteFicheCtrlExtends', function($location, $scope, $rootScope,$http,$timeout, $location, ParcValeurMiniSiteStore) {
+
+    $scope.paramsMS = [];
+    $scope.curParam = null;
+
+    $http.post( $location.url()+'/getParams.json')
+    .success(function(data) {
+        $scope.paramsMS=data;
+        for(var n in $scope.paramsMS.common ){
+            $scope[$scope.paramsMS.common[n].obj] = $scope.paramsMS.common[n];
+        }
+        for(var i in $scope.paramsMS.pages ){
+            for(var j in $scope.paramsMS.pages[i].msParams ) {
+                $scope[$scope.paramsMS.pages[i].msParams[j].obj] = $scope.paramsMS.pages[i].msParams[j];
+            }
+        }
+    });
+
+    $scope.modalFocus = function (prop,obj,img){
+        console.warn(prop,obj);
+        $('#modalFocus .modal-dialog').spin();
+        $("#modalFocus").modal();
+
+        var FocusValue = obj[prop];
+        if(img){
+            var FocusValue = '<div style="text-align:center;height: 100%;display: flex;align-items: center; justify-content: center;"><img src="/'+FocusValue+'" alt="'+prop+'" style="border: 1px solid #ddd;"/></div>';
+        }
+        var $iframe = $('#focusFrame');
+        $iframe.ready(function() {
+            $iframe.contents().find("body").html(FocusValue);
+        });
+        $scope.FocusProperty = obj.NomPropre ? obj.NomPropre : obj.Nom;
+
+        $('#modalFocus .modal-dialog').spin(false);
+    }
+
+
+    $scope.msvalModify = function (obj){
+        $scope.curParam = obj;
+        console.log('edit ',obj.valms.Id);
+
+        if (obj.valms.Id != undefined){
+            ParcValeurMiniSiteStore.getOneData(obj.valms.Id,'default',false).then(function (data) {
+                $scope.modalObj = angular.copy(data);
+                $scope.modalObj.success = false;
+                $scope.modalObj.title = 'Modifier : ';
+                console.log('edit obj copy',$scope.modalObj);
+            });
+        }else {
+            $scope.modalObj = ParcValeurMiniSiteStore.getNewData();
+            $scope.modalObj.success = false
+            $scope.modalObj.ParametreMiniSiteParametreMiniSiteId = obj.Id;
+            if (obj.PageMiniSiteId != 0)
+            {
+                $scope.modalObj.PageMiniSitePageMiniSiteId = obj.PageMiniSiteId;
+            }
+            $scope.modalObj.MiniSiteMiniSiteId = $scope.obj.id;
+
+            $scope.modalObj.title = 'Définir : ';
+            console.log("ooooooooooooooooooooooooooooooooooooooooooooooooooooo",obj);
+            if (obj.ValeurDefaut != undefined && obj.ValeurDefaut != null && obj.ValeurDefaut != "")
+                $scope.modalObj.Valeur = obj.ValeurDefaut;
+
+            console.log('edit obj new',$scope.modalObj);
+        }
+        $("#modalfiche-ParcValeurMiniSite").modal();
+    }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        console.log('reset modalobj',$scope.modalObj);
+        $scope.modalObj = {};
+        $scope.$digest();
+    })
+    $scope.msvalSave = function (callback){
+        var link = $('.nav-link.active.navParam');
+        var dt = null;
+        if(link.length){
+            dt = link.data('target');
+        }
+        console.log('save ',$scope.modalObj);
+        //affichage spinner
+        $('#modalfiche-ParcValeurMiniSite .modal-dialog').spin();
+        ParcValeurMiniSiteStore.saveData($scope.modalObj).then(function (data) {
+            $('#modalfiche-ParcValeurMiniSite .modal-dialog').spin(false);
+            if (data.success){
+                $scope.modalObj = data.data;
+
+                if (!data.warning.length&&!data.success.length) {
+                    var modfic = $("#modalfiche-ParcValeurMiniSite");
+                    modfic.modal('toggle');
+                    if(callback != undefined) {
+                        if(modfic[0] == undefined) callback(data);
+                        else modfic.on('hidden.bs.modal', function(e) {
+                            callback(data);
+                        });
+                    }
+                }else{
+                    $scope.modalObj.success = data.success;
+                    $scope.modalObj.warning = data.warning;
+                    $scope.modalObj.errors = data.errors;
+                    $scope.modalObj.infos = data.infos;
+                }
+
+                ParcValeurMiniSiteStore.refresh();
+                $scope.curParam = null;
+                $http.post( $location.url()+'/getParams.json')
+                    .success(function(data) {
+                        $scope.paramsMS=data;
+                        for(var n in $scope.paramsMS.common ){
+                            $scope[$scope.paramsMS.common[n].obj] = $scope.paramsMS.common[n];
+                        }
+                        for(var i in $scope.paramsMS.pages ){
+                            for(var j in $scope.paramsMS.pages[i].msParams ) {
+                                $scope[$scope.paramsMS.pages[i].msParams[j].obj] = $scope.paramsMS.pages[i].msParams[j];
+                            }
+                        }
+
+                    }).finally(function() {
+                        $scope.$$postDigest(function(){
+                            if(dt){
+                                linkNew = $('.nav-link[data-target='+dt+']');
+                                linkNew.addClass('active');
+                                $(dt).addClass('active');
+                            }
+                        });
+
+                    });
+            }else {
+                //gestion des erreurs
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+                $scope.modalObj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.modalObj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
 
 });

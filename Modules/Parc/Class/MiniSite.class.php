@@ -87,14 +87,17 @@ public function Save(){
             if($page->MenuAffiche){
                 $titre = !empty($page->MenuTitre) ? $page->MenuTitre : $page->Titre;
                 $url = !empty($page->MenuUrl) ? $page->MenuUrl : $page->Titre;
-                $menus[] = array('Url'=>$url,'Titre'=>$titre,'Alias'=>'Parc/PageMiniSite/'.$page->Id);
+                $alias = !empty($page->Alias) ? $page->Alias : 'Parc/PageMiniSite/'.$page->Id;
+                $m = array('Url'=>$url,'Titre'=>$titre,'Alias'=>$alias);
+                if(!empty($page->Template)) $m['Template'] = $page->Template;
+                $menus[] = $m;
             }
         }
 
         //clean des url
         foreach($menus as &$menu){
-            $menu->Url = strtolower($menu->Url);
-            $menu->Url = Utils::checkSyntaxe($menu->Url);
+            $menu['Url'] = strtolower($menu['Url']);
+            $menu['Url'] = Utils::checkSyntaxe($menu['Url']);
         }
     }
 
@@ -147,6 +150,8 @@ public function Save(){
             $men->Titre = $m['Titre'];
             $men->Url = $m['Url'];
             $men->Alias = $m['Alias'];
+            if(!empty($m['Template']))
+                $men->Template = $m['Template'];
             $men->addParent($par);
             if(!$men->Save()) {
                 $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
@@ -206,26 +211,44 @@ public function Save(){
     return parent::Save();
 }
 
-public function Delete(){
+    public function Delete(){
 
-    $site = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
-    if($site){
-        $user = $site->getOneParent('User');
-        if($user){
-            $menus = $user->getChildren('Menu');
-            if(!empty($menus)) {
-                foreach ($menus as $menu){
-                    $menu->Delete();
+        $site = Sys::getOneData('Systeme','Site/Domaine='.$this->Domaine);
+        if($site){
+            $user = $site->getOneParent('User');
+            if($user){
+                $menus = $user->getChildren('Menu');
+                if(!empty($menus)) {
+                    foreach ($menus as $menu){
+                        $menu->Delete();
+                    }
                 }
+                $user->Delete();
             }
-            $user->Delete();
+            $site->Delete();
         }
-        $site->Delete();
+
+        parent::Delete();
     }
 
-    parent::Delete();
-}
+    public function getParams($full=true){
+        $params = $this->getChildren('ParametreMiniSite');
+        if($full){
+            $modele = $this->getOneParent('ModeleMiniSite');
+            $pms = $modele->getChildren('ParametreMiniSite');
+            $params = $params + $pms;
+        }
+        return $params;
+    }
 
-
+    public function getParamsValues($full=true){
+        $params = $this->getParams($full);
+        foreach ($params as &$p){
+            $val = $p->getOneChild('ValeurMiniSite/MiniSite.MiniSiteId('.$this->Id.')');
+            $p->vms = $val->Valeur;
+            $p->valms = $val;
+        }
+        return $params;
+    }
 
 }

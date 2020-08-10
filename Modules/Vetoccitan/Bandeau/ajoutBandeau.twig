@@ -1,0 +1,81 @@
+<style>
+    .imgBandoSelec{
+        width:100%;
+        height:300px;
+        object-fit:cover;
+    }
+    .textBandoSelec{
+        position: absolute;
+    }
+    .animDroite {
+        top: 0;
+        right: 0;
+        width: 250px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    .animGauche{
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    .selectBando:checked + label{
+        background-color: #eeeeee;
+    }
+    .labelSelectBando{
+        padding:10px;
+    }
+</style>
+{%  if funcTempVars.step == 0 %}
+    <h3>Génération d'un nouveau bandeau : </h3>
+    <p>Comment souhaitez vous procéder ?</p>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Dupliquer un bandeau de Vetoccitan ?</label>
+            {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <input type="radio" class="form-control" value="1" ng-model="VetoccitanBandeaufunction.args.type">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Créer son propre bandeau ?</label>
+            {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <input type="radio" class="form-control" value="2" ng-model="VetoccitanBandeaufunction.args.type">
+            </div>
+        </div>
+    </div>
+{%  elseif funcTempVars.step == 1 %}
+    <p>Choisissez un bandeau</p>
+    <div class="row">
+        {% for bando in goodBandeau %}
+            <div class="col-md-6">
+                <input class="selectBando" name="choixBandeau" id="choixBandeau_{{ bando.Id }}" type="radio" hidden ng-model="VetoccitanBandeaufunction.args.bandoId" value="{{ bando.Id }}">
+                <label class="labelSelectBando" for="choixBandeau_{{ bando.Id }}">
+                    <h4>{{ bando.Titre }}</h4>
+                    <div style="width: 100%;overflow: hidden;height: 300px;position: relative;">
+                        <img class="imgBandoSelec" src="{{ bando.Media.Image }}.limit.600x400.jpg" alt="{{ bando.Media.Titre }}">
+                        <div class="textBandoSelec {% if bando.Animation == 'droite' %}animDroite {% else %}animGauche{% endif %}">
+                            <div style="transform:scale(0.7)">
+                                {{ bando.Texte|raw}}
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{%  elseif funcTempVars.step == 2 %}
+    {{ include(template_from_string(module('Vetoccitan/Bandeau/Form?Path=[!Query!]&scopeObj=VetoccitanBandeaufunction.args.values'))) }}
+{% endif %}

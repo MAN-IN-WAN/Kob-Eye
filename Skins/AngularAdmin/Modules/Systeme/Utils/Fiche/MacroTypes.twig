@@ -9,7 +9,8 @@
     {% elseif field.query %}
         <span class="btn btn-warning btn-xs" >{[{ {{ obj }}.{{ field.name }}Label }]}</span>
     {% else %}
-        <span  ng-bind-html="{{ obj }}.{{ field.name }}"></span>
+        <span  ng-bind-html="{{ obj }}.{{ field.name }}" ng-if="{{ obj }}.{{ field.name }}"></span>
+        <span class="emptyVal" ng-if="!{{ obj }}.{{ field.name }}"> Non renseigné </span>
     {% endif %}
 {% endmacro %}
 
@@ -56,7 +57,8 @@
         <span class="label label-danger" ng-if="{{ obj }}.{{ field.name }}"><i class="fa fa-times"></i></span>
     {% else %}
         <span class="label label-success" ng-if="{{ obj }}.{{ field.name }}"><i class="fa fa-check"></i></span>
-        <span class="label label-danger" ng-if="!{{ obj }}.{{ field.name }}"><i class="fa fa-times"></i></span>
+        <span class="label label-danger" ng-if="!{{ obj }}.{{ field.name }} && {{ obj }}.{{ field.name }} != undefined"><i class="fa fa-times"></i></span>
+        <span class="label label" ng-if="{{ obj }}.{{ field.name }} == undefined">Non défini</span>
     {% endif %}
 {% endmacro %}
 
@@ -143,7 +145,18 @@
             <i class="icmn-eye"></i>
         </div>
         <div id="field_{{ field.name }}"  ng-if="!{{ obj }}.{{ field.name }}">
-            N.A.
+            Non renseigné
         </div>
     {% endif %}
+{% endmacro %}
+
+/** COLOR **/
+{% macro fcolor(field,obj) %}
+    <div ng-if="{{ obj }}.{{ field.name }}">
+        <span class="color_display" style="background-color: {[{ {{ obj }}.{{ field.name }} }]}"></span>
+        <span>  {[{ {{ obj }}.{{ field.name }} }]}  </span>
+    </div>
+    <div ng-if="!{{ obj }}.{{ field.name }}">
+        Non renseigné
+    </div>
 {% endmacro %}

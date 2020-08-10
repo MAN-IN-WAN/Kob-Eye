@@ -30,6 +30,7 @@ $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['searchfields'] = $o->getElementsByAttribute('searchOrder|search','',true);
 $vars['ObjectType'] = $info['ObjectType'];
 foreach ($vars['fields'] as $k=>$f){
+    if($f['hiddenList']) unset($vars['fields'][$k]);
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName'],true);
         if ($vars['fields'][$k]['link']==$f['objectModule'].'/'.$f['objectName'])

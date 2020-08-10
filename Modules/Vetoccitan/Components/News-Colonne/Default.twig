@@ -1,0 +1,14 @@
+<div class="boxnews hidden-xs">
+	<h2 class="news">{{ TITRE }}</h2>
+
+
+	{%  for LaNew in LesNews |slice(0, NBNEWS) %}
+			<div class="bloc-infos">
+				<h3><a href="/news/{{ LaNew.Url }}" class="LienNewsColonne">{{  LaNew.Titre }}</a></h3>
+			{#	<p>{{ LaNew.Description|striptags | slice (0 , 150)|raw  }}... </p> #}
+				</div>
+
+
+	{%  endfor %}
+	<div class="boutonCentre"><a href="/{{ LIEN }}"  >Voir toutes les news</a></div>
+</div>
