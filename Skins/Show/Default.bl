@@ -1,24 +1,29 @@
 [HEADER]
-<base href="/" />
+<base href="/s/" />
 
-<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<title>Share your performances: Theatre, Dance, Music</title>
+<meta name="description" content=""/>
+<meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
-<meta name="reply-to" content="info@sup-infor.com"/>
-<meta name="owner" content="SUP-INFOR"/>
-<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
+<meta name="reply-to" content="paul.gordon.fisher@gmail.com"/>
+<meta name="owner" content="Paul Gordon Fisher"/>
+<meta name="keywords" content="Performance, Show, Theatre, Music, Dance, Play, Théâtre, Musique, Partage, Share"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="msapplication-tap-highlight" content="no" />
 
-<link rel="icon" type="image/png" href="assets/icon/icon.png" />
+<link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="stylesheet" href="styles.9e1d7f21e9affc5bc3b9.css"></head>
+<link rel="stylesheet" href="styles.0865f1182fe7d0ebb3cb.css">
 
 [/HEADER]
 
   <app-root></app-root>
-<script src="runtime.07d333d6df27e6e69ede.js" defer></script><script src="polyfills-es5.0d249ce4fa421308b2de.js" nomodule defer></script><script src="polyfills.5ae6696c3f52ba5712ab.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.82274b3bfa54af5b5f41.js" defer></script></body>
+
+<script src="runtime-es2015.1813f11d8e19fa72667e.js" type="module"></script><script src="runtime-es5.1813f11d8e19fa72667e.js" nomodule defer></script><script src="polyfills-es5.a49d989efcbf8eaab207.js" nomodule defer></script><script src="polyfills-es2015.51c4f7e8d338ef7e78a0.js" type="module"></script><script src="main-es2015.0f3e4bfcab20d4813cc2.js" type="module"></script><script src="main-es5.0f3e4bfcab20d4813cc2.js" nomodule defer></script>
+
+

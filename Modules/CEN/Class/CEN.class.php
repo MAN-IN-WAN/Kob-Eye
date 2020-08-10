@@ -4,6 +4,7 @@ class CEN extends Module {
 
 	// liste d'entrées du CEN 
 	public static function GetCEN($args) {	
+//klog::l("GetCEN", $args);
 		switch($args['mode']) {
 			case 'chacha-dict':
 				return Chachalaca::GetDics();
@@ -24,7 +25,13 @@ class CEN extends Module {
 				return Chachalaca::GetMorpho($args);
 
 			case 'tlachia-anal':
-				return Codex::GetAnal($args);
+				$ret = Codex::GetAnal($args);
+				if(!$ret['success'] && $ret['nahuatl'] != trim(strtolower($args['word']))) {
+					$args['word'] = $ret['nahuatl'];
+					$ret1 = Codex::GetAnal($args);
+					$ret['norma'] = $ret1['success'];
+				}
+				return $ret;
 				
 			case 'codex':
 				return Codex::GetCodex($args);
@@ -126,13 +133,15 @@ class CEN extends Module {
 				break;
 			
 			case 'lang';
+				$vers = Sys::getOneData('CEN', 'Regle/Code=VERSION');
+				$vers = json_decode($vers->Regle);
 				$lang = Sys::getOneData('CEN', 'Regle/Code=LANGUE');
 				$lang = file_get_contents($lang->FilePath);
 				$lang = utf8_encode($lang);
 				$lang = str_replace("\r\n", "\n", $lang);
 				$rules = Sys::getOneData('CEN', 'Regle/Code=CONDITIONS');
 				$rules = file_get_contents($rules->FilePath);
-				return array('lang'=>$lang, 'rules'=>$rules);
+				return array('lang'=>$lang, 'rules'=>$rules, 'version'=>$vers->android, 'android'=>$vers->android, 'ios'=>$vers->ios);
 
 			default:
 				return array('error'=>'Mode inconnu:'.$args['mode']);
@@ -154,9 +163,10 @@ class CEN extends Module {
 	public static function fontSize($txt) {
 		return preg_replace_callback('/font-size:([0-9\.]*)([\ \%a-z]*)/',
         function ($ms) {
-			$p = 100;
+			$p = 1;
 			$v = $ms[1];
             switch(trim($ms[2])) {
+				case 'medium': $p = 1; break;
 				case 'pt': $p = $v/12; break;
 				case 'px': $p = $v/16; break;
 				case 'em': $p = $v; break;

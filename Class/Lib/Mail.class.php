@@ -29,7 +29,7 @@ class Mail extends PHPMailer{
 		$this->Subject = $subject;
 	}
 	function From( $from ){
-		$this->SetFrom($from);
+		$this->SetFrom($from, '');
 	}
 	function ReplyTo( $address ){
 		$this->AddReplyTo($address);

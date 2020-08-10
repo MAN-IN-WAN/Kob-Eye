@@ -38,7 +38,7 @@ class User extends genericClass{
         if($this->Admin) return true;
 		//Detection de la nature du pere (ne fonctionne que pour le niveau deux)
 		$ROLES = $this->getRoles();
-		$GLOBALS["Systeme"]->Log->log("ROLES",$ROLES);
+		//$GLOBALS["Systeme"]->Log->log("ROLES",$ROLES);
 		if (in_array($role, $ROLES))
 			return true;
 		else 

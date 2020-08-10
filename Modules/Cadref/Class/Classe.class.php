@@ -196,7 +196,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 
 		$annee = Cadref::$Annee;
 		$sql = "
-select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin
+select c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin, c.AvoirReporte
 from `##_Cadref-Classe` c
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId

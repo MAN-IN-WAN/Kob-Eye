@@ -47,5 +47,5 @@ foreach ($childs as $child){
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
-
+$vars['Type'] = 'adhInscription';
 ?>

@@ -13,6 +13,8 @@ class Cadref extends Module {
 	public static $Annee;
 	public static $Cotisation = null;
 	public static $Group = null;
+	public static $Adherent = null;
+	public static $Enseignant = null;
 
 	/**
 	 * Surcharge de la fonction postInit
@@ -81,6 +83,7 @@ class Cadref extends Module {
 		if(self::$Group == 'CADREF_ADH') {
 			$modif = false;
 			$adh = Sys::getOneData('Cadref', 'Adherent/Numero='.$usr->Login);
+			self::$Adherent = $adh;
 			$aan = $adh->getOneChild('AdherentAnnee/Annee='.self::$Annee);
 			if($aan) {
 				if($aan->AntenneId && !$site) {
@@ -108,6 +111,10 @@ class Cadref extends Module {
 				$modif = true;
 			}
 			if($modif) $usr->Save();
+		}
+		elseif(self::$Group == 'CADREF_ENS') {
+			$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.strtoupper(substr($usr->Login,3)));
+			self::$Enseignant = $ens;
 		}
 	}
 	
@@ -888,9 +895,7 @@ where ce.Classe=$cid
 	}
 
 		
-	public static function SendMessage($params) {	
-		
-klog::l("mmmmmmmmm",$params);
+	public static function SendMessage($params) {
 		$m = genericClass::createInstance('Systeme', 'MailQueue');
 		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
 		else $m->From = self::$MAIL_LET;
@@ -905,6 +910,7 @@ klog::l("mmmmmmmmm",$params);
 		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
 		$m->EmbeddedImages = $p->Valeur;
 		$m->Save();
+		return $m->Id;
 	}
 	
 	public static function MailCivility($a) {

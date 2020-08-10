@@ -29,4 +29,5 @@ if(!isset($info['ObjectType'])) {
 }
 $vars['Annee'] = Cadref::$Annee;
 $vars['context'] = 'children';
+$vars['Type'] = 'Cours';
 ?>

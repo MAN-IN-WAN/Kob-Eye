@@ -149,6 +149,10 @@ class Codex extends genericClass {
 		$ext = isset($args['ext']) ? $args['ext'] : '';
 		$ln = strlen($ext);
 
+		$lang = $args['lang'];
+		$extlg = ['es'=>'esp','fr'=>'fra','en'=>'ang'][$lang];
+		$extes = 'esp';
+
 		$dic = array();
 		$dicId = array();		
 		switch($type) {
@@ -164,23 +168,41 @@ class Codex extends genericClass {
 				return array('codex'=>$dic, 'codexId'=>$dicId); 
 				
 			case 'planche':
-				$sql = "select pCodexId,Id,Cote from `##_CEN-Zone` where CodexId=$id and substr(Cote,1,$ln)='$ext' order by Cote";
+				$sql = "select p.CodexId,p.Id,p.Cote,c.Repertoire "
+					."from `##_CEN-Planche` p "
+					."inner join `##_CEN-Codex` c on c.Id=p.CodexId "
+					."where p.CodexId=$id and substr(p.Cote,1,$ln)='$ext' order by p.Cote";
 				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-
-				$dics = Sys::getData('CEN', 'Planche/CodexId='.$id, 0, 999, 'ASC', 'Cote');
-				foreach($dics as $d) {
-					$dic[] = array('codexId'=>$d->CodexId, 'id'=>$d->Id, 'cote'=>$d->Cote); //, 'img'=>self::getImg($d->Cote, 'jpg'));
+				foreach($pdo as $p) {
+					$cote = trim($p['Cote']);
+					$file = getcwd()."/Home/2/CEN/Codex/".$p['Repertoire']."/textes/".str_replace('.','_',strtolower($cote));
+					$txt = file_exists($file.".$extlg");
+					if(!$txt) $txt = file_exists($file.".$extes");
+					
+					$dic[] = ['codexId'=>$p['CodexId'], 'id'=>$p['Id'], 'cote'=>$cote, 'txt'=>$txt];
 				}
+				//$dics = Sys::getData('CEN', 'Planche/CodexId='.$id, 0, 999, 'ASC', 'Cote');
+				//foreach($dics as $d) {
+				//	$dic[] = array('codexId'=>$d->CodexId, 'id'=>$d->Id, 'cote'=>$d->Cote); //, 'img'=>self::getImg($d->Cote, 'jpg'));
+				//}
 				return array('planches'=>$dic);
 				
 			case 'zone':
-				$sql = "select CodexId,Id,Cote from `##_CEN-Zone` where CodexId=$id and substr(Cote,1,$ln)='$ext' order by Cote";
+				$sql = "select z.CodexId,z.Id,z.Cote,c.Repertoire "
+					."from `##_CEN-Zone` z "
+					."inner join `##_CEN-Codex` c on c.Id=z.CodexId "
+					."where z.CodexId=$id and substr(z.Cote,1,$ln)='$ext' order by z.Cote";
 				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 				$dic = array();
-				foreach($pdo as $d) {
-					$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote'])); //, 'img'=>self::getImg($d->cote, 'jpg'));
+				foreach($pdo as $p) {
+					$cote = trim($p['Cote']);
+					$file = getcwd()."/Home/2/CEN/Codex/".$p['Repertoire']."/textes/".str_replace('.','_',strtolower($cote));
+					$txt = file_exists($file.".$extlg");
+					if(!$txt) $txt = file_exists($file.".$extes");
+					
+					$dic[] = ['codexId'=>$p['CodexId'], 'id'=>$p['Id'], 'cote'=>trim($p['Cote']), 'txt'=>$txt];
 				}
 				return array('zones'=>$dic);
 
@@ -192,7 +214,7 @@ class Codex extends genericClass {
 				
 			case 'element':
 				$whr = "where e.CodexId=$id and e.Cote='$ext' order by e.Theme";
-				$dic = self::getElementBasic($whr);
+				$dic = self::getElementBasic($whr, $extlg, $extes);
 				return array('elements'=>$dic);
 		}
 	}
@@ -210,21 +232,31 @@ class Codex extends genericClass {
 		return $gly;
 	}
 	
-	static private function getElementBasic($whr) {
-		$sql = "select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,ifnull(v.Valeur,p.Valeur) as Valeur,f.Forme ".
+	static private function getElementBasic($whr, $lang='', $les='') {
+		$dirb = getcwd().'/Home/2/CEN/Codex/';
+
+		$sql = "select distinct e.CodexId,e.Id,e.Cote,e.Theme,e.Element,s.Sens,s.Sens2,ifnull(v.Valeur,p.Valeur) as Valeur,f.Forme,c.Repertoire ".
 			"from `##_CEN-Element` e ".
 			"left join `##_CEN-Sens` s on s.CodexId=e.CodexId and s.Element=e.Element ".
 			"left join `##_CEN-Valeur` v on v.CodexId=e.CodexId and v.Cote=e.Cote and v.Theme=e.Theme ".
 			"left join `##_CEN-PValeur` p on p.CodexId=e.CodexId and p.Cote=e.Cote and p.Theme=e.Theme ".
 			"left join `##_CEN-Forme` f on f.CodexId=e.CodexId and f.Theme=e.Theme ".
+			"left join `##_CEN-Codex` c on c.Id=e.CodexId ".
 			"$whr";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$dic = array();
 		foreach($pdo as $d) {
+			$dir = $dirb.$d['Repertoire'];
+			$th = str_replace('.', '_', strtolower(trim($d['Theme'])));
+			$real = count(glob($dirb."reali/$th*.bmp")) > 0;
+			$mp3 = file_exists($dir."/sons/$th.mp3");
+			$txt = file_exists($dir."/textes/$th.$lang");
+			if(!$txt) $txt = file_exists($dir."/textes/$th.$les");
+
 			$dic[] = array('codexId'=>$d['CodexId'], 'id'=>$d['Id'], 'cote'=>trim($d['Cote']), 'theme'=>$d['Theme'], 
 				'element'=>trim($d['Element']), 'meaning'=>$d['Sens'], 'meaning2'=>$d['Sens2'], 
-				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme']);
+				'valeur'=>$d['Valeur'], 'forme'=>$d['Forme'], 'mp3'=>$mp3, 'real'=>$real, 'txt'=>$txt);
 		}
 		return $dic;
 	}	
@@ -359,6 +391,10 @@ class Codex extends genericClass {
 			default: $mode = "like '%$word%'"; break;
 		}
 
+		$lang = $args['lang'];
+		$extlg = ['es'=>'esp','fr'=>'fra','en'=>'ang'][$lang];
+		$extes = 'esp';	
+
 		switch($type) {				
 			case 'glyphe':
 				if($cdx) $cdx = "CodexId in ($cdx) and";
@@ -403,7 +439,7 @@ class Codex extends genericClass {
 							$sql = "select distinct a.Element as word from `##_CEN-Element` a where $cdx a.Element $mode";
 							return self::wordList($word, $sql);
 						case 'theme':
-							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+							$fld = $lang == 'fr' ? 'Sens2' : 'Sens';
 							$sql = "select distinct concat(a.Theme,' <i>',a.Element,'</i> ',b.$fld) as word ".
 								"from `##_CEN-Element` a left join `##_CEN-Sens` b on b.CodexId=a.CodexId and b.Element=a.Element ".
 								"where $cdx a.Theme $mode";
@@ -419,7 +455,7 @@ class Codex extends genericClass {
 								"on e.CodexId=a.CodexId and e.Theme=a.Theme where $cdx cast(a.Forme as unsigned) = cast('$word' as unsigned) ";
 							return self::wordList($word, $sql);
 						case 'traduction':
-							$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+							$fld = $lang == 'fr' ? 'Sens2' : 'Sens';
 							$sql = "select distinct a.$fld as word from `##_CEN-Sens` a inner join `##_CEN-Element` e ".
 								"on e.CodexId=a.CodexId and e.Element=a.Element where $cdx a.$fld $mode";
 							return self::wordList($word, $sql);
@@ -447,7 +483,7 @@ class Codex extends genericClass {
 						$ord = "e.CodexId,e.Cote";
 						return array('word'=>$word, 'elements'=>self::getElementForme($whr));
 					case 'traduction':
-						$fld = $args['lang'] == 'fr' ? 'Sens2' : 'Sens';
+						$fld = $lang == 'fr' ? 'Sens2' : 'Sens';
 						$grp = $cond->elements ? '' : "group by f.CodexId,s.$fld,e.Element";
 						$whr .= " s.$fld $mode $grp";
 						$ord = "$fld,e.CodexId,e.Cote";
@@ -459,7 +495,7 @@ class Codex extends genericClass {
 				$grp = $cond->elements ? '' : "group by $grp";
 				$whr .= " $grp order by $ord";
 				
-				$dic = self::getElementBasic($whr);
+				$dic = self::getElementBasic($whr, $extlg, $extes);
 				if($grp) self::getCount($dic, 'Element', 'e', $whr);
 				return array('word'=>$word, 'elements'=>$dic);
 
@@ -479,9 +515,11 @@ class Codex extends genericClass {
 				return array('glyphes'=>$gly, 'personnes'=>$per);
 
 			case 'glyphe-detail':
+			case 'personne-detail':
 				$cote = $args['cote'];
 				$id = $args['id'];
-				$them = $args['theme'];
+				//$them = $args['theme'];
+				$dir = $args['dir'];
 				$sql = "
 select Citation,Source,Pages from `##_CEN-Citation` where CodexId=$id and Cote='$cote'
 union all select Citation,Source,Pages from `##_CEN-PCitation` where CodexId=$id and Cote='$cote'
@@ -503,10 +541,18 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 					$valSup .= $p['ValSupl'];
 				}
 
-
 				$whr = "where e.CodexId=$id and e.Cote='$cote' order by e.Theme";
-				$elm = self::getElementBasic($whr);
-				return array('citations'=>$cit, 'elements'=>$elm, 'valSup'=>$valSup);
+								
+				$cote = strtolower($cote);
+				$mp3 = file_exists(getcwd().$dir."sons/$cote.mp3");
+				$cote = str_replace('.','_',$cote);
+				$txt = file_exists(getcwd().$dir."textes/$cote.$extlg");
+				if(!$txt) $txt = file_exists(getcwd().$dir."textes/$cote.$extes");
+				
+				$elm = self::getElementBasic($whr, $extlg, $extes);
+				
+				
+				return array('citations'=>$cit, 'elements'=>$elm, 'valSup'=>$valSup, 'mp3'=>$mp3, 'txt'=>$txt);
 
 			case 'glyphe-lecture':
 				$org = json_decode($args['glyphe']);
@@ -568,10 +614,14 @@ union select ValSupl from `##_CEN-PValSupl` where CodexId=$id and Cote='$cote'
 				break;
 		}
 		$txt = '';
-		$txt = file_get_contents(getcwd().$dir.$pres.$lang);
-		if(!$txt) $txt = file_get_contents(getcwd().$dir.$pres.$les);
+		$file = $dir.$pres.$lang;
+		$txt = file_get_contents(getcwd().$file);
+		if(!$txt) {
+			$file = $dir.$pres.$les;
+			$txt = file_get_contents(getcwd().$file);
+		}
 		$txt = utf8_encode(nl2br($txt));
-		return array('text'=>$txt); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
+		return array('file'=>$file, 'text'=>$txt); //, 'xxx'=>getcwd().$dir.$pres.$lang);		
 	}
 	
 	static public function GetTerm($args) {

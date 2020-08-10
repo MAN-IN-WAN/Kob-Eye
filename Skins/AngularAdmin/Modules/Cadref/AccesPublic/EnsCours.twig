@@ -16,6 +16,7 @@
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th>Classe</th>
 				<th>Libellé</th>
+				<th>Antenne</th>
 				<th>Heures</th>
 				<th>Cycle</th>
 				<th>Inscrits</th>
@@ -27,6 +28,7 @@
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.CodeClasse }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleA }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
 				<td scope="row" class="typefloat"><span ng-class="{'cadref-highlight': Number(item.Disponibles)==0}">{[{ item.Inscrits+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
@@ -55,7 +57,7 @@
 			</div>
     </section>
 </div>
-{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+{{ include(template_from_string(module('Cadref/Default/attachementModal?Type=COURS'))) }}
 <script type="text/javascript">
 	$('.spinner-list').spin();
 </script>

@@ -29,5 +29,5 @@ if(!isset($info['ObjectType'])) {
 }
 $vars['tempContext'] = isset($_GET['tempContext']) && $_GET['tempContext'];
 $vars['Annee'] = Cadref::$Annee;
-
+$vars['Type'] = 'Inscription';
 ?>
