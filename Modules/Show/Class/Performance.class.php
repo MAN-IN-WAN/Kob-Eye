@@ -303,7 +303,7 @@ class Performance extends genericClass {
 			}
 		}
 		else {
-			$page = 2;
+			$page = 20;
 			$acat = [];
 			if($offset) $offset = ($offset-1)*$page;
 			$max = self::getPerfs($uid, $logged, $lang, $sql, $frm, $join, $whr, $ord, $offset, $page, $acat);
