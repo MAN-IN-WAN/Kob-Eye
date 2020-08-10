@@ -1,0 +1,85 @@
+{#<div id="myCarousel{{ POSITION }}" class="carousel slide ">
+	<div class="carousel-inner">
+		{% for Pub in Publicites |slice(0, 4) %}
+		<div class="item {% if loop.index == 1 %}active{%  endif %}">
+			<img src="/{{Pub.Media.Image}}" class="img-responsive" style="width:100% !important;" alt="{{Pub.Media.Titre}}" title="{{Pub.Media.Titre}}" />
+			<div class="carousel-caption {% if Pub.Animation == 'gauche' or not Pub.Animation %} animGauche {% else %} animDroite {% endif %}">
+				<div class="texteCarousel">{{Pub.Texte| raw}}</div>
+			</div>
+		</div>
+		{%  endfor %}	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready( function(){
+		$('.carousel').carousel({
+			interval: 5500
+		})
+	});
+	$('#myCarousel{{ POSITION }}').on('slide.bs.carousel', function () {
+		console.log('slide.bs.carousel');
+		$('.anim').removeClass('anim');
+	});
+	$('#myCarousel{{ POSITION }}').on('slid.bs.carousel', function () {
+		console.log('slid.bs.carousel');
+		$(this).find('.item.active').addClass('anim');
+	})
+
+</script>#}
+
+
+
+<div id="myCarousel{{ POSITION }}" class="carousel" >
+	{% for Pub in Publicites  |slice(0, 4) %}
+		<div class="item">
+			<img src="/{{Pub.Media.Image}}.limit.2000x2000.jpg" class="img-responsive" style="width:100% !important;" alt="{{Pub.Media.Titre}}" title="{{Pub.Media.Titre}}" />
+			<div class="carousel-caption {% if Pub.Animation == 'gauche' or not Pub.Animation %} animGauche {% else %} animDroite {% endif %}">
+				<div class="texteCarousel">{{Pub.Texte| raw}}</div>
+			</div>
+		</div>
+	{%  endfor %}
+</div>
+<script type="text/javascript">
+	$(document).ready( function() {
+		$('#myCarousel{{ POSITION }}').slick({
+			dots: true,
+			speed: 1000,
+			draggable: false,
+			swipe: false,
+			accessibility: false,
+			//autoplay: true,
+			//autoplaySpeed: 5500,
+			initialSlide: 0,
+			arrows: false
+		})
+		setTimeout(function(){
+			$('#myCarousel{{ POSITION }}').find('.item.slick-active').addClass('anim');
+		},1000);
+		var interval = setInterval(function(){
+			$('#myCarousel{{ POSITION }}').find('.item.anim').removeClass('anim');
+			setTimeout(function(){
+				$('#myCarousel{{ POSITION }}').slick('next');
+				setTimeout(function(){
+					$('#myCarousel{{ POSITION }}').find('.item.slick-active').addClass('anim');
+				},1000);
+			},1000);
+		},5500);
+
+		$('#myCarousel{{ POSITION }}').on('mouseenter',function(){
+			clearInterval(interval);
+		});
+		$('#myCarousel{{ POSITION }}').on('mouseleave',function(){
+			interval = setInterval(function(){
+				$('#myCarousel{{ POSITION }}').find('.item.anim').removeClass('anim');
+				setTimeout(function(){
+					$('#myCarousel{{ POSITION }}').slick('next');
+					setTimeout(function(){
+						$('#myCarousel{{ POSITION }}').find('.item.slick-active').addClass('anim');
+					},1000);
+				},1000);
+			},5500);
+		});
+
+
+	});
+</script>

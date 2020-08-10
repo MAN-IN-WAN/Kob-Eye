@@ -69,7 +69,10 @@ class User extends genericClass{
 	 * Renvoie l'ensemble des menus de l'utilisateur
 	 */
 	public function getMenus () {
-		if (!isset($this->Menus)) $this->initUserVars();
+        $this->initUserVars();
+        // enlever car faisait bugguer quand on était dans une sous-page de contenu
+        // sur le menu ça n'enlevait pas l'ancienne url
+		//if (!isset($this->Menus)) $this->initUserVars();
 		return $this->Menus;
 	}
 	/**

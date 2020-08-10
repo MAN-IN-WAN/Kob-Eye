@@ -183,6 +183,7 @@
 		<FILTER name="Serveurs Web" color="primary">Web=1</FILTER>
 		<FILTER name="Serveurs SQL" color="secondary">Sql=1</FILTER>
 		<FILTER name="Serveurs Mail" color="secondary">Mail=1</FILTER>
+		<FILTER name="Serveurs Parc" color="secondary">Parc=1</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" quickview="1" list="1" fiche="1" listDescr="Nom" form="1">Nom</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="1" quickview="1" list="1" fiche="1" listDescr="Status" values="0::Non intialisé,1::Connecté,2::Configuré" form="1">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" quickview="1" list="1" fiche="1" listDescr="Nom DNS" form="1">DNSNom</PROPERTIES>
@@ -211,6 +212,7 @@
 			<PROPERTIES type="boolean" searchOrder="10" fiche="1" form="1">MailInBlack</PROPERTIES>
 			<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1"  listDescr="Proxy" form="1">Proxy</PROPERTIES>
 			<PROPERTIES type="boolean" searchOrder="12" quickview="1" fiche="1"  list="1" listDescr="PageSpeed" form="1">PageSpeed</PROPERTIES>
+			<PROPERTIES type="boolean" searchOrder="13" fiche="1"  form="1">Parc</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Web" formCondition="{{ scopeObj }}.Web == 1">
 			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1" >defaultWebServer</PROPERTIES>
@@ -235,6 +237,12 @@
 		<CATEGORY title="MailInBlack" formCondition="{{ scopeObj }}.MailInBlack == 1">
 			<PROPERTIES type="varchar" description="User MIB" form="1">MIBUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Pass MIB" form="1">MIBPass</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Parc" formCondition="{{ scopeObj }}.Parc == 1">
+			<PROPERTIES type="boolean" fiche="1" form="1">ALS</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1">Minisite</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1" formCondition="({{ scopeObj }}.Minisite == 1">MinisiteDefault</PROPERTIES>
+			<PROPERTIES type="boolean" fiche="1" form="1">Principal</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -691,9 +699,11 @@
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
+		<FKEY card="0,1" data="Server,Id" description="Serveur" listDescr="Serveur" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" browseable="1" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
 		<CATEGORY title="Menu">
 			<PROPERTIES type="boolean" description="Afficher le menu" list="1" form="1" fiche="1" listDescr="Afficher Menu" default="1">MenuAffiche</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="6" description="Titre du menu" form="1" fiche="1" listDescr="Titre Menu">MenuTitre</PROPERTIES>
@@ -704,17 +714,20 @@
 		<FKEY card="1,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ParametreMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Parametre MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du Paramètre" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" description="Type de Paramètre" list="1" form="1" fiche="1" listDescr="Type" values="int::Entier,varchar::Texte,html::Texte Long,image::Image,color::Couleur,menu::Menu,file::Fichier,boolean:Booléen">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Paramètre" list="1" form="1" fiche="1" listDescr="Paramètre">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" description="Type de Paramètre" list="1" form="1" fiche="1" listDescr="Type" values="int::Entier,varchar::Texte,html::Texte Long,image::Image,color::Couleur,menu::Menu,file::Fichier,boolean::Booléen">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Nom du Paramètre" list="1" form="1" fiche="1" listDescr="Nom affiché">NomPropre</PROPERTIES>
 		<PROPERTIES type="html"  description="Aide du Paramètre" form="1" fiche="1"  listDescr="Nom">Aide</PROPERTIES>
 		<PROPERTIES type="order"  fiche="1" form="1" list="1" description="Ordre" listDescr="Ordre">Order</PROPERTIES>
 		<PROPERTIES type="varchar" description="Categorie du Paramètre" list="1" form="1" fiche="1" listDescr="Catégorie">Categorie</PROPERTIES>
+		<PROPERTIES type="text" description="Valeur par défaut"  form="1" fiche="1" list="1" listDescr="Defaut">ValeurDefaut</PROPERTIES>
 		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
 		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" fiche="1" list="1" >MiniSiteId</FKEY>
 		<FKEY card="0,1" data="PageMiniSite,Id" description="Page de minisite" listDescr="Page MiniSite" fiche="1" list="1" >PageMiniSiteId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ValeurMiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="Valeur MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
-		<PROPERTIES type="text" searchOrder="1" obligatoire="1" description="Valeur" list="1" form="1" fiche="1" listDescr="Valeur">Valeur</PROPERTIES>
+		<PROPERTIES type="text" description="Valeur"  form="1" fiche="1" list="1" listDescr="Valeur">Valeur</PROPERTIES>
+		<!--<PROPERTIES type="html" obligatoire="1" description="Valeur"  form="1" fiche="1" listDescr="Valeur">ValeurHtml</PROPERTIES>-->
 		<FKEY card="1,1" data="ParametreMiniSite,Id" description="Parametre de MiniSite" listDescr="Parametre" fiche="1" list="1" >ParametreMiniSiteId</FKEY>
 		<FKEY card="0,1" data="MiniSite,Id" description="Minisite" listDescr="Minisite" form="10" fiche="1" list="1" >MiniSiteId</FKEY>
 	</OBJECTCLASS>

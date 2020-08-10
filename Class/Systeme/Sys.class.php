@@ -529,6 +529,7 @@ class Sys extends Root{
 			case "indd":if ($this->type=="indd")header('Content-type: application/pdf');
 			case "bin":if ($this->type=="bin")header("Content-type: binary/octet-stream;");
 			case "htm":if ($this->type=="htm")header("Content-type: text/html; charset=".CHARSET_CODE."");
+			case "css2":if ($this->type=="css2")header("Content-type: text/css");$detectmime=false;
 			case "pac":if ($this->type=="pac")header("Content-type: text/plain; charset=".CHARSET_CODE."");
 			case "cron":
 				$file = $this->Lien.'.'.$this->type;
@@ -693,8 +694,7 @@ class Sys extends Root{
 					$Skin->Generate();
 					$data = $Skin->Affich();
 					$Contenu =$this->getContenu();
-					$data=Parser::ProcessData($data,$Contenu);
-					$data = KeTwig::processTemplates($data);
+					$data = self::ProcessTwigData($data,$Contenu);
 					$data = $Skin->ProcessLang($data);
 					//On ajoute les erreurs
 					if (DEBUG_DISPLAY) $data.=KError::displayHtml();
@@ -706,6 +706,21 @@ class Sys extends Root{
 				break;
 		}
 		if (isset($data))return $data;
+	}
+	private static function ProcessTwigData($data, $Contenu, $level = 0){
+		$level++;
+		if($level >=10){
+			return $data;
+		}
+		if (preg_match("@\[DATA\]@",$data)){
+			$data=Parser::ProcessData($data,$Contenu);
+			$data = self::ProcessTwigData($data,$Contenu,$level);
+		}
+		else if (preg_match("@##TWIG##@",$data)){
+			$data = KeTwig::processTemplates($data);
+			$data = self::ProcessTwigData($data,$Contenu,$level);
+		}
+		return $data;
 	}
 	private function FileNotFound($file) {
 		header("Content-type: text/html; charset=".CHARSET_CODE."");

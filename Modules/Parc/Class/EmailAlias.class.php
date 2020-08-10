@@ -148,7 +148,7 @@ class EmailAlias extends genericClass {
         return parent::Verify();
     }*/
 
-    public function forceDelete(){
+    public function forceDel(){
         parent::Delete();
     }
 }

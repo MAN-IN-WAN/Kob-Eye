@@ -585,6 +585,9 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
             case 3:
                 scope[props[0]][props[1]][props[2]] = response.url;
                 break;
+            case 4:
+                scope[props[0]][props[1]][props[2]][props[3]] = response.url;
+                break;
             default:
                 console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
         }
@@ -602,6 +605,9 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
                 break;
             case 3:
                 scope[props[0]][props[1]][props[2]] = response.url;
+                break;
+            case 4:
+                scope[props[0]][props[1]][props[2]][props[3]] = response.url;
                 break;
             default:
                 console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
