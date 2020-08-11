@@ -16,6 +16,7 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'contact': return Contact::SaveContact($args);
 			case 'vote': return Performance::SetVote($args);
 			case 'get-vote': return Performance::GetVote($args);
 			case 'comments': return Performance::GetComments($args);
@@ -75,6 +76,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
 			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
 			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
+			case 'motives': $data = self::getObjsArray('Motive', "", true, $lang); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -229,22 +231,22 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = base64_encode($u->Id.','.$c->email.','.time());
 		switch($args['lang']) {
 			case 'EN':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
 				$b .= "Please complete user information in Menu/My account.<br /><br />";
 			case 'FR':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
 				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
 			case 'ES':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
@@ -280,21 +282,21 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = base64_encode($mail.','.time());
 		switch($lang) {
 			case 'EN':
-				$s = 'www.shows.zone : Lost password.';
+				$s = 'shows.zone : Lost password.';
 				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";
 				break;
 			case 'FR':
-				$s = 'www.shows.zone : Mot de passe oublié.';
+				$s = 'shows.zone : Mot de passe oublié.';
 				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour changer de mot de passe :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Changer le mot de passe</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 24 heures.<br /><br />";
 				break;
 			case 'ES':
-				$s = 'www.shows.zone : Change password.';
+				$s = 'shows.zone : Change password.';
 				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
