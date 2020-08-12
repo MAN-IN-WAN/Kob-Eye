@@ -7,14 +7,14 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		
-		$sql = "select distinct p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt "
+		$sql = "select distinct p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
 			."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
 			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
 			."inner join `kob-Systeme-User`u on u.Id=p.userCreate "
 			."where m.ToId=$usr->Id "
-			."group by p.Id order by dt desc";
+			."group by p.Id,m.FromId order by dt desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -27,6 +27,7 @@ class Message extends genericClass {
 			$d->user = $r['Initiales'];
 			$d->count = $r['cnt'];
 			$d->time = $r['dt'];
+			$d->status = $r['st'];
 			$msgs[] = $d;
 		}
 		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql];
@@ -40,7 +41,7 @@ class Message extends genericClass {
 		$p = $args['show'];
 		$u = $args['user'];
 		$id = $usr->Id;
-		$sql = "select Id,Message,FromId,MessageDate "
+		$sql = "select Id,Message,FromId,MessageDate,Status "
 			."from `kob-Show-Message` "
 			."where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u)) "
 			."order by MessageDate";
@@ -54,6 +55,7 @@ class Message extends genericClass {
 			$d->msg = $r['Message'];
 			$d->from = $r['FromId'];
 			$d->time = $r['MessageDate'];
+			$d->status = $r['Status'];
 			$msgs[] = $d;
 		}
 		
