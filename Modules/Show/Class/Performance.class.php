@@ -286,12 +286,13 @@ class Performance extends genericClass {
 
 		if($group) {
 			$page = 32;
-//			if($cond->mode == 0 && ($slides == 0 || $slides == -1)) {
-//				$acat = [];
-//				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
-//				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
-//				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
-//			}
+			$inf = json_decode(Sys::$User->Informations);
+			if($inf && $inf->showFavourites && $cond->mode == 0 && ($slides == 0 || $slides == -1)) {
+				$acat = [];
+				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
+				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
+				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
+			}
 		
 			$cat = $slides > 0 ? "/$slides" : '';
 			$cs = Sys::getData('Show', 'Category'.$cat);
@@ -358,7 +359,7 @@ class Performance extends genericClass {
 		$id = $cond->id;
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
-		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales "
+		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales,u.Nom,u.Informations "
 				."from `kob-Show-Performance` s "
 				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
@@ -371,10 +372,12 @@ class Performance extends genericClass {
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$r = $rs->fetch(PDO::FETCH_ASSOC);
 				
+		$inf = json_decode($r['Informations']);
+		
 		$d = new stdClass();
 		$d->id = $p->Id;
 		$d->uid = $p->userCreate;
-		$d->user = $r['Initiales'];
+		$d->user = $inf && $inf->displayName ? $r['Nom'] : $r['Initiales'];
 		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
 		$d->subtitle = $p->Subtitle;
@@ -558,7 +561,7 @@ class Performance extends genericClass {
 			foreach($fav as $f) $f->Delete();
 		}
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$uid);
-		return array('success'=>true, 'logged'=>true, 'favourites'=>$fav);
+		return array('success'=>true, 'logged'=>true, 'favCount'=>$fav);
 	}
 	
 	public static function AddRole($args) {

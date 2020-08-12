@@ -114,7 +114,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
-		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'messages'=>$msg);
+		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'msgCount'=>$msg);
 	}
 	
 	
@@ -143,6 +143,10 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr->Mail = $acc->email;
 		$usr->Nom = $acc->name;
 		$usr->Tel = $acc->phone;
+		$inf = new stdClass();
+		$inf->displayName = $acc->displayName;
+		$inf->showFavourites = $acc->showFavourites;
+		$usr->Informations = json_encode($inf);
 		$usr->Save();
 		return ['success'=>true];
 	}
@@ -189,17 +193,21 @@ klog::l("GETSHOW >>>>>",$args);
 		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
 		$id = $usr->Id;
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
 		$msg = self::newMessages($id);
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
 		//$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 
-				'id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'messages'=>$msg, 'favourites'=>$fav);
+		return ['success'=>true, 'logged'=>true, 'msgCount'=>$msg, 'favCount'=>$fav,
+				'user'=>['token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 'id'=>$usr->Id, 
+				'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'showFavourites'=>$inf ? $inf->showFavourites : false,
+				'displayName'=>$inf ? $inf->displayName : false]];
 	}
 	
 	public static function Status() {
 		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>true, 'logged'=>false, 'messages'=>0);
-		return array('success'=>true, 'logged'=>true, 'messages'=>self::newMessages($usr->Id));
+		if($usr->Public) return array('success'=>true, 'logged'=>false, 'msgCount'=>0);
+		return array('success'=>true, 'logged'=>true, 'msgCount'=>self::newMessages($usr->Id));
 	}
 	
 	private static function newMessages($id) {
