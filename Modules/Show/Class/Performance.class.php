@@ -286,12 +286,12 @@ class Performance extends genericClass {
 
 		if($group) {
 			$page = 32;
-			if($cond->mode == 0 && ($slides == 0 || $slides == -1)) {
-				$acat = [];
-				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
-				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
-				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
-			}
+//			if($cond->mode == 0 && ($slides == 0 || $slides == -1)) {
+//				$acat = [];
+//				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
+//				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
+//				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
+//			}
 		
 			$cat = $slides > 0 ? "/$slides" : '';
 			$cs = Sys::getData('Show', 'Category'.$cat);
