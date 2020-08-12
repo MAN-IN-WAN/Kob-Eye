@@ -15,7 +15,7 @@ class Performance extends genericClass {
 
 		$id = $args['id'];
 		$stars = $args['stars'];
-		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales "
+		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
 			."inner join `##_Systeme-User` u on u.Id=c.UserId "
 			."where c.PerformanceId=$id "; 
@@ -26,8 +26,10 @@ class Performance extends genericClass {
 
 		$tmp = array();
 		foreach($rs as $r) {
+			$inf = json_decode($r['Informations']);
+			$user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 			$tmp[] = ['vote'=>$r['Vote'], 'text'=>$r['Comments'], 'time'=>$r['CommentsDate'],
-				'user'=>$r['Initiales'], 'userId'=>$r['Id']];
+				'user'=>$user, 'userId'=>$r['Id']];
 		}
 		return ['success'=>true, 'comments'=>$tmp];
 	}
@@ -383,7 +385,7 @@ class Performance extends genericClass {
 		$d = new stdClass();
 		$d->id = $p->Id;
 		$d->uid = $p->userCreate;
-		$d->user = $inf && $inf->displayName ? $r['Nom'] : $r['Initiales'];
+		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
 		$d->subtitle = $p->Subtitle;

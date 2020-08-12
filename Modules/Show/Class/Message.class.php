@@ -7,7 +7,7 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		
-		$sql = "select distinct p.Id,p.userCreate,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
+		$sql = "select distinct p.Id,p.userCreate,p.Title,m.FromId,u.Initiales,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
 			."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
@@ -21,11 +21,13 @@ class Message extends genericClass {
 		$id = $usr->Id;
 		$msgs = [];
 		foreach($rs as $r) {
+			$inf = json_decode($r['Informations']);
+			
 			$d = new stdClass();
 			$d->id = $r['Id'];
 			$d->title = $r['Title'];
 			$d->uid = $r['FromId'];
-			$d->user = $r['Initiales'];
+			$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 			$d->count = $r['cnt'];
 			$d->time = $r['dt'];
 			$d->status = $r['st'];
