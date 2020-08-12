@@ -7,7 +7,7 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		
-		$sql = "select distinct p.Id,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
+		$sql = "select distinct p.Id,p.userCreate,p.Title,m.FromId,u.Initiales,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
 			."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
@@ -18,6 +18,7 @@ class Message extends genericClass {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
+		$id = $usr->Id;
 		$msgs = [];
 		foreach($rs as $r) {
 			$d = new stdClass();
@@ -28,6 +29,7 @@ class Message extends genericClass {
 			$d->count = $r['cnt'];
 			$d->time = $r['dt'];
 			$d->status = $r['st'];
+			$d->mine = $r['userCreate'] == $id;
 			$msgs[] = $d;
 		}
 		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql];
@@ -85,4 +87,21 @@ class Message extends genericClass {
 		$m->Save();
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}
+	
+	public static function DelDialog($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+
+		$p = $args['perfId'];
+		$u = $args['user'];
+		$id = $usr->Id;
+		$sql1 = "delete from `kob-Show-Message` set status=1 where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u))";
+		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
+		
+		return self::Messages(null);
+	}
+	
+	
 }

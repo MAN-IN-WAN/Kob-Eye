@@ -157,6 +157,12 @@ class Performance extends genericClass {
 		foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Medium');
 		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Message');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Comments');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Place');
+		foreach($cs as $c) $c->Delete();
 		$o->Delete();
 		return array('success'=>1);
 	}

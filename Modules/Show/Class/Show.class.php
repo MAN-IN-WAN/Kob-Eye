@@ -16,6 +16,7 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'del-dialog': return Message::DelDialog($args);
 			case 'contact': return Contact::SaveContact($args);
 			case 'vote': return Performance::SetVote($args);
 			case 'get-vote': return Performance::GetVote($args);
