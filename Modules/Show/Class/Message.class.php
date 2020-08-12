@@ -63,7 +63,7 @@ class Message extends genericClass {
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		
-		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql];
+		return ['success'=>true, 'logged'=>true, 'msgs'=>$msgs, 'sql'=>$sql, 'sql1'=>$sql1];
 	}
 	
 	public static function AddMsg($args) {
