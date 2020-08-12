@@ -75,7 +75,7 @@ class Message extends genericClass {
 		$p = Sys::getOneData('Show', 'Performance/'.$msg->show);
 		$m = genericClass::createInstance('Show', 'Message');
 		$m->Message = $msg->msg;
-		$m->MessageDate = $msg->time / 1000;
+		$m->MessageDate = $msg->time;
 		$m->Status = 0;
 		$m->addParent($p);
 		$m->addParent($f, 'FromId');
