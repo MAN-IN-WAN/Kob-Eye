@@ -50,14 +50,17 @@ class Classe extends genericClass {
 		$sql = "select c.Annee,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Seances,c.Programmation, "
 			."c.Places,c.Prix,c.Reduction1,c.Reduction2, "
 			."ifnull(l.Lieu,'') as Lieu, "
+			."ifnull(e.Code,'') as Enseignant, "
+			//."concat(d.Libelle,' ',n.Libelle) as Libelle, "
 			."ifnull(d.WebDiscipline,'') as Web, "
-			."ifnull(e.Code,'') as Enseignant "
+			."concat(wd.Libelle,' ',n.Libelle) as LibelleWeb "
 			."from `##_Cadref-Classe` c "
 			."inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId "
 			."inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
 			."left join `##_Cadref-Lieu` l on l.Id=c.LieuId "
 			."left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id "
 			."left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId "
+			."left join `##_Cadref-WebDiscipline` wd on wd.Id=d.WebDisciplineId "
 			."where Annee='$an' "
 			."group by c.CodeClasse "
 			."order by c.CodeClasse";
@@ -67,7 +70,7 @@ class Classe extends genericClass {
 		$file = 'Home/tmp/Classes_'.$an.'_'.date('YmdHis').'.csv';
 		$f = fopen($file, 'w');
 		$s = '"Annee";"CodeClasse";"JourId";"HeureDebut";"HeureFin";"CycleDebit";"CycleFin";"Seances";"Programmation";"Places";'
-			.'"Prix";"Reduction1";"Reduction2";"Lieu";"Web";"Enseignant"';
+			.'"Prix";"Reduction1";"Reduction2";"Lieu";"Enseignant";"Web";"LibelleWeb"';
 		fwrite($f, Cadref::cv2win("$s\n"));
 			
 		foreach($pdo as $a) {
@@ -85,8 +88,9 @@ class Classe extends genericClass {
 				.'"'.$a['Reduction1'].'";'
 				.'"'.$a['Reduction2'].'";'
 				.'"'.$a['Lieu'].'";'
+				.'"'.$a['Enseignant'].'";'
 				.'"'.$a['Web'].'";'
-				.'"'.$a['Enseignant'].'"';
+				.'"'.$a['LibelleWeb'].'"';
 			fwrite($f, Cadref::cv2win("$s\n"));
 		}
 		fclose($f);
@@ -104,7 +108,7 @@ class Classe extends genericClass {
 		$msg = '';
 		$err = false;
 		$flds = ['Annee','CodeClasse','JourId','HeureDebut','HeureFin','CycleDebut','CycleFin','Seances','Programmation',
-			'Places','Prix','Reduction1','Reduction2','Lieu','Web','Enseignant'];
+			'Places','Prix','Reduction1','Reduction2','Lieu','Enseignant','Web','LibelleWeb'];
 
 		$f = getcwd().'/'.$args['FilePath'];
 		$f = str_replace("\r\n", "\n", file_get_contents($f));
@@ -167,8 +171,7 @@ class Classe extends genericClass {
 						if(!$lieu) $msg .= "lig $lig: Lieu erroné $c.\n";
 						else $cls->addParent($lieu);
 						break;
-					case 14: break; // ignore Web
-					case 15:
+					case 14: 
 						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
 						if(!$ens) $msg .= "lig $lig: Enseignant erroné $c.\n";
 						else $cls->addParent($ens);
@@ -178,6 +181,9 @@ class Classe extends genericClass {
 							foreach($dts as $dt) $dt->Delete();
 						}
 						break;
+					case 15: 
+					case 16:
+						break; // ignore Web
 					default:
 						$nb = 0;
 						if($c == '' || $prog == 0) $n == -1;
