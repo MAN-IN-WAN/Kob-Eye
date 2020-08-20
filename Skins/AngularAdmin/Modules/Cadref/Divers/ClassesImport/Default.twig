@@ -1,0 +1,45 @@
+{# fiche SelectAnnee #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" class="form-control" readonly placeholder="" id="input-AttachementFilePath" ng-model="obj.FilePath">
+											<label for="input-AttachementFilePath-file" class="clickable">Choisir un fichier</label>
+											<progress id="upload-progress" max="100" value=""></progress>
+											<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+												   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Classe' }],
+												   removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'obj.FilePath' }" 
+												   ng-init="up_AttachementFilePath = angular.copy(autoUploader)" uploader="up_AttachementFilePath" style="display:none;"
+											>
+										</div>
+									</div>
+									<div class="row" style="height:20px"></div>
+
+									<div class="row">
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="classesImport()">Importer</button>
+										</div>
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </section>
+</div>
+

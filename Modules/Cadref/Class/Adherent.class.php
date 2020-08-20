@@ -24,6 +24,9 @@ class Adherent extends genericClass {
 
 	function GetFormInfo($annee) {
 		$c = !$this->CheckCertificat();
+		$as = $this->getChildren('AdherentAnnee');
+		$aa = [];
+		foreach($as as $a) $aa[] = $a->Annee;
 		$s = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		if(!$s) $s = genericClass::createInstance('Cadref', 'AdherentAnnee');
 		$cc = '';
@@ -34,7 +37,7 @@ class Adherent extends genericClass {
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
-			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc);
+			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc,'Annees'=>$aa);
 	}
 	
 	
@@ -86,7 +89,6 @@ class Adherent extends genericClass {
 		if($save && $dtCert && $this->DateCertificat <= 0) {
 			$this->DateCertificat = $dtCert;
 			$this->Save();
-klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);			
 		}
 		return array('scan'=>$n, 'certif'=>$certif);
 	}
@@ -447,6 +449,13 @@ klog::l('>>>>>>>>>>>>>>>>>MAJ DATE CERTIFICAT '.$this->DateCertificat);
 		}
 		$this->Save();
 		return true;
+	}
+	
+	public static function ClearCertificat() {
+		$sql = "update `##_Cadref-Adherent` set DateCertificat=null";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->exec($sql);
+		return ['success'=>true];
 	}
 
 	function CheckCertificat() {
@@ -1787,7 +1796,7 @@ where ce.Visite=:cid";
 	
 
 	function GetCours($mode, $obj) {
-		$annee = Cadref::$Annee;
+		$annee = isset($obj['AnneeSelect']) && $obj['AnneeSelect'] ? $obj['AnneeSelect'] : Cadref::$Annee;
 		$filter = str_replace('&', '', $obj['Filter']);
 		$adhId = $this->Id;
 		$antId = isset($obj['AntenneId']) ? $obj['AntenneId'] : '';
