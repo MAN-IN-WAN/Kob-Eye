@@ -5,66 +5,83 @@
         <div class="panel-body cadref-public">
             <div class="row no-gutters">
                 <div class="col-md-12">
-{#					<div class="row" ng-if="!reservationObj.Select">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-success" ng-click="reservationSelect(true)">Ajouter une visite</button>
-						</div>
-					</div>
-					<section class="panel" ng-if="reservationObj.Select">
-						<div class="panel-body">
-							<div class="row">
-								<div style="height:10px"></div>
-								<div class="col-md-12">
-									<div class="listWrap">
-										<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
-											<thead>
-												<tr>
-													<th title="Id" class="list-col-th-id" hidden>ID</th>
-													<th class="cadref-th">Date</th>
-													<th class="cadref-th">Visite</th>
-													<th class="cadref-th">Animateur</th>
-													<th class="cadref-th">Prix</th>
-													<th class="cadref-th">Places</th>
-													<th class="cadref-th"></th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="item in reservationObj.VisiteItems">
-													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
-													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
-													<td  class="table-action cadref-td-btn">
-														<span class="btn-abt cadref-btn-add btn-success" ng-click="reservationAjoute(item)" title="Inscrire"></span>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<div style="height:10px"></div>
-							<div class="row">
-								<div class="col-md-2">
-									<button type="button" class="btn btn-warning" ng-click="reservationSelect(false)">Annuler</button>
-								</div>
-							</div>
-						</div>
-					</section>#}
 					<section class="panel">
-{#						<div class="panel-body">#}
-							<ng-include src="'Cadref/Adherent/0/Reservation/PublicListReserv.htm?tempContext=1'"></ng-include>
-{#						</div>#}
-{#						<div class="row" ng-if="reservationObj.Updated">
-							<div class="col-md-2">
-								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ reservationObj.Montant }]}</label>
-							</div>
-							<div class="col-md-2">
-								<button type="button" class="btn btn-info" ng-click="reservationConfirm()">Confirmer l'inscription</button>
-							</div>
-						</div>#}
+{#						<ng-include src="'Cadref/Adherent/0/Reservation/PublicListReserv.htm?tempContext=1'"></ng-include>#}
+
+<div class="cadref-horiz">
+	<label class="form-control-label cadref-label" style="line-height:1">Année scolaire</label>
+	<select id="AnneeSelect" class="form-control cadref-input" ng-model="reservationObj.AnneeSelect" style="width:100px" ng-change="anneeChangeReserv()">
+		<option ng-repeat="a in obj.Annees" value="{[{a}]}">{[{ a+'-'+((a*1)+1) }]}</option>
+	</select>
+</div>
+
+<div class="listWrap">
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Doc.</th>
+				<th>Visite</th>
+				<th>Date</th>
+				<th>Animateur</th>
+				<th>Prix</th>
+				{#<th>Assur.</th>#}
+				<th>Départ</th>
+{#				<th>Etat</th>
+				<th>Date état</th>#}
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in reservationObj.ReservationItems">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typeint">
+					<span ng-if="item.resId>0" class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'reservation')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+					</span>
+					<span ng-if="item.resId==0" class="btn-abt cadref-btn-del btn-danger" ng-click="reservationSupprime(item)" title="Annuler l'inscription"></span>
+				</td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Enseignants }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
+				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.HeureDepart+' '+item.LibelleL }]}</span></td>
+{#				<td scope="row" class="cadref-td typevarchar">
+					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
+					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
+					<span class="label label-danger" ng-if="item.Supprime>0">Supprimé</span>
+				</td>
+				<td scope="row" class="cadref-td typedate">
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime | limitTo : 11 }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
+				</td>#}
+			</tr>
+		</tbody>
+	</table>
+</div>
+			
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+
+{#<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachementInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>
+#}
 					</section>
 				</div>
 			</div>

@@ -1,0 +1,41 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj.Annee = '{{ Annee }}';
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.clearCertif = function() {
+		swal({
+				title: "Effacer les dates de certificat",
+				text: "Cette action sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, effacer !",
+				closeOnConfirm: true
+			},
+			function(){
+				var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+				ajax.success(
+					function(data) {
+						swal("Dates de certificat effacées", '', "success");
+					}
+				);
+			}
+		);
+	}
+});

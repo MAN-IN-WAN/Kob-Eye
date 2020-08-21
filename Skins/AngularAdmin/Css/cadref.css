@@ -60,6 +60,8 @@ table tr td.cadref-td-diff {
 	margin-bottom: .1rem;
 	padding: .1rem .7rem;
 }
+
+
 .cadref-no-margin {
 	margin: 0px;
 }
@@ -404,4 +406,13 @@ nav.left-menu .logo-container .logo {
 .cwt__footer__bottom {
 	margin-top: 10px;
     padding-top: 20px;
+}
+
+.cadref-horiz {
+	display: flex;
+	flex-direction: row;
+}
+.cadref-horiz .cadref-label {
+	margin-bottom: .1rem;
+	padding: 1rem .7rem;
 }

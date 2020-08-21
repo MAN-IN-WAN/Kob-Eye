@@ -701,8 +701,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
-	$scope.inscriptionObj = {Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
- 	$scope.reservationObj = {Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
+	$scope.inscriptionObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
+ 	$scope.reservationObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
 	$scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
@@ -714,6 +714,13 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
         });
     }
     $scope.initAdh();
+	
+	$scope.anneeChangeInscr = function() {
+		$scope.inscriptionGetData('inscription', '');
+	}
+	$scope.anneeChangeReserv = function() {
+		$scope.reservationGetData('reservation', '');
+	}
 	
 	// informations annuelles adherent
 	$scope.adherentInfo = function() {
@@ -734,7 +741,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				$scope.obj.ClasseId = data.data.ClasseId;
 				$scope.obj.AntenneId = data.data.AntenneId;
 				$scope.obj.certifInvalide = data.data.certifInvalide;				
-				$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+				$scope.obj.nonSolde = Number($scope.obj.Solde) != 0;
+				$scope.obj.Annees = data.data.Annees;
 
 				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 			}

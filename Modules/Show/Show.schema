@@ -35,8 +35,11 @@
 		<PROPERTIES type="varchar" length="255" searchOrder="1" category="Description" form="1" list="1" fiche="1">Title</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2">Subtitle</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Program / Summary">Summary</PROPERTIES>
-
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+
+
+
+
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Pressbook">Pressbook</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Price">Price</PROPERTIES>
 
@@ -44,13 +47,13 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Crew">Crew</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Cast">Cast</PROPERTIES>
 
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Advertisement">Advertisement</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Scenery">Scenery</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Instruments">Instruments</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Electricity">Instruments</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Lightning">Lightning</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Daylight">Daylight</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Night">Night</PROPERTIES>
-		<RKEY card="0,n" data="Place,Id" useKeyName="1" form="1" fiche="1" >Places</RKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Dressing room">DressingRoom</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Surface">Surface</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Height">Height</PROPERTIES>
@@ -61,14 +64,11 @@
 		<FKEY card="1,1" data="Category,Id" useKeyName="1" obligatoire="1" form="2" fiche="2" category="Description" description="Category">CategoryId</FKEY>
 		<RKEY card="0,n" data="Genre,Id" useKeyName="1" form="1" fiche="1" >Genres</RKEY>
 		<RKEY card="0,n" data="Event,Id" useKeyName="1" form="1" fiche="1" >Events</RKEY>
-
+		<RKEY card="0,n" data="Place,Id" useKeyName="1" form="1" fiche="1" >Places</RKEY>
 		<RKEY card="0,n" data="Language,Id" useKeyName="1" form="1" fiche="1" >Languages</RKEY>
 		<RKEY card="0,n" data="Public,Id" useKeyName="1" form="1" fiche="1" >Publics</RKEY>
 		<PROPERTIES type="int" obligatoire="0" default="0" filterMode="equal" query="Show/Maturity::Id::Maturity" category="Description" description="Maturity">MaturityId</PROPERTIES>
-<!--
-		<PROPERTIES type="int" obligatoire="0" default="0" filterMode="equal" query="Show/Language::Id::Language" category="Description" description="Language">LanguageId</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" default="0" filterMode="equal" query="Show/Public::Id::Public" category="Description" description="Public">PublicId</PROPERTIES>
--->
+
 
 		<PROPERTIES type="int" obligatoire="0" default="0" filterMode="equal" query="Show/Country::Id::Country" category="Description" list="1" form="1" fiche="1" description="Country">CountryId</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" default="0" filterMode="equal" query="Show/State::Id::State" category="Description" list="1" form="1" fiche="1" description="State">StateId</PROPERTIES>
@@ -197,6 +197,19 @@
 		<PROPERTIES type="varchar" length="128" searchOrder="1" category="Description" form="1" list="1" fiche="1">City</PROPERTIES>
 	</OBJECTCLASS>
 
+	<OBJECTCLASS title="Motive" driver="mysql" AccessPoint="1" Description="Motive" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveES</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Contact" driver="mysql" AccessPoint="1" Description="Contact" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Contact.class.php">
+		<PROPERTIES type="varchar" length="255" >Mail</PROPERTIES>
+		<PROPERTIES type="int" default="0" >CategoryId</PROPERTIES>
+		<PROPERTIES type="int" default="0" >MotiveId</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" >Subject</PROPERTIES>
+		<PROPERTIES type="text" length="255" >Body</PROPERTIES>
+	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Translation" driver="mysql" AccessPoint="1" Description="Translation" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
 		<PROPERTIES type="varchar" length="2" searchOrder="1" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>

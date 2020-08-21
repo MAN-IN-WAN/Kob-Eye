@@ -11,11 +11,11 @@ class Performance extends genericClass {
 	public static function GetComments($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
-		if(!$logged) return ['success'=>false, 'logged'=>false];
+		//if(!$logged) return ['success'=>false, 'logged'=>false];
 
 		$id = $args['id'];
 		$stars = $args['stars'];
-		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales "
+		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
 			."inner join `##_Systeme-User` u on u.Id=c.UserId "
 			."where c.PerformanceId=$id "; 
@@ -26,8 +26,10 @@ class Performance extends genericClass {
 
 		$tmp = array();
 		foreach($rs as $r) {
+			$inf = json_decode($r['Informations']);
+			$user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 			$tmp[] = ['vote'=>$r['Vote'], 'text'=>$r['Comments'], 'time'=>$r['CommentsDate'],
-				'user'=>$r['Initiales'], 'userId'=>$r['Id']];
+				'user'=>$user, 'userId'=>$r['Id']];
 		}
 		return ['success'=>true, 'comments'=>$tmp];
 	}
@@ -56,7 +58,6 @@ class Performance extends genericClass {
 		if($vote->id) $c = Sys::getOneData('Show', 'Comments/'.$vote->id);
 		else {
 			$c = genericClass::createInstance('Show', 'Comments');
-klog::l("xxxxxxxxxxxxxxx",$c);
 			$c->addParent($p);
 			$c->addParent($usr);
 		}
@@ -87,7 +88,7 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 	public static function GetRatings($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
-		if(!$logged) return ['success'=>false, 'logged'=>false];
+		//if(!$logged) return ['success'=>false, 'logged'=>false];
 		
 		$id = $args['id'];
 		$sql = "select Vote,count(*) as cnt from `##_Show-Comments` where PerformanceId=$id group by Vote";
@@ -158,6 +159,12 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 		foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Medium');
 		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Message');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Comments');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Place');
+		foreach($cs as $c) $c->Delete();
 		$o->Delete();
 		return array('success'=>1);
 	}
@@ -211,7 +218,7 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 			case 'preview':
 				return self::getPreview($cond, $logged, $uid, $lang);
 			case 'details':
-				return self::getDetails($cond, $logged, $uid, $lang);
+				return self::getDetails($cond, $logged, $uid, $lang, $args);
 		}
 		return array();
 	}
@@ -222,7 +229,7 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 		$frm = "from `kob-Show-Performance` s ";
 		$join = "inner join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
-
+		
 		$cry = $cond->country;
 		$group = false;
 		$name = '';
@@ -239,7 +246,7 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 				break;
 			case 3:
 				$name = 'Search';
-				if($cond->category) $whr .= "and s.CategoryId in ($cond->category) ";
+				if($cond->category) $whr .= "and s.CategoryId=$cond->category ";
 				if($cond->user) $whr .= "and s.userCreate=$cond->user ";
 				if($cond->year) $whr .= "and s.Year='$cond->year' ";
 				if($cond->genre) $join .= "inner join `kob-Show-PerformanceGenres` pg on pg.PerformanceId=s.Id and pg.Genre in ($cond->genre) ";
@@ -248,92 +255,96 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 				if($cond->maturity) $whr .= "and s.MaturityId<>0 and s.MaturityId".($cond->more ? '>=' : '<=')."$cond->maturity ";
 				if($cond->state) $whr .= "and s.StateId in ($cond->state) ";
 				if($cond->city) $whr .= "and s.StateId in ($cond->city) ";
-				if($cond->name) {
-					$frm = "from `kob-Show-Crew` w "
-						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
-					$whr .= "and match (name) against ('$cond->name') ";
-				}
-				if($cond->role) {
-					$frm = "from `kob-Show-Crew` w "
-						."inner join `kob-Show-Performance` s on s.Id=w.PerformanceId ";
-					$whr .= "and match (role) against ('$cond->role') ";
-				}
 				$txt = $cond->text;
 				if($txt) {
 					$name .= ": $txt";
 					$whr = "and s.Id in ( "
-					."select s.Id "
-					."from `kob-Show-Performance` s "
-					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
+					."select Id "
+					."from `kob-Show-Performance` "
+					."where CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
 					."union "
-					."select s.Id "
-					."from `kob-Show-Crew` c "
+					."select PerformanceId "
+					."from `kob-Show-Crew` "
 					."where MATCH (Name) AGAINST ('$txt') "
 					."union "
-					."select s.Id "
-					."from `kob-Show-Crew` c "
+					."select PerformanceId "
+					."from `kob-Show-Crew` "
 					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) "
 					."union "
 					."select s.Id from `kob-Show-Category` c "
+					."inner join `kob-Show-Performance` s on s.CountryId=$cry and s.CategoryId=c.id "
 					."where c.Category$lang like '$txt%' "
 					."union "
 					."select pg.PerformanceId as Id from `kob-Show-Genre` g "
 					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
 					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) "
 					.") ".$whr;
-//					$whr = "and s.Id in ( "
-//					."select s.Id "
-//					."from `kob-Show-Performance` s "
-//					."where s.CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
-//					."union "
-//					."select s.Id "
-//					."from `kob-Show-Crew` c "
-//					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-//					."where MATCH (Name) AGAINST ('$txt') and s.CountryId=$cry "
-//					."union "
-//					."select s.Id "
-//					."from `kob-Show-Crew` c "
-//					."inner join `kob-Show-Performance` s on s.Id=c.PerformanceId "
-//					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
-//					."union "
-//					."select s.Id from `kob-Show-Category` c "
-//					."inner join `kob-Show-Performance` s on s.CategoryId=c.id "
-//					."where c.Category$lang like '$txt%' and s.CountryId=$cry "
-//					."union "
-//					."select s.Id from `kob-Show-Genre` g "
-//					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
-//					."inner join `kob-Show-Performance` s on s.Id=pg.PerformanceId "
-//					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) and s.CountryId=$cry "
-//					.") ".$whr;
 				}
 		} 
 		
-		$sql .= $frm.$join." where ".substr($whr, 3).' order by '.($group ? "c.Category$lang," : '').'s.tmsEdit desc, s.Id desc';
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
+		
+		$whr = " where ".substr($whr, 3);
+		$ord = ' order by s.tmsEdit desc, s.Id desc'; 
+
+		$offset = $cond->offset;
+		$slides = $cond->slides;
 		
 		$favs = [];
 		$data = [];
-		$acat = [];
-		$rcat = 0;
-		$ncat = $name;
+
+		if($group) {
+			$page = 32;
+			$inf = json_decode(Sys::$User->Informations);
+			if($inf && $inf->showFavourites && $cond->mode == 0 && ($slides == 0 || $slides == -1)) {
+				$acat = [];
+				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
+				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
+				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
+			}
+		
+			$cat = $slides > 0 ? "/$slides" : '';
+			$cs = Sys::getData('Show', 'Category'.$cat);
+			foreach($cs as $c) {
+				$tmp = "Category$lang";
+				$acat = [];
+				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm, $join, $whr." and s.CategoryId=$c->Id", $ord, $offset, $page, $acat);
+				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>$c->$tmp, 'id'=>$c->Id, 'data'=>$acat];
+			}
+		}
+		else {
+			$page = 20;
+			$acat = [];
+			if($offset) $offset = ($offset-1)*$page;
+			$max = self::getPerfs($uid, $logged, $lang, $sql, $frm, $join, $whr, $ord, $offset, $page, $acat);
+			if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>ceil($max/$page), 'name'=>$name, 'id'=>0, 'data'=>$acat];
+		}
+
+		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'group'=>$group, 'sql'=>"$sql$frm$join$whr$ord"];
+	}
+	
+	private static function getPerfs($uid, $logged, $lang, $sql, $frm, $join, $whr, $ord, $offset, $limit, &$acat) {
+		$sql0 = 'select count(*) as cnt '.$frm.$join.$whr;
+		$sql0 = str_replace('##_', MAIN_DB_PREFIX, $sql0);
+		$ps = $GLOBALS['Systeme']->Db[0]->query($sql0);
+		$r = $ps->fetch(PDO::FETCH_ASSOC);
+		$count = $r['cnt'];
+
+		$sql .= $frm.$join.$whr.$ord;
+		if($limit) $sql .= " limit $limit";
+		if($offset) $sql .= " offset $offset";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$ps = $GLOBALS['Systeme']->Db[0]->query($sql);
+
 		foreach($ps as $r) {
 			$p = genericClass::createInstance('Show', 'Performance');
 			$p->initFromId($r['Id']);
-			$cat = $p->CategoryId;
-			if($group && $cat != $rcat) {
-				if($rcat) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
-				$acat = [];
-				$rcat = $cat;
-				$ncat = $r["Category$lang"];
-			}
 			$d = new stdClass();
 			$d->id = $p->Id;
 			$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 			$d->title = $p->Title;
 			$d->subtitle = $p->Subtitle;
 			$d->year = $p->Year;
-			$d->categoryId = $cat;
+			$d->categoryId = $p->CategoryId;
 			$d->category = $r["Category$lang"];
 			$d->countryId = $p->CountryId;
 			$d->maturity = $p->MaturityId ? $r['Maturity'] : 'NR';
@@ -348,19 +359,15 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
 
 			$acat[] = $d;
-			if($group && $d->fav && $cond->mode == 0) $favs[] = $d;
 		}
-		if(count($acat)) $data[] = ['count'=>count($acat), 'name'=>$ncat, 'id'=>$rcat, 'data'=>$acat];
-		if(count($favs)) array_splice($data, 0, 0, [['count'=>count($favs), 'name'=>'Favourites', 'id'=>-1, 'data'=>$favs]]);
-
-		return ['success'=>true, 'logged'=>$logged, 'count'=>count($data), 'data'=>$data, 'group'=>$group, 'sql'=>$sql];
+		return intVal($count);
 	}
 
 	private static function getDetails($cond, $logged, $uid, $lang) {
 		$id = $cond->id;
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
-		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales "
+		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales,u.Nom,u.Informations "
 				."from `kob-Show-Performance` s "
 				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
 				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
@@ -373,10 +380,12 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$r = $rs->fetch(PDO::FETCH_ASSOC);
 				
+		$inf = json_decode($r['Informations']);
+		
 		$d = new stdClass();
 		$d->id = $p->Id;
 		$d->uid = $p->userCreate;
-		$d->user = $r['Initiales'];
+		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
 		$d->subtitle = $p->Subtitle;
@@ -530,16 +539,12 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 	}
 
 	private static function getCrew($parent) {
-//		$sql = "select p.Id,p.Name,c.Role "
-//			."from `##_Show-Crew` c "
-//			."inner join `##_Show-People` p on p.Id=c.PeopleId "
-//			."where c.PerformanceId=".$parent->Id;
 		$sql = "select Id,Name,Role from `##_Show-Crew` where PerformanceId=".$parent->Id;
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$tmp = array();
 		foreach($rs as $r) {
-			$tmp[] = ['id'=>$r[Id], 'name'=>$r['Name'], 'role'=>$r['Role']];
+			$tmp[] = ['id'=>$r['Id'], 'name'=>$r['Name'], 'role'=>$r['Role']];
 		}
 		return $tmp;
 	}
@@ -564,7 +569,7 @@ klog::l("xxxxxxxxxxxxxxx",$c);
 			foreach($fav as $f) $f->Delete();
 		}
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$uid);
-		return array('success'=>true, 'logged'=>true, 'favourites'=>$fav);
+		return array('success'=>true, 'logged'=>true, 'favCount'=>$fav);
 	}
 	
 	public static function AddRole($args) {

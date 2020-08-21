@@ -45,6 +45,174 @@ class Classe extends genericClass {
 		return parent::Delete();
 	}
 	
+	public static function ClassesExport($args) {
+		$an = $args['Annee'];
+		$sql = "select c.Annee,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,c.Seances,c.Programmation, "
+			."c.Places,c.Prix,c.Reduction1,c.Reduction2, "
+			."ifnull(l.Lieu,'') as Lieu, "
+			."ifnull(e.Code,'') as Enseignant, "
+			//."concat(d.Libelle,' ',n.Libelle) as Libelle, "
+			."ifnull(d.WebDiscipline,'') as Web, "
+			."concat(wd.Libelle,' ',n.Libelle) as LibelleWeb "
+			."from `##_Cadref-Classe` c "
+			."inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId "
+			."inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
+			."left join `##_Cadref-Lieu` l on l.Id=c.LieuId "
+			."left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id "
+			."left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId "
+			."left join `##_Cadref-WebDiscipline` wd on wd.Id=d.WebDisciplineId "
+			."where Annee='$an' "
+			."group by c.CodeClasse "
+			."order by c.CodeClasse";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+
+		$file = 'Home/tmp/Classes_'.$an.'_'.date('YmdHis').'.csv';
+		$f = fopen($file, 'w');
+		$s = '"Annee";"CodeClasse";"JourId";"HeureDebut";"HeureFin";"CycleDebit";"CycleFin";"Seances";"Programmation";"Places";'
+			.'"Prix";"Reduction1";"Reduction2";"Lieu";"Enseignant";"Web";"LibelleWeb"';
+		fwrite($f, Cadref::cv2win("$s\n"));
+			
+		foreach($pdo as $a) {
+			$s = '"'.$a['Annee'].'";'
+				.'"'.$a['CodeClasse'].'";'
+				.'"'.$a['JourId'].'";'
+				.'"'.$a['HeureDebut'].'";'
+				.'"'.$a['HeureFin'].'";'
+				.'"'.$a['CycleDebut'].'";'
+				.'"'.$a['CycleFin'].'";'
+				.'"'.$a['Seances'].'";'
+				.'"'.$a['Programmation'].'";'
+				.'"'.$a['Places'].'";'
+				.'"'.$a['Prix'].'";'
+				.'"'.$a['Reduction1'].'";'
+				.'"'.$a['Reduction2'].'";'
+				.'"'.$a['Lieu'].'";'
+				.'"'.$a['Enseignant'].'";'
+				.'"'.$a['Web'].'";'
+				.'"'.$a['LibelleWeb'].'"';
+			fwrite($f, Cadref::cv2win("$s\n"));
+		}
+		fclose($f);
+		return array('csv'=>$file, 'sql'=>$sql);		
+	}
+	
+	public static function ClassesImport($args) {
+		$sql = "select Annee from `##_Cadref-Annee` order by Annee desc limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$d = $pdo->fetch(PDO::FETCH_ASSOC);
+		$annee = $d['Annee'];
+		$next = $annee+1;
+		
+		$msg = '';
+		$err = false;
+		$flds = ['Annee','CodeClasse','JourId','HeureDebut','HeureFin','CycleDebut','CycleFin','Seances','Programmation',
+			'Places','Prix','Reduction1','Reduction2','Lieu','Enseignant','Web','LibelleWeb'];
+
+		$f = getcwd().'/'.$args['FilePath'];
+		$f = str_replace("\r\n", "\n", file_get_contents($f));
+		$ls = explode("\n", $f);
+		$lig = 0;
+		foreach($ls as $l) {
+			if($l == '') break;
+			if(!$lig++) continue; // header
+
+			$cs = explode(";", $l);
+			if($cs[0] == '') break;
+			
+			$n = 0;
+			$nbdt = 0;
+			$ok = true;
+			foreach($cs as $c) {
+				if($c[0] == '"') $c = substr($c, 1, -1);
+				switch($n) {
+					case 0:
+						if($c != $annee) {
+							$msg .= "lig $lig: Année erronée $c. Ligne non traitée.\n";
+							continue;
+						}
+						break;
+					case 1:
+						$new = false;
+						$clas = $c;
+						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
+						if(!$cls) {
+							$new = true;
+							$cls = genericClass::createInstance('Cadref', 'Classe');
+							$cls->Annee = $annee;
+							$cls->Classe = substr($c, 6, 1);
+							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
+							if(!$niv) {
+								$msg .= "lig $lig: Niveau erroné $c. Ligne non traitée.\n";
+								continue;
+							}
+							$cls->addParent($niv);
+						}
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+						if($n == 2) $day = $c;
+						elseif($n == 7) $sean = $c;
+						elseif($n == 8)	$prog = $c;
+						$fld = $flds[$n];
+						$cls->$fld = $c;
+						break;
+					case 13:
+						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
+						if(!$lieu) $msg .= "lig $lig: Lieu erroné $c.\n";
+						else $cls->addParent($lieu);
+						break;
+					case 14: 
+						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
+						if(!$ens) $msg .= "lig $lig: Enseignant erroné $c.\n";
+						else $cls->addParent($ens);
+						$cls->Save();
+						if(!$new) {
+							$dts = $cls->getChildren('ClasseDate');
+							foreach($dts as $dt) $dt->Delete();
+						}
+						break;
+					case 15: 
+					case 16:
+						break; // ignore Web
+					default:
+						$nb = 0;
+						if($c == '' || $prog == 0) $n == -1;
+						else {
+							$nbdt++;
+							$ds = explode('/', $c); 
+							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
+							if(!$dt) $msg .= "lig $lig: Date erronée $c.\n";
+							else {
+								$w = $dt->format('w');
+								if(!$w) $w = 7;
+								if($w != $day) $msg .= "lig $lig: Date différente du jour $c.\n";
+								$ts = $dt->getTimestamp();
+								$dat = genericClass::createInstance('Cadref', 'ClasseDate');
+								$dat->addParent($cls);
+								$dat->DateCours = $ts;
+								$dat->Save();
+							}
+						}
+				}
+				if($n == -1) break;
+				$n++;
+			}
+			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
+			$lig++;
+		}
+		return array('message'=>$msg);
+	}
+	
 	function GetFormInfo() {
 		$a = $this->getOneParent('Antenne');
 		$s = $this->getOneParent('Section');

@@ -16,6 +16,8 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'del-dialog': return Message::DelDialog($args);
+			case 'contact': return Contact::SaveContact($args);
 			case 'vote': return Performance::SetVote($args);
 			case 'get-vote': return Performance::GetVote($args);
 			case 'comments': return Performance::GetComments($args);
@@ -75,6 +77,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
 			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
 			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
+			case 'motives': $data = self::getObjsArray('Motive', "", true, $lang); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -112,7 +115,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
-		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'messages'=>$msg);
+		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'msgCount'=>$msg);
 	}
 	
 	
@@ -141,6 +144,10 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr->Mail = $acc->email;
 		$usr->Nom = $acc->name;
 		$usr->Tel = $acc->phone;
+		$inf = new stdClass();
+		$inf->displayName = $acc->displayName;
+		$inf->showFavourites = $acc->showFavourites;
+		$usr->Informations = json_encode($inf);
 		$usr->Save();
 		return ['success'=>true];
 	}
@@ -187,17 +194,21 @@ klog::l("GETSHOW >>>>>",$args);
 		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
 		$id = $usr->Id;
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
 		$msg = self::newMessages($id);
 		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
 		//$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return array('success'=>true, 'logged'=>true, 'token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 
-				'id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'messages'=>$msg, 'favourites'=>$fav);
+		return ['success'=>true, 'logged'=>true, 'msgCount'=>$msg, 'favCount'=>$fav,
+				'user'=>['token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 'id'=>$usr->Id, 
+				'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'showFavourites'=>$inf ? $inf->showFavourites : false,
+				'displayName'=>$inf ? $inf->displayName : false]];
 	}
 	
 	public static function Status() {
 		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>true, 'logged'=>false, 'messages'=>0);
-		return array('success'=>true, 'logged'=>true, 'messages'=>self::newMessages($usr->Id));
+		if($usr->Public) return array('success'=>true, 'logged'=>false, 'msgCount'=>0);
+		return array('success'=>true, 'logged'=>true, 'msgCount'=>self::newMessages($usr->Id));
 	}
 	
 	private static function newMessages($id) {
@@ -229,22 +240,22 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = base64_encode($u->Id.','.$c->email.','.time());
 		switch($args['lang']) {
 			case 'EN':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
 				$b .= "Please complete user information in Menu/My account.<br /><br />";
 			case 'FR':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
 				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
 			case 'ES':
-				$s = 'www.shows.zone : Confirm registration.';
-				$s = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone : Confirm registration.';
+				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
@@ -280,21 +291,21 @@ klog::l("GETSHOW >>>>>",$args);
 		$info = base64_encode($mail.','.time());
 		switch($lang) {
 			case 'EN':
-				$s = 'www.shows.zone : Lost password.';
+				$s = 'shows.zone : Lost password.';
 				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";
 				break;
 			case 'FR':
-				$s = 'www.shows.zone : Mot de passe oublié.';
+				$s = 'shows.zone : Mot de passe oublié.';
 				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour changer de mot de passe :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Changer le mot de passe</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 24 heures.<br /><br />";
 				break;
 			case 'ES':
-				$s = 'www.shows.zone : Change password.';
+				$s = 'shows.zone : Change password.';
 				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
