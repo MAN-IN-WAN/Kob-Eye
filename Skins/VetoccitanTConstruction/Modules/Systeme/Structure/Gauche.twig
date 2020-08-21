@@ -1,0 +1,16 @@
+<div id="newsGauche"  class="scrollbar-transparent" style="overflow: hidden;position:relative;">
+    <div class="CacheScroll">
+        <div class="responsiveaccueil " >
+            <div class="blocInfosGauche">
+                {{ include(template_from_string(component('Vetoccitan/InfosCab-Colonne'))) }}
+            </div>
+            <div class="bloc-Horaires">
+                {{ include(template_from_string(component('Vetoccitan/HorairesCab-Colonne'))) }}
+            </div>
+        </div>
+        <div class="bloc-infos news hidden-xs hidden-sm">
+            {{ include(template_from_string(component('Vetoccitan/News-Colonne/Default?TITRE=News&NBNEWS=2&LIEN=news'))) }}
+        </div>
+    </div>
+</div>
+

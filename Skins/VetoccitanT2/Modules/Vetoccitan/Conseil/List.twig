@@ -1,0 +1,19 @@
+<div class="Conseils">
+    {% for Cons in Conseils %}
+        <div class="row conseils">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <img {% if  Cons.Media.Image %}src="/{{ Cons.Media.Image }}.limit.500x500.jpg"{% else %}src="/Home/no-image.png"{% endif %} class="img-responsive imgconseils" alt="{{ Cons.Media.Titre }}"
+                     title="{{ Cons.Media.Titre }}"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="titreArticle">
+                    <h1>{{ Cons.Titre }}</h1>
+                </div>
+                <div class="textArticle">
+                    <p class="texte">{{ Cons.Description  |striptags | slice (0 , 400)|raw }}</p>
+                    <a href="/{{ Lien }}/{{ Cons.Url }}" alt="" title="" class="voirplus">Voir plus...</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

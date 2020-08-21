@@ -308,6 +308,9 @@ class AbtelBackup extends Module{
     static function getSize($path){
         return AbtelBackup::localExec('sudo du -sBM "'.$path.'" | sed "s/^\([0-9]\+\).*/\1/g"');
     }
+    static function initDD(){
+        return AbtelBackup::localExec('sudo /var/www/html/Modules/AbtelBackup/InitDD/initDD.sh');
+    }
     /**
      * sync
      * Rsync command avec limite de bande passante.

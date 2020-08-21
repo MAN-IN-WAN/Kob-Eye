@@ -1,0 +1,83 @@
+{#
+    ########################################################" COULEUR PRINCIPALE + COULEUR TEXTE ###########################################################################################"
+#}
+.couleurPrincipale{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
+}
+.couleurPrincipale a{
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
+}
+
+a.LienNewsColonne:hover{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important{% endif %};
+}
+
+body a:hover {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} {% endif %};
+}
+
+.textePresentation {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important{% endif %};
+}
+.contactEquipe {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important{% endif %};
+}
+.filtres li.active{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+}
+.boutonretour:hover {
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+}
+button:hover{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+}
+.wrapWrap #wrap{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
+}
+#close{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
+{% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
+}
+.testPost{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important{% endif %};
+}
+
+{#
+    ########################################################" BORDER RADIUS ###########################################################################################"
+#}
+
+.boxhoraire,
+.boxnum,
+.boxnews,
+.boutonCentre,
+#bandoBas .carousel-inner,
+#myCarouselbandoBAS,
+.Accueil .imgArticle img,
+.Clinique .imgArticle img,
+.boutonretour,
+.blocnumbando,
+.contactEquipe,
+.imgservices,
+.imgconseils,
+.imgnews ,
+.filtres li,
+.inputform,
+.textform,
+.testPost,
+#mLegal,
+.contactMaps{
+    {% if not Border_Radius %}border-radius: 0 !important;{% endif %}
+}
+
+button{
+    {% if not Border_Radius %}border-radius: 0 !important;{% endif %}
+}
+
+{%  for i in 0..20 %}
+    .item.anim .carousel-caption .texteCarousel *:nth-child({{ i }}){
+        transition-delay:calc({{ i }} * 0.25s);
+    }
+{% endfor %}
+
