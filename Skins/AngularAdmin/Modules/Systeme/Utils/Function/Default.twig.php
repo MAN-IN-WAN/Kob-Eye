@@ -79,7 +79,7 @@ if(!isset($info['Functions'][$name]) /*|| !is_object(Sys::$CurrentMenu)*/){
         $methods = get_class_methods($obj);
 
         if(!in_array($name,$methods)){
-            $error = "La fonction que vous essayez d'exectuer n'est pas définie pour l'objet souhaité";
+            $error = "La fonction que vous essayez d'executer n'est pas définie pour l'objet souhaité";
             $vars['toReturn']['errors'][] = array("Message"=>$error);
         } else {
             $temp = $obj->{$name}($vars['params']);

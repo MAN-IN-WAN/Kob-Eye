@@ -1,0 +1,2015 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline
+}
+
+blockquote, q {
+    quotes: none
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+ins {
+    text-decoration: none
+}
+
+del {
+    text-decoration: line-through
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+a:active, input:active {
+    outline: none
+}
+
+:-moz-any-link:focus {
+    outline: none
+}
+
+/* FONT */
+@font-face {
+    font-family: 'neue-haas-grotesk-display';
+    src: url('../Fonts/NHaasGroteskTXPro-55Rg.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+}
+
+
+/*-- GLOBAL ---*/
+html, body {
+    padding: 0;
+    margin: 0;
+    /*font-family: 'SuisseIntl-Book-WebM', Sans-Serif;*/
+    font-family: 'neue-haas-grotesk-display', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    line-height: 20px;
+    scrollbar-width:none
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.fullWidth {
+    width: 100%;
+    margin: auto;
+}
+
+.Container {
+    max-width: 1600px /*100%*/;
+    margin: auto;
+}
+
+.hiddenContenu {
+    display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-size: 22px;
+}
+
+h2 {
+    /*font-size: 24px;*/
+    font-size: 1.5em;
+}
+
+body {
+    font-size: 16px;
+    height: 100%;
+}
+
+
+input, textarea, select, button {
+    font-family: 'neue-haas-grotesk-display', sans-serif;
+    font-size: 12px;
+
+}
+
+a {
+    text-decoration: none;
+    color: #ccc;
+}
+
+/*img {*/
+/*    filter: grayscale(1);*/
+/*}*/
+
+a:hover {
+    text-decoration: underline;
+}
+
+p {
+    /*text-align: justify;*/
+    line-height: 21px;
+}
+
+/** divers **/
+
+#SiteVeto1 {
+    /* position: relative;*/
+    width: 100%;
+    height: 100%;
+}
+
+#SiteVeto1 .bloc-infos {
+    margin: 10px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000;
+    font-size: 1em;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+#SiteVeto1 .bloc-infos h3 a {
+    font-size: 16px;
+    font-style: normal;
+    line-height: initial;
+    display: inline-block;
+}
+
+
+.bloc-infos .col-lg-3.col-md-3.col-sm-3,
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+    padding: 0;
+}
+
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+    text-align: right;
+}
+
+/*.bloc-infos .col-lg-9.col-md-9.col-sm-9:last-child {
+    text-align: center;
+}*/
+
+.btn-default {
+    border: 2px solid #000;
+    padding: 5px;
+}
+
+.borderAnim {
+    border-bottom: 1px solid #000;
+}
+
+.borderTop {
+    border-top: 1px solid #000;
+    padding: 15px 0;
+}
+
+.borderTopContenu {
+    border-top: 1px solid #000;
+    padding-top: 15px;
+}
+
+
+/** CAROUSEL **/
+#SiteVeto1 #Bando {
+    transition: all linear 0.4s;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+}
+
+#SiteVeto1 #Bando.shrunk {
+    height: 0;
+}
+
+#SiteVeto1 #Bando img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blocnumbando {
+    border: 1px solid #000;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    position: relative;
+    bottom: 75px;
+    float: right;
+    right: 30px;
+}
+
+.blocConstruction {
+    border: 1px solid #000;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    position: absolute;
+    bottom: 75px;
+    left: 30px;
+}
+
+
+#bandoHaut {
+    height: 540px;
+}
+
+#bandoHaut img {
+     width: 100% !important;
+     height: 100%;
+     object-fit: cover;
+     object-position: center;
+ }
+/*========================================================*/
+/*                       MENU                             */
+/* ========================================================*/
+#SiteVeto1 #menuBarWrap {
+    height: 75px;
+}
+
+#SiteVeto1 #MenuBar {
+    height: inherit;
+    padding: 0;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    font-size: 1.3em;
+    z-index: 1000;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    transition: all linear 0.4s;
+}
+
+.landing {
+    position: fixed;
+}
+
+#SiteVeto1 #MenuBar.Atterissage {
+    top: calc(100vh - 75px);
+    border-top: 1px solid black;
+}
+
+#SiteVeto1 #MenuBar * {
+    height: 100%;
+}
+
+#SiteVeto1 #MenuBar a {
+    display: flex;
+    padding: 15px;
+    color: #000;
+    text-decoration: none;
+    box-sizing: border-box;
+    align-items: center;
+    text-align: left;
+}
+
+/* Nom clinique */
+.NomMenu {
+    font-size: 1em;
+    text-align: center;
+}
+
+.NomMenu a:hover {
+    color: #000;
+}
+
+/* Contenu Menu */
+#SiteVeto1 #MenuBar ul.Menu0 {
+    justify-content: space-between;
+    list-style: none;
+    display: inline-flex;
+    width: 100%;
+}
+
+#SiteVeto1 #MenuBar ul.Menu0 li a:hover {
+    color: #ccc;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#SiteVeto1 #MenuBar ul.Menu0 li.Current a {
+    color: #ccc;
+}
+
+/*========================================================*/
+/*                       CONTENU PRINCIPAL                */
+/* =======================================================*/
+#Main {
+    padding-top: 15px;
+    height: calc(100% - 75px);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.page_accueil #Main {
+    height: auto;
+}
+
+/** COL GAUCHE **/
+#SiteVeto1 #Content .Gauche {
+    height: 100%;
+    overflow: auto;
+}
+
+#SiteVeto1 #Content .Gauche h2 {
+    font-size: 1em;
+}
+
+a.LienNewsColonne {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+}
+
+a.LienNewsColonne:hover {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/*** CONTENU  **/
+#SiteVeto1 #Content {
+    height: 100%;
+}
+
+#SiteVeto1 #Content #mainContent {
+    height: 100%;
+}
+
+#SiteVeto1 #Content #mainContent .Container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/*** CONTENU  **/
+
+
+#SiteVeto1 #Content .titreImage .legende {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#SiteVeto1 #Content .titreArticle h2 {
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+#SiteVeto1 #Content .textArticle h2 {
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+#SiteVeto1 #Content .equipe img:hover {
+    cursor: pointer;
+}
+
+#SiteVeto1 #Content .equipe h5 {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+#SiteVeto1 #Content .textArticle .texte {
+    font-size: 16px;
+    font-style: normal;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+}
+
+#SiteVeto1 #Content .Contenu .row.equipe {
+    margin-left: 0px;
+    margin-bottom: 12px;
+}
+
+#SiteVeto1 #Content .Contenu .equipier {
+    margin-bottom: 15px;
+}
+
+#SiteVeto1 #Content .Contenu .row.conseils,
+#SiteVeto1 #Content .Contenu .row.services,
+#SiteVeto1 #Content .Contenu .row.news {
+    margin-bottom: 22px;
+}
+
+
+/** NEWS **/
+#SiteVeto1 .bloc-infos.news {
+    border: none;
+}
+
+h2.news {
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #000;
+    padding: 5px;
+    margin: 40px 0 10px 0;
+}
+
+#Footer {
+    border-top: 1px solid black;
+}
+
+#Pre-Footer {
+    background-color: #ccc;
+    height: 290px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    /*margin:10px 0 10px 0;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filtres {
+    display: flex;
+    list-style: none;
+    font-size: 20px;
+    text-align: center;
+    flex-wrap: nowrap;
+    align-content: stretch;
+}
+
+.filtresWrap {
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+.filtres li {
+    border: 1px solid #000;
+    padding: 6px;
+    margin: 0 10px 0 0;
+    width: 115px;
+    height: 33px;
+    cursor: pointer;
+}
+
+.filtres li.active {
+    background-color: #000;
+    color: #fff;
+}
+
+.lien a {
+    display: block;
+    text-decoration: none;
+}
+
+.filtres li.active a {
+    color: #fff;
+}
+
+.filtres li a {
+    color: #000;
+}
+
+/** SCROLL */
+#newsGauche {
+    position: relative;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+}
+
+#newsGauche::-webkit-scrollbar {
+    display: none;
+}
+
+#Contenu-scroll {
+    position: relative;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+}
+
+.CacheScroll {
+    width: 100%;
+    right: -15px;
+    height: 100%;
+    overflow: auto;
+    padding-right: 15px;
+    position: relative;
+}
+
+.scrollbar-transparent::-webkit-scrollbar {
+    display: none;
+}
+
+
+#newsGauche::-webkit-scrollbar {
+    display: none;
+}
+
+.boutonCentre {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.boutonCentre a {
+    /*color: #000;*/
+    color: #fff;
+    background-color: black;
+    border: 1px solid #000;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.titreCentre {
+    border-bottom: 1px solid #000;
+    margin-top: 20px;
+}
+
+#SiteVeto1 .bloc-Horaires .bloc-infos {
+    padding: 0;
+    margin: 0;
+}
+
+#SiteVeto1 .bloc-Horaires {
+    font-size: 15px;
+    line-height: 22px;
+}
+
+.nomClinique {
+    border-top: 1px solid #000;
+    padding-top: 10px;
+    margin-top: -10px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+/* Formulaire */
+.labelform {
+    display: block;
+    padding: 5px 0 5px 0;
+}
+
+.inputform,
+.textform {
+    width: 100%;
+}
+
+.textform {
+    resize: none;
+    width: 100%;
+    height: 200px;
+}
+
+button {
+    color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #000;
+    font-family: inherit;
+    font-size: initial;
+}
+
+button:hover {
+    color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #000;
+    font-family: inherit;
+    font-size: initial;
+}
+
+/** Anim Equipe */
+#animBot {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+#animBot.active {
+    visibility: visible;
+}
+
+#leftSide {
+    background: #d7d7d7;
+    bottom: 100vh;
+    z-index: 100;
+    width: 50%;
+    display: inline-block;
+    position: relative;
+    border-right: 1px solid black;
+}
+
+#rightSide {
+    background: white;
+    top: 100vh;
+    z-index: 100;
+    width: 50%;
+    display: inline-block;
+    position: relative;
+    padding: 15% 6%;
+}
+@keyframes smoothUp {
+    0% { top: 100vh; }
+    100% { top: 0; }
+}
+@keyframes smoothDown {
+    0% { bottom: 100vh; }
+    100% { bottom: 0; }
+}
+#leftSide,
+#rightSide {
+    /*transition: all ease 0.5s;*/
+
+}
+
+#animBot.active #leftSide {
+    bottom:0;
+    animation-duration: 0.5s ;
+    animation-name: smoothDown ;
+    animation-timing-function: cubic-bezier(0.455, 0.995, 0.550, 0.940);
+}
+
+#animBot.active #rightSide {
+    top: 0;
+    animation-duration: 0.5s ;
+    animation-name: smoothUp ;
+    animation-timing-function: cubic-bezier(0.455, 0.995, 0.550, 0.940);
+}
+
+#rightSide #detailVeto {
+
+}
+
+#rightSide #boxContact {
+    /*position: relative;*/
+    /*top: 1200px;*/
+    /*left: 274px;*/
+    /*border: 1px solid #000;*/
+    padding-top: 15px;
+    text-align: center;
+}
+
+#rightSide h2 {
+    right: 100px;
+    position: absolute;
+    top: 100px;
+}
+.cercle {
+    width: 50px;
+    border: 1px solid #000;
+    border-radius: 50px;
+    padding: 10px;
+    position: absolute;
+    right: 50px;
+    top: 75px;
+    z-index:200;
+}
+
+.docDecr {
+    padding: 15px 0;
+}
+.nomdct {
+    font-size: 2em;
+    padding-bottom: 15px;
+}
+
+.contactEquipe {
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid black;
+    padding: 0.6em;
+}
+.contactEquipe:hover {
+  color:#000;
+    text-decoration:none;
+}
+.imagePers{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#animAccueil {
+    position: relative;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+}
+
+
+#testouille {
+    position: relative;
+    /*
+    bottom: -200px;
+    */
+    /*background-color: black;*/
+}
+
+#durAccueil {
+    display: none;
+}
+
+#durClinique {
+    display: none;
+}
+
+#durConseils {
+    display: none;
+}
+
+#durContact {
+    display: none;
+}
+
+#durEquipe {
+    display: none;
+}
+
+#durNews {
+    display: none;
+}
+
+#durServices {
+    display: none;
+}
+.Atterissage #mLegal {
+    display: none;
+}
+#mLegal {
+    text-align: center;
+    cursor: pointer;
+    color: #ccc;
+    padding: 10px 0;
+}
+
+.mentionsLegal {
+    border-top: 1px solid #000;
+    margin: 0 28px;
+    padding: 15px 0;
+}
+
+
+/* PAGE CONTACT */
+form.Contact {
+    /* margin-top: 20px;*/
+    margin-left: 22px;
+}
+
+
+/**** carousel clinique **/
+
+
+#myCarouselbandoHaut h2, myCarouselbandoBas h2 {
+    font-size: 2em;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0.1em 0.1em 0.05em #ffffff;
+}
+#myCarouselbandoHaut {
+    height: 100%;
+}
+.carousel-inner {
+    height: 100%;
+}
+.carousel-inner > .item {
+    height: 100%;
+}
+#myCarousel2 .item {
+    background-color: #c9cccf;
+}
+
+#myCarousel2 .item.background1.active {
+    background-color: #c9cccf;
+}
+
+#myCarousel2 .item.background2.active {
+    background-color: #1b9e1b;
+}
+
+#myCarousel2 .item.background3.active {
+    background-color: #0d7bdc;
+}
+
+#myCarousel2 h2 {
+    font-size: 2em;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0.1em 0.1em 0.05em #ffffff;
+}
+
+/* ajout Marie 01/04/20 pour logo clinique dans menu*/
+/* Modif Patrick 20/04/20 taille du logo dans menu bar de 41% à 27%, full size à voir pour obtenir un logo plus grand  */
+
+#MenuBar img {
+    max-height: 74px;
+}
+
+#durPubAccueil {
+    display: none
+}
+
+#durPubFootAccueil {
+    display: none
+}
+
+.col-lg-11.col-md-11.col-sm-11.borderTopContenu,
+.col-lg-10.col-md-10.col-sm-10.borderTopContenu,
+.col-lg-9.col-md-9.col-sm-9.borderTopContenu,
+.col-lg-8.col-md-8.col-sm-8.borderTopContenu {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.row.news.borderTop,
+.row.conseils.borderTop,
+.row.services.borderTop {
+    margin-left: 0;
+}
+
+
+.row.news.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.conseils.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.services.borderTop .col-lg-5.col-md-5.col-sm-5 {
+    margin-left: -14px;
+}
+
+.tutu {
+    border-bottom: 1px solid black;
+}
+
+.Services,
+.Conseils,
+.News {
+    margin-left: -20px;
+}
+
+.Clinique {
+    margin-left: 0px;
+}
+
+.row.equipe .col-lg-1.col-md-1.col-sm-1 {
+    width: 16%;
+}
+
+.row.news.borderTop .titreImage .legende,
+.row.conseils.borderTop .titreImage .legende,
+.row.services.borderTop .titreImage .legende {
+    font-size: 16px;
+    margin-bottom: -17px;
+    margin-top: 0px !important;
+}
+
+.imgLogo {
+    margin-left: 2%;
+}
+
+.row.filtresarticle {
+    margin-left: -20px;
+}
+
+.row.Articles {
+    margin-left: 0px;
+}
+
+.Articles img {
+    width: 60%;
+}
+
+.boutonretour {
+    border: 1px solid #000;
+    padding: 2px;
+    width: 115px;
+    height: 29px;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    background-color: black;
+
+}
+
+.boutonretour a {
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    color: #fff;
+    background-color: black;
+
+}
+
+
+
+
+.carousel {
+    position: relative;
+    /*margin-bottom: -60px !important;*/
+}
+
+.newsContent {
+    padding-left: 0;
+}
+
+.News img {
+    width: 420px;
+    height: 290px;
+}
+
+
+.borderBottom {
+    border-bottom: 1px solid black;
+}
+
+
+
+.LienMenu {
+    display: none;
+}
+
+.LienAnim {
+    display: block;
+}
+
+.wrapWrap {
+    height: 75px;
+}
+
+#wrap {
+    font-size: 21px;
+    margin: 0;
+    transition: all .5s ease-in;
+    height: inherit;
+    flex-direction: column;
+    border-bottom: 1px solid black;
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    z-index: 10000000;
+}
+
+#open {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+#openLink img {
+    width: 20px;
+    height: 20px;
+}
+
+#close {
+    display: flex;
+    position: absolute;
+    top: 0;
+    max-height: 0px;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    transition: all 0.5s linear;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 15px;
+}
+
+#wrap:target #close {
+    max-height: 800px;
+    padding: 15px;
+}
+
+#close a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    z-index: 10000;
+}
+
+#closeLink img {
+    width: 20px;
+    height: 20px;
+}
+
+#close ul {
+    list-style: none;
+}
+
+li.menuLink {
+    line-height: 1.3em;
+}
+
+#close li.menuLink.Current a {
+    color: #dedede;
+    pointer-events: none;
+}
+
+#myCarouselbandoHaut .carousel-caption, #myCarouselbandoBas .carousel-caption {
+    padding-bottom: 60px;
+}
+
+.noContent {
+    padding-top: 15px;
+    border-top: 1px solid black;
+}
+
+/** Gestion CSS selon les résolutions**/
+
+/*** RESPONSIVE ***/
+
+/** Extra small devices (portrait phones, less than 576px)**/
+
+@media screen and (max-width: 575.98px) {
+    body {
+        height: auto;
+    }
+
+    /* Menu responsive */
+    .Gauche {
+        display: none;
+    }
+
+    .page_accueil .Gauche,
+    .page_contact .Gauche {
+        display: block;
+    }
+
+    #menuBarWrap {
+        display: none;
+    }
+
+    #Main {
+        padding-top: 0;
+    }
+
+    .carousel {
+        display: none;
+    }
+
+    #newsGauche {
+        height: auto;
+        min-height: auto;
+    }
+
+    #SiteVeto1 #Content {
+        height: 100%;
+        padding-top: 15px;
+    }
+
+    .CacheScroll {
+        width: initial;
+        right: initial;
+        height: initial;
+        overflow: initial;
+        padding-right: initial;
+        position: initial;
+    }
+
+
+    #Contenu-scroll {
+        width: 100%;
+        margin-bottom: 0;
+        margin-left: 0;
+        min-height: initial;
+        height: auto;
+        padding-left: 0;
+    }
+
+    .Clinique,
+    .row.news.borderTop,
+    .row.conseils.borderTop,
+    .row.services.borderTop {
+        margin-left: -15px;
+    }
+
+    .Clinique .imgArticle img {
+        width: 100%;
+    }
+
+    .textArticle img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .services img.img-responsive,
+    .conseils img.img-responsive {
+        width: 100%;
+    }
+
+    .col-lg-8.col-md-8.col-sm-8.borderTopContenu {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .row.news.borderTop .col-lg-5.col-md-5.col-sm-5,
+    .row.conseils.borderTop .col-lg-5.col-md-5.col-sm-5,
+    .row.services.borderTop .col-lg-5.col-md-5.col-sm-5 {
+        margin-left: 0;
+    }
+
+    .filtresWrap {
+        margin-bottom: 0;
+        margin-left: -15px;
+    }
+
+    .col-lg-11.col-md-11.col-sm-11.borderTopContenu,
+    .col-lg-10.col-md-10.col-sm-10.borderTopContenu,
+    .col-lg-9.col-md-9.col-sm-9.borderTopContenu,
+    .col-lg-8.col-md-8.col-sm-8.borderTopContenu {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .filtres {
+        display: flex;
+        list-style: none;
+        font-size: 16px;
+        text-align: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .filtres li {
+        margin: 0 5px 10px 5px;
+        flex-grow: 1;
+    }
+
+    .row.Articles {
+        margin-left: -15px;
+    }
+
+    .newsContent {
+        padding-left: 15px;
+    }
+
+    form.Contact {
+        margin-left: 0px;
+    }
+
+    #SiteVeto1 #Content .Contenu .row.equipe {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-bottom: 0;
+    }
+    #SiteVeto1 #Content .Contenu .equipier {
+        padding-bottom:15px;
+        border-bottom: 1px solid black;
+    }
+    .noContent {
+        text-align: center;
+    }
+
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: visible;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 0;
+    }
+
+    #animBot.active #rightSide {
+        right: 0;
+    }
+
+    #rightSide #boxContact {
+        text-align: center;
+    }
+
+    #rightSide h2 {
+        right: 100px;
+        position: absolute;
+        top: 100px;
+    }
+
+    .docDecr {
+        padding: 15px;
+    }
+
+    .contactEquipe {
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid black;
+        padding: 0.6em;
+    }
+
+    .cercle {
+        right: 20px;
+        top: 20px;
+    }
+
+    .hiddenContenu {
+        display: block;
+    }
+
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+         height: auto;
+    }
+
+    .carousel {
+        display: none;
+    }
+
+    .blocInfosGauche{
+        flex-direction:row;
+        width:50%;
+    }
+
+    .bloc-Horaires{
+        width: 50%;
+        padding-left: 12px;
+        padding-top: 1px;
+    }
+
+    .responsiveaccueil {
+        display: flex;
+    }
+
+    .titreCentre {
+        border-bottom: 1px solid #000;
+        margin:0;
+        border-top: 1px solid black;
+    }
+
+    .CacheScroll {
+        width: initial;
+        right: initial;
+        height: initial;
+        overflow: initial;
+        padding-right: initial;
+        position: initial;
+    }
+    .filtres li {
+        height: 33px;
+    }
+    .filtres li.active {
+        height: 33px;
+    }
+    .row.services.borderTop {
+        display:flex;
+    }
+
+    .responsivText{
+        padding:0;
+    }
+    .imageServ{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .respImage{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .borderTopContenu {
+        border-top: 1px solid #000;
+        padding-top: 15px;
+    }
+
+    .horizonPhone{
+        width:50%
+    }
+    #SiteVeto1 #Content .Contenu .equipeteam {
+        border-bottom: 1px solid black;
+        padding-top: 15px;
+    }
+    #SiteVeto1 #Content .Contenu .row.equipe {
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 0;
+    }
+
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: visible;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 0;
+    }
+
+    #animBot.active #rightSide {
+        right: 0;
+    }
+
+    #rightSide #boxContact {
+
+        text-align: center;
+    }
+
+    #rightSide h2 {
+        right: 100px;
+        position: absolute;
+        top: 100px;
+    }
+
+    .docDecr {
+        padding: 15px;
+    }
+
+    .contactEquipe {
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid black;
+        padding: 0.6em;
+    }
+
+    .cercle {
+        right: 20px;
+        top: 20px;
+    }
+    form.Contact {
+        margin:0;
+    }
+
+
+    #MenuBar {
+        position: static !important;
+        display: none;
+    }
+
+    #Main {
+        /*border-top: 1px solid black;*/
+        padding-top: 10px;
+    }
+
+    .responsiv {
+        list-style-type: none;
+    }
+
+    #SiteVeto1 .bloc-infos {
+        margin: 10px 0;
+        padding-bottom: 0px;
+        border-bottom: 1px solid #000;
+    }
+
+
+
+    #newsGauche {
+        position: relative;
+        overflow-y: scroll;
+        height: 215px;
+        width: 100%;
+        margin-bottom: 22px;
+    }
+
+    #SiteVeto1 #Content .Contenu {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+
+    .titreCentre p {
+        border-top: 1px solid #000;
+    }
+
+    .filtres {
+        display: flex;
+        list-style: none;
+        font-size: 16px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .hiddenContenu {
+        display: block;
+    }
+
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+
+
+}
+
+/** Medium devices (tablets, 768px and up) **/
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+        height: auto;
+    }
+
+    #MenuBar {
+        position: static !important;
+        display: none;
+    }
+
+    #Main {
+        /*border-top: 1px solid black;*/
+        padding-top: 10px;
+    }
+
+    .carousel {
+        position: relative;
+        margin-bottom: -15px !important;
+    }
+
+    .responsiveaccueil {
+        column-count: unset;
+        margin-right: 0px;
+    }
+
+    .col-lg-8,
+    .col-md-8,
+    .col-sm-8,
+    .borderTopContenu{
+        width:97%
+    }
+
+    #SiteVeto1 .bloc-infos {
+        margin: 10px 12px 0 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #000;
+    }
+
+    #newsGauche {
+        position: relative;
+        overflow-y: scroll;
+        height: 220px;
+        width: 100%;
+        margin-bottom: 22px;
+    }
+
+    .titreCentre {
+        border-bottom: 1px solid #000;
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+
+    .titreCentre p {
+        border-top: 1px solid #000;
+    }
+
+    .filtres {
+        display: flex;
+        list-style: none;
+        font-size: 16px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .filtres li {
+        border: 1px solid #000;
+        /* padding: 5px; */
+        margin: 0 5px 10px 5px;
+        width: 96px;
+        height: 27px;
+        cursor: pointer;
+    }
+
+    .filtres li.active {
+        border: 1px solid #000;
+        /* padding: 5px; */
+        background-color: #000;
+        margin: 0 5px 10px 5px;
+        color: #fff;
+        width: 96px;
+        height: 27px;
+    }
+
+    .imgArticle {
+        float: left;
+        width: 50%;
+        margin-left: -13px;
+        margin-right: 12px;
+    }
+
+    #SiteVeto1 #Content .titreImage .legende {
+        font-size: 16px;
+        /* font-style: italic; */
+        margin-top: 0px;
+    }
+
+    .responsiv {
+        list-style-type: none;
+    }
+
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: visible;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 0;
+    }
+
+    #animBot.active #rightSide {
+        right: 0;
+    }
+
+    #rightSide #boxContact {
+        text-align: center;
+    }
+
+    #rightSide h2 {
+        right: 100px;
+        position: absolute;
+        top: 100px;
+    }
+
+    .docDecr {
+        padding: 15px;
+    }
+
+    .contactEquipe {
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid black;
+        padding: 0.6em;
+    }
+
+    .cercle {
+        right: 20px;
+        top: 20px;
+    }
+    #SiteVeto1 #Content .Contenu .equipier {
+        padding-bottom:15px;
+        border-bottom: 1px solid black;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+}
+
+/*
+
+Jusqu’à 479px : smartphone en portrait
+		   De 480px à 959px : smartphone en paysage, tablette en portrait et petite tablette en paysage
+
+De 960px à 1280px : tablette en paysage, écran d’ordinateur de taille petite et moyenne
+
+1281px et au delà : grand écran d’ordinateur (21″ et + en plein écran )
+
+Et dans les cas où votre design initial est basé sur une largeur de 1024px, il suffit de remplacer le point de rupture 960px par 1024px.
+
+ Donc pour résumer : 480px | 960px ou 1024px ( selon votre design )  | 1281px  */
+
+
+/* ecran tablette portrait */
+@media (min-width: 469px) and (max-width: 1024px) {
+
+    #SiteVeto1 {
+        margin: 0 !important
+    }
+
+    #SiteVeto1 #MenuBar #wrap {
+        display: none;
+    }
+
+    #Main {
+        /*border-top: 1px solid black;*/
+        padding-top: 10px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .carousel {
+        position: relative;
+        margin-bottom: -15px !important;
+    }
+
+    #submenu .container {
+        width: 100%;
+    }
+
+    #submenu .container .col-sm-3 {
+        width: 24%;
+    }
+
+    .spectacles-list {
+        margin: 0;
+        column-count: 2;
+        column-gap: 0;
+    }
+
+    #SiteVeto1 #MenuBar #wrap {
+        display: none;
+    }
+
+    .responsiv {
+        list-style-type: none;
+    }
+
+    #SiteVeto1 .bloc-infos {
+        font-size: 0.92em;
+    }
+
+    /*
+    #SiteVeto1 .bloc-infos  h3 a{
+        font-size: 0.94em;
+    }
+    */
+    #SiteVeto1 .bloc-Horaires .bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+        padding-right: 5px;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+
+    /* ADMIN */
+
+}
+
+
+@media screen and (min-width: 992px) and (max-width: 1024px) {
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+        display: none;
+    }
+
+    #SiteVeto1 #MenuBar {
+        font-size: 1.2em;
+    }
+
+    #MenuBar ul.Menu0 li {
+        /*padding: 0 7px;*/
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+
+    }
+
+
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+}
+
+
+@media screen and (min-width: 1024px) and (max-width: 1123px) {
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+        display: none;
+    }
+
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 513px;
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+    }
+
+    #MenuBar ul.Menu0 li {
+        /*padding: 0 5px;*/
+    }
+
+
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+}
+
+
+@media screen and (min-width: 1124px) and (max-width: 1197px) {
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+        display: none;
+    }
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 513px;
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+    }
+
+
+    .hiddenContenu {
+        display: block;
+    }
+
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+}
+@media screen and (min-width: 991px) and (max-width: 1197px) {
+    .hidden-md{
+        display: block !important;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+}
+
+@media screen and (min-width: 1198px) and (max-width: 1318px) {
+
+
+    body {
+        height: auto;
+    }
+
+    #SiteVeto1 #menuBarWrap {
+        display: none;
+    }
+    #SiteVeto1 .bloc-infos {
+        font-size: 0.80em;
+    }
+
+    .hidden-md{
+        display: block !important;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+
+
+    /*    #SiteVeto1 .bloc-infos  h3 a{
+            font-size: 0.85em;
+        }*/
+    #SiteVeto1 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+
+    }
+
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 513px;
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+    }
+
+    #MenuBar ul.Menu0 li {
+        /*padding: 0px 10px;*/
+    }
+
+    .hiddenContenu {
+        display: block;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto1 #Bando {
+        display: none;
+    }
+
+
+
+}
+
+@media screen and (min-width: 1319px) and (max-width: 1370px) {
+
+
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 613px;
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+    }
+
+}
+
+@media screen and (min-width: 1371px) and (max-width: 1440px) {
+
+
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 613px;
+    }
+
+    #rightSide #boxContact {
+        position: relative;
+        left: -30px;
+    }
+
+
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1580px) {
+
+
+    #rightSide h2 {
+        position: absolute;
+        top: 730px;
+        left: 613px;
+    }
+
+
+
+}
+
+/* ???? */
+@media (max-width: 1427px) {
+    /*    #SiteVeto1 #MenuBar {
+            height: 80px;
+        }*/
+    #SiteVeto1 .bloc-infos {
+        font-size: 0.84em;
+    }
+
+    #SiteVeto1 .bloc-infos h3 a {
+        /*font-size: 0.84em;*/
+    }
+
+    #SiteVeto1 .bloc-Horaires .bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+        padding-right: 5px;
+    }
+
+
+}

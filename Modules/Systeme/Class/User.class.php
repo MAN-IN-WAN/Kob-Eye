@@ -38,7 +38,7 @@ class User extends genericClass{
         if($this->Admin) return true;
 		//Detection de la nature du pere (ne fonctionne que pour le niveau deux)
 		$ROLES = $this->getRoles();
-		$GLOBALS["Systeme"]->Log->log("ROLES",$ROLES);
+		//$GLOBALS["Systeme"]->Log->log("ROLES",$ROLES);
 		if (in_array($role, $ROLES))
 			return true;
 		else 
@@ -69,7 +69,10 @@ class User extends genericClass{
 	 * Renvoie l'ensemble des menus de l'utilisateur
 	 */
 	public function getMenus () {
-		if (!isset($this->Menus)) $this->initUserVars();
+        $this->initUserVars();
+        // enlever car faisait bugguer quand on était dans une sous-page de contenu
+        // sur le menu ça n'enlevait pas l'ancienne url
+		//if (!isset($this->Menus)) $this->initUserVars();
 		return $this->Menus;
 	}
 	/**

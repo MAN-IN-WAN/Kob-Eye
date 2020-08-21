@@ -27,13 +27,13 @@
 /** INPUT TEXT / URL /SELECT / SLIDERGO **/
 {% macro formDefault(field, obj, id, placeholder) %}
     {% if field.Values %}
-        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" {% if field.default %}ng-init=" {{ obj }}.{{ field.name }} = {{ obj }}.{{ field.name }} ? {{ obj }}.{{ field.name }} :  '{{ field.default }}' "{% endif %}>
             {% for v,k in field.Values %}
                 <option value="{{ v }}" >{{ k }}</option>
             {% endfor %}
         </select>
     {% elseif field.query %}
-        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+        <select class="form-control" {% if not (id is empty) %}id="{{ id }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" {% if field.default  %}ng-init="{{ obj }}.{{ field.name }} = {{ obj }}.{{ field.name }} ? {{ obj }}.{{ field.name }} :  '{{ field.default }}' "{% endif %}>
             {% for v,k in field.query | sort  %}
                 <option value="{{ v }}">{{ k }}</option>
             {% endfor %}
@@ -47,9 +47,9 @@
         <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} ion-range-slider stype="single" prettify="prett_{{ field.name }}" min="0" max="204800" from="{{ obj }}.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" ng-init="{{ obj }}.{{ field.name }} = {{ obj }}.{{ field.name }} > 1024 ? {{ obj }}.{{ field.name }}:1024"  ng-model="{{ obj }}.{{ field.name }}" >
     {% else %}
         {% if field.name == "Url" %}
-            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control urlInput" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control urlInput" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" {% if field.default  %}ng-init="{{ obj }}.{{ field.name }} = '{{ field.default }}' "{% endif %}>
         {% else %}
-            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}">
+            <input type="text" {% if not (id is empty) %}id="{{ id }}"{% endif %} class="form-control" {% if not (placeholder is empty) %}placeholder="{{ placeholder }}"{% endif %} ng-model="{{ obj }}.{{ field.name }}" {% if field.default  %}ng-init="{{ obj }}.{{ field.name }} = '{{ field.default }}' "{% endif %}>
         {% endif %}
     {% endif %}
 {% endmacro %}

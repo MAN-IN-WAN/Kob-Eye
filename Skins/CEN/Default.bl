@@ -1,11 +1,12 @@
 [HEADER]
 <base href="/" />
 
-<meta name="author" content="Marc Thouvenot, Paul Gordon Fisher"/>
+<meta name="author" content="Marc Thouvenot"/>
+<meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
 <meta name="reply-to" content="info@sup-infor.com"/>
 <meta name="owner" content="SUP-INFOR"/>
-<meta name="keywords" content="Nahuatl, Codex, Codices, Ghlyphes, Azteques"/>
+<meta name="keywords" content="nahuatl, otomi, mixtèque, maya, caribe, Breton, Chimalpahin, Chimalpopoca, aztèque, mexica, mexicain, mexican, mexico, Mexique, glyphes, glifos, glyphs, écriture, escritura, writing, pictographique, pictographic, paléographie, paleografia, paleographies traductions, traducciones, étude, dictionnaire, diccionarios, progr ammes informatiques, programas, pohua, temoa, tlachia, Codex de Florence, Bibliothèque Nationale de France, Bnf, Telleriano-Remensis, Cozcatzin, Xolotl, Testeriano, Azcatitlan, Quinatzin, Tlotzin, Tepechpan, Vergara, Mexicayotl, Techialoyan, Leyenda de los soles, Castillo, Cuauhtitlan, hiéroglyphe, épigraphie, précolombien, mésoamérique, Edition, publication"/>
 
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="format-detection" content="telephone=no" />
@@ -26,9 +27,12 @@
   gtag('config', 'UA-163672775-1');
 </script>
 
-<link rel="stylesheet" href="styles.5c4a59525056e67f52f8.css"></head>
+
+<link rel="stylesheet" href="styles.e153bff2d794dfd6c1fc.css">
+
 
 [/HEADER]
   <app-root></app-root>
 
-<script src="runtime.c4ad2e63001157044817.js" defer></script><script src="polyfills-es5.1fbf10247479a03cb95d.js" nomodule defer></script><script src="polyfills.e7b7e15bfa4509170f42.js" defer></script><script src="cordova.29dc09fa9fc3a7aeb58c.js" defer></script><script src="main.86792f2919b7208e73ac.js" defer></script></body>
+<script src="runtime.eee8215f7751b463492b.js" defer></script><script src="polyfills-es5.63322a01e5e05e81f089.js" nomodule defer></script><script src="polyfills.acdee76fc0fc64ea424e.js" defer></script><script src="main.9a159de21045ed255d6b.js" defer></script>
+

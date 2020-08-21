@@ -1,0 +1,2503 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline
+}
+
+blockquote, q {
+    quotes: none
+}
+::-webkit-scrollbar { display: none; }
+
+ * {
+    scrollbar-width: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+ins {
+    text-decoration: none
+}
+
+del {
+    text-decoration: line-through
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+a:active, input:active {
+    outline: none
+}
+
+:-moz-any-link:focus {
+    outline: none
+}
+
+/* FONT */
+
+@font-face {
+    font-family: 'Poppins-Medium';
+    src: url('../Fonts/Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+/*-- GLOBAL ---*/
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 18px;
+    width: 100%;
+    line-height: 20px;
+    color: #000;
+    height: 100%;
+}
+
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.fullWidth {
+    width: 100%;
+    margin: auto;
+}
+
+.Container {
+    max-width: 1600px;
+    margin: auto;
+}
+
+.hiddenContenu {
+    display: none;
+}
+
+#Main {
+    padding: 15px;
+    height: calc(100% - 75px);
+    position: relative;
+    overflow-y: scroll;
+    padding-left: 32px;
+}
+
+.page_accueil #Main {
+    height: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+
+}
+
+h1 {
+    font-size: 1em;
+    font-family: 'Poppins-Medium', sans-serif;
+
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #000;
+}
+
+p {
+    line-height: 22px;
+}
+
+a.voirplus {
+    line-height: 40px;
+}
+
+
+input, textarea, select, button {
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 0.9em;
+
+}
+
+a {
+    text-decoration: none;
+    color: #ccc;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ffd132;
+}
+
+
+/** divers **/
+
+#SiteVeto2 {
+    position: relative;
+    width: 100% /*1200px*/;
+    height: 100%;
+}
+
+div#SiteVeto2::after {
+    content: ' ';
+    width: 25px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+}
+
+/* colDroite */
+
+/*box horaire*/
+
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 30px 45px;
+}
+
+.bloc-Horaires {
+    width: 100%
+}
+
+.bloc-infos {
+    line-height: 1.6;
+}
+
+.jours {
+    text-align: left;
+    padding-left: 0;
+}
+
+/* box numéro*/
+
+
+#SiteVeto2 #MenuBar .Current{
+    color :white;
+}
+
+
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 0 0;
+    padding: 15px 45px;
+    text-align: center;
+}
+
+.logoContact {
+    width: 25px;
+    vertical-align: middle;
+}
+
+.numWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* box news*/
+
+.boxnews {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 0 0;
+    padding: 30px 45px;
+}
+
+.boxnews h2,
+.boxnews .bloc-infos {
+    margin-bottom: 15px;
+}
+
+h2.news {
+    font-size: 1em;
+}
+
+.blocnews {
+    margin: 20px 0;
+}
+
+.boutonCentre {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 15px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 0 10px #ddd;
+    position: relative;
+    overflow: visible;
+    background-color: #ffd132;
+}
+.boutonCentre:after {
+    content: ' ';
+    position: absolute;
+    top: -10px;
+    height: 10px;
+    left: 0;
+    right: 0;
+    background-color: white;
+}
+
+.boutonCentre a {
+    color: #000;
+    text-decoration: none;
+}
+
+.boutonCentre a:hover {
+    filter: invert(0.9);
+
+}
+
+
+/* fin colDroite */
+
+/** Accueil **/
+
+.Accueil .imgArticle img {
+    width: 59%;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    height: 386px;
+}
+
+.textArticle {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+a.LienNewsColonne {
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.75em;
+}
+
+a.LienNewsColonne:hover {
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.75em;
+    color: #ffd132;
+}
+
+
+/** fin Accueil **/
+
+
+/** Clinique **/
+
+.Clinique .imgArticle img {
+    /*width: 59%;*/
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+/** fin Clinique **/
+
+/** BOUTON **/
+
+.boutonretour {
+    padding: 8px;
+    margin: 0 5px 10px 5px;
+    width: 135px;
+    height: 35px;
+    float: right;
+    font-size: 1.2em;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #ddd;
+    text-transform: uppercase;
+
+}
+
+.boutonretour:hover {
+    background-color: #ffd132;
+}
+
+.btn-default {
+    border: 2px solid #000;
+    padding: 5px;
+}
+
+.boutonretour a {
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    color: #000;
+}
+
+.boutonretour a:hover {
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    color: #fff;
+}
+
+button {
+    padding: 8px;
+    margin: 0 5px 10px 5px;
+    width: 135px;
+    height: 35px;
+    font-size: 1.2em;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #ddd;
+    text-transform: uppercase;
+    background-color: #fff;
+    border-style: none;
+}
+
+button:hover {
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #ffd132;
+}
+
+/** FIN BOUTON **/
+.borderAnim {
+    border-bottom: 1px solid #000;
+}
+
+.borderTop {
+    border-top: 1px solid #000;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.borderTopContenu {
+    border-top: 1px solid #000;
+    padding-top: 15px;
+}
+
+
+#SiteVeto2 #Bando {
+    transition: all linear 0.4s;
+    overflow: hidden;
+    height: calc(100vh - 75px);
+    position: relative;
+    z-index: 100;
+}
+
+#SiteVeto2 #Bando.shrunk {
+    height: 0;
+}
+
+#SiteVeto2 #Bando img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blocnumbando {
+    /*float: right;*/
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    position: relative;
+    bottom: 75px;
+    float: right;
+    right: 30px;
+}
+
+/** CAROUSEL **/
+#myCarouselbandoHaut, #myCarouselbandoBAS {
+    box-shadow: 0 8px 8px #ddd;
+}
+#myCarouselbandoHaut {
+    height:100%
+}
+.slick-list,
+.slick-track,
+.slick-slide,
+.carousel .item{
+    height: 100%;
+    position: relative;
+}
+/*.carousel-inner {
+    height: 100%;
+}*/
+/*#bandoBas .carousel-inner {
+    height: 100%;
+    border-radius: 15px;
+}*/
+/*.carousel-inner > .item {
+    height:100%
+
+}*/
+
+#myCarouselbandoBAS{
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#bandoHaut img {
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.carousel {
+    position: relative;
+}
+
+/**** carousel clinique **/
+#myCarouselbandoHaut h2, #myCarouselbandoBas h2 {
+    font-size: 2em;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0.1em 0.1em 0.05em #ffffff;
+}
+
+.carousel-caption.animGauche {
+    left: 0;
+    right: auto;
+    width: 600px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 50px;
+    overflow-wrap: break-word;
+
+}
+.carousel-caption.animGauche .texteCarousel *{
+    opacity:0;
+    transform : translateX(100px);
+    transition: all ease-in-out 0.5s;
+}
+.item.anim .carousel-caption .texteCarousel *{
+    opacity:1;
+    transform: none;
+}
+
+.carousel-caption.animDroite {
+    left: auto;
+    right: 0;
+    width: 600px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 50px;
+    overflow-wrap: break-word;
+}
+.carousel-caption.animDroite .texteCarousel *{
+    opacity:0;
+    transform : translateY(-100px);
+    transition: all ease-in-out 0.5s;
+}
+
+.texteCarousel {
+    transition: all ease-in-out 1s;
+    width: 100%;
+}
+
+
+/** bandeaux**/
+
+#bandoHaut,
+#bandoBas {
+    z-index: 10;
+    position: relative;
+}
+
+#bandoHaut {
+    height: 540px;
+}
+
+#bandoBas {
+    margin-top: 30px;
+    overflow: hidden;
+    padding: 0px 15px;
+}
+
+/*** MENU  **/
+
+#SiteVeto2 #menuBarWrap {
+    height: 75px;
+    z-index: 1000;
+    position: relative;
+}
+
+#SiteVeto2 #MenuBar .Container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#SiteVeto2 #MenuBar {
+    height: inherit;
+    background-color: #ffd132;
+    font-family: 'Poppins-Medium';
+    text-transform: uppercase;
+    font-size: 1.1em;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    transition: all linear 0.4s;
+    padding: 0 32px;
+}
+
+.landing {
+    position: fixed;
+}
+
+#SiteVeto2 #MenuBar.Atterissage {
+    top: calc(100vh - 75px);
+}
+
+#SiteVeto2 #MenuBar * {
+    height: 100%;
+}
+
+#SiteVeto2 #MenuBar a {
+    display: flex;
+    padding: 15px;
+    /*color: #000;*/
+    text-decoration: none;
+    box-sizing: border-box;
+    align-items: center;
+   /* text-align: center;*/
+}
+
+h1.NomMenu {
+    list-style: none;
+    margin-left: -15px;
+}
+
+.NomMenu a {
+    color: #000;
+}
+
+.NomMenu a:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+
+#SiteVeto2 #MenuBar ul.Menu0 {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin-right: -15px;
+    font-size: 0.9em;
+}
+
+#MenuBar ul.Menu0 li a {
+    color: #000;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#MenuBar ul.Menu0 li a:hover {
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#MenuBar ul.Menu0 li:hover {
+    filter: invert(0.9);
+}
+
+#MenuBar ul.Menu0 li.Current a {
+    filter: invert(1);
+    text-transform: uppercase;
+}
+
+#MenuBar ul.Menu0 li h1 {
+    line-height: inherit;
+
+}
+
+#MenuBar img {
+    max-height: 80px;
+    margin-left: 15px;
+}
+
+#Content #MenuBar .imgLogo {
+    margin-top: 0;
+}
+
+.ContenuMenu {
+    margin-top: -10px;
+}
+
+#Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+}
+
+.wrapWrap {
+    height: 75px;
+}
+
+#wrap {
+    font-size: 21px;
+    margin: 0;
+    transition: all .5s ease-in;
+    height: inherit;
+    flex-direction: column;
+    border-bottom: 1px solid black;
+    position: fixed;
+    width: 100%;
+    z-index: 10000000;
+    background-color: #ffd132;
+}
+
+#open {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+#open h1 {
+    padding: 0 15px;
+}
+#openLink img {
+    width: 20px;
+    height: 20px;
+}
+
+#close {
+    display: flex;
+    position: absolute;
+    top: 0;
+    max-height: 0px;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffd132;
+    transition: all 0.5s linear;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 15px;
+}
+
+
+#wrap:target #close {
+    max-height: 800px;
+    padding: 15px;
+}
+
+#close a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    z-index: 10000;
+}
+
+#closeLink img {
+    width: 20px;
+    height: 20px;
+}
+
+#close ul {
+    list-style: none;
+}
+
+li.menuLink {
+    line-height: 1.3em;
+}
+
+#close li.menuLink.Current a {
+    color: #fff;
+    pointer-events: none;
+}
+
+
+/** FIN MENU **/
+
+.logovetoccitan img {
+    width: 150px;
+}
+.logovetoccitan {
+    text-align:center;
+    padding-top: 15px;
+}
+
+/*** CONTENU  **/
+/*#SiteVeto2 #Content {
+    position: relative;
+    margin-top:30px;
+}*/
+#SiteVeto2 #Main #Content.AvecPub {
+    height: 100%;
+    position: relative;
+    margin-top: 30px;
+}
+
+#SiteVeto2 #Main #Content.SansPub {
+    height: 100%;
+    position: relative;
+    margin-top: 90px;
+}
+
+
+/** PAGE EQUIPE **/
+
+/** Anim Equipe */
+#animBot {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+#animBot.active {
+    visibility: visible;
+}
+
+#leftSide {
+    background: #d7d7d7;
+    bottom: 100vh;
+    z-index: 100;
+    width: 50%;
+    display: inline-block;
+    position: relative;
+    border-right: 1px solid black;
+}
+
+#rightSide {
+    background: white;
+    top: 100vh;
+    z-index: 100;
+    width: 50%;
+    display: inline-block;
+    position: relative;
+    padding: 15% 6%;
+}
+
+@keyframes smoothUp {
+    0% { top: 100vh;
+        opacity:0;}
+    10% { top: 90vh;
+        opacity:0.1;}
+    20% { top: 80vh;
+        opacity:0.2;}
+    30% { top: 70vh;
+        opacity:0.3;}
+    40% { top: 60vh;
+        opacity:0.4;}
+    50% { top: 50vh;
+        opacity:0.5;}
+    60% { top: 40vh;
+        opacity:0.6;}
+    70% { top: 30vh;
+        opacity:0.7;}
+    80% { top: 20vh;
+        opacity:0.8;}
+    90% { top: 10vh;
+        opacity:0.9;}
+    100% { top: 0;
+        opacity:1;}
+}
+@keyframes smoothDown {
+    0% { bottom: 100vh;
+        opacity:0;}
+    10% { bottom: 90vh;
+        opacity:0.1;}
+    20% { bottom: 80vh;
+        opacity:0.2;}
+    30% { bottom: 70vh;
+        opacity:0.3;}
+    40% { bottom: 60vh;
+        opacity:0.4;}
+    50% { bottom: 50vh;
+        opacity:0.5;}
+    60% { bottom: 40vh;
+        opacity:0.6;}
+    70% { bottom: 30vh;
+        opacity:0.7;}
+    80% { bottom: 20vh;
+        opacity:0.8;}
+    90% { bottom: 10vh;
+        opacity:0.9;}
+    95% { bottom: 3vh;
+        opacity:0.95;}
+    100% { bottom: 0;
+        opacity:1;}
+}
+@keyframes smoothUpBack {
+    0% { top: 0;
+        visibility: visible;}
+    100% { top: 100vh;
+        visibility: hidden;}
+}
+@keyframes smoothDownBack {
+    0% { bottom: 0;
+        visibility: visible;
+    }
+    100% { bottom: 100vh;
+        visibility: hidden; }
+}
+
+#animBot.active #leftSide {
+    bottom:-60px;
+    animation-duration: 0.3s ;
+    animation-name: smoothDown ;
+    /*animation-timing-function: cubic-bezier(.03,1.06,.72,.01);*/
+    animation-timing-function: cubic-bezier(0.1, 0.1, 0.9, 1.0);
+    /*animation-timing-function: cubic-bezier(0,120,0,120);*/
+}
+
+#animBot.active #rightSide {
+    top:0;
+    animation-duration: 0.3s ;
+    animation-name: smoothUp ;
+    /*animation-timing-function: cubic-bezier(0.455, 0.995, 0.550, 0.940);*/
+    /*animation-timing-function: cubic-bezier(.03,1.06,.72,.01);*/
+    animation-timing-function: cubic-bezier(0.1, 0.1, 0.9, 1.0);
+}
+
+#animBot.inactive #leftSide {
+    animation-duration: 0.3s ;
+    animation-name: smoothDownBack ;
+    /*animation-timing-function: cubic-bezier(0.455, 0.995, 0.550, 0.940);*/
+    animation-timing-function: cubic-bezier(.03,1.06,.72,.97);
+}
+
+#animBot.inactive #rightSide {
+    animation-duration: 0.3s ;
+    animation-name: smoothUpBack ;
+    /*animation-timing-function: cubic-bezier(0.455, 0.995, 0.550, 0.940);*/
+    animation-timing-function: cubic-bezier(.03,1.06,.72,.97);
+}
+
+#rightSide #boxContact {
+    /*position: relative;*/
+    /*top: 1200px;*/
+    /*left: 274px;*/
+    /*border: 1px solid #000;*/
+    padding-top: 15px;
+    text-align: center;
+}
+
+#rightSide h2 {
+    right: 100px;
+    position: absolute;
+    top: 100px;
+}
+
+.cercle {
+    width: 50px;
+    border-radius: 50px;
+    padding: 10px;
+    position: absolute;
+    right: 50px;
+    top: 75px;
+    z-index: 200;
+    box-shadow: 0 0 10px #ddd;
+
+}
+
+.docDecr {
+    padding: 15px;
+}
+
+.nomdct {
+    font-size: 2em;
+    padding-bottom: 15px;
+}
+
+.contactEquipe {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.6em;
+    box-shadow: 0 2px 5px #ddd;
+    border-radius: 20px;
+    margin-top: 15px;
+    color: #ffd132;
+    display: block;
+}
+
+.imagePers {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* fin animation*/
+
+.row.equipeteam h5 {
+    font-size: 1em;
+}
+
+.imgequipe {
+    border-radius: 100px;
+    width:135px;
+    height:135px;
+    margin: auto;
+    object-fit: cover;
+    object-position: top;
+
+}
+
+
+.row.equipeteam {
+    margin-bottom: 60px;
+}
+
+.textePresentation {
+    color: #ffd132;
+
+}
+
+#SiteVeto2 #Content .equipe img:hover {
+    cursor: pointer;
+}
+
+#SiteVeto2 #Content .equipe h5 {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+#SiteVeto2 #Content .Contenu .row.equipe {
+    margin-left: 18px;
+    margin-bottom: 12px;
+}
+
+#SiteVeto2 #Content .Contenu .row.equipeteam {
+    margin-bottom: 22px;
+}
+
+/** Anim text equipe /*/
+
+@keyframes fadeInHead {
+    0%,50% {opacity:0;
+        transform:translateY(40px);}
+    100% {opacity:1;
+        transform:translateY(0px);}
+}
+@keyframes fadeInDecr {
+    0%,66% {opacity:0; transform:translateY(40px);}
+    100% {opacity:1; transform:translateY(0px);}
+}
+
+#animBot.active #rightSide #detailVeto .docHead{
+    animation-duration: 0.8s ;
+    animation-name: fadeInHead ;
+}
+#animBot.active #rightSide #detailVeto .docDecr{
+    animation-duration: 0.8s ;
+    animation-name: fadeInDecr ;
+}
+#animBot.active #rightSide #boxContact{
+    animation-duration: 0.8s ;
+    animation-name: fadeInDecr ;
+}
+
+
+#animAccueil {
+    position: relative;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+}
+
+#rightSide .nomdct {
+    text-transform: uppercase;
+    top: 15px;
+    left: 0;
+    font-family: 'Poppins-Medium';
+    font-size:2em;
+}
+
+#rightSide .PersPost {
+    padding-top: 5px;
+}
+
+
+/** FIN PAGE EQUIPE **/
+
+/*Anim mentions */
+#mention {
+    max-height:50px;
+    overflow: hidden;
+    transition: all ease-in-out 0.5s;
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+#mention.active {
+    max-height: 258px;
+    z-index: 100;
+}
+
+.wrapMention{
+    height:50px;
+    position:relative;
+}
+
+/** PAGE SERVICES CONSEILS NEWS **/
+
+.imgservices,
+.imgconseils,
+.imgnews {
+    display: block;
+    height: 236px;
+    width: 464px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+#SiteVeto2 #Content .Contenu .row.conseils,
+#SiteVeto2 #Content .Contenu .row.services,
+#SiteVeto2 #Content .Contenu .row.news {
+    margin-bottom: 22px;
+    margin-top: 15px;
+}
+
+
+/** FIN PAGE SERVICES **/
+
+
+#SiteVeto2 #Content .titreImage .legende {
+    font-size: 1em;
+    margin-top: 15px;
+}
+
+#SiteVeto2 #Content .titreArticle h2 {
+    font-family: 'Poppins-Medium';
+    font-size: 1em;
+    margin-top: 15px;
+}
+
+#Footer {
+    margin-top: 20px;
+}
+
+#Pre-Footer {
+    background-color: #ccc;
+    height: 290px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 9px 10px #ddd;
+}
+
+.lien a {
+    display: block;
+}
+
+.lien a:hover {
+    display: block;
+    text-decoration: none;
+    color: #ccc;
+}
+
+.row.Filtres > div {
+    padding-left: 10px;
+}
+
+.filtres li.active a {
+    color: #fff;
+}
+
+.filtres {
+    display: flex;
+    list-style: none;
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+
+.filtres li {
+    padding: 5px;
+    margin: 0 10px 0 0;
+    /*width: 115px;*/
+    height: 29px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    text-transform: uppercase;
+}
+
+.filtres li.active {
+    background-color: #ffd132;
+    color: #fff;
+}
+
+
+/** SCROLL */
+
+#Contenu-scroll {
+    position: relative;
+    /* POUR REUNION WEB ON DESACTIVE */
+    overflow-y: scroll;
+    height: 800px;
+    width: 100%;
+    margin-bottom: 22px;
+    /* Ajout padding a gauche car texte coupé avec le overflow*/
+    padding-left: 20px;
+}
+
+.scrollbar-transparent::-webkit-scrollbar {
+    display: none;
+}
+html {
+    scrollbar-width: none;
+}
+
+/* Formulaire */
+.labelform {
+    display: block;
+    padding: 5px 0 5px 0;
+}
+
+.inputform,
+.textform {
+    width: 100%;
+    box-shadow: 0 0px 10px #ddd;
+    border-style: none;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.textform {
+    resize: none;
+    width: 100%;
+    height: 200px;
+}
+
+.Atterissage #mLegal {
+    display: none;
+}
+.Atterissage .wrapMention {
+    display: none;
+}
+#mLegal {
+    text-align: center;
+    margin: 10px 16px;
+    cursor: pointer;
+    color: #ccc;
+    padding: 10px 0;
+    box-shadow: 0 0 10px #ccc;
+    /*margin-top: 10px;*/
+    background-color: white;
+    z-index: 15;
+    border-radius: 15px 15px 0 0;
+
+}
+.active #mLegal{
+    border-radius: 15px;
+}
+
+#mention{
+    background-color: white;
+    z-index: 15;
+}
+.padMLegal {
+    padding-top: 15px;
+    padding: 15px 30px 0;
+}
+
+
+/* PAGE CONTACT */
+form.Contact {
+    margin-top: 20px;
+}
+
+.contactMaps {
+    border-radius: 15px;
+    box-shadow: 0 0 10px #ddd;
+}
+/* ajout Marie 01/04/20 pour logo clinique dans menu*/
+/* Modif Patrick 20/04/20 taille du logo dans menu bar de 41% à 27%, full size à voir pour obtenir un logo plus grand  */
+
+
+.tutu {
+    border-bottom: 1px solid black;
+}
+
+
+.row.news.borderTop .titreImage .legende,
+.row.conseils.borderTop .titreImage .legende,
+.row.services.borderTop .titreImage .legende {
+    font-size: 0.9em;
+    margin-bottom: -17px;
+    margin-top: 0px !important;
+}
+
+.imgLogo {
+    margin-left: 2%;
+}
+
+.row.filtresarticle {
+    margin-left: -35px;
+}
+
+
+.borderBottom {
+    border-bottom: 1px solid black;
+}
+.mentionsLegal {
+    margin: 0 16px;
+    padding: 15px 0;
+}
+.paddResp {
+    cursor:pointer!important;
+}
+.slick-dots {
+    bottom: 10px!important;
+}
+.slick-dots li button {
+    box-shadow: none;
+}
+.slick-dots li button:hover{
+    background-color: unset!important;
+}
+.carousel-caption {
+    text-align: unset!important;
+}
+.testPost {
+    margin: 0;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px #ddd;
+    padding: 15px;
+    text-transform: uppercase;
+    border-radius:15px;
+}
+.row.postHead.text-center {
+    margin: 0;
+    padding: 0 15px;
+}
+
+/** Gestion CSS du Menu selon les résolutions**/
+/*
+@media screen and (min-width: 1024px) and (max-width: 1110px) {
+
+    #SiteVeto2 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding: 0 8px;
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    #Content #MenuBar .ContenuMenu {
+        margin-top: 0;
+        margin-left: -56px;
+        font-size: 0.9em;
+    }
+
+    h1.NomMenu {
+        list-style: none;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 8px 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        font-size: 0.9em;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    .boxhoraire .col-md-9 {
+        width: 73%;
+    }
+
+    .blocjours {
+        line-height: 1.6;
+        width: 100%;
+        font-size: 0.8em;
+    }
+
+    .jours {
+        text-align: left;
+        padding-left: 15px;
+    }
+
+    .boxnum {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+
+    .boxnews {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px 30px 5px 30px;
+        font-size: 0.9em;
+    }
+
+    .croixAnim {
+        position: absolute;
+        top: 62px;
+        left: 450px;
+    }
+}
+
+@media screen and (min-width: 1110px) and (max-width: 1195px) {
+
+    #SiteVeto2 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding-left: 10px;
+        !* padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    #Content #MenuBar .ContenuMenu {
+        margin-top: 0;
+        margin-left: 0px;
+        font-size: 0.9em;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        font-size: 0.9em;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    .boxhoraire .col-md-9 {
+        width: 73%;
+    }
+
+    .jours {
+        text-align: left;
+        padding-left: 11px;
+        margin-left: 0px;
+    }
+
+    .blocjours {
+        line-height: 1.6;
+        width: 100%;
+        font-size: 0.9em;
+    }
+
+    .boxnum {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+
+    .boxnews {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px 30px 5px 30px;
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (min-width: 1195px) and (max-width: 1220px) {
+
+    #SiteVeto2 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding-left: 17px;
+        !*  padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    #Content #MenuBar .ContenuMenu {
+        margin-top: 0;
+        margin-left: 70px;
+        font-size: 0.9em;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        font-size: 0.9em;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    .boxhoraire .col-md-9 {
+        width: 75%;
+    }
+
+    .jours {
+        text-align: left;
+        padding-left: 11px;
+        margin-left: 0px;
+    }
+
+    .blocjours {
+        line-height: 1.6;
+        width: 100%;
+    }
+
+    .boxnum {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+
+    .boxnews {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px 30px 5px 30px;
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (min-width: 1221px) and (max-width: 1280px) {
+
+    #SiteVeto2 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding-left: 20px;
+        !*   padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+
+    #Content #MenuBar .ContenuMenu {
+        margin-top: 0;
+        margin-left: 70px;
+        font-size: 0.9em;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        font-size: 0.9em;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    .boxhoraire .col-md-9 {
+        width: 75%;
+    }
+
+    .jours {
+        text-align: left;
+        padding-left: 0;
+        margin-left: -18px;
+    }
+
+    .blocjours {
+        line-height: 1.6;
+        width: 80%;
+    }
+
+    .boxnum {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+
+    .boxnews {
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 20px 5px 5px 5px;
+        padding: 5px 30px 5px 30px;
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1318px) {
+
+    #SiteVeto2 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding-left: 15px;
+        !* padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    #Content #MenuBar .ContenuMenu {
+        margin-top: 0;
+        margin-left: -15px;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+}
+
+@media screen and (min-width: 1319px) and (max-width: 1370px) {
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+}
+
+@media screen and (min-width: 1371px) and (max-width: 1440px) {
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        margin-left: -15px;
+        padding: 18px 0;
+    }
+}
+
+@media screen and (min-width: 1370px) and (max-width: 1600px) {
+
+
+    .Contenu {
+        margin-left: 20px;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        !*padding:18px 0;*!
+    }
+}
+
+@media screen and (min-width: 1560px) and (max-width: 1595px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 10%;
+    }
+
+}
+
+@media screen and (min-width: 1528px) and (max-width: 1560px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 8%;
+    }
+
+}
+
+@media screen and (min-width: 1511px) and (max-width: 1528px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 7%;
+    }
+
+}
+
+@media screen and (min-width: 1480px) and (max-width: 1511px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 5%;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (min-width: 1452px) and (max-width: 1480px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 3%;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1452px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+        padding-left: 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (min-width: 1393px) and (max-width: 1440px) {
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 25px;
+        padding-left: 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (min-width: 1380px) and (max-width: 1393px) {
+
+    h1.NomMenu {
+        list-style: none;
+        padding: 18px 0 0 0;
+        margin-left: 28px;
+    }
+
+    #SiteVeto2 #MenuBar ul.Menu0 {
+        list-style: none;
+        display: flex;
+        padding: 18px 0;
+    }
+
+    #MenuBar ul.Menu0 li {
+        padding-left: 27px;
+        !*   padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (min-width: 1314px) and (max-width: 1380px) {
+    #MenuBar ul.Menu0 li {
+        padding-left: 20px;
+        !*  padding-top: 10px; *!
+        max-width: 20%;
+    }
+
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+
+    .boxhoraire {
+        background-color: #fff;
+        box-shadow: 0 0 10px #ddd;
+        border-radius: 15px;
+        margin: 5px;
+        padding: 20px 0;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .logoContact {
+        width: 5%;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .croixAnim {
+        position: absolute;
+        top: 62px;
+        left: 537px;
+    }
+}
+
+@media screen and (min-width: 1100px) and (max-width: 1314px) {
+
+    .croixAnim {
+        position: absolute;
+        top: 62px;
+        left: 537px;
+    }
+}
+
+*/
+
+/** fin gestion menu selon resolution **/
+
+
+/*** RESPONSIVE ***/
+@media screen and (max-width: 767.98px) {
+    .carousel {
+        display: none;
+    }
+    #bandoHaut {
+        height: 0;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+
+    .mentionsLegal {
+        padding: 0 15px;
+    }
+
+    .imgArticle img,
+    .textArticle img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    #Content .equipeteam {
+        margin-bottom: 0;
+    }
+
+    .paddResp {
+        margin-bottom: 15px;
+        cursor:pointer!important;
+    }
+    .mentionsLegal {
+        padding: 0 15px;
+    }
+    .contactEquipe {
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid black;
+        padding: 0.6em;
+    }
+
+    .cercle {
+        right: 20px;
+        top: 20px;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto2 #Bando.shrunk {
+         height: 0;
+    }
+    #SiteVeto2 #Bando {
+        height: 0;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: unset;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 100vw;
+    }
+
+    #animBot.active #rightSide {
+        right: 100vw;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+    .boxhoraire {
+        font-size: 0.75em;
+        padding: 10px;
+    }
+
+}
+/** Medium devices (tablets, 768px and up) **/
+@media  (max-width: 1199.98px) {
+    #open h1 {
+        padding: 0;
+    }
+    #Main {
+        padding: 15px 0 !important;
+    }
+
+    #Content {
+        padding: 0;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+
+    div#SiteVeto2::after {
+        content: none;
+    }
+
+    .boxnum{
+        padding: 15px;
+    }
+
+    .numWrap {
+        justify-content: space-between;
+    }
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto2 #Bando.shrunk {
+        height: 0;
+    }
+    #SiteVeto2 #Bando {
+        height: 0;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: unset;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 100vw;
+    }
+
+    #animBot.active #rightSide {
+        right: 100vw;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+    .boxhoraire {
+        font-size: 0.8em;
+        padding: 30px;
+    }
+
+}
+
+@media ( max-aspect-ratio: 1/1) {
+
+
+    #SiteVeto1 #MenuBar.Atterissage {
+        top: unset;
+        /*border-top: 1px solid black;*/
+    }
+    #SiteVeto2 #Bando.shrunk {
+        height: 0;
+    }
+    #SiteVeto2 #Bando {
+        height: 0;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+
+}
+
+@media screen and (min-width: 765px) and (max-width: 1014px) {
+    .boxhoraire {
+        font-size: 0.75em;
+        padding: 10px;
+    }
+    .mentionsLegal {
+        padding: 0 15px;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+    .boxhoraire {
+        font-size: 0.75em;
+        padding: 10px;
+    }
+}
+@media screen and (min-width: 1015px) and (max-width: 1044px) {
+.boxhoraire {
+    font-size: 0.8em;
+    padding: 10px;
+}
+    .mentionsLegal {
+        padding: 0 15px;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+    .boxhoraire {
+        font-size: 0.75em;
+        padding: 10px;
+    }
+}
+@media screen and (min-width: 1045px) and (max-width: 1134px) {
+    .boxhoraire {
+        padding: 15px;
+        font-size:0.80em;
+    }
+    .mentionsLegal {
+        padding: 0 15px;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+}
+@media screen and (min-width: 1135px) and (max-width: 1209px) {
+
+    .boxhoraire {
+        padding: 30px;
+        font-size:0.80em;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: unset;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 100vw;
+    }
+
+    #animBot.active #rightSide {
+        right: 100vw;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+    .Atterissage #mLegal {
+        display: block;
+    }
+
+}
+@media screen and (min-width: 1210px) and (max-width: 1229px) {
+
+    .boxhoraire {
+        padding: 30px 35px;
+        font-size:0.80em;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    /** Anim Equipe */
+    #animBot {
+        position: fixed;
+        top:75px;
+        height: calc(100vh - 75px);
+        flex-direction:column-reverse;
+    }
+
+    #animBot.active {
+        visibility: unset;
+    }
+
+    #leftSide {
+        top:0px;
+        left: 100vw;
+        width: 100%;
+        height: 50%;
+        border-right: 0;
+        border-bottom: 1px solid black;
+    }
+
+    #rightSide {
+        bottom:0px;
+        right: 100vw;
+        width: 100%;
+        height: 50%;
+    }
+
+    #animBot.active #leftSide {
+        left: 100vw;
+    }
+
+    #animBot.active #rightSide {
+        right: 100vw;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+
+}
+@media screen and (min-width: 1230px) and (max-width: 1261px) {
+
+    .boxhoraire {
+        padding: 30px 35px;
+        font-size:0.80em;
+    }
+    .hiddenContenu {
+        display: block;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+
+}
+@media screen and (min-width: 1262px) and (max-width: 1318px) {
+
+    .boxhoraire {
+        padding: 30px 35px;
+        font-size:0.85em;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+
+}
+
+
+@media screen and (min-width: 1319px) and (max-width: 1371px) {
+    .boxhoraire {
+        padding: 30px 35px;
+        font-size:0.9em;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+}
+
+@media screen and (min-width: 1372px) and (max-width: 1440px) {
+    .boxhoraire {
+        padding: 30px 35px;
+        font-size:0.9em;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1580px) {
+    .boxhoraire {
+        padding: 30px 35px;
+    }
+    .Atterissage .wrapMention {
+        display: block;
+    }
+    #mention.active {
+        max-height: 695px;
+        z-index: 100;
+    }
+}

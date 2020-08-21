@@ -1,0 +1,245 @@
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroForm.twig" import  form_properties %}
+<div class="row" id="{{ uuid }}">
+    {% if categories|length > 1 %}
+    <div class="formCatsFrise col-md-2">
+        {% for cat,fields in categories %}
+            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem" {% if fields.condition %}ng-class="{ 'hidden': !({{ include(template_from_string(fields.condition)) }}) }"{% endif %}>
+                    <a href="#" class="formCatsFriseLink">{{ cat }}</a>
+                </span>
+        {% endfor %}
+    </div>
+    <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% else %}
+    <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% endif %}
+            <div class="formCatWrapper">
+                {% for cat,fields in categories %}
+                    <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"  {% if fields.condition %}ng-if="{{ include(template_from_string(fields.condition)) }}"{% endif %}
+                         class="formCatContainer{% if loop.first %} active{% endif %}">
+                        {#            <h3>{{ cat }}</h3>#}
+                        {{ form_properties(fields.fields,scopeObj,ObjectType,Module) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        //Gestion des dates
+        $('#{{ uuid }} .datepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .timepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'HH:mm',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .datetimepicker-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+
+        //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+        $("#{{ uuid }} .datepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .timepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .datetimepicker-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+
+        //Gestion des urls
+        $('#{{ uuid }} .urlInput').on('keyup', function () {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g, ''));
+        });
+
+        {% if categories|length > 1 %}
+        var modal = $('#{{ uuid }} .formCats').closest('.modal');
+        //console.error('#{{ uuid }} .formCats', modal);
+        modal.off('shown.bs.modal');
+        modal.on('shown.bs.modal', function () {
+            var par = $(this).find('.formCatWrapper');
+            par.css('height', par.height());
+            var temp = $('<div class="formNav">\n' +
+                '           <button class="btn btn-warning catNav formPrev pull-left disabled">Précedent</button>\n' +
+                '           <button class="btn btn-warning catNav formNext pull-right">Suivant</button>\n' +
+                '    </div>');
+
+            $(this).find('.modal-footer .formNav').remove();
+            $(this).find('.modal-footer').prepend(temp);
+
+            //Gestion de la navigation
+            $(this).find('.formPrev').off('click');
+            $(this).find('.formPrev').on('click', function () {
+                var par = $(this).closest('.modal').find('.formCats');
+                var active = par.find('.formCatContainer.active');
+                var index = active.data('cat');
+
+                displayCat(active[0], index - 1,-1);
+            });
+            $(this).find('.formNext').off('click');
+            $(this).find('.formNext').on('click', function () {
+                var par = $(this).closest('.modal').find('.formCats');
+                var active = par.find('.formCatContainer.active');
+                var index = active.data('cat');
+
+                displayCat(active[0], index + 1,1);
+            });
+
+            displayCat(par, 0,1);
+            var initCpt = modal.find('.formCatContainer').length;
+            setInterval(function(){
+                if(modal.find('.formCatContainer').length != initCpt){
+                    initCpt = modal.find('.formCatContainer').length;
+
+                    var par = modal.find('.formCats');
+                    var active = par.find('.formCatContainer.active');
+                    var index = active.data('cat');
+
+                    displayCat(active[0], index ,1);
+                }
+            },1000);
+
+        });
+
+
+        function animateHeight(next, parent, index) {
+            var links = parent.closest('.modal').find('.formCatsFriseElem');
+            var divs = parent.closest('.modal').find('.formCatContainer');
+            var fi = null;
+            var li = null;
+            $.each(divs,function(k,v){
+                if(fi === null){
+                    fi = $(v).data('cat');
+                }
+                if(li === null){
+                    li = $(v).data('cat');
+                }
+
+                if(fi > $(v).data('cat')){
+                    fi = $(v).data('cat');
+                }
+                if(li < $(v).data('cat')){
+                    li = $(v).data('cat');
+                }
+            });
+            // console.log(fi,li);
+
+            parent.animate({height: next}, 300, 'swing', function () {
+                if ( index < li)
+                    parent.closest('.modal').find('.formNext').removeClass('disabled');
+                if ( index > fi )
+                    parent.closest('.modal').find('.formPrev').removeClass('disabled');
+
+                links.removeClass('disabled');
+                return true;
+            })
+        }
+
+
+        //Gestion des clics sur la frise
+        $('#{{ uuid }} .formCatsFrise a').off('click');
+        $('#{{ uuid }} .formCatsFrise a').on('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if ($(this).parent().hasClass('active'))
+                return false;
+            var sibs = $(this).closest('.formCatsFrise').find('a.formCatsFriseLink');
+            sibs.parent().removeClass('active');
+
+            var next = $(this).parent().data('cat');
+            //console.log(next);
+            displayCat(this, next,0);
+
+            $(this).parent().addClass('active');
+
+        });
+
+        function displayCat(node, next, dir) {
+            //console.log(next);
+            //console.log(node, next);
+            var par = $(node).closest('.modal');
+            var curActive = par.find('.formCatContainer.active');
+            var nextActive = par.find('.formCatContainer[data-cat="' + next + '"]');
+            var count = 0;
+            while(!nextActive.length && count < 100){
+                count++;
+                //console.log(count);
+                next += dir;
+                nextActive = par.find('.formCatContainer[data-cat="' + next + '"]');
+            }
+            var nextHeight = nextActive[0].scrollHeight;
+            // console.log('XXXXXXXXXXXXXX',nextActive);
+            var buttons = par.find('.formNav button');
+            var links = $(node).closest('.modal').find('.formCatsFriseElem');
+            var cats = par.find('.formCatContainer');
+            var wrap = par.find('.formCatWrapper');
+            //console.log(next);
+            links.addClass('disabled');
+            buttons.addClass('disabled');
+
+
+            if (curActive.data('cat') > next) {
+                var wayNew = 'before';
+                var wayold = 'after';
+            } else if(curActive.data('cat') < next) {
+                var wayNew = 'after';
+                var wayold = 'before';
+            } else{
+                par.find('.formCatContainer').removeClass('active');
+                nextActive.addClass('active');
+                animateHeight(nextHeight, wrap, next);
+                return true;
+            }
+
+            $.each(links,function(k,v){
+                $(v).removeClass('active');
+                if($(v).data('cat') == next) $(v).addClass('active');
+            });
+
+            cats.removeClass('before');
+            cats.removeClass('after');
+
+            nextActive.addClass(wayNew);
+            nextActive.addClass('active').removeClass(wayNew);
+            curActive.addClass(wayold).removeClass('active');
+
+            animateHeight(nextHeight, wrap, next);
+            return true;
+        }
+        {% endif %}
+    </script>

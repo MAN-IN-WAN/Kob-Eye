@@ -8,19 +8,7 @@ class PageMiniSite extends genericClass{
            $m->Save(true);
         }
 
-        return parent::Save();
-    }
-
-    public function Delete() {
-        parent::Delete();
-
-        $modele = $this->getOneParent('ModeleMiniSite');
-        $ms = $modele->getChildren('MiniSite');
-        foreach ($ms as $m){
-            $m->Save(true);
-        }
-
-        return true;
+        return parent::save();
     }
 
 
@@ -38,7 +26,9 @@ class PageMiniSite extends genericClass{
         $params = $this->getParams($full);
         foreach ($params as &$p){
             $val = $p->getOneChild('ValeurMiniSite/MiniSite.MiniSiteId('.$msID.')');
+            // remplacé pour gérer les valeurs avec du html
             $p->vms = $val->Valeur;
+            $p->valms = $val;
         }
         return $params;
     }

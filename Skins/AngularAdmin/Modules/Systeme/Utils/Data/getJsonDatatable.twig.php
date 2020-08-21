@@ -3,12 +3,18 @@ session_write_close();
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $o->setView();
-$vars['fields'] = $o->getElementsByAttribute('list','',true);
+$context = (isset($_GET['context']))?$_GET['context']:'default';
+if($context == 'fiche'){
+    $vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
+}else {
+    $vars['fields'] = $o->getElementsByAttribute('list','',true);
+}
+
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
-$context = (isset($_GET['context']))?$_GET['context']:'default';
+
 $sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
@@ -71,7 +77,8 @@ foreach ($vars['rows'] as $k=>$v){
     $v->label = Utils::cleanJson($v->getFirstSearchOrder());
     if ($v->getSecondSearchOrder())
         $v->description = $v->getSecondSearchOrder();
-    foreach ($vars['fields'] as $f){
+	
+    if(isset($vars['fields']) && gettype($vars['fields'])=='array') foreach ($vars['fields'] as $f){
         switch ($f['type']){
             case 'date':
                 //transformation des timestamps en format js

@@ -2,9 +2,12 @@
 $annee = Cadref::$Annee;
 $utl = Cadref::$UTL;
 
+$to = [];
 $vars['mode'] = 'public';
 $menu = Sys::$CurrentMenu->Url;
 if($menu == 'ens_message') {
+	$vars['objecttype'] = 'Enseignant';
+	
 	$n = substr(Sys::$User->Login, 3, 3);
 	$e = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 	$id = $e->Id;
@@ -14,10 +17,11 @@ if($menu == 'ens_message') {
 	$to = array('C'=>$utl.' (Secrétariat)','T'=>'Tous mes élèves');
 	$sql = "
 select distinct c.Id, concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle,
-CycleDebut, CycleFin,c.HeureDebut,c.HeureFin,j.Jour
+CycleDebut, CycleFin,c.HeureDebut,c.HeureFin,j.Jour,a.LibelleCourt
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
@@ -27,12 +31,14 @@ where ce.EnseignantId=$id and c.Annee='$annee'
 	$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 	$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 	foreach($pdo as $p) {
-		$s = $p['Libelle'].'  '.$p['Jour'].' '.$p['HeureDebut'].'-'.$p['HeureFin'];
+		$s = $p['LibelleCourt'].', '.$p['Libelle'].',  '.$p['Jour'].' '.$p['HeureDebut'].'-'.$p['HeureFin'];
 		if($p['CycleDebut']) $s .= '  ('.$p['CycleDebut'].'-'.$p['CycleFin'].')';
 		$to[$p['Id']] = $s;
 	}
 }
 elseif($menu == 'adh_message') {
+	$vars['objecttype'] = 'Adherent';
+	
 	$n = Sys::$User->Login;
 	$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 	$id = $a->Id;

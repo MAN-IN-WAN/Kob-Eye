@@ -1,0 +1,39 @@
+<iframe class="contactMaps" height="400" width="100%" style="border:0"  src="https://www.google.com/maps/embed/v1/place?q={{ Adresse }}&key=AIzaSyA8WzSVq6D0wZFAsNwdsqSExgHlNO3_S68" allowfullscreen style="width: 100%;"></iframe>
+{% if not post %}
+    <form method="post" class="Contact">
+        <div class="row">
+            <div class="col-lg-7 col-md-9 col-sm-9 ">
+                <label for="nom" class="labelform ">Nom :</label>
+                <input type="text" placeholder="Nom" id="nom" class="inputform" name="nom">
+
+                <label for="prenom" class="labelform">Prénom :</label>
+                <input type="text" placeholder="Prenom" id="prenom" class="inputform" name="prenom">
+
+                <label for="mail" class="labelform">Adresse mail de contact :</label>
+                <input type="mail" placeholder="Adresse Mail" id="mail" class="inputform" name="email">
+
+                <label for="numero" class="labelform">Téléphone :</label>
+                <input type="text" placeholder="Téléphone" id="numero" class="inputform" name="telephone">
+
+                <label for="message" class="labelform">Message :</label>
+                <textarea id="message" placeholder="Votre message ici" class="textform" name="message"></textarea>
+
+                <input type="text" id="flag" class="inputform" hidden name="flag">
+
+                <button type="submit">Envoyer</button>
+            </div>
+            <div class="col-lg-5 col-sm-3 col-md-3">
+            </div>
+        </div>
+    </form>
+    {% else %}
+        <div class="alert alert-dark col-lg-7 col-md-9 col-sm-9">Message envoyé avec succès.</div>
+        <div class="well darker col-lg-7 col-md-9 col-sm-9">
+            <div class="row-fluid">
+                <input type="hidden" name="SendContact" value="1">
+                <div class="span5 offset1">
+                    <a href="/{{ Retour }}" class="btn btn-block btn-secondary">Nouveau message</a>
+                </div>
+            </div>
+        </div>
+{% endif %}

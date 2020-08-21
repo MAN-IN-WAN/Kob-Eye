@@ -280,22 +280,35 @@
                         }
 
                         if($scope.{{ c.identifier }}function.callBack){
-                            $scope[$scope.{{ c.identifier }}function.callBack.nom](...$scope.{{ c.identifier }}function.callBack.args);
+                            if ($scope.{{ c.identifier }}function.callBack.nom.indexOf(".") > -1){
+                                var objs = $scope.{{ c.identifier }}function.callBack.nom.split(".");
+                                var scobj = $scope;
+                                for (var i=0;i< objs.length;i++){
+                                    scobj = scobj[objs[i]];
+                                }
+                                scobj(...$scope.{{ c.identifier }}function.callBack.args);
+                            }else{
+                                $scope[$scope.{{ c.identifier }}function.callBack.nom](...$scope.{{ c.identifier }}function.callBack.args);
+                            }
                         }
 
 
-                        {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
-                            $scope.modalObj = data;
-                            console.log('function '+title+' obj',$scope.modalObj);
+                        if(obj.id != 0){
+                            {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                                $scope.modalObj = data;
+                                console.log('function '+title+' obj',$scope.modalObj);
+                                $('#modalfunction-{{ c.identifier }} .modal-dialog').spin(false);
+                            });
+                        } else {
                             $('#modalfunction-{{ c.identifier }} .modal-dialog').spin(false);
-                        });
+                        }
 
                     }).finally(function(){
                         $scope.{{ c.identifier }}function.loaded = true;
                     });
                 });
             } else {
-                console.log('callfunction ',obj.id,title);
+                console.log('callfunction ',obj.id,title,obj);
                 $('#modalfunction-{{ c.identifier }} .modal-dialog').spin();
                 var args = {};
                 if( $scope.{{ c.identifier }}function != undefined &&  $scope.{{ c.identifier }}function.callNext && follow){
@@ -350,16 +363,27 @@
                         }
                     }
 
-                    if($scope.{{ c.identifier }}function.callBack){
-                        $scope[$scope.{{ c.identifier }}function.callBack.nom](...$scope.{{ c.identifier }}function.callBack.args);
+                     if($scope.{{ c.identifier }}function.callBack){
+                        if ($scope.{{ c.identifier }}function.callBack.nom.indexOf(".") > -1){
+                            var objs = $scope.{{ c.identifier }}function.callBack.nom.split(".");
+                            var scobj = $scope;
+                            for (var i=0;i< objs.length;i++){
+                                scobj = scobj[objs[i]];
+                            }
+                            scobj(...$scope.{{ c.identifier }}function.callBack.args);
+                        }else{
+                            $scope[$scope.{{ c.identifier }}function.callBack.nom](...$scope.{{ c.identifier }}function.callBack.args);
+                        }
                     }
-
-
-                    {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
-                        $scope.modalObj = data;
-                        console.log('function '+title+' obj',$scope.modalObj);
+                    if(obj.id != 0){
+                        {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                            $scope.modalObj = data;
+                            console.log('function '+title+' obj',$scope.modalObj);
+                            $('#modalfunction-{{ c.identifier }} .modal-dialog').spin(false);
+                        });
+                    } else {
                         $('#modalfunction-{{ c.identifier }} .modal-dialog').spin(false);
-                    });
+                    }
 
                 }).finally(function(){
                     $scope.{{ c.identifier }}function.loaded = true;
@@ -1164,7 +1188,8 @@
                         $scope.modalObj.warning = data.warning;
                         $scope.modalObj.errors = data.errors;
                         $scope.modalObj.infos = data.infos;
-                        $scope.modalObj = $scope.obj
+
+                        $scope.obj = $scope.modalObj;
                         if (!data.warning.length&&!data.success.length) {
 							var modfic = $("#modalfiche-{{ c.identifier }}");
                             modfic.modal('toggle');
@@ -1175,7 +1200,6 @@
 								});
 							}
 						}
-                        {{ c.identifier }}Store.refresh();
                     }else {
                         //gestion des erreurs
                         $scope.modalObj.errors = data.errors;

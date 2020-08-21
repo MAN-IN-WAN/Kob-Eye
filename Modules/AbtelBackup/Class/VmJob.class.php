@@ -381,7 +381,7 @@ VM_STARTUP_ORDER=
     private function cloneJob($v,$esx,$act){
         $this->setStep(3); //'Clonage'
         $act->addDetails($v->Titre.' ---> clonage de la vm');
-        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act ,false);
+        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ./ghettovcb.conf',$act ,false);
         $act->setProgression(100);
         parent::Save();
         return $act;

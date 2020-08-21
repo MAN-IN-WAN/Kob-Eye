@@ -1,0 +1,41 @@
+<div id="mLegal" onclick="openMention()">Mentions Legales</div>
+<div id="mention" class="Container" style="position: relative">
+<div class="row mentionsLegal">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        {{ Mention.ColonneGauche| raw }}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        {{ Mention.ColonneCentre|raw }}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        {{ Mention.ColonneDroite|raw }}
+    </div>
+</div>
+</div>
+<script>
+$("#mention").toggle();
+    function openMention () {
+    $("#mention").toggle();
+    console.log('ici');
+            for (let Bottom=0;Bottom < 180;Bottom++){
+               (function(Bottom) {
+                       setTimeout(function() {
+                           document.getElementById("Footer").style.bottom = Bottom+"px";
+                       }, Bottom );
+                   })(Bottom);
+            }
+        document.getElementById('mLegal').onclick = function() { closeMention(); };
+    }
+    function closeMention () {
+    $("#mention").toggle();
+    console.log('la');
+            for (let Bottom=180;Bottom > 0;Bottom--){
+                     (function(Bottom) {
+                             setTimeout(function() {
+                                 document.getElementById("Footer").style.bottom = Bottom+"px";
+                             },Bottom );
+                     })(1/Bottom);
+            }
+        document.getElementById('mLegal').onclick = function() { openMention(); };
+     } 
+</script>

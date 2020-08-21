@@ -1,0 +1,28 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj.Annee = '{{ Annee }}';
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.classesExport = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+		ajax.success(
+			function(data) {
+				$window.open(data.data.csv);//swal("Exportation", data.data.message, "success");
+			}
+		);
+	}
+});

@@ -3059,11 +3059,11 @@ class genericClass extends Root {
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
-                    $o->{$f['name']} = date('d/m/Y',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
+                    $o->{$f['name']} = isset($this->{$f['name']})&&$this->{$f['name']}>0 ? date('d/m/Y',$this->{$f['name']}):'';
                     break;
                 case 'datetime':
                     //transformation des timestamps en format js
-                    $o->{$f['name']} = date('d/m/Y H:i',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
+                    $o->{$f['name']} = isset($this->{$f['name']})&&$this->{$f['name']}>0?date('d/m/Y H:i',$this->{$f['name']}):'';
                     break;
                 case 'boolean':
                     //transformation des timestamps en format js

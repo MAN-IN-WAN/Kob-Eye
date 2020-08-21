@@ -1,0 +1,18 @@
+<div class="Services">
+     {% for Serv in Services %}
+        <div class="row services">
+            <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
+                <img {% if  Serv.Media.Image %}src="/{{ Serv.Media.Image }}.limit.500x500.jpg"{% else %}src="/Home/no-image.png"{% endif %} class="img-responsive imgservices" alt="{{ Serv.Media.Titre }}" title="{{ Serv.Media.Titre }}" />
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-5 col-xs-12">
+                <div class="titreArticle">
+                    <h1>{{ Serv.Titre }}</h1>
+                </div>
+                <div class="textArticle">
+                    <p class="texte">{{ Serv.Description  |striptags | slice (0 , 400)|raw }}</p>
+                    <a href="{{ Lien }}/{{ Serv.Url  }}" alt="" title="" class="voirplus">Voir plus...</a>
+                </div>
+            </div>
+        </div>
+     {% endfor %}
+</div>

@@ -1,35 +1,69 @@
-{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroTypes.twig" import  fvarchar,flabel, fhidden, label, fkeyshort, fkeylong,fboolean,fint,fextlink,ffloat,fplugin,ffile,fimage,fprice,fprogress,ftext %}
+
 <div class="nav-tabs-horizontal" ng-if="displayFiche">
     <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" href="javascript: void(0);" data-toggle="tab"
-                   data-target="#tabParamsMS" role="tab"><b>Paramètres</b></a>
-            </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="javascript: void(0);" data-toggle="tab"
+               data-target="#tabParamsMS" role="tab"><b>Paramètres globaux ({[{paramsMS.common.length}]})</b></a>
+        </li>
+        <li ng-repeat="pg in paramsMS.pages" class="nav-item">
+            <a class="nav-link navParam" href="javascript: void(0);" data-toggle="tab"
+               data-target="#tabParamPageMs_{[{ pg.Id }]}" role="tab"><b>{[{ pg.MenuTitre }]} ({[{ pg.msParams.length
+                    }]})</b></a>
+        </li>
     </ul>
     <div class="tab-content">
-                <div class="tab-pane active" id="tabParamsMS" role="tabpanel">
-                    <ul>
-                        <li ng-repeat="param in paramsMS">
-                            <div class="col-md-12 col-lg-6">
-                                <div class="row  ficheField  type_{[{ param.type }]}">
-                                    <div class="col-md-5 detail-label">
-                                        <label class="form-control-label"for="l0">
-                                                {[{ param.Nom }]}
-                                        </label>
-                                    </div>
-                                    <div class="col-md-7 detail-value" ng-switch="param.type">
-                                        <div ng-switch-when="int"> {{ fint(field,obj) }}</div>
-                                        <div ng-switch-when="varchar"> {{ fvarchar(field,obj) }}</div>
-                                        <div ng-switch-when="html"> {{ ftext(field,obj) }}</div>
-                                        <div ng-switch-when="image"> {{ fimage(field,obj) }}</div>
-                                        <div ng-switch-when="color">  {{ fvarchar(field,obj) }}</div>
-                                        <div ng-switch-when="file"> {{ ffile(field,obj) }}</div>
-                                        <div ng-switch-when="boolean"> {{ fboolean(field,obj) }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+        <div class="tab-pane active" id="tabParamsMS" role="tabpanel">
+            <p ng-if="!paramsMS.common.length" class="nothingHere">
+                Il n'y a aucun paramètre à définir pour l'ensemble de ce Minisite.
+            </p>
+            <ul ng-if="paramsMS.common.length" class="row msParamsWrap">
+                <li class="col-md-12 col-lg-6  msParams" ng-repeat="param in paramsMS.common">
+                    <div class="row  ficheField  type_{[{ param.type }]}">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0" ng-if="!param.NomPropre">
+                                {[{ param.Nom }]}
+                            </label>
+                            <label class="form-control-label" for="l0" ng-if="param.NomPropre">
+                                {[{ param.NomPropre }]}
+                            </label>
+                        </div>
+                        <div class="col-md-6 detail-value" >
+                            <ng-include
+                                    src="'Parc/MiniSite/ParamLine.htm?type='+param.Type+'&obj='+param.obj"></ng-include>
+                        </div>
+                        <div class="col-md-1 modvalue" >
+                            <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="msvalModify(param)" title="Modifier"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-repeat="pg in paramsMS.pages" class="tab-pane" id="tabParamPageMs_{[{ pg.Id }]}" role="tabpanel">
+            <p ng-if="!pg.msParams.length" class="nothingHere">
+                Il n'y a aucun paramètre à définir pour cette page.
+            </p>
+            <ul ng-if="pg.msParams.length" class="row  msParamsWrap">
+                <li ng-repeat="param in pg.msParams" class="col-md-12 col-lg-6 msParams">
+                    <div class="row  ficheField  type_{[{ param.type }]}">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0" ng-if="!param.NomPropre">
+                                {[{ param.Nom }]}
+                            </label>
+                            <label class="form-control-label" for="l0" ng-if="param.NomPropre">
+                                {[{ param.NomPropre }]}
+                            </label>
+                        </div>
+                        <div class="col-md-6 detail-value" >
+                            <ng-include
+                                    src="'Parc/MiniSite/ParamLine.htm?type='+param.Type+'&obj='+param.obj"></ng-include>
+                        </div>
+                        <div class="col-md-1 modvalue" >
+                            <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="msvalModify(param)" title="Modifier"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

@@ -13,7 +13,7 @@ class RestorePoint extends genericClass {
 
         //pour chaque vm
         $v =  $this->getOneParent('EsxVm');
-        if ($v) {
+        if (!$v) {
             $v = $this->getOneParent('SambaDevice');
         }
         if (!$v) return true;

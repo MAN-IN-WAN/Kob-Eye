@@ -1,0 +1,31 @@
+
+<div id="Contenu-scroll" class="scrollbar-transparent" style="overflow: hidden;position:relative">
+    <div class="CacheScroll">
+   		<div class="row Articles ">
+  		  	<div class="col-lg-10 col-md-10 col-sm-10 borderTopContenu">
+        		<div class="boutonretour">
+           				<a href="/{{  Retour }}">Retour</a>
+        		</div>
+				{% if UneNews.Media.Image %}
+        		<div class="imgArticle">
+            			<img src="/{{ UneNews.Media.Image }}" class="img-responsive" alt="{{ UneNews.Media.Titre }}" title="{{ UneNews.Media.Titre }}" />
+        		</div>
+					{% if UneNews.Media.Titre %}
+					<div class="titreImage">
+							<p class="legende">{{ UneNews.Media.Titre }}</p>
+					</div>
+					{% endif %}
+				{% endif %}
+        		<div class="titreArticle">
+           				<h2>{{ UneNews.Titre}}</h2>
+        		</div>
+        		<div class="textArticle">
+            			<p class="texte">{{ UneNews.Description | raw  }}</p>
+        		</div>
+    		</div>
+        	<div class="col-lg-2 col-md-2 col-sm-2">
+    				{#        vide conforme à la maquette#}
+        	</div>
+        </div>    
+    </div>
+</div>

@@ -110,7 +110,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.attachementsOpen = function(item, origine) {
 		$('#upload-progress').val(0);
 		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
-		var o = $scope.attachementInfo = {origine:origine, mode:'', classeId:0, visiteId:0, associatif:0, code:'', libelle: ''};
+		var o = $scope.attachementInfo = {origine:origine, mode:'', classeId:0, visiteId:0, associatif:0, code:'', libelle:'', classes:[], selected:0};
 		switch(origine){
 			case 'classe':
 				o.classeId = item.id;
@@ -139,6 +139,10 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		}
 		$scope.CadrefAttachement.store.getData(1, 'children');
 		$("#modal-Attachements").modal();
+
+		$scope.autoUploader.onProgressAll = function(progress) {
+			$('#upload-progress').val(progress);
+		}
 	}
 	
 	$scope.$watch('CadrefAttachement.currentPage', function() {
@@ -146,10 +150,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	});
 
 	
-	$scope.autoUploader.onProgressAll = function(progress) {
-		$('#upload-progress').val(progress);
-	}
-
 	//-----------------------------
 	// MESSAGE
 	//-----------------------------
@@ -391,6 +391,47 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.attachementInfo.mode = '';
 	}
 	
+	// selection d'une classe
+	$scope.attachementSelClasse = function() {
+		let o = $scope.attachementInfo;
+		o.selected = 0;
+		for(let item of o.classes) if(item.selected) o.selected++;
+	}
+
+	// liste des classes avec selection
+	$scope.attachementClasses = async function(item) {
+		let ids = [];
+		if(item) { 
+			let params = {
+				name: 'GetAttachements',
+				query: 'Cadref/Attachement/'+item.id,
+				args : '',
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			let data = await $http.post('/Cadref/Attachement/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+			ids = data.data.data.ids;
+		}
+
+		let o = $scope.attachementInfo;
+		o.classes = [];
+		if(o.origine != 'classe') return;
+		for(let item of $scope.ens.classes) {
+			item.selected = false;
+			item.attach = 0;
+			if(item) {
+				let tmp = ids.filter(it => it.classe === item.id);
+				if(tmp.length) {
+					item.selected = true;
+					item.attach = tmp[0].attach;
+				}
+			}
+			o.classes.push(item);
+		}
+		o.selected = ids.length;
+		try { $scope.$digest(); } catch(ex) {}
+	}
+
 	// ajout attachement
 	$scope.attachementAdd = function() {
 		var i = $scope.attachementInfo;
@@ -398,6 +439,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		o.ClasseClasseId = i.classeId;
 		o.VisiteVisiteId = i.visiteId;
 		i.mode = 'add';
+		$scope.attachementClasses(null);
 	}
 	
 	// modification attachement
@@ -408,19 +450,45 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		o.ClasseClasseId = i.classeId;
 		o.VisiteVisiteId = i.visiteId;
 		i.mode = 'edit';
+		$scope.attachementClasses(item);
 	}
 
 	// sauve attachement
-	$scope.attachementSave = function() {
-        $('#settings').spin();
-        CadrefAttachementStore.saveData($scope.attachementObj).then(function (data) {
-            $('#settings').spin(false);
-			$scope.attachementInfo.mode = '';
-		});
+	$scope.attachementSave = function(type, del) {
+		$('#settings').spin();
+		let i = $scope.attachementInfo;
+		if(type && i.origine == 'classe') {
+			let cls = []
+			for(let item of i.classes) if(item.selected || item.attach)
+				cls.push({classe:item.id, attach:item.attach, selected:(del === true ? false : item.selected)});
+
+			let params = {
+				name: 'SaveAttachements',
+				query: 'Cadref/Attachement/',
+				args : {attach:$scope.attachementObj, ids:cls},
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			$http.post('/Cadref/Attachement//Method.json',{"Func":JSON.stringify(params)})
+			.then(function(data) {
+				$('#settings').spin(false);
+				$scope.attachementInfo.mode = '';
+			});
+			$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+i.classeId+'/Attachement', 'children');
+			$scope.CadrefAttachement.store.getData(1, 'children');
+			try { $scope.$digest(); } catch(ex) {}
+		}
+		else {			
+			CadrefAttachementStore.saveData($scope.attachementObj)
+			.then(function (data) {
+				$('#settings').spin(false);
+				$scope.attachementInfo.mode = '';
+			});
+		}
 	}
 
 	// suppression attachement
-	$scope.attachementDelete = function(item) {
+	$scope.attachementDelete = function(item, type) {
 		swal({
 				title: "Effacer l'attachement",
 				text: "Cette suppression sera définitive. ",
@@ -432,8 +500,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				closeOnConfirm: true
 			},
 			function(){
-				CadrefAttachementStore.deleteOneData(item.id,'all');
-				$scope.attachementInfo.mode = '';
+				if(type && $scope.attachementInfo.origine == 'classe') $scope.attachementSave(type, true);
+				else {
+					CadrefAttachementStore.deleteOneData(item.id,'all');
+					$scope.attachementInfo.mode = '';
+				}
 			}
 		);
 	}
@@ -630,8 +701,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
-	$scope.inscriptionObj = {Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
- 	$scope.reservationObj = {Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
+	$scope.inscriptionObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
+ 	$scope.reservationObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
 	$scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
@@ -643,6 +714,13 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
         });
     }
     $scope.initAdh();
+	
+	$scope.anneeChangeInscr = function() {
+		$scope.inscriptionGetData('inscription', '');
+	}
+	$scope.anneeChangeReserv = function() {
+		$scope.reservationGetData('reservation', '');
+	}
 	
 	// informations annuelles adherent
 	$scope.adherentInfo = function() {
@@ -663,7 +741,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				$scope.obj.ClasseId = data.data.ClasseId;
 				$scope.obj.AntenneId = data.data.AntenneId;
 				$scope.obj.certifInvalide = data.data.certifInvalide;				
-				$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+				$scope.obj.nonSolde = Number($scope.obj.Solde) != 0;
+				$scope.obj.Annees = data.data.Annees;
 
 				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 			}

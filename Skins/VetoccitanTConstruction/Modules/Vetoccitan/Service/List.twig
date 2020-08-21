@@ -1,0 +1,37 @@
+<div id="Contenu-scroll" class="scrollbar-transparent" style="overflow: hidden;position:relative">
+    <div class="CacheScroll">
+   <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            {% if Services is empty %}
+                <div class="noContent">
+                    <p>Désolé, aucun article ne correspond à votre recherche.</p>
+                </div>
+            {% endif %}
+                {% for Serv in Services %}
+                    <div class="row services borderTop">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                            <img src="/{{ Serv.Media.Image }}" class="img-responsive imageServ" alt="{{ Serv.Media.Titre }}" title="{{ Serv.Media.Titre }}"  />
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 responsivText">
+                            <div class="titreImage">
+                                <p class="legende">{{ Serv.Media.Titre }}</p>
+                            </div>
+                            <div class="titreArticle">
+                                <h2>{{ Serv.Titre }}</h2>
+                            </div>
+                            <div class="textArticle">
+                                <p class="texte">
+                                    {{ Serv.Description | striptags | slice (0 , 400)|raw  }}...
+                                </p>
+                                <a href="/{{ Lien }}/{{ Serv.Url }}" alt="" title="" >Voir plus...</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+                            {# VIDE CONFORME À LA MAQUETTE #}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+</div>

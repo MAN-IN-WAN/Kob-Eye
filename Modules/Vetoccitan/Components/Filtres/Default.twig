@@ -1,0 +1,10 @@
+<div class="row filtresWrap">
+	<div class="col-lg-10 col-md-10 col-sm-10">
+		<ul class="filtres ">
+			<li class="lien {%  if ChoixCateg==0 %}  active {%  endif  %}"><a href="/{{ menuUrl }}" >Tous</a></li>
+			{%  for Fil in Filtres %}
+        		<li class="lien {%  if ChoixCateg==Fil.Id %} active {%  endif  %}" ><a href="/{{ menuUrl }}?C={{ Fil.Id }}" >{{ Fil.Nom }}</a></li>
+			{%  endfor %}
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="News">
+    {% for News in News %}
+        <div class="row news">
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                <img {% if  News.Media.Image %}src="/{{ News.Media.Image }}.limit.500x500.jpg"{% else %}src="/Home/no-image.png"{% endif %} class="img-responsive imgnews" alt="{{ News.Media.Titre }}"
+                     title="{{ News.Media.Titre }}"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+                <div class="titreArticle">
+                    <h1>{{ News.Titre }}</h1>
+                </div>
+                <div class="textArticle">
+                    <p class="texte"> {{ News.Description|striptags | slice (0 , 400)|raw }}</p>
+                    <a href="/{{ Lien }}/{{ News.Url }}" alt="" title="" class="voirplus">Voir plus...</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

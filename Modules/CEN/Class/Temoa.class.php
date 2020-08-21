@@ -30,7 +30,7 @@ class Temoa extends genericClass {
 			$temoa = new temoa2\Temoa();
 			$ret = $temoa->SetRules(getcwd().'/'.$rule->FilePath);
 			
-			klog::l($f);
+			//klog::l($f);
 
 			$this->DocHtml = ($temoa->GetHTML($f.".rtf"));
 			$this->DocNoteCount = $temoa->GetNoteCount();
@@ -162,8 +162,8 @@ class Temoa extends genericClass {
 			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true);
 			$docId[$d->Id] = $d->Nom;
 		}
-		
-		return array('documentsId'=>$docId, 'documents'=>$doc,); // 'filters'=>$filt);		
+//klog::l("GetDocs",array('documentsId'=>$docId, 'documents'=>$doc,));
+		return array('documentsId'=>$docId, 'documents'=>$doc); // 'filters'=>$filt);		
 	}
 	
 	
