@@ -1,0 +1,75 @@
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-heading">
+            <h3>Stats</h3>
+        </div>
+        <div class="panel-body  mode-material ">
+            <div class="nav-tabs-vertical"  style="margin-bottom: 20px;">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="javascript: void(0);" data-toggle="tab"
+                           data-target="#ExpStCult" role="tab">Etiquette structure culturelles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="javascript: void(0);" data-toggle="tab"
+                           data-target="#ExpStSoc" role="tab">Etiquette structure sociales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="javascript: void(0);" data-toggle="tab"
+                           data-target="#ExportMail" role="tab">Export mails des structures sociales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="javascript: void(0);" data-toggle="tab"
+                           data-target="#ResStSoc" role="tab">Statistiques de réservations pour structures sociales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="javascript: void(0);" data-toggle="tab"
+                           data-target="#ExpGen" role="tab">Export général </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active " role="tabpanel" id="ExpStCult">
+                        <div class="row">
+                            Etiquette structure culturelles
+                            <div class="col-md-12" compile="ExpOrganisations.html"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " role="tabpanel" id="ExpStSoc">
+                        <div class="row">
+                            Etiquette structure sociales
+                            <div class="col-md-12" compile="ExpClients.html"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " role="tabpanel" id="ExportMail">
+                        <div class="row">
+                            Export mails
+                            <div class="col-md-12" compile="ExportMail.html"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " role="tabpanel" id="ResStSoc">
+                        <div class="row">
+                            Statistiques de réservations pour structures sociales
+                            <div class="col-md-12" compile="StatsStructures.html"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " role="tabpanel" id="ExpGen">
+                        <div class="row">
+                            Export général
+                            <div class="col-md-12" compile="ExportGeneral.html"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <!-- End child Panel -->
+    </section>
+</div>

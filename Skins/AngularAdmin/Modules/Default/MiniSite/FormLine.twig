@@ -1,0 +1,38 @@
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Form/MacroTypes.twig" import  formLabel, formHelper, formHidden, formCharCount, formDefault, formDate, formCustomSelect, formSwitch, formPassword, formProgress, formUpload, formColor, formAce, formCke %}
+
+<div class="row">
+{#    <div class="col-md-12">
+        <label class="form-control-label label" for="{{ 'input_'~field.name }}">{{ field.name }}</label>
+        {% if field.help %}
+            <small>
+                {{ formHelper(field) }}
+            </small>
+        {% endif %}
+    </div>#}
+    <div class="col-md-12">
+        <div class="form-group">
+            {% if type == 'image' or type == 'file'%}
+                {{ formUpload(field,'modalObj','Parc','ValeurMiniSite','input_'~field.name) }}
+            {%  endif %}
+            {% if type == 'int' %}
+                {{ formDefault(field,'modalObj','input_'~field.name) }}
+            {%  endif %}
+            {% if type == 'varchar' %}
+                {{ formDefault(field,'modalObj','input_'~field.name) }}
+            {%  endif %}
+            {% if type == 'text' or type == 'html' %}
+                {% if field.type == "text" %}
+                    {{ formAce(field,'modalObj','input_'~field.name) }}
+                {% elseif field.type == "html" %}
+                    {{ formCke(field,'modalObj','input_'~field.name) }}
+                {% endif %}
+            {%  endif %}
+            {% if type == 'boolean' %}
+                {{ formSwitch(field,'modalObj','input_'~field.name) }}
+            {%  endif %}
+            {% if type == 'color' %}
+             {{ formColor(field,'modalObj','input_'~field.name) }}
+            {%  endif %}
+        </div>
+    </div>
+</div>

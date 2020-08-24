@@ -1,0 +1,34 @@
+{% from "Skins/AngularAdmin/Modules/Systeme/Utils/Fiche/MacroTypes.twig" import  fvarchar,flabel, fhidden, label, fkeyshort, fkeylong,fboolean,fint,fextlink,ffloat,fplugin,ffile,fimage,fprice,fprogress,ftext,fcolor %}
+
+
+{% if type == 'image' %}
+    {{ fimage(field,obj) }}
+{%  endif %}
+{% if type == 'int' %}
+    {{ fint(field,obj) }}
+{%  endif %}
+{% if type == 'varchar' %}
+    {{ fvarchar(field,obj) }}
+{%  endif %}
+{% if type == 'text' or type == 'html' %}
+    {{ ftext(field,obj) }}
+{%  endif %}
+{% if type == 'file' %}
+    {{ ffile(field,obj) }}
+{%  endif %}
+{% if type == 'boolean' %}
+    {{ fboolean(field,obj) }}
+{%  endif %}
+{% if type == 'color' %}
+    {{ fcolor(field,obj) }}
+{%  endif %}
+
+
+
+
+
+
+
+
+
+

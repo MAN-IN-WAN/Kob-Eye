@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|D][!D::getTask([!uuid!])!][/STORPROC]

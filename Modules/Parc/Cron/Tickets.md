@@ -1,0 +1,11 @@
+//[LIB GestionWs|G]
+//[STORPROC Parc/Client|C]
+//    [IF [!C::CodeGestion!]!=]
+//        [BASH COLOR|cyan][!C::Id!] --[!C::CodeGestion!][/BASH]
+//        [!G::getTickets([!C::CodeGestion!])!]
+//    [ELSE]
+//        [BASH COLOR|red][!C::Id!] -- Code Gestion manquant[/BASH]
+//    [/IF]
+//[/STORPROC]
+
+//[!G::altGetTickets()!]
