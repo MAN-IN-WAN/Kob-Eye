@@ -1,0 +1,42 @@
+
+{%  if funcTempVars.step == 0 %}
+    <h3>Quel disque souhaitez vous monter : </h3>
+    {% for  v in funcTempVars.files%}
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">{{ v.name }} ({{ v.size }})</label>
+            {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <input type="radio" class="form-control" value="{{ v.name }}" ng-model="AbtelBackupRestorePointfunction.args.file">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{%  elseif funcTempVars.step == 1 %}
+
+    <script type="test/javascript" src="/Tools/Js/Jstree/jstree.js"></script>
+    <link type="text/css" rel="stylesheet" href="/Tools/Js/Jstree/themes/default/style.css">
+
+    <div id="jstreeContainer">
+
+    </div>
+    <script>
+        $(function() {
+            $('#jstreeContainer').jstree({
+                'core' : {
+                    'data' : {
+                        "type": "POST",
+                        "url" : "AbtelBackup/Tree.json",
+                        "dataType" : "json", // needed only if you do not supply JSON headers
+                        "data" : function (node) {
+                            return { "path" : node.data? node.data : '-' };
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endif %}

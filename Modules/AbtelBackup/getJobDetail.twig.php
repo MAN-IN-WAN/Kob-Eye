@@ -31,6 +31,34 @@ if($job->ObjectType == "VmJob"){
 $running = $job->getOneChild('Tache/Demarre=1&&Termine=0&&Erreur=0');
 $data['JobStatus'] = $running ? '1' : '0';
 
+if(isset($args[5])){
+    switch($args[5]){
+        case 1:
+            echo $data['BackupSize'];
+            return;
+            break;
+        case 2:
+            echo $data['JobStatus'];
+            return;
+            break;
+        case 3:
+            echo $data['Type'];
+            return;
+            break;
+        case 4:
+            echo $data['VmCount'];
+            return;
+            break;
+        case 5:
+            echo $data['VmSize'];
+            return;
+            break;
+        default:
+            echo null;
+            return;
+    }
+} else {
+    echo json_encode(array('data'=>$data));
+}
 
-echo json_encode(array('data'=>$data));
 

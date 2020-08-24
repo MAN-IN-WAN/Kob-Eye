@@ -7,7 +7,7 @@ class Tache extends genericClass{
 
         if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) {
             //on vérifie que le thread est toujours la
-            if (Parc::isProcessAlive($this->ThreadId))
+            if (Systeme::isProcessAlive($this->ThreadId))
                 return true;
             $this->Reset();
             return $this->Execute();

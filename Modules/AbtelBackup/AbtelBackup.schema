@@ -67,8 +67,9 @@
 		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille (Mo)">Size</PROPERTIES>
 		<FKEY data="BackupStore,Id" card="0,1">BackupStoreId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="restoreNow,delete" Class="Modules/AbtelBackup/Class/RestorePoint.class.php">
+	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="restoreNow,mountNow,delete" Class="Modules/AbtelBackup/Class/RestorePoint.class.php">
 		<FUNCTION title="Restauration">restoreNow</FUNCTION>
+		<FUNCTION title="Récupération de fichiers">mountNow</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Point de restauration">Name</PROPERTIES>
 		<PROPERTIES type="raw" searchOrder="2" form="1" fiche="1" listDescr="" subtype="text">Details</PROPERTIES>

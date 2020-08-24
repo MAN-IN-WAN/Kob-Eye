@@ -227,8 +227,8 @@ class Header extends Root{
                 header('Location: ' . $page->Redirect, true, 301);
                 exit();
             }
-            //if (!$this->ForceTitle)
-            $this->Title = $page->Title;
+            if (!$this->ForceTitle)
+              $this->Title = $page->Title;
             if (!$this->ForceDescription)
                 $this->Description = $page->Description;
             if (!$this->ForceKeywords)
@@ -239,9 +239,12 @@ class Header extends Root{
             //on prends le titre du menu par défaut
             $defmenu = Sys::$DefaultMenu;
             if ($defmenu) {
-                $this->Title = $defmenu->Title;
-                $this->Description = $defmenu->Description;
-                $this->Keywords = $defmenu->Keywords;
+                if (!$this->ForceTitle)
+                    $this->Title = $defmenu->Title;
+                if (!$this->ForceDescription)
+                    $this->Description = $defmenu->Description;
+                if (!$this->ForceKeywords)
+                    $this->Keywords = $defmenu->Keywords;
             }
         }
     }
@@ -336,6 +339,8 @@ class Header extends Root{
 		$this->Content .='</head>
 ';
         $this->Content.='<body '.$this->Body.'>';
+
+
 		return $this->Content;
 	}
 

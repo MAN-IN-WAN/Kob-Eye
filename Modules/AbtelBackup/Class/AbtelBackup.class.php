@@ -244,7 +244,7 @@ class AbtelBackup extends Module{
 
         pclose($proc);
         // get exit status
-        preg_match('/[0-9]+$/', $complete_output, $matches);
+        preg_match('/(?<=Exit status : )[0-9]+$/', $complete_output, $matches);
 
         // return exit status and intended output
         if(  isset($matches[0]) && $matches[0] !== "0" && !$stderr) {
@@ -369,9 +369,18 @@ class AbtelBackup extends Module{
             $s->RX = $network[1];
             $s->TX = $network[0];
             $s->Save();
+            //file_put_contents('/tmp/debugbw',time().PHP_EOL,8);
+            sleep(8);
+            //file_put_contents('/tmp/debugbw',time().PHP_EOL,8);
         }
         //suppression des données supérieurs à 3j
         $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'AbtelBackup-State` WHERE tmsCreate<'.(time()-(86400*3)).';');
         return true;
     }
+    static function human_filesize($bytes, $decimals = 2) {
+        $sz = 'BKMGTP';
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    }
+
 }

@@ -65,6 +65,10 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     }
 
     $rootScope.$on('SystemeActivityStore', function (ev, data) {
+        if(window.location.href.indexOf('/TableauDeBord') < 0) {
+            console.log('ptbdb');
+            return true;
+        }
         switch (data.type) {
             case 'add':
                 $scope.SystemeActivityStore.addOneData(data.id, data.data, 'dash');
@@ -95,6 +99,7 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     var refreshSizes = function () {
         var data = $scope.AbtelBackupStateStore.data['dash'][0];
         if (!data) return false;
+
         var nfsSize = parseInt(data.NfsSize);
         var borgSize = parseInt(data.BorgSize);
         var nasSize = parseInt(data.NasSize);
@@ -179,6 +184,15 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     }
 
     $rootScope.$on('AbtelBackupStateStore', function (ev, data) {
+        if(window.location.href.indexOf('/TableauDeBord') < 0) {
+            console.log('ptbdb');
+            if( $scope.diskChart){
+                $scope.diskChart.destroy();
+                $scope.diskChart = undefined;
+            }
+
+            return true;
+        }
         if (data.type == 'add') {
             refreshSizes(true);
         }
@@ -373,6 +387,14 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
     });
 
     $rootScope.$on('AbtelBackupBorgRepoStore', function (ev, data) {
+        if(window.location.href.indexOf('/TableauDeBord') < 0) {
+            console.log('ptbdb');
+            if( $scope.repoChart){
+                $scope.repoChart.destroy();
+                $scope.repoChart = undefined;
+            }
+            return true;
+        }
         if (data.type == 'edit' || data.type == 'add') {
             refreshSizesBar(true);
         }
@@ -680,15 +702,15 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
         var dots = $scope.AbtelBackupStateStore.data['dash'];
         var dot = dots[0];
         //Download
-        $scope.bandwidth.RX.push([dot.tmsCreate*1000,dot['RX']]);
+        $scope.bandwidth.RX.push([dot.tmsCreate*1000,parseFloat(dot['RX'])]);
         //Upload
-        $scope.bandwidth.TX.push([dot.tmsCreate*1000,dot['TX']]);
+        $scope.bandwidth.TX.push([dot.tmsCreate*1000,parseFloat(dot['TX'])]);
         //Cpu
-        $scope.bandwidth.Cpu.push([dot.tmsCreate*1000,dot['CpuUsage']]);
+        $scope.bandwidth.Cpu.push([dot.tmsCreate*1000,parseFloat(dot['CpuUsage'])]);
         //Ram
-        $scope.bandwidth.Ram.push([dot.tmsCreate*1000,dot['RamUsage']]);
+        $scope.bandwidth.Ram.push([dot.tmsCreate*1000,parseFloat(dot['RamUsage'])]);
         //Io
-        $scope.bandwidth.Io.push([dot.tmsCreate*1000,dot['IOUsage']]);
+        $scope.bandwidth.Io.push([dot.tmsCreate*1000,parseFloat(dot['IOUsage'])]);
 
         //Update charts
         $scope.bandwidthChart.updateSeries([
@@ -724,8 +746,24 @@ app.controller('{{ Url }}Ctrl', function ($anchorScroll, $interval, $location, $
 
 
     $rootScope.$on('AbtelBackupStateStore', function (ev, data) {
+        if(window.location.href.indexOf('/TableauDeBord') < 0) {
+            console.log('ptbdb');
+            if( $scope.systemChart){
+                $scope.systemChart.destroy();
+                $scope.systemChart = undefined;
+            }
+            if( $scope.bandwidthChart){
+                $scope.bandwidthChart.destroy();
+                $scope.bandwidthChart = undefined;
+            }
+            return true;
+        }
         if (data.type == 'add') {
-            updateBandwidth();
+            if(!$scope.bandwidthChart){
+                refreshBandwidthBar();
+            } else {
+                updateBandwidth();
+            }
         }
     });
 

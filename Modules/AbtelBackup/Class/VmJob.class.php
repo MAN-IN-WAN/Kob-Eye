@@ -358,6 +358,7 @@ EMAIL_FROM=
 WORKDIR_DEBUG=0
 VM_SHUTDOWN_ORDER=
 VM_STARTUP_ORDER=
+VM_BACKUP_DIR_NAMING_CONVENTION=A
 ';
         $act->addDetails('-> configuration vmjob','yellow');
         $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');

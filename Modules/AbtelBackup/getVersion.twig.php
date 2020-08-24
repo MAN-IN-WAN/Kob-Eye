@@ -1,5 +1,5 @@
 <?php
 
-$temp = exec('rpm -qa AbtelBackup');
+$temp = exec('rpm -qa Abtel-Backup');
 
 echo $temp;
