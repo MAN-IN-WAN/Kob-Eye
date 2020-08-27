@@ -1,0 +1,99 @@
+<div class="container">
+    <button class="btn-success" ng-click="exportData();">Export Facturation</button>
+    <div class="accordion" id="accordionExample">
+        {% for keys,item in data %}
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#{{ keys }}"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Client : {{ item.Nom }}
+                        </button>
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Quota Use : {{ item.QuotasUsedAllDomain }}</p>
+                            <p>Quota limit : {{ item.QuotasLimitAllDomain }}</p>
+                            <p>{{ item.percentageCli|number_format(2) }} % de l'espace utilisé</p>
+                            <p>Nombre de boite(s): {{ item.NbBoiteAllDomain }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Nombre MAIL PRO : {{ item.NbBoiteAllDomainMailPro }}</p>
+                            <p>Nombre MAIL BUS : {{ item.NbBoiteAllDomainMailBus }}</p>
+                            <p>Nombre MAIL POP : {{ item.NbBoiteAllDomainMailPop }}</p>
+                            <p>Nombre de boite(s) active(s): {{ item.NbBoiteActiveAllDomain }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="{{ keys }}" class="collapse show" aria-labelledby="headingOne"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        {% for Nom,Dom in item.Domaines %}
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#{{ Nom|replace({'.': ''})|trim }}"
+                                                aria-expanded="true" aria-controls="collapseOne">
+                                            Domaine : {{ Nom }}
+                                        </button>
+                                    </h5>
+                                    <div class="row">
+                                    {% if Dom.QuotasUsedDomain is empty %}
+                                        <div class="col-md-12">
+                                            <p>Pas de boite</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <p>Quota Use : {{ Dom.QuotasUsedDomain }}</p>
+                                            <p>Quota limit : {{ Dom.QuotasLimitDomain }}</p>
+                                            <p>{{ Dom.percentageDom|number_format(2) }} % de l'espace utilisé</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>MAIL PRO : {{ Dom.MAIL_PRO }}</p>
+                                            <p>MAIL POP : {{ Dom.MAIL_POP }}</p>
+                                            <p>MAIL BUS : {{ Dom.MAIL_BUS }}</p>
+                                            <p>Nombre de boite(s) active(s) : {{ Dom.NbBoiteActive }}</p>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                <div id="{{ Nom|replace({'.': ''})|trim }}" class="collapse"
+                                     aria-labelledby="headingThree" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        {% for keys,values in item.Domaines %}
+                                            {% if keys == Nom %}
+                                                {% for keys, value in values %}
+                                                    <div class="row">
+                                                        {% if value is iterable %}
+                                                            {% for keys,item in value %}
+                                                                <div class="col-sm-4">
+                                                                    <div class="card" style="padding:10px;!important">
+                                                                        {% if item is iterable %}
+                                                                            {% for keys,e in item %}
+                                                                                <p>{{ keys }} : {{ e }}</p>
+                                                                            {% endfor %}
+                                                                        {% else %}
+                                                                            <p>{{ keys }} : {{ item }}</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            {#                                                        <p>{{ keys }} : {{ value }}</p>#}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

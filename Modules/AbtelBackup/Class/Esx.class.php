@@ -306,7 +306,17 @@ class Esx extends genericClass {
         //On modifie le fichier fstab
         //echo "Modification du fichier fstab\r\n";
         $act = $task->createActivity("Modification du fichier fstab",'Info');
+        $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab /etc/fstab.bck'));
         $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab.mig /etc/fstab'));
+
+        //Modification du hostname
+        $t = explode('_',$this->Titre);
+        $nhn = end($t);
+        $act = $task->createActivity("Modification du fichier hostname",'Info');
+        $hn = AbtelBackup::localExec('sudo cat /etc/hostname');
+        $act->addDetails($hn);
+        $act->addDetails(AbtelBackup::localExec('sudo hostnamectl set-hostname '.$nhn.'.backup.abtel.fr'));
+
         //on crée un snapshot
         $snpas = $esxsrc->getSnapshots($vmsrc);
         $act->addDetails('Snapshots: '.sizeof($snpas).' => '.print_r($snpas,true));
@@ -321,6 +331,9 @@ class Esx extends genericClass {
                 foreach ($this->Error as $e){
                     $act->addDetails(' - '.$e["Message"]);
                 }
+
+                //revert du hostname
+                AbtelBackup::localExec('sudo hostnamectl set-hostname '.$hn);
                 //revert fstab file
                 AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
                 $act->Terminate(false);
@@ -338,6 +351,8 @@ class Esx extends genericClass {
                 $act->addDetails(' - '.$e["Message"]);
             }
             $act->Terminate(false);
+            //revert du hostname
+            AbtelBackup::localExec('sudo hostnamectl set-hostname '.$hn);
             AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
             return false;
         }
@@ -353,6 +368,18 @@ class Esx extends genericClass {
             $act->Terminate(false);
             return false;
         }
+
+        //revert du hostname
+        try {
+            $out = AbtelBackup::localExec('sudo hostnamectl set-hostname '.$hn);
+            $act->addDetails('Reinitialisation du hostname OK: '.$out);
+            $act->Terminate(true);
+        }catch (Exception $e){
+            $act->addDetails('Erreur lors du renommage du hostname: '.$e->getMessage().' - '.$out);
+            $act->Terminate(false);
+            return false;
+        }
+
         //echo "Copie de la clef privée\r\n";
         $act = $task->createActivity("Copie de la clef privée",'Info');
         //on copie la clef privée

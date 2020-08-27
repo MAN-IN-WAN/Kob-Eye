@@ -1,0 +1,79 @@
+<div style="position:relative;">
+    <table id="activity_list">
+        <tr id="tableFixedHeader" class="activity-item" >
+            <th class="activity_start">Démarré le</th>
+            <th class="activity_title">Titre</th>
+            <th class="activity_progress">Progrès</th>
+        </tr>
+        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" ng-init="hover = false" ng-click="act.Errors ? null : (hover = !hover)" ng-class="{showDetail:hover}">
+            <td class="actWrap" colspan="3">
+                <table class="actSub" ng-class="{error: act.Errors == 1}">
+                    <tr class="actInfo" ng-class="{cursor:(act.Details && !act.Errors)}">
+                        <td class="activity_start">
+                            {[{ act.create }]}
+                        </td>
+                        <td class="activity_title" ng-class="{success: (act.Success == 1 && act.Type =='Exec'),error: (act.Errors == 1 && act.Type =='Exec'),running:(act.Success != 1  && act.Errors != 1 && act.Started == 1 && act.Type =='Exec'),info: (act.Type =='Info' && act.Errors != 1), info_error:(act.Type =='Info' && act.Errors == 1), stopped:(act.Success != 1  && act.Errors != 1 && act.Started != 1 && act.Type =='Exec')}"  colspan="{[{ act.Type == 'Exec' ? 1:2 }]}"><span ng-bind-html="act.Titre"></span></td>
+                        <td class="activity_progress" ng-if="act.Type == 'Exec'">
+                            <uib-progress ng-if="act.Progression < 100">
+                                <uib-bar value="act.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                            </uib-progress>
+                            <uib-progress ng-if="act.Progression >= 100">
+                                <uib-bar value="act.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                            </uib-progress>
+                        </td>
+                    </tr>
+                    <tr class="actDetail" ng-if="act.Details">
+                        <td colspan="3" >
+                            <pre ng-bind-html="act.Details"></pre>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
+<script type="text/javascript">
+    $('.spinner-list').spin();
+</script>

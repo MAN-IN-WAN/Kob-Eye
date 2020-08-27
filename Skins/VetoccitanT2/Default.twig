@@ -1,0 +1,88 @@
+<div id="SiteVeto2"  class="page_{{ menClass }} {% if not accueil %}Atterissage {% endif %}">
+    {% if not accueil %}
+        <div id="Bando">
+            <img src="/{{ Adherent.Media.Image }}.limit.1024x800.jpg" class="img-responsive"
+                 alt="{{ Adherent.Media.Titre }}"
+                 title="Accueil"/>
+            <div class="Container">
+                <div class="blocnumbando">{{ Adherent.Tel }}</div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="wrapWrap hidden-lg">
+        <div id="wrap">
+            <div id="open">
+                <h1 class="toChange">
+                    {% if men is not empty %}
+                        {{ men }}
+                    {% endif %}
+                </h1>
+                <a href="#wrap" id="openLink">
+                    <img src="/Skins/{{ curSkin }}/Images/burger.png">
+                </a>
+            </div>
+            <div id="close">
+                {{ include(template_from_string(module('Systeme/Menu'))) }}
+                <a href="#" id="closeLink">
+                    <img src="/Skins/{{ curSkin }}/Images/croix.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="menuBarWrap" class="{% if not accueil %}landing{% endif %} hidden-md hidden-sm hidden-xs">
+        <div id="MenuBar" class="{% if not accueil %}Atterissage {% endif %} row fullWidth couleurPrincipale  ">
+            <div class="row Container">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <h1 class="NomMenu"><a href="/">{{ Adherent.Nom }}</a></h1>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9">
+                    {{ include(template_from_string(module('Systeme/Menu'))) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if  Lien == '' %}
+        <div id="bandoHaut" class="row fullWidth {% if not accueil %} hiddenContenu {% endif %}"
+             style="overflow: hidden;">
+            {{ include(template_from_string(component('Vetoccitan/Carousel/Default?POSITION=bandoHaut'))) }}
+        </div>
+    {% endif %}
+
+
+    <div id="Main" class="fullWidth {% if not accueil %} hiddenContenu {% endif %}">
+            <div id="Content" class="row Container ">
+                [DATA]
+            </div>
+            <div id="animBot">
+                <div id="leftSide" onClick="Out()">
+                </div>
+                <div id="rightSide" onClick="Out()">
+                    <img class='cercle' src='/Skins/VetoccitanT2/Images/croix.png' alt=''>
+                    <div id='detailVeto'>
+                    </div>
+                    <div id='boxContact'>
+                        <a href='/contact' class="contactEquipe">Contactez-nous</a>
+                    </div>
+                </div>
+            </div>
+        {% if  Lien == '' %}
+            <div id="bandoBas" class="row Container{% if not accueil %} hiddenContenu {% endif %}">
+                {{ include(template_from_string(component('Vetoccitan/Carousel/Default?POSITION=bandoBAS'))) }}
+            </div>
+        {% endif %}
+    </div>
+
+
+
+
+    {{ include(template_from_string(module('Systeme/Structure/Footer'))) }}
+
+
+</div>
+
+
+{#{{ include(template_from_string(module('Systeme/Structure/Droite'))) }}#}

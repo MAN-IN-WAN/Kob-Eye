@@ -1,0 +1,93 @@
+
+<div class="row" id="{{ uuid }}">
+    <ng-include
+            src="'Parc/MiniSite/FormLine.htm?type='+curParam.Type+'&obj={{ scopeObj }}'"></ng-include>
+
+    {#{% if categories|length > 1 %}
+    <div class="formCatsFrise col-md-2">
+        {% for cat,fields in categories %}
+            <span data-cat="{{ loop.index0 }}" class="formCatsFriseElem" {% if fields.condition %}ng-class="{ 'hidden': !({{ include(template_from_string(fields.condition)) }}) }"{% endif %}>
+                    <a href="#" class="formCatsFriseLink">{{ cat }}</a>
+                </span>
+        {% endfor %}
+    </div>
+    <div class="formCats col-md-10" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% else %}
+    <div class="formCats col-md-12" ng-init="form_index = 0; form_index_max = {{ cat | length }}">
+    {% endif %}
+            <div class="formCatWrapper">
+                {% for cat,fields in categories %}
+                    <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"  {% if fields.condition %}ng-if="{{ include(template_from_string(fields.condition)) }}"{% endif %}
+                         class="formCatContainer{% if loop.first %} active{% endif %}">
+                        #}{#            <h3>{{ cat }}</h3>#}{#
+                        {{ form_properties(fields.fields,scopeObj,ObjectType,Module) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        //Gestion des dates
+        $('#{{ uuid }} .datepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .timepicker-only-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            format: 'HH:mm',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#{{ uuid }} .datetimepicker-init').datetimepicker({
+            widgetPositioning: {
+                horizontal: 'left'
+            },
+            locale: 'fr',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+
+        //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+        $("#{{ uuid }} .datepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .timepicker-only-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+        $("#{{ uuid }} .datetimepicker-init").on("dp.change", function () {
+            var input = $(this).children('input').eq(0);
+            input.trigger('change');
+            input.trigger('input');
+        });
+
+        //Gestion des urls
+        $('#{{ uuid }} .urlInput').on('keyup', function () {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g, ''));
+        });
+
+    </script>#}
+</div>

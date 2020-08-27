@@ -1,0 +1,14 @@
+
+{% set cpt = 1 %}
+<ul class="Menu0 cssMenu">
+    {% for menu in Menu %}
+            {% if menu.MenuPrincipal == 1 %}
+            <li class="{% if menu.current %}Current{% endif %} menuLink">
+                <a href="/{{ menu.Url }}" data-alias="{{ menu.Alias }}">
+                    {{ menu.Titre }}
+                </a>
+             </li>
+            {% endif %}
+        {% set cpt = cpt + 1 %}
+    {% endfor %}
+</ul>

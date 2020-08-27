@@ -1,0 +1,46 @@
+<div id="Contenu-scroll" class="scrollbar-transparent" style="overflow: hidden;position:relative">
+    <div class="CacheScroll">
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                {% set i = 0 %}
+                {% if News is empty %}
+                    <div class="noContent">
+                        <p>Désolé, aucun article ne correspond à votre recherche.</p>
+                    </div>
+                {% endif %}
+                    {% for New in News %}
+                        <div class="row news {% if i !=0 %}borderTop {% endif %}"{% if i ==0 %}style="padding:15px 0;margin-left: 0;" {% endif %}>
+                            <div class="col-lg-7 col-md-7 col-sm-7 newsContent">
+                                {% if New.Media.Image %}
+                                <div class="imgArticle ">
+                                    <img src=" {{ New.Media.Image }} " class="img-responsive" alt="{{ New.Media.Titre }}"
+                                         title="{{ New.Media.Titre }}"/>
+                                </div>
+                                    {% if New.Media.Titre %}
+                                    <div class="titreImage">
+                                        <p class="legende">{{ New.Media.Titre }}</p>
+                                    </div>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="titreArticle">
+                                    <h2>{{ New.Titre }}</h2>
+                                </div>
+                               {# <div class="textArticle">
+                                    <p class="texte">{{ New.Description |striptags | slice (0 , 400)|raw }} ...</p>
+                                </div>#}
+                                <a href="/{{ Lien }}/{{ New.Url }}" alt="" title="">Voir plus...</a>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                {# VIDE CONFORME À LA MAQUETTE #}
+                            </div>
+
+                        </div>
+                    {% set i = i + 1  %}
+                    {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

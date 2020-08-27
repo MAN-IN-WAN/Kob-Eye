@@ -1,0 +1,60 @@
+<div class="boxhoraire">
+	<div class="bloc-Horaires">
+		{# <div class="titreCentre">Horaires</div>#}
+		{{  Lundi }}
+		{% if Horaires.Lundi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Lundi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{ Horaires.Lundi }}</div>
+			</div>
+		{% endif %}
+		{% if Horaires.Mardi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Mardi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Mardi }}</div>
+			</div>
+		{% endif %}
+
+		{% if Horaires.Mercredi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Mercredi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Mercredi }}</div>
+			</div>
+		{% endif %}
+
+		{% if Horaires.Jeudi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Jeudi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Jeudi }}</div>
+			</div>
+		{% endif %}
+
+		{% if Horaires.Vendredi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Vendredi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Vendredi }}</div>
+			</div>
+		{% endif %}
+		{% if Horaires.Samedi %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Samedi</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Samedi }}</div>
+			</div>
+		{% endif %}
+		{% if Horaires.Dimanche %}
+			<div class="row bloc-infos">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">Dimanche</div>
+				<div class="col-lg-9 col-md-9 col-sm-9" style="text-align:right">  {{  Horaires.Dimanche }}</div>
+			</div>
+		{% endif %}
+
+	</div>
+
+</div>
+<div class="boutonCentre couleurPrincipale">
+	{% if Adherent.LienReservation %}
+		<a href="/{{ Adherent.LienReservation }}"  >Prendre rendez-vous</a>
+	{% else %}
+		<a href="/contact"  >Prendre rendez-vous</a>
+	{% endif %}
+</div>

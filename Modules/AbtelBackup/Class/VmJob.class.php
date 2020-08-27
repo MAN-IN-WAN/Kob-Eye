@@ -358,6 +358,7 @@ EMAIL_FROM=
 WORKDIR_DEBUG=0
 VM_SHUTDOWN_ORDER=
 VM_STARTUP_ORDER=
+VM_BACKUP_DIR_NAMING_CONVENTION=A
 ';
         $act->addDetails('-> configuration vmjob','yellow');
         $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
@@ -381,7 +382,7 @@ VM_STARTUP_ORDER=
     private function cloneJob($v,$esx,$act){
         $this->setStep(3); //'Clonage'
         $act->addDetails($v->Titre.' ---> clonage de la vm');
-        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act ,false);
+        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ./ghettovcb.conf',$act ,false);
         $act->setProgression(100);
         parent::Save();
         return $act;

@@ -1,0 +1,585 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+/* FONT */
+
+/*@font-face {*/
+/*	font-family: 'latoblack';*/
+/*	src: url('../Fonts/lato-black-webfont.eot');*/
+/*	src: url('../Fonts/lato-black-webfont.eot?#iefix') format('embedded-opentype'),*/
+/*	url('../Fonts/lato-black-webfont.woff2') format('woff2'),*/
+/*	url('../Fonts/lato-black-webfont.woff') format('woff'),*/
+/*	url('../Fonts/lato-black-webfont.ttf') format('truetype'),*/
+/*	url('../Fonts/lato-black-webfont.svg#latoblack') format('svg');*/
+/*	font-weight: normal;*/
+/*	font-style: normal;*/
+
+/*}*/
+
+
+@font-face {
+	font-family: 'SuisseIntl-Book-WebM';
+	url('../Fonts/SuisseIntl-Book-WebM.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebM.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}
+@font-face {
+	font-family: 'SuisseIntl-Book-WebS';
+	url('../Fonts/SuisseIntl-Book-WebS.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebS.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+@font-face {
+	font-family: 'SuisseIntl-Book-WebXL';
+	url('../Fonts/SuisseIntl-Book-WebXL.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebXL.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: 'SuisseIntl-Book-WebS', Sans-Serif;
+	font-size:12px;
+	width: 100%;
+	margin:22px auto;
+
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.fullWidth {
+	width:100%;
+	margin:auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+h1 {
+	font-size:22px;
+}
+h2 {
+	font-size:24px;
+}
+body {
+	font-size:16px;
+}
+
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color:#ccc;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+p {
+	text-align: justify;
+}
+
+/** divers **/
+
+#SiteVeto1 {
+	position: relative;
+	width:1600px;
+	margin:22px auto;
+}
+.Container {
+	width:100%;
+}
+#SiteVeto1 .bloc-infos {
+	margin: 10px 0;
+	padding-bottom: 10px;
+	border-bottom :1px solid #000;
+}
+.bloc-infos .col-lg-3.col-md-3.col-sm-3,
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+	padding: 0;
+}
+.btn-default {
+	border: 2px solid #000;
+	padding: 5px;
+}
+
+.borderTop {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+	margin-top: 15px;
+}
+.borderTopContenu {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+}
+/** CAROUSEL **/
+
+#SiteVeto1 #Bando {
+	width: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+/*** MENU  **/
+
+#SiteVeto1 #MenuBar {
+	padding: 25px 0;
+	height: 75px;
+	width: 1200px;
+	margin: 0 0 10px 0;
+	/*border-bottom: 1px solid #000;*/
+	font-size: 1.3em;
+	position:initial;
+	z-index: 1000;
+	background-color: #fff;
+}
+#SiteVeto1 #MenuBar .NotHome {
+	position: fixed; /* A NE PAS ENLEVER */
+	top: 0;
+}
+
+#SiteVeto1 #MenuBar h1 {
+	font-size:1em;
+}
+
+#SiteVeto1 #MenuBar .col-md-3,
+#SiteVeto1 #MenuBar .col-sm-3,
+#SiteVeto1 #MenuBar .col-lg-3
+/*#SiteVeto1 #Main .Gauche .col-md-3,*/
+/*#SiteVeto1 #Main .Gauche .col-sm-3,*/
+/*#SiteVeto1 #Main .Gauche .col-lg-3*/
+
+{
+	padding-left: 0;padding-right: 0;
+}
+
+#SiteVeto1 #MenuBar ul.Menu0 {
+	list-style: none;
+	display: flex;
+    float: right;
+}
+#MenuBar ul.Menu0 li {
+	float: left;
+	padding:5px 10px;
+}
+#MenuBar ul.Menu0 li.Last {
+    margin-right: -20px;
+}
+
+#MenuBar ul.Menu0 li a {
+	color:#000;
+}
+#MenuBar ul.Menu0 li a:hover {
+	color:#000;
+	cursor:pointer;
+}
+#MenuBar ul.Menu0 li.Current a{
+	color:#ccc;
+}
+#MenuBar ul.Menu0 li h1 {
+	line-height: inherit;
+
+}
+
+
+/** COL GAUCHE **/
+#SiteVeto1 #Content .Gauche h2 {
+	font-size:1em;
+}
+
+
+
+/*** CONTENU  **/
+#SiteVeto1 #Content {
+	position: relative;
+	margin-top:35px;
+}
+
+#SiteVeto1 #Content .Contenu {
+    margin-left: 35px;
+    margin-top: 20px;
+}
+
+#SiteVeto1 #Content .titreImage .legende {
+	font-size:16px;
+	/*font-style: italic;*/
+	margin-top:15px;
+}
+#SiteVeto1 #Content .titreArticle h2 {
+	font-size:24px;
+	text-transform: uppercase;
+	margin-top:15px;
+}
+#SiteVeto1 #Content .equipe img:hover {
+	cursor: pointer;
+}
+#SiteVeto1 #Content .equipe h5 {
+	font-size:1em;
+	text-transform: uppercase;
+	margin-bottom:15px;
+}
+#SiteVeto1 #Content .textArticle .texte {
+	font-size:16px;
+	font-style: normal;
+	margin-top:15px;
+	margin-bottom: 15px;
+
+}
+#SiteVeto1 #Content .Contenu .row.equipe {
+	/*margin-left:0;*/
+	margin-bottom: 22px;
+}
+#SiteVeto1 #Content .Contenu .row.conseils,
+#SiteVeto1 #Content .Contenu .row.services,
+#SiteVeto1 #Content .Contenu .row.news
+{
+	margin-bottom: 22px;
+}
+/*#SiteVeto1 #Content .Contenu .Conseils,
+#SiteVeto1 #Content .Contenu .Services,
+#SiteVeto1 #Content .Contenu .News
+{
+	margin-top: 15px;
+}*/
+
+/** NEWS **/
+#SiteVeto1 .bloc-infos.news {
+	border: none;
+}
+
+h2.news {
+ font-size: 16px;
+ text-align: center;
+ border: 1px solid #000;
+ padding: 5px;
+ margin: 40px 0 10px 0;
+}
+
+#Footer{
+	border-top: 1px solid black;
+}
+
+#Pre-Footer {
+    background-color: #ccc;
+    height: 290px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    /*margin:10px 0 10px 0;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.filtres {
+	display: flex;
+    list-style: none;
+    font-size:22px;
+    text-align: center;
+
+}
+.filtres li {
+	    border: 1px solid #000;
+    	/*padding: 5px;*/
+        margin: 0 5px 10px 5px;
+        width:115px;
+        height:29px;
+}
+.filtres li.active {
+	border: 1px solid #000;
+    /*padding: 5px;*/
+    background-color: #000;
+    margin: 0 5px 10px 5px;
+    color:#fff;
+    width:115px;
+        height:29px;
+}
+
+
+
+/** SCROLL */
+#newsGauche {
+	position: relative;
+	/* POUR REUNION WEB ON DESACTIVE overflow-y: scroll;*/
+
+	height: 400px;
+	width: 100%;
+	/*padding-right: 5px;*/
+	margin-bottom: 22px;
+}
+#newsGauche::-webkit-scrollbar {
+	display: none;
+}
+#Contenu-scroll {
+	position: relative;
+	/* POUR REUNION WEB ON DESACTIVE overflow-y: scroll;*/
+	height: 800px;
+	width: 100%;
+	margin-bottom: 22px;
+}
+
+.scrollbar-transparent::-webkit-scrollbar {
+	display: none;
+}
+
+#newsGauche::-webkit-scrollbar {
+	display: none;
+}
+
+.boutonCentre {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.boutonCentre a {
+    color: #000;
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.titreCentre {
+    border-bottom: 1px solid #000;
+    margin-top: 20px;
+}
+#SiteVeto1 .bloc-Horaires .bloc-infos {
+    padding: 0;
+    margin: 0;
+}
+#SiteVeto1 .bloc-Horaires {
+   font-size: 15px;
+}
+.nomClinique {
+  border-top: 1px solid #000;
+    padding-top: 5px;
+    margin-top: 20px;
+}
+
+/* Formulaire */
+.labelform {
+	display:block;
+	padding: 5px 0 5px 0;
+}
+.inputform,
+.textform {
+	width:100%;
+}
+.textform {
+	resize:none;
+	width:100%;
+	height:200px;
+}
+button {
+    color: #000;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: initial;
+}
+button:hover {
+    color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #000;
+    font-family: inherit;
+    font-size: initial;
+}
+/** Anim Equipe */
+#leftSide {
+	background: #d7d7d7;
+	top: 0px;
+	z-index: 100;
+	width: 50%;
+	/*height: 1500px;*/
+	display: inline-block;
+	position: relative;
+}
+#rightSide {
+	background: white;
+	bottom:0px;
+	width: 50%;
+	/*height: 1500px;*/
+	display: inline-block;
+	position: relative;
+	z-index: 100;
+	/*overflow: scroll;*/
+	/*overflow:auto;*/
+}
+#anim{
+	 display: flex;
+	 /*position: absolute;*/
+	 /* height: 600px; */
+ }
+#animBot{
+	display: flex;
+	/*position: absolute;
+	/* height: 600px; */
+}
+#rightSide p {
+	position:absolute;
+	top:950px;
+	left:80px;
+}
+#rightSide span {
+	position:absolute;
+	top:750px;
+	left:80px;
+}
+#animAccueil{
+	position:relative;
+	top:0px;
+	background-color:white;
+	z-index: 100;
+}
+
+
+#testouille {
+	position: relative;
+	/*
+	bottom: -200px;
+	*/
+	/*background-color: black;*/
+}
+#durAccueil{
+	display:none;
+}
+#durClinique{
+	display:none;
+}
+#durConseils{
+	display:none;
+}
+#durContact{
+	display:none;
+}
+#durEquipe{
+	display:none;
+}
+#durNews{
+	display:none;
+}
+#durServices{
+	display:none;
+}
+
+#mLegal{
+	text-align: center;
+	cursor: pointer;
+	color: #ccc;
+	padding: 10px 0;
+}
+
+#mention{
+	border-top: 1px solid black;
+	/*margin-left: 20px;
+	margin-right: 20px;*/
+}
+
+/* PAGE CONTACT */
+form.Contact {
+	margin-top: 20px;
+}
+
+
+/**** carousel clinique **/
+#myCarousel h2{
+	font-size:2em;
+	color:#000;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+}
+#myCarousel2 .item {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background1.active {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background2.active {
+	background-color: #1b9e1b;
+}
+#myCarousel2 .item.background3.active {
+	background-color: #0d7bdc ;
+}
+#myCarousel2 h2{
+	 font-size:2em;
+	 color:#000;
+	 font-weight: bold;
+	 text-align: center;
+	 text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+ }
+
+ /* ajout Marie 01/04/20 pour logo clinique dans menu*/
+
+ #MenuBar img {
+    width: 41%;
+}
+
+#durPubAccueil{
+display:none
+}
+#durPubFootAccueil{
+	display:none
+}
+
+.col-lg-10.col-md-10.col-sm-10.borderTopContenu {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.row.news.borderTop,
+.row.conseils.borderTop,
+.row.services.borderTop {
+    margin-left: 5px;
+    margin-right: -18px;
+}
+
+.row.news.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.conseils.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.services.borderTop .col-lg-5.col-md-5.col-sm-5 {
+    margin-left: -14px;
+}
+
+.row.borderTop {
+     margin-right: 0;
+}
+.tutu{
+	border-bottom: 1px solid black;
+}
+
+.Services,
+.Conseils,
+.News {
+    margin-left: -20px;
+}
+
+.row.equipe .col-lg-1.col-md-1.col-sm-1{
+	width:16%;
+}
+
+.row.news.borderTop .titreImage .legende,
+.row.conseils.borderTop .titreImage .legende,
+.row.services.borderTop .titreImage .legende {
+    font-size: 16px;
+    margin-bottom: -17px;
+    margin-top:0px !important;
+}

@@ -1,0 +1,6 @@
+app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope) {
+    $scope.exportData = function(){
+        window.open('Parc/Facturation/Export.csv','_blank');
+        console.log('export ok');
+    }
+});

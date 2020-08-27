@@ -563,6 +563,18 @@ class Systeme extends Module {
         }
         echo 'fin du thread parent '.posix_getpid()."\n";
     }
+
+
+    /**
+     * is ProcessAlive
+     */
+    static function isProcessAlive($pid) {
+        $out = self::localExec('ps -p '.$pid.' -h');
+        $out = trim($out);
+        if (empty($out)) return false;
+        else return true;
+    }
+
 }
 
 function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {

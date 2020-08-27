@@ -1,0 +1,38 @@
+<div class="Services">
+    {% set Lien = 'services' %}
+    <div class="row Filtres">
+        <div class="col-lg-10 col-md-10 col-sm-10">
+            {{ include(template_from_string(module('Redaction/Filtres/Filtres'))) }}
+        </div>
+         <div class="col-lg-2 col-md-2 col-sm-2">
+{#            // vide conforme à la maquette#}
+         </div>
+    </div>
+    <div class="row">
+          <div class="col-lg-10 col-md-10 col-sm-10">
+              {% set i = 1 %}
+              {% for i in 1..3 %}
+       <div class="row services borderTop">
+              <div class="col-lg-5 col-md-5 col-sm-5">
+                     <img src="Skins/VetoccitanT/Images/imgnews{{i}}.jpg" class="img-responsive" alt="photo-{{i}}" title="photo-{{i}}" />
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="titreImage">
+            <p class="legende">Titre de l'image</p>
+                </div>
+                  <div class="titreArticle">
+                      <h2>Titre{{i}}</h2>
+                  </div>
+                 <div class="textArticle">
+                    <p class="texte"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae tincidunt ipsum.  </p>
+                    <a href="/{{Lien}}/Article" alt="" title="" >Voir plus...</a>
+                 </div>
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-1">
+{#                     // vide conforme à la maquette#}
+              </div>
+       </div>
+{% endfor %}
+ </div>
+</div>
+</div>

@@ -7,9 +7,19 @@
 define('ROOT_DIR', dirname(__FILE__).'/');
 define('SQL_LITE_CACHE',0);
 
+
 //importation de la class BashColors
 include ('Class/Utils/BashColors.class.php');
 $colors = new BashColors();
+
+if (sizeof($argv)<3){
+    echo $colors->getColoredString("ERROR: You need at least two parameters: [DOMAIN] [URI]", "red") . "\n";
+    echo $colors->getColoredString("ex: cron.php blahblah.com /Systeme/cron.htm", "yellow") . "\n";
+    die();
+}
+
+if (isset($argv[3])&& $argv[3]=="false")
+    ob_start();
 
 echo $colors->getColoredString("  _  __     _                            ", "green") . "\n";
 echo $colors->getColoredString(" | |/ /___ | |__         ___ _   _  ___  ", "green") . "\n";
@@ -32,11 +42,7 @@ echo $colors->getColoredString("                                                
 
 echo $colors->getColoredString("Loading classes ...", "green") . "\n";	
  
-if (sizeof($argv)<3){
-    echo $colors->getColoredString("ERROR: You need at least two parameters: [DOMAIN] [URI]", "red") . "\n";	
-    echo $colors->getColoredString("ex: cron.php blahblah.com /Systeme/cron.htm", "yellow") . "\n";
-    die();
-}
+
 // Verif taille fichier log
 if(filesize(ROOT_DIR.'Log/Systeme.log') > 1500000000) file_put_contents('Log/Systeme.log', '');
 
@@ -121,13 +127,24 @@ echo $colors->getColoredString("Database connections ...", "green") . "\n";
 $Systeme->Connect();
 //$Systeme->Log->log($Chrono->total());
 echo $colors->getColoredString("Processing page ".$argv[2]."\r\n", "green") . "\n";
-if (isset($argv[3])&& $argv[3]=="false")
-    ob_start();
-$Systeme->Affich();
+
 if (isset($argv[3])&& $argv[3]=="false")
     ob_clean();
+
+
+$Systeme->Affich();
+
+
+if (isset($argv[3])&& $argv[3]=="false")
+    ob_start();
+
 $Systeme->Close();
 echo $colors->getColoredString("\nClosing connections ...", "green") . "\n";	
 echo $colors->getColoredString("------------------------------------", "green") . "\n";	
 $Chrono->stop();
+
+if (isset($argv[3])&& $argv[3]=="false")
+    ob_clean();
+
+
 

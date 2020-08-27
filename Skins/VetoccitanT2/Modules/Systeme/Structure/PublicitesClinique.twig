@@ -1,0 +1,22 @@
+
+   <div id="myCarousel" class="carousel slide ">
+        <div class="carousel-inner">
+            {% set i = 0 %}
+            {% for i in 0..2 %}
+                  <div class="item {% if i == 1 %}active{% endif %}">
+                    <img src="Skins/Vetoccitan1/Images/bando_ratio.jpg" class="img-responsive" style="width:1200px !important;" alt="photo-[!Col!]" title="photo-[!Col!]" />
+                    <div class="carousel-caption ">
+                        <h2>PUBLICITE CLINIQUE ..... {{i}}</h2>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        $(document).ready( function(){
+            $('.carousel').carousel({
+                  interval: 3500
+            })
+        });
+    </script>

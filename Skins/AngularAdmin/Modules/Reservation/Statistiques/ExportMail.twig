@@ -1,0 +1,9 @@
+{% if state == 0 %}
+    {{ return | raw }}
+{% elseif state == 1 %}
+    <button ng-click="initMail();">Retour à la selection</button>
+    <iframe src="/Reservation/Statistiques/ExportMail.pdf?state=2" frameborder="0" style="width:100%;height:900px;"></iframe>
+{% elseif state == 3 %}
+    <button ng-click="initMail();">Retour à la selection</button>
+    <iframe src="/Reservation/Statistiques/ExportMail.pdf?state=4" frameborder="0" style="width:100%;height:900px;"></iframe>
+{% endif %}

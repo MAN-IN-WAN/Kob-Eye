@@ -1,0 +1,319 @@
+app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location, $compile, $sce, $scope, $rootScope, $routeParams, $http) {
+
+    $scope.Villes = new Array();
+    $scope.Departements = new Array();
+    $scope.Codes = new Array();
+
+    $scope.ExpOrganisations = {
+        state: 0,
+        html: "",
+        args: {Etiq: 3}
+    }
+
+    $scope.ExpClients = {
+        state: 0,
+        html: "",
+        args: {Active:3,Etiq: 3}
+    }
+
+    $scope.ExportMail = {
+        state: 0,
+        html: ""
+    }
+
+    $scope.StatsStructures = {
+        html: "",
+        client:[],
+        state:0,
+        args:{}
+    }
+
+    $scope.ExportGeneral = {
+        state: 0,
+        html: "",
+        args:{}
+    }
+
+    $scope.initExportGeneral = function () {
+        console.log($scope.ExportGeneral);
+        $http.post('/Reservation/Statistiques/ExportGeneral.json', {
+    })
+        .success(function (data) {
+            $scope.ExportGeneral.html = data.html;
+            $scope.ExportGeneral.state = $scope.ExportGeneral.state +=1;
+            $timeout(function(){
+                $scope.initDatePickerOnly();
+            });
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.ExportGeneral.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initExportGeneral();">Réessayer</button>';
+        });
+    }
+    $scope.initExportGeneral();
+
+    $scope.initStatsStructures = function () {
+        console.log($scope.StatsStructures);
+        $http.post('/Reservation/Statistiques/StatsStructures.json', {
+            })
+            .success(function (data) {
+                $scope.StatsStructures.html = data.html;
+                $scope.StatsStructures.client = data.client;
+                $scope.StatsStructures.state = $scope.StatsStructures.state +=1;
+                $scope.getSelectClient($scope.StatsStructures.searchTermclient);
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsStructures.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsStructures();">Réessayer</button>';
+            });
+    }
+    $scope.initStatsStructures();
+
+
+    $scope.initMail = function () {
+        console.log($scope.ExportMail);
+        $http.post('/Reservation/Statistiques/ExportMail.json', {})
+            .success(function (data) {
+                $scope.ExportMail.html = data.html;
+                $scope.ExportMail.state = 0;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExportMail.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initMail();">Réessayer</button>';
+            });
+    }
+    $scope.initMail();
+
+    $scope.init = function () {
+        console.log($scope.ExpOrganisations);
+        $http.post('/Reservation/Statistiques/ExpOrganisations.json', {})
+            .success(function (data) {
+                $scope.Villes = data.Villes;
+                $scope.Departements = data.Departements;
+                $scope.Codes = data.Codes;
+                $scope.ExpOrganisations.html = data.html;
+                $scope.ExpOrganisations.state = 1;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExpOrganisations.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="init();">Réessayer</button>';
+            });
+    }
+    $scope.init();
+
+    $scope.initClient = function () {
+        console.log($scope.ExpClients);
+        $http.post('/Reservation/Statistiques/ExpClients.json', {})
+            .success(function (data) {
+                $scope.Villes = data.Villes;
+                $scope.Departements = data.Departements;
+                $scope.Codes = data.Codes;
+
+                $scope.ExpClients.html = data.html;
+
+                $scope.ExpClients.state = 1;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExpClients.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initClient();">Réessayer</button>';
+            });
+    }
+    $scope.initClient();
+
+
+    $scope.validExpOrg = function () {
+        $http.post('/Reservation/Statistiques/ExpOrganisations.htm', {
+            state: $scope.ExpOrganisations.state,
+            args: $scope.ExpOrganisations.args
+        })
+            .success(function (data) {
+                $scope.ExpOrganisations.html = data;
+                $scope.ExpOrganisations.state += 1;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExpOrganisations.html = "Oups...";
+            });
+    }
+
+    $scope.validExpCli = function () {
+        $http.post('/Reservation/Statistiques/ExpClients.htm', {
+            state: $scope.ExpClients.state,
+            args: $scope.ExpClients.args
+        })
+            .success(function (data) {
+                $scope.ExpClients.html = data;
+                $scope.ExpClients.state += 1;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExpClients.html = "Oups...";
+            });
+    }
+
+    $scope.onExportMailStCult = function () {
+        $http.post('/Reservation/Statistiques/ExportMail.json', {
+            state: $scope.ExportMail.state +=1
+        })
+        .success(function (data) {
+            $scope.ExportMail.html = data;
+            //$scope.ExpClients.state += 1;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.ExportMail.html = "Oups...";
+        });
+    }
+
+    $scope.onExportMailStSoc = function () {
+        $http.post('/Reservation/Statistiques/ExportMail.json', {
+            state: $scope.ExportMail.state = 3
+        })
+        .success(function (data) {
+            $scope.ExportMail.html = data;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.ExportMail.html = "Oups...";
+        });
+    }
+
+    $scope.onExportGen = function () {
+        $('#ExpGen').spin();
+        console.log($scope.ExportGeneral);
+        $http.post('/Reservation/Statistiques/ExportGeneral.json', {
+            html:$scope.ExportGeneral.html,
+            state:$scope.ExportGeneral.state,
+            args: $scope.ExportGeneral.args
+        })
+        .success(function (data) {
+            $scope.ExportGeneral.html = data.html;
+            $scope.ExportGeneral.state +=1;
+            $scope.ExportGeneral.args = data.args;
+            $('#ExpGen').spin(false);
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.ExportGeneral.html = "Oups...";
+        });
+    }
+
+    $scope.onSelecClient = function(){
+        console.log($scope.StatsStructures);
+        $http.post('/Reservation/Statistiques/StatsStructures.json', {
+            html:$scope.StatsStructures.html,
+            client:$scope.StatsStructures.args.client,
+            Date:$scope.StatsStructures.args.Date,
+            state:$scope.StatsStructures.state
+        })
+            .success(function (data) {
+                $scope.StatsStructures.html = data.html;
+                $scope.StatsStructures.client = data.client;
+                $scope.StatsStructures.state +=1;
+        })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsStructures.html = "Oups...";
+    });
+
+    }
+    $scope.filteredClients = new Array();
+    $scope.StatsStructures.currentPageClient = 1;
+    $scope.getSelectClient = function (search) {
+        if(search == undefined || search == null || search == '') {
+            $scope.filteredClients = $scope.StatsStructures.client;
+            return true;
+        }
+        search = search.toLowerCase();
+        var temp = new Array();
+        for(var n = 0; n < $scope.StatsStructures.client.length;n++){
+            var tempNom = $scope.StatsStructures.client[n]['Nom'].toLowerCase();
+            if(tempNom.indexOf(search) != -1 ){
+                temp.push( $scope.StatsStructures.client[n]);
+            }
+        }
+
+        $scope.filteredClients = temp;
+        return true;
+    }
+    $scope.$watch('StatsStructures.searchTermclient',function(){
+            $scope.getSelectClient($scope.StatsStructures.searchTermclient);
+    });
+
+    $scope.reInitExportGeneral = function () {
+
+        console.log($scope.ExportGeneral);
+        $http.post('/Reservation/Statistiques/ExportGeneral.json', {
+        })
+            .success(function (data) {
+                $scope.ExportGeneral.html = data.html;
+                $scope.ExportGeneral.state = 1;
+                $timeout(function(){
+                $scope.initDatePickerOnly();
+            });
+        })
+            .error(function (data) {
+                console.error(data);
+                $scope.ExportGeneral.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initExportGeneral();">Réessayer</button>';
+            });
+
+    }
+
+    $scope.reInitStatsStructures = function () {
+
+        console.log($scope.StatsStructures);
+        $http.post('/Reservation/Statistiques/StatsStructures.json', {
+        })
+            .success(function (data) {
+                $scope.StatsStructures.html = data.html;
+                $scope.StatsStructures.state = 1;
+        })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsStructures.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsStructures();">Réessayer</button>';
+            });
+
+    }
+
+    $scope.$watch('ExpOrganisations.args.Ville', function () {
+        if ($scope.ExpOrganisations.args.Ville != undefined && $scope.ExpOrganisations.args.Ville != "" && $scope.ExpOrganisations.args.Ville != null) {
+            $scope.ExpOrganisations.args.CodePos = undefined;
+            $scope.ExpOrganisations.args.Dep = undefined;
+        }
+    });
+    $scope.$watch('ExpOrganisations.args.CodePos', function () {
+        if ($scope.ExpOrganisations.args.CodePos != undefined && $scope.ExpOrganisations.args.CodePos != "" && $scope.ExpOrganisations.args.CodePos != null) {
+            $scope.ExpOrganisations.args.Ville = undefined;
+            $scope.ExpOrganisations.args.Dep = undefined;
+        }
+    });
+    $scope.$watch('ExpOrganisations.args.Dep', function () {
+        if ($scope.ExpOrganisations.args.Dep != undefined && $scope.ExpOrganisations.args.Dep != "" && $scope.ExpOrganisations.args.Dep != null) {
+            $scope.ExpOrganisations.args.Ville = undefined;
+            $scope.ExpOrganisations.args.CodePos = undefined;
+        }
+    });
+
+
+    $scope.$watch('ExpClients.args.Ville', function () {
+        if ($scope.ExpClients.args.Ville != undefined && $scope.ExpClients.args.Ville != "" && $scope.ExpClients.args.Ville != null) {
+            $scope.ExpClients.args.CodePos = undefined;
+            $scope.ExpClients.args.Dep = undefined;
+        }
+    });
+    $scope.$watch('ExpClients.args.CodePos', function () {
+        if ($scope.ExpClients.args.CodePos != undefined && $scope.ExpClients.args.CodePos != "" && $scope.ExpClients.args.CodePos != null) {
+            $scope.ExpClients.args.Ville = undefined;
+            $scope.ExpClients.args.Dep = undefined;
+        }
+    });
+    $scope.$watch('ExpClients.args.Dep', function () {
+        if ($scope.ExpClients.args.Dep != undefined && $scope.ExpClients.args.Dep != "" && $scope.ExpClients.args.Dep != null) {
+            $scope.ExpClients.args.Ville = undefined;
+            $scope.ExpClients.args.CodePos = undefined;
+        }
+    });
+
+
+    // Fin du controller
+});
