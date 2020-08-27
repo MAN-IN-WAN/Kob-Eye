@@ -174,6 +174,7 @@ class CEN extends Module {
 				$s = "tlachia\t".$args["word"]."\t".$args['codex']."\t".$args['cond']."\n";
 				break;
 		}
+//klog::l("<<<<<<<<<<<<<<",$_SERVER);
 		$s = date('Y-m-d H:i:s')."\t".$_SERVER['REMOTE_ADDR']."\t".$s;
 		
 		file_put_contents(getcwd().'/Log/search.log', $s, FILE_APPEND);
