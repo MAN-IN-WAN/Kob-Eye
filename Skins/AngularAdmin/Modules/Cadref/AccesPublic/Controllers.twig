@@ -589,7 +589,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	{% if objecttype == 'Adherent' and benevole == 1 %}
 		
 	$scope.CadrefAdherent = $rootScope.createStore(CadrefAdherentStore, 'default');
-	$scope.CadrefAdherent.store.setFilters('Annee={{ Annee }}', 'default');
+	//$scope.CadrefAdherent.store.setFilters('Annee={{ Annee }}', 'default');
 	CadrefAdherentStore.getData(1,'default');
 	
 	$scope.$watch('CadrefAdherent.currentPage', function() {

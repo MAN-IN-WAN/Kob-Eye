@@ -138,7 +138,6 @@ class Performance extends genericClass {
 		self::setChild($o, 'Category', $s->categoryId);
 		self::setChildren($o, 'Genre', $gen, $s->genres);
 		self::setChildren($o, 'Language', $lng, $s->languages);
-klog::l("SAVE PERF >>>>>>>>>>>>>>>>>>>",$o);
 		$o->Save();
 		return array('success'=>1, 'id'=>$o->Id);
 	}
@@ -164,6 +163,8 @@ klog::l("SAVE PERF >>>>>>>>>>>>>>>>>>>",$o);
 		$cs = $o->getChildren('Comments');
 		foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Place');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Event');
 		foreach($cs as $c) $c->Delete();
 		$o->Delete();
 		return array('success'=>1);

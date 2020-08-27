@@ -46,8 +46,9 @@
 				<th>Ville</th>
 				<th>Adresse</th>
 {#				<th>Téléphone</th>
-				<th>Téléphone</th>
-#}				<th>Mail</th>
+				<th>Téléphone</th>#}
+				<th>Mail</th>
+				<th>Annee</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -60,12 +61,13 @@
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Ville }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Adresse1 }]}</a></td>
 {#				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone1 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone2 }]}</a></td>
-#}				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone2 }]}</a></td>#}
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
 
 
 				<td scope="row" class="cadref-td typeint">
-					<a class="btn-abt cadref-btn-carte btn-primary" ng-click="benevoleCarte(item)" title="Carte"></a>
+					<a class="btn-abt cadref-btn-carte btn-primary" ng-if="item.Annee=={{ Annee }}" ng-click="benevoleCarte(item)" title="Carte"></a>
 {#					<a href="#down" class="btn-abt btn-abt-fiscal btn-info" ng-click="benevoleAttestation(item,2)" title="Attestations de paiement"></a>
 #}				</td>
 			</tr>
