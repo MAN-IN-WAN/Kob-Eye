@@ -79,7 +79,7 @@ class Performance extends genericClass {
 			if($c->Comments) $comments++;
 			$rating += $c->Vote;
 		}
-		$rating = round($rating/$votes,1);
+		$rating = $votes ? round($rating/$votes, 1) : 0;
 		$this->Votes = $votes;
 		$this->Comments = $comments;
 		$this->Rating = $rating;

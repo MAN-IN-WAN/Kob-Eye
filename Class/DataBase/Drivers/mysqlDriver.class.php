@@ -109,7 +109,6 @@ class mysqlDriver extends ObjectClass{
 					break;
 					case "float":
 						$Valeur = floatval($ValeurProp);
-						klog::l("FLOAT  $NomProp:$ValeurProp:$Valeur");
 					break;
 					default:
 						$Valeur = "'".addslashes($ValeurProp)."'";
@@ -118,7 +117,6 @@ class mysqlDriver extends ObjectClass{
 				$Requete.= "`$NomProp`=".$Valeur;
 				$Flag=true;
 			}
-			
 			$sql = 'UPDATE `'.$this->Prefix.$this->titre.'` SET '.$Requete.' WHERE `Id`='.$Properties['Id'];
 		}
 		mysqlDriver::executeSql($this,$sql,"UPDATE");
@@ -422,7 +420,7 @@ class mysqlDriver extends ObjectClass{
 	//Execution d une requete SQL
 	static function executeSql($O,$sql,$type='SELECT',$GroupBy=""){
 		if (empty($sql))return;
-//if(strpos($sql,'UPDATE') !== false && strpos($sql,'Show-Performance') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
+//if(strpos($sql,'INSERT INTO') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
 
         //test connection toujours active
         if (!is_object($GLOBALS["Systeme"]->Db[$O->Bdd])){
