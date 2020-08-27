@@ -159,6 +159,25 @@ class CEN extends Module {
 		if($root) rmdir($dir); 
 	}
 
+	public static function searchLog($args) {
+		switch($args['mode']) {
+			case 'chacha':
+				$s = "chacha\t".$args["word"]."\t".$args['dic']."\t".'{"norm":'.$args['norm']."}\n";
+				break;
+			case 'trad':
+				$s = "gdn\t".$args["word"]."\t".$args['dic']."\t".'{"norm":'.$args['norm'].',"nah":'.$args['nah'].',"search":"'.$args['search']."}\n";
+				break;
+			case 'temoa':
+				$s = "temoa\t".$args["word"]."\t".$args['corpus']."\t".$args['ortho']."\n";
+				break;
+			case 'tlachia':
+				$s = "tlachia\t".$args["word"]."\t".$args['codex']."\t".$args['cond']."\n";
+				break;
+		}
+		$s = date('Y-m-d H:i:s')."\t".$_SERVER['REMOTE_ADDR']."\t".$s;
+		
+		file_put_contents(getcwd().'/Log/search.log', $s, FILE_APPEND);
+	}
 	
 	public static function fontSize($txt) {
 		return preg_replace_callback('/font-size:([0-9\.]*)([\ \%a-z]*)/',

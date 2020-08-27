@@ -8,7 +8,7 @@
 	</div>
 </div>
 <div class="row cadref-separ"></div>
-<section class="panel">	
+<section class="panel panel-inscr">	
 	<table>
 		<thead>
 			<tr>
@@ -71,7 +71,24 @@
 				</td>
 			</tr>
 		</tbody>
-
+	</table>
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>Reporté</th>
+				<th>Dû</th>
+				<th>Utilisé</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="cadref-td-inscr" style="width:60px"><label class="form-control-label cadref-label" style="line-height:1">Avoirs</label></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.avoirReporte" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.avoirDu" ng-change="classeAvoir()"  style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.avoirUtilise" ng-change="classeAvoir()"  style="width:60px" /></td>
+			</tr>
+		</tbody>
 	</table>
 </section>
 </form>

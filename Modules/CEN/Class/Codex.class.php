@@ -365,6 +365,8 @@ class Codex extends genericClass {
 
 	// result
 	static function GetTlachia($args) {
+		CEN::searchLog($args);
+
 		$word = trim(strtolower($args['word']));
 		$cdx = $args['codex'];
 		$list = $args['list'] == 'true';

@@ -84,6 +84,8 @@ class Temoa extends genericClass {
 	
 	// liste des mots dans le documents
 	static function GetTargets($args) {
+		CEN::searchLog($args);
+
 		$corpus = $args['corpus'];
 		if($corpus == 'all') $corpus = '';
 		else $corpus = "and Id in ($corpus)";
@@ -144,7 +146,8 @@ class Temoa extends genericClass {
 				$a->title = $t->Nom;
 				$occur += $a->count;
 				$a->pict = $t->DocPictCount > 0;
-				$a->trad = !empty($t->Trad1Html) || !empty($t->Trad2Html);
+				$a->trad = !empty($t->Trad1Html);
+				$a->trad2 = !empty($t->Trad2Html);
 			}
 		}
 		$ret = array('temoa'=>$o,'words'=>$words,'occur'=>$occur,'docs'=>count($docs));	
@@ -159,7 +162,8 @@ class Temoa extends genericClass {
 		$doc = array();
 		foreach($docs as $d) {
 			$id = $d->Id;
-			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true);
+			$info = ($d->Trad1Html != '' ? 't' : '').($d->Trad2Html != '' ? 't' : '').($d->DocPictCount ? 'i' : '');
+			$doc[] = array('id'=>$d->Id, 'title'=>$d->Nom, 'selected'=>true, 'info'=>$info);
 			$docId[$d->Id] = $d->Nom;
 		}
 //klog::l("GetDocs",array('documentsId'=>$docId, 'documents'=>$doc,));

@@ -125,12 +125,19 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
 		$msg = $logged ? self::newMessages($usr->Id) : 0;
-		$trn = self::getTranslation($lang);
+		if($args['first']) $trn = self::getTranslation($lang);
 		$cat = self::getObjsArray('Category', '', false, $lang);
 		$mat = self::getObjsArray('Maturity', '', false, '');
 		$lng = self::getObjsArray('Language', '', false, $lang);
 		return array('success'=>true, 'logged'=>$logged, 'categories'=>$cat, 'maturities'=>$mat, 'languages'=>$lng, 
 				'translation'=>$trn);
+	}
+	
+	private static function getTranslation($lang) {
+		$trn = [];
+		$rs = Sys::getData('Show', "Translation");
+		foreach($rs as $r) $trn[] = ['EN'=>$r->TextEN, 'FR'=>$r->TextFR, 'ES'=>$r->TextES];
+		return $trn;
 	}
 	
 	private static function saveUser($args) {
@@ -166,13 +173,6 @@ klog::l("GETSHOW >>>>>",$args);
 		return ['success'=>true];
 	}
 
-	private static function getTranslation($lang) {
-		$trn = [];
-		$rs = Sys::getData('Show', "Translation/Language=$lang");
-		foreach($rs as $r) $trn[] = [$r->Original, $r->Translation];
-		return $trn;
-	}
-	
 	public static function getObjsArray($name, $query, $obj, $lang) {
 		$sql = "select Id,$name$lang from `kob-Show-$name`";
 		if($query) $sql .= " where $query";

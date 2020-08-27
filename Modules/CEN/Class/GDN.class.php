@@ -36,6 +36,8 @@ class GDN extends genericClass {
 	}
 
 	static function GetGDN($args) {
+		CEN::searchLog($args);
+
 		$nah = $args['nah'] == 'true';
 		$field = $nah ? 'Norma_1' : 'Trad_2';
 		$word = $args['word'];
