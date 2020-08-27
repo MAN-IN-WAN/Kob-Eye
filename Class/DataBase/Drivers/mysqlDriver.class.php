@@ -420,7 +420,7 @@ class mysqlDriver extends ObjectClass{
 	//Execution d une requete SQL
 	static function executeSql($O,$sql,$type='SELECT',$GroupBy=""){
 		if (empty($sql))return;
-//if(strpos($sql,'INSERT INTO') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
+if(strpos($sql,'UPDATE') !== false && sprpos($sql,'Show-Performance')) klog::l(">>>>>>>>>>>>>>>>>".$sql);
 
         //test connection toujours active
         if (!is_object($GLOBALS["Systeme"]->Db[$O->Bdd])){

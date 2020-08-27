@@ -89,7 +89,6 @@ klog::l("GETSHOW >>>>>",$args);
 		$country = $args['country'];
 		$countryId = $args['countryId'];
 		$utcOffset = "+0200";
-klog::l("<<<<<<<<<<<<<<",$_SERVER);
 		
 		if($first) {
 			$ip = $_SERVER['REMOTE_ADDR']; 
