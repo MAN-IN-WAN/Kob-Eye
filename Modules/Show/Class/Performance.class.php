@@ -493,7 +493,8 @@ class Performance extends genericClass {
 		$dir = getcwd().'/Home/2/Show/icons';
 		mkdir($dir);
 		$img = $dir.'/'.$a[2].'.ico';
-		file_put_contents($img, file_get_contents("$w/favicon.ico"));
+		$data = file_get_contents("$w/favicon.ico");
+		if($data) file_put_contents($img, $data);
 
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
@@ -506,7 +507,7 @@ class Performance extends genericClass {
 		$id = $args['id'];
 		$pid = $args['perfId'];
 		$p = Sys::getOneData('Show', 'Performance/'.$pid);
-		$m = Sys::getOneData('Show', 'Crew/'.$id);
+		$m = Sys::getOneData('Show', 'Medium/'.$id);
 		$m->Delete();
 
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
