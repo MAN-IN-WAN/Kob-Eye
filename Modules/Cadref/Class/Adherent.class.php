@@ -2105,13 +2105,14 @@ where ce.Visite=:cid";
 		
 		$annee = $params['Annee'];
 		
-		if($params['CalculAvoir']) {
+		if($params['CalculSolde']) {
 			$ante = $annee-1;
-			$sql = "select i.AdherentId,sum(c.AvoirReporte) as avoir "
-				."from  `##_Cadref-Inscription` i "
-				."inner join `##_Cadref-Classe` c on c.Id=i.ClasseId "
-				."where i.Annee='$ante' and c.AvoirReporte>0 "
-				."group by i.AdherentId";
+			$sql = "select a.AdherentId,a.AvoirDu,sum(c.AvoirReporte) as avoir "
+				."from `kob-Cadref-AdherentAnnee` a "
+				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' "
+				."left join `kob-Cadref-Classe` c on c.Id=i.ClasseId "
+				."where a.Annee='$ante' and (a.AvoirDu>0 or c.AvoirReporte>0) "
+				."group by a.AdherentId";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
@@ -2123,16 +2124,14 @@ where ce.Visite=:cid";
 					$aan->Annee = $annee;
 					$aan->Numero = $adh->Numero;
 				}
-				$aan->AvoirReporte = $p['avoir'];
+				$aan->AvoirReporte = $p['AvoirDu']+$p['avoir'];
 				$aan->Save();
 			}
+			$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
+			foreach($adhs as $adh) {
+				$adh->SaveAnnee(null, 3);
+			}
 		}
-//		if($params['CalculAvoir'] || $params['CalculSolde']) {
-//			$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
-//			foreach($adhs as $adh) {
-//				$adh->SaveAnnee(null, 3);
-//			}
-//		}
 
 		
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;

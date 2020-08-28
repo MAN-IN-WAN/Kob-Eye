@@ -271,12 +271,13 @@ order by lib,i.Antenne";
 		require_once ('PrintFinance.class.php');
 		
 		$annee = $obj['Annee'];
-		$sql = "select count(*) as nbr,sum(Cotisation) as cotis from `##_Cadref-AdherentAnnee` where Annee='$annee' and Cotisation>0";
+		$sql = "select count(*) as nbr,sum(Cotisation) as cotis,sum(AvoirUtilise) as avoir from `##_Cadref-AdherentAnnee` where Annee='$annee' and Cotisation>0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$d = $pdo->fetch(PDO::FETCH_ASSOC);
 		$nbcot = $d['nbr'];
 		$cotis = $d['cotis'];
+		$avoir = $d['avoir'];
 		
 		$sql = "
 select i.CodeClasse,d.Libelle as libelleD,n.Libelle as libelleN,count(*) as inscrits,
@@ -317,7 +318,7 @@ order by i.CodeClasse
 			return array('csv'=>$file, 'sql'=>$sql);
 		}
 			
-		$pdf = new PrintFinance($nbcot,$cotis);
+		$pdf = new PrintFinance($nbcot,$cotis,$avoir);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT',"Rapport Financier"));
 

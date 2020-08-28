@@ -170,7 +170,7 @@
 		$scope.attachementObj;
 		$scope.attachementInfo;
 		$scope.attachementsOpen = function(item, origine) {
-console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
+//console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			$('#upload-progress').val(0);
 			if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
 			var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: '', classes:[]};
@@ -447,6 +447,29 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			}
 		});
 
+		{% endif %}
+		
+		{% if objecttype == 'Parametre' %}
+		//--------------------------------------
+		// PARAMETRE
+		//--------------------------------------		
+		$scope.domaines = [];
+		$scope.sousDomaines = [];
+		$scope.changeData = function() {
+			$scope.modalObj.SousDomaine = '';
+		}
+		$scope.loadData = function(mode) {
+			args = {mode:mode};
+			if(mode=='sousDomaine') args['domaine'] = $scope.modalObj.Domaine;
+			var ajax = $scope.{{ ident }}callMethod(args,'LoadData');
+			ajax.success(function(data) {
+			console.log(">>>",args,data.data);
+				if(mode=='domaine') $scope.domaines = data.data;
+				else if(mode=='sousDomaine') $scope.sousDomaines = data.data;
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
 		{% endif %}
 		
 		
@@ -2450,6 +2473,28 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 		}
 		{% endif %}
 		
+		{% if objecttype == 'Parametre' %}
+		//--------------------------------------
+		// PARAMETRE
+		//--------------------------------------		
+		$scope.domaines = [];
+		$scope.sousDomaines = [];
+		$scope.changeData = function() {
+			$scope.obj.SousDomaine = '';
+		}
+		$scope.loadData = function(mode) {
+			args = {mode:mode};
+			if(mode=='sousDomaine') args['domaine'] = $scope.obj.Domaine;
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'LoadData',args,false);
+			ajax.success(function(data) {
+			console.log(">>>",args,data.data);
+				if(mode=='domaine') $scope.domaines = data.data;
+				else if(mode=='sousDomaine') $scope.sousDomaines = data.data;
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		{% endif %}
 		
 
 	});
