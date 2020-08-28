@@ -455,12 +455,16 @@ class Performance extends genericClass {
 		$tmp = array();
 		foreach($rs as $r) {
 			if($r->Description) $h = $r->Description;
-			else {
-				$a = explode('/', $r->Medium);
+			$a = explode('/', $r->Medium);
+			$w = $a[0].'//'.$a[2];
+			
+			$img = '/Home/2/Show/icons/'.$a[2].'.ico';
+			$ico = file_exists(getcwd().$img) ? $img : '';
+			if(!$h) {
 				$h = $a[2];
 				if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
 			}
-			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h];
+			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h, 'icon'=>$ico];
 		}
 		return array('count'=>count($tmp), 'data'=>$tmp);
 	}
@@ -484,6 +488,13 @@ class Performance extends genericClass {
 		$m->Description = $link->title;
 		$m->Save();
 		
+		$a = explode('/', $m->Medium);
+		$w = $a[0].'//'.$a[2];
+		$dir = getcwd().'/Home/2/Show/icons';
+		mkdir($dir);
+		$img = $dir.'/'.$a[2].'.ico';
+		file_put_contents($img, file_get_contents("$w/favicon.ico"));
+
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
 

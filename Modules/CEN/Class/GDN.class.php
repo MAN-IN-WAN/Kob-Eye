@@ -81,7 +81,7 @@ order by  $sort";
 			$list[] = array('id'=>$r['Id'],'paleo'=>$r['Paleo'],'trad'=>$r['Trad_2'],'comm'=>!empty($r['Commentaires']),'dic'=>$r['DictionnaireId']);
 		}
 		if(!empty($rup)) $gdn[] = array('norma'=>$rup, 'gdn'=>$list);
-		return array('gdn'=>$gdn, 'word'=>$word, 'count'=>$count);
+		return array('gdn'=>$gdn, 'word'=>$word, 'count'=>$count, 'sql'=>$sql);
 	}
 	
 	static function GetComments($args) {
