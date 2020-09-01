@@ -170,7 +170,7 @@
 		$scope.attachementObj;
 		$scope.attachementInfo;
 		$scope.attachementsOpen = function(item, origine) {
-console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
+//console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			$('#upload-progress').val(0);
 			if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
 			var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: '', classes:[]};
@@ -449,6 +449,29 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 
 		{% endif %}
 		
+		{% if objecttype == 'Parametre' %}
+		//--------------------------------------
+		// PARAMETRE
+		//--------------------------------------		
+		$scope.domaines = [];
+		$scope.sousDomaines = [];
+		$scope.changeData = function() {
+			$scope.modalObj.SousDomaine = '';
+		}
+		$scope.loadData = function(mode) {
+			args = {mode:mode};
+			if(mode=='sousDomaine') args['domaine'] = $scope.modalObj.Domaine;
+			var ajax = $scope.{{ ident }}callMethod(args,'LoadData');
+			ajax.success(function(data) {
+			console.log(">>>",args,data.data);
+				if(mode=='domaine') $scope.domaines = data.data;
+				else if(mode=='sousDomaine') $scope.sousDomaines = data.data;
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		{% endif %}
+		
 		
 	});
 
@@ -725,6 +748,9 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 					o.Differe = Number(data.data.Differe);
 					o.Regularisation = Number(data.data.Regularisation);
 					o.Dons = Number(data.data.Dons);
+					o.AvoirReporte = Number(data.data.AvoirReporte);
+					o.AvoirDu = Number(data.data.AvoirDu);
+					o.AvoirUtilise = Number(data.data.AvoirUtilise);
 					o.Solde = Number(data.data.Solde);
 					o.NotesAnnuelles = data.data.NotesAnnuelles == null ? '' : data.data.NotesAnnuelles;
 					o.Adherent = data.data.Adherent;
@@ -773,8 +799,7 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 		// solde adherent
 		$scope.soldeAdherent = function() {
 			var o = $scope.obj;
-			var s = Number(o.Cotisation)+Number(o.Cours)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation)+Number(o.Dons);
-			//var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Visites)-Number(o.Reglement)-Number(o.Differe)-Number(o.Regularisation);
+			var s = Number(o.Cotisation)+Number(o.Cours)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation)+Number(o.Dons)-Number(o.AvoirReporte)-Number(o.AvoirDu)+Number(o.AvoirUtilise);
 			o.Solde = s;
 			o.nonSolde = s != 0;
 		}
@@ -1065,6 +1090,9 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			cad.Inscr.regle = $scope.modalObj.Reglement;
 			cad.Inscr.diff = $scope.modalObj.Differe;
 			cad.Inscr.regul = $scope.modalObj.Regularisation;
+			cad.Inscr.avoirReporte = $scope.modalObj.AvoirReporte;
+			cad.Inscr.avoirDu = $scope.modalObj.AvoirDu;
+			cad.Inscr.avoirUtilise = $scope.modalObj.AvoirUtilise;
 			cad.Inscr.dons = $scope.modalObj.Dons;
 			cad.Inscr.solde = 0;
 			cad.Inscr.paye = $scope.modalObj.Solde;
@@ -1154,21 +1182,23 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 				if(c.Attente>0 || c.Supprime>0) continue;
 				cad.cours += Number(c.Prix)-Number(c.Reduction)-Number(c.Soutien);
 			}
-			cad.paye = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)+Number(cad.dons);
-			//cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+			cad.paye = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)+Number(cad.dons)-Number(cad.avoirReporte)-Number(cad.avoirDu)+Number(cad.avoirUtilise);
 			cad.solde = 0;
 			cad.nonSolde = false;
 			$scope.nextControle(false);
 		}
 		$scope.classePaye = function() {
 			var cad = $scope.CadrefClasse.Inscr;
-			cad.solde = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye)+Number(cad.dons);
-			//cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
+			cad.solde = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye)+Number(cad.dons)-Number(cad.avoirReporte)-Number(cad.avoirDu)+Number(cad.avoirUtilise);
 			cad.nonSolde = Number(cad.solde) != 0;
 			cad.updated = true;
 			$scope.nextControle(false);
 		}
 		$scope.classeDons = function() {
+			$scope.classeCalcul();
+			$scope.CadrefClasse.Inscr.updated = true;
+		}
+		$scope.classeAvoir = function() {
 			$scope.classeCalcul();
 			$scope.CadrefClasse.Inscr.updated = true;
 		}
@@ -1396,8 +1426,7 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			for(var i = 0; i < 12; i++) {
 				if(!reg[i].encais) p += Number(reg[i].paye);
 			}
-			var s = ins.cotis*1+ins.cours*1-ins.regle*1-p*1+ins.regul*1+ins.dons*1;
-			//var s = Number(ins.cotis)+Number(ins.cours)+Number(ins.visit)-Number(ins.regle)-p-Number(ins.regul);
+			var s = ins.cotis*1+ins.cours*1-ins.regle*1-p*1+ins.regul*1+ins.dons*1-ins.avoirReporte*1-ins.avoirDu*1+ins.avoirUtilise*1;
 			dif.solde = s;
 			dif.nonSolde = s != 0;
 		}
@@ -1504,6 +1533,9 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 			cad.Visit.regle = $scope.modalObj.Reglement;
 			cad.Visit.diff = $scope.modalObj.Differe;
 			cad.Visit.regul = $scope.modalObj.Regularisation;
+			cad.Visit.avoirReporte = $scope.modalObj.AvoirReporte;
+			cad.Visit.avoirDu = $scope.modalObj.AvoirDu;
+			cad.Visit.avoirUtilise = $scope.modalObj.AvoirUtilise;			
 			cad.Visit.dons = $scope.modalObj.Dons;
 			cad.Visit.solde = 0;
 			cad.Visit.paye = $scope.modalObj.Solde;
@@ -2441,6 +2473,28 @@ console.log(">>>>>>>ATTACH LIST", origine, item, $scope.obj);
 		}
 		{% endif %}
 		
+		{% if objecttype == 'Parametre' %}
+		//--------------------------------------
+		// PARAMETRE
+		//--------------------------------------		
+		$scope.domaines = [];
+		$scope.sousDomaines = [];
+		$scope.changeData = function() {
+			$scope.obj.SousDomaine = '';
+		}
+		$scope.loadData = function(mode) {
+			args = {mode:mode};
+			if(mode=='sousDomaine') args['domaine'] = $scope.obj.Domaine;
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'LoadData',args,false);
+			ajax.success(function(data) {
+			console.log(">>>",args,data.data);
+				if(mode=='domaine') $scope.domaines = data.data;
+				else if(mode=='sousDomaine') $scope.sousDomaines = data.data;
+			}).error(function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			});
+		}
+		{% endif %}
 		
 
 	});

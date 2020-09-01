@@ -65,4 +65,21 @@ else $vars['CurrentUrl'] = $vars['Query'];
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
 
+//$sql = "select distinct Domaine,SousDomaine from `##_Cadref-Parametre` order by Domaine,SousDomaine";
+//$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+//$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+//$r = null;
+//$tmp = [];
+//$n = 0;
+//foreach($pdo as $p) {
+//	$dom = $p['Domaine'];
+//	if($r != $dom) {
+//		$t = $tmp[$dom] = [];
+//	}
+//	$t[] = $p['SousDomaine'];
+//}
+//$vars['domaines'] = $tmp;
+$vars['domaines'] = [];
+$vars['sousDomaines'] = [];
+
 ?>

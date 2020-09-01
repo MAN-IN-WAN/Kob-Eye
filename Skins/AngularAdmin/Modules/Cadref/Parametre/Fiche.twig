@@ -23,8 +23,30 @@
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
-							{{ flinput(f.Domaine, o, false, '', 'width:150px; text-transform:uppercase;', true) }}
-							{{ flinput(f.SousDomaine, o, false, '', 'width:150px; text-transform:uppercase;', true) }}
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label" style="line-height:1.1">Domaine</label>
+								</div>
+								<div class="col-md-10">
+									<input type="text" list="Domaine-list" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="{{ o }}.Domaine" style="width:150px; text-transform:uppercase;" ng-focus="loadData('domaine')" ng-blur="loadData('sousDomaine')" ng-change="changeData()" onkeyup="this.value = this.value.toUpperCase();">
+									<datalist id="Domaine-list">
+										<option ng-repeat="name in domaines">{[{ name }]}<option>
+									</datalist>
+								</div>
+							</div>							
+							<div class="row">
+								<div class="col-md-2">
+									<label class="form-control-label cadref-label" style="line-height:1.1">Sous domaine</label>
+								</div>
+								<div class="col-md-10">
+									<input type="text" list="SousDomaine-list" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="{{ o }}.SousDomaine" style="width:150px; text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
+									<datalist id="SousDomaine-list">
+										<option ng-repeat="name in sousDomaines">{[{ name }]}<option>
+									</datalist>
+								</div>
+							</div>							
+{#							{{ flinput(f.Domaine, o, false, '', 'width:150px; text-transform:uppercase;', true) }}#}
+{#							{{ flinput(f.SousDomaine, o, false, '', 'width:150px; text-transform:uppercase;', true) }}#}
 							{{ flinput(f.Parametre, o, false, '', 'width:150px;', false) }}
 							{{ flinput(f.Valeur, o) }}
 							{{ ftext(f.Texte, o) }}

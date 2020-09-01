@@ -378,9 +378,11 @@ class Chachalaca extends genericClass {
 	
 
 	static function GetMorpho($args) {
+		CEN::searchLog($args);
+		
 		$word = $args['word'];
 		if($args['norm'] == 'true') $word = GDN::Normalize($word);
-
+	
 		self::$dicIds = $args['dic'];
 		self::$premier = $word;
 		

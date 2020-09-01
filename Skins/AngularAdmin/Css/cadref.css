@@ -74,6 +74,12 @@ table tr td.cadref-td-diff {
 .cadref-input-diff {
 	padding: .32rem .25rem;
 }
+.panel-annuel th {
+	padding-left: 3px;
+}
+.panel-inscr th {
+	padding-left: 3px;
+}
 .cadref-input-date {
 	width: 130px;
 }
@@ -275,10 +281,23 @@ cadref-btn-close:hover {
 	font-size:1rem !important;
 }
 .cadref-annuel {
-	background-color:paleturquoise !important;
+	background-color:#afefef !important;
 }
 .cadref-annuel .dropdown-toggle {
-	background-color:paleturquoise !important;
+	background-color:#afefef !important;
+}
+.panel-annuel .cadref-input-diff {
+	width: 64px;
+	padding: 3px 3.5px;
+}
+.cadref-input-diff.cadref-annuel.cadref-empty {
+	background-color:#ffffff !important;
+}
+input:read-only.cadref-input-diff.cadref-annuel {
+	background-color:#abe0e0 !important;
+}
+input:-moz-read-only .cadref-input-diff.cadref-annuel {
+	background-color:#abeaea !important;
 }
 
 .cadref-highlight {

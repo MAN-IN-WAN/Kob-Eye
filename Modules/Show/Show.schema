@@ -98,7 +98,9 @@
 		<PROPERTIES type="file" category="Description" form="1" list="1" fiche="1">Medium</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Main picture">MainPicture</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" >Icon</PROPERTIES>
 
 <!--		<RKEY card="0,n" data="Performance,Id" useKeyName="1" form="1" fiche="1" >Performances</RKEY>-->
 <!--		<RKEY card="0,n" data="People,Id" useKeyName="1" form="1" fiche="1" >People</RKEY>-->
@@ -212,9 +214,9 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Translation" driver="mysql" AccessPoint="1" Description="Translation" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="varchar" length="2" searchOrder="1" values="EN::English,FR::French,SP:Spanish" category="Description" form="1" list="1" fiche="1">Language</PROPERTIES>
-		<PROPERTIES type="varchar" length="128" searchOrder="2" category="Description" form="1" list="1" fiche="1">Original</PROPERTIES>
-		<PROPERTIES type="varchar" length="128" category="Description" form="1" list="1" fiche="1">Translation</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" searchOrder="1" form="1" list="1" fiche="1">TextEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" form="1" list="1" fiche="1">TextFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" form="1" list="1" fiche="1">TextES</PROPERTIES>
 	</OBJECTCLASS>
 
 

@@ -326,7 +326,7 @@
 						{# block right #}    
 						{% if Create==0 %}
 						<div class="col-md-4">
-							<section class="panel" ng-if="{{ o }}.id">
+							<section class="panel panel-annuel" ng-if="{{ o }}.id">
 								<table>
 									<thead>
 										<tr>
@@ -336,8 +336,6 @@
 											<th>Règlé</th>
 											<th>Différé</th>
 											<th>Dons</th>
-											<th>Régul.</th>
-											<th>Solde</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -373,6 +371,40 @@
 												</div>
 
 											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table>
+									<thead>
+										<tr>
+											<th>Av report</th>
+											<th>Av dû</th>
+											<th>Av util</th>
+											<th></th>
+											<th>Régul.</th>
+											<th>Solde</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.AvoirReporte" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.AvoirDu" mask="ddddd"/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.AvoirUtilise" mask="ddddd"/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group"><div class="cadref-input-diff cadref-annuel cadref-empty"></div></div>
+											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
 													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.Regularisation" mask="ddddd"/>
@@ -387,6 +419,7 @@
 										</tr>
 									</tbody>
 								</table>
+
 								<div class="row" style="height:10px"></div>
 								<div class="row">
 									<div class="col-md-2">

@@ -45,27 +45,29 @@
 				<th>Prénom</th>
 				<th>Ville</th>
 				<th>Adresse</th>
-{#				<th>Téléphone</th>
 				<th>Téléphone</th>
-#}				<th>Mail</th>
+				<th>Téléphone</th>
+				<th>Mail</th>
+				<th>Annee</th>
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
 			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Numero }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Nom }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Prenom }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Ville }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Adresse1 }]}</a></td>
-{#				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone1 }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Telephone2 }]}</a></td>
-#}				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Mail }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Numero }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Nom }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Prenom }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Ville }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Adresse1 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Telephone1 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Telephone2 }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Mail }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Annee }]}</a></td>
 
 
 				<td scope="row" class="cadref-td typeint">
-					<a class="btn-abt cadref-btn-carte btn-primary" ng-click="benevoleCarte(item)" title="Carte"></a>
+					<a class="btn-abt cadref-btn-carte btn-primary" ng-if="item.Annee=={{ Annee }}" ng-click="benevoleCarte(item)" title="Carte"></a>
 {#					<a href="#down" class="btn-abt btn-abt-fiscal btn-info" ng-click="benevoleAttestation(item,2)" title="Attestations de paiement"></a>
 #}				</td>
 			</tr>

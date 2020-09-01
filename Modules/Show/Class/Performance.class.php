@@ -79,7 +79,7 @@ class Performance extends genericClass {
 			if($c->Comments) $comments++;
 			$rating += $c->Vote;
 		}
-		$rating = round($rating/$votes,1);
+		$rating = $votes ? round($rating/$votes, 1) : 0;
 		$this->Votes = $votes;
 		$this->Comments = $comments;
 		$this->Rating = $rating;
@@ -138,7 +138,6 @@ class Performance extends genericClass {
 		self::setChild($o, 'Category', $s->categoryId);
 		self::setChildren($o, 'Genre', $gen, $s->genres);
 		self::setChildren($o, 'Language', $lng, $s->languages);
-		
 		$o->Save();
 		return array('success'=>1, 'id'=>$o->Id);
 	}
@@ -164,6 +163,8 @@ class Performance extends genericClass {
 		$cs = $o->getChildren('Comments');
 		foreach($cs as $c) $c->Delete();
 		$cs = $o->getChildren('Place');
+		foreach($cs as $c) $c->Delete();
+		$cs = $o->getChildren('Event');
 		foreach($cs as $c) $c->Delete();
 		$o->Delete();
 		return array('success'=>1);
@@ -453,18 +454,27 @@ class Performance extends genericClass {
 		$rs = $parent->getChildren('Medium/MediumTypeId!=1');
 		$tmp = array();
 		foreach($rs as $r) {
+			$h = '';
 			if($r->Description) $h = $r->Description;
-			else {
+			
+			$ico = '';
+			if($r->Icon) $ico = '/Home/2/Show/icons/'.$r->Icon;
+			//$img = '/Home/2/Show/icons/'.$a[2].'.ico';
+			//$ico = file_exists(getcwd().$img) ? $img : '';
+			if(!$h) {
 				$a = explode('/', $r->Medium);
-				$h = $a[2];
+				if(count($a) < 3) $h = $a[0];
+				else $h= $a[2];
 				if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
 			}
-			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h];
+			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h, 'icon'=>$ico];
 		}
 		return array('count'=>count($tmp), 'data'=>$tmp);
 	}
 	
 	public static function AddLink($args) {
+		require_once('Class/Lib/get-fav.php');
+		
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];
@@ -483,6 +493,24 @@ class Performance extends genericClass {
 		$m->Description = $link->title;
 		$m->Save();
 		
+		$a = explode('/', $m->Medium);
+		if(count($a) < 3) $w = $a[0];
+		else $w = $a[0].'//'.$a[2];
+		$dir = getcwd().'/Home/2/Show/icons/';
+		mkdir($dir);
+		
+		$grap_favicon = array('URL' => $w, 'SAVE'=> true, 'DIR' => $dir, 'TRY' => true, 'DEV' => null);
+		$favicons[] = grap_favicon($grap_favicon);
+		if(count($favicons) && $favicons[0] != ".png") {
+			$a = explode('/', $favicons[0]);
+			$m->Icon = $a[count($a)-1];
+			$m->Save();
+		}
+		
+//		$img = $dir.'/'.$a[2].'.ico';
+//		$data = file_get_contents("http://www.google.com/s2/favicons?sz=&domain=$w");
+//		if($data) file_put_contents($img, $data);
+
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
 
@@ -494,7 +522,7 @@ class Performance extends genericClass {
 		$id = $args['id'];
 		$pid = $args['perfId'];
 		$p = Sys::getOneData('Show', 'Performance/'.$pid);
-		$m = Sys::getOneData('Show', 'Crew/'.$id);
+		$m = Sys::getOneData('Show', 'Medium/'.$id);
 		$m->Delete();
 
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];

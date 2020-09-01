@@ -13,6 +13,7 @@ class PrintFinance extends FPDF {
 	private $titre;
 	private $nbcot;
 	private $cotis;
+	private $avoir;
 	private $prix = 0;
 	private $reduc = 0;
 	private $reduc2 = 0;
@@ -21,12 +22,13 @@ class PrintFinance extends FPDF {
 	private $inscrits = 0;
 	
 	
-	function PrintFinance($nbcot,$cotis) {
+	function PrintFinance($nbcot,$cotis,$avoir) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
 		$this->nbcot = $nbcot;
 		$this->cotis = $cotis;
+		$this->avoir = $avoir;
 		$this->head = array('Classe','','Inscrits','Prix','Remise','Soutien','Total');
 		$this->width = array(18,75,10,20,20,20,20);
 		$this->align = array('L','L','R','R','R','R','R');
@@ -81,7 +83,10 @@ class PrintFinance extends FPDF {
 		$this->SetXY($this->left, $this->posy+4);
 		$this->Cell(60, 4.5, $this->cv('Nombre de cotisants : ').$this->nbcot);
 		$this->Cell(60, 4.5, $this->cv('Montant des cotisations : ').$this->cotis);
+		$this->posy += 8;
+		$this->SetXY($this->left, $this->posy);
 		$this->Cell(60, 4.5, $this->cv('Nombre de cours : ').$this->cours);
+		$this->Cell(60, 4.5, $this->cv('Avoir utilisé : ').$this->avoir);
 	}
 	
 	function PrintLines($regl) {

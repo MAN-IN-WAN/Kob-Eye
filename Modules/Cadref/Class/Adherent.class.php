@@ -37,7 +37,8 @@ class Adherent extends genericClass {
 		return array('Cotisation'=>$s->Cotisation, 'Cours'=>$s->Cours, 'Visites'=>$s->Visites, 'Reglement'=>$s->Reglement, 'Differe'=>$s->Differe,
 			'Regularisation'=>$s->Regularisation, 'Solde'=>$s->Solde, 'NotesAnnuelles'=>$s->NotesAnnuelles, 'Adherent'=>$s->Adherent,
 			'ClasseId'=>$s->ClasseId, 'AntenneId'=>$s->AntenneId, 'CotisationAnnuelle'=>Cadref::$Cotisation, 'certifInvalide'=>$c,
-			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc,'Annees'=>$aa);
+			'Soutien'=>$s->Soutien,'Dons'=>$s->Dons,'ClasseClasseIdlabel'=>$cc,'Annees'=>$aa,
+			'AvoirReporte'=>$s->AvoirReporte,'AvoirDu'=>$s->AvoirDu,'AvoirUtilise'=>$s->AvoirUtilise);
 	}
 	
 	
@@ -183,12 +184,14 @@ class Adherent extends genericClass {
 		if($mode == 0 || $mode == 1) {
 			$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
 			$a->Dons = $data->Dons ? $data->Dons : 0;
+			$a->AvoirDu = $data->AvoirDu ? $data->AvoirDu : 0;
+			$a->AvoirUtilise = $data->AvoirUtilise ? $data->AvoirUtilise : 0;
 		}
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation + $a->Dons;
+		$a->Solde = $a->Cotisation + $cours - $regle - $diffe + $a->Regularisation + $a->Dons - $a->AvoirReporte - $a->AvoirDu + $a->AvoirUtilise;
 		$a->Save();
 
 		return true;
@@ -200,6 +203,8 @@ class Adherent extends genericClass {
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
 		$data->Dons = $inscr['dons'];
+		$data->AvoirDu = $inscr['avoirDu'];
+		$data->AvoirUtilise = $inscr['avoirUtilise'];
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -2090,6 +2095,8 @@ where ce.Visite=:cid";
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
 		$data->Dons = $inscr['dons'];
+		$data->AvoirDu = $inscr['avoirDu'];
+		$data->AvoirUtilise = $inscr['avoirUtilise'];
 		$this->SaveAnnee($data, 1);
 	}
 	
@@ -2099,31 +2106,51 @@ where ce.Visite=:cid";
 		$annee = $params['Annee'];
 		
 		if($params['CalculSolde']) {
+			$ante = $annee-1;
+			$sql = "select a.AdherentId,a.AvoirDu,sum(c.AvoirReporte) as avoir "
+				."from `kob-Cadref-AdherentAnnee` a "
+				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' "
+				."left join `kob-Cadref-Classe` c on c.Id=i.ClasseId "
+				."where a.Annee='$ante' and (a.AvoirDu>0 or c.AvoirReporte>0) "
+				."group by a.AdherentId";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			foreach($pdo as $p) {
+				$adh = Sys::getOneData('Cadref', 'Adherent/'.$p['AdherentId']);
+				$aan = $adh->getOneChild('AdherentAnnee/Annee='.$annee);
+				if(!$aan) {
+					$aan = genericClass::createInstance('Cadref', 'AdherentAnnee');
+					$aan->addParent($adh);
+					$aan->Annee = $annee;
+					$aan->Numero = $adh->Numero;
+				}
+				$aan->AvoirReporte = $p['AvoirDu']+$p['avoir'];
+				$aan->Save();
+			}
 			$adhs = Sys::getData('Cadref','Adherent/Annee='.$annee);
 			foreach($adhs as $adh) {
-				//$adh = $aan->getOneParent('Adherent');
 				$adh->SaveAnnee(null, 3);
 			}
 		}
 
+		
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
 
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 
-		$sql = "
-select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles,
-i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN,i.Utilisateur
-from `##_Cadref-AdherentAnnee` a
-left join `##_Cadref-Adherent` e on e.Id=a.AdherentId
-left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee'
-left join `##_Cadref-Classe` c on c.Id=i.ClasseId 
-left join `##_Cadref-Niveau` n on n.Id=c.NiveauId 
-left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0)
-";
+		$sql = "select e.Id,e.Numero,e.Nom,e.Prenom,a.Cours,a.Reglement,a.Differe,a.Regularisation,a.Dons,a.Cotisation,a.NotesAnnuelles, "
+			."a.AvoirReporte,AvoirDu,AvoirUtilise, "
+			."i.CodeClasse,i.Supprime,i.Prix,i.Reduction,i.Soutien,d.Libelle as LibelleD,n.Libelle as LibelleN,i.Utilisateur "
+			."from `##_Cadref-AdherentAnnee` a "
+			."left join `##_Cadref-Adherent` e on e.Id=a.AdherentId "
+			."left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee' "
+			."left join `##_Cadref-Classe` c on c.Id=i.ClasseId "
+			."left join `##_Cadref-Niveau` n on n.Id=c.NiveauId "
+			."left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
+			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
-			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons<>0 or a.Cotisation=0)";		
+			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons-a.AvoirReporte-a.AvoirDu+a.AvoirUtilise<>0 or a.Cotisation=0)";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
