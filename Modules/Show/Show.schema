@@ -98,7 +98,9 @@
 		<PROPERTIES type="file" category="Description" form="1" list="1" fiche="1">Medium</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Year">Year</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Main picture">MainPicture</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="16" fiche="16" >Icon</PROPERTIES>
 
 <!--		<RKEY card="0,n" data="Performance,Id" useKeyName="1" form="1" fiche="1" >Performances</RKEY>-->
 <!--		<RKEY card="0,n" data="People,Id" useKeyName="1" form="1" fiche="1" >People</RKEY>-->

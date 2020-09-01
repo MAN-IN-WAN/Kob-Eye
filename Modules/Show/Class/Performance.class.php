@@ -454,14 +454,17 @@ class Performance extends genericClass {
 		$rs = $parent->getChildren('Medium/MediumTypeId!=1');
 		$tmp = array();
 		foreach($rs as $r) {
+			$h = '';
 			if($r->Description) $h = $r->Description;
-			$a = explode('/', $r->Medium);
-			$w = $a[0].'//'.$a[2];
 			
-			$img = '/Home/2/Show/icons/'.$a[2].'.ico';
-			$ico = file_exists(getcwd().$img) ? $img : '';
+			$ico = '';
+			if($r->Icon) $ico = '/Home/2/Show/icons/'.$r->Icon;
+			//$img = '/Home/2/Show/icons/'.$a[2].'.ico';
+			//$ico = file_exists(getcwd().$img) ? $img : '';
 			if(!$h) {
-				$h = $a[2];
+				$a = explode('/', $r->Medium);
+				if(count($a) < 3) $h = $a[0];
+				else $h= $a[2];
 				if(substr($h, 0, 4) == 'www.') $h = substr($h, 4);
 			}
 			$tmp[] = ['id'=>$r->Id, 'url'=>$r->Medium, 'title'=>$h, 'icon'=>$ico];
@@ -470,6 +473,8 @@ class Performance extends genericClass {
 	}
 	
 	public static function AddLink($args) {
+		require_once('Class/Lib/get-fav.php');
+		
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false];
@@ -489,12 +494,22 @@ class Performance extends genericClass {
 		$m->Save();
 		
 		$a = explode('/', $m->Medium);
-		$w = $a[0].'//'.$a[2];
-		$dir = getcwd().'/Home/2/Show/icons';
+		if(count($a) < 3) $w = $a[0];
+		else $w = $a[0].'//'.$a[2];
+		$dir = getcwd().'/Home/2/Show/icons/';
 		mkdir($dir);
-		$img = $dir.'/'.$a[2].'.ico';
-		$data = file_get_contents("$w/favicon.ico");
-		if($data) file_put_contents($img, $data);
+		
+		$grap_favicon = array('URL' => $w, 'SAVE'=> true, 'DIR' => $dir, 'TRY' => true, 'DEV' => null);
+		$favicons[] = grap_favicon($grap_favicon);
+		if(count($favicons) && $favicons[0] != ".png") {
+			$a = explode('/', $favicons[0]);
+			$m->Icon = $a[count($a)-1];
+			$m->Save();
+		}
+		
+//		$img = $dir.'/'.$a[2].'.ico';
+//		$data = file_get_contents("http://www.google.com/s2/favicons?sz=&domain=$w");
+//		if($data) file_put_contents($img, $data);
 
 		return ['success'=>true, 'logged'=>true, 'links'=>self::getLinks($p)];
 	}
