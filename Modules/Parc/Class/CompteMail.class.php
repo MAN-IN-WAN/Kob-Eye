@@ -29,10 +29,10 @@ class CompteMail extends genericClass
             $this->Suppression = NULL;
 
 
-        if ($this->Suppression > 0 && $this->Suppression < time()) {
+        /*if ($this->Suppression > 0 && $this->Suppression < time()) {
             $this->finalDelete();
             return true;
-        }
+        }*/
 
 
         $client = $this->getKEClient();
@@ -262,6 +262,50 @@ class CompteMail extends genericClass
         return $this->Save();
     }
 
+    public function finalDelete()
+    {
+        $srv = $this->getKEServer();
+
+        if (!is_object($srv) || $srv->ObjectType != 'Server') {
+            $this->AddError(array('Message' => 'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+        try {
+            $zimbra->deleteAccount($this->IdMail);
+        } catch (Exception $e) {
+            $this->AddError(array('Message' => 'Erreur lors l\'effacement : ' . $e->getErrorCode(), 'Object' => ''));
+            //return false;
+        }
+
+        $childs = $this->getChildren('EmailAlias');
+        foreach ($childs as $ch) {
+            $ch->Delete(false);
+        }
+
+        parent::Delete();
+    }
+
+
+    public function forceDelete()   {
+        parent::Delete();
+    }
+
+    public static function doFinalDelete(){
+        $accs = Sys::getData('Parc','CompteMail/Suppression>0');
+        foreach($accs as $acc){
+            if(!empty($acc->Suppression) && $acc->Suppression < time()){
+               /* print_r(date('d/m/Y',$acc->Suppression).PHP_EOL);
+                continue;*/
+                $acc->finalDelete();
+            }
+        }
+    }
+
+
     public function unDelete()
     {
         $this->Suppression = NULL;
@@ -280,11 +324,37 @@ class CompteMail extends genericClass
      */
     public function getKEServer()
     {
+        $bsrv = Sys::getOneData('Parc', 'Server/defaultMailServer=1', 0, 1, '', '', '', '', true);
+
         if (empty($this->Id)) {
-            foreach ($this->Parents as $p) {
-                if ($p['Titre'] == 'Server') {
-                    $pa = Sys::getOneData('Parc', 'Server/' . $p['Id'], 0, 1, null, null, null, null, true);
-                    $this->_KEServer = $pa;
+            $zimbra = new \Zimbra\ZCS\Admin($bsrv->IP, $bsrv->mailAdminPort);
+            $zimbra->auth($bsrv->mailAdminUser, $bsrv->mailAdminPassword);
+
+            $dom = explode('@', $this->Adresse);
+            $dom = $dom[1];
+
+            $one = null;
+            try {
+                $one = $zimbra->getAccounts(array(
+                    'domain' => $dom,
+                    'limit' => 1,
+                    'offset' => 0
+                ));
+            } catch (Exception $e) {
+                //Cas ou il ny' a pas de compte ou pas de domaine
+            }
+            if(!empty($one)){
+                $srv = $one[0]->get('zimbraMailHost');
+                $gsrv = Sys::getOneData('Parc','Server/DNSNom='.$srv);
+                $this->_KEServer = $gsrv;
+            }
+
+            if (!is_object($this->_KEServer)) {
+                foreach ($this->Parents as $p) {
+                    if ($p['Titre'] == 'Server') {
+                        $pa = Sys::getOneData('Parc', 'Server/' . $p['Id'], 0, 1, null, null, null, null, true);
+                        $this->_KEServer = $pa;
+                    }
                 }
             }
         } else{
@@ -294,11 +364,12 @@ class CompteMail extends genericClass
         }
         if (!is_object($this->_KEServer)) {
             //retroune le serveur de mail par defaut
-            $this->_KEServer = Sys::getOneData('Parc', 'Server/defaultMailServer=1', 0, 1, '', '', '', '', true);
+            $this->_KEServer =  $bsrv;
         }
         if (!is_object($this->_KEServer)) {
             return false;
         }
+
         return $this->_KEServer;
     }
 
@@ -674,39 +745,6 @@ class CompteMail extends genericClass
     }
 
 
-    public function finalDelete()
-    {
-        $srv = $this->getKEServer();
-
-        if (!is_object($srv) || $srv->ObjectType != 'Server') {
-            $this->AddError(array('Message' => 'Un compte mail doit être lié a un serveur.'));
-            return false;
-        }
-
-        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
-        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
-
-        try {
-            $zimbra->deleteAccount($this->IdMail);
-        } catch (Exception $e) {
-            $this->AddError(array('Message' => 'Erreur lors l\'effacement : ' . $e->getErrorCode(), 'Object' => ''));
-            return false;
-        }
-
-        $childs = $this->getChildren('EmailAlias');
-        foreach ($childs as $ch) {
-            $ch->Delete(false);
-        }
-
-        parent::Delete();
-    }
-
-
-    public function forceDelete()
-    {
-        parent::Delete();
-    }
-
     /**
      * doMigrationMail
      * Migration de boite mail entre serveur MBX
@@ -789,4 +827,5 @@ class CompteMail extends genericClass
         $act->Terminate(true);
         return true;
     }
+
 }

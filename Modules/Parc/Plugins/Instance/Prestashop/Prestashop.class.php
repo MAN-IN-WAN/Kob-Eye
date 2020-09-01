@@ -68,7 +68,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
 
             $modele = Sys::getOneData('Parc','Host/Nom=modele-prestashop');
             $srv = $modele->getOneParent('Server');
-            $url = $srv->DNSNom;
+            $url = $srv->IP;
 
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-prestashop/www/ www';
             $out = $apachesrv->remoteExec($cmd);
@@ -83,7 +83,9 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //Dump de la base
             $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
-            $cmd = 'mysqldump -h db.maninwan.fr -u '.$modele->Nom.' -p'.$modele->Password.' '.$modele->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $mysqlhostModel = "185.87.64.121";
+            $mysqlhost =  $mysqlsrv->IP;
+            $cmd = 'mysqldump -h '.$mysqlhostModel.' -u '.$modele->Nom.' -p'.$modele->Password.' '.$modele->Nom.' | mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom;
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -91,23 +93,23 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
 
             //Conf en base
             $act = $task->createActivity('Configuration magasin', 'Info');
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN\'"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN\'"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN_SSL\'"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN_SSL\'"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->Nom.'\' WHERE name=\'PS_SHOP_NAME\'"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->Nom.'\' WHERE name=\'PS_SHOP_NAME\'"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop SET name =\''.$this->_obj->Nom.'\' WHERE id_shop=1"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop SET name =\''.$this->_obj->Nom.'\' WHERE id_shop=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop_url SET domain =\''.$this->_obj->FullDomain.'\', domain_ssl =\''.$this->_obj->FullDomain.'\' WHERE id_shop=1"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop_url SET domain =\''.$this->_obj->FullDomain.'\', domain_ssl =\''.$this->_obj->FullDomain.'\' WHERE id_shop=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -119,7 +121,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             $salt = $salt[1];
             $act->addDetails('Salt : '.$salt);*/
             $pass = addcslashes(password_hash($host->Password, PASSWORD_BCRYPT),'$');
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_employee SET passwd =\''.$pass.'\',email=\'admin@'.$this->_obj->FullDomain.'\' WHERE Id_employee=1"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h '.$mysqlhost.' -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_employee SET passwd =\''.$pass.'\',email=\'admin@'.$this->_obj->FullDomain.'\' WHERE Id_employee=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -192,7 +194,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             //Installation des fichiers
             $modele = Sys::getOneData('Parc','Host/Nom=modele-prestashop');
             $srv = $modele->getOneParent('Server');
-            $url = $srv->DNSNom;
+            $url = $srv->IP;
 
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-prestashop/www/ www';

@@ -35,7 +35,68 @@ class ParcInstanceKobEye extends Plugin implements ParcInstancePlugin {
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
+        $host = $this->_obj->getOneChild('Host');
+        $bdd = $host->getOneChild('Bdd');
+        $mysqlsrv = $bdd->getOneParent('Server');
+        $apachesrv = $host->getOneParent('Server');
+
+        try {
+            //Installation des fichiers
+            $act = $task->createActivity('Suppression du dossier www', 'Info', $task);
+            $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //Installation des fichiers
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
+
+            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git clone https://github.com/MAN-IN-WAN/Kob-Eye.git';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Modification des droits', 'Info', $task);
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+
+            //Generation de la conf
+            $act = $task->createActivity('Génération fichier Conf', 'Info', $task);
+            $cmd = 'cp -p /home/' . $host->NomLDAP . '/www/Conf/General.conf.tpl  /home/' . $host->NomLDAP . '/www/Conf/General.conf';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            if($this->rewriteConfig()){
+                $act->Terminate(true);
+            } else{
+                $act->Terminate(false);
+            }
+            
+            //Creation de la base
+            $act = $task->createActivity('ACTION UPDATE', 'Info', $task);
+            $cmd = 'curl -kv '.$this->_obj->FullDomain.'?ACTION=UPDATE';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+
+
+
+            //changement du statut de l'instance
+            $this->_obj->setStatus(2);
+            $this->_obj->CurrentVersion = date('Ymd');
+            $this->_obj->Save();
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
+        //execution de la configuration
+        $act = $task->createActivity('Création de la config', 'Info', $task);
+        $act->Terminate($this->rewriteConfig());
+        return true;
     }
     /**
      * createUpdateTask
@@ -62,12 +123,16 @@ class ParcInstanceKobEye extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-        $hos = $this->_obj->getOneChild('Host');
-        $srv = $hos->getOneParent('Server');
-        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/Conf/General.conf');
+        $host = $this->_obj->getOneChild('Host');
+        $bdd = $host->getOneChild('Bdd');
+        $mysqlsrv = $bdd->getOneParent('Server');
+        $apachesrv = $host->getOneParent('Server');
+        $conf = $apachesrv->getFileContent('/home/'.$host->NomLDAP.'/www/Conf/General.conf');
         if (!empty($conf)){
-            $conf = preg_replace('#<MYSQL_DSN>mysql\:\/\/(.*):(.*)@(.*)\/(.*)</MYSQL_DSN>#','<MYSQL_DSN>mysql://'.$hos->NomLDAP.':'.$hos->Password.'@db.maninwan.fr/\4</MYSQL_DSN>',$conf);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/Conf/General.conf',$conf);
+            $conf = preg_replace('#<BDD_DSN>.*</BDD_DSN>#','<MYSQL_DSN>mysql://'.$host->NomLDAP.':'.$host->Password.'@'.$mysqlsrv->InternalIP.'/'.$host->NomLDAP.'</MYSQL_DSN>',$conf);
+            $conf = str_replace('<SQL_MAX_LIMIT type="const">200</SQL_MAX_LIMIT>','<SQL_MAX_LIMIT type="const">2000</SQL_MAX_LIMIT>',$conf);
+            $conf = str_replace('Login','LoginBootstrap',$conf);
+            $apachesrv->putFileContent('/home/'.$host->NomLDAP.'/www/Conf/General.conf',$conf);
         }
         return true;
     }

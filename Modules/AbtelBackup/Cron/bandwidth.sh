@@ -1,13 +1,16 @@
 #!/bin/bash
-        R11=`cat /sys/class/net/ens160/statistics/rx_bytes`
-        T11=`cat /sys/class/net/ens160/statistics/tx_bytes`
-        R21=`cat /sys/class/net/ens192/statistics/rx_bytes`
-        T21=`cat /sys/class/net/ens192/statistics/tx_bytes`
+
+
+
+        R11=$([ -d "/sys/class/net/ens160" ] && cat /sys/class/net/ens160/statistics/rx_bytes || echo 0)
+        T11=$([ -d "/sys/class/net/ens160" ] && cat /sys/class/net/ens160/statistics/tx_bytes || echo 0)
+        R21=$([ -d "/sys/class/net/ens192" ] && cat /sys/class/net/ens192/statistics/rx_bytes || echo 0)
+        T21=$([ -d "/sys/class/net/ens192" ] && cat /sys/class/net/ens192/statistics/tx_bytes || echo 0)
         sleep 1
-        R12=`cat /sys/class/net/ens160/statistics/rx_bytes`
-        T12=`cat /sys/class/net/ens160/statistics/tx_bytes`
-        R22=`cat /sys/class/net/ens192/statistics/rx_bytes`
-        T22=`cat /sys/class/net/ens192/statistics/tx_bytes`
+        R12=$([ -d "/sys/class/net/ens160" ] && cat /sys/class/net/ens160/statistics/rx_bytes || echo 0)
+        T12=$([ -d "/sys/class/net/ens160" ] && cat /sys/class/net/ens160/statistics/tx_bytes || echo 0)
+        R22=$([ -d "/sys/class/net/ens192" ] && cat /sys/class/net/ens192/statistics/rx_bytes || echo 0)
+        T22=$([ -d "/sys/class/net/ens192" ] && cat /sys/class/net/ens192/statistics/tx_bytes || echo 0)
         TBPS1=`expr $T12 - $T11`
         RBPS1=`expr $R12 - $R11`
         TBPS2=`expr $T22 - $T21`
