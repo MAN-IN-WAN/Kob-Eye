@@ -245,7 +245,7 @@ klog::l("<<<",$cls);
 			$nbdt = 0;
 			$ok = true;
 			foreach($cs as $c) {
-				if($c[0] == '"') $c = substr($c, 1, -1);
+				if(substr($c, 0, 1) == '"') $c = substr($c, 1, -1);
 				switch($n) {
 					case 0:
 						if($c != $annee) {
