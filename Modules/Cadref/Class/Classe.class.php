@@ -242,14 +242,14 @@ klog::l("<<<",$cls);
 			if($cs[0] == '') break;
 	
 			$n = 0;
-			$nbdt = 0;
+			$nbdt = $sean = 0;
 			$ok = true;
 			foreach($cs as $c) {
 				if(substr($c, 0, 1) == '"') $c = substr($c, 1, -1);
 				switch($n) {
 					case 0:
 						if($c != $annee) {
-							$msg .= "lig $lig: Année erronée $c.\n";
+							$msg .= "lig $lig: Année erronee $c.\n";
 							$ok = false;
 						}
 						break;
@@ -275,7 +275,7 @@ klog::l("<<<",$cls);
 						}
 					case 2:
 						if($c == '' || $c == '0') {
-							//$msg .= "lig $lig: $clas Classe ignorée.\n";
+							$msg .= "lig $lig: $clas Classe ignoree.\n";
 							$ok = false;
 						}
 					case 3:
@@ -316,16 +316,20 @@ klog::l("<<<",$cls);
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: Date différente du jour $c.\n";
+								if($w != $day) $msg .= "lig $lig: Date differente du jour $c.\n";
 							}
 						}
 				}
 				if(!$ok || $n == -1) break;
 				$n++;
 			}
-			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
+			if($prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates et de seances differents $sean.\n";
 		}
-		return array('message'=>$msg);
+		$msg .= "\n$lig lignes traitees\n";
+		$file = 'Home/tmp/Import_'.date('YmdHis').'.txt';
+		file_put_contents($file, $msg);
+		
+		return array('file'=>$file);
 	}
 	
 	function GetFormInfo() {
