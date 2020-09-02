@@ -85,6 +85,24 @@ class Parc_Client extends genericClass {
                 if (empty($this->AccesUser)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner l'identifiant pour l'accès web"));
                     $this->_isVerified = false;
+                } else {
+                    $tmp = Sys::getOneData('Parc','Client/AccesActif=1&&AccesUser='.$this->AccesUser);
+                    if(!empty($tmp) && $tmp->Id != $this->Id){
+                        $this->AddError(Array("Message"=>"Il existe déjà un client avec cet identifiant"));
+                        $this->_isVerified = false;
+                    } else {
+                        $tmp = Sys::getOneData('Parc','Contact/AccesActif=1&&AccesUser='.$this->AccesUser);
+                        if(!empty($tmp)){
+                            $this->AddError(Array("Message"=>"Il existe déjà un contact avec cet identifiant"));
+                            $this->_isVerified = false;
+                        } else {
+                            $tmp = Sys::getOneData('Systeme','User/Login='.$this->AccesUser);
+                            if(!empty($tmp)){
+                                $this->AddError(Array("Message"=>"Il existe déjà un utilisateur avec cet identifiant"));
+                                $this->_isVerified = false;
+                            }
+                        }
+                    }
                 }
                 if (empty($this->AccesPass)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner le mot de passe pour l'accès web"));
@@ -93,6 +111,24 @@ class Parc_Client extends genericClass {
                 if (empty($this->Email)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner l'adresse mail pour l'accès web"));
                     $this->_isVerified = false;
+                } else {
+                    $tmp = Sys::getOneData('Parc','Client/AccesActif=1&&Email='.$this->Email);
+                    if(!empty($tmp) && $tmp->Id != $this->Id){
+                        $this->AddError(Array("Message"=>"Il existe déjà un client avec cette adresse email"));
+                        $this->_isVerified = false;
+                    } else {
+                        $tmp = Sys::getOneData('Parc','Contact/AccesActif=1&&Email='.$this->Email);
+                        if(!empty($tmp) ){
+                            $this->AddError(Array("Message"=>"Il existe déjà un contact avec cette adresse email"));
+                            $this->_isVerified = false;
+                        } else {
+                            $tmp = Sys::getOneData('Systeme','User/Mail='.$this->Email);
+                            if(!empty($tmp)){
+                                $this->AddError(Array("Message"=>"Il existe déjà un utilisateur avec cette adresse email"));
+                                $this->_isVerified = false;
+                            }
+                        }
+                    }
                 }
                 if (!$this->_isVerified)
                     return false;

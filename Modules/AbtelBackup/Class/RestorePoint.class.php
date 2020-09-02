@@ -147,7 +147,7 @@ class RestorePoint extends genericClass {
                         preg_match('/loop[0-9]+p[0-9]+/', $line, $matches);
                         if(!empty($matches[0])) {
                             AbtelBackup::localExec("sudo mkdir -p '/backup/mount/vmdk/" . $matches[0] . "'");
-                            AbtelBackup::localExec("sudo mount '/dev/mapper/" . $matches[0] . "' '/backup/mount/vmdk/" . $matches[0] . "'");
+                            AbtelBackup::localExec("sudo mount -o ro '/dev/mapper/" . $matches[0] . "' '/backup/mount/vmdk/" . $matches[0] . "'");
                         }
                     }
 

@@ -18,6 +18,10 @@ foreach($fields as $f){
     $data[$f['name']] = $job->{$f['name']};
 }
 
+$data['VmCount'] = -1;
+$data['VmSize'] = -1;
+$data['BackupSize'] = -1;
+
 if($job->ObjectType == "VmJob"){
     $vms = $job->getChildren('EsxVm');
     $data['VmCount'] = sizeof($vms);

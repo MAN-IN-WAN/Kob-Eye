@@ -37,10 +37,11 @@ class EmailRessource extends genericClass {
             parent::Save();
             return true;
         }
-
-
+        if(empty($this->Suppression))
+            $this->Suppression = NULL;
 
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
+
 		    if(!$this->createRessource()){
 		        //$this->Delete();
                 $this->addError(array('Message'=>'Impossible de créer la ressource...'));
@@ -319,6 +320,8 @@ class EmailRessource extends genericClass {
             $values['zimbraCalResType'] = $this->Type;
             $values['zimbraCalResAutoAcceptDecline'] = 'TRUE';
             $values['zimbraCalResAutoDeclineIfBusy'] = 'TRUE';
+
+            $values['zimbraCOSId'] = '7abc8e0e-ac5e-4255-8367-ef69894716ef';
 
             $res = $zimbra->createRessource($values);
 
