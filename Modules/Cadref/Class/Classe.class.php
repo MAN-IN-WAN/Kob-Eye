@@ -264,12 +264,12 @@ klog::l("<<<",$cls);
 							$cls->Classe = substr($c, 6, 1);
 							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
 							if(!$niv) {
-								$msg .= "lig $lig: Niveau inexistant ".substr($c,0,6).".\n";
+								$msg .= "lig $lig: $clas Niveau inexistant ".substr($c,0,6).".\n";
 								$dis = Sys::getOneData('Cadref', 'Discipline/CodeDiscipline='.substr($c, 1, 4));
 								if(!$dis) {
-									$msg .= "lig $lig: Discipline inexistante ".substr($c,1,4).".\n";
+									$msg .= "lig $lig: $clas Discipline inexistante ".substr($c,1,4).".\n";
 									$sec = Sys::getOneData('Cadref', 'Section/Section='.substr($c, 1, 2));
-									if(!$sec) $msg .= "lig $lig: Section inexistante ".substr($c,1,2).".\n";
+									if(!$sec) $msg .= "lig $lig: $clas Section inexistante ".substr($c,1,2).".\n";
 								}
 							}
 						}
@@ -303,20 +303,26 @@ klog::l("<<<",$cls);
 						if(!$ens) $msg .= "lig $lig: $clas Enseignant inexistant $c.\n";
 						break;
 					case 15:
-						break; // ignore libelle
+						$web = Sys::getOneData('Cadref', 'WebDiscipline/CodeDiscipline='.$c);
+						if(!$ens) $msg .= "lig $lig: $clas WebDiscipline inexistante $c.\n";
+						break;
 					case 16:
-						break; // ignore Web
+						break; // ignore libelle
 					default:
-						if($c == '' || $prog == 0) $n == -1;
+						if($c == '') $n = -1;
 						else {
+							if($prog == 0) {
+								$n = -1;
+								$msg .= "lig $lig: $clas Date sur cours hebdomadaire $c.\n";
+							}
 							$nbdt++;
 							$ds = explode('/', $c); 
 							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
-							if(!$dt) $msg .= "lig $lig: Date erronée $c.\n";
+							if(!$dt) $msg .= "lig $lig: $clas Date erronée $c.\n";
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: Date differente du jour $c.\n";
+								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $c.\n";
 							}
 						}
 				}
