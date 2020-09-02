@@ -22,7 +22,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'get-vote': return Performance::GetVote($args);
 			case 'comments': return Performance::GetComments($args);
 			case 'ratings': return Performance::GetRatings($args);
-			case 'privacy': return self::privacy($args);	
+			case 'article': return self::article($args);	
 			case 'account': return self::saveUser($args);	
 			case 'nickname': return self::checkNickname($args);	
 			case 'email': return self::checkEMail($args);			
@@ -54,9 +54,13 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('err'=>'mode unknown');
 	}
 	
-	private static function privacy($args) {
-		$a = Sys::getOneData('Redaction', 'Article/Titre=SHOW');
-		return ['success'=>true, 'text'=>$a->Contenu];
+	private static function article($args) {
+		$art = $args['article'];
+		$lang = $args['lang'];
+		
+		$a = Sys::getOneData('Redaction', "Article/Modele=$art$lang");
+		if(!$a) $a = Sys::getOneData('Redaction', "Article/Modele=$art".'EN');
+		return ['success'=>true, 'title'=>$a->Title, 'text'=>$a->Contenu];
 	}
 	
 	private static function logout($args) {
