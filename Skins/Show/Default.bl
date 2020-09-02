@@ -24,5 +24,5 @@
 
   <app-root></app-root>
 
-<script src="runtime-es2015.2349cf37328bc0810abd.js" type="module"></script><script src="runtime-es5.2349cf37328bc0810abd.js" nomodule defer></script><script src="polyfills-es5.0aff8b2d058159c585d2.js" nomodule defer></script><script src="polyfills-es2015.bf495b878b910d9032b1.js" type="module"></script><script src="main-es2015.996ac1d4a84221ba89bb.js" type="module"></script><script src="main-es5.996ac1d4a84221ba89bb.js" nomodule defer></script>
+<script src="runtime-es2015.2349cf37328bc0810abd.js" type="module"></script><script src="runtime-es5.2349cf37328bc0810abd.js" nomodule defer></script><script src="polyfills-es5.0aff8b2d058159c585d2.js" nomodule defer></script><script src="polyfills-es2015.bf495b878b910d9032b1.js" type="module"></script><script src="main-es2015.3868810b346278999264.js" type="module"></script><script src="main-es5.3868810b346278999264.js" nomodule defer></script>
 
