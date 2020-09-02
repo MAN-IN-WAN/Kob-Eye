@@ -120,7 +120,7 @@ class Classe extends genericClass {
 
 			$cs = explode(";", $l);
 			if($cs[0] == '') break;
-			
+klog::l("****",$cs);		
 			$n = 0;
 			$nbdt = 0;
 			$ok = true;
@@ -130,13 +130,14 @@ class Classe extends genericClass {
 					case 0:
 						if($c != $annee) {
 							$msg .= "lig $lig: Année erronée $c. Ligne non traitée.\n";
-							continue;
+							$ok = false;
 						}
 						break;
 					case 1:
 						$new = false;
-						$clas = $c;
+						//$clas = $c;
 						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
+klog::l(">>>$c: Classe/Annee=$annee&CodeClasse=$c",$cls);
 						if(!$cls) {
 							$new = true;
 							$cls = genericClass::createInstance('Cadref', 'Classe');
@@ -145,7 +146,7 @@ class Classe extends genericClass {
 							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
 							if(!$niv) {
 								$msg .= "lig $lig: Niveau erroné $c. Ligne non traitée.\n";
-								continue;
+								$ok = false;
 							}
 							$cls->addParent($niv);
 						}
@@ -175,16 +176,19 @@ class Classe extends genericClass {
 						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
 						if(!$ens) $msg .= "lig $lig: Enseignant erroné $c.\n";
 						else $cls->addParent($ens);
+klog::l("<<<",$cls);
 						$cls->Save();
 						if(!$new) {
 							$dts = $cls->getChildren('ClasseDate');
 							foreach($dts as $dt) $dt->Delete();
 						}
 						break;
-					case 15: 
+					case 15:
+						break; // ignore libelle
 					case 16:
 						break; // ignore Web
 					default:
+klog::l("<<<",$cls);
 						$nb = 0;
 						if($c == '' || $prog == 0) $n == -1;
 						else {
@@ -204,11 +208,122 @@ class Classe extends genericClass {
 							}
 						}
 				}
-				if($n == -1) break;
+				if(!$ok || $n == -1) break;
 				$n++;
 			}
 			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
 			$lig++;
+		}
+		return array('message'=>$msg);
+	}
+
+	public static function ClassesCheck($args) {
+		$sql = "select Annee from `##_Cadref-Annee` order by Annee desc limit 1";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$d = $pdo->fetch(PDO::FETCH_ASSOC);
+		$annee = $d['Annee'];
+		$next = $annee+1;
+		
+		$msg = '';
+		$err = false;
+		$flds = ['Annee','CodeClasse','JourId','HeureDebut','HeureFin','CycleDebut','CycleFin','Seances','Programmation',
+			'Places','Prix','Reduction1','Reduction2','Lieu','Enseignant','Web','LibelleWeb'];
+
+		$f = getcwd().'/'.$args['FilePath'];
+		$f = str_replace("\r\n", "\n", file_get_contents($f));
+		$ls = explode("\n", $f);
+		$lig = 0;
+		foreach($ls as $l) {
+			if($l == '') break;
+			if(!$lig++) continue; // header
+
+			$cs = explode(";", $l);
+			if($cs[0] == '') break;
+	
+			$n = 0;
+			$nbdt = 0;
+			$ok = true;
+			foreach($cs as $c) {
+				if($c[0] == '"') $c = substr($c, 1, -1);
+				switch($n) {
+					case 0:
+						if($c != $annee) {
+							$msg .= "lig $lig: Année erronée $c.\n";
+							$ok = false;
+						}
+						break;
+					case 1:
+						$new = false;
+						$clas = $c;
+						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
+						if(!$cls) {
+							$new = true;
+							$cls = genericClass::createInstance('Cadref', 'Classe');
+							$cls->Annee = $annee;
+							$cls->Classe = substr($c, 6, 1);
+							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
+							if(!$niv) {
+								$msg .= "lig $lig: Niveau inexistant ".substr($c,0,6).".\n";
+								$dis = Sys::getOneData('Cadref', 'Discipline/CodeDiscipline='.substr($c, 1, 4));
+								if(!$dis) {
+									$msg .= "lig $lig: Discipline inexistante ".substr($c,1,4).".\n";
+									$sec = Sys::getOneData('Cadref', 'Section='.substr($c, 1, 2));
+									if(!$sec) $msg .= "lig $lig: Section inexistante ".substr($c,1,2).".\n";
+								}
+							}
+						}
+					case 2:
+						if($c == '' || $c == '0') {
+							$msg .= "lig $lig: $clas Classe ignorée.\n";
+							$ok = false;
+						}
+					case 3:
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+						if($n == 2) $day = $c;
+						elseif($n == 7) $sean = $c;
+						elseif($n == 8)	$prog = $c;
+						$fld = $flds[$n];
+						$cls->$fld = $c;
+						break;
+					case 13:
+						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
+						if(!$lieu) $msg .= "lig $lig: $clas Lieu inexistant $c.\n";
+						break;
+					case 14: 
+						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
+						if(!$ens) $msg .= "lig $lig: $clas Enseignant inexistant $c.\n";
+						break;
+					case 15:
+						break; // ignore libelle
+					case 16:
+						break; // ignore Web
+					default:
+						if($c == '' || $prog == 0) $n == -1;
+						else {
+							$nbdt++;
+							$ds = explode('/', $c); 
+							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
+							if(!$dt) $msg .= "lig $lig: Date erronée $c.\n";
+							else {
+								$w = $dt->format('w');
+								if(!$w) $w = 7;
+								if($w != $day) $msg .= "lig $lig: Date différente du jour $c.\n";
+							}
+						}
+				}
+				if(!$ok || $n == -1) break;
+				$n++;
+			}
+			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
 		}
 		return array('message'=>$msg);
 	}

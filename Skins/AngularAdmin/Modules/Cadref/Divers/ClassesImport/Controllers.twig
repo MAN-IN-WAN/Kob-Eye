@@ -17,8 +17,16 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
 	
+	$scope.classesCheck = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'ClassesCheck');
+		ajax.success(
+			function(data) {
+				swal("Vérification", data.data.message, "success");
+			}
+		);
+	}
 	$scope.classesImport = function() {
-		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'ClassesImport');
 		ajax.success(
 			function(data) {
 				swal("Importation", data.data.message, "success");
