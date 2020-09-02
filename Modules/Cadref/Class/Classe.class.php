@@ -120,16 +120,17 @@ class Classe extends genericClass {
 
 			$cs = explode(";", $l);
 			if($cs[0] == '') break;
-klog::l("****",$cs);		
+		
 			$n = 0;
 			$nbdt = 0;
 			$ok = true;
+			$del = false;
 			foreach($cs as $c) {
 				if($c[0] == '"') $c = substr($c, 1, -1);
 				switch($n) {
 					case 0:
 						if($c != $annee) {
-							$msg .= "lig $lig: Année erronée $c. Ligne non traitée.\n";
+							$msg .= "lig $lig: Annee erronee $c. Ligne non traitee.\n";
 							$ok = false;
 						}
 						break;
@@ -144,14 +145,18 @@ klog::l("****",$cs);
 							$cls->Classe = substr($c, 6, 1);
 							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
 							if(!$niv) {
-								$msg .= "lig $lig: $clas Niveau erroné $c. Ligne non traitée.\n";
+								$msg .= "lig $lig: $clas Niveau introuvable $c. Ligne non traitee.\n";
 								$ok = false;
 							}
 							$cls->addParent($niv);
 						}
 					case 2:
 						if($c == '' || $c == '0') {
-							$ok = false;
+							$del = true;
+							if($new) {
+								$ok = false;
+								break;
+							}
 						}
 					case 3:
 					case 4:
@@ -170,14 +175,18 @@ klog::l("****",$cs);
 						$cls->$fld = $c;
 						break;
 					case 13:
-						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
-						if(!$lieu) $msg .= "lig $lig: Lieu erroné $c.\n";
-						else $cls->addParent($lieu);
+						if(!$del) {
+							$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
+							if(!$lieu) $msg .= "lig $lig: Lieu introuvable $c.\n";
+							else $cls->addParent($lieu);
+						}
 						break;
 					case 14: 
-						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
-						if(!$ens) $msg .= "lig $lig: Enseignant erroné $c.\n";
-						else $cls->addParent($ens);
+						if(!$del) {
+							$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
+							if(!$ens) $msg .= "lig $lig: Enseignant introuvable $c.\n";
+							else $cls->addParent($ens);
+						}
 						$cls->Save();
 						if(!$new) {
 							$dts = $cls->getChildren('ClasseDate');
@@ -190,16 +199,16 @@ klog::l("****",$cs);
 						break; // ignore Web
 					default:
 						$nb = 0;
-						if($c == '' || $prog == 0) $n == -1;
+						if($del || $c == '' || $prog == 0) $n == -1;
 						else {
 							$nbdt++;
 							$ds = explode('/', $c); 
 							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
-							if(!$dt) $msg .= "lig $lig: Date erronée $c.\n";
+							if(!$dt) $msg .= "lig $lig: Date erronee $c.\n";
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: Date différente du jour $c.\n";
+								if($w != $day) $msg .= "lig $lig: Date differente du jour $c.\n";
 								$ts = $dt->getTimestamp();
 								$dat = genericClass::createInstance('Cadref', 'ClasseDate');
 								$dat->addParent($cls);
@@ -211,7 +220,7 @@ klog::l("****",$cs);
 				if(!$ok || $n == -1) break;
 				$n++;
 			}
-			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
+			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates different des seances $sean.\n";
 			$lig++;
 		}
 		$msg .= "\n$lig lignes traitees\n";
@@ -253,7 +262,7 @@ klog::l("****",$cs);
 				switch($n) {
 					case 0:
 						if($c != $annee) {
-							$msg .= "lig $lig: Année erronee $c.\n";
+							$msg .= "lig $lig: Annee erronee $c.\n";
 							$ok = false;
 						}
 						break;
