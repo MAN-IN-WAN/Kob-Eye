@@ -137,7 +137,6 @@ klog::l("****",$cs);
 						$new = false;
 						//$clas = $c;
 						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
-klog::l(">>>$c: Classe/Annee=$annee&CodeClasse=$c",$cls);
 						if(!$cls) {
 							$new = true;
 							$cls = genericClass::createInstance('Cadref', 'Classe');
@@ -145,12 +144,15 @@ klog::l(">>>$c: Classe/Annee=$annee&CodeClasse=$c",$cls);
 							$cls->Classe = substr($c, 6, 1);
 							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
 							if(!$niv) {
-								$msg .= "lig $lig: Niveau erroné $c. Ligne non traitée.\n";
+								$msg .= "lig $lig: $clas Niveau erroné $c. Ligne non traitée.\n";
 								$ok = false;
 							}
 							$cls->addParent($niv);
 						}
 					case 2:
+						if($c == '' || $c == '0') {
+							$ok = false;
+						}
 					case 3:
 					case 4:
 					case 5:
@@ -176,7 +178,6 @@ klog::l(">>>$c: Classe/Annee=$annee&CodeClasse=$c",$cls);
 						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
 						if(!$ens) $msg .= "lig $lig: Enseignant erroné $c.\n";
 						else $cls->addParent($ens);
-klog::l("<<<",$cls);
 						$cls->Save();
 						if(!$new) {
 							$dts = $cls->getChildren('ClasseDate');
@@ -188,7 +189,6 @@ klog::l("<<<",$cls);
 					case 16:
 						break; // ignore Web
 					default:
-klog::l("<<<",$cls);
 						$nb = 0;
 						if($c == '' || $prog == 0) $n == -1;
 						else {
@@ -214,7 +214,11 @@ klog::l("<<<",$cls);
 			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates différent des séances $sean.\n";
 			$lig++;
 		}
-		return array('message'=>$msg);
+		$msg .= "\n$lig lignes traitees\n";
+		$file = 'Home/tmp/Import_'.date('YmdHis').'.txt';
+		file_put_contents($file, $msg);
+		
+		return array('file'=>$file);
 	}
 
 	public static function ClassesCheck($args) {
