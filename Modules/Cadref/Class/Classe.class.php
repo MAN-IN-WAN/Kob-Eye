@@ -295,16 +295,25 @@ klog::l("<<<",$cls);
 						$cls->$fld = $c;
 						break;
 					case 13:
-						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
-						if(!$lieu) $msg .= "lig $lig: $clas Lieu inexistant $c.\n";
+						if(!$c) $msg .= "lig $lig: $clas Lieu non renseigne.\n";
+						else {
+							$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
+							if(!$lieu) $msg .= "lig $lig: $clas Lieu inexistant $c.\n";
+						}
 						break;
 					case 14: 
-						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
-						if(!$ens) $msg .= "lig $lig: $clas Enseignant inexistant $c.\n";
+						if(!$c) $msg .= "lig $lig: $clas Enseignant non renseigne.\n";
+						else {
+							$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
+							if(!$ens) $msg .= "lig $lig: $clas Enseignant inexistant $c.\n";
+						}
 						break;
 					case 15:
-						$web = Sys::getOneData('Cadref', 'WebDiscipline/CodeDiscipline='.$c);
-						if(!$ens) $msg .= "lig $lig: $clas WebDiscipline inexistante $c.\n";
+						if(!$c) $msg .= "lig $lig: $clas WebDiscipline non renseigne.\n";
+						else {
+							$web = Sys::getOneData('Cadref', 'WebDiscipline/CodeDiscipline='.$c);
+							if(!$ens) $msg .= "lig $lig: $clas WebDiscipline inexistante $c.\n";
+						}
 						break;
 					case 16:
 						break; // ignore libelle
