@@ -268,14 +268,14 @@ klog::l("<<<",$cls);
 								$dis = Sys::getOneData('Cadref', 'Discipline/CodeDiscipline='.substr($c, 1, 4));
 								if(!$dis) {
 									$msg .= "lig $lig: Discipline inexistante ".substr($c,1,4).".\n";
-									$sec = Sys::getOneData('Cadref', 'Section='.substr($c, 1, 2));
+									$sec = Sys::getOneData('Cadref', 'Section/Section='.substr($c, 1, 2));
 									if(!$sec) $msg .= "lig $lig: Section inexistante ".substr($c,1,2).".\n";
 								}
 							}
 						}
 					case 2:
 						if($c == '' || $c == '0') {
-							$msg .= "lig $lig: $clas Classe ignorée.\n";
+							//$msg .= "lig $lig: $clas Classe ignorée.\n";
 							$ok = false;
 						}
 					case 3:
