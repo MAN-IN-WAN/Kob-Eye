@@ -60,7 +60,7 @@ klog::l("GETSHOW >>>>>",$args);
 		
 		$a = Sys::getOneData('Redaction', "Article/Modele=$art$lang");
 		if(!$a) $a = Sys::getOneData('Redaction', "Article/Modele=$art".'EN');
-		return ['success'=>true, 'title'=>$a->Title, 'text'=>$a->Contenu];
+		return ['success'=>true, 'title'=>$a->Titre, 'text'=>$a->Contenu];
 	}
 	
 	private static function logout($args) {
