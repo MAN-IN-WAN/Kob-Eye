@@ -122,7 +122,7 @@ class Classe extends genericClass {
 			if($cs[0] == '') break;
 		
 			$n = 0;
-			$nbdt = 0;
+			$nbdt = $prog = $sean = 0;
 			$ok = true;
 			foreach($cs as $c) {
 				if($c[0] == '"') $c = substr($c, 1, -1);
@@ -219,7 +219,7 @@ class Classe extends genericClass {
 				if(!$ok || $n == -1) break;
 				$n++;
 			}
-			if($prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates different des seances $sean.\n";
+			if(!$del && $prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates different des seances $sean.\n";
 			$lig++;
 		}
 		$msg .= "\n$lig lignes traitees\n";
@@ -254,7 +254,7 @@ class Classe extends genericClass {
 			if($cs[0] == '') break;
 	
 			$n = 0;
-			$nbdt = $sean = 0;
+			$nbdt = $prog = $sean = 0;
 			$ok = true;
 			foreach($cs as $c) {
 				if(substr($c, 0, 1) == '"') $c = substr($c, 1, -1);
@@ -358,7 +358,7 @@ class Classe extends genericClass {
 				if(!$ok || $n == -1) break;
 				$n++;
 			}
-			if($prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates et de seances differents $sean.\n";
+			if(!$del && $prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates et de seances differents $sean.\n";
 		}
 		$msg .= "\n$lig lignes traitees\n";
 		$file = 'Home/tmp/Import_'.date('YmdHis').'.txt';
