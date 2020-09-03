@@ -3,6 +3,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
 	$scope.obj.FilePath = '';
+	$scope.obj.loading = false;
 
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
@@ -17,11 +18,23 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
 	
-	$scope.classesImport = function() {
-		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+	$scope.classesCheck = function() {
+		$scope.obj.loading = true;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'ClassesCheck');
 		ajax.success(
 			function(data) {
-				swal("Importation", data.data.message, "success");
+				$window.open(data.data.file);
+				$scope.obj.loading = false;
+			}
+		);
+	}
+	$scope.classesImport = function() {
+		$scope.obj.loading = true;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'ClassesImport');
+		ajax.success(
+			function(data) {
+				$window.open(data.data.file);
+				$scope.obj.loading = false;
 			}
 		);
 	}
