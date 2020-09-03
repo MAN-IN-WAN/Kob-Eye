@@ -124,7 +124,6 @@ class Classe extends genericClass {
 			$n = 0;
 			$nbdt = 0;
 			$ok = true;
-			$del = false;
 			foreach($cs as $c) {
 				if($c[0] == '"') $c = substr($c, 1, -1);
 				switch($n) {
@@ -135,29 +134,31 @@ class Classe extends genericClass {
 						}
 						break;
 					case 1:
+						$clas = $c;
+						break;
+					case 2:
+						$del = ($c == '' || $c == '0');
+						
 						$new = false;
-						//$clas = $c;
-						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
-						if(!$cls) {
+						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$clas");
+						if(!$cls && !$del) {
 							$new = true;
 							$cls = genericClass::createInstance('Cadref', 'Classe');
 							$cls->Annee = $annee;
-							$cls->Classe = substr($c, 6, 1);
-							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
+							$cls->Classe = substr($clas, 6, 1);
+							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($clas, 0, 6));
 							if(!$niv) {
-								$msg .= "lig $lig: $clas Niveau introuvable $c. Ligne non traitee.\n";
+								$msg .= "lig $lig: $clas Niveau introuvable $clas. Ligne non traitee.\n";
 								$ok = false;
 							}
 							$cls->addParent($niv);
 						}
-					case 2:
-						if($c == '' || $c == '0') {
-							$del = true;
-							if($new) {
-								$ok = false;
-								break;
-							}
+						elseif($cls && $del) {
+							$cls->Delete();
+							$msg .= "lig $lig: $clas Classe supprimee.\n";
+							$ok = false;
 						}
+						elseif($del) $ok = false;
 					case 3:
 					case 4:
 					case 5:
@@ -175,18 +176,14 @@ class Classe extends genericClass {
 						$cls->$fld = $c;
 						break;
 					case 13:
-						if(!$del) {
-							$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
-							if(!$lieu) $msg .= "lig $lig: Lieu introuvable $c.\n";
-							else $cls->addParent($lieu);
-						}
+						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
+						if(!$lieu) $msg .= "lig $lig: Lieu introuvable $c.\n";
+						else $cls->addParent($lieu);
 						break;
 					case 14: 
-						if(!$del) {
-							$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
-							if(!$ens) $msg .= "lig $lig: Enseignant introuvable $c.\n";
-							else $cls->addParent($ens);
-						}
+						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
+						if(!$ens) $msg .= "lig $lig: Enseignant introuvable $c.\n";
+						else $cls->addParent($ens);
 						$cls->Save();
 						if(!$new) {
 							$dts = $cls->getChildren('ClasseDate');
@@ -199,7 +196,7 @@ class Classe extends genericClass {
 						break; // ignore Web
 					default:
 						$nb = 0;
-						if($del || $c == '' || $prog == 0) $n == -1;
+						if($c == '' || $prog == 0) $n == -1;
 						else {
 							$nbdt++;
 							$ds = explode('/', $c); 
@@ -208,7 +205,7 @@ class Classe extends genericClass {
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: Date differente du jour $c.\n";
+								if($w != $day) $msg .= "lig $lig: Date differente du jour $day $w $c.\n";
 								$ts = $dt->getTimestamp();
 								$dat = genericClass::createInstance('Cadref', 'ClasseDate');
 								$dat->addParent($cls);
@@ -259,6 +256,7 @@ class Classe extends genericClass {
 			$ok = true;
 			foreach($cs as $c) {
 				if(substr($c, 0, 1) == '"') $c = substr($c, 1, -1);
+				
 				switch($n) {
 					case 0:
 						if($c != $annee) {
@@ -267,30 +265,34 @@ class Classe extends genericClass {
 						}
 						break;
 					case 1:
-						$new = false;
 						$clas = $c;
-						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$c");
-						if(!$cls) {
+						break;
+					case 2:
+						$del = ($c == '' || $c == '0');
+						
+						$new = false;
+						$cls = Sys::getOneData('Cadref', "Classe/Annee=$annee&CodeClasse=$clas");
+						if(!$cls && !$del) {
 							$new = true;
 							$cls = genericClass::createInstance('Cadref', 'Classe');
 							$cls->Annee = $annee;
-							$cls->Classe = substr($c, 6, 1);
-							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($c, 0, 6));
+							$cls->Classe = substr($clas, 6, 1);
+							$niv = Sys::getOneData('Cadref', 'Niveau/CodeNiveau='.substr($clas, 0, 6));
 							if(!$niv) {
-								$msg .= "lig $lig: $clas Niveau inexistant ".substr($c,0,6).".\n";
-								$dis = Sys::getOneData('Cadref', 'Discipline/CodeDiscipline='.substr($c, 1, 4));
+								$msg .= "lig $lig: $clas Niveau inexistant ".substr($clas,0,6).".\n";
+								$dis = Sys::getOneData('Cadref', 'Discipline/CodeDiscipline='.substr($clas, 1, 4));
 								if(!$dis) {
-									$msg .= "lig $lig: $clas Discipline inexistante ".substr($c,1,4).".\n";
-									$sec = Sys::getOneData('Cadref', 'Section/Section='.substr($c, 1, 2));
-									if(!$sec) $msg .= "lig $lig: $clas Section inexistante ".substr($c,1,2).".\n";
+									$msg .= "lig $lig: $clas Discipline inexistante ".substr($clas,1,4).".\n";
+									$sec = Sys::getOneData('Cadref', 'Section/Section='.substr($clas, 1, 2));
+									if(!$sec) $msg .= "lig $lig: $clas Section inexistante ".substr($clas,1,2).".\n";
 								}
 							}
 						}
-					case 2:
-						if($c == '' || $c == '0') {
-							$msg .= "lig $lig: $clas Classe ignoree.\n";
+						elseif($cls && $del) {
+							$msg .= "lig $lig: $clas Classe a supprimer.\n";
 							$ok = false;
 						}
+						elseif($del) $ok = false;
 					case 3:
 					case 4:
 					case 5:
@@ -344,7 +346,7 @@ class Classe extends genericClass {
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $c.\n";
+								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $day $w $c.\n";
 							}
 						}
 				}
