@@ -245,6 +245,14 @@ class ListeDiffusion extends genericClass {
      * @return	bool
      */
     public function addListMember($cptMail){
+
+        $type = $cptMail->ObjectType;
+        if($type == 'CompteMail'){
+            $add = $cptMail->Adresse;
+        }elseif($type == 'ListeDiffusion') {
+            $add = $cptMail->Nom;
+        }
+
         $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
@@ -267,13 +275,13 @@ class ListeDiffusion extends genericClass {
         $members = $temp->getMembers();
 
         foreach($members as $memb){
-            if($cptMail->Adresse == $memb) {
+            if($add == $memb) {
                 $this->AddError(array('Message' => 'Erreur, ce compte mail est déjà membre de cette liste de diffusion', 'Object' => ''));
                 return false;
             }
         }
 
-        $members[] = $cptMail->Adresse;
+        $members[] = $add;
         $temp = $zimbra->modifyDistributionList(array(
            'id' => $this->IdDiffusion,
             'zimbraMailForwardingAddress'=> $members
@@ -288,6 +296,12 @@ class ListeDiffusion extends genericClass {
      * @return	bool
      */
     public function delListMember($cptMail){
+        $type = $cptMail->ObjectType;
+        if($type == 'CompteMail'){
+            $add = $cptMail->Adresse;
+        }elseif($type == 'ListeDiffusion') {
+            $add = $cptMail->Nom;
+        }
 
         $srv = $this->getKEServer();
 
@@ -311,7 +325,7 @@ class ListeDiffusion extends genericClass {
 
         $newMembs = array();
         foreach($members as $memb){
-            if($cptMail->Adresse != $memb) {
+            if($add != $memb) {
                 $newMembs[] = $memb;
             }
         }
@@ -375,9 +389,15 @@ class ListeDiffusion extends genericClass {
      */
     public function checkListMember($cptMail){
         $proxyMembers = $this->getChildren('CompteMail');
+        $proxyMembers2 = $this->getChildren('ListeDiffusion');
+
+
         $membs = array();
         foreach($proxyMembers as $cpt){
             $membs[] = $cpt->Adresse;
+        }
+        foreach($proxyMembers2 as $cpt){
+            $membs[] = $cpt->Nom;
         }
 
         if(in_array($cptMail->Adresse,$membs)){
@@ -397,7 +417,7 @@ class ListeDiffusion extends genericClass {
      */
     public function addChild($Type, $Id) {
         $child = parent::addChild($Type, $Id);
-        if($Type == 'CompteMail'){
+        if($Type == 'CompteMail' || $Type == 'ListeDiffusion'){
             $this->addListMember($child);
         }
 
@@ -413,7 +433,7 @@ class ListeDiffusion extends genericClass {
     public function delChild($Type, $Id) {
         $child = parent::delChild($Type, $Id);
 
-        if($Type == 'CompteMail'){
+        if($Type == 'CompteMail' || $Type == 'ListeDiffusion'){
             $this->delListMember($child);
         }
 
@@ -426,7 +446,7 @@ class ListeDiffusion extends genericClass {
      * @param String Object Type name
      */
     public function resetChilds($Class) {
-        if($Class == 'CompteMail') {
+        if($Class == 'CompteMail' || $Class == 'ListeDiffusion') {
             $olds = $this->getChildren($Class);
             foreach($olds as $old){
                 $this->delListMember($old);

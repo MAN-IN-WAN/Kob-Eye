@@ -5,3 +5,18 @@
 		<div class="col-md-2 text-right"><img src="/{{ LOGOTEL }}" class="logoContact"></div>
 	</div>
 </div>
+
+{% if (Adherent.LienFacebook is not empty) or (Adherent.LienInstagram is not empty)  %}
+		<div class="boxnum">
+			Suivez nous sur {%  if (Adherent.LienFacebook is not empty) and (Adherent.LienInstagram is empty) %}
+								<a href="{{ Adherent.LienFacebook }}" target="_blank">Facebook</a>
+							{%  endif %}
+							{%  if (Adherent.LienInstagram is not empty) and (Adherent.LienFacebook is empty) %}
+								<a href="{{ Adherent.LienInstagram }}"target="_blank">Instagram</a>
+							{% endif %}
+							{% if (Adherent.LienFacebook is not empty) and (Adherent.LienInstagram is not empty) %}
+								<a href="{{ Adherent.LienFacebook }}" target="_blank">Facebook</a>, <a href="{{ Adherent.LienInstagram }}"target="_blank">Instagram</a>
+							{% endif %}
+		</div>
+{% endif %}
+

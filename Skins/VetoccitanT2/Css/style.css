@@ -116,7 +116,7 @@ h2 {
 }
 
 p {
-    line-height: 22px;
+    line-height: 25px;
 }
 
 a.voirplus {
@@ -280,6 +280,10 @@ h2.news {
 .textArticle {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+/* AJOUT MD CAR PUCES EN DEHORS DU CONTENU */
+.textArticle ul {
+    margin-left: 20px;
 }
 
 a.LienNewsColonne {
@@ -582,7 +586,7 @@ button:hover {
    /* text-align: center;*/
 }
 
-h1.NomMenu {
+.NomMenu {
     list-style: none;
     margin-left: -15px;
 }
@@ -946,6 +950,26 @@ li.menuLink {
 
 /* fin animation*/
 
+.equipe {
+    border-top: 2px solid #ddd;
+    margin: 0 15px;
+}
+
+.equipe .imgArticle {
+    padding-top: 50px;
+    width: 70%;
+    margin: auto;
+}
+.equipe .titreArticle {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.equipe .textArticle {
+    width: 60%;
+    margin: auto;
+}
+
 .row.equipeteam h5 {
     font-size: 1em;
 }
@@ -963,6 +987,9 @@ li.menuLink {
 
 .row.equipeteam {
     margin-bottom: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .textePresentation {
@@ -1234,6 +1261,11 @@ form.Contact {
     border-radius: 15px;
     box-shadow: 0 0 10px #ddd;
 }
+.adresseContact {
+    padding-top: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
 /* ajout Marie 01/04/20 pour logo clinique dans menu*/
 /* Modif Patrick 20/04/20 taille du logo dans menu bar de 41% à 27%, full size à voir pour obtenir un logo plus grand  */
 
@@ -1285,9 +1317,8 @@ form.Contact {
 .testPost {
     margin: 0;
     margin-bottom: 15px;
-    box-shadow: 0 2px 5px #ddd;
+    border-bottom: 2px solid #ddd;
     padding: 15px;
-    text-transform: uppercase;
     border-radius:15px;
 }
 .row.postHead.text-center {
@@ -2134,8 +2165,17 @@ form.Contact {
         font-size: 0.75em;
         padding: 10px;
     }
-
+    /* filtres*/
+    .filtres li {
+        flex-grow: 1;
+        margin: 0 5px 10px 5px;
+    }
+    .filtres {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
 }
+
 /** Medium devices (tablets, 768px and up) **/
 @media  (max-width: 1199.98px) {
     #open h1 {
@@ -2156,10 +2196,13 @@ form.Contact {
         content: none;
     }
 
-    .boxnum{
-        padding: 15px;
+    .logoContact {
+        width: 20px;
+        vertical-align: middle;
     }
-
+    .boxnum {
+        padding: 15px 5px;
+    }
     .numWrap {
         justify-content: space-between;
     }
@@ -2218,9 +2261,19 @@ form.Contact {
     .Atterissage #mLegal {
         display: block;
     }
-    .boxhoraire {
-        font-size: 0.8em;
-        padding: 30px;
+
+    .boutonCentre {
+        padding:10px;
+    }
+
+    /* filtres*/
+    .filtres li {
+        flex-grow: 1;
+        margin: 0 5px 10px 5px;
+    }
+    .filtres {
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 
 }
@@ -2253,8 +2306,8 @@ form.Contact {
 
 @media screen and (min-width: 765px) and (max-width: 1014px) {
     .boxhoraire {
-        font-size: 0.75em;
-        padding: 10px;
+        font-size: 0.62em;
+        padding: 5px;
     }
     .mentionsLegal {
         padding: 0 15px;
@@ -2269,16 +2322,16 @@ form.Contact {
     .Atterissage #mLegal {
         display: block;
     }
-    .boxhoraire {
-        font-size: 0.75em;
-        padding: 10px;
+    /* filtres*/
+    .filtres li {
+        flex-grow: 1;
+        margin: 0 5px 10px 5px;
+    }
+    .filtres {
+        justify-content: space-between;
     }
 }
 @media screen and (min-width: 1015px) and (max-width: 1044px) {
-.boxhoraire {
-    font-size: 0.8em;
-    padding: 10px;
-}
     .mentionsLegal {
         padding: 0 15px;
     }
@@ -2501,3 +2554,5 @@ form.Contact {
         z-index: 100;
     }
 }
+
+

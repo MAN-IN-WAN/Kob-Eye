@@ -256,7 +256,7 @@ class RestorePoint extends genericClass{
         $restopoint = $this->Identifiant;
         try {
             //Préparation du backup
-            $act = $task->createActivity('Préparation et nettoyage backup - ID: '.$this->Id.' PID: '.getmypid() ,'Info');
+            $act = $task->createActivity('Préparation et nettoyage backup - ID: '.$task->Id.' PID: '.$task->ThreadId,'Info');
             //test des dossiers
             $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
             $out = $apachesrv->remoteExec($cmd);
@@ -279,7 +279,7 @@ class RestorePoint extends genericClass{
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
                 $bddsrv = $bdd->getOneParent('Server');
-                $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom.' - ID: '.$this->Id.' PID: '.getmypid(), 'Info', $task);
+                $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom.' - ID: '.$task->Id.' PID: '.$task->ThreadId, 'Info', $task);
                 $bddIP = !empty($bddsrv->InternalIP) ? $bddsrv->InternalIP : '127.0.0.1';
                 $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.$bddIP.' --lock-tables=false --single-transaction -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
                 $act->addDetails($cmd);
@@ -287,20 +287,20 @@ class RestorePoint extends genericClass{
                 $act->addDetails($out);
                 $act->Terminate(true);
             }
-            $act = $task->createActivity('Suppression du lock - ID: '.$this->Id.' PID: '.getmypid(), 'Info', $task);
+            $act = $task->createActivity('Suppression du lock - ID: '.$task->Id.' PID: '.$task->ThreadId, 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . ' && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg break-lock backup';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $task->createActivity('Backup fichier - ID: '.$this->Id.' PID: '.getmypid(), 'Info', $task);
+            $act = $task->createActivity('Backup fichier - ID: '.$task->Id.' PID: '.$task->ThreadId, 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . ' && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs" --exclude "azkocms_medias" --exclude "azkocms_skins"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //modification des droits
-            $act = $task->createActivity('Modification des droits - ID: '.$this->Id.' PID: '.getmypid(), 'Info', $task);
+            $act = $task->createActivity('Modification des droits - ID: '.$task->Id.' PID: '.$task->ThreadId, 'Info', $task);
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/backup -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);

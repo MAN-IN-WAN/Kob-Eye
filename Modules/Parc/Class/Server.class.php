@@ -283,6 +283,8 @@ class Server extends genericClass {
                         $o = genericClass::createInstance('Parc','CompteMail');
                         $o->IdMail = $accId;
                         $report .= '<b>Nouvelle adresse trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
+                    } else {
+                        $report .= '<b>Adresse déjà existante </b> : '.$accName.'.<br>'.PHP_EOL;
                     }
                     $o->Adresse = $accName;
                     $o->COS = $cos;
@@ -299,6 +301,7 @@ class Server extends genericClass {
 
                     if(!$dryrun){
                         $o->Save(false);
+                        //$report .= print_r($o->Error,true);
                         $mAliases = $account->get('zimbraMailAlias');
                         if(!is_array($mAliases))
                             $mAliases = array($mAliases);

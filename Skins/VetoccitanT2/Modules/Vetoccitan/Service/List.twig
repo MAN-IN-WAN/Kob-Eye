@@ -9,7 +9,7 @@
                     <h1>{{ Serv.Titre }}</h1>
                 </div>
                 <div class="textArticle">
-                    <p class="texte">{{ Serv.Description  |striptags | slice (0 , 400)|raw }}</p>
+                    <p class="texte">{{ Serv.Description  |striptags | slice (0 , 150)|raw }}</p>
                     <a href="{{ Lien }}/{{ Serv.Url  }}" alt="" title="" class="voirplus">Voir plus...</a>
                 </div>
             </div>

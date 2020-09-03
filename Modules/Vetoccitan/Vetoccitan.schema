@@ -1,10 +1,10 @@
 <SCHEMA>
-	<OBJECTCLASS title="Adherent" driver="mysql" AccessPoint="1" master="1" Description="Adherents" tagObjects="Adherent"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  className="Adherent" Class="Modules/Vetoccitan/Class/Adherent.class.php">
+	<OBJECTCLASS title="Adherent" driver="mysql" AccessPoint="1" master="1" Description="Adherents" tagObjects="Adherent"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  className="Adherent" Class="Modules/Vetoccitan/Class/Adherent.class.php" Operations="add::VETO_ADM,edit,delete::VETO_ADM">
 		<CATEGORY title="Principal">
 			<PROPERTIES searchOrder="1" obligatoire="1" description="Adhérent" type="varchar" length="255"  fiche="1" form="1" list="1">Nom</PROPERTIES>
 			<PROPERTIES type="html" form="1" fiche="1" >Description</PROPERTIES>
 			<PROPERTIES type="image" list="1" form="1" fiche="1">Logo</PROPERTIES>
-			<PROPERTIES type="varchar" query="Vetoccitan/Divers::Id" description="Choix des mentions légales" form="1" fiche="1">MentionsLegales</PROPERTIES>
+			<PROPERTIES type="varchar" query="Vetoccitan/Divers::Id::Nom" description="Choix des mentions légales" form="1" fiche="1">MentionsLegales</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Coordonnees">
 			<PROPERTIES Order="4" description="Adresse"    type="text" fiche="1" form="1" >Adresse</PROPERTIES>
@@ -13,8 +13,8 @@
 			<PROPERTIES Order="7" description="Pays"      type="varchar" length="100"   fiche="1" form="1">Pays</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Communication">
-			<PROPERTIES Order="8"     obligatoire="0"  description="Lien réservation"      type="text"   fiche="1" form="1" >LienReservation</PROPERTIES>
-			<PROPERTIES Order="9"     obligatoire="0"  description="Lien eshop"      type="text"   fiche="1" form="1" >LienEshop</PROPERTIES>
+			<PROPERTIES Order="8"     obligatoire="0"  description="Lien réservation"      type="text"   fiche="0" form="0" >LienReservation</PROPERTIES>
+			<PROPERTIES Order="9"     obligatoire="0"  description="Lien eshop"      type="text"   fiche="0" form="0" >LienEshop</PROPERTIES>
 			<PROPERTIES Order="10"     obligatoire="1"  description="Mail de contact"      type="varchar" length="100"  fiche="1" form="1" list="1">EmailContact</PROPERTIES>
 			<PROPERTIES Order="11" description="Téléphone" type="varchar" length="20"   fiche="1" form="1">Tel</PROPERTIES>
 			<PROPERTIES Order="11" description="Fax" type="varchar" length="20"  fiche="1" form="1">Fax</PROPERTIES>
@@ -23,8 +23,8 @@
 			<PROPERTIES Order="14"     obligatoire="0"  description="Lien Instagram"      type="text"   fiche="1" form="1" >LienInstagram</PROPERTIES>
 		</CATEGORY>
 
-		<FKEY card="0,n" data="Activite,Id" link="1"  parentDescription="Activite" listDescr="Activite" fiche="1" form="1">ActiviteId</FKEY>
-		<FKEY card="0,1" module="Parc" data="Client,Id" link="1"  parentDescription="Client" listDescr="Client" >ClientId</FKEY>
+		<FKEY card="0,n" data="Activite,Id" link="1"  parentDescription="Activite" listDescr="Activite" fiche="1" form="1" >ActiviteId</FKEY>
+		<FKEY card="0,1" module="Parc" data="Client,Id" link="1"  parentDescription="Client" listDescr="Client" hasRole="VETO_ADM">ClientId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Personnel" driver="mysql" AccessPoint="1" Description="Personnel" Class="Modules/Vetoccitan/Class/Personnel.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
@@ -61,7 +61,8 @@
 	<OBJECTCLASS title="News" driver="mysql"  AccessPoint="1" Description="News" Class="Modules/Vetoccitan/Class/News.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  browseable="1">
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" length="255" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="html"  form="1" fiche="1">Description</PROPERTIES>
-		<PROPERTIES type="boolean"  list="1" form="1" fiche="1">AlaUne</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" form="1" fiche="1">AlaUne</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" fiche="1" default="1" values="1::Sites Adhérents,2::Site Public Vetoccitan,3::Site Pro Vetoccitan,4::Réseaux sociaux,Newsletter">Canal</PROPERTIES>
 		<FKEY card="0,1" data="Categorie,Id" link="1" list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
 		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>
 	</OBJECTCLASS>
@@ -85,7 +86,7 @@
 		<PROPERTIES type="date" description="Date Fin Affichage" list="1" form="1" fiche="1">DateFin</PROPERTIES>
 		<PROPERTIES type="boolean"  list="1" form="1" fiche="1">Publier</PROPERTIES>
 		<PROPERTIES type="varchar" default="gauche" description="Animation" list="1" form="1" fiche="1" length="50" values="gauche::Texte à gauche,droite::Texte à droite">Animation</PROPERTIES>
-		<FKEY card="0,n" data="Adherent,Id" link="1"   parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>
+<!--		<FKEY card="0,n" data="Adherent,Id" link="1"   hasRole="VETO_ADM" parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>-->
 		<FKEY card="0,n" data="Categorie,Id" link="1" list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
 	</OBJECTCLASS>
 
@@ -140,9 +141,7 @@
 		<PROPERTIES type="varchar" description="Contexte de diffusion" length="50" list="1" form="1" fiche="1" values="MentionsLegales::Mentions légales">Contexte</PROPERTIES>
 		<PROPERTIES type="order" description="Ordre affichage"  list="1" form="1" fiche="1" >Ordre</PROPERTIES>
 		<PROPERTIES type="boolean"  description="Par défaut" list="1" form="1" fiche="1">Defaut</PROPERTIES>
-
 	</OBJECTCLASS>
-
 
 
 </SCHEMA>

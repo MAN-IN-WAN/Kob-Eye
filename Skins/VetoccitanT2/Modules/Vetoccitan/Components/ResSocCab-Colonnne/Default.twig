@@ -1,0 +1,7 @@
+{{ LienFacebook }}++
+
+{% if (LienFacebook is not empty) or (LienInstagram is not empty)  %}
+    <div class="bloc-social">
+        {%  if LienFacebook is not empty %}<a href="{{ LienFacebook }}" target="_blank"><img src="/Skins/VetoccitanT/Images/logoFB.png"></a>{%  endif %} {%  if LienInstagram is not empty %}<a href="{{ LienInstagram }}"target="_blank"><img src="/Skins/VetoccitanT/Images/logoIG.png"></a>{% endif %}
+    </div>
+{% endif %}

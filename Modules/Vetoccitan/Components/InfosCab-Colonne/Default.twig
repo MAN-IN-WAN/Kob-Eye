@@ -4,10 +4,11 @@
 	<p>{{ Adherent.CodePostal  }} {{ Adherent.Ville  }}</p>
 </div>
 
-<div class="bloc-infos">
+{#<div class="bloc-infos">
 	<h2>{{ Horaires.Journees }} </h2>
 	<p>{{ Horaires.HeuresTravail }}</p>
-</div>
+</div>#}
+
 <div class="bloc-infos">
 	<p>Tél : {{ Adherent.Tel  }}</p>
 	<p>Courriel : {{ Adherent.EmailContact  }}</p>
@@ -15,6 +16,6 @@
 
 {% if (Adherent.LienFacebook is not empty) or (Adherent.LienInstagram is not empty)  %}
 <div class="bloc-social">
-	{%  if Adherent.LienFacebook is not empty %}<a href="{{ Adherent.LienFacebook }}" target="_blank"><img src="/Skins/VetoccitanT/Images/logoFB.png"></a>{%  endif %} {%  if Adherent.LienInstagram is not empty %}<a href="{{ Adherent.LienInstagram }}"target="_blank"><img src="/Skins/VetoccitanT/Images/logoIG.png"></a>{% endif %}
+	{%  if Adherent.LienFacebook is not empty %}<a href="{{ Adherent.LienFacebook }}" target="_blank"><img src="/Skins/VetoccitanT/Images/200727-VETOCCITAN-logoFB35px.png"></a>{%  endif %} {%  if Adherent.LienInstagram is not empty %}<a href="{{ Adherent.LienInstagram }}"target="_blank"><img src="/Skins/VetoccitanT/Images/200727-VETOCCITAN-logoIG35px.png"></a>{% endif %}
 </div>
 {% endif %}
