@@ -978,6 +978,9 @@ where ce.Classe=$cid
 		return iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $txt);
 	}
 	
+	public static function win2utf($txt) {
+		return iconv('ISO-8859-15', 'UTF-8//TRANSLIT', $txt);
+	}
 	
 	
 

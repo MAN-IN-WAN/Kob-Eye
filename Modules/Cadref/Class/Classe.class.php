@@ -172,17 +172,18 @@ class Classe extends genericClass {
 						if($n == 2) $day = $c;
 						elseif($n == 7) $sean = $c;
 						elseif($n == 8)	$prog = $c;
+						elseif($n == 5 || $n == 6) $c = self::convDat($c);
 						$fld = $flds[$n];
 						$cls->$fld = $c;
 						break;
 					case 13:
 						$lieu = Sys::getOneData('Cadref', 'Lieu/Lieu='.$c);
-						if(!$lieu) $msg .= "lig $lig: Lieu introuvable $c.\n";
+						if(!$lieu) $msg .= "lig $lig: $clas Lieu introuvable $c.\n";
 						else $cls->addParent($lieu);
 						break;
 					case 14: 
 						$ens = Sys::getOneData('Cadref', 'Enseignant/Code='.$c);
-						if(!$ens) $msg .= "lig $lig: Enseignant introuvable $c.\n";
+						if(!$ens) $msg .= "lig $lig: $clas Enseignant introuvable $c.\n";
 						else $cls->addParent($ens);
 						$cls->Save();
 						if(!$new) {
@@ -199,13 +200,14 @@ class Classe extends genericClass {
 						if($c == '' || $prog == 0) $n == -1;
 						else {
 							$nbdt++;
+							$c = self::convDat($c);
 							$ds = explode('/', $c); 
 							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
-							if(!$dt) $msg .= "lig $lig: Date erronee $c.\n";
+							if(!$dt) $msg .= "lig $lig: $clas Date erronee $c.\n";
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: Date differente du jour $day $w $c.\n";
+								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $c.\n";
 								$ts = $dt->getTimestamp();
 								$dat = genericClass::createInstance('Cadref', 'ClasseDate');
 								$dat->addParent($cls);
@@ -217,7 +219,7 @@ class Classe extends genericClass {
 				if(!$ok || $n == -1) break;
 				$n++;
 			}
-			if($prog && $nbdt != $sean) $msg .= "lig $lig: Nombre de dates different des seances $sean.\n";
+			if($prog && $nbdt != $sean) $msg .= "lig $lig: $clas Nombre de dates different des seances $sean.\n";
 			$lig++;
 		}
 		$msg .= "\n$lig lignes traitees\n";
@@ -306,9 +308,11 @@ class Classe extends genericClass {
 						if($n == 2) $day = $c;
 						elseif($n == 7) $sean = $c;
 						elseif($n == 8)	$prog = $c;
+						elseif($n == 5 || $n == 6) $c = self::convDat($c);
 						$fld = $flds[$n];
 						$cls->$fld = $c;
 						break;
+					
 					case 13:
 						if(!$c) $msg .= "lig $lig: $clas Lieu non renseigne.\n";
 						else {
@@ -340,13 +344,14 @@ class Classe extends genericClass {
 								$msg .= "lig $lig: $clas Date sur cours hebdomadaire $c.\n";
 							}
 							$nbdt++;
+							$c = self::convDat($c);
 							$ds = explode('/', $c); 
 							$dt = date_create_from_format('d/m/Y', "$c/".($ds[1] > 7 ? $annee : $next));
 							if(!$dt) $msg .= "lig $lig: $clas Date erronée $c.\n";
 							else {
 								$w = $dt->format('w');
 								if(!$w) $w = 7;
-								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $day $w $c.\n";
+								if($w != $day) $msg .= "lig $lig: $clas Date differente du jour $c.\n";
 							}
 						}
 				}
@@ -360,6 +365,14 @@ class Classe extends genericClass {
 		file_put_contents($file, $msg);
 		
 		return array('file'=>$file);
+	}
+	
+	private static function convDat($dt) {
+		if(strpos($dt, '-') === false) return $dt;
+		$t = explode('-', Cadref::win2utf($dt));
+		$m = strpos('janv;févr;mars;avr ;mai ;juin;juil;août;sept;oct ;nov ;déc ;', $t[1]) / 5 + 1;
+		$t = sprintf('%s/%02d', $t[0], $m);
+		return $t;
 	}
 	
 	function GetFormInfo() {
