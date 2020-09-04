@@ -1,0 +1,17 @@
+{%  if funcTempVars.step == 0 %}
+    <h3>Redirection d'un domaine : </h3>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Domaine cible</label>
+            {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" >
+                <input type="text" class="form-control" ng-model="ParcDomainfunction.args.redirect">
+            </div>
+        </div>
+    </div>
+
+{%  elseif funcTempVars.step == 1 %}
+
+{% endif %}

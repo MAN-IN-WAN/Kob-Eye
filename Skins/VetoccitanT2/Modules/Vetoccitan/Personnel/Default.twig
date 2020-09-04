@@ -3,12 +3,12 @@
             <div class="poste noPadding">
                 <div class="row postHead text-center">
                     <div class="row testPost text-center">
-                        <h3 class="col-lg-3 col-md-3 col-sm-3 col-xs-6" style="margin-left: -30px;">{{ Post.Nom }}</h3>
+                        <h3>{{ Post.Nom }}</h3>
                     </div>
                 </div>
                 <div class="row equipeteam text-center">
                 {% for Equi in attribute(Equipiers,Post.Nom) %}
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 paddResp" onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {% if Equi.Photo2 %}{{ Equi.Photo2|json_encode }}{% else %}{{ Equi.Photo|json_encode }}{% endif %})">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 paddResp" onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {% if Equi.Photo2 %}{{ Equi.Photo2|json_encode }}{% else %}{{ Equi.Photo|json_encode }}{% endif %})">
                         {#<img src="{{ Equi.Photo }}" class="img-responsive imgequipe" alt="{{ Equi.Nom }}" title="{{ Equi.Nom }}"  onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})" />#}
                         {% if Equi.Photo %}
                             <img src="{{ Equi.Photo }}.limit.200x200.jpg"
@@ -38,7 +38,7 @@
             </div>
         {% endfor %}
 
-    <div class="equipe" style="padding: 0 15px;" >
+    <div class="equipe">
         <div class="imgArticle ">
             <!---- ON DOIT RECUPÉRER VALUE DANS MINISITE POUR PRESENTATION EQUIPE : IMAGE -  TITRE IMAGE - "L'ÉQUIPE" - TEXTE -->
             <img src="/{{ Image }}" class="img-responsive respImage" alt="" title=""/>

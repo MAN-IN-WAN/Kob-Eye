@@ -1,6 +1,6 @@
 <div class="boxhoraire">
 	<div class="bloc-Horaires">
-		{# <div class="titreCentre">Horaires</div>#}
+				{# <div class="titreCentre">Horaires</div>#}
 		{{  Lundi }}
 		{% if Horaires.Lundi %}
 			<div class="row bloc-infos">
@@ -53,7 +53,7 @@
 </div>
 <div class="boutonCentre couleurPrincipale">
 	{% if Adherent.LienReservation %}
-		<a href="/{{ Adherent.LienReservation }}"  >Prendre rendez-vous</a>
+		<a href="{{ Adherent.LienReservation }}"   target="_blank" >Prendre rendez-vous</a>
 	{% else %}
 		<a href="/contact"  >Prendre rendez-vous</a>
 	{% endif %}

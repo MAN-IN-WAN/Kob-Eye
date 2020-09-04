@@ -36,7 +36,7 @@
         <div id="MenuBar" class="{% if not accueil %}Atterissage {% endif %} row fullWidth couleurPrincipale  ">
             <div class="row Container">
                 <div class="col-lg-3 col-md-3 col-sm-3">
-                    <h1 class="NomMenu"><a href="/">{{ Adherent.Nom }}</a></h1>
+                    <div class="NomMenu"><a href="/">{{ Adherent.Nom }}</a></div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9">
                     {{ include(template_from_string(module('Systeme/Menu'))) }}

@@ -1,21 +1,25 @@
-app.controller('{{ identifier }}CtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,VetoccitanBandeauStore) {
+app.controller('{{ identifier }}CtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,VetoccitanBandeauStore,VetoccitanMediaStore) {
 
     $scope.initBandeau = function () {
         $('#ajaxwrapperFunc').spin();
-        console.log('addXXXXXXXXXXXXXXXXXXXXXXXX {{ keIdentifier }}');
+        console.log('add {{ keIdentifier }}');
         $scope.VetoccitanBandeaufunction.args.values = {{ keIdentifier }}Store.getNewData();
         console.log($scope.modalObj);
         $('#ajaxwrapperFunc').spin(false);
     }
-    $scope.{{ c.identifier }}modify = function (obj){
-        {{ c.identifier }}Store.getOneData(obj.id,'default',false).then(function (data) {
+    $scope.VetoccitanBandeaumodify = function (obj){
+        VetoccitanBandeauStore.getOneData(obj.id,'default',false).then(function (data) {
             $scope.modalObj = data;
             $scope.modalObj.success = false;
-            $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
-            console.log('edit obj',$scope.modalObj);
-{# TODO  aller chercher le media child et le caler dans modalObj.Image #}
+            $scope.modalObj.title = 'Modifier Bandeau '+data.label;
+            console.log('edit obj',$scope.modalObj,obj);
+            VetoccitanMediaStore.setQuery('Vetoccitan/Bandeau/'+obj.id+'/Media','children');
+            VetoccitanMediaStore.getData(1,'children').then(function(data){
+                if(data.length && data[0].Image != undefined)
+                    $scope.modalObj.Image = data[0].Image;
+            });
         });
-        $("#modal-{{ c.identifier }}").modal();
+        $("#modal-VetoccitanBandeau").modal();
     }
 
 });

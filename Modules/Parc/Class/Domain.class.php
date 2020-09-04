@@ -569,4 +569,29 @@ class Domain extends genericClass
         $this->AutoGenSubDomains(false);
     }
 
+    public function Redirect ($params){
+        $step = 0;
+        if(!empty($params['step']))
+            $step = $params['step'];
+
+        switch($step) {
+            case 1 : //Evenements sur toute une journée avec  jours d'ouverture
+
+                break;
+            default: //Initialisation
+                return array (
+                    'template'=>"redirectDomain",
+                    'step'=>1,
+                    'callNext'=>array (
+                        'nom'=>'Redirect',
+                        'title'=>'Redirection'
+                    ),
+                    'funcTempVars' => array(
+                        'step'=> $step
+                    )
+                );
+
+        }
+
+    }
 }

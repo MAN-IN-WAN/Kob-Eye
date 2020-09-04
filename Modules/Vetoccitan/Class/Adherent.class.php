@@ -100,13 +100,20 @@ class Adherent extends genericClass
 
         }
 
+        $t = array();
+
         // Recherche les Médias de nos Infos search
         foreach ($SearchsAdherent as &$CONS) {
-            $ConsImg = $CONS->getOneChild("Media");
-            $CONS->Media =$ConsImg;
+            if ($search == "News" && $CONS->Canal > 1){
+                continue;
+            }else{
+                $ConsImg = $CONS->getOneChild("Media");
+                $CONS->Media =$ConsImg;
+                $t[] = $CONS;
+            }
         }
         // on récupère l'adhérent et on renvoie un array avec les valeurs
-        return($SearchsAdherent);
+        return($t);
 
     }
 }

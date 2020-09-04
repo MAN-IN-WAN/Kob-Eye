@@ -74,6 +74,7 @@
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Domain" logEvent="1" driver="mysql" AccessPoint="1" master="0" Description="Domaine" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
+		<FUNCTION title="Rediriger domaine" type="form">Redirect</FUNCTION>
 		<FILTER name="Tous les domaines" color="warning" ></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" unique="1" list="1" form="1" fiche="1" description="Url du domaine" listDescr="Domaine">Url</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde" list="1" form="1" fiche="1" listDescr="Saisie automatique">updateOnSave</PROPERTIES>

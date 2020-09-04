@@ -389,6 +389,13 @@ class CompteMail extends genericClass
             //donc i ls'agit d'un client connecté, on récupère l'objet client
             $this->_KEClient = Sys::$User->getOneChild('Client');
         }
+        if (!is_object($this->_KEClient) ) {
+            // on regarde si on peut pas rattacher depuis le domaine
+            $tld = explode('@', $this->Adresse);
+            $tld = end($tld);
+            $domain = Sys::getOneData('Parc', 'Domain/Url=' . $tld);
+            $this->_KEClient = $domain->getOneParent('Client');
+        }
         if (!is_object($this->_KEClient)) {
             return false;
         }
