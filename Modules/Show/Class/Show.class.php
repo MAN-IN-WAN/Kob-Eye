@@ -16,6 +16,7 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'del-account': return self::DelAccount($args);
 			case 'del-dialog': return Message::DelDialog($args);
 			case 'contact': return Contact::SaveContact($args);
 			case 'vote': return Performance::SetVote($args);
@@ -52,6 +53,18 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'favourite': return Performance::SetFavourite($args);
 		}
 		return array('err'=>'mode unknown');
+	}
+	
+	private static function delAccount($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
+		
+		$id = $usr->Id;
+		$phase = $args['phase'];
+		
+		$ps = $usr->getChildren('Performance');
+		
+		return array('success'=>true, 'logged'=>false);
 	}
 	
 	private static function article($args) {
@@ -157,6 +170,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$usr->Tel = $acc->phone;
 		$inf = new stdClass();
 		$inf->displayName = $acc->displayName;
+		$inf->sendInfo = $acc->sendInfo;
 		$inf->showFavourites = $acc->showFavourites;
 		$usr->Informations = json_encode($inf);
 		$usr->Save();
@@ -463,4 +477,5 @@ klog::l("GETSHOW >>>>>",$args);
 		return sprintf("$sign%02d:%02d", $hours, $mins);
 //		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
 	}
+	
 }
