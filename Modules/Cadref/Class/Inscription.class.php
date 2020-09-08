@@ -8,9 +8,12 @@ class Inscription extends genericClass {
 	
 	public static function OpenWeb($obj) {
 		$mnu = Sys::getOneData('Systeme', 'Menu/Url=adh_inscriptions');
-		$mnu->Affiche = $obj['Open'];
-		$mnu->Save();
-		return $mnu->Affiche;
+		if($obj['Save']) {
+			$mnu->Affiche = $obj['Open'] ? 1 : 0;
+			$mnu->Save();
+klog::l(">>>>>>>>>>",$mnu);
+		}
+		return $mnu->Affiche != 0;
 	} 
 	
 	function PrintStatistique($obj) {
