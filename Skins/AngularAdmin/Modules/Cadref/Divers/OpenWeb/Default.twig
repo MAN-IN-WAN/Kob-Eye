@@ -1,4 +1,4 @@
-{# fiche printClasse #}
+{# fiche OpenWeb #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 <div class="page-content-inner">
     <section class="panel">
@@ -9,19 +9,25 @@
         </div>
         <div class="row" style="height:20px"></div>
 		<div class="panel-body">
-            <div class="row">
+			<div class="row">
                 <div class="col-xl-12">
                     <div class="panel panel-with-borders m-b-0">
                         <div class="panel-body cadref-no-padding">
 							<div class="row">
 								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Autoriser l'inscription en ligne") }}
+										</div>
+										<div class="col-md-2">
+											<switch class="cadref-switch-red" ng-model="obj.Open"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
 
 									<div class="row">
 										<div class="col-md-2">
-											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction(0)">Imprimer</button>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction(1)">Excel</button>
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="openWeb()">Valider</button>
 										</div>
 									</div>
 								</div>                            
@@ -33,5 +39,4 @@
 		</div>
     </section>
 </div>
-
 

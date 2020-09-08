@@ -6,6 +6,13 @@ class Inscription extends genericClass {
 		throw new Exception('Une inscription ne peut être supprimée');
 	}
 	
+	public static function OpenWeb($obj) {
+		$mnu = Sys::getOneData('Systeme', 'Menu/Url=adh_inscriptions');
+		$mnu->Affiche = $obj['Open'];
+		$mnu->Save();
+		return $mnu->Affiche;
+	} 
+	
 	function PrintStatistique($obj) {
 		require_once ('cadrefStat.class.php');
 		require_once ('PrintStatistique.class.php');
