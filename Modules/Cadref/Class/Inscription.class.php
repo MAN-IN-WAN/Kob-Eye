@@ -11,7 +11,6 @@ class Inscription extends genericClass {
 		if($obj['Save']) {
 			$mnu->Affiche = $obj['Open'] ? 1 : 0;
 			$mnu->Save();
-klog::l(">>>>>>>>>>",$mnu);
 		}
 		return $mnu->Affiche != 0;
 	} 
