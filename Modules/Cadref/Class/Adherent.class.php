@@ -640,7 +640,7 @@ group by i.Antenne,s.Libelle
 				
 				if($typAdh == 'S') {
 					// adhérents sans inscription
-					$frm = "from `##_Cadref-Adherent` e left join `##_Cadref-Adherent` aa on aa.AdherentId=e.Id ad aa.Annee='$annee' ";
+					$frm = "from `##_Cadref-Adherent` e inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee' ";
 					$whr = "and aa.Cotisation>0 and aa.Reglement=aa.Cotisation and aa.Differe=0 and aa.Cours=0 ";
 				}
 				else if($typAdh != '') {
