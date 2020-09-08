@@ -191,7 +191,7 @@ class Adherent extends genericClass {
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours - $regle - $diffe + $a->Regularisation + $a->Dons - $a->AvoirReporte - $a->AvoirDu + $a->AvoirUtilise;
+		$a->Solde = $a->Cotisation + $cours + $a->Dons - $regle - $diffe - $a->Regularisation - $a->AvoirUtilise;
 		$a->Save();
 
 		return true;
@@ -2150,7 +2150,7 @@ where ce.Visite=:cid";
 			."left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
 			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
-			$sql .= " and (a.Cours+a.Cotisation-a.Reglement-a.Differe+a.Regularisation+a.Dons-a.AvoirReporte-a.AvoirDu+a.AvoirUtilise<>0 or a.Cotisation=0)";		
+			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe-a.Regularisation-a.AvoirUtilise<>0 or a.Cotisation=0)";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
