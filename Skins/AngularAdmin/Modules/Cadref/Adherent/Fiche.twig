@@ -454,7 +454,7 @@
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
-					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="i" title="Alt I" ng-click="openInscription(obj)">Inscription</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait||obj.AnneeSelect!='{{ Annee }}'" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="i" title="Alt I" ng-click="openInscription(obj)">Inscription</button>
 					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-primary margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="p" title="Alt P" ng-click="printCarte(obj)">Carte</button>
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>

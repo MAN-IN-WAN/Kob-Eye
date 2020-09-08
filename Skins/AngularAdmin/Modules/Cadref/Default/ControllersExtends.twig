@@ -1073,12 +1073,17 @@
 		$scope.CadrefClasse.Inscr.nonSolde = false;
 		$scope.inscrOpened = false;
 
-        $scope.openInscription = function(obj) {
-			if($scope.obj.AnneeSelect != '{{ Annee }}') {
+		function sleep(ms) {
+			  return new Promise(resolve => setTimeout(resolve, ms));
+		}
+
+        $scope.openInscription = async function(obj) {
+{#			if($scope.obj.AnneeSelect != '{{ Annee }}') {
 				$scope.obj.AnneeSelect = '{{ Annee }}';
 				$scope.anneeChange();
+				await sleep(3000);
 			}
-		
+#}		
 			$scope.modalObj = {};
             angular.copy(obj, $scope.modalObj);
             CadrefInscriptionStore.cloneContext('children','temp');
