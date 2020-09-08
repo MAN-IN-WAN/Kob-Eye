@@ -80,7 +80,7 @@ class PrintRecapitulatif extends FPDF {
 		$this->Cell($this->width[0], 4.5, '');
 		$this->Cell($this->width[1], 4.5, $mode ? '' : 'Totaux', 0, 0, 'R');
 		for($i = 0; $i < 12; $i++) $this->Cell($this->width[$i+2], 4.5, $t[$i], 0, 0, 'R');
-		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]-$t[8]-$t[11];
+		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]+$t[8]-$t[11];
 		$this->Cell($this->width[14], 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
 		$this->SetXY($this->left, $this->posy);
