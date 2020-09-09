@@ -640,8 +640,9 @@ group by i.Antenne,s.Libelle
 				
 				if($typAdh == 'S') {
 					// adhérents sans inscription
-					$frm = "from `##_Cadref-Adherent` e inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee' ";
-					$whr = "and aa.Cotisation>0 and aa.Reglement=aa.Cotisation and aa.Differe=0 and aa.Cours=0 ";
+					$frm = "from `##_Cadref-Adherent` e inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee' "
+						. "left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee' and i.Supprime=0 ";
+					$whr .= "and aa.Cotisation>0 and i.Id is null ";
 				}
 				else if($typAdh != '') {
 					$frm = "
@@ -2150,7 +2151,7 @@ where ce.Visite=:cid";
 			."left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
 			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
-			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 or a.Cotisation=0)";		
+			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 or a.Cotisation=0 or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0)";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
