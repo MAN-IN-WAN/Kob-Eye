@@ -2109,14 +2109,14 @@ where ce.Visite=:cid";
 		
 		if($params['CalculSolde']) {
 			$ante = $annee-1;
-			$sqsl = "update `kob-Cadref-AdherentAnnee` set AvoirReporte=0 where Annee='$annee'";
+			$sql = "update `kob-Cadref-AdherentAnnee` set AvoirReporte=0 where Annee='$annee'";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$GLOBALS['Systeme']->Db[0]->exec($sql);
 			
 			
 			$sql = "select a.AdherentId,a.AvoirDu,sum(c.AvoirReporte) as avoir "
 				."from `kob-Cadref-AdherentAnnee` a "
-				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' and Supprime=0 "
+				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' and i.Supprime=0 "
 				."left join `kob-Cadref-Classe` c on c.Id=i.ClasseId "
 				."where a.Annee='$ante' and (a.AvoirDu>0 or c.AvoirReporte>0) "
 				."group by a.AdherentId";
