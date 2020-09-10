@@ -47,7 +47,10 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Crew">Crew</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Cast">Cast</PROPERTIES>
 
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Amateur">Amateur</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Professional">Professional</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Advertisement">Advertisement</PROPERTIES>
+
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Scenery">Scenery</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Instruments">Instruments</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Electricity">Instruments</PROPERTIES>

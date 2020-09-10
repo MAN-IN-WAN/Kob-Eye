@@ -643,6 +643,7 @@ group by i.Antenne,s.Libelle
 					$frm = "from `##_Cadref-Adherent` e inner join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee' "
 						. "left join `##_Cadref-Inscription` i on i.AdherentId=e.Id and i.Annee='$annee' and i.Supprime=0 ";
 					$whr .= "and aa.Cotisation>0 and i.Id is null ";
+					//$whr .= "and aa.Cotisation>0 and aa.Cotisation+aa.Dons-aa.Reglement-aa.Differe-aa.AvoirUtilise+aa.Regularisation=0 and i.Id is null ";
 				}
 				else if($typAdh != '') {
 					$frm = "
@@ -2110,7 +2111,7 @@ where ce.Visite=:cid";
 			$ante = $annee-1;
 			$sql = "select a.AdherentId,a.AvoirDu,sum(c.AvoirReporte) as avoir "
 				."from `kob-Cadref-AdherentAnnee` a "
-				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' "
+				."left join `kob-Cadref-Inscription` i on i.AdherentId=a.AdherentId and i.Annee='$ante' and Supprime=0 "
 				."left join `kob-Cadref-Classe` c on c.Id=i.ClasseId "
 				."where a.Annee='$ante' and (a.AvoirDu>0 or c.AvoirReporte>0) "
 				."group by a.AdherentId";

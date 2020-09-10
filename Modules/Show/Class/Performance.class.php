@@ -227,9 +227,9 @@ class Performance extends genericClass {
 	private static function getPreview($cond, $logged, $uid, $lang) {
 
 		$sql = "select s.Id,c.Category$lang,mt.Maturity ";
-		$frm = "from `kob-Show-Performance` s ";
-		$join = "inner join `kob-Show-Category` c on c.Id=s.CategoryId "
-				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId ";
+		$frm = "from `##_Show-Performance` s ";
+		$join = "inner join `##_Show-Category` c on c.Id=s.CategoryId "
+				."left join `##_Show-Maturity` mt on mt.Id=s.MaturityId ";
 		
 		$cry = $cond->country;
 		$group = false;
@@ -242,7 +242,7 @@ class Performance extends genericClass {
 				$name = 'My shows';
 				break;
 			case 2: 
-				$frm .= "inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
+				$frm .= "inner join `##_Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
 				$name = 'Favourites';
 				break;
 			case 3:
@@ -250,9 +250,9 @@ class Performance extends genericClass {
 				if($cond->category) $whr .= "and s.CategoryId=$cond->category ";
 				if($cond->user) $whr .= "and s.userCreate=$cond->user ";
 				if($cond->year) $whr .= "and s.Year='$cond->year' ";
-				if($cond->genre) $join .= "inner join `kob-Show-PerformanceGenres` pg on pg.PerformanceId=s.Id and pg.Genre in ($cond->genre) ";
-				if($cond->language) $join .= "inner join `kob-Show-PerformanceLanguages` pl on pl.PerformanceId=s.Id and pl.Language in ($cond->language) ";
-				//if($cond->crew) $join .= "inner join `kob-Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew) ";
+				if($cond->genre) $join .= "inner join `##_Show-PerformanceGenres` pg on pg.PerformanceId=s.Id and pg.Genre in ($cond->genre) ";
+				if($cond->language) $join .= "inner join `##_Show-PerformanceLanguages` pl on pl.PerformanceId=s.Id and pl.Language in ($cond->language) ";
+				//if($cond->crew) $join .= "inner join `##_Show-Crew` cw on cw.PerformanceId=s.Id and cw.PeopleId in ($cond->crew) ";
 				if($cond->maturity) $whr .= "and s.MaturityId<>0 and s.MaturityId".($cond->more ? '>=' : '<=')."$cond->maturity ";
 				if($cond->state) $whr .= "and s.StateId in ($cond->state) ";
 				if($cond->city) $whr .= "and s.StateId in ($cond->city) ";
@@ -261,23 +261,23 @@ class Performance extends genericClass {
 					$name .= ": $txt";
 					$whr = "and s.Id in ( "
 					."select Id "
-					."from `kob-Show-Performance` "
+					."from `##_Show-Performance` "
 					."where CountryId=$cry and MATCH (Title,Subtitle,Summary,Description) AGAINST ('$txt*' in boolean mode) "
 					."union "
 					."select PerformanceId "
-					."from `kob-Show-Crew` "
+					."from `##_Show-Crew` "
 					."where MATCH (Name) AGAINST ('$txt') "
 					."union "
 					."select PerformanceId "
-					."from `kob-Show-Crew` "
+					."from `##_Show-Crew` "
 					."where MATCH (Role) AGAINST ('$txt*' in boolean mode) "
 					."union "
-					."select s.Id from `kob-Show-Category` c "
-					."inner join `kob-Show-Performance` s on s.CountryId=$cry and s.CategoryId=c.id "
+					."select s.Id from `##_Show-Category` c "
+					."inner join `##_Show-Performance` s on s.CountryId=$cry and s.CategoryId=c.id "
 					."where c.Category$lang like '$txt%' "
 					."union "
-					."select pg.PerformanceId as Id from `kob-Show-Genre` g "
-					."inner join `kob-Show-PerformanceGenres` pg on pg.Genre=g.Id "
+					."select pg.PerformanceId as Id from `##_Show-Genre` g "
+					."inner join `##_Show-PerformanceGenres` pg on pg.Genre=g.Id "
 					."where MATCH (Genre$lang) AGAINST ('$txt*' in boolean mode) "
 					.") ".$whr;
 				}
@@ -298,7 +298,7 @@ class Performance extends genericClass {
 			$inf = json_decode(Sys::$User->Informations);
 			if($inf && $inf->showFavourites && $cond->mode == 0 && ($slides == 0 || $slides == -1)) {
 				$acat = [];
-				$frm0 = $frm."inner join `kob-Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
+				$frm0 = $frm."inner join `##_Show-FavPerformance` fp on fp.PerformanceId=s.Id and fp.UserId=$uid ";
 				$max = self::getPerfs($uid, $logged, $lang, $sql, $frm0, $join, $whr, $ord, $offset, $page, $acat);
 				if($max) $data[] = ['count'=>count($acat), 'offset'=>$offset, 'max'=>$max, 'pages'=>0, 'name'=>'Favourites', 'id'=>-1, 'data'=>$acat];
 			}
@@ -369,13 +369,13 @@ class Performance extends genericClass {
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
 		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales,u.Nom,u.Informations "
-				."from `kob-Show-Performance` s "
-				."left join `kob-Show-Category` c on c.Id=s.CategoryId "
-				."left join `kob-Show-Maturity` mt on mt.Id=s.MaturityId "
-				."left join `kob-Show-Country` cr on cr.Id=s.CountryId "
-				."left join `kob-Show-State` st on st.Id=s.StateId "
-				."left join `kob-Show-City` cy on cy.Id=s.CityId "
-				."left join `kob-Systeme-User` u on u.Id=s.userCreate "
+				."from `##_Show-Performance` s "
+				."left join `##_Show-Category` c on c.Id=s.CategoryId "
+				."left join `##_Show-Maturity` mt on mt.Id=s.MaturityId "
+				."left join `##_Show-Country` cr on cr.Id=s.CountryId "
+				."left join `##_Show-State` st on st.Id=s.StateId "
+				."left join `##_Show-City` cy on cy.Id=s.CityId "
+				."left join `##_Systeme-User` u on u.Id=s.userCreate "
 				."where s.Id=$id limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -385,8 +385,9 @@ class Performance extends genericClass {
 		
 		$d = new stdClass();
 		$d->id = $p->Id;
-		$d->uid = $p->userCreate;
-		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+//		$d->uid = $p->userCreate;
+//		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+		$d->user = self::getEditor($p->userCreate);
 		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
 		$d->subtitle = $p->Subtitle;
@@ -420,10 +421,21 @@ class Performance extends genericClass {
 		return ['success'=>true, 'logged'=>$logged, 'show'=>$d, 'genres'=>$gnr, 'sql'=>$sql];
 	}
 
+	private static function getEditor($uid) {
+		$sql = "select u.tmsCreate,count(p.Id) as cnt,u.Nom,u.Mail,u.Tel,u.Initiales "
+			."from `##_Systeme-User` u "
+			."left join `##_Show-Performance` p on p.userCreate=u.Id "
+			."where u.Id=$uid "
+			."group by u.Id";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$r = $rs->fetch(PDO::FETCH_ASSOC);
+		return ['id'=>$uid, 'shows'=>$r['cnt'], 'create'=>$r['tmsCreate'], 'nickname'=>$r['Initiales'], 'name'=>$r['Nom'], 'phone'=>$r['Tel'], 'email'=>$r['Mail']];
+	}
 	
 	private static function getChildrenArray($parent, $name, $lang) {
 		$table = $name.'s';
-		$sql = "select $name from `kob-Show-Performance$table` where PerformanceId=$parent->Id";
+		$sql = "select $name from `##_Show-Performance$table` where PerformanceId=$parent->Id";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 
