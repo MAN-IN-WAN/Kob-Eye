@@ -873,10 +873,11 @@ order by a.Nom, a.Prenom";
 				Cadref::SendMessage($args);				
 			}
 			
-			if($mode == 0 && $obj['CopieEns'] && strpos($whr, 'i.CodeClasse like') !== false) {
+			if($mode == 0 && $obj['CopieEns'] && (strpos($whr, 'i.CodeClasse like') !== false || strpos($whr, 'ce.EnseignantId=') !== false)) {
 				$sql1 = "select distinct en.Mail,en.Nom,en.Prenom,'' as Sexe ";
-				$frm1 = $frm." inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId "
-					."inner join `##_Cadref-Enseignant` en on en.Id=ce.EnseignantId ";
+				$frm1 = $frm;
+				if(strpos($whr, 'ce.EnseignantId=') === false) $frm1 .= " inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
+				$frm1 .= " inner join `##_Cadref-Enseignant` en on en.Id=ce.EnseignantId ";
 				$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1.$frm1.$whr);
 
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql1);
