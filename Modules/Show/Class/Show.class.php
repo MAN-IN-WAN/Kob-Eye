@@ -521,7 +521,7 @@ klog::l("GETSHOW >>>>>",$args);
 
 		$headers = array
 		(
-			'Authorization: key='.API_ACCESS_KEY,
+			'Authorization: key=AIzaSyBY-8U5b5PfKD0qlB-_I8ypZkEqZoK6wPs',
 			'Content-Type: application/json'
 		);
 
