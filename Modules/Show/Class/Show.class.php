@@ -504,7 +504,7 @@ klog::l("GETSHOW >>>>>",$args);
 		if(!$info) return;
 		if(!isset($info->fcmToken) || !$info->fcmToken) return;
 		
-		$registrationIds = array($info->fcmToken);	
+		$registrationIds = array($info->fcmToken->value);	
 		$msg = array
 		(
 			'body'=>"abc",
