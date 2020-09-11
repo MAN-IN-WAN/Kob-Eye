@@ -496,13 +496,12 @@ klog::l("GETSHOW >>>>>",$args);
 //		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
 	}
 	
-	static function SendFCM($inf) {
-		klog::l('INFO:'.$inf);
-		$info = json_decode($inf);
+	static function SendFCM($from, $to) {
+		$info = json_decode($to->Informations);
 		if(!$info) return;
 		if(!isset($info->fcmToken) || !$info->fcmToken) return;
 		
-		$registrationIds = array($info->fcmToken->value);
+		$registrationIds = array($info->fcmToken);
 		$msg = array
 		(
 			'body'=>"abc",
@@ -520,7 +519,6 @@ klog::l("GETSHOW >>>>>",$args);
 			'Authorization: key=AAAAGQ9-ZyU:APA91bFFgV2i3FG_md9RFf6eUW2UuKTgbDVvziVYwhNjGhDFFF7EC9iTbp_r4rBod_F6UODkK1Y7hz462iASQZn7FzJttJaLICqcH19EVuzoFn6GJdNMQDJAYWMClu-TGiAcxpfgabv5',
 			'Content-Type: application/json'
 		);
-klog::l(">>>>>>>>>>>>>>>>>>>>>>>",$fields);
 		
 		$ch = curl_init();
 		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
