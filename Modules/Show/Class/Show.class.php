@@ -497,8 +497,10 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 	
 	static function SendFCM($inf) {
+		klog::l('INFO:'.$inf);
 		if(!$inf) return;
 		$info = json_decode($inf);
+		klog::l('INFO:',$info);
 		if(!$info) return;
 		if(!isset($info->fcmToken) || !$info->fcmToken) return;
 		
