@@ -498,13 +498,11 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	static function SendFCM($inf) {
 		klog::l('INFO:'.$inf);
-		if(!$inf) return;
 		$info = json_decode($inf);
-		klog::l('INFO:',$info);
 		if(!$info) return;
 		if(!isset($info->fcmToken) || !$info->fcmToken) return;
 		
-		$registrationIds = array($info->fcmToken->value);	
+		$registrationIds = array($info->fcmToken->value);
 		$msg = array
 		(
 			'body'=>"abc",
@@ -512,19 +510,18 @@ klog::l("GETSHOW >>>>>",$args);
 			'vibrate'=>1,
 			'sound'=>1
 		);
-
 		$fields = array
 		(
 			'registration_ids'=>$registrationIds,
 			'notification'=>$msg
 		);
-
 		$headers = array
 		(
 			'Authorization: key=AIzaSyBY-8U5b5PfKD0qlB-_I8ypZkEqZoK6wPs',
 			'Content-Type: application/json'
 		);
-
+klog::l(">>>>>>>>>>>>>>>>>>>>>>>",$fields);
+		
 		$ch = curl_init();
 		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
 		curl_setopt( $ch,CURLOPT_POST, true );
