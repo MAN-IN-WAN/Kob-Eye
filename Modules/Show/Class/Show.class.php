@@ -504,8 +504,8 @@ klog::l("GETSHOW >>>>>",$args);
 		$registrationIds = array($info->fcmToken);
 		$msg = array
 		(
-			'body'=>"abc",
-			'title'=>"Hello from Api",
+			'body'=>"Message from: $from->Initiales",
+			'title'=>"to: $to->Initiales",
 			'vibrate'=>1,
 			'sound'=>1
 		);
