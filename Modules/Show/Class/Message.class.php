@@ -6,15 +6,15 @@ class Message extends genericClass {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
-		
-		$sql = "select distinct p.Id,p.userCreate,p.Title,m.FromId,u.Initiales,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
+		$id = $usr->Id;
+		$sql = "select distinct p.Id,p.userCreate,p.Title,if(m.FromId=$id,m.ToId,m.FromId) as tfid,u.Initiales,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
-			."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
+			//."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
 			."inner join `kob-Show-Performance` p on p.Id=m.PerformanceId "
-			."inner join `kob-Systeme-User`u on u.Id=m.FromId "
-			."where m.ToId=$usr->Id "
-			."group by p.Id,m.FromId order by dt desc";
+			."inner join `kob-Systeme-User`u on u.Id=if(m.FromId=$id,m.ToId,m.FromId) "
+			."where m.ToId=$id or m.FromId=$id "
+			."group by p.Id,tfid order by dt desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -26,8 +26,8 @@ class Message extends genericClass {
 			$d = new stdClass();
 			$d->id = $r['Id'];
 			$d->title = $r['Title'];
-			$d->uid = $r['FromId'];
-			$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+			//$d->uid = $r['tfid'];
+			$d->user = ['id'=>$r['tfid'], 'nickname'=>$r['Initiales']]; //$inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
 			$d->count = $r['cnt'];
 			$d->time = $r['dt'];
 			$d->status = $r['st'];
