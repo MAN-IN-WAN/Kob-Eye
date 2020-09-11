@@ -42,11 +42,11 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'del-link': return Performance::DelLink($args);
 			case 'save-perf': return Performance::SavePerf($args);
 			case 'del-perf': return Performance::DeletePerf($args);
-			case 'login': return self::logUser();
+			case 'login': return self::logUser($args);
 			case 'confirm': return self::registerConfirm($args);
 			case 'register': return self::registerUser($args);
 			case 'logout': return self::logout($args);
-			case 'init': return self::initShow($args);			
+			case 'init': return self::initShow($args);
 			case 'lang': return self::loadLang($args);			
 			case 'param': return self::param($args);
 			case 'perf': return Performance::GetPerf($args);
@@ -129,12 +129,12 @@ klog::l("GETSHOW >>>>>",$args);
 		}
 		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId, 'utcOffset'=>$utcOffset];
 		
-		$ret = self::getUserInfo();
+		$ret = self::getUserInfo($args['fcm']);
 		$ret['country'] = $cry;
 		return $ret;
 	}
 	
-	private static function getUserInfo() {
+	private static function getUserInfo($fcmToken) {
 		$usr = Sys::$User;
 		$logged = !$usr->Public;
 		$user = null;
@@ -143,6 +143,11 @@ klog::l("GETSHOW >>>>>",$args);
 		if($logged) {
 			$inf = null;
 			if($usr->Informations) $inf = json_decode($usr->Informations);
+			if($fcmToken && (!isset($inf->fcmToken) || $inf->fcmToken != $fcmToken)) {
+				$inf->fcmToken = $fcmToken;
+				$usr->Informations = json_encode($inf);
+				$usr->Save();
+			}
 			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
 			$msg = self::newMessages($usr->Id);
 			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
@@ -157,11 +162,11 @@ klog::l("GETSHOW >>>>>",$args);
 		return $ret;
 	}
 	
-	private static function logUser() {
+	private static function logUser($args) {
 		$usr = Sys::$User;
 		if($usr->Public) return array('success'=>false, 'logged'=>false);
 		
-		$ret = self::getUserInfo();
+		$ret = self::getUserInfo($args['fcm']);
 		return $ret;
 	}
 	
@@ -491,4 +496,42 @@ klog::l("GETSHOW >>>>>",$args);
 //		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
 	}
 	
+	static function SendFCM($inf) {
+		if(!$inf) return;
+		$info = json_decode($inf);
+		if(!$info) return;
+		if(!isset($info->fcmToken) || !$info->fcmToken) return;
+		
+		$registrationIds = array($info->fcmToken);	
+		$msg = array
+		(
+			'body'=>"abc",
+			'title'=>"Hello from Api",
+			'vibrate'=>1,
+			'sound'=>1
+		);
+
+		$fields = array
+		(
+			'registration_ids'=>$registrationIds,
+			'notification'=>$msg
+		);
+
+		$headers = array
+		(
+			'Authorization: key='.API_ACCESS_KEY,
+			'Content-Type: application/json'
+		);
+
+		$ch = curl_init();
+		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+		curl_setopt( $ch,CURLOPT_POST, true );
+		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+		$result = curl_exec($ch );
+		curl_close( $ch );
+		klog::l('FCM:', $result);
+	}
 }
