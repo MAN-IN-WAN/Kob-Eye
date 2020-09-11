@@ -150,7 +150,7 @@ klog::l("GETSHOW >>>>>",$args);
 			}
 			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
 			$msg = self::newMessages($usr->Id);
-			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
+			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$usr->Id);
 		}
 		$ret = ['success'=>true, 'logged'=>$logged];
 		if($logged) {
