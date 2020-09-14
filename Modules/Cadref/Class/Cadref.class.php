@@ -248,7 +248,7 @@ class Cadref extends Module {
 		$u->Save();
 		
 		$a->Password = $pass;
-		if($endId) $a->Compte = 1;
+		if($ensId) $a->Compte = 1;
 		$a->Save();
 
 		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
