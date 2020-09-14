@@ -179,14 +179,17 @@ class Adherent extends genericClass {
 			if(!$a->Cotisation && $data->Cotisation) $a->DateCotisation = time();
 			$a->Cotisation = $data->Cotisation ? $data->Cotisation : 0;
 			$this->Cotisation = $data->Cotisation;
+			if(isset($data->AvoirDu)) $a->AvoirDu = $data->AvoirDu;
+			if(isset($data->AvoirUtilise)) $a->AvoirUtilise = $data->AvoirUtilise;
 			$this->Save();
 		}
 		if($mode == 0 || $mode == 1) {
 			$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
 			$a->Dons = $data->Dons ? $data->Dons : 0;
-			$a->AvoirDu = $data->AvoirDu ? $data->AvoirDu : 0;
-			$a->AvoirUtilise = $data->AvoirUtilise ? $data->AvoirUtilise : 0;
+			if(isset($data->AvoirDu)) $a->AvoirDu = $data->AvoirDu;
+			if(isset($data->AvoirUtilise)) $a->AvoirUtilise = $data->AvoirUtilise;
 		}
+//klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaa",$a);
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
@@ -203,8 +206,8 @@ class Adherent extends genericClass {
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
 		$data->Dons = $inscr['dons'];
-		$data->AvoirDu = $inscr['avoirDu'];
-		$data->AvoirUtilise = $inscr['avoirUtilise'];
+		if(isset($inscr['avoirDu'])) $data->AvoirDu = $inscr['avoirDu'];
+		if(isset($inscr['avoirUtilise'])) $data->AvoirUtilise = $inscr['avoirUtilise'];
 		$this->SaveAnnee($data, 1);
 	}
 
@@ -284,22 +287,27 @@ class Adherent extends genericClass {
 		}
 	}
 	
+	
 	function WebInscription($paiement) {
 		$annee = Cadref::$Annee;
+		
+		$zero = is_string($paiement) && $paiement == 'zero';
 
-		$reg = genericClass::createInstance('Cadref', 'Reglement');
-		$reg->addParent($paiement);
-		$reg->addParent($this);
-		$reg->Numero = $this->Numero;
-		$reg->Annee = $annee;
-		$reg->Montant = $paiement->Montant;
-		$reg->DateReglement = time();
-		$reg->ModeReglement = 'W';
-		$reg->Note = $paiement->Reference;
-		$reg->Encaisse = 1;
-		$reg->Utilisateur = 'WEB';
-		$reg->Web = 1;
-		$reg->Save();
+		if(!$zero) {
+			$reg = genericClass::createInstance('Cadref', 'Reglement');
+			$reg->addParent($paiement);
+			$reg->addParent($this);
+			$reg->Numero = $this->Numero;
+			$reg->Annee = $annee;
+			$reg->Montant = $paiement->Montant;
+			$reg->DateReglement = time();
+			$reg->ModeReglement = 'W';
+			$reg->Note = $paiement->Reference;
+			$reg->Encaisse = 1;
+			$reg->Utilisateur = 'WEB';
+			$reg->Web = 1;
+			$reg->Save();
+		}
 	
 		$data = $this->GetPanier('inscribe', '');
 		foreach($data['data'] as $ins) {
@@ -334,9 +342,12 @@ class Adherent extends genericClass {
 		}
 		// adherent
 		$this->Annee = $annee;
-		if($saveAdh) $this->Save();
+		//if($saveAdh) $this->Save();
 		
-		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']+$data['donate']));
+		$avoirUt = $data['avoirReporte']+$data['avoirDu']-$data['avoirSolde']; 
+		
+		$insc = array('Inscr'=>array('cotis'=>$data['cotis'], 'regul'=>$data['regul'], 'dons'=>$data['dons']+$data['donate'],
+			'avoirDu'=>$data['avoirDu'], 'avoirUtilise'=>$avoirUt));
 		$this->saveAnneeInscr($insc);
 		$this->Save();
 		
@@ -1560,21 +1571,31 @@ where i.ClasseId=".substr($to, 2)." and a.Mail like '%@%'";
 			$visites[] = $cot;
 			$regul = $co ? $co->Regularisation : 0;
 			$dons = $co ? $co->Dons : 0;
+			$avoirRep = $co ? $co->AvoirReporte : 0;
+			$avoirDu = $co ? $co->AvoirDu : 0;
+			$avoirUt = $co ? $co->AvoirUtilise : 0;
 		}
 		else {
 			if($co) {
-				$cotisDue = 0;
+				$cotisDue = $co->Cotisation ? 0 : $an->Cotisation;
 				$cotis = $co->Cotisation ? $co->Cotisation : $an->Cotisation;
 				$regul = $co->Regularisation;
 				$dons = $co->Dons;
+				$avoirRep = $co->AvoirReporte;
+				$avoirDu = $co->AvoirDu;
+				$avoirUt = $co->AvoirUtilise;
 			}
 			else {
 				$cotis = $cotisDue = $an->Cotisation;
 				$regul = 0;
 				$dons = 0;
+				$avoirRep = 0;
+				$avoirDu = 0;
+				$avoirUt = 0;
 			}
 		}
 
+$sss = '';
 		// cours deja inscrits
 		$sql = "
 select c.Id as clsId, c.CodeClasse, d.Libelle as LibelleD, n.Libelle as LibelleN, 
@@ -1613,8 +1634,10 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 		}
 			
 		// cours ajoutés
+		$montant = 0;
 		$in = substr($ids, 0, strlen($ids)-1);
-		$sql = "
+		if($in) {
+			$sql = "
 select distinct c.Id as clsId, c.CodeClasse, wd.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,a.LibelleCourt as LibelleA, c.Prix,
 if(c.DateReduction2 is not null and c.DateReduction2<=UNIX_TIMESTAMP(),c.Reduction2,
@@ -1629,49 +1652,49 @@ inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
 where c.CodeClasse in ($in) and c.Annee='$annee' 
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
-		$sss = $sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
-		$montant = 0;
-		if(! $pdo) klog::l("ERROR CADREF : Adherent.class cours ajoutés : ".sql);
-		else foreach($pdo as $r) {
-			$r['bloque'] = 0;
-			if(!$r['cWeb'] || !$r['nWeb']) {
-				$r['bloque'] = 1;
-				$r['note2'] = 'Indisponible en ligne';
-			}
-			$r['classe'] = 'label-warning';
-			$r['note'] = 'Nouveau cours';
-			$jr = $r['Jour'];
-			$cyd = $this->cycleValeur($r['CycleDebut'], true);
-			$cyf = $this->cycleValeur($r['CycleFin'], false);
-			$hrd = $r['HeureDebut'];
-			$hrf = $r['HeureFin'];
-			$heures = 0;
-			foreach($data as $d) {
-				if($d['clsId'] == 0) continue;
-				$cd = $this->cycleValeur($d['CycleDebut'], true);
-				$cf = $this->cycleValeur($d['CycleFin'], false);
-				if($jr == $d['Jour'] && (($cf >= $cyd && $cf <= $cyf) || ($cd >= $cyd && $cd <= $cyf))) {
-					$hd = $d['HeureDebut'];
-					$hf = $d['HeureFin'];
-					if(($hf >= $hrd && $hf <= $hrf) || ($hd >= $hrd && $hd <= $hrf)) $heures = 1;
-				}			
-			}
-			$r['heures'] = $heures;
-			if(!$r['bloque'] && $r['Disponibles'] <= 0) {
-				$r['note2'] =  'Plus de place disponible';
-				$r['bloque'] = 1;
-			}
-			elseif($heures) $r['note2'] = "Chevauchement d'horaire";
-			else $r['note2'] = '';
-			
-			if($r['bloque'] == 0) {
-				$data[] = $r;
-				$montant += $r['Prix']-$r['Reduction'];
-			}
-			else {
-				$c = "'".$r['CodeClasse']."',";
-				$ids = str_replace($c, '', $ids);		
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+			if(! $pdo) klog::l("ERROR CADREF : Adherent.class cours ajoutés : ".$sql);
+			else foreach($pdo as $r) {
+				$r['bloque'] = 0;
+				if(!$r['cWeb'] || !$r['nWeb']) {
+					$r['bloque'] = 1;
+					$r['note2'] = 'Indisponible en ligne';
+				}
+				$r['classe'] = 'label-warning';
+				$r['note'] = 'Nouveau cours';
+				$jr = $r['Jour'];
+				$cyd = $this->cycleValeur($r['CycleDebut'], true);
+				$cyf = $this->cycleValeur($r['CycleFin'], false);
+				$hrd = $r['HeureDebut'];
+				$hrf = $r['HeureFin'];
+				$heures = 0;
+				foreach($data as $d) {
+					if($d['clsId'] == 0) continue;
+					$cd = $this->cycleValeur($d['CycleDebut'], true);
+					$cf = $this->cycleValeur($d['CycleFin'], false);
+					if($jr == $d['Jour'] && (($cf >= $cyd && $cf <= $cyf) || ($cd >= $cyd && $cd <= $cyf))) {
+						$hd = $d['HeureDebut'];
+						$hf = $d['HeureFin'];
+						if(($hf >= $hrd && $hf <= $hrf) || ($hd >= $hrd && $hd <= $hrf)) $heures = 1;
+					}			
+				}
+				$r['heures'] = $heures;
+				if(!$r['bloque'] && $r['Disponibles'] <= 0) {
+					$r['note2'] =  'Plus de place disponible';
+					$r['bloque'] = 1;
+				}
+				elseif($heures) $r['note2'] = "Chevauchement d'horaire";
+				else $r['note2'] = '';
+
+				if($r['bloque'] == 0) {
+					$data[] = $r;
+					$montant += $r['Prix']-$r['Reduction'];
+				}
+				else {
+					$c = "'".$r['CodeClasse']."',";
+					$ids = str_replace($c, '', $ids);		
+				}
 			}
 		}
 
@@ -1700,15 +1723,20 @@ where ce.Classe=:cid";
 			$d['Enseignants'] = $e;
 		}
 		$total = $cotisDue+$montant+$donate+$solde;
+		$avoir = $avoirRep+$avoirDu-$avoirUt;
+		$avoirSolde = 0;
+		if($co) $avoirSolde = $total >= $avoir ? 0 : $avoir-$total;
+		$total -= $avoir;
+		if($total < 0) $total = 0;
 		
 		
 		// visites deja inscrites
 		$sql = "
-select v.Id as visId, c.Visite, v.Libelle as LibelleD,v.DateVisite,v.Prix,from_unixtime(v.DateVisite,'%d/%m/%Y') as DateText,
+select v.Id as visId, v.Visite, v.Libelle as LibelleD,v.DateVisite,v.Prix,from_unixtime(v.DateVisite,'%d/%m/%Y') as DateText,
 r.Attente,r.Supprime,1 as Inscrit,v.Places,if(v.Places-v.Inscrits-v.Attentes<=0,0,v.Places-v.Inscrits-v.Attentes) as Disponibles,v.Attachements,
 from_unixtime(r.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
 from_unixtime(r.DateSupprime,'%d/%m/%Y') as DateSupprime,
-from_unixtime(r.DateInscription,'%d/%m/%Y') as DateInscription, i.Supprime, r.Id as resId
+from_unixtime(r.DateInscription,'%d/%m/%Y') as DateInscription, r.Supprime, r.Id as resId
 from `##_Cadref-Reservation` r
 inner join `##_Cadref-Visite` v on v.Id=r.VisiteId
 where r.AdherentId=$adhId and r.Annee='$annee'
@@ -1733,40 +1761,41 @@ order by v.DateVisite";
 		}
 			
 		// visites ajoutées
+		$montantVisite = 0;
 		$in = substr($vids, 0, strlen($vids)-1);
-		$sql = "
+		if($in) {
+			$sql = "
 select distinct v.Id as clsId,v.Visite,v.Libelle as LibelleD,v.DateVisite,v.Prix,from_unixtime(v.DateVisite,'%d/%m/%Y') as DateText,
 0 as Attente,0 as Supprime,0 as Inscrit,v.Places,if(v.Places-v.Inscrits-v.Attentes<=0,0,v.Places-v.Inscrits-v.Attentes) as Disponibles,v.Web,
 0 as Attachements, 0 as resId
 from `##_Cadref-Visite` v
 where v.Visite in ($in) and v.Annee='$annee'
 order by v.DateVisite";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
-		$montantVisite = 0;
-		foreach($pdo as $r) {
-			$r['bloque'] = 0;
-			if(!$r['Web']) {
-				$r['bloque'] = 1;
-				$r['note2'] = 'Indisponible en ligne';
-			}
-			$r['classe'] = 'label-warning';
-			$r['note'] = 'Nouvelle visite';
-			if(!$r['bloque'] && $r['Disponibles'] <= 0) {
-				$r['note2'] =  'Plus de place disponible';
-				$r['bloque'] = 1;
-			}
-			else $r['note2'] = '';
-			
-			if($r['bloque'] == 0) {
-				$visites[] = $r;
-				$montantVisite += $r['Prix'];
-			}
-			else {
-				$c = "'".$r['Visite']."',";
-				$vids = str_replace($c, '', $vids);		
-			}
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+			foreach($pdo as $r) {
+				$r['bloque'] = 0;
+				if(!$r['Web']) {
+					$r['bloque'] = 1;
+					$r['note2'] = 'Indisponible en ligne';
+				}
+				$r['classe'] = 'label-warning';
+				$r['note'] = 'Nouvelle visite';
+				if(!$r['bloque'] && $r['Disponibles'] <= 0) {
+					$r['note2'] =  'Plus de place disponible';
+					$r['bloque'] = 1;
+				}
+				else $r['note2'] = '';
 
+				if($r['bloque'] == 0) {
+					$visites[] = $r;
+					$montantVisite += $r['Prix'];
+				}
+				else {
+					$c = "'".$r['Visite']."',";
+					$vids = str_replace($c, '', $vids);		
+				}
+			}
 		}
 
 		if($vsess) {
@@ -1797,8 +1826,9 @@ where ce.Visite=:cid";
 		$totalVisite = $cotisDue+$montantVisite+$donate+$solde;
 
 		return array('data'=>$data, 'cotis'=>$cotis, 'cotisDue'=>$cotisDue, 'solde'=>$solde, 'donate'=>$donate, 'montant'=>$montant, 'total'=>$total, 
-			'regul'=>$regul, 'dons'=>$dons, 'visites'=>$visites, 'montantVisite'=>$montantVisite, 'totalVisite'=>$totalVisite,
-			'urlweb'=>unserialize($_SESSION['urlweb']), 'sql'=>$sss);		
+			'regul'=>$regul, 'dons'=>$dons, 'avoirReporte'=>$avoirRep, 'avoirDu'=>$avoirDu, 'avoirUtilise'=>$avoirUt,  'avoirSolde'=>$avoirSolde,
+			'visites'=>$visites, 'montantVisite'=>$montantVisite, 'totalVisite'=>$totalVisite,
+			'urlweb'=>unserialize(isset($_SESSION['urlweb']) ? $_SESSION['urlweb'] : ''), 'sql'=>$sss);		
 	}
 	
 	

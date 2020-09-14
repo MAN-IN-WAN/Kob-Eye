@@ -143,7 +143,7 @@
 							</div>
 						</div>		
 						<div style="height:30px"></div>
-						<div class="row" ng-if="panierObj.Total*1">
+						<div class="row" ng-if="panierObj.CotisationDue*1||panierObj.Montant*1||panierObj.Dons*1||panierObj.Avoir*1">
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Prix des cours : € {[{ panierObj.Montant }]}</label>
 							</div>
@@ -162,6 +162,9 @@
 										<input type="text" mask="9999" class="form-control cadref-input" ng-model="panierObj.Dons" ng-change="panierDons()" style="width:60px" />
 									</div>
 								</div>
+							</div>
+							<div class="col-md-2" ng-if="panierObj.Avoir">
+								<label class="form-control-label cadref-label" style="line-height:1; color:green">Avoir : {[{ '€ -'+panierObj.Avoir }]}</label>
 							</div>
 							<div class="col-md-2">
 								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ panierObj.Total }]}</label>
@@ -228,7 +231,17 @@
 						<label class="form-control-label cadref-label">Don de soutien</label>
 					</div>
 					<div class="col-md-6">
-						<label class="form-control-label cadref-label">€ {[{ panierObj.Dons }]}</label>
+						<label class="form-control-label cadref-label">€ {[{ panierObj.Dons*1 }]}</label>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				
+				<div class="row" ng-if="panierObj.Avoir*1">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Avoir</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label" style="color:green">€ {[{ -(panierObj.Avoir*1) }]}</label>
 					</div>
 				</div>
 				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:5px;margin-top:15px"></div>
@@ -240,6 +253,15 @@
 						<label class="form-control-label cadref-label">€ {[{ panierObj.Total }]}</label>
 					</div>
 				</div>
+				<div ng-if="panierObj.AvoirSolde*1" style="height:10px"></div>
+				<div ng-if="panierObj.AvoirSolde*1" class="row">
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label">Avoir restant</label>
+					</div>
+					<div class="col-md-6">
+						<label class="form-control-label cadref-label" style="color:green">€ {[{ -panierObj.AvoirSolde*1 }]}</label>
+					</div>
+				</div>
 				<div class="row" style="height:1px;border-bottom:1px solid red;;margin-bottom:25px;margin-top:5px"></div>
 				<div>
 					<label class="form-control-label cadref-label" style="color:gray">Rappel : Règlement non fractionnable pour les paiements en ligne</label>
@@ -248,9 +270,11 @@
 				<div class="row">
 					<div class="col-md-2">
 					</div>
+					<!-- chargement dynamique form paiement -->
 					<div id="panierPayer" class="col-md-2">
-						<button type="button" class="btn btn-success">Chargement ...</button>
+						<button id="boutonPayer" type="button" class="btn btn-success" ng-click="panierZero()">Chargement...</button>
 					</div>
+					
 					<div class="col-md-2">
 					</div>
 					<div class="col-md-2">

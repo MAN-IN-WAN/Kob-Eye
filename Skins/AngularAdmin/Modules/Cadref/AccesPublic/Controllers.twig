@@ -847,6 +847,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.panierObj.Cotisation = data.data.data.cotis;
 		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
 		$scope.panierObj.Montant = data.data.data.montant;
+		$scope.panierObj.AvoirReporte = data.data.data.avoirReporte;
+		$scope.panierObj.AvoirDu = data.data.data.avoirDu;
+		$scope.panierObj.AvoirUtilise = data.data.data.avoirUtilise;
+		$scope.panierObj.AvoirSolde = data.data.data.avoirSolde;
+		$scope.panierObj.Avoir = $scope.panierObj.AvoirReporte*1+$scope.panierObj.AvoirDu*1-$scope.panierObj.AvoirUtilise*1;
 		$scope.panierObj.Solde = data.data.data.solde;
 		$scope.panierObj.Total = data.data.data.total;
 		$scope.panierObj.Urlweb = data.data.data.urlweb;
@@ -873,12 +878,22 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 	
 	$scope.panierConfirme = async function(mode) {
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[mode=='classe' ? $scope.panierObj.Total : $scope.panierObj.TotalVisite, mode]);
-		$("#panierPayer").html(data.data.data);
-		$('#PBXPayer').click(function() {
-			$('#modal-panier').modal('hide');
-		});
+		if($scope.panierObj.Total*1 > 0) {
+			$("#boutonPayer").prop('disabled', true);
+			var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[mode=='classe' ? $scope.panierObj.Total : $scope.panierObj.TotalVisite, mode]);
+			$("#panierPayer").html(data.data.data);
+			$('#PBXPayer').click(function() {
+				$('#modal-panier').modal('hide');
+			});
+		}
+		else $("#boutonPayer").html('Confirmer');
 		$("#modal-panier").modal('toggle');
+	}
+	
+	$scope.panierZero = async function() {
+		await $scope.{{ identifier }}callMethod($scope.obj,'WebInscription',['zero']);
+		$("#modal-panier").modal('hide');
+		$scope.getPanier();
 	}
 	
 	$scope.panierDons = function() {
