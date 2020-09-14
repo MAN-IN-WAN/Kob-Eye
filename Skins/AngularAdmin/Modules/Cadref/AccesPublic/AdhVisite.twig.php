@@ -8,7 +8,7 @@ $o = genericClass::createInstance($vars['module'],$vars['objecttype']);
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();
 foreach ($temp as $k=>$field){
-    if($info['TypeSearch'] == 'Direct' && ($field['type'] == 'metak' || $field['type'] == 'metad' || $field['type'] == 'metat' || $field['name'] == 'ImgMeta'  )){
+    if(($field['type'] == 'metak' || $field['type'] == 'metad' || $field['type'] == 'metat' || $field['name'] == 'ImgMeta'  )){
         continue;
     }
     if (isset($field['query'])&&!empty($field['query'])){
