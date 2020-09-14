@@ -76,7 +76,7 @@ class PrintCarte extends FPDF {
 
 	function Footer() {
 		$this->SetFont('Arial', '', 8);
-		$this->SetXY($this->letf, 90);
+		$this->SetXY($this->left, 90);
 		$this->Cell(200, 5, $this->cv('* Le reçu fiscal pour la cotisation vous sera délivré courant février.'), 0, 0, 'C');
 		if(!$this->recto) return;
 
