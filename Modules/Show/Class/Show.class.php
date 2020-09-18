@@ -94,7 +94,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
 			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
 			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
-			case 'motives': $data = self::getObjsArray('Motive', "", true, $lang); break;
+			case 'motives': $data = self::getObjsArray('Motive', "Type='$flt'", true, $lang); break;
 		}
 		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
@@ -501,6 +501,8 @@ klog::l("GETSHOW >>>>>",$args);
 		if(!$info) return;
 		if(!isset($info->fcmToken) || !$info->fcmToken) return;
 		
+			$key = Sys::getOneData('Show', 'Setting/Domain=NOTIFICATION&SubDomain=FCM&Setting=KEY');
+		
 		$registrationIds = array($info->fcmToken);
 		$msg = array
 		(
@@ -516,7 +518,7 @@ klog::l("GETSHOW >>>>>",$args);
 		);
 		$headers = array
 		(
-			'Authorization: key=AAAAGQ9-ZyU:APA91bFFgV2i3FG_md9RFf6eUW2UuKTgbDVvziVYwhNjGhDFFF7EC9iTbp_r4rBod_F6UODkK1Y7hz462iASQZn7FzJttJaLICqcH19EVuzoFn6GJdNMQDJAYWMClu-TGiAcxpfgabv5',
+			'Authorization: key='.$key->Value,
 			'Content-Type: application/json'
 		);
 		

@@ -726,7 +726,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					$cf += 86400 - 1;
 				}
 				$j = $p['JourId'] - 1;
-				$d = $start + ($j * 24 * 60 * 60);
+				$d = $start + ($j * 24 * 60 * 60) + 12*60*60;
 				while($d <= $end) {
 					$ok = !($cd && ($d < $cd || $d > $cf));
 					if($ok) {
@@ -734,7 +734,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 							switch($v->type) {
 								case 'D':
 									$w = date('N', $d);
-									$ok = !($v->day == $w && $d < $v->start);
+									if($v->day == $w) $ok = !($d < $v->start);
 									break;
 								case 'F':
 									$w = date('N', $d);

@@ -37,9 +37,6 @@
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Program / Summary">Summary</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
 
-
-
-
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Pressbook">Pressbook</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Price">Price</PROPERTIES>
 
@@ -203,6 +200,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Motive" driver="mysql" AccessPoint="1" Description="Motive" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="8" category="Description" form="1" list="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveEN</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveFR</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveES</PROPERTIES>
@@ -241,5 +239,16 @@
 		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >UserId</FKEY>
 		<PROPERTIES type="int" default="0" form="1" fiche="1" >FavUserId</PROPERTIES>
 	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Setting" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Setting" Operations="add,edit" Dico="1" Class="Modules/Show/Class/Setting.class.php">
+		<PROPERTIES type="varchar" length="16" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" >Domain</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" searchOrder="2" obligatoire="1" category="Description" list="1" form="1" fiche="1" >SubDomain</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="3" obligatoire="1" category="Description" list="1" form="1" fiche="1" >Setting</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Valeur">Value</PROPERTIES>
+		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" >Value</PROPERTIES>
+		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" >Text</PROPERTIES>
+	</OBJECTCLASS>
+
+
 
 </SCHEMA>
