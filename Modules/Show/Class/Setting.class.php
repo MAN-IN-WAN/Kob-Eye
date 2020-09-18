@@ -1,5 +1,5 @@
 <?php
-class Parametre extends genericClass {
+class Setting extends genericClass {
 	
 	public function LoadData($args) {
 		if($args['mode'] == 'domaine') 
