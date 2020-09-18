@@ -1,12 +1,12 @@
 <?php
-class Setting extends genericClass {
+class Parametre extends genericClass {
 	
 	public function LoadData($args) {
-		if($args['mode'] == 'domain') 
-			$sql = "select distinct Domain as name from `##_Show-Setting` order by Domain";
+		if($args['mode'] == 'domaine') 
+			$sql = "select distinct Domaine as name from `##_Cadref-Parametre` order by Domaine";
 		else {
-			$dom = $args['domain'];
-			$sql = "select distinct SubDomain as name from `##_Show-Setting` where Domain='$dom' order by SubDomain";
+			$dom = $args['domaine'];
+			$sql = "select distinct SousDomaine as name from `##_Cadref-Parametre` where Domaine='$dom' order by SousDomaine";
 		}
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -14,4 +14,5 @@ class Setting extends genericClass {
 		foreach($pdo as $p) $tmp[] = $p['name'];
 		return $tmp;
 	}
+
 }
