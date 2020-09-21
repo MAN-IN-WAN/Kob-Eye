@@ -246,7 +246,7 @@
 		<PROPERTIES type="varchar" length="32" searchOrder="3" obligatoire="1" category="Description" list="1" form="1" fiche="1" >Setting</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Valeur">Value</PROPERTIES>
 		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" >Value</PROPERTIES>
-		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" >Text</PROPERTIES>
+		<PROPERTIES type="html" category="Description" list="1" form="1" fiche="1" >Html</PROPERTIES>
 	</OBJECTCLASS>
 
 

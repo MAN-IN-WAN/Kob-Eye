@@ -23,7 +23,7 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'get-vote': return Performance::GetVote($args);
 			case 'comments': return Performance::GetComments($args);
 			case 'ratings': return Performance::GetRatings($args);
-			case 'article': return self::article($args);	
+			case 'document': return self::document($args);	
 			case 'account': return self::saveUser($args);	
 			case 'nickname': return self::checkNickname($args);	
 			case 'email': return self::checkEMail($args);			
@@ -67,13 +67,13 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('success'=>true, 'logged'=>false);
 	}
 	
-	private static function article($args) {
-		$art = $args['article'];
+	private static function document($args) {
+		$doc = $args['doc'];
 		$lang = $args['lang'];
 		
-		$a = Sys::getOneData('Redaction', "Article/Modele=$art$lang");
-		if(!$a) $a = Sys::getOneData('Redaction', "Article/Modele=$art".'EN');
-		return ['success'=>true, 'title'=>$a->Titre, 'text'=>$a->Contenu];
+		$set = Sys::getOneData('Show', "Setting/Domain=DOCUMENT&SubDomain=$doc&Setting=$lang");
+		if(!$set && $lang != 'EN') $set = Sys::getOneData('Show', "Setting/Domain=DOCUMENT&SubDomain=$doc&Setting=EN");
+		return ['success'=>true, 'title'=>$set->Value, 'html'=>$set->Html];
 	}
 	
 	private static function logout($args) {
@@ -405,14 +405,14 @@ klog::l("GETSHOW >>>>>",$args);
 		$data['success'] = 1;
 		$data['mail'] = $info[1];
 		if($u->Actif) {
-			$data['message'] = "Your registration has already been confirmed.<br />Welcome on show.ooo.";
+			$data['message'] = "Your registration has already been confirmed.<br />Welcome to https://shows.zone";
 			return $data;
 		}
 
 		$u->Actif = 1;
 		$u->Save();
 //		$data['success'] = 1;
-		$data['message'] = 'Your registration has been confirmed.<br />Welcome on show.ooo.';
+		$data['message'] = 'Your registration has been confirmed.<br />Welcome to https://shows.zone';
 		return $data;
 	}
 
@@ -420,23 +420,6 @@ klog::l("GETSHOW >>>>>",$args);
 	public static function MailSignature() {
 		return '';
 	}
-	
-//	public static function SendMessage($params) {
-//		$m = genericClass::createInstance('Systeme', 'MailQueue');
-//		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-//		else $m->From = 'show@polgo.ooo';
-//
-//		if(isset($params['To'])) $m->To = implode(',', $params['To']);
-//		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
-//		
-//		$m->Subject = $params['Subject'];
-//		$m->Body = $params['Body'];
-//		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
-//		
-//		//$m->EmbeddedImages = '';
-//		$m->Save();
-//		return $m->Id;
-//	}
 	
 	public static function SendMessage($params) {
 		require_once('Class/Lib/Mail.class.php');
