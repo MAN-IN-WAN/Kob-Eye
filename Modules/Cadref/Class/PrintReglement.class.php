@@ -22,7 +22,7 @@ class PrintReglement extends FPDF {
 	private $mode = 0;  // 0:reglement, 1:differes, 2:non encaisses
 	private $titre;
 	private $type;
-	private $modes = ['B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','V'=>'Virements','A'=>'Chèques vacances','X'=>'Non affectés','W'=>'Web'];
+	private $modes = ['B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','R'=>'Rbt Avoir','V'=>'Virements','A'=>'Chèques vacances','X'=>'Non affectés','W'=>'Web'];
 	
 	
 	function PrintReglement($mode, $type, $user, $debut, $fin) {
