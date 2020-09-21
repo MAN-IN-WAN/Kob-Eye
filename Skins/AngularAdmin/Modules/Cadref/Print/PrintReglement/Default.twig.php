@@ -21,4 +21,4 @@ $menus = ['impressionslistereglements','impressionsreglementsdifferes','impressi
 $t = explode('/', Sys::$CurrentMenu->Url);
 $vars['mode'] = array_search($t[0].$t[1], $menus);
 
-$vars['modes'] = ['T'=>'Totaux', 'B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','V'=>'Virements','A'=>'Chèques vacances','W'=>'Web',''=>'Non affectés'];
+$vars['modes'] = ['T'=>'Totaux', 'B'=>'Chèques','E'=>'Espèces','C'=>'Cartes','P'=>'Prélèvements','R'=>'Remboursement','V'=>'Virements','A'=>'Chèques vacances','W'=>'Web',''=>'Non affectés'];
