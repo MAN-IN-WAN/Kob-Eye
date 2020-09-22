@@ -294,7 +294,6 @@
 								</div>
 								<div class="col-md-4">
 									<input id="adhIban" type="text" class="form-control cadref-input" ng-model="{{ o }}.IBAN"
-										style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();"
 										mask="wwww wwww wwww wwww wwww wwww www"
 										ng-class="{'cadref-highlight': {{ o }}.ibanInvalide}" ng-change="checkIBAN({{ o }}.IBAN)"
 									/>
@@ -303,7 +302,7 @@
 									{{ label("BIC") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.BIC, o, false, 'wwwwwwwwwww', '', true) }}
+									{{ finput(f.BIC, o, false, 'wwwwwwwwwww') }}
 								</div>
 								<div class="col-md-1">
 									{{ label("Signature mandat") }}

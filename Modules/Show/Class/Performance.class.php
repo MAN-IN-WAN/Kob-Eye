@@ -17,8 +17,8 @@ class Performance extends genericClass {
 		$stars = $args['stars'];
 		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
-			."inner join `##_Systeme-User` u on u.Id=c.UserId "
-			."where c.PerformanceId=$id "; 
+			."inner join `##_Systeme-User` u on u.Id=c.UserId and u.Actif=1"
+			."where c.PerformanceId=$id"; 
 		if($stars) $sql .= "and c.Vote=$stars ";
 		$sql .= "order by c.CommentsDate desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -352,6 +352,7 @@ class Performance extends genericClass {
 			$d->votes = $p->Votes;
 			$d->rating = round($p->Rating, 1);
 			$d->comments = $p->Comments;
+			$d->status = $p->Status;
 			$main = '';
 			$picts = self::getPictures($p, $main);
 			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
@@ -411,6 +412,7 @@ class Performance extends genericClass {
 		$d->votes = $p->Votes;
 		$d->rating = round($p->Rating, 1);
 		$d->comments = $p->Comments;	
+		$d->status = $p->Status;
 		$main = '';
 		$d->picts = self::getPictures($p, $main);
 		$d->pict = $main;

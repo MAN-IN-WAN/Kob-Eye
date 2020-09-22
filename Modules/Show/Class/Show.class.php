@@ -149,6 +149,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$usr->Save();
 			}
 			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
+			if($usr->Privilege) $user['privilege'] = $usr->Privilege;
 			$msg = self::newMessages($usr->Id);
 			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$usr->Id);
 		}
@@ -426,7 +427,7 @@ klog::l("GETSHOW >>>>>",$args);
 
 		$Mail = new Mail();
 		if(isset($params['From']) && !empty($params['From'])) $Mail->From($params['From']);
-		else $Mail->From('info@shows.zone');
+		else $Mail->From('noreply@shows.zone');
 		$Mail->Subject($params['Subject']);
 		if(isset($params['To'])) {
 			foreach($params['To'] as $to)
@@ -436,7 +437,7 @@ klog::l("GETSHOW >>>>>",$args);
 			foreach($params['ReplyTo'] as $to)
 				$Mail->ReplyTo($to);
 		}
-		$Mail->Cc('paul@abtel.fr');
+		$Mail->Cc('contact@shows.zone');
 		if(isset($params['Cc'])) {
 			foreach($params['Cc'] as $to)
 				$Mail->Cc($to);
