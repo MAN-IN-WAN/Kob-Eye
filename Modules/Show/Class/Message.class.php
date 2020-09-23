@@ -87,7 +87,8 @@ class Message extends genericClass {
 		$m->addParent($f, 'FromId');
 		$m->addParent($t, 'ToId');
 		$m->Save();
-		Show::SendFCM($f, $t);
+		$body = "Message from: $f->Initiales";
+		Show::SendFCM($t, '', $body);
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}
 	
