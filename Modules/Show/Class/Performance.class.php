@@ -8,6 +8,24 @@ class Performance extends genericClass {
 		return parent::Save();
 	}
 	
+	public static function SetStatus($args) {
+		$usr = Sys::$User;
+		$logged = ! $usr->Public;
+		if(!$logged) return ['success'=>false, 'logged'=>false];
+		if(!$usr->Privilege) return ['success'=>false];
+		
+		$show = $args['show'];		
+		$p = Sys::getOneData('Show', "Performance/".$show->id);
+		if($p) {
+			$flag = $show->flag;
+			if($p->Status & $flag) $p->Status &= ~$flag;
+			else $p->Status |= $flag;
+			$p->Save();
+			return ['success'=>true, 'status'=>$p->Status];
+		}
+		return ['success'=>false];
+	}
+
 	public static function GetComments($args) {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;

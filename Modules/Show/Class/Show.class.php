@@ -18,6 +18,7 @@ klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
 			case 'del-account': return self::DelAccount($args);
 			case 'del-dialog': return Message::DelDialog($args);
+			case 'show-status': return Performance::SetStatus($args);
 			case 'contact': return Contact::SaveContact($args);
 			case 'vote': return Performance::SetVote($args);
 			case 'get-vote': return Performance::GetVote($args);
