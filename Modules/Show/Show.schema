@@ -1,4 +1,5 @@
 <SCHEMA>
+<!--
 	<OBJECTCLASS title="LangValue" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="LangValue" hidden="0">
 		<PROPERTIES type="varchar" length="32" form="2" fiche="2" >ParentModule</PROPERTIES>
 		<PROPERTIES type="int" default="0" list="2" form="2" fiche="2" >ParentId</PROPERTIES>
@@ -12,6 +13,7 @@
 		<PROPERTIES type="varchar" length="2" form="2" fiche="2" >Language</PROPERTIES>
 		<PROPERTIES type="text" form="2" fiche="2" >Text</PROPERTIES>
 	</OBJECTCLASS>
+-->
 
 	<OBJECTCLASS title="Message" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Message" hidden="0" Class="Modules/Show/Class/Message.class.php">
 		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
@@ -46,7 +48,6 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Performance" driver="mysql" AccessPoint="1" Description="Performance" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Performance.class.php">
-<!--		<PROPERTIES type="varchar" length="2" form="2" fiche="2" >Language</PROPERTIES>-->
 		<PROPERTIES type="varchar" length="255" searchOrder="1" category="Description" form="1" list="1" fiche="1">Title</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2">Subtitle</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Program / Summary">Summary</PROPERTIES>
