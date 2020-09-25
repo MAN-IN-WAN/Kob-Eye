@@ -232,17 +232,18 @@ class Performance extends genericClass {
 		$usr = Sys::$User;
 		$logged = ! $usr->Public;
 		$uid = $usr->Id;
+		$privilege = $usr->Privilege;
 
 		switch($cond->type) {
 			case 'preview':
-				return self::getPreview($cond, $logged, $uid, $lang);
+				return self::getPreview($cond, $logged, $uid, $lang, $privilege);
 			case 'details':
 				return self::getDetails($cond, $logged, $uid, $lang, $args);
 		}
 		return array();
 	}
 	
-	private static function getPreview($cond, $logged, $uid, $lang) {
+	private static function getPreview($cond, $logged, $uid, $lang, $privilege) {
 
 		$sql = "select s.Id,c.Category$lang,mt.Maturity ";
 		$frm = "from `##_Show-Performance` s ";
@@ -250,9 +251,10 @@ class Performance extends genericClass {
 				."left join `##_Show-Maturity` mt on mt.Id=s.MaturityId ";
 		
 		$cry = $cond->country;
+		$priv = $privilege ? '1 or ' : '';
 		$group = false;
 		$name = '';
-		$whr = "and (countryId=$cry or Status&16) ";
+		$whr = "and ($rpiv countryId=$cry or Status&16) and (!(Status&1)) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
