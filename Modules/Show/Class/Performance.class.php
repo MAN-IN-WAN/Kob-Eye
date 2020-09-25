@@ -35,8 +35,8 @@ class Performance extends genericClass {
 		$stars = $args['stars'];
 		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
-			."inner join `##_Systeme-User` u on u.Id=c.UserId and u.Actif=1"
-			."where c.PerformanceId=$id"; 
+			."inner join `##_Systeme-User` u on u.Id=c.UserId and u.Actif=1 "
+			."where c.PerformanceId=$id "; 
 		if($stars) $sql .= "and c.Vote=$stars ";
 		$sql .= "order by c.CommentsDate desc";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
@@ -254,7 +254,7 @@ class Performance extends genericClass {
 		$priv = $privilege ? '1 or' : '';
 		$group = false;
 		$name = '';
-		$whr = "and ($rpiv countryId=$cry or Status&16) and ($priv !(Status&1)) ";
+		$whr = "and ($rpiv countryId=$cry or Status&16 or s.userCreate=$uid) and ($priv !(Status&1) or s.userCreate=$uid) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
