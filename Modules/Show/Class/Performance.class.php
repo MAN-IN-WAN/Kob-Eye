@@ -33,7 +33,7 @@ class Performance extends genericClass {
 
 		$id = $args['id'];
 		$stars = $args['stars'];
-		$sql = "select c.Vote,c.Comments,c.CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
+		$sql = "select c.Vote,c.Comments,if(c.CommentsDate,c.CommentsDate,c.tmsEdit) as CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
 			."inner join `##_Systeme-User` u on u.Id=c.UserId and u.Actif=1 "
 			."where c.PerformanceId=$id "; 
