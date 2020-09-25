@@ -82,24 +82,6 @@ klog::l("GETSHOW >>>>>",$args);
 		return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
 	}
 
-	private static function param($args) {
-		$id = $args['id'];
-		$eqid = '';
-		if(strpos($id, ',')) $eqid = " in ($id)";
-		else $eqid = "=$id";
-		
-		$flt = $args['filter'];
-		$lang = $args['lang'];
-		switch($args['type']) {
-			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
-			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
-			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
-			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
-			case 'motives': $data = self::getObjsArray('Motive', "Type='$flt'", true, $lang); break;
-		}
-		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
-	}
-
 	private static function initShow($args) {
 		$first = $args['first'];
 		$lang = $args['lang'];
@@ -233,13 +215,34 @@ klog::l("GETSHOW >>>>>",$args);
 		return ['success'=>true];
 	}
 
+	private static function param($args) {
+		$id = $args['id'];
+		$eqid = '';
+		if(strpos($id, ',')) $eqid = " in ($id)";
+		else $eqid = "=$id";
+		
+		$flt = $args['filter'];
+		$lang = $args['lang'];
+		switch($args['type']) {
+			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
+			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
+			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
+			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
+			case 'motives': $data = self::getObjsArray('Motive', "Type='$flt'", true, $lang); break;
+		}
+		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
+	}
+
 	public static function getObjsArray($name, $query, $obj, $lang) {
 		$en = 'EN';
-		$sql = "select Id,if($name$lang='', $name$en, $name$lang) as $name$lang from `kob-Show-$name`";
+		$fld = $name;
+		if($lang) $fld = "if($name$lang='', $name$en, $name$lang) as $name$lang"; 
+		$sql = "select Id,$fld from `kob-Show-$name`";
 		if($query) $sql .= " where $query";
+		//$sql .= " order by $fld";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
-
+		
 		$arr = array();
 		if($obj) {
 			foreach($rs as $r) $arr[] = ['id'=>$r['Id'], 'name'=>$r[$name.$lang]];
