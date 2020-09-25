@@ -49,7 +49,7 @@ class Performance extends genericClass {
 			$tmp[] = ['vote'=>$r['Vote'], 'text'=>$r['Comments'], 'time'=>$r['CommentsDate'],
 				'user'=>$user, 'userId'=>$r['Id']];
 		}
-		return ['success'=>true, 'comments'=>$tmp];
+		return ['success'=>true, 'comments'=>$tmp, 'sql'=>$sql];
 	}
 	
 	public static function GetVote($args) {
@@ -252,7 +252,7 @@ class Performance extends genericClass {
 		$cry = $cond->country;
 		$group = false;
 		$name = '';
-		$whr = "and countryId=$cry ";
+		$whr = "and (countryId=$cry or Status&16) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:

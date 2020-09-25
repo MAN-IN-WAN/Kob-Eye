@@ -234,7 +234,8 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 
 	public static function getObjsArray($name, $query, $obj, $lang) {
-		$sql = "select Id,$name$lang from `kob-Show-$name`";
+		$en = 'EN';
+		$sql = "select Id,if($name$lang='', $name$en, $name$lang) from `kob-Show-$name`";
 		if($query) $sql .= " where $query";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
