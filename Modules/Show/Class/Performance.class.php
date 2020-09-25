@@ -251,10 +251,10 @@ class Performance extends genericClass {
 				."left join `##_Show-Maturity` mt on mt.Id=s.MaturityId ";
 		
 		$cry = $cond->country;
-		$priv = $privilege ? '1 or ' : '';
+		$priv = $privilege ? '1 or' : '';
 		$group = false;
 		$name = '';
-		$whr = "and ($rpiv countryId=$cry or Status&16) and (!(Status&1)) ";
+		$whr = "and ($rpiv countryId=$cry or Status&16) and ($priv !(Status&1)) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
