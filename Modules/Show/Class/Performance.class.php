@@ -134,7 +134,7 @@ class Performance extends genericClass {
 		$lang = $args['lang'];
 		$s = $args['show'];
 		$id = $s->id;
-		$dom = [];
+		$lng = [];
 		$gen = [];
 		$o = genericClass::createInstance('Show', 'Performance');
 		if($id) {
@@ -154,6 +154,7 @@ class Performance extends genericClass {
 		$o->StateId = $s->stateId;
 		$o->CityId = $s->cityId;
 		self::setChild($o, 'Category', $s->categoryId);
+		$o->Save();
 		self::setChildren($o, 'Genre', $gen, $s->genres);
 		self::setChildren($o, 'Language', $lng, $s->languages);
 		$o->Save();
