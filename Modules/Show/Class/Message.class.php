@@ -7,7 +7,7 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		$id = $usr->Id;
-		$sql = "select distinct p.Id,p.userCreate,p.Title,if(m.FromId=$id,m.ToId,m.FromId) as tfid,u.Initiales,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
+		$sql = "select distinct p.Id,p.userCreate,p.Title,if(m.FromId=$id,m.ToId,m.FromId) as tfid,u.Prenom,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
 			."from `kob-Show-Message` m "
 			."inner join `kob-Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
 			//."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
@@ -27,7 +27,7 @@ class Message extends genericClass {
 			$d->id = $r['Id'];
 			$d->title = $r['Title'];
 			//$d->uid = $r['tfid'];
-			$d->user = ['id'=>$r['tfid'], 'nickname'=>$r['Initiales']]; //$inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+			$d->user = ['id'=>$r['tfid'], 'nickname'=>$r['Prenom']]; //$inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Prenom'];
 			$d->count = $r['cnt'];
 			$d->time = $r['dt'];
 			$d->status = $r['st'];
@@ -87,7 +87,7 @@ class Message extends genericClass {
 		$m->addParent($f, 'FromId');
 		$m->addParent($t, 'ToId');
 		$m->Save();
-		$body = "Message from: $f->Initiales";
+		$body = "Message from: $f->Prenom";
 		Show::SendFCM($t, '', $body);
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}

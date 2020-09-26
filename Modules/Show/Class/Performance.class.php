@@ -33,7 +33,7 @@ class Performance extends genericClass {
 
 		$id = $args['id'];
 		$stars = $args['stars'];
-		$sql = "select c.Vote,c.Comments,if(c.CommentsDate,c.CommentsDate,c.tmsEdit) as CommentsDate,u.Id,u.Initiales,u.Nom,u.Informations "
+		$sql = "select c.Vote,c.Comments,if(c.CommentsDate,c.CommentsDate,c.tmsEdit) as CommentsDate,u.Id,u.Prenom,u.Nom,u.Informations "
 			."from `##_Show-Comments` c "
 			."inner join `##_Systeme-User` u on u.Id=c.UserId and u.Actif=1 "
 			."where c.PerformanceId=$id "; 
@@ -45,7 +45,7 @@ class Performance extends genericClass {
 		$tmp = array();
 		foreach($rs as $r) {
 			$inf = json_decode($r['Informations']);
-			$user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+			$user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Prenom'];
 			$tmp[] = ['vote'=>$r['Vote'], 'text'=>$r['Comments'], 'time'=>$r['CommentsDate'],
 				'user'=>$user, 'userId'=>$r['Id']];
 		}
@@ -254,7 +254,7 @@ class Performance extends genericClass {
 		$priv = $privilege ? '1 or' : '';
 		$group = false;
 		$name = '';
-		$whr = "and ($rpiv countryId=$cry or Status&16 or s.userCreate=$uid) and ($priv !(Status&1) or s.userCreate=$uid) ";
+		$whr = "and ($priv countryId=$cry or Status&16 or s.userCreate=$uid) and ($priv !(Status&1) or s.userCreate=$uid) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
@@ -389,7 +389,7 @@ class Performance extends genericClass {
 		$id = $cond->id;
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
-		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Initiales,u.Nom,u.Informations "
+		$sql = "select c.Category$lang,mt.Maturity,cr.Country$lang,st.State,cy.City,u.Prenom,u.Nom,u.Informations "
 				."from `##_Show-Performance` s "
 				."left join `##_Show-Category` c on c.Id=s.CategoryId "
 				."left join `##_Show-Maturity` mt on mt.Id=s.MaturityId "
@@ -407,7 +407,7 @@ class Performance extends genericClass {
 		$d = new stdClass();
 		$d->id = $p->Id;
 //		$d->uid = $p->userCreate;
-//		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Initiales'];
+//		$d->user = $inf && $inf->displayName && $r['Nom'] ? $r['Nom'] : $r['Prenom'];
 		$d->user = self::getEditor($p->userCreate);
 		$d->mine = ($logged && $p->userCreate == $uid) ? 1 : 0;
 		$d->title = $p->Title;
@@ -444,7 +444,7 @@ class Performance extends genericClass {
 	}
 
 	private static function getEditor($uid) {
-		$sql = "select u.tmsCreate,count(p.Id) as cnt,u.Nom,u.Mail,u.Tel,u.Initiales "
+		$sql = "select u.tmsCreate,count(p.Id) as cnt,u.Nom,u.Mail,u.Tel,u.Prenom "
 			."from `##_Systeme-User` u "
 			."left join `##_Show-Performance` p on p.userCreate=u.Id "
 			."where u.Id=$uid "
@@ -452,7 +452,7 @@ class Performance extends genericClass {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$r = $rs->fetch(PDO::FETCH_ASSOC);
-		return ['id'=>$uid, 'shows'=>$r['cnt'], 'create'=>$r['tmsCreate'], 'nickname'=>$r['Initiales'], 'name'=>$r['Nom'], 'phone'=>$r['Tel'], 'email'=>$r['Mail']];
+		return ['id'=>$uid, 'shows'=>$r['cnt'], 'create'=>$r['tmsCreate'], 'nickname'=>$r['Prenom'], 'name'=>$r['Nom'], 'phone'=>$r['Tel'], 'email'=>$r['Mail']];
 	}
 	
 	private static function getChildrenArray($parent, $name, $lang) {

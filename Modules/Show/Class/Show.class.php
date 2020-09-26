@@ -131,7 +131,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$usr->Informations = json_encode($inf);
 				$usr->Save();
 			}
-			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Initiales, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
+			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Prenom, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
 			if($usr->Privilege) $user['privilege'] = $usr->Privilege;
 			$msg = self::newMessages($usr->Id);
 			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$usr->Id);
@@ -188,7 +188,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$ret = self::checkEMail(['email'=>$acc->email, 'id'=>$acc->id]);
 		if(!$ret['success']) return $ret;
 		$usr = Sys::$User;
-		$usr->Initiales = $acc->nickname;
+		$usr->Prenom = $acc->nickname;
 		$usr->Mail = $acc->email;
 		$usr->Nom = $acc->name;
 		$usr->Tel = $acc->phone;
@@ -202,7 +202,7 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 
 	private static function checkNickname($args) {
-		$usr = Sys::getOneData('Systeme', 'User/Initiales='.$args['nickname'].'&Id!='.$args['id']);
+		$usr = Sys::getOneData('Systeme', 'User/Prenom='.$args['nickname'].'&Id!='.$args['id']);
 		$exists = $usr !== false && $usr !== null;
 		if($exists) return ['success'=>false, 'err'=>'This nickname already exists'];
 		return ['success'=>true];
@@ -263,7 +263,7 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	private static function registerUser($args) {
 		$c = $args['credentials'];
-		$n = Sys::getCount('Systeme', 'User/Initiales='.$c->nickname);
+		$n = Sys::getCount('Systeme', 'User/Prenom='.$c->nickname);
 		if($n > 0) return array('success'=>false, 'msg'=>'Nickname already in use');
 		$n = Sys::getCount('Systeme', 'User/Mail='.$c->email);
 		if($n > 0) return array('success'=>false, 'msg'=>'Email address already in use');
@@ -273,7 +273,7 @@ klog::l("GETSHOW >>>>>",$args);
 		$u->addParent($g);
 		$u->Login = $c->email;
 		$u->Mail = $c->email;
-		$u->Initiales = $c->nickname;
+		$u->Prenom = $c->nickname;
 		$u->Actif = 0;
 		$u->Pass = '[md5]'.md5($c->pass);
 		$u->Save();
@@ -283,21 +283,21 @@ klog::l("GETSHOW >>>>>",$args);
 		switch($args['lang']) {
 			case 'EN':
 				$s = 'shows.zone : Confirm registration.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
 				$b .= "Please complete user information in Menu/My account.<br /><br />";
 			case 'FR':
 				$s = 'shows.zone : Confirm registration.';
-				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
 				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
 			case 'ES':
 				$s = 'shows.zone : Confirm registration.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
@@ -334,21 +334,21 @@ klog::l("GETSHOW >>>>>",$args);
 		switch($lang) {
 			case 'EN':
 				$s = 'shows.zone : Lost password.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";
 				break;
 			case 'FR':
 				$s = 'shows.zone : Mot de passe oublié.';
-				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour changer de mot de passe :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Changer le mot de passe</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 24 heures.<br /><br />";
 				break;
 			case 'ES':
 				$s = 'shows.zone : Change password.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";

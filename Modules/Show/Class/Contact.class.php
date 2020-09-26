@@ -15,7 +15,7 @@ class Contact extends genericClass {
 		
 		$name = ',';
 		$usr = Sys::$User;
-		if(! $usr->Public) $name = " $usr->Initiales,";
+		if(! $usr->Public) $name = " $usr->Prenom,";
 
 		switch($lang) {
 			case 'EN':
