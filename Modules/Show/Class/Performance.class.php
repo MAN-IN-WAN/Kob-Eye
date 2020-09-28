@@ -17,10 +17,12 @@ class Performance extends genericClass {
 		$show = $args['show'];		
 		$p = Sys::getOneData('Show', "Performance/".$show->id);
 		if($p) {
+			$old = $p->Status;
 			$flag = $show->flag;
 			if($p->Status & $flag) $p->Status &= ~$flag;
 			else $p->Status |= $flag;
 			$p->Save();
+			
 			return ['success'=>true, 'status'=>$p->Status];
 		}
 		return ['success'=>false];
@@ -142,6 +144,7 @@ class Performance extends genericClass {
 			$gen = self::getChildrenArray($o, 'Genre', $lang);
 			$lng = self::getChildrenArray($o, 'Language', $lang);
 		}
+		else $o->Status = 32;  // validation flag
 		
 		$o->Title = $s->title;
 		$o->Subtitle = $s->subtitle;
@@ -158,6 +161,8 @@ class Performance extends genericClass {
 		self::setChildren($o, 'Genre', $gen, $s->genres);
 		self::setChildren($o, 'Language', $lng, $s->languages);
 		$o->Save();
+		
+		Show::SendMessage(['To'=>['paul@abtel.fr'], 'Subject'=>'New show', 'Body'=>"Title: ".$s->title]);
 		return array('success'=>1, 'id'=>$o->Id);
 	}
 	
@@ -228,6 +233,7 @@ class Performance extends genericClass {
 	
 	
 	public static function GetPerf($args) {
+		Show::checkLang();
 		$cond = $args['cond'];
 		$lang = $args['lang'];
 		$usr = Sys::$User;
@@ -239,7 +245,7 @@ class Performance extends genericClass {
 			case 'preview':
 				return self::getPreview($cond, $logged, $uid, $lang, $privilege);
 			case 'details':
-				return self::getDetails($cond, $logged, $uid, $lang, $args);
+				return self::getDetails($cond, $logged, $uid, $lang, $privilege);
 		}
 		return array();
 	}
@@ -377,7 +383,7 @@ class Performance extends genericClass {
 			$main = '';
 			$picts = self::getPictures($p, $main);
 			if(empty($main) && $pict['count']) $main = $pict['data'][0]; 
-			$d->pict = $main;
+			$d->pict = empty($main) ? "Home/2/Show/no-picture.png" : $main;
 
 			$d->fav = $logged ? Sys::getCount('Show', "FavPerformance/UserId=$uid&PerformanceId=".$p->Id) : 0;
 
@@ -386,7 +392,7 @@ class Performance extends genericClass {
 		return intVal($count);
 	}
 
-	private static function getDetails($cond, $logged, $uid, $lang) {
+	private static function getDetails($cond, $logged, $uid, $lang, $privilege) {
 		$id = $cond->id;
 		$p = Sys::getOneData('Show', "Performance/$id");
 		
@@ -437,6 +443,10 @@ class Performance extends genericClass {
 		$main = '';
 		$d->picts = self::getPictures($p, $main);
 		$d->pict = $main;
+		if(empty($main) && !$d->mine && !$privilege) {
+			$d->pict = 'Home/2/Show/no-picture.png';
+			$d->picts = ['count'=>1, 'data'=>[['id'=>0, 'pict'=>$d->pict, 'main'=>true, 'title'=>'', 'subtitle'=>'', 'year'=>'']]];
+		}
 		$d->links = self::getLinks($p);
 		$d->crew = self::getCrew($p);
 		$gnr = Show::getObjsArray('Genre', 'CategoryId='.$d->categoryId, false, $lang);

@@ -4,18 +4,14 @@ class Show extends Module {
 	
 	public static $Lang = '';
 	
-//	public static function CheckLogged() {
-//		$usr = Sys::$User;
-//		return($usr->Public);
-//	}
-	
 	public static function GetShow($args) {
-		if(isset($args['lang']) && $args['lang']) self::$Lang = $args['lang'];
+		if(isset($args['lang'])) self::$Lang = $args['lang'];
 		
 		$mode = $args['mode'];
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
+			case 'test': return Message::SendMails();
 			case 'del-account': return self::DelAccount($args);
 			case 'del-dialog': return Message::DelDialog($args);
 			case 'show-status': return Performance::SetStatus($args);
@@ -54,6 +50,29 @@ klog::l("GETSHOW >>>>>",$args);
 			case 'favourite': return Performance::SetFavourite($args);
 		}
 		return array('err'=>'mode unknown');
+	}
+	
+	
+	public static function checkLang() {
+		$usr = Sys::$User;
+		if($usr->Public) return;
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
+		if(!$inf) $inf = new stdClass();
+		if(!isset($inf->language) || $inf->language!=self::$Lang) {
+			$inf->language = self::$Lang;
+			$usr->Informations = json_encode($inf);
+			$usr->Save();
+		}
+	}
+	
+	public static function userLang($id) {
+		$lang = 'EN';
+		$usr = Sys::getOneData('Systeme', "User/$id");
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
+		if($inf && isset($inf->language)) $lang = $inf->language;
+		return $lang;
 	}
 	
 	private static function delAccount($args) {
@@ -177,7 +196,7 @@ klog::l("GETSHOW >>>>>",$args);
 	private static function getTranslation($lang) {
 		$trn = [];
 		$rs = Sys::getData('Show', "Translation");
-		foreach($rs as $r) $trn[] = ['EN'=>$r->TextEN, 'FR'=>$r->TextFR, 'ES'=>$r->TextES];
+		foreach($rs as $r) $trn[] = ['EN'=>$r->TextEN, 'FR'=>$r->TextFR, 'ES'=>$r->TextES ? $r->TextES : $r->TextEN];
 		return $trn;
 	}
 	
@@ -236,10 +255,10 @@ klog::l("GETSHOW >>>>>",$args);
 	public static function getObjsArray($name, $query, $obj, $lang) {
 		$en = 'EN';
 		$fld = $name;
-		if($lang) $fld = "if($name$lang='', $name$en, $name$lang) as $name$lang"; 
-		$sql = "select Id,$fld from `kob-Show-$name`";
+		if($lang) $fld = "if(ifnull($name$lang,'')='', $name$en, $name$lang) as $name$lang"; 
+		$sql = "select Id,$fld from `##_Show-$name`";
 		if($query) $sql .= " where $query";
-		//$sql .= " order by $fld";
+		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		
@@ -254,7 +273,7 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 			
 	private static function newMessages($id) {
-		$sql = "select count(*) as cnt from `kob-Show-Message` where ToId=$id and Status=0";
+		$sql = "select count(*) as cnt from `##_Show-Message` where ToId=$id and !(Status&1)";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$r = $rs->fetch(PDO::FETCH_ASSOC);
@@ -276,32 +295,35 @@ klog::l("GETSHOW >>>>>",$args);
 		$u->Prenom = $c->nickname;
 		$u->Actif = 0;
 		$u->Pass = '[md5]'.md5($c->pass);
+		$inf = new stdClass();
+		$inf->language = self::$Lang;
+		$u->Informations = json_encode($inf);
 		$u->Save();
-
+		
 		$host = $_SERVER['HTTP_ORIGIN'];
 		$info = base64_encode($u->Id.','.$c->email.','.time());
-		switch($args['lang']) {
+		switch(self::$Lang) {
 			case 'EN':
-				$s = 'shows.zone : Confirm registration.';
+				$s = 'shows.zone: Confirm registration.';
 				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
-				$b .= "Please complete user information in Menu/My account.<br /><br />";
+				$b .= "You can complete user information in Menu/My account.<br /><br />";
 			case 'FR':
-				$s = 'shows.zone : Confirm registration.';
+				$s = "shows.zone: Confirmer l'enregistrement";
 				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
-				$b .= 'Click on the link below to confirm your registration :<br /><br />';
-				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
+				$b .= 'Cliquer sur le lien ci-dessous pour confirmer votre enregistrement :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmer l'enregistrement</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
-				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
+				$b .= "Vous pouvez complèter vos informations dans Menu/Mon compte.<br /><br />";
 			case 'ES':
-				$s = 'shows.zone : Confirm registration.';
-				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
-				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
-				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
-				$b .= "This link will be active for 48 hours.<br /><br />";
-				$b .= "Please complete user information in Menu/My account.<br /><br />";
+				$s = 'shows.zone: Confirmar registro.';
+				$b = "Hola ".$u->Prenom.",<br /><br /><br />";
+				$b .= 'Haga clic en el enlace de abajo para confirmar su registro :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmación de registro</a></strong><br /><br />";
+				$b .= "Este enlace estará activo durante 48 horas..<br /><br />";
+				$b .= "Puede completar la información del usuario en Menú/Mi cuenta.<br /><br />";
 		}
 		$b .= self::MailSignature();
 		$params = array('Subject'=>$s, 'To'=>array($c->email), 'Body'=>$b);
@@ -391,6 +413,7 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	private static function registerConfirm($args) {
 		$data = array('success'=>0,'message'=>"Incorrect link");
+		$lang = $args['lang'];
 
 		$get = isset($args['info']) ? trim($args['info']) : '';
 		if($get == '') return $data;
@@ -411,14 +434,14 @@ klog::l("GETSHOW >>>>>",$args);
 		$data['success'] = 1;
 		$data['mail'] = $info[1];
 		if($u->Actif) {
-			$data['message'] = "Your registration has already been confirmed.<br />Welcome to https://shows.zone";
+			$data['message'] = "Your registration has already been confirmed";
 			return $data;
 		}
 
 		$u->Actif = 1;
 		$u->Save();
 //		$data['success'] = 1;
-		$data['message'] = 'Your registration has been confirmed.<br />Welcome to https://shows.zone';
+		$data['message'] = 'Your registration has been confirmed';
 		return $data;
 	}
 
