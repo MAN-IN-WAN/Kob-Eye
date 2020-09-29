@@ -162,7 +162,8 @@ class Performance extends genericClass {
 		self::setChildren($o, 'Language', $lng, $s->languages);
 		$o->Save();
 		
-		Show::SendMessage(['To'=>['paul@abtel.fr'], 'Subject'=>'New show', 'Body'=>"Title: ".$s->title]);
+		if(!$id) Show::SendMessage(['To'=>['paul@abtel.fr'], 'Subject'=>'New show', 'Body'=>"Id: $o->Id\nTitle: $s->title\n"]);
+		
 		return array('success'=>1, 'id'=>$o->Id);
 	}
 	
