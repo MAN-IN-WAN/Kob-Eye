@@ -144,7 +144,7 @@ class Performance extends genericClass {
 			$gen = self::getChildrenArray($o, 'Genre', $lang);
 			$lng = self::getChildrenArray($o, 'Language', $lang);
 		}
-		else $o->Status = 32;  // validation flag
+		//else $o->Status = 32;  // validation flag
 		
 		$o->Title = $s->title;
 		$o->Subtitle = $s->subtitle;
