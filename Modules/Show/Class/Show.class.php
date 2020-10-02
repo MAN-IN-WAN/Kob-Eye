@@ -11,45 +11,52 @@ class Show extends Module {
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
-			case 'test': return Message::SendMails();
+			//case 'test': return self::checkMsg(Message::SendMails());
 			case 'del-account': return self::DelAccount($args);
-			case 'del-dialog': return Message::DelDialog($args);
-			case 'show-status': return Performance::SetStatus($args);
-			case 'contact': return Contact::SaveContact($args);
-			case 'vote': return Performance::SetVote($args);
-			case 'get-vote': return Performance::GetVote($args);
-			case 'comments': return Performance::GetComments($args);
-			case 'ratings': return Performance::GetRatings($args);
-			case 'document': return self::document($args);	
-			case 'account': return self::saveUser($args);	
-			case 'nickname': return self::checkNickname($args);	
-			case 'email': return self::checkEMail($args);			
-			case 'change-pwd': return self::changePwd($args);			
+			case 'del-dialog': return self::checkMsg(Message::DelDialog($args));
+			case 'show-status': return self::checkMsg(Performance::SetStatus($args));
+			case 'contact': return self::checkMsg(Contact::SaveContact($args));
+			case 'vote': return self::checkMsg(Performance::SetVote($args));
+			case 'get-vote': return self::checkMsg(Performance::GetVote($args));
+			case 'comments': return self::checkMsg(Performance::GetComments($args));
+			case 'ratings': return self::checkMsg(Performance::GetRatings($args));
+			case 'document': return self::checkMsg(self::document($args));	
+			case 'account': return self::checkMsg(self::saveUser($args));	
+			case 'nickname': return self::checkMsg(self::checkNickname($args));	
+			case 'email': return self::checkMsg(self::checkEMail($args));			
+			case 'change-pwd': return self::checkMsg(self::changePwd($args));			
 			case 'lost-pwd': return self::lostPwd($args);			
-			case 'add-role': return Performance::AddRole($args);
-			case 'del-role': return Performance::DelRole($args);
+			case 'add-role': return self::checkMsg(Performance::AddRole($args));
+			case 'del-role': return self::checkMsg(Performance::DelRole($args));
 			case 'status': return self::Status();
-			case 'messages': return Message::Messages($args);
-			case 'dialog': return Message::Dialog($args);
-			case 'msg': return Message::AddMsg($args);
-			case 'image': return Performance::LoadImage($args);
-			case 'del-pict': return Performance::DelPict($args);
-			case 'main-pict': return Performance::MainPict($args);
-			case 'add-link': return Performance::AddLink($args);
-			case 'del-link': return Performance::DelLink($args);
-			case 'save-perf': return Performance::SavePerf($args);
-			case 'del-perf': return Performance::DeletePerf($args);
+			case 'messages': return self::checkMsg(Message::Messages($args));
+			case 'dialog': return self::checkMsg(Message::Dialog($args));
+			case 'msg': return self::checkMsg(Message::AddMsg($args));
+			case 'image': return self::checkMsg(Performance::LoadImage($args));
+			case 'del-pict': return self::checkMsg(Performance::DelPict($args));
+			case 'main-pict': return self::checkMsg(Performance::MainPict($args));
+			case 'add-link': return self::checkMsg(Performance::AddLink($args));
+			case 'del-link': return self::checkMsg(Performance::DelLink($args));
+			case 'save-perf': return self::checkMsg(Performance::SavePerf($args));
+			case 'del-perf': return self::checkMsg(Performance::DeletePerf($args));
 			case 'login': return self::logUser($args);
 			case 'confirm': return self::registerConfirm($args);
 			case 'register': return self::registerUser($args);
 			case 'logout': return self::logout($args);
 			case 'init': return self::initShow($args);
 			case 'lang': return self::loadLang($args);			
-			case 'param': return self::param($args);
-			case 'perf': return Performance::GetPerf($args);
-			case 'favourite': return Performance::SetFavourite($args);
+			case 'param': return self::checkMsg(self::param($args));
+			case 'perf': return self::checkMsg(Performance::GetPerf($args));
+			case 'favourite': return self::checkMsg(Performance::SetFavourite($args));
 		}
 		return array('err'=>'mode unknown');
+	}
+	
+	private static function checkMsg($args) {
+		if(isset($args['logged']) && $args['logged']) {
+			$args['msgCount'] = self::newMessages(Sys::$User->Id);
+		}
+		return $args;
 	}
 	
 	
