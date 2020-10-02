@@ -310,6 +310,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
 				$b .= "You can complete user information in Menu/My account.<br /><br />";
+				break;
 			case 'FR':
 				$s = "shows.zone: Confirmer l'enregistrement";
 				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
@@ -317,6 +318,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmer l'enregistrement</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
 				$b .= "Vous pouvez complèter vos informations dans Menu/Mon compte.<br /><br />";
+				break;
 			case 'ES':
 				$s = 'shows.zone: Confirmar registro.';
 				$b = "Hola ".$u->Prenom.",<br /><br /><br />";
@@ -324,6 +326,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmación de registro</a></strong><br /><br />";
 				$b .= "Este enlace estará activo durante 48 horas..<br /><br />";
 				$b .= "Puede completar la información del usuario en Menú/Mi cuenta.<br /><br />";
+				break;
 		}
 		$b .= self::MailSignature();
 		$params = array('Subject'=>$s, 'To'=>array($c->email), 'Body'=>$b);
