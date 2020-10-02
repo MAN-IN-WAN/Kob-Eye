@@ -72,6 +72,8 @@ class Cadref extends Module {
 	
 	private function checkGroups() {
 		$usr = Sys::$User;
+		if(!$usr) return;
+		
 		$groups = $usr->getParents('Group');
 		$site = null;
 		$delegue = null;
