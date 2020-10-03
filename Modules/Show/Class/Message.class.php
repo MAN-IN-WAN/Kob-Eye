@@ -138,10 +138,28 @@ class Message extends genericClass {
 		$m->addParent($f, 'FromId');
 		$m->addParent($t, 'ToId');
 		$m->Save();
-		$body = "Message from: $f->Prenom";
-		Show::SendFCM($t, '', $body);
+		
+		$t = genericClass::createInstance('Systeme', 'Tache');
+		$t->Nom = 'Notification';
+		$t->Type = 'Fonction';
+		$t->TaskType = '';
+		$t->TaskModule = 'Show';
+		$t->TaskObject = 'Message';
+		$t->TaskFunction = 'TaskNotification';
+		$t->TaskArgs = serialize(['id'=>$t->Id, 'from'=>$f->Prenom]);
+		$t->Save();
+
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}
+	
+	public static function TaskNotification($args) {
+		$args = unserialize($tache->TaskArgs);
+		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$args);
+		$t = Sys::getOneData('Systeme', 'User/'.$args['id']);
+		$body = "Message from: ".$args['from'];
+		Show::SendFCM($t, '', $body);		
+	}
+
 	
 	public static function DelDialog($args) {
 		$usr = Sys::$User;
