@@ -139,7 +139,7 @@ class Message extends genericClass {
 		$m->addParent($t, 'ToId');
 		$m->Save();
 		
-		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$t);
+		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>".$t->Id,$t);
 		$t = genericClass::createInstance('Systeme', 'Tache');
 		$t->Nom = 'Notification';
 		$t->Type = 'Fonction';
@@ -147,7 +147,9 @@ class Message extends genericClass {
 		$t->TaskModule = 'Show';
 		$t->TaskObject = 'Message';
 		$t->TaskFunction = 'TaskNotification';
-		$t->TaskArgs = serialize(['id'=>$t->Id, 'from'=>$f->Prenom]);
+		$arg = ['id'=>$t->Id, 'from'=>$f->Prenom];
+		klog::l($arg);
+		$t->TaskArgs = serialize($args);
 		$t->Save();
 
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
