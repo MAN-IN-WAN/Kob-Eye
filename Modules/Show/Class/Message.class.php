@@ -147,8 +147,8 @@ class Message extends genericClass {
 		$t->TaskModule = 'Show';
 		$t->TaskObject = 'Message';
 		$t->TaskFunction = 'TaskNotification';
-		$arg = ['id'=>$t->Id, 'from'=>$f->Prenom];
-		klog::l($arg);
+		$arg = ['id'=>$msg->to, 'from'=>$f->Prenom];
+		klog::l("xxxxxxxxxxxxxxxxx",$arg);
 		$t->TaskArgs = serialize($args);
 		$t->Save();
 
