@@ -90,7 +90,7 @@ class Message extends genericClass {
 		$logged = ! $usr->Public;
 		if(!$logged) return ['success'=>false, 'logged'=>false, 'msgs'=>[]];
 		$id = $usr->Id;
-		$sql = "select distinct p.Id,p.userCreate,p.Title,if(m.FromId=$id,m.ToId,m.FromId) as tfid,u.Prenom,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(m1.Status) as st "
+		$sql = "select distinct p.Id,p.userCreate,p.Title,if(m.FromId=$id,m.ToId,m.FromId) as tfid,u.Prenom,u.Nom,u.Informations,count(*) as cnt,max(m1.MessageDate) as dt, min(if(m.FromId=$id,1,m1.Status&1)) as st "
 			."from `##_Show-Message` m "
 			."inner join `##_Show-Message` m1 on m1.PerformanceId=m.PerformanceId "
 			//."and ((m1.FromId=m.FromId and m1.ToId=$usr->Id) or (m1.FromId=$usr->Id and m1.ToId=m.FromId)) "
@@ -184,7 +184,7 @@ class Message extends genericClass {
 		$p = $args['perfId'];
 		$u = $args['user'];
 		$id = $usr->Id;
-		$sql1 = "delete from `##_Show-Message` set status=1 where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u))";
+		$sql1 = "delete from `##_Show-Message` where PerformanceId=$p and ((FromId=$u and ToId=$id) or (FromId=$id and ToId=$u))";
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		
