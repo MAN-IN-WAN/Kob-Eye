@@ -6,6 +6,36 @@ class Message extends genericClass {
 	// read all messages older than 15' and send a mail to each users
 	// then flag the messages. 
 	public static function SendMails() {
+		// notifications
+		$sql = "select Id from `##_Show-Message` where !(Status&5) ";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$ids = '';
+		foreach($rs as $r) $ids .= ($ids ? ',' : '').$r['Id'];
+
+		$sql = "select distinct u.Informations "
+			."from `##_Show-Message` m"
+			."inner join `##_Systeme-User` u on u.Id=m.ToId "
+			."where m.Id in ($ids) and u.Informations<>''";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($rs as $r) {
+			$inf = json_decode($r['Informations']);
+			if($inf->fcmToken) {
+				switch($inf->language) {
+					case 'ES': $t = 'Tienes mensajes'; break;
+					case 'FR': $t = 'Vous avez des messages'; break;
+					default: $t = 'You have messages';
+				}
+				Show::SendFCM($inf->fcmToken, $t, '');
+			}
+		}
+
+		$sql1 = "update `##_Show-Message` set Status=(Status|4) where Id in ($ids)";
+		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
+		
+		// mails
 		$dt = time() - 60*15;
 
 		$sql = "select Id from `##_Show-Message` where !(Status&3) and MessageDate<$dt ";
@@ -48,7 +78,7 @@ class Message extends genericClass {
 		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		
-		return ['sql'=>$sql];
+		return true;
 	}
 		
 	// get all discussions
@@ -139,29 +169,9 @@ class Message extends genericClass {
 		$m->addParent($t, 'ToId');
 		$m->Save();
 		
-		$t = genericClass::createInstance('Systeme', 'Tache');
-		$t->Nom = 'Notification';
-		$t->Type = 'Fonction';
-		$t->TaskType = '';
-		$t->TaskModule = 'Show';
-		$t->TaskObject = 'Message';
-		$t->TaskFunction = 'TaskNotification';
-		$params = ['id'=>$msg->to, 'from'=>$f->Prenom];
-		$t->TaskArgs = serialize($params);
-		$t->Save();
-
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}
 	
-	public static function TaskNotification($tache) {
-		$args = unserialize($tache->TaskArgs);
-		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$args);
-		if(!$args['id']) return;
-		$t = Sys::getOneData('Systeme', 'User/'.$args['id']);
-		$body = "Message from: ".$args['from'];
-		Show::SendFCM($t, '', $body);		
-	}
-
 	
 	public static function DelDialog($args) {
 		$usr = Sys::$User;

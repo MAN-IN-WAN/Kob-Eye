@@ -518,14 +518,10 @@ klog::l("GETSHOW >>>>>",$args);
 //		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
 	}
 	
-	static function SendFCM($to, $title, $body) {
-		$info = json_decode($to->Informations);
-		if(!$info) return;
-		if(!isset($info->fcmToken) || !$info->fcmToken) return;
-		
+	static function SendFCM($token, $title, $body) {
 		$key = Sys::getOneData('Show', 'Setting/Domain=NOTIFICATION&SubDomain=FCM&Setting=KEY');
 		
-		$registrationIds = array($info->fcmToken);
+		$registrationIds = array($token);
 		$msg = array
 		(
 			'title'=>$title,
