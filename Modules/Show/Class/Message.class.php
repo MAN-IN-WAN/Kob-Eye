@@ -152,7 +152,7 @@ class Message extends genericClass {
 		return ['success'=>true, 'logged'=>true, 'msgId'=>$m->Id];
 	}
 	
-	public static function TaskNotification($args) {
+	public static function TaskNotification($tache) {
 		$args = unserialize($tache->TaskArgs);
 		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$args);
 		$t = Sys::getOneData('Systeme', 'User/'.$args['id']);
