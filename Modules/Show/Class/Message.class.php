@@ -139,6 +139,7 @@ class Message extends genericClass {
 		$m->addParent($t, 'ToId');
 		$m->Save();
 		
+		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$t);
 		$t = genericClass::createInstance('Systeme', 'Tache');
 		$t->Nom = 'Notification';
 		$t->Type = 'Fonction';
@@ -155,6 +156,7 @@ class Message extends genericClass {
 	public static function TaskNotification($tache) {
 		$args = unserialize($tache->TaskArgs);
 		klog::l(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",$args);
+		if(!$args['id']) return;
 		$t = Sys::getOneData('Systeme', 'User/'.$args['id']);
 		$body = "Message from: ".$args['from'];
 		Show::SendFCM($t, '', $body);		
