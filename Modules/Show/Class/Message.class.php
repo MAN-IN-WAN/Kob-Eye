@@ -18,6 +18,7 @@ class Message extends genericClass {
 			."inner join `##_Systeme-User` u on u.Id=m.ToId "
 			."where m.Id in ($ids) and u.Informations<>''";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+klog::l($sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($rs as $r) {
 			$inf = json_decode($r['Informations']);
