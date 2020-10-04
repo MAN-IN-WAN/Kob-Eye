@@ -13,28 +13,29 @@ class Message extends genericClass {
 		$ids = '';
 		foreach($rs as $r) $ids .= ($ids ? ',' : '').$r['Id'];
 
-		$sql = "select distinct u.Informations "
-			."from `##_Show-Message` m"
-			."inner join `##_Systeme-User` u on u.Id=m.ToId "
-			."where m.Id in ($ids) and u.Informations<>''";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l($sql);
-		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
-		foreach($rs as $r) {
-			$inf = json_decode($r['Informations']);
-			if($inf->fcmToken) {
-				switch($inf->language) {
-					case 'ES': $t = 'Tienes mensajes'; break;
-					case 'FR': $t = 'Vous avez des messages'; break;
-					default: $t = 'You have messages';
+		if($ids) {
+			$sql = "select distinct u.Informations "
+				."from `##_Show-Message` m "
+				."inner join `##_Systeme-User` u on u.Id=m.ToId "
+				."where m.Id in ($ids) and u.Informations<>''";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+			foreach($rs as $r) {
+				$inf = json_decode($r['Informations']);
+				if($inf->fcmToken) {
+					switch($inf->language) {
+						case 'ES': $t = 'Tienes mensajes'; break;
+						case 'FR': $t = 'Vous avez des messages'; break;
+						default: $t = 'You have messages';
+					}
+					Show::SendFCM($inf->fcmToken, $t, '');
 				}
-				Show::SendFCM($inf->fcmToken, $t, '');
 			}
-		}
 
-		$sql1 = "update `##_Show-Message` set Status=(Status|4) where Id in ($ids)";
-		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
-		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
+			$sql1 = "update `##_Show-Message` set Status=(Status|4) where Id in ($ids)";
+			$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+			$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
+		}
 		
 		// mails
 		$dt = time() - 60*15;
@@ -45,39 +46,40 @@ klog::l($sql);
 		$ids = '';
 		foreach($rs as $r) $ids .= ($ids ? ',' : '').$r['Id'];
 
+		if($ids) {
+			$sql = "select distinct m.ToId,u.Prenom,u.Mail,u.Informations "
+				."from `##_Show-Message` m "
+				."inner join `##_Systeme-User` u on u.Id=m.ToId "
+				."where m.Id in ($ids) ";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 
-		$sql = "select distinct m.ToId,u.Prenom,u.Mail,u.Informations "
-			."from `##_Show-Message` m "
-			."inner join `##_Systeme-User` u on u.Id=m.ToId "
-			."where m.Id in ($ids) ";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
-			
-		foreach($rs as $r) {
-			$inf = $r['Informations'];
-			if($inf) $inf = json_decode($inf);
-			$lang = isset($inf->language) && $inf->language ? $inf->language : 'EN';
-			switch($lang) {
-				case 'EN': 
-					$s = 'You have some messages';
-					$b = 'Hello '.$r['Prenom'].",\n\n$s on https://shows.zone\n";
-					break;
-				case 'ES': 
-					$s = 'Tienes algunos mensajes'; 
-					$b = 'Hola '.$r['Prenom'].",\n\n$s en https://shows.zone\n";
-					break;
-				case 'FR': 
-					$s = 'Vous avez des messages';
-					$b = 'Bonjour '.$r['Prenom'].",\n\n$s sur https://shows.zone\n";
-					break;
+			foreach($rs as $r) {
+				$inf = $r['Informations'];
+				if($inf) $inf = json_decode($inf);
+				$lang = isset($inf->language) && $inf->language ? $inf->language : 'EN';
+				switch($lang) {
+					case 'EN': 
+						$s = 'You have some messages';
+						$b = 'Hello '.$r['Prenom'].",\n\n$s on https://shows.zone\n";
+						break;
+					case 'ES': 
+						$s = 'Tienes algunos mensajes'; 
+						$b = 'Hola '.$r['Prenom'].",\n\n$s en https://shows.zone\n";
+						break;
+					case 'FR': 
+						$s = 'Vous avez des messages';
+						$b = 'Bonjour '.$r['Prenom'].",\n\n$s sur https://shows.zone\n";
+						break;
+				}
+				$params = ['Subject'=>"shows.zone: $s", 'To'=>array($r['Mail']), 'Boddy'=>$b];
+				Show::SendMessage($params);
 			}
-			$params = ['Subject'=>"shows.zone: $s", 'To'=>array($r['Mail']), 'Boddy'=>$b];
-			Show::SendMessage($params);
+
+			$sql1 = "update `##_Show-Message` set Status=(Status|2) where Id in ($ids)";
+			$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+			$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		}
-		
-		$sql1 = "update `##_Show-Message` set Status=(Status|2) where Id in ($ids)";
-		$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
-		$rs = $GLOBALS['Systeme']->Db[0]->exec($sql1);
 		
 		return true;
 	}
