@@ -68,13 +68,13 @@ class Message extends genericClass {
 					case 'ES': 
 						$s = 'Tienes algunos mensajes'; 
 						$b = 'Hola '.$r['Prenom']
-							."<br/><br/>$s on <a href=\"https://shows.zone\">https://shows.zone</a>"
+							."<br/><br/>$s en <a href=\"https://shows.zone\">https://shows.zone</a>"
 							."<br/><br/><br/>No responda a este mail.";
 						break;
 					case 'FR': 
 						$s = 'Vous avez des messages';
 						$b = 'Bonjour '.$r['Prenom']
-							."<br/><br/>$s on <a href=\"https://shows.zone\">https://shows.zone</a>"
+							."<br/><br/>$s sur <a href=\"https://shows.zone\">https://shows.zone</a>"
 							."<br/><br/><br/>Ne pas répondre à ce mail.";
 						break;
 				}
