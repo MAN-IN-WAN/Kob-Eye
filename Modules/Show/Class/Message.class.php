@@ -72,7 +72,7 @@ class Message extends genericClass {
 						$b = 'Bonjour '.$r['Prenom'].",\n\n$s sur https://shows.zone\n";
 						break;
 				}
-				$params = ['Subject'=>"shows.zone: $s", 'To'=>array($r['Mail']), 'Boddy'=>$b];
+				$params = ['Subject'=>"shows.zone: $s", 'To'=>array($r['Mail']), 'Body'=>$b];
 				Show::SendMessage($params);
 			}
 
