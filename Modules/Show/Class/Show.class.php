@@ -487,8 +487,8 @@ klog::l("GETSHOW >>>>>",$args);
 		$body = $params['Body'];
 		$set = Sys::getOneData('Show', 'Setting/Domain=MAIL&SubDomain=DEFAULT&Setting=SIGN');
 		$body .= $set->Html;
-		$a = explode('|', $set->Valeur);
-		klog::l(">>>>>>>>>>>>>>>>>>>>>>xxxxxxxxxxx:".$set->Valeur,$a);
+		$a = explode('|', $set->Value);
+//		klog::l(">>>>>>>>>>>>>>>>>>>>>>xxxxxxxxxxx:".$set->Valeur,$a);
 		$Mail->EmbeddedImage($a[0], $a[1]);
 		
 		$bloc = new Bloc();
