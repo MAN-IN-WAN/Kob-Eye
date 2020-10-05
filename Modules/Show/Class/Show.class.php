@@ -484,8 +484,14 @@ klog::l("GETSHOW >>>>>",$args);
 			foreach($params['Bcc'] as $to)
 				$Mail->Bcc($to);
 		}
+		$body = $params['Body'];
+		$set = Sys::getOneData('Show', 'Setting/Domain=MAIL&SubDomain=DEFAULT&Setting=SIGN');
+		$body .= $set->Text;
+		$a = explode('|', $set->Valeur);
+		$Mail->EmbeddedImage($a[0], $a[1]);
+		
 		$bloc = new Bloc();
-		$bloc->setFromVar("Mail", $params['Body'], array("BEACON"=>"BLOC"));
+		$bloc->setFromVar("Mail", $body, array("BEACON"=>"BLOC"));
 		$Pr = new Process();
 		$bloc->init($Pr);
 		$bloc->generate($Pr);

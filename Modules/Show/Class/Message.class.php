@@ -61,15 +61,21 @@ class Message extends genericClass {
 				switch($lang) {
 					case 'EN': 
 						$s = 'You have some messages';
-						$b = 'Hello '.$r['Prenom'].",\n\n$s on https://shows.zone\n";
+						$b = 'Hello '.$r['Prenom']
+							."<br/><br/>$s on <a href=\"https://shows.zone\">https://shows.zone</a>"
+							."<br/><br/><br/>Do not answer to this mail.";
 						break;
 					case 'ES': 
 						$s = 'Tienes algunos mensajes'; 
-						$b = 'Hola '.$r['Prenom'].",\n\n$s en https://shows.zone\n";
+						$b = 'Hola '.$r['Prenom']
+							."<br/><br/>$s on <a href=\"https://shows.zone\">https://shows.zone</a>"
+							."<br/><br/><br/>No responda a este mail.";
 						break;
 					case 'FR': 
 						$s = 'Vous avez des messages';
-						$b = 'Bonjour '.$r['Prenom'].",\n\n$s sur https://shows.zone\n";
+						$b = 'Bonjour '.$r['Prenom']
+							."<br/><br/>$s on <a href=\"https://shows.zone\">https://shows.zone</a>"
+							."<br/><br/><br/>Ne pas répondre à ce mail.";
 						break;
 				}
 				$params = ['Subject'=>"shows.zone: $s", 'To'=>array($r['Mail']), 'Body'=>$b];
