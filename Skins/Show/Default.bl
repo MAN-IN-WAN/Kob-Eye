@@ -1,7 +1,7 @@
 [HEADER]
 <base href="/s/" />
 
-<title>Share your performances: Theatre, Dance, Music</title>
+<title>Share your shows: Theatre, Dance, Music</title>
 <meta name="author" content="Paul Gordon Fisher"/>
 <meta name="robots" content="all"/>
 <meta name="reply-to" content="contact@shows.zone"/>
@@ -24,7 +24,7 @@
 
   <app-root></app-root>
 
-<script src="runtime-es2015.18f4d5b0566feba1cce6.js" type="module"></script><script src="runtime-es5.18f4d5b0566feba1cce6.js" nomodule defer></script><script src="polyfills-es5.9c2b39da61d4ea974676.js" nomodule defer></script><script src="polyfills-es2015.b8834abf55460ca008fa.js" type="module"></script><script src="main-es2015.3c9b12b192adc3689c2f.js" type="module"></script><script src="main-es5.3c9b12b192adc3689c2f.js" nomodule defer></script>
+<script src="runtime-es2015.7304732c360e0d2b5dc5.js" type="module"></script><script src="runtime-es5.7304732c360e0d2b5dc5.js" nomodule defer></script><script src="polyfills-es5.9c2b39da61d4ea974676.js" nomodule defer></script><script src="polyfills-es2015.b8834abf55460ca008fa.js" type="module"></script><script src="main-es2015.4e58cf2c002b0a34454c.js" type="module"></script><script src="main-es5.4e58cf2c002b0a34454c.js" nomodule defer></script>
 
 
 
