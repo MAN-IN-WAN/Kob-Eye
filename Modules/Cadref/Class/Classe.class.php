@@ -478,7 +478,7 @@ order by d.DateCours";
 	
 	function PrintPresence($obj) {
 		require_once ('PrintPresence.class.php');
-		$annee = Cadref::$Annee;
+		$annee = $obj['Annee'];
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];
 		$fin .= substr('ZZZZZZZ', 0, 7-strlen($fin));
@@ -518,7 +518,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'sql'=>$sql);
 	}
 
 	function PrintClasse($obj) {
