@@ -508,7 +508,7 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('pdf'=>false, 'sql'=>$sql);
 		
-		$pdf = new PrintPresence($debut, $fin, $obj['Mois']);
+		$pdf = new PrintPresence($debut, $fin, $obj['Mois'], $annee);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Fiches de presence');
 

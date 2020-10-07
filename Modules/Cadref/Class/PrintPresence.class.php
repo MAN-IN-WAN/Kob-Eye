@@ -4,6 +4,7 @@ require_once('Class/Lib/pdfb/fpdf_fpdi/fpdf.php');
 
 class PrintPresence extends FPDF {
 	
+	private $annee;
 	private $debut;
 	private $fin;
 	private $mois;
@@ -21,7 +22,7 @@ class PrintPresence extends FPDF {
 	private $lpage = 0;
 	
 	
-	function PrintPresence($debut, $fin, $mois) {
+	function PrintPresence($debut, $fin, $mois, $annee) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
@@ -29,6 +30,7 @@ class PrintPresence extends FPDF {
 		$this->width = array(12,22,116,10,10,10,10,10);
 		$this->align = array('L','L','L','R','R','R','L','L');
 
+		$this->annee = $annee.'-'.($annee+1);
 		$this->debut = $debut;
 		$this->fin = $fin;
 		$this->mois = $mois;
@@ -57,8 +59,8 @@ class PrintPresence extends FPDF {
 		$this->Cell(200, 6.5, $this->cv($this->enseignants), 'LRT', 0, 'L');
 		$y += 6.5;
 		$this->SetXY($this->left, $y);
-		$this->Cell(45, 6.5, 'Code : '.$this->record['CodeClasse'], 'LTB', 0, 'L');
-		$this->Cell(90, 6.5, $this->cycle, 'LTB', 0, 'L');
+		$this->Cell(55, 6.5, 'Code : '.$this->record['CodeClasse'].'  '.$this->annee, 'LTB', 0, 'L');
+		$this->Cell(80, 6.5, $this->cycle, 'LTB', 0, 'L');
 		$this->lpage++;
 		$this->Cell(65, 6.5, 'Page '.$this->lpage, 'RTB', 0, 'R');
 		$y += 10.5;
