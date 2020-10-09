@@ -1,4 +1,8 @@
 <?php
+if(isset($vars['Path'])) $Path = $vars['Path'];
+else $vars['Path'] = $Path = $vars['Query'];
+//$info = Info::getInfos($Path);
+
 $vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 $info = Array('Module'=>'Cadref', 'ObjectType'=>'Classe');
 $o = genericClass::createInstance($info['Module'], $info['ObjectType']);
@@ -16,7 +20,7 @@ foreach($temp as $k => $field) {
 $vars['fields'] = $fields;
 
 if(is_object(Sys::$CurrentMenu)) $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
-else $vars['CurrentUrl'] = $Path;
+else $vars['CurrentUrl'] = ''; //$Path;
 
 
 if(!isset($info['ObjectType'])) {

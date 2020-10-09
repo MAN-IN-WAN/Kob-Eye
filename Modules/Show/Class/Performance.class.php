@@ -585,7 +585,7 @@ class Performance extends genericClass {
 		
 		$p = Sys::getOneData('Show', 'Performance/'.$args['perfId']);
 		$main = '';
-		$pict = self::getPictures($p, $main);
+		$picts = self::getPictures($p, $main);
 		return ['success'=>true, 'logged'=>true, 'picts'=>$picts, 'pict'=>$main];
 	}
 

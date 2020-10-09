@@ -121,7 +121,7 @@ foreach (Sys::$User->Menus as $m){
                 }
             }
             if(isset($obj)){
-                $vars["controllers"][$tmp['identifier']]['browseable'] = $obj->browseable;
+                if(isset($tmp['identifier'])) $vars["controllers"][$tmp['identifier']]['browseable'] = $obj->browseable;
             }else{
                 $vars["controllers"][$tmp['identifier']]['browseable'] = false;
             }
