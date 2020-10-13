@@ -66,6 +66,7 @@
 		<PROPERTIES type="varchar" length="4" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" form="6" fiche="6" description="Certificat médical">Certificat</PROPERTIES>
 
 		<VIEW title="DisciplineWebList" default="1">
 			<OBJECTCLASS title="WebDiscipline" filters="">
@@ -77,32 +78,29 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Niveau" driver="mysql" order="CodeNiveau" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Niveau" Operations="addChildren,edit" Dico="0" Class="Modules/Cadref/Class/Niveau.class.php">
-		<FKEY card="1,1" module="Cadref" data="Antenne,Id"    category="Description" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
+<!--
 		<FKEY card="0,1" module="Cadref" data="Section,Id"    category="Description" form="2" fiche="2" description="Section">SectionId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Discipline,Id" category="Description" form="3" fiche="3" description="Discipline">DisciplineId</FKEY>
-		<PROPERTIES type="varchar" length="1" auto="1" category="Description" description="Antenne">Antenne</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Discipline">Discipline</PROPERTIES>
-		<PROPERTIES type="varchar" length="1" obligatoire="1" category="Description" form="4" fiche="4" description="Niveau">Niveau</PROPERTIES>
-		<PROPERTIES type="varchar" length="9" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
+-->
+		<FKEY card="1,1" module="Cadref" data="Antenne,Id" category="Description" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
+		<PROPERTIES type="varchar" length="1" auto="1" category="Description" description="Antenne">Antenne</PROPERTIES>
+		<FKEY card="0,1" module="Cadref" data="WebDiscipline,Id" category="Description" form="5" fiche="5" description="Discipline Web">WebDisciplineId</FKEY>
+		<PROPERTIES type="varchar" length="5" category="Description" list="5" form="2" fiche="2" listDescr="Disc" description="Discipline">WebDiscipline</PROPERTIES>
+
+		<PROPERTIES type="varchar" length="7" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" obligatoire="1" category="Description" form="4" fiche="4" description="Niveau">Niveau</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="Description" list="6" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
-<!--		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>-->
+		<PROPERTIES type="boolean" default="0" category="Description" form="6" fiche="6" description="Certificat médical">Certificat</PROPERTIES>
 
 		<VIEW title="NiveauList" default="1">
 			<OBJECTCLASS title="Niveau" filters="">
-				<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
-					<PROPERTIES type="varchar" list="4" listDescr="Discipline" alias="LibelleD">Libelle</PROPERTIES>
-					<JOIN type="outer" module="Cadref" title="WebDiscipline" on="WebDisciplineId" target="Id">
-						<PROPERTIES type="varchar" list="5" form="4" fiche="4" listDescr="Libelle web" alias="LibelleW">Libelle</PROPERTIES>
-					</JOIN>
+				<JOIN type="outer" module="Cadref" title="WebDiscipline" on="WebDisciplineId" target="Id">
+					<PROPERTIES type="varchar" list="4" listDescr="Discipline" alias="LibelleW">Libelle</PROPERTIES>
 				</JOIN>
-<!--
-				<JOIN type="outer" module="Cadref" title="Section" on="SectionId" target="Id">
-					<PROPERTIES type="varchar" list="3" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
-				</JOIN>
--->
 				<JOIN type="outer" module="Cadref" title="Antenne" on="AntenneId" target="Id">
 					<PROPERTIES type="varchar" alias="LibelleA">Libelle</PROPERTIES>
 				</JOIN>
