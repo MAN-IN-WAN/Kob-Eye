@@ -260,9 +260,10 @@ class Performance extends genericClass {
 		
 		$cry = $cond->country;
 		$priv = $privilege ? '1 or' : '';
+		$world = $cond->mode == 0 ? 'or Status&16' : '';
 		$group = false;
 		$name = '';
-		$whr = "and ($priv countryId=$cry or Status&16 or s.userCreate=$uid) and ($priv !(Status&1) or s.userCreate=$uid) ";
+		$whr = "and ($priv countryId=$cry $world or s.userCreate=$uid) and ($priv !(Status&1) or s.userCreate=$uid) ";
 		switch($cond->mode) {
 			case 0: $group = true; break;
 			case 1:
