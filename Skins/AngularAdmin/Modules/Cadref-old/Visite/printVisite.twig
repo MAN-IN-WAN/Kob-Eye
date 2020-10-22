@@ -1,0 +1,60 @@
+{# fiche printAttestation #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+			<div>
+				<span class="cadref-ins-numero" ng-bind="obj.Numero"></span> <span class="cadref-ins-nom" ng-bind="obj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="obj.Prenom"></span>
+			</div>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Guide") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="visitObj.Guide" ng-change="visitePrintMode(0)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Chauffeur") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="visitObj.Chauffeur" ng-change="visitePrintMode(1)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Interne") }}
+										</div>
+										<div class="col-md-2">
+											 <switch ng-model="visitObj.Interne" ng-change="visitePrintMode(2)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="col-md-2">
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefVisitefunction.callNext" ng-click="CadrefVisite.Print.mode='print'; CadrefVisitecallFunction(CadrefVisitefunction.callNext.item,CadrefVisitefunction.callNext.nom,CadrefVisitefunction.callNext.title,CadrefVisitefunction.callNext.needConfirm,1)">Imprimer</button>
+									</div>
+								</div>
+							</div>                            
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+<input type="hidden" ng-init="CadrefVisitefunction.args.Print=visitObj"/>
+

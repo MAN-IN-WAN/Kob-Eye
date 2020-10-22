@@ -1,0 +1,76 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window, CadrefAttachementStore) {
+
+	// store Attachement
+	$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
+	$scope.CadrefAttachement.store.setFilters('Associatif=1', 'children');
+	$scope.CadrefAttachement.store.getData(1,'children');
+
+	$scope.attachementObj;
+	$scope.attachementInfo;
+	let o = $scope.attachementInfo = {origine: 'associatif', mode: '', classeId: 0, visiteId: 0, associatif: 1, code: '', libelle: 'Documents associatifs'};
+
+	$scope.$watch('CadrefAttachement.currentPage', function() {
+		$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
+	});
+
+	$scope.autoUploader.onProgressAll = function(progress) {
+		$('#upload-progress').val(progress);
+	}
+
+	// ferme attachement edit section
+	$scope.attachementCloseEdit = function() {
+		$scope.attachementInfo.mode = '';
+	}
+
+	// ajout attachement
+	$scope.attachementAdd = function() {
+		$('#upload-progress').val(0);
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = CadrefAttachementStore.getNewData();
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		o.Associatif = i.associatif;
+		i.mode = 'add';
+	}
+
+	// modification attachement
+	$scope.attachementModify = function(item) {
+		$('#upload-progress').val(0);
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = {};
+		angular.copy(item, o);
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'edit';
+	}
+
+	// sauve attachement
+	$scope.attachementSave = function() {
+		$('#settings').spin();
+		CadrefAttachementStore.saveData($scope.attachementObj).then(function (data) {
+			$('#settings').spin(false);
+			$scope.attachementInfo.mode = '';
+		});
+	}
+
+	// suppression attachement
+	$scope.attachementDelete = function(item) {
+		swal({
+				title: "Effacer l'attachement",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAttachementStore.deleteOneData(item.id,'all');
+				$scope.attachementInfo.mode = '';
+			}
+		);
+	}
+
+	
+});

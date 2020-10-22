@@ -1,0 +1,67 @@
+{# fiche Depart #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean,fkey %} 
+{% set f=fields %}
+{% set o='modalObj' %}
+<div class="page-content-inner">
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-10">
+					<div class="row">
+						<div class="col-md-8" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visite") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-2">
+											{{ fkey(f.VisiteId, o) }}
+										</div>
+										<div class="col-md-10">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" ng-model="obj.Libelle" readonly/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Lieu") }}
+								</div>
+								<div class="col-md-10">
+									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefLieuStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':'Type=R'}" 
+										 ng-model="{{ o }}.LieuLieuId"
+										 class="form-control" 
+										 ng-title="{{ o }}.LieuLieuIdlabel+'  -  '+{{ o }}.Libelle">
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Heure départ") }}
+								</div>
+								<div class="col-md-2">
+									<input type="text" id="heureDepart" class="form-control cadref-input" ng-model="{{ o }}.HeureDepart" mask="dd:dd"/>
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="departSave()">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="departDelete({{ o }})">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" data-dismiss="modal">Annuler</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,265 @@
+{% if not headless %}
+	<div class="nav-tabs-horizontal margin-bottom-20">
+{#		<ul class="nav nav-tabs" role="tablist">
+			{% for filter in filters %}
+				<li class="nav-item">
+					<a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+#}	</div>
+
+	<div class="form-group row">
+		<div class="col-lg-5 col-md-12">
+			<div class="input-group list-search">
+				<div class="row">
+					<div class="col-md-4" style="padding-right:0">
+						<input type="text" id="search{{ identifier }}2" class="form-control" name="{{ identifier }}query2" ng-model="{{ identifier }}.filter2" placeholder="Code..." >
+					</div>
+					<div class="col-md-5" style="padding-left:0; padding-right:0">
+						<input type="text" id="search{{ identifier }}1" class="form-control" name="{{ identifier }}query1" ng-model="{{ identifier }}.filter1" placeholder="Recherche..." >
+					</div>
+					<div class="col-md-3" style="padding-left:0">
+						<select id="ClasseAnnee" class="form-control" ng-init="ListClasseAnnee='{{ Annee }}';classeAnneeChange()" ng-model="ListClasseAnnee" ng-change="classeAnneeChange()">
+							<option value=""></option>
+							{% for v,c in annees %}
+								<option value="{{ v }}" {% if c %}selected="true"{% endif %}>{{ v }}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+				</div>
+				<span class="input-group-btn">
+					<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('{{ identifier }}')"></a>				
+					<a href="javascript: void(0);" class="btn btn-warning" accesskey="r" title="Alt R" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
+						Rafraîchir
+					</a>
+					{% if (operation.add or (context == 'children' and operation.addChildren)) and not hideBtn.add %}
+						<a  href="javascript: void(0);" class="btn btn-success" accesskey="n"  title="Alt N" ng-click="{{ identifier }}add()">
+							Nouveau
+						</a>
+					{% endif %}
+					{% if operation.export and not hideBtn.export %}
+						<a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}export()">
+							Exporter
+						</a>
+					{% endif %}
+					{% if operation.delete and not hideBtn.delete %}
+						<a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 1" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+							Supprimer la sélection
+						</a>
+					{% endif %}
+					{% if context != 'children' and ObjectClass.searchFilters %}
+						<a  href="javascript: void(0);" class="btn btn-info" accesskey="f" title="Alt F" ng-click="{{ identifier }}switchPanelFilters();">
+							Filtres
+						</a>
+					{% endif %}
+					{% if context == 'children' and not ObjectClass.hideSelect and not hideBtn.selection %}
+						<a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
+							Selection
+						</a>
+					{% endif %}
+				</span>
+			</div>
+		</div>
+		<div class="col-lg-1 col-md-12">
+			<select class="form-control" ng-model="{{ identifier }}.pageLength" >
+				<option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
+				<option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
+			</select>
+		</div>
+
+		<div class="col-lg-2 col-md-12">
+		</div>
+		<div class="col-lg-4 col-md-12">
+			<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+		</div>
+	</div>
+
+	{% if context != 'children' %}
+		<div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' ">
+			<div class="row">
+				<div class="col-md-12">
+					<h5>Requète complête: {[{ {{ identifier }}.filterQuery }]}</h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-lg-6">
+					{% for field in searchfields %}
+						{% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"  %}
+							<div class="row">
+								<div class="col-md-6">
+									<label class="form-control-label" for="l0">{{ field.description }}</label>
+									{% if field.help %}
+										<small>
+											<i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+										</small>
+									{% endif %}
+								</div>
+								<div class="col-md-6">
+									<div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}" ng-init="{{ identifier }}.filters.{{ field.name }}.type='{{ field.type }}'">
+										{% if field.type == "fkey" and field.card == "short" %}
+											<div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
+										{% elseif field.type == "boolean" %}
+											<switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
+										{% else %}
+											{% if field.query %}
+												<select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+													{% for v,k in field.query %}
+														<option value="{{ v }}">{{ k }}</option>
+													{% endfor %}
+												</select>
+											{% elseif field.Values %}
+												<select class="form-control form-control-sm"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+													{% for v,k in field.Values %}
+														<option value="{{ v }}">{{ k }}</option>
+													{% endfor %}
+												</select>
+											{% else %}
+												<input type="text" class="form-control form-control-sm" placeholder=""  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+												<label for="{{ identifier }}{{ field.name }}">Correspondance stricte</label><input type="checkbox" id="{{ identifier }}{{ field.name }}" ng-checked="{{ identifier }}.filters.{{ field.name }}.strict" ng-init="{{ identifier }}.filters.{{ field.name }}.strict=true" ng-model="{{ identifier }}.filters.{{ field.name }}.strict" ng-change="{{ identifier }}applyFilters()">
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						{% endif %}
+						{% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
+						</div>
+						<div class="col-md-12 col-lg-6">
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+			<div class=" row">
+				<div class="col-md-10">
+					<a href="javascript: void(0);" class="btn btn-info " ng-click="{{ identifier }}applyFilters()">
+						Appliquer les filtres
+					</a>
+					<a href="javascript: void(0);" class="btn btn-warning " ng-click="{{ identifier }}resetFilters()">
+						Réinitialiser les filtres
+					</a>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endif %}
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+		<thead>
+			<tr>
+				{% if showCheckboxes %}
+					<th width="30" title="Ch" class="list-col-th-dark">
+						<input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
+					</th>
+				{% endif %}
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Année</th>
+				<th titre="CodeClasse" ng-click="triggerSort($event,'{{ identifier }}','CodeClasse','{{ context }}')">Classe</th>
+				<th>Libellé</th>
+				<th>Web</th>
+				<th>Heures</th>
+				<th>Cycle</th>
+				<th>Places</th>
+				<th>Prix</th>
+				<th>Doc.</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
+			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+				{% if showCheckboxes %}
+					<td  class="list-col-td-dark cadref-td">
+						<input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
+					</td>
+				{% endif %}
+				<td class="list-col-td-id cadref-td" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-class="{'cadref-highlight': !item.AccesWeb}">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><span ng-class="{'cadref-highlight': item.Places*1<=item.Inscrits*1}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<button class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" title="Pièces jointes" 
+						  ng-click="attachementsOpen(item, 'classe', '{{Type}}')">{[{ item.Attachements }]}
+					</button>
+				</td>
+
+				{% for interface in Interfaces %}
+					{% if interface.child  %}
+						<td scope="row" class="type{{ interface.type }}">
+							{% if interface.type == "price" or interface.type == "float" %}
+								<span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
+							{% elseif interface.type == "extlink" %}
+								<a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+							{% endif %}
+						</td>
+					{% endif %}
+				{% endfor %}
+				<td  class="table-action cadref-td-btn">
+					<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</div>
+<div class="form-group row">
+    <div class="col-lg-6 col-md-12">
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+</div>
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+	<div class="modal-dialog cadref-modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+				<h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger" ng-if="modalObj.errors.length">
+					<ul>
+						<li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+					</ul>
+				</div>
+				<div class="alert alert-warning" ng-if="modalObj.warning.length">
+					<ul>
+						<li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+					</ul>
+				</div>
+				<div class="alert alert-success" ng-if="modalObj.infos.length">
+					<ul>
+						<li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+					</ul>
+				</div>
+				<div ng-if="modalObj.success == false">
+					{{ include(template_from_string(module(formPath~'?Path='~Path~'&Create=1'))) }}
+				</div>
+			</div>
+			{#            <div class="modal-footer">
+							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+							<button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">__SAVE_MODAL_OBJ__</button>
+						</div>
+			#}        </div>
+	</div>
+</div>
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>

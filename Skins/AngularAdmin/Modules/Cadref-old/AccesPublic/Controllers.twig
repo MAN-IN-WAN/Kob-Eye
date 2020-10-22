@@ -1,0 +1,1114 @@
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, $window, $timeout,
+	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
+	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
+
+    $scope.obj;
+	$scope.localObj = {};
+
+	$rootScope.$on('CadrefAbsenceStore',function (ev,data){
+		$('.absence-calendar-block').fullCalendar('refetchEvents');
+	});
+
+	$scope.{{ identifier }}InfoSave = function (){
+        //affichage spinner
+        $('#settings').spin();
+        $scope.store.saveData($scope.obj).then(function (data) {
+            $('#settings').spin(false);
+            if (data.success){
+                $scope.obj = data.data;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+            }else {
+                //gestion des erreurs
+                $scope.obj.errors = data.errors;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+                $scope.obj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.obj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.obj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
+		if (args == undefined) args = [];
+		if (explodeArgs == undefined) explodeArgs = true;
+		var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}/'+obj.id,
+			args : args,
+			explodeArgs:explodeArgs,
+			tms : Date.now()
+		};
+		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+
+	//--------------------------------
+	// UTILISATEUR
+	//--------------------------------
+	
+	// mot de passe
+	$scope.utilisateurInfo = {mode: '', pwdValid: 0, PwdOld: '', PwdNew: '', PwdConf: '', pwdInfo: '', pwdCondInfo: '', returnMsg: ''};
+	$scope.utilisateurChange = function(mode) {
+		$scope.utilisateurInfo.mode = mode; 
+	}
+	$scope.utilisateurPwdChange = function(mode) {
+		var o = $scope.utilisateurInfo;
+		o.pwdValid = 0;
+		o.returnMsg = o.pwdConfInfo = o.pwdInfo = '';
+		if(mode == 'new') o.PwdConf = '';
+		if(o.PwdOld == '') return;
+		var p = o.PwdNew 
+		if(p) {
+			if(p.length < 8) o.pwdInfo = 'Mot de passe trop court';
+			else {
+//				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$", "g");
+				if(! rgx.test(p)) o.pwdInfo = 'Mot de passe non conforme';
+			}
+			if(o.pwdInfo) return;
+		}
+		if(o.PwdConf && p != o.PwdConf) {
+			o.pwdConfInfo = 'Confirmation incorrecte';
+			return;
+		}
+		o.pwdValid = 1;
+	}
+	$scope.utilisateurPwdSave = async function() {
+		$('#password').spin();
+		var o = $scope.utilisateurInfo;
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'ChangePassword',o,false);
+		data = data.data.data;
+		$('#password').spin(false);
+		if(!data.success) o.returnMsg = data.message;
+		else o.mode = ''; 
+		$scope.$digest();
+	}
+	
+	//-----------------------------
+	// ATTACHEMENT
+	//-----------------------------
+	
+	// store Attachement
+	$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
+
+	$scope.CadrefAttachementAsso = $rootScope.createStore(CadrefAttachementStore, 'children');
+	$scope.CadrefAttachementAsso.store.setFilters('Associatif=1', 'children');
+	$scope.CadrefAttachementAsso.store.getData(1,'children');
+
+	// ouverture fenetre attachements
+	$scope.attachementObj;
+	$scope.attachementInfo;
+	$scope.attachementsOpen = function(item, origine) {
+		$('#upload-progress').val(0);
+		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
+		var o = $scope.attachementInfo = {origine:origine, mode:'', classeId:0, visiteId:0, associatif:0, code:'', libelle:'', classes:[], selected:0};
+		switch(origine){
+			case 'classe':
+				o.classeId = item.id;
+				o.code = item.CodeClasse;
+				o.libelle = item.LibelleD+' '+item.LibelleN;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+				break;
+			case 'inscription':
+				o.classeId = item.clsId; //item.ClasseClasseId;
+				o.code = item.CodeClasse;
+				o.libelle = item.LibelleD+' '+item.LibelleN;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+				break;
+			case 'visite':
+				o.visiteId = item.id;
+				o.code = item.Visite;
+				o.libelle = item.Libelle;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+				break;
+			case 'reservation':
+				o.visiteId = item.clsId; //item.VisiteVisiteId;
+				o.code = item.Visite;
+				o.libelle = item.Libelle;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+				break;
+		}
+		$scope.CadrefAttachement.store.getData(1, 'children');
+		$("#modal-Attachements").modal();
+
+		$scope.autoUploader.onProgressAll = function(progress) {
+			$('#upload-progress').val(progress);
+		}
+	}
+	
+	$scope.$watch('CadrefAttachement.currentPage', function() {
+		$scope.CadrefAttachement.store.setPage($scope.CadrefAttachement.currentPage, 'children');
+	});
+
+	
+	//-----------------------------
+	// MESSAGE
+	//-----------------------------
+	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: '', Sender: '', smsSize:''};
+	$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
+	$scope.pieceAdd = function() {
+		var p = $scope.msgObj.Pieces;
+		p.mode = 'add';
+		p.filePath = '';
+	}
+
+	$scope.pieceSave = function() {
+		var p = $scope.msgObj.Pieces;
+		p.data.push(p.filePath);
+		p.mode = '';
+		p.filePath = '';
+	}
+
+	$scope.pieceDelete = function(item) {
+		var p = $scope.msgObj.Pieces;
+		n = p.data.indexOf(item);
+		if(n >= 0) p.data.splice(n, 1);
+	}
+
+	$scope.pieceCloseEdit = function() {
+		$scope.msgObj.Pieces.mode = '';
+	}
+
+	$scope.messageSend = function(mode) {
+		$scope.msgObj.sendMode = mode;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PublicSendMessage',{Msg:$scope.msgObj});
+		ajax.success(
+			function(data) {
+				swal(mode == 'sms' ? 'SMS' : 'Message',"Message envoyé",'info');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
+	$scope.checkSmsSize = function(obj) {
+		let s = obj.SMS.length;
+		obj.smsSize = s ? ' '+s : '';
+	}
+
+	
+	{% if objecttype == 'Enseignant' %}
+	//--------------------------------
+	// ENSEIGNANT
+	//--------------------------------	
+
+
+	//Gestion du store
+    $scope.store = CadrefEnseignantStore;
+	
+	// store children
+	$scope.CadrefAbsence = $rootScope.createStore(CadrefAbsenceStore, 'children');
+	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
+{#	$scope.CadrefClasse = $rootScope.createStore(CadrefClasseStore, 'children');
+	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'children');
+	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.$watch('CadrefClasse.currentPage', function() {
+		$scope.CadrefClasse.store.setPage($scope.CadrefClasse.currentPage, 'children');
+	});
+	$scope.$watch('CadrefClasse.pageLength', function() {
+		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.pageLength, 'children');
+	});
+#}
+	$scope.ens = {classes: [], visites: [], busy: true };
+
+    $scope.initEns = function(){
+        $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
+            $scope.obj = data;
+			
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetClassesVisites',[]);
+			ajax.success(function(data) {
+				$scope.ens.classes = data.data.classes;
+				$scope.ens.visites = data.data.visites;
+				$scope.ens.busy = false;
+			});
+
+        });
+    }
+    $scope.initEns();
+	
+	//-----------------
+	// ABSENCE
+	//-----------------
+	$scope.absenceObj;
+	$scope.absenceInfo = {mode: ''};
+	// ferme absence edit section
+	$scope.absenceCloseEdit = function() {
+		$scope.absenceInfo.mode = '';
+	}
+
+	// ajout absence
+	$scope.absenceAdd = function() {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = CadrefAbsenceStore.getNewData();
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'add';
+	}
+
+	// modification absence
+	$scope.absenceModify = function(item) {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = {};
+		angular.copy(item, o);
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'edit';
+	}
+
+	// sauve absence
+	$scope.absenceSave = function() {
+		$('#settings').spin();
+		CadrefAbsenceStore.saveData($scope.absenceObj).then(function (data) {
+			$('#settings').spin(false);
+			$scope.absenceInfo.mode = '';
+			try {$scope.$digest();} catch(ex) {}
+		});
+	}
+
+	// suppression absence
+	$scope.absenceDelete = function(item) {
+		swal({
+				title: "Effacer l'absence",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAbsenceStore.deleteOneData(item.id,'all');
+				$scope.absenceInfo.mode = '';
+				try {$scope.$digest();} catch(ex) {}
+			}
+		);
+	}
+
+	// message absence
+	$scope.absenceMessage = async function(item) {
+		var params = {
+			name: 'SendMessage',
+			query: 'Cadref/Absence/'+item.id,
+			args : [],
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		var data = await $http.post('/Cadref/Absence/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+		console.log(data);
+		if(data.data.data) swal("Messages envoyés", "", "success");
+		else swal("Messages non envoyés", "L'absence ne coïncide pas avec un cours à venir", "warning");
+	}
+	
+	
+	$scope.visites = true;
+	$('.absence-calendar-block').fullCalendar({
+		//aspectRatio: 2,
+		height: 650,
+		header: {
+			left: 'prev, next, today',
+			center: 'title',
+			right: 'visites, month, agendaWeek, agendaDay'
+		},
+		buttonIcons: {
+			prev: 'none fa fa-arrow-left',
+			next: 'none fa fa-arrow-right',
+			prevYear: 'none fa fa-arrow-left',
+			nextYear: 'none fa fa-arrow-right'
+		},
+		customButtons: {
+			visites: {
+				text: 'Visites',
+				click: function() {
+					$scope.visites = ! $scope.visites;
+					if($scope.visites) $('.fc-visites-button').addClass('btn-info');
+					else $('.fc-visites-button').removeClass('btn-info');
+					$('.absence-calendar-block').fullCalendar('refetchEvents');
+				}
+			}
+		},
+		minTime: "08:00",
+		maxTime: "19:00",
+		//defaultView: 'agendaMonth',
+		//allDayDefault: false,
+		hiddenDays: [0],
+		//allDaySlot: true,
+		editable: false,
+		navLinks: true,
+		nowIndicator: true,
+		eventLimit: true, // allow "more" link when too many events
+		viewRender: function(view, element) {
+			if (!cleanUI.hasTouch) {
+				$('.fc-scroller').jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+			}
+		},
+		defaultDate: '{{ "now"|date("Y-m-d") }}',
+		events: function(start, end, timezone, callback) {
+			var args = {start: start, end: end, visites: $scope.visites};
+			$http.post('/Cadref/Dashboard/getCalendar.json',{"args":JSON.stringify(args)})
+			.success(function(data) {
+				callback(data.events);
+			});
+		},
+		eventClick: function(calEvent, jsEvent, view) {
+			if (!$(this).hasClass('event-clicked')) {
+				$('.fc-event').removeClass('event-clicked');
+				$(this).addClass('event-clicked');
+			}
+		},
+		eventRender: function(eventObj, $el) {
+        $el.popover({
+          title: eventObj.title,
+          content: eventObj.description,
+		  html: true,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
+      }
+
+	});
+	
+		
+	// ATTACHEMENTS
+	
+	// ferme attachement edit section
+	$scope.attachementCloseEdit = function() {
+		$scope.attachementInfo.mode = '';
+	}
+	
+	// selection d'une classe
+	$scope.attachementSelClasse = function() {
+		let o = $scope.attachementInfo;
+		o.selected = 0;
+		for(let item of o.classes) if(item.selected) o.selected++;
+	}
+
+	// liste des classes avec selection
+	$scope.attachementClasses = async function(item) {
+		let ids = [];
+		if(item) { 
+			let params = {
+				name: 'GetAttachements',
+				query: 'Cadref/Attachement/'+item.id,
+				args : '',
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			let data = await $http.post('/Cadref/Attachement/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+			ids = data.data.data.ids;
+		}
+
+		let o = $scope.attachementInfo;
+		o.classes = [];
+		if(o.origine != 'classe') return;
+		for(let item of $scope.ens.classes) {
+			item.selected = false;
+			item.attach = 0;
+			if(item) {
+				let tmp = ids.filter(it => it.classe === item.id);
+				if(tmp.length) {
+					item.selected = true;
+					item.attach = tmp[0].attach;
+				}
+			}
+			o.classes.push(item);
+		}
+		o.selected = ids.length;
+		try { $scope.$digest(); } catch(ex) {}
+	}
+
+	// ajout attachement
+	$scope.attachementAdd = function() {
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = CadrefAttachementStore.getNewData();
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'add';
+		$scope.attachementClasses(null);
+	}
+	
+	// modification attachement
+	$scope.attachementModify = function(item) {
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = {};
+		angular.copy(item, o);
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'edit';
+		$scope.attachementClasses(item);
+	}
+
+	// sauve attachement
+	$scope.attachementSave = function(type, del) {
+		$('#settings').spin();
+		let i = $scope.attachementInfo;
+		if(type && i.origine == 'classe') {
+			let cls = []
+			for(let item of i.classes) if(item.selected || item.attach)
+				cls.push({classe:item.id, attach:item.attach, selected:(del === true ? false : item.selected)});
+
+			let params = {
+				name: 'SaveAttachements',
+				query: 'Cadref/Attachement/',
+				args : {attach:$scope.attachementObj, ids:cls},
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			$http.post('/Cadref/Attachement//Method.json',{"Func":JSON.stringify(params)})
+			.then(function(data) {
+				$('#settings').spin(false);
+				$scope.attachementInfo.mode = '';
+			});
+			$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+i.classeId+'/Attachement', 'children');
+			$scope.CadrefAttachement.store.getData(1, 'children');
+			try { $scope.$digest(); } catch(ex) {}
+		}
+		else {			
+			CadrefAttachementStore.saveData($scope.attachementObj)
+			.then(function (data) {
+				$('#settings').spin(false);
+				$scope.attachementInfo.mode = '';
+			});
+		}
+	}
+
+	// suppression attachement
+	$scope.attachementDelete = function(item, type) {
+		swal({
+				title: "Effacer l'attachement",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				if(type && $scope.attachementInfo.origine == 'classe') $scope.attachementSave(type, true);
+				else {
+					CadrefAttachementStore.deleteOneData(item.id,'all');
+					$scope.attachementInfo.mode = '';
+				}
+			}
+		);
+	}
+	
+	// PRESENCE
+	$scope.Presence = {Debut:''};
+	$scope.enseignantPresence = function() {
+		var p = $scope.Presence;
+		p.Fin = p.Debut;
+		$scope.obj.Fin = $scope.obj.Debut;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintPresence',p,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.log('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// liste adhérents
+	$scope.enseignantAdh = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// print visite
+	$scope.visitePrint = function(item) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintVisite',[item.Visite]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	{% endif %}
+
+
+{#	{% if objecttype == 'Visite' and  benevole == 1 %}
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'default');
+	$scope.CadrefVisite.store.setFilters('Annee={{ Annee }}', 'default');
+	CadrefVisiteStore.getData(1,'default');
+	
+	$scope.$watch('CadrefVisite.currentPage', function() {
+		$scope.CadrefVisite.store.setPage($scope.CadrefVisite.currentPage, 'default');
+	});
+	$scope.$watch('CadrefVisite.pageLength', function() {
+		$scope.CadrefVisite.store.setPageLength($scope.CadrefVisite.currentPage, 'default');
+	});
+
+
+	// efface le contenu du filtre
+	$scope.clearFilter = function(id) {
+		$scope.CadrefVisite.filter = '';
+		$('#searchCadrefVisite').focus();
+	}
+
+	{% endif %}
+#}	
+
+	//--------------------------------
+	// ADHERENT
+	//--------------------------------
+
+	{% if objecttype == 'Adherent' and benevole == 1 %}
+		
+	$scope.CadrefAdherent = $rootScope.createStore(CadrefAdherentStore, 'default');
+	//$scope.CadrefAdherent.store.setFilters('Annee={{ Annee }}', 'default');
+	CadrefAdherentStore.getData(1,'default');
+	
+	$scope.$watch('CadrefAdherent.currentPage', function() {
+		$scope.CadrefAdherent.store.setPage($scope.CadrefAdherent.currentPage, 'default');
+	});
+	$scope.$watch('CadrefAdherent.pageLength', function() {
+		$scope.CadrefAdherent.store.setPageLength($scope.CadrefAdherent.pageLength, 'default');
+	});
+
+
+	// efface le contenu du filtre
+	$scope.clearFilter = function(id) {
+		$scope.CadrefAdherent.filter1 = '';
+		$scope.CadrefAdherent.filter2 = '';
+		$('#searchCadrefAdherent2').focus();
+	}
+
+	var lasttimeout = false;
+	// wait for CadrefAdherent to be defined before setting a watch on filters
+	var unwatch = $scope.$watch('CadrefAdherent', function() {
+		if($scope.CadrefAdherent != undefined && $scope.CadrefAdherent.filter2 == undefined) {
+			$scope.CadrefAdherent.filter1 = '';
+			$scope.CadrefAdherent.filter2 = '';
+			var f = CadrefAdherentStore.getFilters('default',true).global;
+			if(f != '') {
+				if(f.substring(0, 10) == 'NomPrenom~') $scope.CadrefAdherent.filter2 = f.substring(10);
+				else $scope.CadrefAdherent.filter1 = f
+			}
+			$scope.$watch('CadrefAdherent.filter1', function() {
+				if ($scope.CadrefAdherent.filter1 != CadrefAdherentStore.getFilters('default',true).global){
+					if (lasttimeout){
+						$timeout.cancel(lasttimeout);
+						lasttimeout = false;
+					}
+					CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
+					lasttimeout = $timeout(function () {
+						//CadrefAdherentStore.setPageLength(15);
+
+						CadrefAdherentStore.getData(1,'default');
+					},250);
+				}
+			});
+			$scope.$watch('CadrefAdherent.filter2', function() {
+				if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
+					if (lasttimeout){
+						$timeout.cancel(lasttimeout);
+						lasttimeout = false;
+					}
+					var np = $scope.CadrefAdherent.filter2 != '' ? 'NomPrenom~'+$scope.CadrefAdherent.filter2 : '';
+					CadrefAdherentStore.setGlobalFilter(np,'default');
+					lasttimeout = $timeout(function () {
+						//CadrefAdherentStore.setPageLength(15);
+
+						CadrefAdherentStore.getData(1,'default');
+					},250);
+				}
+			});
+			unwatch();
+		}
+	});
+	
+	$scope.benevoleCarte = function(obj) {
+		var ajax = $scope.{{ identifier }}callMethod(obj,'PrintCarte',[false]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.log('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	// attestations diverses
+	$scope.benevoleAttestation = function(obj, mode) {
+		var attest = {AttestAnnee:'{{ Annee }}', AttestFisc:0, AttestSuivi:0, AttestPaiement:0};
+		switch(mode) {
+			case 0: attest.AttestFisc = 1; break;
+			case 1: attest.AttestSuivi = 1; break;
+			case 2: attest.AttestPaiement = 1; break;
+		}
+		var ajax = $scope.{{ identifier }}callMethod(obj,'PrintAttestationPublic',attest,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf == false) swal('Attention',"Non inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
+	{% endif %}
+	
+	
+	{% if objecttype == 'Adherent' and benevole == 0 %}
+
+	//Gestion du store
+    $scope.store = CadrefAdherentStore;  
+
+	// store children
+	$scope.CadrefReglement = $rootScope.createStore(CadrefReglementStore, 'children');
+	$scope.CadrefReglement.store.setFilters('Annee={{ Annee }}', 'children');
+	$scope.CadrefInscription = $rootScope.createStore(CadrefInscriptionStore, 'children');
+	$scope.CadrefInscription.store.setFilters('Annee={{ Annee }}', 'children');
+	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
+	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
+
+	$scope.inscriptionObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[], Cotisation:0, Total:0};
+ 	$scope.reservationObj = {AnneeSelect:'{{ Annee }}', Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
+	$scope.initAdh = function(){
+        $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
+            $scope.obj = data;
+			$scope.obj.AnneeSelect = '{{ Annee }}';
+			$scope.adherentInfo();
+			$scope.inscriptionGetData('inscription', '');
+			$scope.reservationGetData('reservation', '');
+			$scope.getPanier('', '');
+        });
+    }
+    $scope.initAdh();
+	
+	$scope.anneeChangeInscr = function() {
+		$scope.inscriptionGetData('inscription', '');
+	}
+	$scope.anneeChangeReserv = function() {
+		$scope.reservationGetData('reservation', '');
+	}
+	
+	// informations annuelles adherent
+	$scope.adherentInfo = function() {
+		var annee = $scope.obj.AnneeSelect;
+		if(annee == undefined) annee = '{{ Annee }}';
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
+		ajax.success(
+			function(data) {
+				$scope.obj.Cotisation = data.data.Cotisation;
+				$scope.obj.Cours = data.data.Cours;
+				$scope.obj.Visites = data.data.Visites;
+				$scope.obj.Reglement = data.data.Reglement;
+				$scope.obj.Differe = data.data.Differe;
+				$scope.obj.Regularisation = data.data.Regularisation;
+				$scope.obj.Solde = data.data.Solde;
+				$scope.obj.NotesAnnuelles = data.data.NotesAnnuelles;
+				$scope.obj.Adherent = data.data.Adherent;
+				$scope.obj.ClasseId = data.data.ClasseId;
+				$scope.obj.AntenneId = data.data.AntenneId;
+				$scope.obj.certifInvalide = data.data.certifInvalide;				
+				$scope.obj.nonSolde = Number($scope.obj.Solde) != 0;
+				$scope.obj.Annees = data.data.Annees;
+
+				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// carte adherent
+	$scope.adherentCarte = function(obj) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[true]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf == false) swal('Attention',"Vous n'êtes pas inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
+	// responsable site
+	$scope.adherentSite = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintSiteAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// délégué de classe
+	$scope.adherentDelegue = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintDelegueAdherents',[]);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	
+	// attestations diverses
+	$scope.Attest = {AttestAnnee:'{{ Annee }}', AttestFisc:1, AttestSuivi:0, AttestPaiement:0};
+	$scope.adherentAttestation = function() {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestationPublic',$scope.Attest,false);
+		ajax.success(
+			function(data) {
+				if(data.data.pdf == false) swal('Attention',"Vous n'êtes pas inscrit pour cette année.",'warning');
+				else $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	$scope.selectAttestMode = function(mode) {
+		var o = $scope.Attest;
+		switch(mode) {
+		case 0: 
+			if(o.AttestFisc) { o.AttestPaiement = o.AttestSuivi = 0; }
+			else { o.AttestPaiement = 0; o.AttestSuivi = 1; }
+			break;
+		case 1: 
+			if(o.AttestSuivi) { o.AttestPaiement = o.AttestFisc = 0; }
+			else { o.AttestPaiement = 1; o.AttestFisc = 0; }
+			break;
+		case 2: 
+			if(o.AttestPaiement) { o.AttestFisc = o.AttestSuivi = 0; }
+			else { o.AttestFisc = 1; o.AttestSuivi = 0; }
+		}
+	}
+
+
+
+	//---------------------------
+	// gestion du panier
+	$scope.panierObj = {Montant:0, panierItems:[], visiteItems:[], Cotisation:0, Montant:0, Total:0, TotalVisite:0, Dons:0, Urlweb:''};
+	$scope.getPanier = async function(action, classe, dons) { 
+		if(classe == undefined) classe = '';
+		var args = [action, classe];
+		if(dons != undefined) args.push(dons);
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPanier',args);
+		$scope.panierObj.panierItems = data.data.data.data;
+		$scope.panierObj.Cotisation = data.data.data.cotis;
+		$scope.panierObj.CotisationDue = data.data.data.cotisDue;
+		$scope.panierObj.Montant = data.data.data.montant;
+		$scope.panierObj.AvoirReporte = data.data.data.avoirReporte;
+		$scope.panierObj.AvoirDu = data.data.data.avoirDu;
+		$scope.panierObj.AvoirUtilise = data.data.data.avoirUtilise;
+		$scope.panierObj.AvoirSolde = data.data.data.avoirSolde;
+		$scope.panierObj.Avoir = $scope.panierObj.AvoirReporte*1+$scope.panierObj.AvoirDu*1-$scope.panierObj.AvoirUtilise*1;
+		$scope.panierObj.Solde = data.data.data.solde;
+		$scope.panierObj.Total = data.data.data.total;
+		$scope.panierObj.Urlweb = data.data.data.urlweb;
+		$scope.panierObj.Dons = data.data.data.donate;
+		$scope.panierObj.visiteItems = data.data.data.visites;
+		$scope.panierObj.TotalVisite = data.data.data.totalVisite;
+		$scope.panierObj.MontantVisite = data.data.data.montantVisite;
+		$scope.panierObj.affSolde = $scope.panierObj.Solde*1 > 0;
+		$scope.$digest();
+//console.log($scope.panierObj);
+	}
+
+	$scope.panierAjoute = function(item) {
+		$scope.inscriptionObj.Select = 0;
+		$scope.getPanier('add', item.CodeClasse);
+	}
+
+	$scope.panierSupprime = function(item) {
+		$scope.getPanier('remove', item.CodeClasse);
+	}
+	
+	$scope.panierPoursuivre = function() {
+		window.location.href = $scope.panierObj.Urlweb;
+	}
+	
+	$scope.panierConfirme = async function(mode) {
+		if($scope.panierObj.Total*1 > 0) {
+			$("#boutonPayer").prop('disabled', true);
+			var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetPayment',[mode=='classe' ? $scope.panierObj.Total : $scope.panierObj.TotalVisite, mode]);
+			$("#panierPayer").html(data.data.data);
+			$('#PBXPayer').click(function() {
+				$('#modal-panier').modal('hide');
+			});
+		}
+		else $("#boutonPayer").html('Confirmer');
+		$("#modal-panier").modal('toggle');
+	}
+	
+	$scope.panierZero = async function() {
+		await $scope.{{ identifier }}callMethod($scope.obj,'WebInscription',['zero']);
+		$("#modal-panier").modal('hide');
+		$scope.getPanier();
+	}
+	
+	$scope.panierDons = function() {
+		$scope.getPanier('', '', $scope.panierObj.Dons);
+	}
+
+	$scope.panierVisiteAjoute = function(item) {
+		$scope.inscriptionObj.Select = 0;
+		$scope.getPanier('visiteAdd', item.Visite);
+	}
+
+	$scope.panierVisiteSupprime = function(item) {
+		$scope.getPanier('visiteRemove', item.Visite);
+	}
+	
+
+	//---------------------------
+	// gestion des inscriptions
+	
+	// affiche / cache le panneau d'inscription
+	$scope.inscriptionSelect = function(mode, visite) {
+		$scope.inscriptionObj.Select = mode;
+		if(visite) {
+			$scope.inscriptionGetData('visite', '');
+		}
+	}
+	
+	// charge les données d'inscription
+	$scope.inscriptionGetData = async function(mode, filter='') {
+		var o = $scope.inscriptionObj;
+		o.Filter = filter;
+		var params = [mode, o];
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetCours',params);
+		switch(mode) {
+			case 'inscription':
+				o.InscriptionItems = data.data.data.data;
+				break;
+			case 'classe':
+				o.ClasseItems = data.data.data.data;
+				break;
+			case 'antenne': o.AntenneId = 0;  // no break
+			case 'section': o.SectionId = 0;  // no break
+			case 'discipline': o.DisciplineId = 0; o.ClasseItems = []; break;
+			case 'visite':
+				o.VisiteItems = data.data.data.data;
+				break;
+		}	
+		$scope.$digest();
+		return data.data.data.data;
+	}
+
+	// renvoi un valeur numerique pour comparaison de dates 
+	function cycleValeur(c, debut) {
+		if(c == '') return debut ? 0 : 19999;
+		var m = parseInt(c.substr(3));
+		return (m < 9 ? 10000 : 0)+m*100+parseInt(c.substr(0, 2)); 
+	}
+	
+	$scope.inscriptionAjoute = function(c) {
+		var i = $scope.inscriptionObj;
+		var t = i.InscriptionItems;
+		var cid = c.clsId;
+		var jr = c.Jour;
+		var cyd = cycleValeur(c.CycleDebut, true);
+		var cyf = cycleValeur(c.CycleFin, false);
+		var hrd = c.HeureDebut;
+		var hrf = c.HeureFin;
+		var heures = false;
+		for(var ins of t) {
+			if(ins.clsId == cid) {
+				swal('Attention','Vous êtes déjà inscrit à ce cours','warning');
+				return;
+			}
+			var cd = cycleValeur(ins.CycleDebut, true);
+			var cf = cycleValeur(ins.CycleFin, false);
+			if(jr == ins.Jour && ((cf >= cyd && cf <= cyf) || (cd >= cyd && cd <= cyf))) {
+				var hd = ins.HeureDebut;
+				var hf = ins.HeureFin;
+				if((hf >= hrd && hf <= hrf) || (hd >= hrd && hd <= hrf)) {
+					alert('Attention, les horaires de ce cours se chevauchent avec un autre');
+					heures = true;
+				}
+			}
+		}
+		var o = {};
+		o.heures = heures;
+		o.insId = 0;
+		o.clsId = cid;
+		//o.ClasseClasseId = cid;
+		o.LibelleA = c.LibelleA;
+		o.LibelleD = c.LibelleD;
+		o.LibelleN = c.LibelleN;
+		o.Jour = c.Jour;
+		o.HeureDebut = c.HeureDebut;
+		o.HeureFin = c.HeureFin;
+		o.CycleDebut = c.CycleDebut;
+		o.CycleFin = c.CycleFin;
+		o.Attente = 1;
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
+		o.Supprime = 0;
+		o.DateSupprime = null;
+		o.Utilisateur = '';
+		o.DateInscription = '';
+		o.Prix = c.Prix;
+		o.Reduction = c.Reduction;
+		o.Soutien = c.Soutien;
+		o.Enseignants = c.Enseignants;
+		o.Attachements = c.Attachements;
+		o.updated = 1;
+		t[t.length] = o;
+		
+		i.Montant = i.Montant*1+(o.Prix*1-o.Reduction*1);
+		if($scope.obj.Cotisation*1 == 0)
+			i.Cotisation = $scope.CotisationAnnuelle;
+		i.Total = i.Montant*1+i.Cotisation*1;
+		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
+		i.Updated = true;
+	}
+	
+	$scope.inscriptionSupprime = function(item) {
+		var i = $scope.inscriptionObj;
+		var t = i.InscriptionItems;
+		var n = t.indexOf(item);
+		if(n >= 0) t.splice(n, 1);
+		
+		i.Updated = false;
+		i.Montant = i.Montant*1-(item.Prix*1-item.Reduction*1);
+		for(var ins of t) {
+			if(ins.updated) {
+				i.Updated = true;
+				break;
+			}
+		}
+	}
+
+
+	//---------------------------
+	// gestion des reservations
+	
+	// affiche / cache le panneau d'e reservation
+	$scope.reservationSelect = function(mode) {
+		if(mode) $scope.reservationGetData('visite','');
+		$scope.inscriptionObj.Select = mode;
+		//$scope.reservationObj.Select = mode;
+	}
+	
+	// charge les données de reservation
+	$scope.reservationGetData = async function(mode, filter='') {
+		var o = $scope.reservationObj;
+		o.Filter = filter;
+		var params = [mode, o];
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetCours',params);
+		switch(mode) {
+			case 'reservation':
+				o.ReservationItems = data.data.data.data;
+				$scope.$digest();
+				break;
+			case 'visite':
+				o.VisiteItems = data.data.data.data;
+				$scope.$digest();
+				break;
+		}	
+		return data.data.data.data;
+	}
+
+	
+	$scope.reservationAjoute = function(c) {
+		var r = $scope.reservationObj;
+		var t = r.ReservationItems;
+		var vid = c.clsId;
+		for(var ins of t) {
+			if(ins.clsId ==vid) {
+				swal('Attention','Vous êtes déjà inscrit à cette visite','warning');
+				return;
+			}
+		}
+		var o = {};
+		o.resId = 0;
+		o.visId = vid;
+		o.Libelle = c.Libelle;
+		o.DateVisite = c.DateVisite;
+		o.DateText = c.DateText;
+		o.Attente = 1;
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
+		o.Supprime = 0;
+		o.DateSupprime = null;
+		o.Utilisateur = '';
+		o.DateInscription = '';
+		o.Prix = c.Prix;
+		o.Enseignants = c.Enseignants;
+		o.Attachements = c.Attachements;
+		o.updated = 1;
+		t[t.length] = o;
+		
+		r.Montant = r.Montant*1+o.Prix*1;
+		r.Select = 0;
+		r.Updated = true;
+	}
+	
+	$scope.reservationSupprime = function(item) {
+		var r = $scope.reservationObj;
+		var t = r.ReservationItems;
+		var n = t.indexOf(item);
+		if(n >= 0) t.splice(n, 1);
+		r.Montant = r.Montant*1-item.Prix*1;
+		r.Updated = false;
+		for(var ins of t) {
+			if(ins.updated) {
+				r.Updated = true;
+				break;
+			}
+		}
+	}
+	
+	{% endif %}
+
+
+});

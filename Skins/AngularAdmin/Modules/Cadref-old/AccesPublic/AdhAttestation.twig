@@ -1,0 +1,63 @@
+{# Attestations Adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="page-content-inner">
+    <h3>Attestation fiscale</h3>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-1">
+							    <label class="form-control-label cadref-label" style="line-height:1">Année de cotisation</label>
+						</div>
+						<div class="col-md-1">
+							<select class="form-control cadref-input" ng-model="Attest.AttestAnnee" ng-init="Attest.AttestAnnee='{{ first }}'">
+								{% for k,v in attestAnnees %}
+									<option value="{{ k }}">{{ v }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-2">
+							{{ label("Attestation fiscale") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestFisc" ng-change="selectAttestMode(0)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-2">
+							{{ label("Suivi de cours") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestSuivi" ng-change="selectAttestMode(1)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-2">
+							{{ label("Attestation de paiement") }}
+						</div>
+						<div class="col-md-2">
+							<switch ng-model="Attest.AttestPaiement" ng-change="selectAttestMode(2)"></switch>
+						</div>
+					</div>
+					<div class="row" style="height:10px"></div>
+					<div class="row">
+						<div class="col-md-1">
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="btn btn-success margin-inline " ng-click="adherentAttestation()">Imprimer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+

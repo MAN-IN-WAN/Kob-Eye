@@ -1,0 +1,146 @@
+{# fiche FicheAttachements #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+{% if associatif %}
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+{% else %}
+<div>
+	{% if not adherent %}<span class="cadref-ins-numero" ng-bind="attachementInfo.code"></span> {% endif %}<span class="cadref-ins-nom" ng-bind="attachementInfo.libelle"></span>
+</div>
+{% endif %}
+{% if not adherent %}
+	<div class="cadref-widget" ng-if="attachementInfo.mode!=''">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Titre') }}
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control cadref-input" maxlength="255" ng-model="attachementObj.Titre"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Documents') }}
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control" readonly placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
+						<label for="input-AttachementFilePath-file" class="clickable">Choisir un fichier</label>
+						<progress id="upload-progress" max="100" value=""></progress>
+						<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+							   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attachement' }],
+							   removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'attachementObj.FilePath' }" 
+							   ng-init="up_AttachementFilePath = angular.copy(autoUploader)" uploader="up_AttachementFilePath" style="display:none;"
+						>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Lien externe') }}
+					</div>
+					<div class="col-md-10">
+						<input type="text" placeholder="https://..." class="form-control cadref-input" maxlength="1024" ng-model="attachementObj.LienExterne"/>
+					</div>
+				</div>
+					
+				{% if Type != '' %}	
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Classes sélectionnées') }}
+					</div>
+					<div class="col-md-10">
+						<div class="listWrap">
+							<table class="table table-hover" width="100%">
+								<tbody>
+									<tr ng-repeat="item in attachementInfo.classes" >
+										<td><input type="checkbox" ng-model="item.selected" ng-click="attachementSelClasse()"></td>
+										<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.CodeClasse }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleA }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
+										<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				<div class="row">
+					<div class="col-md-12">
+{#						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && (attachementObj.FilePath!='' || attachementObj.LienExterne!='') && attachementInfo.selected" ng-click="attachementSave('{{ Type }}')" title="Enregister"></a>#}
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && (attachementObj.FilePath!='' || attachementObj.LienExterne!='')" ng-click="attachementSave('{{ Type }}')" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj, '{{ Type }}')" style="float:right" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="attachementCloseEdit()" title="Annuler"></a>
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
+{% endif %}
+<div  ng-if="attachementInfo.mode==''">
+	<div style="height:20px"></div>
+	<div class="form-group row">
+		<div class="col-lg-6 col-md-12">
+			<h5>Liste des documents</h5>
+		</div>
+{#		<div class="col-lg-1 col-md-12">
+			<select class="form-control" ng-model="CadrefAttachement.pageLength" >
+				<option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
+				<option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
+				<option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
+			</select>
+		</div>#}
+		<div class="col-lg-6 col-md-12">
+			<dir-pagination-controls boundary-links="true" pagination-context="children" pagination-id="CadrefAttachement-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+		</div>
+	</div>
+	<div class="listWrap">
+		<table class="table table-hover nowrap straight" id="CadrefAttachement-table" width="100%" style="line-height:1">
+			<thead>
+				<tr>
+					<th title="Id" class="list-col-th-id" hidden>ID</th>
+					<th class="cadref-th">Date</th>
+					<th class="cadref-th">Titre</th>
+					<th class="cadref-th-btn">
+						{% if not adherent %}
+							<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="attachementAdd()" title="Ajouter un document"></a>
+						{% endif %}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr dir-paginate="item in CadrefAttachement.data" pagination-context="children" current-page="CadrefAttachement.currentPage" items-per-page="15" pagination-id="CadrefAttachement-pagination">
+					<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+					<td class="cadref-td typedatetime"><span class="label">{[{ item.DateModification }]}</span></td>
+					<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Titre }]}</span></td>
+					<td  class="table-action cadref-td-btn">
+						<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.LienExterne || item.FilePath }]}" target="_blank" ng-click="attachementCloseEdit()" ng-if="item.FilePath || item.LienExterne" title="Télécharger"></a>
+						{% if not adherent %}
+{#							<a class="btn-abt cadref-btn-upload btn-warning" href="" ng-click="attachementModify(item)" ng-if="!item.FilePath" title="Modifier"></a>#}
+							<a class="btn-abt btn-abt-nfo btn-primary" href="" ng-click="attachementModify(item)" title="Modifier"></a>
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+					
+{% if associatif %}
+		</div>
+	</section>
+</div>
+{% endif %}
+					

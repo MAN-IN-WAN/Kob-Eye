@@ -1,0 +1,27 @@
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+            {% if CurrentMenu.SousTitre %}
+            <h5>
+                {{ CurrentMenu.SousTitre }}
+            </h5>
+            {% endif %}
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+                            {{ include(template_from_string(module(listPath~'?Query='~Path))) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+

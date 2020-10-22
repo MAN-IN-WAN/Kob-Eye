@@ -1,0 +1,23 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.sendAlert = function() {
+		var args = {title:$scope.obj.Titre, tag:$scope.obj.Texte, module:'', id:0, users:[], role:'CADREF_ADMIN', icon:'icmn-bubble-notification'};
+		var ajax = $scope.{{ identifier }}callMethod(args,'{{ function }}');
+	}
+});

@@ -1,0 +1,192 @@
+{# fiche Enseignant #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o= Create ? 'modalObj' : 'obj' %}
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
+					<div class="row">
+						<div class="col-md-7" >
+							<form name="CadrefContent">
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Numéro") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Code, o, false, '@@@@', 'width:100px; text-transform:uppercase;', true) }}
+								</div>
+								{% if not Create %}
+								<div class="col-md-1">
+									<a class="form-control-label cadref-label" href="" ng-click="showPassword(obj)">?</a>
+								</div>
+								{% endif %}							
+							</div>
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Delegué des prof.") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Delegue, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Prestataire") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Prestataire, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Notes") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Notes, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visible web") }}
+								</div>
+								<div class="col-md-10">
+									<switch class="cadref-switch-red" ng-model="{{ o }}.AccesWeb"></switch>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Inactif") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Inactif, o, true) }}
+								</div>
+							</div>
+							</form>
+						</div>
+						{# block right #}                    
+						<div class="col-md-5">
+							<section class="panel" ng-if="obj.id">
+								<div>
+									{{ label('Absences') }}
+								</div>
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/Absence/ListAbsence.htm'"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+					<div class="row" ng-if="obj.id">
+						{# classes #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body">
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=add,delete,selection,export&hideModal=1'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accsskey="g" title="Alt G" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" bg-if="{{ o }}.id && !{{ o }}.Compte" ng-click="enseignantUser(obj)">Utilisateur</button>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+{#            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
+                <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
+            </div>
+#}        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,486 @@
+{# fiche printAdherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner" id="printForm">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:10px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								{% if mode==0 %}
+									<div class="col-xl-6">
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Année") }}
+											</div>
+											<div class="col-md-10">
+												<select class="form-control cadref-input" ng-model="obj.Annee" ng-init="obj.Annee='{{ Annee }}'" style="width:80px">
+													{% for u,s in annees %}
+														<option {% if s %}selected{% endif %} value="{{ u }}">{{ u }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Type adhérent") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.TypeAdherent" ng-init="obj.TypeAdherent=''">
+													{% for a,b in typeAdh %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+											<div class="col-md-2">
+												{{ label("Nouveaux inscrits") }}
+											</div>
+											<div class="col-md-3">
+												<switch ng-model="obj.Nouveaux"></switch>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Antenne") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Antenne" ng-init="obj.Antenne=''">
+													{% for a,b in antennes %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Visite") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Visite" ng-init="obj.Visite=''">
+													{% for a,b in visites %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Année de visite") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.VisiteAnnee" ng-init="obj.VisiteAnnee=''">
+															<option value=""></option>
+															{% for v,c in annees %}
+																<option value="{{ v }}">{{ v }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Enseignant") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
+													{% for a,b in enseignants %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Disciplines") }}
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[0]" mask="wwwwwww" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																	{{ label('Exclure') }}
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[0]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[1]" mask="wwwwwww" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[1]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[2]" mask="wwwwwww" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[2]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[3]" mask="wwwwwww" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[3]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[4]" mask="wwwwwww" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[4]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Inscrits Attentes") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Inscrits" ng-init="obj.Inscrits=''">
+															{% for a,b in inscrits %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Odre d'attente") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.OrdreAtt"></switch>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Non inscrits depuis") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.NonInscrit" ng-init="obj.NonInscrit=''">
+															{% for v in noninscr %}
+																<option value="{{ v }}">{{ v }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Mail") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Mail" ng-init="obj.Mail=''">
+															{% for a,b in mails %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("SMS 06-07") }}
+													</div>
+													<div class="col-md-5">
+														<select class="form-control cadref-input" ng-model="obj.Tel06" ng-init="obj.Tel06=''">
+															{% for a,b in mails %}
+																<option value="{{ a }}">{{ b }}</option>
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Soutien") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Soutien" ng-change="checkSoutien(0)"></switch>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Dons") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Dons" ng-change="checkSoutien(1)"></switch>
+													</div>
+												</div>
+												{% if initiales == 'ADM' %}
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Misc") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Misc"></switch>
+													</div>
+												</div>
+												{% endif %}
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Jour de la semaine") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Jour" ng-init="obj.Jour=''">
+													{% for a,b in jours %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Lieu") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Lieu" ng-init="obj.Lieu=''">
+													{% for a,b in lieux %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Rupture") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Rupture" ng-init="obj.Rupture='N'">
+													{% for a,b in ruptures %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+											<div class="col-md-5" ng-if="obj.Rupture=='C'">
+												<div class="row">
+													<div class="col-md-5">
+														{{ label("Saut de pages") }}
+													</div>
+													<div class="col-md-5">
+														<switch ng-model="obj.Pages"></switch>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Mode d'impression") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Contenu" ng-init="obj.Contenu=''">
+													{% for a,b in contenu %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction({{ mode }},'print')">Imprimer</button>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-click="printFunction({{ mode }},'export')">Exporter</button>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-click="clearFunction()">Effacer</button>
+											</div>
+										</div>
+									</div>
+									{# mail #}
+									<div class="col-xl-6">
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Sujet") }}
+											</div>
+											<div class="col-md-11">
+												<input type="text" class="form-control cadref-input" ng-model="obj.Sujet"/>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Corps") }}
+											</div>
+											<div class="col-md-11">
+												<textarea ckeditor="ckHtml" contenteditable="false" class="form-control cadref-input" style="width:100%;height:80px;min-height:400px;white-space: pre-wrap;" ng-model="obj.Corps" ng-trim="false"></textarea>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Pièces jointes") }}
+											</div>
+											<div class="col-md-11">
+												<div class="cadref-widget" ng-if="obj.Pieces.mode!=''">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row">
+																<div class="col-md-2">
+																	{{ label('Documents') }}
+																</div>
+																<div class="col-md-10">
+																	<input type="text" class="form-control" placeholder="" id="input-pieceFilePath" ng-model="obj.Pieces.filePath">
+																	<label for="input-pieceFilePath-file" class="clickable">Choisissez un fichier</label>
+																	<input id="input-pieceFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+																		   options="{ alias:'FileData',formData:[],
+																		   removeAfterUpload: true, inputId: 'input-pieceFilePath', model:'obj.Pieces.filePath' }" 
+																		   ng-init="up_pieceFilePath = angular.copy(autoUploader)" uploader="up_pieceFilePath" style="display:none;"
+																		   />
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-12">
+																	<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="obj.Pieces.filePath!=''" ng-click="pieceSave()" title="Ajouter"></a>
+																	<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="pieceCloseEdit()" title="Annuler"></a>
+																</div>
+															</div>						
+														</div>
+													</div>
+												</div>
+												<div  ng-if="obj.Pieces.mode==''">
+													<div class="listWrap">
+														<table class="table table-hover nowrap straight" id="Pieces-table" width="100%" style="line-height:1">
+															<thead>
+																<tr>
+																	<th class="cadref-th">Fichier</th>
+																	<th class="cadref-th-btn">
+																		<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="pieceAdd()" title="Ajouter un document"></a>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="item in obj.Pieces.data" >
+																	<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item }]}</span></td>
+																	<td  class="table-action cadref-td-btn">
+																		<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-click="pieceCloseEdit()" title="Télécharger"></a>
+																		<a class="btn-abt cadref-btn-del btn-danger" href="" ng-click="pieceDelete(item)" title="Supprimer"></a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="height: 5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												<label class="form-control-label cadref-label" style="line-height:1">SMS{[{obj.smsSize}]}</label>
+											</div>
+											<div class="col-md-11">
+												<textarea class="form-control cadref-input" maxlength="149" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="obj.SMS" ng-change="checkSmsSize(obj)"></textarea>
+											</div>
+										</div>
+										<div style="height: 5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction({{ mode }},'mail')">Mail</button>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction({{ mode }},'sms')">SMS</button>
+											</div>
+											<div class="col-md-3">
+												<div class="row">
+													<div class="col-md-8">
+														{{ label("Copie enseignants") }}
+													</div>
+													<div class="col-md-4">
+														<switch ng-model="obj.CopieEns" class="cadref-switch"></switch>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% else %}
+								<div class="row">
+									<div class="col-md-2">
+										{{ label("Sans mail") }}
+									</div>
+									<div class="col-md-4">
+										<switch ng-model="obj.NoMail" class="cadref-switch"></switch>
+									</div>
+								</div>
+								<div class="row" style="height:10px"></div>
+								<div class="row">
+									<div class="col-md-2">
+										<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction({{ mode }},'print')">Imprimer</button>
+									</div>
+{#									<div class="col-md-2">
+										<button type="button" class="btn btn-primary margin-inline cadref-btn-100" ng-click="printFunction('mail')">Message</button>
+									</div>
+#}								</div>
+							{% endif %}
+						</div>                            
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{#<div class="spinner-list"></div>
+#}

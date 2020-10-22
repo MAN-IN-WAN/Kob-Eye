@@ -1,0 +1,149 @@
+{# liste reglements #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="cadref-widget" ng-if="reglementInfo.mode!=''">
+	<div class="row">
+		<div style="height:10px"></div>
+		<div class="col-md-12">
+			<div id="abcense-edit">
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Date") }}
+					</div>
+					<div class="col-md-4">
+						<label class="input-group datepicker-only-init" style="margin-bottom:0">
+							<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" {#mask="dd/dd/dddd" #}
+								   ng-model="reglementObj.DateReglement" ng-init="initDatePickerOnly()"/>
+							<span class="input-group-addon">
+								<i class="icmn-calendar"></i>
+							</span>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Montant") }}
+					</div>
+					<div class="col-md-4">
+						<input type="text" class="form-control cadref-input" ng-model="reglementObj.Montant"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Mode") }}
+					</div>
+					<div class="col-md-4">
+						<select class="form-control cadref-input" ng-model="reglementObj.ModeReglement">
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+						<option value="P">Prélèvement</option>
+						<option value="R">Rbt Avoir</option>
+						<option value="A">Vacances</option>
+						<option value="V">Virement</option>
+						<option value="W">Web</option>
+						</select>	
+					</div>
+				</div>
+				<div style="height:5px"></div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Différé") }}
+					</div>
+					<div class="col-md-4">
+						<switch ng-model="reglementObj.Differe"></switch>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Encaissé") }}
+					</div>
+					<div class="col-md-4">
+						<switch class="cadref-switch-red" ng-model="reglementObj.Encaisse"></switch>
+					</div>
+				</div>
+				{% if prelevement == 1 %}
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Fichier SEPA") }}
+					</div>
+					<div class="col-md-4">
+						<switch class="cadref-switch-red" ng-model="reglementObj.SEPA"></switch>
+					</div>
+				</div>
+				{% endif %}
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Supprimé") }}
+					</div>
+					<div class="col-md-4">
+						<switch class="cadref-switch" ng-model="reglementObj.Supprime"></switch>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Notes") }}
+					</div>
+					<div class="col-md-8">
+				        <input type="text" class="form-control cadref-input" ng-model="reglementObj.Notes"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Utilisateur") }}
+					</div>
+					<div class="col-md-8">
+				        <input type="text" class="form-control cadref-input" ng-model="reglementObj.Utilisateur"/>
+					</div>
+				</div>
+
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-click="reglementSave()" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="reglementCloseEdit()" title="Annuler"></a>
+						<a class="btn-abt cadref-btn-encais btn-info" style="float:right;" ng-if="!reglementObj.Supprime" href="" ng-click="reglementEncaisse()" title="Encaissement"></a>
+{#						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="reglementObj.id && !reglementObj.Encaisse" ng-click="reglementDelete(reglementObj)" style="float:right" title="Supprimer"></a>#}
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="listWrap" ng-if="reglementInfo.mode==''">
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Règlé</th>
+				<th class="cadref-th" title="Mode règlement">M</th>
+				<th class="cadref-th" title="Différé">D</th>
+				<th class="cadref-th" title="Encaissé">E</th>
+				<th class="cadref-th">Notes</th>
+				<th class="cadref-th">U</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typedate"><a href="" ng-click="reglementModify(item)">{[{ item.DateReglement | limitTo : 5 }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="reglementModify(item)">€ {[{ item.Montant }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.ModeReglement }]}</a></td>
+				<td scope="row" class="cadref-td typeboolean">                    
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Differe && item.Encaisse">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe"></a>
+				</td>
+				<td scope="row" class="cadref-td typeboolean">                    
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Encaisse">O</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="!item.Encaisse && !item.Supprime">N</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Supprime">S</a>
+				</td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.Notes }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.Utilisateur }]}</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

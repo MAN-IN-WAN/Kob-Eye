@@ -1,0 +1,513 @@
+{# fiche Adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o=Create ? 'modalObj' : 'obj' %}
+
+<div class="page-content-inner">
+	<div>
+		<ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+			<li>
+				<a href="#/TableauDeBord">Tableau de bord</a>
+			</li>
+			<li>
+				<a href="#/{{ CurrentMenu.Url }}" accesskey="l" title="Alt L">Liste des {{ ObjectClass.getDescription() }}</a>
+			</li>
+			<li>
+				<a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+			</li>
+		</ul>
+	</div>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
+					<div class="row">
+						<div {% if Create %}class="col-md-12"{% else %}class="col-md-8"{% endif %} >
+							<form name="CadrefContent" id="CadrefContent">
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Numéro") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Numero, o, true, '', 'width:80px') }}
+								</div>
+								<div class="col-md-1">
+									{{ label("Année") }}
+								</div>
+								<div class="col-md-1">
+									<select id="AnneeSelect" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.AnneeSelect" style="width:64px" ng-focus="anneeFocus()" ng-change="anneeChange()">
+										{% for v in annees %}
+											<option value="{{ v }}">{{ v }}</option>
+										{% endfor %}
+									</select>
+								</div>
+{#								<div class="col-md-1">
+									{{ label("Etoiles") }}
+								</div>
+								<div class="col-md-2">
+									{{ fvalues(f.Etoile, o) }}
+								</div>#}
+								<div class="col-md-3">
+									<label class="form-control-label cadref-label">{[{ {{ o }}.Utilisateur+'&nbsp;&nbsp;'+{{ o }}.DateModification }]}</label>
+								</div>
+								{% if not Create %}
+								<div class="col-md-1">
+									<a class="form-control-label cadref-label" href="" ng-click="showPassword(obj)">?</a>
+								</div>
+								{% endif %}
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Nom") }}
+								</div>
+								<div class="col-md-10">
+									<input id="adhNom" type="text" class="form-control cadref-input" ng-model="{{ o }}.Nom"
+										style="text-transform:uppercase;" 
+									/>
+								</div>
+							</div>
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control cadref-input" ng-model="{{ o }}.CP" mask="ddddd" tabindex="-1"/>
+								</div>
+								<div class="col-md-8">
+									<input type="text" list="Ville-list" ng-change="villeChange()" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="{{ o }}.Ville" style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
+									<datalist id="Ville-list">
+										{% for item in communes %}
+										<option>{{ item.Commune~' ('~item.CP~')' }}<option>
+										{% endfor %}
+									</datalist>
+								</div>
+							</div>
+							<div class="row" style="height:5px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:5px"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année de Naissance") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Naissance, o, false, 'dddd') }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Sexe") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Sexe, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Certificat médical") }}
+										</div>
+										<div class="col-md-7">
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objCertificat" type="text" class="form-control cadref-input" placeholder="Date" 
+													    ng-model="obj.DateCertificat" ng-class="{'cadref-highlight': {{ o }}.certifInvalide}" 
+													   ng-init="initDatePickerOnly()"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Origine") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Origine, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Situation") }}
+										</div>
+										<div class="col-md-7">
+											<div class="row">
+												<div class="col-md-3" style="padding-right:0">
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.SituationIdLabel" ng-change="situationChange({{ o }},'Situation')" onkeyup="this.value = this.value.toUpperCase();"/>
+												</div>
+												<div class="col-md-9" style="padding-left:0">
+													<select class="form-control cadref-input-diff" ng-model="{{ o }}.SituationId" tabindex="-1" ng-change="situationSelect({{ o }},'Situation')">
+														<option value="0"></option>
+														{% for v,k in fields.SituationId.query %}
+															<option value="{{ v }}">{{ k }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Profession") }}
+										</div>
+										<div class="col-md-7">
+											<div class="row">
+												<div class="col-md-3" style="padding-right:0">
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.ProfessionIdLabel" ng-change="situationChange({{ o }},'Profession')" onkeyup="this.value = this.value.toUpperCase();"/>
+												</div>
+												<div class="col-md-9" style="padding-left:0">
+													<select class="form-control cadref-input-diff" ng-model="{{ o }}.ProfessionId" tabindex="-1" ng-change="situationSelect({{ o }},'Profession')">
+														<option value="0"></option>
+														{% for v,k in fields.ProfessionId.query %}
+															<option value="{{ v }}">{{ k }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+									<div class="col-md-4">
+											<div class="row">
+													<div class="col-md-5">
+															{{ label("Inactif") }}
+													</div>
+													<div class="col-md-7">
+															{{ fboolean(f.Inactif, o, true) }}
+													</div>
+											</div>
+									</div>
+									<div class="col-md-4">
+											<div class="row">
+													<div class="col-md-5">
+															{{ label("Année d'inscription") }}
+													</div>
+													<div class="col-md-7">
+															{{ finput(f.Inscription, o, true) }}
+													</div>
+											</div>
+									</div>
+									<div class="col-md-4">
+											<div class="row">
+													<div class="col-md-5">
+															{{ label("Dernière inscription") }}
+													</div>
+													<div class="col-md-7">
+															{{ finput(f.Annee, o, true) }}
+													</div>
+											</div>
+									</div>
+							</div>
+
+										
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Role associatif") }}
+										</div>
+										<div class="col-md-7">
+											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Adherent">
+												{% for v,k in typeAdh %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Délégué de classe") }}
+										</div>
+										<div class="col-md-7">
+											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.ClasseId">
+												{% for v,k in classes %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+{#									<div custom-select="a.id as a.label for a in getSelectData('CadrefClasseStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':'Annee={{ Annee }}'}" 
+										 ng-model="{{ o }}.ClasseId"
+										 class="form-control cadref-input cadref-annuel" 
+										 ng-title="{{ o }}.ClasseClasseIdlabel"
+										 style="text-transform:uppercase;"
+										 placeholder=""
+										 >
+									</div>#}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Responsable d'antenne") }}
+										</div>
+										<div class="col-md-7">
+											<select class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.AntenneId">
+												{% for v,k in antennes %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" style="height:8px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("IBAN") }}
+								</div>
+								<div class="col-md-4">
+									<input id="adhIban" type="text" class="form-control cadref-input" ng-model="{{ o }}.IBAN"
+										mask="wwww wwww wwww wwww wwww wwww www"
+										ng-class="{'cadref-highlight': {{ o }}.ibanInvalide}" ng-change="checkIBAN({{ o }}.IBAN)"
+									/>
+								</div>
+								<div class="col-md-1">
+									{{ label("BIC") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.BIC, o, false, 'wwwwwwwwwww') }}
+								</div>
+								<div class="col-md-1">
+									{{ label("Signature mandat") }}
+								</div>
+								<div class="col-md-1">
+									{{ fdate(f.DateRUM, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:5px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Notes") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Notes, o) }}
+								</div>
+							</div>
+						</form>
+						</div>
+						{# block right #}    
+						{% if Create==0 %}
+						<div class="col-md-4">
+							<section class="panel panel-annuel" ng-if="{{ o }}.id">
+								<table>
+									<thead>
+										<tr>
+											<th>Cotis.</th>
+											<th>Cours</th>
+											<th>Visites</th>
+											<th>Règlé</th>
+											<th>Différé</th>
+											<th>Dons</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly ng-class="{'cadref-highlight': {{ o }}.nonCotis}"/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cours" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Visites" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Reglement" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Differe" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Dons" readonly/>
+												</div>
+
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table>
+									<thead>
+										<tr>
+											<th>Av report</th>
+											<th>Av dû</th>
+											<th>Av util</th>
+											<th></th>
+											<th>Régul.</th>
+											<th>Solde</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.AvoirReporte" readonly/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.AvoirDu" mask="ddddd"/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.AvoirUtilise" mask="ddddd"/>
+												</div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group"><div class="cadref-input-diff cadref-annuel cadref-empty"></div></div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-change="soldeAdherent()" ng-model="{{ o }}.Regularisation" mask="ddddd"/>
+												</div>
+
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input-diff" ng-model="{{ o }}.Solde" ng-init="{{ o }}.Solde=0; ckedPristine()" readonly ng-class="{'cadref-highlight': {{ o }}.nonSolde}"/>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<div class="row" style="height:10px"></div>
+								<div class="row">
+									<div class="col-md-2">
+										{{ label("Notes annuelles") }}
+									</div>
+									<div class="col-md-10">
+										<textarea class="form-control cadref-input" ng-class="{'cadref-annuel':{{ o }}.NotesAnnuelles=='','cadref-highlight':{{ o }}.NotesAnnuelles!=''}" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="{{ o }}.NotesAnnuelles"></textarea>
+									</div>
+								</div>
+							</section>
+							<section class="panel" ng-if="obj.id">
+								<div class="panel-body cadref-no-padding">
+									<div class="listWrap">
+										<ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListReglement.htm'" ng-if="show"></ng-include>
+									</div>
+								</div>
+							</section>
+						</div>
+						{% endif %}
+					</div>
+					<div class="row" ng-if="obj.id">
+						{# inscriptions #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body cadref-panel-body">
+									<div class="listWrap">
+										<ng-include src="'/{{ CurrentUrl }}/0/Inscription/ListInscription.htm'" ng-if="show"></ng-include>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait||obj.AnneeSelect!='{{ Annee }}'" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="i" title="Alt I" ng-click="openInscription(obj)">Inscription</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-primary margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="p" title="Alt P" ng-click="printCarte(obj)">Carte</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="v" title="Alt V" ng-click="openReservation(obj)">Visites</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestations','')">Attestations</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>
+					<button type="button" ng-disabled="checkDirty()||obj.adherentWait" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="openDocuments(obj)">Scan: {[{ obj.ScanCount }]}</button>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" modal-movable role="modal" data-backdrop="static" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="cursor:move">
+				<a class="btn-abt cadref-btn-close" href="" ng-if="!inscrOpened" data-dismiss="modal" title="Annuler"></a>
+				<a class="btn-abt cadref-btn-close" href="" ng-if="inscrOpened" ng-click="closeInscription()" title="Annuler"></a>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+{#            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
+                <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
+            </div>
+#}        </div>
+    </div>
+</div>
