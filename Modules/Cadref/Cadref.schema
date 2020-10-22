@@ -89,9 +89,13 @@
 		<FKEY card="0,1" module="Cadref" data="WebDiscipline,Id" category="Description" form="5" fiche="5" description="Discipline Web">WebDisciplineId</FKEY>
 		<PROPERTIES type="varchar" length="5" category="Description" list="5" form="2" fiche="2" listDescr="Disc" description="Discipline">WebDiscipline</PROPERTIES>
 
-		<PROPERTIES type="varchar" length="7" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" obligatoire="1" category="Description" form="4" fiche="4" description="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" obligatoire="1" category="Description" form="4" fiche="4" description="Niveau">Niveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="7" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
+
 		<PROPERTIES type="varchar" length="50" category="Description" list="6" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" list="6" form="5" fiche="5" description="Libellé">Libelle2</PROPERTIES>
+
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" form="6" fiche="6" description="Certificat médical">Certificat</PROPERTIES>
