@@ -854,9 +854,10 @@ order by a.Nom, a.Prenom";
 
 		
 		if($obj['mode'] == 'mail') {
-
+			$from = '';
 			switch($mode) {
 				case 0:
+					$from = $obj['Emetteur'];
 					$subj = $obj['Sujet'];
 					$body = $obj['Corps'];
 					$att = $obj['Pieces']['data'];
@@ -880,7 +881,7 @@ order by a.Nom, a.Prenom";
 				if($mode == 1) {
 					$att = array($this->imprimeCertificat(array($a)));
 				}
-				$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
+				$args = array('From'=>$from, 'Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
 				Cadref::SendMessage($args);				
 			}
 			
@@ -894,11 +895,11 @@ order by a.Nom, a.Prenom";
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql1);
 				foreach($pdo as $a) {
 					if(strpos($a['Mail'], '@') === false) continue;
-					$args = array('Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
+					$args = array('From'=>$from, 'Subject'=>$subj, 'To'=>array($a['Mail']), 'Body'=>Cadref::MailCivility($a).$body, 'Attachments'=>$att);
 					Cadref::SendMessage($args);				
 				}				
 			}
-			$args = array('Subject'=>$subj, 'To'=>array(Cadref::$MAIL), 'Body'=>$body, 'Attachments'=>$att);
+			$args = array('From'=>$from, 'Subject'=>$subj, 'To'=>array(Cadref::$MAIL), 'Body'=>$body, 'Attachments'=>$att);
 			Cadref::SendMessage($args);				
 			return ['sql'=>$sql];
 		}

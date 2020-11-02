@@ -60,6 +60,11 @@ if($vars['mode'] == 0) {
 		$tmp[$a->Id] = $a->Jour;
 	$vars['jours'] = $tmp;
 	
+	$tmp = array();
+	$as = Sys::getData('Cadref', 'Parametre/Domaine=MAIL&SousDomaine=EMETTEUR');
+	foreach($as as $a)
+		$tmp[$a->Parametre] = $a->Valeur;
+	$vars['emetteurs'] = $tmp;
 
 	$vars['ruptures'] = array('A'=>'Antenne', 'D' => 'Disciplines', 'N' => 'Niveaux', 'C' => 'Classes', 'S' => 'Sans rupture');
 	$vars['contenu'] = array('' => '', 'E' => 'Elèves seulement', 'N' => 'Impression du nom', 'A' => 'Impression nom et adresse', 'Q' => 'Etiquettes');

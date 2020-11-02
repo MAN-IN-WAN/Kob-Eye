@@ -78,16 +78,17 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Niveau" driver="mysql" order="CodeNiveau" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Niveau" Operations="addChildren,edit" Dico="0" Class="Modules/Cadref/Class/Niveau.class.php">
+<!--
 		<FKEY card="0,1" module="Cadref" data="Section,Id"    category="Description" form="2" fiche="2" description="Section">SectionId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Discipline,Id" category="Description" form="3" fiche="3" description="Discipline">DisciplineId</FKEY>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Discipline">Discipline</PROPERTIES>
+-->
 		<FKEY card="1,1" module="Cadref" data="Antenne,Id" category="Description" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
 		<PROPERTIES type="varchar" length="1" auto="1" category="Description" description="Antenne">Antenne</PROPERTIES>
-<!--
 		<FKEY card="0,1" module="Cadref" data="WebDiscipline,Id" category="Description" form="5" fiche="5" description="Discipline Web">WebDisciplineId</FKEY>
 		<PROPERTIES type="varchar" length="5" category="Description" list="5" form="2" fiche="2" listDescr="Disc" description="Discipline">WebDiscipline</PROPERTIES>
--->
+
 		<PROPERTIES type="varchar" length="4" obligatoire="1" category="Description" form="4" fiche="4" description="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" obligatoire="1" category="Description" form="4" fiche="4" description="Niveau">Niveau</PROPERTIES>
 		<PROPERTIES type="varchar" length="7" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
