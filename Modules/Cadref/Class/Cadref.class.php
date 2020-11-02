@@ -907,8 +907,9 @@ where ce.Classe=$cid
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
 		
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		$m->EmbeddedImages = $p->Valeur;
+//		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+//		$m->EmbeddedImages = $p->Valeur;
+		$m->EmbeddedImages = self::MailLogo($m->From);
 		$m->Save();
 		return $m->Id;
 	}
@@ -920,10 +921,16 @@ where ce.Classe=$cid
 		return $c.",<br /><br /><br />";
 	}
 
-	public static function MailSignature() {
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		return $p->Texte;
-		self::$MailLogo = $p->Valeur;
+	public static function MailSignature($from = '') {
+		if($from) $p = self::GetParametre('MAIL', 'SIGNATURE', $from);
+		if(!$p) $p = self::GetParametre('MAIL', 'SIGNATURE', 'STANDARD');
+		return $p ? $p->Texte : '';
+	}
+
+	public static function MailLogo($from = '') {
+		if($from) $p = self::GetParametre('MAIL', 'SIGNATURE', $from);
+		if(!$p) $p = self::GetParametre('MAIL', 'SIGNATURE', 'STANDARD');
+		return $p ? $p->Valeur : '';
 	}
 
     public static function SendSms($params) {

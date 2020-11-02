@@ -873,7 +873,7 @@ order by a.Nom, a.Prenom";
 					$att = array();
 					break;
 			}
-			$body .= Cadref::MailSignature();
+			$body .= Cadref::MailSignature($from);
 
 			foreach($pdo as $a) {
 				if(strpos($a['Mail'], '@') === false) continue;
