@@ -326,7 +326,7 @@ klog::l("GETSHOW >>>>>",$args);
 				$s = "shows.zone: Confirmer l'enregistrement";
 				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci-dessous pour confirmer votre enregistrement :<br /><br />';
-				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmer l'enregistrement</a></strong><br /><br />";
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmer l&apos;enregistrement</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
 				$b .= "Vous pouvez complèter vos informations dans Menu/Mon compte.<br /><br />";
 				break;
