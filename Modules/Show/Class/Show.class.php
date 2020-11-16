@@ -465,7 +465,9 @@ klog::l("GETSHOW >>>>>",$args);
 
 		$Mail = new Mail();
 		if(isset($params['From']) && !empty($params['From'])) $Mail->From($params['From']);
-		else $Mail->From('noreply@shows.zone');
+		else $Mail->From('contact@shows.zone');
+//		else $Mail->From('noreply@shows.zone');
+
 		$Mail->Subject($params['Subject']);
 		if(isset($params['To'])) {
 			foreach($params['To'] as $to)
