@@ -228,14 +228,18 @@ klog::l("GETSHOW >>>>>",$args);
 	}
 
 	private static function checkNickname($args) {
-		$usr = Sys::getOneData('Systeme', 'User/Prenom='.$args['nickname'].'&Id!='.$args['id']);
+		$qry = 'User/Prenom='.$args['nickname'];
+		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
+		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
 		if($exists) return ['success'=>false, 'err'=>'This nickname already exists'];
 		return ['success'=>true];
 	}
 	
 	private static function checkEMail($args) {
-		$usr = Sys::getOneData('Systeme', 'User/Login='.$args['email'].'&Id!='.$args['id']);
+		$qry = 'User/Login='.$args['email'];
+		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
+		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
 		if($exists) return ['success'=>false, 'err'=>'This email already exists'];
 		return ['success'=>true];
@@ -477,11 +481,11 @@ klog::l("GETSHOW >>>>>",$args);
 			foreach($params['ReplyTo'] as $to)
 				$Mail->ReplyTo($to);
 		}
-		$Mail->Cc('contact@shows.zone');
 		if(isset($params['Cc'])) {
 			foreach($params['Cc'] as $to)
 				$Mail->Cc($to);
 		}
+		$Mail->Bcc('paul@polgo.ooo');
 		if(isset($params['Bcc'])) {
 			foreach($params['Bcc'] as $to)
 				$Mail->Bcc($to);
@@ -499,13 +503,13 @@ klog::l("GETSHOW >>>>>",$args);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
 		
-		if($params['Attachments']) {
+		if(isset($params['Attachments']) && $params['Attachments']) {
 			foreach($params['Attachments'] as $att) {
 				$a = explode('|',$att);
 				$Mail->Attach($a[0], $a[1]);
 			}
 		}
-		if($params['EmbeddedImages']) {
+		if(isset($params['EmbeddedImages']) && $params['EmbeddedImages']) {
 			foreach($params['EmbeddedImages'] as $att) {
 				$a = explode('|',$att);
 				$Mail->EmbeddedImage($a[0], $a[1]);
