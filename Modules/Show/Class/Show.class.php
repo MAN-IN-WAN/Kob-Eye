@@ -232,7 +232,7 @@ klog::l("GETSHOW >>>>>",$args);
 		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
 		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
-		if($exists) return ['success'=>false, 'err'=>'This nickname already exists'];
+		if($exists) return ['success'=>false, 'err'=>'Nickname already in use'];
 		return ['success'=>true];
 	}
 	
@@ -241,7 +241,7 @@ klog::l("GETSHOW >>>>>",$args);
 		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
 		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
-		if($exists) return ['success'=>false, 'err'=>'This email already exists'];
+		if($exists) return ['success'=>false, 'err'=>'Email address already in use'];
 		return ['success'=>true];
 	}
 
