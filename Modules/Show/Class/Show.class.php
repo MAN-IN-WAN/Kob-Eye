@@ -485,7 +485,8 @@ klog::l("GETSHOW >>>>>",$args);
 			foreach($params['Cc'] as $to)
 				$Mail->Cc($to);
 		}
-		$Mail->Bcc('paul@polgo.ooo');
+//		$Mail->Bcc('paul@polgo.ooo');
+		$Mail->Bcc('contact@shows.zone');
 		if(isset($params['Bcc'])) {
 			foreach($params['Bcc'] as $to)
 				$Mail->Bcc($to);
