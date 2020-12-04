@@ -516,7 +516,7 @@ class Cadref extends Module {
 		$annee = self::$Annee;
 		$data = array();
 
-		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'";
+		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'and Cotisation<>0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
 		foreach($pdo as $p) $data['NbAdherents'] = $p['cnt'];
