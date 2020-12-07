@@ -17,7 +17,7 @@ class Admin
     private $zimbraConnect;
     private $zimbraConnectChild;
     private $systemUsers = array(
-        "postmaster",
+        //"postmaster",
         "ham",
         "spam",
         "virus-quarantine",

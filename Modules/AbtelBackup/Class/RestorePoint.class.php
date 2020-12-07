@@ -177,7 +177,7 @@ class RestorePoint extends genericClass {
                     //AbtelBackup::localExec("sudo chown -R backup. /backup/mount ");
 
                     //Clean d'eventuels montyages précedents
-                    AbtelBackup::localExec('if mount | grep /backup/mount/vmdk > /dev/null; then for LINE in $(mount | grep /backup/mount/vmdk | cut -d" " -f3 ); do sudo  umount -l $LINE; rmdir $LINE; done ; fi');
+                    AbtelBackup::localExec('if mount | grep /backup/mount/vmdk > /dev/null; then for LINE in $(mount | grep /backup/mount/vmdk | cut -d" " -f3 ); do sudo  umount -l $LINE; sudo rmdir $LINE; done ; fi');
                     $ret = AbtelBackup::localExec('sudo losetup | grep "/backup/mount/borg" |  cut -d" " -f1');
                     if(!empty(trim($ret))){
                         $ret = AbtelBackup::localExec('sudo kpartx -d -v '.$ret);

@@ -77,6 +77,38 @@ class FormationSession extends genericClass {
             }
         }
     }
+
+    /**
+     * initDonnee
+     */
+    function completeDonnee() {
+        $p = $this->getProjet();
+        $num=1;
+        $questions = Sys::getData('Formation','Projet/'.$p->Id.'/Categorie/*/Question',0,200,'ASC','Ordre');
+        foreach ($questions as $q){
+            $tps = $q->getChildren('TypeQuestion');
+            foreach ($tps as $o) {
+                $alr = $this->getOneChild('Donnee/Numero='.$num);
+                if($alr){
+                    //echo 'deja'.$num.PHP_EOL;
+                    $num++;
+                    continue;
+                } else {
+                    $e = genericClass::createInstance('Formation', 'Donnee');
+                    $e->addParent($this);
+                    $e->addParent($o);
+                    $e->Numero = $num;
+                    $e->Titre = $q->Nom;
+                    $e->TypeReponse = $o->TypeReponse;
+                    $num++;
+                    //print_r($e);
+                    $e->Save();
+                }
+
+            }
+        }
+    }
+
     /**
      * getCatBloque
      */
@@ -517,6 +549,7 @@ class FormationSession extends genericClass {
         $context  = stream_context_create( $options );
         $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
         $response = json_decode( $result );
+//        if (false){//isset($response->success)&&$response->success){
         if (isset($response->success)&&$response->success){
             $this->Synchro = 1;
             print_r($response);

@@ -230,7 +230,7 @@ class Systeme extends Module {
                 }
 
             }
-            sleep(100);
+            sleep(1);
         }
         return true;
     }

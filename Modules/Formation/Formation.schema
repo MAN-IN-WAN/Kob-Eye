@@ -77,6 +77,7 @@
         <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Région">Region</FKEY>
         <FKEY card="0,1" data="Boitier,Id" category="Intitulé" description="Boitier">Boitier</FKEY>
         <FUNCTION>Synchro</FUNCTION>
+        <FUNCTION>completeDonnee</FUNCTION>
     </OBJECTCLASS>
     <OBJECTCLASS title="Donnee" driver="mysql" Description="Donnee" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="order" searchOrder="1" category="Intitulé">Numero</PROPERTIES>

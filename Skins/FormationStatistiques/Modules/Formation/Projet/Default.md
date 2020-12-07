@@ -35,7 +35,7 @@
                                 <div class="col-xs-3">
                                     <i class="fa fa-map-marker fa-5x"></i>
                                 </div>
-                                <div class="col-xs-9">
+                                <div class="col-xs-9 [IF [!Q::Dimension!]!=][!Q::Dimension!][/IF]">
                                     <div class="huge">Question [!D::Numero!] [IF [!Q::Dimension!]!=]- [!Q::Dimension!][/IF]</div>
                                     <div>[!D::Titre!]</div>
                                     <strong>[!TQ::Nom!]</strong>

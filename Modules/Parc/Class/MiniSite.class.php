@@ -2,7 +2,7 @@
 
 class MiniSite extends genericClass{
 
-public function Save(){
+public function Save($regenMenu = false){
     Sys::startTransaction();
 
     $skin = 'Minisite';
@@ -86,11 +86,16 @@ public function Save(){
         foreach($pages as $page){
             if($page->MenuAffiche){
                 $titre = !empty($page->MenuTitre) ? $page->MenuTitre : $page->Titre;
-                $url = !empty($page->MenuUrl) ? $page->MenuUrl : $page->Titre;
+                $url = $page->MenuUrl;//!empty($page->MenuUrl) ? $page->MenuUrl : $page->Titre;
                 $alias = !empty($page->Alias) ? $page->Alias : 'Parc/PageMiniSite/'.$page->Id;
-                $m = array('Url'=>$url,'Titre'=>$titre,'Alias'=>$alias);
+                $order = !empty($page->Order) ? $page->Order : 0;
+                $m = array('Url'=>$url,'Titre'=>$titre,'Alias'=>$alias,'Order'=>$order);
                 if(!empty($page->Template)) $m['Template'] = $page->Template;
-                $menus[] = $m;
+                if(empty($m['Url'])){
+                    $menus[0] = $m;
+                } else {
+                    $menus[] = $m;
+                }
             }
         }
 
@@ -139,7 +144,7 @@ public function Save(){
     //Check du menu et creation le cas échéant
     $men = Sys::getData('Systeme','User/'.$par->Id.'/Menu');
 
-    if(count($men) != count($menus)){
+    if(count($men) != count($menus) || $regenMenu){
         if(count($men)){
             foreach ($men as $me){
                 $me->Delete();
@@ -150,6 +155,7 @@ public function Save(){
             $men->Titre = $m['Titre'];
             $men->Url = $m['Url'];
             $men->Alias = $m['Alias'];
+            $men->Ordre = $m['Order'];
             if(!empty($m['Template']))
                 $men->Template = $m['Template'];
             $men->addParent($par);
