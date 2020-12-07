@@ -4,86 +4,108 @@ class Show extends Module {
 	
 	public static $Lang = '';
 	
-//	public static function CheckLogged() {
-//		$usr = Sys::$User;
-//		return($usr->Public);
-//	}
-	
 	public static function GetShow($args) {
-		if(isset($args['lang']) && $args['lang']) self::$Lang = $args['lang'];
+		if(isset($args['lang'])) self::$Lang = $args['lang'];
 		
 		$mode = $args['mode'];
 
 klog::l("GETSHOW >>>>>",$args);
 		switch($mode) {			
-			case 'del-dialog': return Message::DelDialog($args);
-			case 'contact': return Contact::SaveContact($args);
-			case 'vote': return Performance::SetVote($args);
-			case 'get-vote': return Performance::GetVote($args);
-			case 'comments': return Performance::GetComments($args);
-			case 'ratings': return Performance::GetRatings($args);
-			case 'article': return self::article($args);	
-			case 'account': return self::saveUser($args);	
-			case 'nickname': return self::checkNickname($args);	
-			case 'email': return self::checkEMail($args);			
-			case 'change-pwd': return self::changePwd($args);			
+			//case 'test': return self::checkMsg(Message::SendMails());
+			case 'del-account': return self::DelAccount($args);
+			case 'del-dialog': return self::checkMsg(Message::DelDialog($args));
+			case 'show-status': return self::checkMsg(Performance::SetStatus($args));
+			case 'contact': return self::checkMsg(Contact::SaveContact($args));
+			case 'vote': return self::checkMsg(Performance::SetVote($args));
+			case 'get-vote': return self::checkMsg(Performance::GetVote($args));
+			case 'comments': return self::checkMsg(Performance::GetComments($args));
+			case 'ratings': return self::checkMsg(Performance::GetRatings($args));
+			case 'document': return self::checkMsg(self::document($args));	
+			case 'account': return self::checkMsg(self::saveUser($args));	
+			case 'nickname': return self::checkMsg(self::checkNickname($args));	
+			case 'email': return self::checkMsg(self::checkEMail($args));			
+			case 'change-pwd': return self::checkMsg(self::changePwd($args));			
 			case 'lost-pwd': return self::lostPwd($args);			
-			case 'add-role': return Performance::AddRole($args);
-			case 'del-role': return Performance::DelRole($args);
+			case 'add-role': return self::checkMsg(Performance::AddRole($args));
+			case 'del-role': return self::checkMsg(Performance::DelRole($args));
 			case 'status': return self::Status();
-			case 'messages': return Message::Messages($args);
-			case 'dialog': return Message::Dialog($args);
-			case 'msg': return Message::AddMsg($args);
-			case 'image': return Performance::LoadImage($args);
-			case 'del-pict': return Performance::DelPict($args);
-			case 'main-pict': return Performance::MainPict($args);
-			case 'add-link': return Performance::AddLink($args);
-			case 'del-link': return Performance::DelLink($args);
-			case 'save-perf': return Performance::SavePerf($args);
-			case 'del-perf': return Performance::DeletePerf($args);
-			case 'login': return self::logUser();
+			case 'messages': return self::checkMsg(Message::Messages($args));
+			case 'dialog': return self::checkMsg(Message::Dialog($args));
+			case 'msg': return self::checkMsg(Message::AddMsg($args));
+			case 'image': return self::checkMsg(Performance::LoadImage($args));
+			case 'del-pict': return self::checkMsg(Performance::DelPict($args));
+			case 'main-pict': return self::checkMsg(Performance::MainPict($args));
+			case 'add-link': return self::checkMsg(Performance::AddLink($args));
+			case 'del-link': return self::checkMsg(Performance::DelLink($args));
+			case 'save-perf': return self::checkMsg(Performance::SavePerf($args));
+			case 'del-perf': return self::checkMsg(Performance::DeletePerf($args));
+			case 'login': return self::logUser($args);
 			case 'confirm': return self::registerConfirm($args);
 			case 'register': return self::registerUser($args);
 			case 'logout': return self::logout($args);
-			case 'init': return self::initShow($args);			
+			case 'init': return self::initShow($args);
 			case 'lang': return self::loadLang($args);			
-			case 'param': return self::param($args);
-			case 'perf': return Performance::GetPerf($args);
-			case 'favourite': return Performance::SetFavourite($args);
+			case 'param': return self::checkMsg(self::param($args));
+			case 'perf': return self::checkMsg(Performance::GetPerf($args));
+			case 'favourite': return self::checkMsg(Performance::SetFavourite($args));
 		}
 		return array('err'=>'mode unknown');
 	}
 	
-	private static function article($args) {
-		$art = $args['article'];
+	private static function checkMsg($args) {
+		if(isset($args['logged']) && $args['logged']) {
+			$args['msgCount'] = self::newMessages(Sys::$User->Id);
+		}
+		return $args;
+	}
+	
+	
+	public static function checkLang() {
+		$usr = Sys::$User;
+		if($usr->Public) return;
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
+		if(!$inf) $inf = new stdClass();
+		if(!isset($inf->language) || $inf->language!=self::$Lang) {
+			$inf->language = self::$Lang;
+			$usr->Informations = json_encode($inf);
+			$usr->Save();
+		}
+	}
+	
+	public static function userLang($id) {
+		$lang = 'EN';
+		$usr = Sys::getOneData('Systeme', "User/$id");
+		$inf = '';
+		if($usr->Informations) $inf = json_decode($usr->Informations);
+		if($inf && isset($inf->language)) $lang = $inf->language;
+		return $lang;
+	}
+	
+	private static function delAccount($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
+		
+		$id = $usr->Id;
+		$phase = $args['phase'];
+		
+		$ps = $usr->getChildren('Performance');
+		
+		return array('success'=>true, 'logged'=>false);
+	}
+	
+	private static function document($args) {
+		$doc = $args['doc'];
 		$lang = $args['lang'];
 		
-		$a = Sys::getOneData('Redaction', "Article/Modele=$art$lang");
-		if(!$a) $a = Sys::getOneData('Redaction', "Article/Modele=$art".'EN');
-		return ['success'=>true, 'title'=>$a->Titre, 'text'=>$a->Contenu];
+		$set = Sys::getOneData('Show', "Setting/Domain=DOCUMENT&SubDomain=$doc&Setting=$lang");
+		if(!$set && $lang != 'EN') $set = Sys::getOneData('Show', "Setting/Domain=DOCUMENT&SubDomain=$doc&Setting=EN");
+		return ['success'=>true, 'title'=>$set->Value, 'html'=>$set->Html];
 	}
 	
 	private static function logout($args) {
 		$GLOBALS['Systeme']->Connection->Disconnect();
 		return array('success'=>true, 'logged'=>false, 'token'=>'', 'pseudo'=>'');
-	}
-
-	private static function param($args) {
-		$id = $args['id'];
-		$eqid = '';
-		if(strpos($id, ',')) $eqid = " in ($id)";
-		else $eqid = "=$id";
-		
-		$flt = $args['filter'];
-		$lang = $args['lang'];
-		switch($args['type']) {
-			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
-			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
-			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
-			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
-			case 'motives': $data = self::getObjsArray('Motive', "", true, $lang); break;
-		}
-		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
 	}
 
 	private static function initShow($args) {
@@ -115,13 +137,54 @@ klog::l("GETSHOW >>>>>",$args);
 			}
 		}
 		$cry = ['lang'=>$lang, 'langName'=>$langName, 'country'=>$country, 'countryId'=>$countryId, 'utcOffset'=>$utcOffset];
-
-		$usr = Sys::$User;
-		$logged = !$usr->Public;
-		$msg = $logged ? self::newMessages($usr->Id) : 0;
-		return array('success'=>true, 'logged'=>$logged, 'country'=>$cry, 'msgCount'=>$msg);
+		
+		$ret = self::getUserInfo($args['fcm']);
+		$ret['country'] = $cry;
+		return $ret;
 	}
 	
+	private static function getUserInfo($fcmToken) {
+		$usr = Sys::$User;
+		$logged = !$usr->Public;
+		$user = null;
+		$msg = 0;
+		$fav = 0;
+		if($logged) {
+			$inf = null;
+			if($usr->Informations) $inf = json_decode($usr->Informations);
+			if($fcmToken && (!isset($inf->fcmToken) || $inf->fcmToken != $fcmToken)) {
+				$inf->fcmToken = $fcmToken;
+				$usr->Informations = json_encode($inf);
+				$usr->Save();
+			}
+			$user = ['id'=>$usr->Id, 'nickname'=>$usr->Prenom, 'name'=>$usr->Nom, 'email'=>$usr->Mail, 'phone'=>$usr->Tel, 'info'=>$inf];
+			if($usr->Privilege) $user['privilege'] = $usr->Privilege;
+			$msg = self::newMessages($usr->Id);
+			$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$usr->Id);
+		}
+		$ret = ['success'=>true, 'logged'=>$logged];
+		if($logged) {
+			$ret['token'] = session_id();
+			$ret['user'] = $user;
+			$ret['msgCount'] = $msg;
+			$ret['favCount'] = $fav;
+		}
+		return $ret;
+	}
+	
+	private static function logUser($args) {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>false, 'logged'=>false);
+		
+		$ret = self::getUserInfo($args['fcm']);
+		return $ret;
+	}
+	
+	public static function Status() {
+		$usr = Sys::$User;
+		if($usr->Public) return array('success'=>true, 'logged'=>false, 'msgCount'=>0);
+		return array('success'=>true, 'logged'=>true, 'msgCount'=>self::newMessages($usr->Id));
+	}
 	
 	
 	private static function loadLang($args) {
@@ -140,7 +203,7 @@ klog::l("GETSHOW >>>>>",$args);
 	private static function getTranslation($lang) {
 		$trn = [];
 		$rs = Sys::getData('Show', "Translation");
-		foreach($rs as $r) $trn[] = ['EN'=>$r->TextEN, 'FR'=>$r->TextFR, 'ES'=>$r->TextES];
+		foreach($rs as $r) $trn[] = ['EN'=>$r->TextEN, 'FR'=>$r->TextFR, 'ES'=>$r->TextES ? $r->TextES : $r->TextEN];
 		return $trn;
 	}
 	
@@ -151,38 +214,65 @@ klog::l("GETSHOW >>>>>",$args);
 		$ret = self::checkEMail(['email'=>$acc->email, 'id'=>$acc->id]);
 		if(!$ret['success']) return $ret;
 		$usr = Sys::$User;
-		$usr->Initiales = $acc->nickname;
+		$usr->Prenom = $acc->nickname;
 		$usr->Mail = $acc->email;
 		$usr->Nom = $acc->name;
 		$usr->Tel = $acc->phone;
-		$inf = new stdClass();
-		$inf->displayName = $acc->displayName;
-		$inf->showFavourites = $acc->showFavourites;
-		$usr->Informations = json_encode($inf);
+//		$inf = new stdClass();
+//		$inf->displayName = $acc->displayName;
+//		$inf->sendInfo = $acc->sendInfo;
+//		$inf->showFavourites = $acc->showFavourites;
+		$usr->Informations = json_encode($acc->info);
 		$usr->Save();
 		return ['success'=>true];
 	}
 
 	private static function checkNickname($args) {
-		$usr = Sys::getOneData('Systeme', 'User/Initiales='.$args['nickname'].'&Id!='.$args['id']);
+		$qry = 'User/Prenom='.$args['nickname'];
+		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
+		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
-		if($exists) return ['success'=>false, 'err'=>'This nickname already exists'];
+		if($exists) return ['success'=>false, 'err'=>'Nickname already in use'];
 		return ['success'=>true];
 	}
 	
 	private static function checkEMail($args) {
-		$usr = Sys::getOneData('Systeme', 'User/Login='.$args['email'].'&Id!='.$args['id']);
+		$qry = 'User/Login='.$args['email'];
+		if(isset($args['id']) && $args['id']) $qry .= '&Id!='.$args['id'];
+		$usr = Sys::getOneData('Systeme', $qry);
 		$exists = $usr !== false && $usr !== null;
-		if($exists) return ['success'=>false, 'err'=>'This email already exists'];
+		if($exists) return ['success'=>false, 'err'=>'Email address already in use'];
 		return ['success'=>true];
 	}
 
+	private static function param($args) {
+		$id = $args['id'];
+		$eqid = '';
+		if(strpos($id, ',')) $eqid = " in ($id)";
+		else $eqid = "=$id";
+		
+		$flt = $args['filter'];
+		$lang = $args['lang'];
+		switch($args['type']) {
+			case 'countries': $data = self::getObjsArray('Country', "Country$lang like '%$flt%'", true, $lang); break;
+			case 'states': $data = self::getObjsArray('State', "CountryId$eqid and State like '%$flt%'", true, ''); break;
+			case 'cities': $data = self::getObjsArray('City', "StateId$eqid", true, ''); break;
+			case 'genres': $data = self::getObjsArray('Genre', "CategoryId$eqid", false, $lang); break;
+			case 'motives': $data = self::getObjsArray('Motive', "Type='$flt'", true, $lang); break;
+		}
+		return array('success'=>true, 'logged'=>!Sys::$User->Public, 'data'=>$data);
+	}
+
 	public static function getObjsArray($name, $query, $obj, $lang) {
-		$sql = "select Id,$name$lang from `kob-Show-$name`";
+		$en = 'EN';
+		$fld = $name;
+		if($lang) $fld = "if(ifnull($name$lang,'')='', $name$en, $name$lang) as $name$lang"; 
+		$sql = "select Id,$fld from `##_Show-$name`";
 		if($query) $sql .= " where $query";
+		$sql .= " order by $name$lang";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
-
+		
 		$arr = array();
 		if($obj) {
 			foreach($rs as $r) $arr[] = ['id'=>$r['Id'], 'name'=>$r[$name.$lang]];
@@ -192,31 +282,9 @@ klog::l("GETSHOW >>>>>",$args);
 		}
 		return $arr;
 	}
-		
-	private static function logUser() {
-		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>false, 'logged'=>false);
-		
-		$id = $usr->Id;
-		$inf = '';
-		if($usr->Informations) $inf = json_decode($usr->Informations);
-		$msg = self::newMessages($id);
-		$fav = Sys::getCount('Show', 'FavPerformance/UserId='.$id);
-		//$fav += Sys::getCount('Show', 'FavUser/UserId='.$id);
-		return ['success'=>true, 'logged'=>true, 'msgCount'=>$msg, 'favCount'=>$fav,
-				'user'=>['token'=>session_id(), 'name'=>$usr->Nom, 'phone'=>$usr->Tel, 'id'=>$usr->Id, 
-				'nickname'=>$usr->Initiales, 'email'=>$usr->Mail, 'showFavourites'=>$inf ? $inf->showFavourites : false,
-				'displayName'=>$inf ? $inf->displayName : false]];
-	}
-	
-	public static function Status() {
-		$usr = Sys::$User;
-		if($usr->Public) return array('success'=>true, 'logged'=>false, 'msgCount'=>0);
-		return array('success'=>true, 'logged'=>true, 'msgCount'=>self::newMessages($usr->Id));
-	}
-	
+			
 	private static function newMessages($id) {
-		$sql = "select count(*) as cnt from `kob-Show-Message` where ToId=$id and Status=0";
+		$sql = "select count(*) as cnt from `##_Show-Message` where ToId=$id and !(Status&1)";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$r = $rs->fetch(PDO::FETCH_ASSOC);
@@ -225,7 +293,7 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	private static function registerUser($args) {
 		$c = $args['credentials'];
-		$n = Sys::getCount('Systeme', 'User/Initiales='.$c->nickname);
+		$n = Sys::getCount('Systeme', 'User/Prenom='.$c->nickname);
 		if($n > 0) return array('success'=>false, 'msg'=>'Nickname already in use');
 		$n = Sys::getCount('Systeme', 'User/Mail='.$c->email);
 		if($n > 0) return array('success'=>false, 'msg'=>'Email address already in use');
@@ -235,35 +303,41 @@ klog::l("GETSHOW >>>>>",$args);
 		$u->addParent($g);
 		$u->Login = $c->email;
 		$u->Mail = $c->email;
-		$u->Initiales = $c->nickname;
+		$u->Prenom = $c->nickname;
 		$u->Actif = 0;
 		$u->Pass = '[md5]'.md5($c->pass);
+		$inf = new stdClass();
+		$inf->language = self::$Lang;
+		$u->Informations = json_encode($inf);
 		$u->Save();
-
+		
 		$host = $_SERVER['HTTP_ORIGIN'];
 		$info = base64_encode($u->Id.','.$c->email.','.time());
-		switch($args['lang']) {
+		switch(self::$Lang) {
 			case 'EN':
-				$s = 'shows.zone : Confirm registration.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$s = 'shows.zone: Confirm registration.';
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to confirm your registration :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
 				$b .= "This link will be active for 48 hours.<br /><br />";
-				$b .= "Please complete user information in Menu/My account.<br /><br />";
+				$b .= "You can complete user information in Menu/My account.<br /><br />";
+				break;
 			case 'FR':
-				$s = 'shows.zone : Confirm registration.';
-				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
-				$b .= 'Click on the link below to confirm your registration :<br /><br />';
-				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirm registration</a></strong><br /><br />";
+				$s = "shows.zone: Confirmer l'enregistrement";
+				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
+				$b .= 'Cliquer sur le lien ci-dessous pour confirmer votre enregistrement :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmer l&apos;enregistrement</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 48 heures.<br /><br />";
-				$b .= "Veuillez complèter vos informations dans Menu/Mon compte.<br /><br />";
+				$b .= "Vous pouvez complèter vos informations dans Menu/Mon compte.<br /><br />";
+				break;
 			case 'ES':
-				$s = 'shows.zone : Confirm registration.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
-				$b .= 'Cliquer sur le lien ci dessous pour confirmer votre enregistrement :<br /><br />';
-				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmation d'enregistrement</a></strong><br /><br />";
-				$b .= "This link will be active for 48 hours.<br /><br />";
-				$b .= "Please complete user information in Menu/My account.<br /><br />";
+				$s = 'shows.zone: Confirmar registro.';
+				$b = "Hola ".$u->Prenom.",<br /><br /><br />";
+				$b .= 'Haga clic en el enlace de abajo para confirmar su registro :<br /><br />';
+				$b .= "<strong><a href=\"$host/s/confirm?info=$info\">Confirmación de registro</a></strong><br /><br />";
+				$b .= "Este enlace estará activo durante 48 horas..<br /><br />";
+				$b .= "Puede completar la información del usuario en Menú/Mi cuenta.<br /><br />";
+				break;
 		}
 		$b .= self::MailSignature();
 		$params = array('Subject'=>$s, 'To'=>array($c->email), 'Body'=>$b);
@@ -296,21 +370,21 @@ klog::l("GETSHOW >>>>>",$args);
 		switch($lang) {
 			case 'EN':
 				$s = 'shows.zone : Lost password.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";
 				break;
 			case 'FR':
 				$s = 'shows.zone : Mot de passe oublié.';
-				$b = "Bonjour ".$u->Initiales.",<br /><br /><br />";
+				$b = "Bonjour ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Cliquer sur le lien ci dessous pour changer de mot de passe :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Changer le mot de passe</a></strong><br /><br />";
 				$b .= "Ce lien restera actif pendant 24 heures.<br /><br />";
 				break;
 			case 'ES':
 				$s = 'shows.zone : Change password.';
-				$b = "Hello ".$u->Initiales.",<br /><br /><br />";
+				$b = "Hello ".$u->Prenom.",<br /><br /><br />";
 				$b .= 'Click on the link below to change your password :<br /><br />';
 				$b .= "<strong><a href=\"$host/s/password?info=$info\">Change password</a></strong><br /><br />";
 				$b .= "This link will be active for 24 hours.<br /><br />";
@@ -353,6 +427,7 @@ klog::l("GETSHOW >>>>>",$args);
 	
 	private static function registerConfirm($args) {
 		$data = array('success'=>0,'message'=>"Incorrect link");
+		$lang = $args['lang'];
 
 		$get = isset($args['info']) ? trim($args['info']) : '';
 		if($get == '') return $data;
@@ -373,14 +448,14 @@ klog::l("GETSHOW >>>>>",$args);
 		$data['success'] = 1;
 		$data['mail'] = $info[1];
 		if($u->Actif) {
-			$data['message'] = "Your registration has already been confirmed.<br />Welcome on show.ooo.";
+			$data['message'] = "Your registration has already been confirmed";
 			return $data;
 		}
 
 		$u->Actif = 1;
 		$u->Save();
 //		$data['success'] = 1;
-		$data['message'] = 'Your registration has been confirmed.<br />Welcome on show.ooo.';
+		$data['message'] = 'Your registration has been confirmed';
 		return $data;
 	}
 
@@ -389,29 +464,14 @@ klog::l("GETSHOW >>>>>",$args);
 		return '';
 	}
 	
-//	public static function SendMessage($params) {
-//		$m = genericClass::createInstance('Systeme', 'MailQueue');
-//		if(isset($params['From']) && !empty($params['From'])) $m->From = $params['From'];
-//		else $m->From = 'show@polgo.ooo';
-//
-//		if(isset($params['To'])) $m->To = implode(',', $params['To']);
-//		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
-//		
-//		$m->Subject = $params['Subject'];
-//		$m->Body = $params['Body'];
-//		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
-//		
-//		//$m->EmbeddedImages = '';
-//		$m->Save();
-//		return $m->Id;
-//	}
-	
 	public static function SendMessage($params) {
 		require_once('Class/Lib/Mail.class.php');
 
 		$Mail = new Mail();
 		if(isset($params['From']) && !empty($params['From'])) $Mail->From($params['From']);
-		else $Mail->From('info@shows.zone');
+		else $Mail->From('contact@shows.zone');
+//		else $Mail->From('noreply@shows.zone');
+
 		$Mail->Subject($params['Subject']);
 		if(isset($params['To'])) {
 			foreach($params['To'] as $to)
@@ -421,29 +481,36 @@ klog::l("GETSHOW >>>>>",$args);
 			foreach($params['ReplyTo'] as $to)
 				$Mail->ReplyTo($to);
 		}
-		$Mail->Cc('paul@abtel.fr');
 		if(isset($params['Cc'])) {
 			foreach($params['Cc'] as $to)
 				$Mail->Cc($to);
 		}
+//		$Mail->Bcc('paul@polgo.ooo');
+		$Mail->Bcc('contact@shows.zone');
 		if(isset($params['Bcc'])) {
 			foreach($params['Bcc'] as $to)
 				$Mail->Bcc($to);
 		}
+		$body = $params['Body'];
+		$set = Sys::getOneData('Show', 'Setting/Domain=MAIL&SubDomain=DEFAULT&Setting=SIGN');
+		$body .= $set->Html;
+		$a = explode('|', $set->Value);
+		$Mail->EmbeddedImage($a[0], $a[1]);
+		
 		$bloc = new Bloc();
-		$bloc->setFromVar("Mail", $params['Body'], array("BEACON"=>"BLOC"));
+		$bloc->setFromVar("Mail", $body, array("BEACON"=>"BLOC"));
 		$Pr = new Process();
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
 		
-		if($params['Attachments']) {
+		if(isset($params['Attachments']) && $params['Attachments']) {
 			foreach($params['Attachments'] as $att) {
 				$a = explode('|',$att);
 				$Mail->Attach($a[0], $a[1]);
 			}
 		}
-		if($params['EmbeddedImages']) {
+		if(isset($params['EmbeddedImages']) && $params['EmbeddedImages']) {
 			foreach($params['EmbeddedImages'] as $att) {
 				$a = explode('|',$att);
 				$Mail->EmbeddedImage($a[0], $a[1]);
@@ -462,5 +529,39 @@ klog::l("GETSHOW >>>>>",$args);
 		$secs = floor($seconds % 60);
 		return sprintf("$sign%02d:%02d", $hours, $mins);
 //		return sprintf("(GMT$sign%02d:%02d)", $hours, $mins, $secs);
+	}
+	
+	static function SendFCM($token, $title, $body) {
+		$key = Sys::getOneData('Show', 'Setting/Domain=NOTIFICATION&SubDomain=FCM&Setting=KEY');
+		
+		$registrationIds = array($token);
+		$msg = array
+		(
+			'title'=>$title,
+			'body'=>$body,
+			'vibrate'=>1,
+			'sound'=>1
+		);
+		$fields = array
+		(
+			'registration_ids'=>$registrationIds,
+			'notification'=>$msg
+		);
+		$headers = array
+		(
+			'Authorization: key='.$key->Value,
+			'Content-Type: application/json'
+		);
+		
+		$ch = curl_init();
+		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+		curl_setopt( $ch,CURLOPT_POST, true );
+		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+		$result = curl_exec($ch );
+		curl_close( $ch );
+		klog::l('FCM:', $result);
 	}
 }

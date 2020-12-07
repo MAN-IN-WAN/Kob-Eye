@@ -50,6 +50,15 @@
 							<div class="row" style="height:10px"></div>
 							{{ flinput(f.WebDiscipline, o, false, '@@', 'width:60px; text-transform:uppercase;', true) }}
 							{{ flinput(f.Libelle, o) }}
+							<div class="row" style="height:5px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Certificat médical") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Certificat, o) }}
+								</div>
+							</div>
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">

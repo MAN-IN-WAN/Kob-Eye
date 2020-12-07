@@ -1,0 +1,64 @@
+{# fiche cours Enseignant #}
+<div class="page-content-inner">
+	<h3>Enseignement</h3>
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<section class="panel">
+						<div class="panel-body">
+{#							<ng-include src="'Cadref/Enseignant/0/Classe/PublicListClasse.htm'"></ng-include>#}
+
+<div class="listWrap">
+	<table class="table table-hover" width="100%">
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Classe</th>
+				<th>Libellé</th>
+				<th>Antenne</th>
+				<th>Heures</th>
+				<th>Cycle</th>
+				<th>Inscrits</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!ens.busy">
+			<tr ng-repeat="item in ens.classes" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.CodeClasse }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleA }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
+				<td scope="row" class="typefloat"><span ng-class="{'cadref-highlight': Number(item.Disponibles)==0}">{[{ item.Inscrits+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'classe')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="ens.busy">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</div>
+
+
+						</div>
+					</section>
+				</div>
+			</div>
+    </section>
+</div>
+{{ include(template_from_string(module('Cadref/Default/attachementModal?Type=COURS'))) }}
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>
+

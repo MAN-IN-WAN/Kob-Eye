@@ -248,7 +248,7 @@ class Cadref extends Module {
 		$u->Save();
 		
 		$a->Password = $pass;
-		if($endId) $a->Compte = 1;
+		if($ensId) $a->Compte = 1;
 		$a->Save();
 
 		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte : ';
@@ -516,7 +516,7 @@ class Cadref extends Module {
 		$annee = self::$Annee;
 		$data = array();
 
-		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'";
+		$sql = "select count(*) as cnt from `##_Cadref-Adherent` where Annee='$annee'and Cotisation<>0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql,PDO::FETCH_ASSOC);
 		foreach($pdo as $p) $data['NbAdherents'] = $p['cnt'];
@@ -726,7 +726,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					$cf += 86400 - 1;
 				}
 				$j = $p['JourId'] - 1;
-				$d = $start + ($j * 24 * 60 * 60);
+				$d = $start + ($j * 24 * 60 * 60) + 12*60*60;
 				while($d <= $end) {
 					$ok = !($cd && ($d < $cd || $d > $cf));
 					if($ok) {
@@ -734,7 +734,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 							switch($v->type) {
 								case 'D':
 									$w = date('N', $d);
-									$ok = !($v->day == $w && $d < $v->start);
+									if($v->day == $w) $ok = !($d < $v->start);
 									break;
 								case 'F':
 									$w = date('N', $d);
@@ -907,8 +907,9 @@ where ce.Classe=$cid
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments'])) $m->Attachments = implode(',', $params['Attachments']);
 		
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		$m->EmbeddedImages = $p->Valeur;
+//		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+//		$m->EmbeddedImages = $p->Valeur;
+		$m->EmbeddedImages = self::MailLogo($m->From);
 		$m->Save();
 		return $m->Id;
 	}
@@ -920,10 +921,16 @@ where ce.Classe=$cid
 		return $c.",<br /><br /><br />";
 	}
 
-	public static function MailSignature() {
-		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
-		return $p->Texte;
-		self::$MailLogo = $p->Valeur;
+	public static function MailSignature($from = '') {
+		if($from) $p = self::GetParametre('MAIL', 'SIGNATURE', $from);
+		if(!$p) $p = self::GetParametre('MAIL', 'SIGNATURE', 'STANDARD');
+		return $p ? $p->Texte : '';
+	}
+
+	public static function MailLogo($from = '') {
+		if($from) $p = self::GetParametre('MAIL', 'SIGNATURE', $from);
+		if(!$p) $p = self::GetParametre('MAIL', 'SIGNATURE', 'STANDARD');
+		return $p ? $p->Valeur : '';
 	}
 
     public static function SendSms($params) {

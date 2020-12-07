@@ -12,7 +12,7 @@
 		else $obj = Sys::getOneData($info['Module'],explode('/',$path,2)[1]);
 		$methods = get_class_methods($obj);
 
-		if(!in_array($name,$methods)){
+		if(!is_array($methods) || !in_array($name,$methods)){
 			$error = "La fonction que vous essayez d'exectuer n'est pas définie pour l'objet souhaité";
 			$vars['toReturn']['errors'][] = array("Message"=>$error);
 		} else {

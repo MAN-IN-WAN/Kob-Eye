@@ -1,0 +1,61 @@
+{# printEnseignant #}
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+	$scope.obj.Pieces = {data: [], mode: '', filePath: ''};
+	$scope.obj.Antenne = {{ antenne }};
+	$scope.obj.Mail = '0';
+	
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+
+	$scope.pieceAdd = function() {
+		var p = $scope.obj.Pieces;
+		p.mode = 'add';
+		p.filePath = '';
+	}
+
+	$scope.pieceSave = function() {
+		var p = $scope.obj.Pieces;
+		p.data.push(p.filePath);
+		p.mode = '';
+		p.filePath = '';
+	}
+
+	$scope.pieceDelete = function(item) {
+		var p = $scope.obj.Pieces;
+		n = p.data.indexOf(item);
+		if(n >= 0) p.data.splice(n, 1);
+	}
+	
+	$scope.pieceCloseEdit = function() {
+		$scope.obj.Pieces.mode = '';
+	}
+	
+	
+	$scope.printFunction = function(mode) {
+		$scope.obj.mode = mode;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+		ajax.success(
+			function(data) {
+				if(data.data.msg) swal("Messages envoyés", "", "success");
+				else if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+});

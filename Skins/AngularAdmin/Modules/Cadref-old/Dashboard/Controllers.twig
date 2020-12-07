@@ -1,0 +1,103 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval) {
+
+	// Stats
+	$scope.NbAdherents = 0;
+	$scope.NbInscriptions = 0;
+	$scope.NbReservations = 0;
+	$scope.NbUsers = 0;
+	$scope.getStat = function() {
+		{% if group == 'CADREF_ADMIN' %}
+		$http.get('/Cadref/Dashboard/getStat.json')
+		.success(function(data) {
+			$scope.NbAdherents = Number(data.NbAdherents);
+			$scope.NbInscriptions = Number(data.NbInscriptions);
+			$scope.NbReservations = Number(data.NbReservations);
+			$scope.NbUsers = Number(data.NbUsers);
+{#			// repartition
+			var bar = $('#bargraph')
+			if(bar == undefined || bar.get(0) == undefined) {
+				$interval.cancel(intv);
+				return;
+			}
+			bar.get(0).__chartist__.update(data.bars);
+#}
+		});
+		{% endif %}
+		$('.cadref-calendar-block').fullCalendar('refetchEvents');
+	}
+	$scope.getStat();
+	var intv = $interval($scope.getStat, {% if group == 'CADREF_ADMIN' %}60000{% else %}180000{% endif %});
+	
+	// calendrier
+	$scope.visites = true;
+	$('.cadref-calendar-block').fullCalendar({
+		//aspectRatio: 2,
+		height: 650,
+		header: {
+			left: 'prev, next, today',
+			center: 'title',
+			right: 'visites, month, agendaWeek, agendaDay'
+		},
+		buttonIcons: {
+			prev: 'none fa fa-arrow-left',
+			next: 'none fa fa-arrow-right',
+			prevYear: 'none fa fa-arrow-left',
+			nextYear: 'none fa fa-arrow-right'
+		},
+		customButtons: {
+			visites: {
+				text: 'Visites',
+				click: function() {
+					$scope.visites = ! $scope.visites;
+					if($scope.visites) $('.fc-visites-button').addClass('btn-success');
+					else $('.fc-visites-button').removeClass('btn-success');
+					$('.cadref-calendar-block').fullCalendar('refetchEvents');
+				}
+			}
+		},
+		minTime: "08:00",
+		maxTime: "19:00",
+		//defaultView: 'agendaMonth',
+		//allDayDefault: false,
+		hiddenDays: [0],
+		//allDaySlot: true,
+		editable: false,
+		navLinks: true,
+		nowIndicator: true,
+		eventLimit: true, // allow "more" link when too many events
+		viewRender: function(view, element) {
+			if (!cleanUI.hasTouch) {
+				$('.fc-scroller').jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+			}
+		},
+		defaultDate: '{{ "now"|date("Y-m-d") }}',
+		events: function(start, end, timezone, callback) {
+			var args = {start: start, end: end, visites: $scope.visites};
+			$http.post('/Cadref/Dashboard/getCalendar.json',{"args":JSON.stringify(args)})
+			.success(function(data) {
+				callback(data.events);
+			});
+		},
+		eventClick: function(calEvent, jsEvent, view) {
+			if (!$(this).hasClass('event-clicked')) {
+				$('.fc-event').removeClass('event-clicked');
+				$(this).addClass('event-clicked');
+			}
+		},
+		eventRender: function(eventObj, $el) {
+        $el.popover({
+          title: eventObj.title,
+          content: eventObj.description,
+		  html: true,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
+      }
+
+	});
+
+});

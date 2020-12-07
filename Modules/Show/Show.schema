@@ -1,4 +1,20 @@
 <SCHEMA>
+<!--
+	<OBJECTCLASS title="LangValue" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="LangValue" hidden="0">
+		<PROPERTIES type="varchar" length="32" form="2" fiche="2" >ParentModule</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="2" form="2" fiche="2" >ParentId</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" form="2" fiche="2" >Language</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" form="2" fiche="2" >Value</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="LangText" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="LangText" hidden="0">
+		<PROPERTIES type="varchar" length="32" form="2" fiche="2" >ParentModule</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="2" form="2" fiche="2" >ParentId</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" form="2" fiche="2" >Language</PROPERTIES>
+		<PROPERTIES type="text" form="2" fiche="2" >Text</PROPERTIES>
+	</OBJECTCLASS>
+-->
+
 	<OBJECTCLASS title="Message" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Message" hidden="0" Class="Modules/Show/Class/Message.class.php">
 		<FKEY card="1,1" data="Performance,Id" form="1" fiche="1" >PerformanceId</FKEY>
 		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >FromId</FKEY>
@@ -31,14 +47,11 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Status">Status</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Performance" driver="mysql" AccessPoint="1" Description="Presentation" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Performance.class.php">
+	<OBJECTCLASS title="Performance" driver="mysql" AccessPoint="1" Description="Performance" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Show/Class/Performance.class.php">
 		<PROPERTIES type="varchar" length="255" searchOrder="1" category="Description" form="1" list="1" fiche="1">Title</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2">Subtitle</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="2" fiche="2" description="Program / Summary">Summary</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Description">Description</PROPERTIES>
-
-
-
 
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Pressbook">Pressbook</PROPERTIES>
 		<PROPERTIES type="text" category="Description" form="16" fiche="16" description="Price">Price</PROPERTIES>
@@ -47,7 +60,10 @@
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Crew">Crew</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="2" form="2" fiche="2" description="Cast">Cast</PROPERTIES>
 
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Amateur">Amateur</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Professional">Professional</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Advertisement">Advertisement</PROPERTIES>
+
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Scenery">Scenery</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Instruments">Instruments</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="2" form="2" fiche="2" description="Electricity">Instruments</PROPERTIES>
@@ -129,6 +145,7 @@
 
 
 	<OBJECTCLASS title="Category" driver="mysql" AccessPoint="1" Description="Category" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">Category</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryEN</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryFR</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">CategoryES</PROPERTIES>
@@ -200,6 +217,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Motive" driver="mysql" AccessPoint="1" Description="Motive" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="varchar" length="8" category="Description" form="1" list="1" fiche="1">Type</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveEN</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveFR</PROPERTIES>
 		<PROPERTIES type="varchar" length="64" category="Description" form="1" list="1" fiche="1">MotiveES</PROPERTIES>
@@ -238,5 +256,16 @@
 		<FKEY card="1,1" data="User,Id" module="Systeme" form="1" fiche="1" >UserId</FKEY>
 		<PROPERTIES type="int" default="0" form="1" fiche="1" >FavUserId</PROPERTIES>
 	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Setting" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Setting" Operations="add,edit" Dico="1" Class="Modules/Show/Class/Setting.class.php">
+		<PROPERTIES type="varchar" length="16" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" >Domain</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" searchOrder="2" obligatoire="1" category="Description" list="1" form="1" fiche="1" >SubDomain</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="3" obligatoire="1" category="Description" list="1" form="1" fiche="1" >Setting</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" list="1" form="1" fiche="1" description="Valeur">Value</PROPERTIES>
+		<PROPERTIES type="text" category="Description" list="1" form="1" fiche="1" >Value</PROPERTIES>
+		<PROPERTIES type="html" category="Description" list="1" form="1" fiche="1" >Html</PROPERTIES>
+	</OBJECTCLASS>
+
+
 
 </SCHEMA>

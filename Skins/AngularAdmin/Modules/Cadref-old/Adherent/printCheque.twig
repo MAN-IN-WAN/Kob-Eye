@@ -1,0 +1,137 @@
+{# fiche printCheque adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+			<div>
+				<span class="cadref-ins-numero" ng-bind="obj.Numero"></span> <span class="cadref-ins-nom" ng-bind="obj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="obj.Prenom"></span>
+			</div>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Montant") }}
+										</div>
+										<div class="col-md-4">
+											<div class="control-group">
+												<input type="text" id="chequeMontant" class="form-control cadref-input" autofocus ng-model="CadrefClasse.Cheque.Montant"/>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Date") }}
+										</div>
+										<div class="col-md-4">
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objDateCheque" type="text" class="form-control cadref-input"
+													   ng-model="CadrefClasse.Cheque.DateCheque" ng-init="initDatePickerOnly(); CadrefClasse.Cheque.DateCheque='{{ "now"|date("d/m/Y") }}'"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Objet") }}
+										</div>
+										<div class="col-md-10">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="CadrefClasse.Cheque.Objet" ng-init="CadrefClasse.Cheque.Objet='{{ objet }}'"/>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Description") }}
+										</div>
+										<div class="col-md-10">
+											<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="CadrefClasse.Cheque.Description"></textarea>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Nom") }}
+										</div>
+										<div class="col-md-10">
+											<table>
+												<thead>
+													<tr>
+														<th>Civ.</th>
+														<th>Nom</th>
+														<th>Prénom</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="cadref-td-inscr">
+															<div class="control-group">
+																<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Civilite" ng-init="CadrefClasse.Cheque.Civilite='{{ civilite }}'" style="width:80px"/>
+															</div>
+														</td>
+														<td class="cadref-td-inscr">
+															<div class="control-group">
+																<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Nom" ng-init="CadrefClasse.Cheque.Nom='{{ nom }}'"/>
+															</div>
+														</td>
+														<td class="cadref-td-inscr">
+															<div class="control-group">
+																<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Prenom" ng-init="CadrefClasse.Cheque.Prenom='{{ prenom }}'"/>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Adresse") }}
+										</div>
+										<div class="col-md-10">
+											<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Adresse1" ng-init="CadrefClasse.Cheque.Adresse1='{{ adresse1 }}'"/>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-10">
+											<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Adresse2" ng-init="CadrefClasse.Cheque.Adresse2='{{ adresse2 }}'"/>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Ville") }}
+										</div>
+										<div class="col-md-10">
+											<input type="text" class="form-control cadref-input-inscr" ng-model="CadrefClasse.Cheque.Ville" ng-init="CadrefClasse.Cheque.Ville='{{ ville }}'"/>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Imprimer</button>
+										</div>
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.Cheque=CadrefClasse.Cheque"/>

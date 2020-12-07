@@ -294,7 +294,7 @@ cadref-btn-close:hover {
 	background-color:#ffffff !important;
 }
 input:read-only.cadref-input-diff.cadref-annuel {
-	background-color:#abe0e0 !important;
+	background-color:#abd0d0 !important;
 }
 input:-moz-read-only .cadref-input-diff.cadref-annuel {
 	background-color:#abeaea !important;

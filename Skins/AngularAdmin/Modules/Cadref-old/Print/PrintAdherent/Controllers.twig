@@ -1,0 +1,110 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $timeout, $routeParams, $http, $window) {
+
+	$scope.obj = {Annee:'{{ Annee }}', Rupture:'N', CurrentUrl:'{{ Url }}', Pieces:{data:[], mode:'', filePath:''}, smsSize:''};
+	
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+		var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+
+	$scope.checkSoutien = function(num) {
+		let o = $scope.obj;
+		if(num == 0) {
+			if(o.Soutien) o.Dons = false;
+		}
+		else if(o.Dons) o.Soutien = false
+	}
+	
+	$scope.pieceAdd = function() {
+		var p = $scope.obj.Pieces;
+		p.mode = 'add';
+		p.filePath = '';
+	}
+
+	$scope.pieceSave = function() {
+		var p = $scope.obj.Pieces;
+		p.data.push(p.filePath);
+		p.mode = '';
+		p.filePath = '';
+	}
+
+	$scope.pieceDelete = function(item) {
+		var p = $scope.obj.Pieces;
+		n = p.data.indexOf(item);
+		if(n >= 0) p.data.splice(n, 1);
+	}
+	
+	$scope.pieceCloseEdit = function() {
+		$scope.obj.Pieces.mode = '';
+	}
+	
+	$scope.printFunction = function(type, mode) {
+		$('#printForm').spin();
+		$scope.obj.type = type;
+		$scope.obj.mode = mode;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+		ajax.success(
+			function(data) {
+				$('#printForm').spin(false);
+				if(mode == 'print') {
+					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+					else swal('Adhérents','Rien à imprimer','warning');
+				}
+				else if(mode == 'mail' || mode == 'sms') swal("Message", data.data.message, "success");
+				else $window.open(data.data.csv);//swal("Exportation", data.data.message, "success");
+			}
+		).error(
+			function() {
+				$('#printForm').spin(false);
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
+	$scope.clearFunction = function() {
+		$scope.obj = {Annee:'{{ Annee }}', Rupture: 'N', CurrentUrl: '{{ Url }}', Pieces: {data: [], mode: '', filePath: ''}, smsSize:''};
+	}
+	
+	
+	$scope.sessionInfo = function() {
+		var args = {name: 'PrintAdherent'} ;
+		var ajax = $scope.{{ identifier }}callMethod(args,'{{ function }}Session');
+		ajax.success(
+			function(data) {
+				if(data.data) {
+					let d = data.data;
+					let o = $scope.obj;
+					o.Antenne = d.Antenne;
+					o.Enseignant = d.Enseignant;
+					o.Disc = d.Disc;
+					o.Rupture = d.Rupture;
+					o.Contenu = d.Contenu;
+					o.Sujet = d.Sujet;
+					o.Corps = d.Corps;
+					o.SMS = d.SMS;
+				}
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	$scope.checkSmsSize = function(obj) {
+		let s = obj.SMS.length;
+		obj.smsSize = s ? ' '+s : '';
+	}
+	
+	$(document).ready(function(){
+		$scope.sessionInfo();
+	});
+
+});

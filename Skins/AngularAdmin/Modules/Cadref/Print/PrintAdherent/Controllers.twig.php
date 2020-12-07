@@ -13,4 +13,11 @@ if(isset($_COOKIE['PHPSESSID'])) {
 	$vars['obj'] = $_SESSION['PrintAdherent'];
 }
 
+$vars['emetteur'] = '';
+$as = Sys::getData('Cadref', 'Parametre/Domaine=MAIL&SousDomaine=EMETTEUR');
+foreach($as as $a) {
+	if($a->Parametre == '1') $vars['emetteur'] = $a->Valeur;
+}
+
+
 ?>
