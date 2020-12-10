@@ -1,0 +1,37 @@
+[HEADER]
+<base href="/t/" />
+
+<meta name="author" content="Marc Thouvenot"/>
+<meta name="author" content="Paul Gordon Fisher"/>
+<meta name="robots" content="all"/>
+<meta name="reply-to" content="info@sup-infor.com"/>
+<meta name="owner" content="SUP-INFOR"/>
+<meta name="keywords" content="nahuatl, otomi, mixtèque, maya, caribe, Breton, Chimalpahin, Chimalpopoca, aztèque, mexica, mexicain, mexican, mexico, Mexique, glyphes, glifos, glyphs, écriture, escritura, writing, pictographique, pictographic, paléographie, paleografia, paleographies traductions, traducciones, étude, dictionnaire, diccionarios, progr ammes informatiques, programas, pohua, temoa, tlachia, Codex de Florence, Bibliothèque Nationale de France, Bnf, Telleriano-Remensis, Cozcatzin, Xolotl, Testeriano, Azcatitlan, Quinatzin, Tlotzin, Tepechpan, Vergara, Mexicayotl, Techialoyan, Leyenda de los soles, Castillo, Cuauhtitlan, hiéroglyphe, épigraphie, précolombien, mésoamérique, Edition, publication"/>
+
+<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+
+<link rel="icon" type="image/png" href="assets/icon/icon.png" />
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="google-site-verification" content="qLF2HIoPOyYDF427fYDBG9GZY6DcsOZN9vS3gqGDA6k" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163672775-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-163672775-1');
+</script>
+
+
+<link rel="stylesheet" href="styles.b90531eb9c5954f757a1.css"></head>
+
+
+[/HEADER]
+  <app-root></app-root>
+
+<script src="runtime-es2015.8ba8a9b8825df2b272ce.js" type="module"></script><script src="runtime-es5.8ba8a9b8825df2b272ce.js" nomodule defer></script><script src="polyfills-es5.7f04130fb748fb469cc3.js" nomodule defer></script><script src="polyfills-es2015.91389ecfa80f1063947d.js" type="module"></script><script src="main-es2015.816b496621838ea08778.js" type="module"></script><script src="main-es5.816b496621838ea08778.js" nomodule defer></script></body>

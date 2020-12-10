@@ -455,5 +455,33 @@
 		<PROPERTIES type="text" category="Description" form="2" list="2" fiche="2">CommentaireEs</PROPERTIES>
 	</OBJECTCLASS>
 
+	<!-- TONALLI -->
+
+	<OBJECTCLASS title="ToTonalli" driver="mysql" order="Nom" AccessPoint="1" Description="Tonalli" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/CEN/Class/ToTonalli.class.php">
+		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Tonalli</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Maya</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description" form="3" list="3" fiche="3">Divinite</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="3" list="3" fiche="3">FR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">ES</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">EN</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToMeztli" driver="mysql" order="Nom" AccessPoint="1" Description="Meztli" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Meztli</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Maya</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="3" list="3" fiche="3">FR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">ES</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">EN</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToXihuitl" driver="mysql" order="Nom" AccessPoint="1" Description="Xihuitl" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Xihuitl</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">MoisInitial</PROPERTIES>
+		<PROPERTIES type="varchar" length="254" category="Description" form="2" list="2" fiche="2">Parametres</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToTCodex" driver="mysql" order="Nom" AccessPoint="1" Description="TCodex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Codex</PROPERTIES>
+	</OBJECTCLASS>
 
 </SCHEMA>
