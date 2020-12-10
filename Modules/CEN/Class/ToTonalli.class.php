@@ -14,7 +14,7 @@ class ToTonalli extends genericClass {
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$mez = array();
-		foreach($rs as $r) $mez[] = ['id'=>$r['Id'],'meztli'=>$r['Tonalli'],'maya'=>$r['Maya'],'trad'=>$r[$lang]];
+		foreach($rs as $r) $mez[] = ['id'=>$r['Id'],'meztli'=>$r['Meztli'],'maya'=>$r['Maya'],'trad'=>$r[$lang]];
 		$sql = "select Id,Xihuitl,MoisInitial,Parametres from `##_CEN-ToXihuitl` order by Id";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
