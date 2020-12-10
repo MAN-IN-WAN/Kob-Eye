@@ -221,9 +221,6 @@ class Server extends genericClass {
         try{
             $domaines = $zimbra->getDomains();
             $quotas = $zimbra->getQuotas(array());
-            //echo '<pre>';
-            //print_r($quotas);
-            //echo '</pre>';
             $cosesTemp = $zimbra->getAllCos();
             $coses = array();
             foreach ($cosesTemp as $cosTemp){
@@ -233,24 +230,45 @@ class Server extends genericClass {
 
 
             foreach($domaines as $domain){
-                //echo '<pre>';
-                //print_r($domain);
-                //echo '</pre>';
+                $kDom = null;
+                $kCli = null;
 
                 $dname = $domain->get('name');
-                //print_r($dname.'<br/>');
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
                 $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
-                if(!is_object($kDom)){
-                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
-                    continue;
+                if(!$kDom){
+                    $domain = genericClass::createInstance('Parc','Domain');
+                    $domain->Url = $dname;
+                    $domain->updateOnSave = 0;
+                    $domain->Secondaire = 1;
+                    $domain->Mail = 1;
+                    //$domain->addParent($client);
+
+                    $domain->Save();
+                } else {
+                    if(!$kDom->Mail) {
+                        $kDom->Mail = 1;
+
+                        $kDom->Save();
+                    }
                 }
-                $kCli = $kDom->getOneParent('Client');
+                if(is_object($kDom)) {
+                    $kCli = $kDom->getOneParent('Client');
+                }
+
+                if(!is_object($kCli)){
+                    $acc = Sys::getOneData('Parc','CompteMail/Adresse~%@'.$dname);
+                    if(is_object($acc)) {
+                        $kCli = $acc->getOneParent('Client');
+                    }
+                }
                 if(!is_object($kCli)){
                     $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
                     continue;
                 }
 
-                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
 
                 $accList = $zimbra->getAllAccounts($dname);
                 foreach($accList as $account){
@@ -288,7 +306,9 @@ class Server extends genericClass {
                     }
                     $o->Adresse = $accName;
                     $o->COS = $cos;
-                    $o->Nom = $userNom;
+                    $exp = explode('@',$accName);
+                    //echo $accName ." : -".$exp[0]."-+".$userNom."+";
+                    $o->Nom = !empty($userNom)? $userNom : $exp[0];
                     $o->Prenom = $userPrenom;
                     $o->Quota = floor($userQuota/1048576); //En Mo
                     $o->EspaceUtilise =floor($userUsed/1048576); //En Mo
@@ -301,7 +321,7 @@ class Server extends genericClass {
 
                     if(!$dryrun){
                         $o->Save(false);
-                        //$report .= print_r($o->Error,true);
+                        $report .= print_r($o->Error,true);
                         $mAliases = $account->get('zimbraMailAlias');
                         if(!is_array($mAliases))
                             $mAliases = array($mAliases);
@@ -355,24 +375,27 @@ class Server extends genericClass {
 
 
             foreach($domaines as $domain){
-                //echo '<pre>';
-                //print_r($domain);
-                //echo '</pre>';
+                $kDom = null;
+                $kCli = null;
 
                 $dname = $domain->get('name');
-                //print_r($dname.'<br/>');
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
                 $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
-                if(!is_object($kDom)){
-                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
-                    continue;
+                if(is_object($kDom)) {
+                    $kCli = $kDom->getOneParent('Client');
                 }
-                $kCli = $kDom->getOneParent('Client');
+
+                if(!is_object($kCli)){
+                    $acc = Sys::getOneData('Parc','CompteMail/Adresse~%@'.$dname);
+                    if(is_object($acc)) {
+                        $kCli = $acc->getOneParent('Client');
+                    }
+                }
                 if(!is_object($kCli)){
                     $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
                     continue;
                 }
-
-                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
 
                 $diffList = $zimbra->getDistributionLists($dname);
                 foreach($diffList as $diff){
@@ -456,24 +479,27 @@ class Server extends genericClass {
 
 
             foreach($domaines as $domain){
-                //echo '<pre>';
-                //print_r($domain);
-                //echo '</pre>';
+                $kDom = null;
+                $kCli = null;
 
                 $dname = $domain->get('name');
-                //print_r($dname.'<br/>');
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
                 $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
-                if(!is_object($kDom)){
-                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
-                    continue;
+                if(is_object($kDom)) {
+                    $kCli = $kDom->getOneParent('Client');
                 }
-                $kCli = $kDom->getOneParent('Client');
+
+                if(!is_object($kCli)){
+                    $acc = Sys::getOneData('Parc','CompteMail/Adresse~%@'.$dname);
+                    if(is_object($acc)) {
+                        $kCli = $acc->getOneParent('Client');
+                    }
+                }
                 if(!is_object($kCli)){
                     $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
                     continue;
                 }
-
-                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
 
                 $ressList = $zimbra->getAllRessources($dname);
                 foreach($ressList as $ress){
@@ -1586,6 +1612,7 @@ class Server extends genericClass {
             $task->Save();
             $act->addDetails('FIN ldap2service');
         }catch (Exception $e){
+            $out = !empty($out) ? $out : 'No out ';
             $act->addDetails($out.print_r($e,true).' -> '.$e->getMessage());
             //si erreur il faut vérfiier le fichier de date
             $task->Error = true;
@@ -1834,11 +1861,12 @@ class Server extends genericClass {
         if($infra)
             $pref = 'Infra/'.$infra->Id.'/';
 
-        $pxs = Sys::getData('Parc',$pref.'Server/PageSpeed=1',0,100,'','','','',true);
+        //$pxs = Sys::getData('Parc',$pref.'Server/PageSpeed=1',0,100,'','','','',true);
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',0,100,'','','','',true);
         foreach ($pxs as $px){
             $task = genericClass::createInstance('Systeme', 'Tache');
             $task->Type = 'Fonction';
-            $task->Nom = 'Suppression du cache pagespeed ' . $px->Nom.' pour l\'hote virtuel ' . $apache->ApacheServerName;
+            $task->Nom = 'Suppression du cache pagespeed ' . $px->Nom.' ( pour l\'hote virtuel ' . $apache->ApacheServerName.' )';
             $task->TaskModule = 'Parc';
             $task->TaskObject = 'Server';
             $task->TaskId = $px->Id;
@@ -1864,24 +1892,32 @@ class Server extends genericClass {
      */
     public function emptyPageSpeedCache($task) {
         $params = unserialize($task->TaskArgs);
-        $act = $task->createActivity('Suppression du dossier cache pagespeed du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache']);
+        $act = $task->createActivity('Suppression du dossier cache pagespeed du proxy '.$this->Nom.' ( pour le\'hote virtuel '.$params['Apache'].' )');
         if (!isset($params['Apache'])||empty($params['Apache'])){
             $act->addDetails('Paramètre Apache introuvable.');
             $act->Terminate(false);
             return false;
         }
         try {
-            $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache']);
-            $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'], $act);
+            //$act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache']);
+            //$out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'], $act);
+
+            $act->addDetails('rm -Rf /var/pagespeed_cache/*');
+            $out = $this->remoteExec('rm -Rf /var/pagespeed_cache/*', $act);
             $act->addDetails($out);
+
+            $act->addDetails('nginx -s reload');
+            $out = $this->remoteExec('nginx -s reload', $act);
+            $act->addDetails($out);
+
             $act->Terminate(true);
-            if ($params['ApacheSsl']){
+            /*if ($params['ApacheSsl']){
                 $act = $task->createActivity('Suppression du dossier pagespeed cache du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache'].'.ssl');
                 $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl');
                 $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl', $act);
                 $act->addDetails($out);
                 $act->Terminate(true);
-            }
+            }*/
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
@@ -1949,6 +1985,49 @@ class Server extends genericClass {
             throw new Exception ($e->getMessage());
             return false;
         }
+        return true;
+    }
+
+    /**
+     * stat
+     * get Server Stats
+     */
+    public function stat(){
+        //TODO gestion task/activité
+        try{
+            $nbCPu = $this->remoteExec('cat /proc/cpuinfo | grep processor | wc -l');
+            $this->NbCpu = $nbCPu;
+        } catch (Exception $e){
+            //TODO
+        }
+
+        try{
+            $nbRam = $this->remoteExec('dmidecode -t 17 | grep -i size | awk \'/[0-9]+/ {s+=$2/1024} END {printf "%.0f\n", s}\'');
+            $this->NbRam = $nbRam;
+        } catch (Exception $e){
+//TODO
+        }
+
+        try{
+            $freeHome = $this->remoteExec('df -h /home/ |awk \'END {print $5} \' | sed  \'s/%//\'');
+            $this->HomeFree = $freeHome;
+        } catch (Exception $e){
+//TODO
+        }
+
+        try{
+            $diskAvail = $this->remoteExec('fdisk -l | grep Dis | grep sd | awk \'{s+=$4/1024/1024/1024} END {printf "%.0f\n", s}\'');
+            $this->EspaceProvisionne = $diskAvail;
+        } catch (Exception $e){
+//TODO
+        }
+
+        //$freeHomePercent = $this->remoteExec('df -h /home/ |awk \'END {print $5} \'');
+
+
+
+
+
         return true;
     }
 }

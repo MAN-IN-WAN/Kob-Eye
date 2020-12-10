@@ -6,7 +6,11 @@
 [STORPROC [!CD::getParents(TypeQuestion)!]|TQ|0|1][/STORPROC]
 [STORPROC [!TQ::getParents(Question)!]|Q|0|1][/STORPROC]
 
-<ol class="breadcrumb">
+[STORPROC Formation/Region/[!CurrentRegion!]|REG]
+[!CurrentRegionId:=[!REG::Id!]!]
+[/STORPROC]
+
+<ol class="breadcrumb 2">
     [STORPROC [!Q::getCategoryBreadcrumb()!]|BR]
     <li><a href="#">[!BR::Nom!]</a></li>
     [/STORPROC]
@@ -17,14 +21,15 @@
 
 
 <h3>[!TQ::Nom!]</h3>
-<p>[!CD::TypeReponse!]</p>
+//<p>[!CD::TypeReponse!]</p>
 [SWITCH [!CD::TypeReponse!]|=]
     [CASE 1]
         //<h1>Cas Jauge</h1>
         [!SUM:=0!]
         [!COUNT:=0!]
-        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
-            [!SUM+=[!Utils::parseInt([!R::Valeur!])!]!]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+            [!val:=[!Utils::parseInt([!R::Valeur!])!]!]
+            [!SUM+=[!val!]!]
             [!COUNT+=1!]
         [/STORPROC]
         [IF [!COUNT!]>0]
@@ -50,25 +55,38 @@
     [/CASE]
     [CASE 2]
 //Cas Echelle
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur>1|NbR]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+[!NbTot:=0!]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur=2+Valeur=3+Valeur=4+Valeur=5+Valeur=6+Valeur="1"+Valeur="2"+Valeur="3"+Valeur="4"+Valeur="5"+Valeur="6"!)|NbR]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
+[!NbTot:=[!NbTot:+[!Nb1!]!]!]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=2|Nb2]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=2+Valeur="2"!)|Nb2]
+[!NbTot:=[!NbTot:+[!Nb2:*2!]!]!]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=3|Nb3]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=3+Valeur="3"!)|Nb3]
+[!NbTot:=[!NbTot:+[!Nb3:*3!]!]!]
 [!Nb3:=[!Nb3:/[!NbR!]!]!]
 [!Nb3:=[!Math::Floor([!Nb3:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=4|Nb4]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=4+Valeur="4"!)|Nb4]
+[!NbTot:=[!NbTot:+[!Nb4:*4!]!]!]
 [!Nb4:=[!Nb4:/[!NbR!]!]!]
 [!Nb4:=[!Math::Floor([!Nb4:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=5|Nb5]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=5+Valeur="5"!)|Nb5]
+[!NbTot:=[!NbTot:+[!Nb5:*5!]!]!]
 [!Nb5:=[!Nb5:/[!NbR!]!]!]
 [!Nb5:=[!Math::Floor([!Nb5:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=6|Nb6]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=6+Valeur="6"!)|Nb6]
+[!NbTot:=[!NbTot:+[!Nb6:*6!]!]!]
 [!Nb6:=[!Nb6:/[!NbR!]!]!]
 [!Nb6:=[!Math::Floor([!Nb6:*100!])!]!]
+
+[!NbMoy:=[!NbTot:/[!NbR!]!]!]
+        <div style="margin-bottom:15px; font-size:2em;">
+            Moyenne : <span style="font-weight:600; color:#229922;">[!Math::Round([!NbMoy!],2)!]<span>
+        </div>
+
         <div class="legendeG">FAIBLE</div>
         <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
         <div class="legendeD">ELEVE</div>
@@ -189,7 +207,7 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="random">
 
-                [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestion.TypeQuestionId([!CD::TypeQuestionId!])|R|0|1000]
+                [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestion.TypeQuestionId([!CD::TypeQuestionId!])|R|0|1000]
                 [IF [!R::Valeur!]!=]
                 <div class="well">
                     <p>[!Utils::JsonDecode([!R::Valeur!])!]</p>
@@ -210,12 +228,12 @@
     [/CASE]
     [CASE 4]
         //Cas OUi / Non
-[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+[COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
 
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
+        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=1&Valeur!="1"|Nb2]
+        [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=1&Valeur!="1"|Nb2]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
         <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
@@ -272,7 +290,7 @@
     [/CASE]
     [CASE 5]
             //Cas Sélection
-            [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+            [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
             <canvas id="myChart" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
             <script>
@@ -290,7 +308,7 @@
                         highlightStroke: "rgba(151,187,205,1)",
                         data: [
                             [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
-                            [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|Nb1]
+                            [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=[!TQV::Id!]+Valeur="[!TQV::Id!]"+Valeur=["[!TQV::Id!]"]!)|Nb1]
                     [!Nb1:=[!Nb1:/[!NbR!]!]!]
                 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                 [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
@@ -350,7 +368,7 @@
         [!qty:=0!]
         [!sum:=0!]
         [!res:=100!]
-        [STORPROC Formation/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [STORPROC Formation/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
             [!qty+=1!]
             [!sum+=[!R::Valeur!]!]
         [/STORPROC]
@@ -415,7 +433,7 @@
 
     [/CASE]
     [CASE 7]
-        [STORPROC Formation/Session/Region.Region([!CurrentRegion!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [STORPROC Formation/Session/Region.Region([!CurrentRegionId!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
             [IF [!R::Valeur!]]
                 [!val:=[!Utils::unserialize([!R::Valeur!])!]!]
                 <div class="well">
@@ -429,27 +447,27 @@
     [CASE 8]
         <div  style="display:block;height:600px;padding-left:100px;">
         [OBJ Formation|Question|q]
-        [!q::traiterTypeReponse(8,*,[!CD::TypeQuestionId!],,[!CurrentRegion!])!]
+        [!q::traiterTypeReponse(8,*,[!CD::TypeQuestionId!],,[!CurrentRegionId!])!]
         </div>
     [/CASE]
     [CASE 9]
         [OBJ Formation|Question|q]
-        [!q::traiterTypeReponse(9,*,[!CD::TypeQuestionId!],,[!CurrentRegion!])!]
+        [!q::traiterTypeReponse(9,*,[!CD::TypeQuestionId!],,[!CurrentRegionId!])!]
     [/CASE]
     [CASE 10]
         [OBJ Formation|Question|q]
-        [!q::traiterTypeReponse(10,*,[!CD::TypeQuestionId!],,[!CurrentRegion!])!]
+        [!q::traiterTypeReponse(10,*,[!CD::TypeQuestionId!],,[!CurrentRegionId!])!]
     [/CASE]
     [CASE 11]
         <p>11</p>
     [/CASE]
     [CASE 12]
         [OBJ Formation|Question|q]
-        [!q::traiterTypeReponse(12,*,[!CD::TypeQuestionId!],,[!CurrentRegion!])!]
+        [!q::traiterTypeReponse(12,*,[!CD::TypeQuestionId!],,[!CurrentRegionId!])!]
     [/CASE]
     [CASE 13]
         [OBJ Formation|Question|q]
-        [!q::traiterTypeReponse(13,*,[!CD::TypeQuestionId!],,[!CurrentRegion!])!]
+        [!q::traiterTypeReponse(13,*,[!CD::TypeQuestionId!],,[!CurrentRegionId!])!]
     [/CASE]
     [DEFAULT]
         <p>Cas inconnu [!CD::TypeReponse!]</p>

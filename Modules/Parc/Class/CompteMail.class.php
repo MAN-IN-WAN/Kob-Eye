@@ -41,6 +41,8 @@ class CompteMail extends genericClass
             return false;
         }
 
+
+
         if (!$synchro) {
             parent::Save();
             return true;
@@ -77,9 +79,26 @@ class CompteMail extends genericClass
         }
 
         if ($this->MailFilter) {
+
             $tld = explode('@', $this->Adresse);
             $tld = end($tld);
             $domain = Sys::getOneData('Parc', 'Domain/Url=' . $tld);
+            if(!$domain){
+                $domain = genericClass::createInstance('Parc','Domain');
+                $domain->Url = $tld;
+                $domain->updateOnSave = 0;
+                $domain->Secondaire = 1;
+                $domain->Mail = 1;
+                //$domain->addParent($client);
+
+                $domain->Save();
+            } else {
+                if(!$domain->Mail) {
+                    $domain->Mail = 1;
+
+                    $domain->Save();
+                }
+            }
             if (!$domain->MailFilter) {
                 $this->addError(array('Message' => 'Impossible de protéger ce compte car le domaine n\'est pas protégé'));
                 return false;
@@ -385,16 +404,28 @@ class CompteMail extends genericClass
         if (!is_object($this->_KEClient)) {
             $this->_KEClient = $this->getOneParent('Client');
         }
+        if (!is_object($this->_KEClient)) {
+            foreach ($this->Parents as $p) {
+                if ($p['Titre'] == 'Client') {
+                    if(!empty($p['Id'])){
+                        $pa = Sys::getOneData('Parc', 'Client/' . $p['Id'], 0, 1, null, null, null, null, true);
+                        $this->_KEClient = $pa;
+                    }
+                }
+            }
+        }
         if (!is_object($this->_KEClient) && Sys::$User->hasRole('PARC_CLIENT')) {
             //donc i ls'agit d'un client connecté, on récupère l'objet client
             $this->_KEClient = Sys::$User->getOneChild('Client');
         }
+
         if (!is_object($this->_KEClient) ) {
             // on regarde si on peut pas rattacher depuis le domaine
             $tld = explode('@', $this->Adresse);
             $tld = end($tld);
             $domain = Sys::getOneData('Parc', 'Domain/Url=' . $tld);
-            $this->_KEClient = $domain->getOneParent('Client');
+            if(!empty($domain))
+                $this->_KEClient = $domain->getOneParent('Client');
         }
         if (!is_object($this->_KEClient)) {
             return false;
@@ -559,8 +590,8 @@ class CompteMail extends genericClass
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) . ' ' . ucfirst($this->Nom);
-            if (!$isTrans)
-                $values['zimbraMailHost'] = $srv->DNSNom;
+            //if (!$isTrans)
+                //$values['zimbraMailHost'] = $srv->DNSNom;
             $values['id'] = $this->IdMail;
             $values['zimbraMailQuota'] = $this->Quota * 1024 * 1024;
 
@@ -698,7 +729,7 @@ class CompteMail extends genericClass
         //$preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
         //$url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
         //$url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
-        $url = 'https://mx1.abtel.link/mail?auth=qp&zauthtoken=' . $datoken;
+        $url = 'https://mail.abtel.link/mail?auth=qp&zauthtoken=' . $datoken;
         return $url;
     }
 

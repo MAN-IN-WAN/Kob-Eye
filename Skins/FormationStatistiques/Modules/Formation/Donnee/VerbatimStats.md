@@ -6,7 +6,11 @@
 [STORPROC [!CD::getParents(TypeQuestion)!]|TQ|0|1][/STORPROC]
 [STORPROC [!TQ::getParents(Question)!]|Q|0|1][/STORPROC]
 [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|NbR]
-[STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!Utils::random([!NbR:-10!])!]|12]
+[!NbRand:=[!Utils::random([!NbR:-10!])!]!]
+[IF [!NbRand!]<0]
+    [!NbRand:=0!]
+[/IF]
+[STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!NbRand!]|12]
     [IF [!Utils::parseInt([!R::Valeur!])!]!=[!R::Valeur!]]
     <div class="well">
         [!Result:=[!Utils::jsonDecode([!R::Valeur!])!]!]

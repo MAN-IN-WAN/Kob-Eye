@@ -26,7 +26,7 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                    <a  href="javascript: void(0);" ng-if="displaySelect();" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                    <a  href="javascript: void(0);" ng-if="{{ identifier }}displaySelect()" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
                 Supprimer la sélection
                 </a>
                 {% endif %}
@@ -38,7 +38,7 @@
                         {% endif %}
                     {% endfor %}
                     {% if fs %}
-                        <div class="btn-group " ng-if="displaySelect();"  uib-dropdown>
+                        <div class="btn-group " ng-if="{{ identifier }}displaySelect()"  uib-dropdown>
                         <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
                         <button type="button" class="btn btn-func" uib-dropdown-toggle>
                             <span class="caret"></span>

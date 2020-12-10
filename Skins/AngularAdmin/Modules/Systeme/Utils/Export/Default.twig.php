@@ -9,14 +9,8 @@ $filters = (isset($_GET['filters']))?$_GET['filters']:'';
 
 $vars['rows'] = Sys::getData($info['Module'],$vars['Path'].'/'.$filters,0,10000);
 foreach ($vars['rows'] as $k=>$v){
-    $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
-    $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);
-    if (is_object($uc))
-        $v->userCreateName = $uc->Login;
-    else $v->userCreateName = 'inconnu';
-    if (is_object($ue))
-        $v->userEditName = $ue->Login;
-    else $v->userEditName = 'inconnu';
+    $v->userCreateName = 'inconnu';
+    $v->userEditName = 'inconnu';
     $v->label = $v->getFirstSearchOrder();
     foreach ($vars['fields'] as $f){
         if ($f['type']=='date'){

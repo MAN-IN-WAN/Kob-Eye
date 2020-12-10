@@ -15,8 +15,8 @@
 <div class="alert [!Q::Dimension!]"><b>Dimension</b>: [!Q::Dimension!]</div>
 [/IF]
 <h3>[!TQ::Nom!]</h3>
-<p>[!CD::TypeReponse!]</p>
-
+<!--<p>[!CD::TypeReponse!]</p>-->
+//**[!CD::TypeReponse!]
 [SWITCH [!CD::TypeReponse!]|=]
     [CASE 1]
         <div class="row">
@@ -25,7 +25,8 @@
                 [!SUM:=0!]
                 [!COUNT:=0!]
                 [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
-                    [!SUM+=[!Utils::parseInt([!R::Valeur!])!]!]
+                    [!val:=[!Utils::parseInt([!R::Valeur!])!]!]
+                    [!SUM+=[!val!]!]
                     [!COUNT+=1!]
                 [/STORPROC]
                 [IF [!COUNT!]>0]
@@ -92,28 +93,42 @@
     [/CASE]
     [CASE 2]
 //Cas Echelle
+[!NbTot:=0!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur=2+Valeur=3+Valeur=4+Valeur=5+Valeur=6+Valeur="1"+Valeur="2"+Valeur="3"+Valeur="4"+Valeur="5"+Valeur="6"!)|NbR]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
+[!NbTot:=[!NbTot:+[!Nb1!]!]!]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=2+Valeur="2"!)|Nb2]
+[!NbTot:=[!NbTot:+[!Nb2:*2!]!]!]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=3+Valeur="3"!)|Nb3]
+[!NbTot:=[!NbTot:+[!Nb3:*3!]!]!]
 [!Nb3:=[!Nb3:/[!NbR!]!]!]
 [!Nb3:=[!Math::Floor([!Nb3:*100!])!]!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=4+Valeur="4"!)|Nb4]
+[!NbTot:=[!NbTot:+[!Nb4:*4!]!]!]
 [!Nb4:=[!Nb4:/[!NbR!]!]!]
 [!Nb4:=[!Math::Floor([!Nb4:*100!])!]!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=5+Valeur="5"!)|Nb5]
+[!NbTot:=[!NbTot:+[!Nb5:*5!]!]!]
 [!Nb5:=[!Nb5:/[!NbR!]!]!]
 [!Nb5:=[!Math::Floor([!Nb5:*100!])!]!]
         [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=6+Valeur="6"!)|Nb6]
+[!NbTot:=[!NbTot:+[!Nb6:*6!]!]!]
 [!Nb6:=[!Nb6:/[!NbR!]!]!]
 [!Nb6:=[!Math::Floor([!Nb6:*100!])!]!]
-        <div class="legendeG">FAIBLE</div>
-        <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
-        <div class="legendeD">ELEVE</div>
+
+[!NbMoy:=[!NbTot:/[!NbR!]!]!]
+        <div style="margin-bottom:15px; font-size:2em;">
+            Moyenne : <span style="font-weight:600; color:#229922;">[!Math::Round([!NbMoy!],2)!]</span>
+        </div>
+        <div class="canvasWrap" style="height: 550px;position: relative;">
+            <div class="legendeG">FAIBLE</div>
+            <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
+            <div class="legendeD">ELEVE</div>
+        </div>
         <script>
 
             // Get context with jQuery - using jQuery's .get() method.
@@ -173,9 +188,93 @@
                 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
             });
 
-        </script>keywords
+        </script>
 
+        //REGION
+        <h2>Régions</h2>
+        <div class="row">
+            [STORPROC Formation/Region|RE]
+            <div class="col-md-3">
+                <h5>[!RE::Nom!]</h5>
+                [!NbTot:=0!]
+                [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur=2+Valeur=3+Valeur=4+Valeur=5+Valeur=6+Valeur="1"+Valeur="2"+Valeur="3"+Valeur="4"+Valeur="5"+Valeur="6"!)|NbR]
+                [IF [!NbR!]>0]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=1+Valeur="1"!)|Nb1]
+                    [!NbTot:=[!NbTot:+[!Nb1!]!]!]
+                    [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                    [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=2+Valeur="2"!)|Nb2]
+                    [!NbTot:=[!NbTot:+[!Nb2:*2!]!]!]
+                    [!Nb2:=[!Nb2:/[!NbR!]!]!]
+                    [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=3+Valeur="3"!)|Nb3]
+                    [!NbTot:=[!NbTot:+[!Nb3:*3!]!]!]
+                    [!Nb3:=[!Nb3:/[!NbR!]!]!]
+                    [!Nb3:=[!Math::Floor([!Nb3:*100!])!]!]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=4+Valeur="4"!)|Nb4]
+                    [!NbTot:=[!NbTot:+[!Nb4:*4!]!]!]
+                    [!Nb4:=[!Nb4:/[!NbR!]!]!]
+                    [!Nb4:=[!Math::Floor([!Nb4:*100!])!]!]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=5+Valeur="5"!)|Nb5]
+                    [!NbTot:=[!NbTot:+[!Nb5:*5!]!]!]
+                    [!Nb5:=[!Nb5:/[!NbR!]!]!]
+                    [!Nb5:=[!Math::Floor([!Nb5:*100!])!]!]
+                    [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=6+Valeur="6"!)|Nb6]
+                    [!NbTot:=[!NbTot:+[!Nb6:*6!]!]!]
+                    [!Nb6:=[!Nb6:/[!NbR!]!]!]
+                    [!Nb6:=[!Math::Floor([!Nb6:*100!])!]!]
 
+                    [!NbMoy:=[!NbTot:/[!NbR!]!]!]
+                [ELSE]
+                    [!Nb1:=0!]
+                    [!Nb2:=0!]
+                    [!Nb3:=0!]
+                    [!Nb4:=0!]
+                    [!Nb5:=0!]
+                    [!Nb6:=0!]
+                    [!NbMoy:=0!]
+                [/IF]
+                <div style="margin-bottom:15px; font-size:1.2em;">
+                    Moyenne : <span style="font-weight:600; color:#229922;">[!Math::Round([!NbMoy!],2)!]</span>
+                </div>
+                <div class="legendeG">FAIBLE</div>
+                <canvas id="myChart-TQ3-[!RE::Id!]" width="200" height="250" style="width: 75%;margin-left: 12%"></canvas>
+                <div class="legendeD">ELEVE</div>
+                <script>
+
+                    // Get context with jQuery - using jQuery's .get() method.
+                    var ctx = $("#myChart-TQ3-[!RE::Id!]").get(0).getContext("2d");
+                    var data = {
+                        labels: ['1', "2", "3", "4", "5", "6"],
+                        datasets: [
+                            {
+                                label: "Réponses",
+                                fillColor: "rgba(151,187,205,0.5)",
+                                strokeColor: "rgba(151,187,205,0.8)",
+                                highlightFill: "rgba(151,187,205,0.75)",
+                                highlightStroke: "rgba(151,187,205,1)",
+                                data: [[!Nb1!],[!Nb2!],[!Nb3!],[!Nb4!],[!Nb5!],[!Nb6!]]
+                            }
+                        ]
+                    };
+                    var myNewChart = new Chart(ctx).Bar(data, {
+                        scaleBeginAtZero : false,
+                        scaleShowGridLines : true,
+                        scaleGridLineColor : "rgba(0,0,0,.05)",
+                        scaleGridLineWidth : 1,
+                        scaleShowHorizontalLines: true,
+                        scaleShowVerticalLines: true,
+                        barShowStroke : true,
+                        barStrokeWidth : 2,
+                        barValueSpacing : 5,
+                        barDatasetSpacing : 1,
+                        legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    });
+
+                </script>
+            </div>
+            [/STORPROC]
+        </div>
 
 
     [/CASE]
@@ -448,7 +547,7 @@
                              [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                              [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
                          [ELSE]
-                            [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!Utils::jsonEncode([!TQV::Id!])!]|Nb1]
+                            [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=[!TQV::Id!]+Valeur="[!TQV::Id!]"+Valeur=["[!TQV::Id!]"]!)|Nb1]
                              [!Nb1:=[!Nb1:/[!NbR!]!]!]
                              [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                              [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
@@ -533,7 +632,7 @@
                                  [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                                  [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
                             [ELSE]
-                                [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=[!TQV::Id!]+Valeur="[!TQV::Id!]"+Valeur=[!TQV::Valeur!]!)|Nb1]
+                                [COUNT Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&(!Valeur=[!TQV::Id!]+Valeur="[!TQV::Id!]"+Valeur=["[!TQV::Id!]"]!)|Nb1]
                                 [!Nb1:=[!Nb1:/[!NbR!]!]!]
                                 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
                                 [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
