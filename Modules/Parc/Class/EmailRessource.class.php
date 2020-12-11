@@ -227,7 +227,7 @@ class EmailRessource extends genericClass {
             //print_r('UPDATE --------'.$this->Adresse.PHP_EOL);
 
             $values['displayName'] = ucfirst($this->Nom);
-            $values['zimbraMailHost'] = $srv->DNSNom;
+            //$values['zimbraMailHost'] = $srv->DNSNom;
             $values['id'] = $this->IdMail;
             $values['zimbraCalResType'] = $this->Type;
             $values['zimbraCalResAutoAcceptDecline'] = 'TRUE';

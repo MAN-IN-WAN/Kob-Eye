@@ -407,6 +407,7 @@ class Process extends Root{
 					if (!isset($Out[2]))$Params = 0; else $Params = explode(",",$Out[2]);
 					switch ($Out[1]){
 						case "Round":
+                            if(!empty($Params[1])) return round($Params[0],$Params[1]);
 							return round($Params[0]);
 						break;
 						case "Floor":
@@ -474,10 +475,14 @@ class Process extends Root{
 				case "Utils":
 					$ClassName = $Tab[0];
                                         $Tab = explode ('::',$Data,2);
+
+                    $res = array();
+                    preg_match('/(?:\()(.+)(?:\))/',$Tab[1],$res);
 					$Out = explode("(",$Tab[1],2);
-					$Parametres = explode(")",$Out[1],2);
+					/*$Parametres = explode(")",$Out[1],2);*/
+                    $Parametres = $res[1];
 					$FunctionName = $Out[0];
-					$Parametres = explode (",",$Parametres[0]);
+					$Parametres = explode (",",$Parametres);
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (sizeof(explode("[!",$P))>1)?Process::processVars($P):$P;
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (is_string($P)&&sizeof(explode("[*",$P))>1)?Process::searchAndReplaceVars($P,"[*","*]"):$P;
 					//preg_match("#(.*)\((.*)\)#",$Tab[1],$Out);

@@ -17,12 +17,12 @@
 <div class="container-fluid">
     <div class="row" style="margin-top:200px;">
         <div class=col-md-12>
-            <a href="http://edf.management.pro" class="btn btn-success btn-lg btn-block" target="_blank">PARTICIPANT</a>
+            <a href="http://rvd.management.pro" class="btn btn-success btn-lg btn-block" target="_blank">PARTICIPANT</a>
         </div>
     </div>
     <div class="row" style="margin-top:200px;">
         <div class=col-md-12>
-            <a href="http://manager.edf.management.pro" target="_blank" class="">Accès animateur</a>
+            <a href="http://manager.rvd.management.pro" target="_blank" class="">Accès animateur</a>
         </div>
     </div>
 </div>

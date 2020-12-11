@@ -1,0 +1,106 @@
+{# fiche info personnelles Adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+{% set o='obj' %}
+<div class="page-content-inner">
+    <h3>Situation financières</h3>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8 col-sm-12 col-xs-12" >
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Cotisation annuelle') }}
+								</div>
+								<div class="col-md-1 col-sm-2">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Cotisation" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Cours != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Montant des cours') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Cours" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Visites != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Montant des visites guidées') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Visites" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Total des règlements encaissés') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Reglement" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Total des règlements différés') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Differe" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Regularisation != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Régularisation') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Regularisation" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Solde') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Solde" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-xs-12" >
+									{{ label("Liste des règlements") }}
+{#									<section class="panel">
+#}										<div class=" cadref-no-padding">
+											<ng-include src="'Cadref/Adherent/0/Reglement/PublicListRegl.htm'"></ng-include>
+{#										</div>
+#}									</section>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					{# block right #}                    
+					<div class="col-md-4 col-sm-0">
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+</section>
+</div>

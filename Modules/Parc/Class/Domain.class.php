@@ -29,7 +29,24 @@ class Domain extends genericClass
 
         // Enregistrement si pas d'erreur
         if ($this->_isVerified) {
+
             parent::Save();
+
+            //Pour eviter les domaines sans NS
+            $child = $this->getOneChild('NS');
+            if(!$child){
+                $ns = genericClass::createInstance('Parc','NS');
+                $ns->Dnsdomainname = $this->Url.'.';
+                $ns->Dnscname = 'ns1.abtel.fr.';
+                $ns->addParent($this);
+                $ns->Save();
+                $ns2 = genericClass::createInstance('Parc','NS');
+                $ns2->Dnsdomainname = $this->Url.'.';
+                $ns2->Dnscname = 'ns2.abtel.fr.';
+                $ns2->addParent($this);
+                $ns2->Save();
+            }
+
             if ($this->updateOnSave && !$this->Secondaire) {
                 $this->updateOnSave = false;
                 parent::Save();
@@ -127,7 +144,8 @@ class Domain extends genericClass
                         }
                     }
                     //Si pas d'erreur on fait pointer sur le MIB
-                    if (!count($this->Error)) {
+                    //if (!count($this->Error)) {
+                    if (true) {
                         //Redirect du mailcleaner su MIB
                         $ips = array();
                         foreach ($ms as $s) {
@@ -155,6 +173,7 @@ class Domain extends genericClass
                 }
             }
         }
+
         return true;
     }
 
@@ -576,6 +595,27 @@ class Domain extends genericClass
 
         switch($step) {
             case 1 : //Evenements sur toute une journée avec  jours d'ouverture
+                $nd = $params['redirect'];
+
+                $A = $this->getOneChild('Subdomain/Nom=A:');
+                if (!$A) {
+                    $A =genericClass::createInstance("Parc",'Subdomain');
+                    $A->TTL = 3600;
+                }
+                $A->IP = '158.255.102.117';
+                $A->Save();
+
+                $host = Sys::getOneData('Parc','Host/Interne=1&&Redirect=1');
+                if(empty($host)) return false;
+
+                $ap = $host->getOneChild('Apache/ApacheServerName=' . $this->Url);
+                if(empty($ap)){
+                    $ap = genericClass::createInstance('Parc','Apache');
+                    $ap->ApacheServerName = $this->Url;
+
+                }
+                $ap->ApacheConfig = 'RedirectPermanent / http://abc.example.com/';
+                $ap->Save();
 
                 break;
             default: //Initialisation

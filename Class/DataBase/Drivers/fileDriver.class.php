@@ -53,23 +53,35 @@ class fileDriver extends ObjectClass {
 		if (file_exists($Dir.$Name)) return $Dir.$Name;
 		//On verifie l'existence du fichier original
 		if (!file_exists($OrigAdresse)) return false;
-		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefromjpeg($OrigAdresse);
-		}elseif ($TabNom[1]=="gif"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			 $Img = imagecreatefromgif($OrigAdresse);
-		}elseif ($TabNom[1]=="bmp"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			 $Img = imagecreatefrombmp($OrigAdresse);
-		}elseif ($TabNom[1]=="png") {
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefrompng($OrigAdresse);
-		}elseif ($TabNom[1]=="flv"||$TabNom[1]=="f4v"||$TabNom[1]=="mov"||$TabNom[1]=="avi") {
+		
+//		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefromjpeg($OrigAdresse);
+//		}elseif ($TabNom[1]=="gif"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			 $Img = imagecreatefromgif($OrigAdresse);
+//		}elseif ($TabNom[1]=="bmp"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			 $Img = imagecreatefrombmp($OrigAdresse);
+//		}elseif ($TabNom[1]=="png") {
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefrompng($OrigAdresse);
+//		}
+		if(strpos(',jpg,jpeg,gif,bmp,png,', ','.$TabNom[1].',') !== false) {
+			$Img = false;
+			$image_data = file_get_contents($OrigAdresse);
+			try {
+				$Img = imagecreatefromstring($image_data);
+				$Dimensions = getimagesize($OrigAdresse);
+			} catch (Exception $ex) {
+				return false;
+			}
+		}
+		elseif ($TabNom[1]=="flv"||$TabNom[1]=="f4v"||$TabNom[1]=="mov"||$TabNom[1]=="avi") {
 			$FrameTemp = $OrigAdresse.".frame.".$Sec.".jpg";
 			if (!file_exists($FrameTemp)){
 				//Extraction de la frame
@@ -138,26 +150,37 @@ class fileDriver extends ObjectClass {
 		if($this->imageOverQuota($Dossier,'/'.$Nom."\.scale\.[0-9]+x[0-9]+\.".$Out.'/'))	
 			return false;
 		
-		if (file_exists($Dir.$Name)) return $Dir.$Name;
-		//On verifie l'existence du fichier original
-		if (!file_exists($OrigAdresse)) return false;
-		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefromjpeg($OrigAdresse);
-		}elseif ($TabNom[1]=="gif"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefromgif($OrigAdresse);
-		}elseif ($TabNom[1]=="bmp"){
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefrombmp($OrigAdresse);
-		}elseif ($TabNom[1]=="png") {
-			//On commence le travail de l'image
-			$Dimensions = getimagesize($OrigAdresse);
-			$Img = imagecreatefrompng($OrigAdresse);
-		}elseif ($TabNom[1]=="flv"||$TabNom[1]=="f4v"||$TabNom[1]=="mov"||$TabNom[1]=="avi") {
+//		if (file_exists($Dir.$Name)) return $Dir.$Name;
+//		//On verifie l'existence du fichier original
+//		if (!file_exists($OrigAdresse)) return false;
+//		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefromjpeg($OrigAdresse);
+//		}elseif ($TabNom[1]=="gif"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefromgif($OrigAdresse);
+//		}elseif ($TabNom[1]=="bmp"){
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefrombmp($OrigAdresse);
+//		}elseif ($TabNom[1]=="png") {
+//			//On commence le travail de l'image
+//			$Dimensions = getimagesize($OrigAdresse);
+//			$Img = imagecreatefrompng($OrigAdresse);
+//		}
+		if(strpos(',jpg,jpeg,gif,bmp,png,', ','.$TabNom[1].',') !== false) {
+			$Img = false;
+			$image_data = file_get_contents($OrigAdresse);
+			try {
+				$Img = imagecreatefromstring($image_data);
+				$Dimensions = getimagesize($OrigAdresse);
+			} catch (Exception $ex) {
+				return false;
+			}
+		}
+		elseif ($TabNom[1]=="flv"||$TabNom[1]=="f4v"||$TabNom[1]=="mov"||$TabNom[1]=="avi") {
 			$FrameTemp = $OrigAdresse.".frame.".$Sec.".jpg";
 			if (!file_exists($FrameTemp)){
 				//Extraction de la frame

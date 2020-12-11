@@ -1,0 +1,135 @@
+{# fiche printReglement #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Utilisateur") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.Utilisateur" ng-init="obj.Utilisateur='{{ initiales }}'" style="width:80px">
+												{% for u in users %}
+													<option value="{{ u }}">{{ u }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Mode règlement") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.ModeReglement" ng-init="obj.ModeReglement='T'" style="width:160px">
+												{% for m,v in modes %}
+													<option value="{{ m }}">{{ v }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									{% if mode == 1 and prelevement == 1 %}
+									<div class="row" ng-if="obj.ModeReglement=='P'">
+										<div class="col-md-2">
+											{{ label("Fichier SEPA") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.SEPA" ng-init="obj.SEPA='T'" style="width:160px">
+												<option value="C">Tous</option>
+												<option value="N">Non envoyés</option>
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									{% endif %}
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Ordre de tri") }}
+										</div>
+										<div class="col-md-10">
+											<select class="form-control cadref-input" ng-model="obj.Ordre" ng-init="obj.Ordre='C'" style="width:160px">
+												<option value="C">Chronologique</option>
+												<option value="N">Nom Prénom</option>
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									{% if mode == 0 %}
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Date de début") }}
+											</div>
+											<div class="col-md-3">
+												<label class="input-group datepicker-only-init cadref-no-margin">
+													<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="39/19/2099" 
+														   ng-model="obj.DateDebut" ng-init="initDatePickerOnly(); obj.DateDebut='{{ "now"|date("d/m/Y") }}'"/>
+													<span class="input-group-addon">
+														<i class="icmn-calendar"></i>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="row" style="height:10px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Date de fin") }}
+											</div>
+											<div class="col-md-3">
+												<label class="input-group datepicker-only-init cadref-no-margin">
+													<input id="input-objDateFin" type="text" class="form-control cadref-input" ng-model="obj.DateFin" ng-init="obj.DateFin='{{ "now"|date("d/m/Y") }}'"/>
+													<span class="input-group-addon">
+														<i class="icmn-calendar"></i>
+													</span>
+												</label>
+											</div>
+										</div>
+									{% else %}
+										<div class="row">
+											<div class="col-md-2">
+												{% if mode == 1 %}{{ label("Mois d'échéance") }}{% else %}{{ label("Echéance antérieure à") }}{% endif %}
+											</div>
+											<div class="col-md-2">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ "now"|date("m/Y") }}'" mask="dd/dddd" style="width:80px"/>
+												</div>
+											</div>
+										</div>
+									{% endif %}
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
+										</div>
+										{% if mode == 1 and prelevement == 1 %}
+										<div class="col-md-2">
+											<button type="button" ng-if="obj.ModeReglement=='P'" class="btn btn-info margin-inline cadref-btn-100" ng-click="prelevements()">Fichier SEPA</button>
+										</div>
+										<div class="col-md-2">
+											<button type="button" ng-if="obj.ModeReglement=='P'" class="btn btn-warning margin-inline cadref-btn-100" ng-click="encaissements()">Encaissement</button>
+										</div>
+										{% endif %}
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </section>
+</div>

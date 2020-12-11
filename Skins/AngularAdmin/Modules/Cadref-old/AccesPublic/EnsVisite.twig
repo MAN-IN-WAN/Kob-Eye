@@ -1,0 +1,63 @@
+{# fiche visites Enseignant #}
+<div class="page-content-inner">
+	<h3>Visites guidées</h3>
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<section class="panel">
+						<div class="panel-body">
+{#							<ng-include src="'Cadref/Enseignant/0/Visite/PublicListVisite.htm'"></ng-include>#}
+
+<div class="listWrap">
+	<table class="table table-hover" width="100%">
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				{#<th>Visite</th>#}
+				<th>Date</th>
+				<th>Libellé</th>
+				<th>Prix</th>
+				{#<th>Assur.</th>#}
+				<th>Inscrits</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!ens.busy">
+			<tr ng-repeat="item in ens.visites">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				{#<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Visite }]}</a></td>#}
+				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.DateVisite }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
+				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
+				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': parseInt(item.Disponibles)==0}">{[{ item.Inscrits+'/'+item.Places+(Number(item.Attentes) ? ' +'+item.Attentes+' atte' : '') }]}</span></td>
+				<td scope="row" class="table-action cadref-td cadref-td-btn">
+					<span href="" class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}</span>
+					<a href="" class="btn btn-abt cadref-btn-print btn-primary" ng-click="visitePrint(item)" title="Imprimer"></a>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="ens.busy">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+						</div>
+					</section>
+				</div>
+			</div>
+    </section>
+</div>
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>
+

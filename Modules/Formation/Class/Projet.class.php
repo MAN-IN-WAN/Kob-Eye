@@ -61,6 +61,7 @@ class Projet extends genericClass {
                             "afficheoui": "'.$tq->AfficheOui.'",
                             "affichenon": "'.$tq->AfficheNon.'",
                             "nom":"'.str_replace('"', '\"',$tq->Nom).'",
+                            "parametres": '.json_encode($tq->Parametres).',
                             "typequestionvaleurs": [';
                     $typequestionvaleurs = $tq->getChildren('TypeQuestionValeur');
                     $virgule4 = '';
@@ -162,7 +163,7 @@ class Projet extends genericClass {
 
         $context  = stream_context_create( $options );
 
-        $result = file_get_contents( 'http://edf.e-p.consulting/Formation/Projet/'.$this->Id.'/getJson.htm', false, $context );
+        $result = file_get_contents( 'http://impact-rvd.julhiet-sterwen.com/Formation/Projet/'.$this->Id.'/getJson.htm', false, $context );
         $response = json_decode( $result );
         if ($response->success){
             return "OK à jour";
@@ -224,6 +225,7 @@ class Projet extends genericClass {
                         $tqu->Nom = $tq->nom;
                         $tqu->AfficheOui = $tq->afficheoui;
                         $tqu->AfficheNon = $tq->affichenon;
+                        $tqu->Parametres = $tq->parametres;
                         $tqu->Save();
                         foreach ($tq->typequestionvaleurs as $tqv) {
                             $tquv = genericClass::createInstance('Formation','TypeQuestionValeur');
@@ -248,7 +250,7 @@ class Projet extends genericClass {
                 $ma->Nom = $m->nom;
                 $ma->Fichier = $m->fichier;
                 if (!file_exists($m->fichier))
-                    file_put_contents($m->fichier, file_get_contents("http://edf.e-p.consulting/".$m->fichier));
+                    file_put_contents($m->fichier, file_get_contents("http://impact-rvd.julhiet-sterwen.com/".$m->fichier));
                 $ma->Largeur = $m->largeur;
                 $ma->Hauteur = $m->hauteur;
                 $ma->Save();
@@ -276,7 +278,7 @@ class Projet extends genericClass {
                 $fi->Type = $f->type;
                 $fi->Fichier = $f->fichier;
                 if (!file_exists($f->fichier))
-                    file_put_contents($f->fichier, file_get_contents("http://edf.e-p.consulting/".$f->fichier));
+                    file_put_contents($f->fichier, file_get_contents("http://impact-rvd.julhiet-sterwen.com/".$f->fichier));
                 $fi->Save();
             }
             foreach ($json->regions as $r) {

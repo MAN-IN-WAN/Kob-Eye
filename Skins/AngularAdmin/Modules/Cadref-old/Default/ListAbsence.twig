@@ -1,0 +1,85 @@
+{# liste Absence #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="cadref-widget" ng-if="absenceInfo.mode!=''">
+	<div class="row">
+		<div class="col-md-12">
+			<div id="abcense-edit">
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Date de début") }}
+					</div>
+					<div class="col-md-8">
+						<label class="input-group datetimepicker-init cadref-no-margin">
+							<input id="input-absenceObjDateDebut" type="text" class="form-control cadref-input" ng-init="initDateTimePicker()"
+								   placeholder="Date début" mask="dd/dd/dddd dd:dd" ng-model="absenceObj.DateDebut"/>
+							<span class="input-group-addon">
+								<i class="icmn-calendar"></i>
+							</span>
+						</label>
+					</div>
+				</div>
+				<div class="row" style="height:5px"></div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Date de fin") }}
+					</div>
+					<div class="col-md-8">
+						<label class="input-group datetimepicker-init cadref-no-margin">
+							<input id="input-absenceObjDateFin" type="text" class="form-control cadref-input" ng-init="initDateTimePicker()"
+								   placeholder="Date fin" mask="dd/dd/dddd dd:dd" ng-model="absenceObj.DateFin"/>
+							<span class="input-group-addon">
+								<i class="icmn-calendar"></i>
+							</span>
+						</label>
+					</div>
+				</div>
+				<div class="row" style="height:5px"></div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Description") }}
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" ng-model="absenceObj.Description"/>
+					</div>
+				</div>
+				<div style="height:5px"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="absenceObj.DateDebut!=''" ng-click="absenceSave()" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-msg" ng-class="{'btn-success': absenceObj.Message==1, 'btn-info': absenceObj.Message==0}" href="" title="{[{ absenceObj.Message==0 ? 'Prévenir les élèves' : 'Elèves déjà prévenus' }]}" ng-click="absenceMessage(absenceObj)"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="absenceCloseEdit()" title="Annuler"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="absenceObj.id" ng-click="absenceDelete(absenceObj)" style="float:right" title="Supprimer"></a>
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="listWrap" ng-if="absenceInfo.mode==''">
+	<table class="table table-hover" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Début</th>
+				<th class="cadref-th">Fin</th>
+				<th class="cadref-th">Descrition</th>
+				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="absenceAdd()" title="Ajouter une absence"></a></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td class="cadref-td typedatetime"><a href="" ng-click="absenceModify(item)">{[{ item.DateDebut }]}</a></td>
+				<td class="cadref-td typedatetime"><a href="" ng-click="absenceModify(item)">{[{ item.DateFin }]}</a></td>
+				<td class="cadref-td typevarchar"><a href="" ng-click="absenceModify(item)">{[{ item.Description }]}</a></td>
+{#				<td class="cadref-td typevarchar"><span class="icmn-envelop3" ng-class="{'cadref-success':item.Message==1,'cadref-info':item.Message==0}" title="Envoyer un message aux élèves"> </span></td>#}
+				<td  class="table-action cadref-td-btn">
+{#					<a class="btn-abt cadref-btn-msg" ng-class="{'btn-success': item.Message==1, 'btn-warning': item.Message==0}" href="" title="Envoyer un message aux élèves" ng-click="absenceMessage(item)"></a>#}
+					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="absenceModify(item)"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

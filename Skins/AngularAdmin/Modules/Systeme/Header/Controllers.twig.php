@@ -120,8 +120,8 @@ foreach (Sys::$User->Menus as $m){
                     $vars["controllers"][$tmp['identifier']]['extends'] = $info['Module'] . '/' . $info['ObjectType'] . '/ControllersExtends?Chemin=' . $info['Module'] . '/' . $info['ObjectType'] . '/Controllers&Url=' . $m->Url . $menu->Url;
                 }
             }
-            if($obj){
-                $vars["controllers"][$tmp['identifier']]['browseable'] = $obj->browseable;
+            if(isset($obj)){
+                if(isset($tmp['identifier'])) $vars["controllers"][$tmp['identifier']]['browseable'] = $obj->browseable;
             }else{
                 $vars["controllers"][$tmp['identifier']]['browseable'] = false;
             }
@@ -171,9 +171,9 @@ foreach (Sys::$User->Menus as $m){
         $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
         if (!empty($blinfo)) {
             if(!isset($info['ObjectType'])) {
-                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Query'].'/ControllersExtends?Chemin='.$info['Query'].'/ControllersExtends&Url='.$m->Url.$menu->Url;
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Query'].'/ControllersExtends?Chemin='.$info['Query'].'/ControllersExtends&Url='.$m->Url.(isset($menu)?$menu->Url:'');
             }else{
-                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Module'].'/'.$info['ObjectType'].'/ControllersExtends?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/ControllersExtends&Url='.$m->Url.$menu->Url;
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Module'].'/'.$info['ObjectType'].'/ControllersExtends?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/ControllersExtends&Url='.$m->Url.(isset($menu)?$menu->Url:'');
             }
         }
     }

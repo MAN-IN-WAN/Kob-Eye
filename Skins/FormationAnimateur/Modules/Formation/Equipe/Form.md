@@ -19,12 +19,14 @@
             [STORPROC Formation/Equipe/[!I::LastId!]/Reponse/TypeQuestion.TypeQuestionId([!TQ::Id!])|R][/STORPROC]
 
             [!tVal:=[!Utils::jsonDecode([!R::Valeur!])!]!]
+
             [IF [!tVal!]!=]
                 [!R::Valeur:=[!tVal!]!]
             [/IF]
             [IF [!R::Valeur!]=""]
                 [!R::Valeur:=!]
             [/IF]
+
         [/IF]
         [!Q:= [!TQ::getOneParent(Question)!]!]
 
@@ -100,8 +102,11 @@
                     [IF [!TQ::MultiPart!]]
                         <h4><b>Participant [!Pos!]</b></h4>
                     [/IF]
-
-                    [!vs:=[!vals::[!tt!]!]!]
+                    [IF [!TQ::MultiPart!]]
+                        [!vs:=[!vals::[!tt!]!]!]
+                    [ELSE]
+                        [!vs:=[!vals!]!]
+                    [/IF]
                     <div class="form-group">
                         <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
                         <div class="col-sm-4">

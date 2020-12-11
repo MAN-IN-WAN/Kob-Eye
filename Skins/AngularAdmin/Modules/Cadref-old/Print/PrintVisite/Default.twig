@@ -1,0 +1,88 @@
+{# fiche printPresence #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Première visite") }}
+										</div>
+										<div class="col-md-4">
+											<select class="form-control cadref-input" ng-model="obj.Debut" ng-change="debutSelect()">
+												<option value=""></option>
+												{% for v,k in visites %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Dernière visite") }}
+										</div>
+										<div class="col-md-4">
+											<select class="form-control cadref-input" ng-model="obj.Fin">
+												<option value=""></option>
+												{% for v,k in visites %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Guide") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="obj.Guide" ng-change="selectMode(0)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Chauffeur") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="obj.Chauffeur" ng-change="selectMode(1)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Interne") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="obj.Interne" ng-change="selectMode(2)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
+										</div>
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </section>
+</div>
+

@@ -1,0 +1,12 @@
+<section class="col-md-12 center-block">
+	<h5>Confirmation d'inscription.</h5>
+	<div class="row" style="height:10px"></div>
+	<div id="msg"  class="alert {%if data.success %}alert-success{% else %}alert-danger{% endif %}">{{ data.message }}</div>
+	<div class="row" style="height:20px"></div>
+	{%if data.success %}
+		<a href="/" class="btn btn-success btn-block" id="Annuler">Continuer</a>
+	{% else %}
+		<a href="/" class="btn btn-warning btn-block" id="Annuler">Annuler</a>
+	{% endif %}
+</section>
+

@@ -1,0 +1,145 @@
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:5px; padding-top:5px">
+			<div>
+				<span class="cadref-ins-numero" ng-bind="obj.Numero"></span> <span class="cadref-ins-nom" ng-bind="obj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="obj.Prenom"></span>
+			</div>
+        </div>
+        <div class="row" style="height:5px"></div>
+		<div class="cadref-panel-body">
+			<div class="row">
+				<div class="col-md-1">
+					{{ label('Destinataires') }}
+				</div>
+				<div class="col-md-10">
+					{% if mode == 'public' %}
+					<select class="form-control cadref-input" ng-model="msgObj.Mail">
+						<option value=""></option>
+						{% for v,k in destinataires %}
+							<option value="{{ v }}">{{ k }}</option>
+						{% endfor %}
+					</select>
+					{% else %}
+					<input type="text" class="form-control cadref-input" readonly ng-init="msgObj.Mail=obj.Mail" ng-model="msgObj.Mail"/>
+					{% endif %}
+				</div>
+			</div>
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					{{ label('Sujet') }}
+				</div>
+				<div class="col-md-10">
+					<input type="text" class="form-control cadref-input" placeholder="Sujet du message" ng-model="msgObj.Subject"/>
+				</div>
+			</div>
+			{% if mode != 'admin' %}
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					{#{{ label('') }}#}
+				</div>
+				<div class="col-md-10">
+					<input type="text" class="form-control cadref-input" readonly tabindex="-1" ng-model="msgObj.Sender" ng-init="msgObj.Sender='{{ sender }}'"/>
+				</div>
+			</div>
+			{% endif %}
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					{{ label('Message') }}
+				</div>
+				<div class="col-md-10">
+					<textarea ckeditor="ckHtml" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="msgObj.Body" ng-trim="false"></textarea>
+				</div>
+			</div>
+			{% if mode == 'admin' %}
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					<label class="form-control-label cadref-label" style="line-height:1">SMS{[{msgObj.smsSize}]}</label>
+				</div> 
+				<div class="col-md-10">
+					<textarea class="form-control cadref-input" maxlength="160" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="msgObj.SMS" ng-change="checkSmsSize(msgObj)"></textarea>
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="row" style="height:5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+					{{ label("Pièces jointes") }}
+				</div>
+				<div class="col-md-10">
+					<div class="cadref-widget" ng-if="msgObj.Pieces.mode!=''">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2">
+										{{ label('Documents') }}
+									</div>
+									<div class="col-md-10">
+										<input type="text" class="form-control cadref-input" id="input-pieceFilePath" ng-model="msgObj.Pieces.filePath">
+										<label for="input-pieceFilePath-file" class="cadref-clickable">Choisissez un fichier</label>
+										<input id="input-pieceFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+											   options="{ alias:'FileData',formData:[],
+											   removeAfterUpload: true, inputId: 'input-pieceFilePath', model:'msgObj.Pieces.filePath' }" 
+											   ng-init="up_pieceFilePath = angular.copy(autoUploader)" uploader="up_pieceFilePath" style="display:none;"
+											   />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="msgObj.Pieces.filePath!=''" ng-click="pieceSave()" title="Ajouter"></a>
+										<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="pieceCloseEdit()" title="Annuler"></a>
+									</div>
+								</div>						
+							</div>
+						</div>
+					</div>
+					<div  ng-if="msgObj.Pieces.mode==''">
+						<div class="listWrap">
+							<table class="table table-hover" id="Pieces-table" width="100%" style="line-height:1">
+								<thead>
+									<tr>
+										<th class="cadref-th">Fichier</th>
+										<th class="cadref-th-btn">
+											<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="pieceAdd()" title="Ajouter un document"></a>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in msgObj.Pieces.data" >
+										<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item }]}</span></td>
+										<td  class="table-action cadref-td-btn">
+											<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-click="pieceCloseEdit()" title="Télécharger"></a>
+											<a class="btn-abt cadref-btn-del btn-danger" href="" ng-click="pieceDelete(item)" title="Supprimer"></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="height: 5px"></div>
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-2">
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.Mail == '' || msgObj.Subject == ''" ng-click="messageSend('mail')">Mail</button>
+				</div>
+				{% if mode == 'admin' %}
+				<div class="col-md-2">
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.SMS == ''" ng-click="messageSend('sms')">SMS</button>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		{#		<button type="button" class="btn btn-info ng-scope" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>
+		#}
+	</section>
+</div>
+<!--<input type="hidden" ng-init="Cadref{{ objecttype}}function.args.Msg=msgObj"/>-->
+
