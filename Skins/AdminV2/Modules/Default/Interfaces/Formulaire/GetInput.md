@@ -154,55 +154,102 @@
 	[/CASE]			
 	[CASE file]
 		<div id="[!Prefixe!][!Prop::Nom!]_DivUpload" >
-		<div class="Content" [IF [!Valeur!]!=]style="display:none"[/IF]>
-			<div class="UploadProgress">
-			<img src="/Skins/AdminV2/Img/fancy/progress/bar.gif" class="progress current-progress" />
-			<div class="current-text"></div>
+			<div class="Content" [IF [!Valeur!]!=]style="display:none"[/IF]>
+				<div id="[!Prefixe!][!Prop::Nom!]_DivUpload_js">
+
+				</div>
 			</div>
-			<a class="Browse" href="#">Attacher un fichier</a>
-		</div>
-		<div class="Result" [IF [!Valeur!]=]style="display:none"[/IF]>
-			<input type="text"  id="[!Prefixe!][!Prop::Nom!]" name="[!Prefixe!][!Prop::Nom!]" value="[!Valeur!]" class="Champ"/>
-			<a class="Toggle">
-			Changer de fichier
-			</a>
-			<span class="FileName" style="display:none;">
-			[!Valeur!]
-			</span>
-		</div>
+			<div class="Result" [IF [!Valeur!]=]style="display:none"[/IF]>
+				<input type="text"  id="[!Prefixe!][!Prop::Nom!]" name="[!Prefixe!][!Prop::Nom!]" value="[!Valeur!]" class="Champ"/>
+				<a class="Toggle">
+				Changer de fichier
+				</a>
+				<span class="FileName" style="display:none;">
+				[!Valeur!]
+				</span>
+			</div>
 		</div>
 		<ul id="[!Prefixe!][!Prop::Nom!]_List" style="display:none"></ul>
 		<script type="text/javascript">
+			var containerId = "[!Prefixe!][!Prop::Nom!]_DivUpload";
+			$(containerId).getElement('.Toggle').removeEvents('click');
+			$(containerId).getElement('.Toggle').addEvent('click',function(e){
+				e.stop();
+				this.getElement('.Content').setStyle('display','block');
+				this.getElement('.Result').setStyle('display','none');
+				this.getElement('.Result input').set('value','');
+			}.bind($(containerId)));
+
 			var Cook = Cookie.read('KE_SESSID');
-			Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload",
-			"[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
+			// Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload","[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
+			var uploader[!Prop::Nom!] = new qq.FineUploader({
+				element: document.getElementById(containerId+'_js'),
+				request: {
+					endpoint: '/Systeme/Interfaces/Formulaire/Upload2.htm?Module=[!Module::Actuel::Nom!]&obj=[!ObjectTT!]&KE_SESSID='+Cook
+				},
+				callbacks: {
+					onComplete: function(id, name, response, xhr) {
+						console.log(id, name, response, xhr);
+						$(containerId).getElement(".Content").setStyle("display","none");
+						$(containerId).getElement(".Result").setStyle("display","block");
+						var r= $(containerId).getElement(".Result span");
+						r.set('html',response.url);
+						var i= $(containerId).getElement(".Result input");
+						i.set('value',response.url);
+					}
+				}
+			});
 		</script>
 	[/CASE]
 	[CASE image]
 		<div id="[!Prefixe!][!Prop::Nom!]_DivUpload" >
-		<div class="Content" [IF [!Valeur!]!=]style="display:none"[/IF]>
-			<div class="UploadProgress">
-			<img src="/Skins/AdminV2/Img/fancy/progress/bar.gif" class="progress current-progress" />
-			<div class="current-text"></div>
+			<div class="Content" [IF [!Valeur!]!=]style="display:none"[/IF]>
+				<div id="[!Prefixe!][!Prop::Nom!]_DivUpload_js">
+
+				</div>
 			</div>
-			<a class="Browse" href="#">Attacher un fichier</a>
-		</div>
-		<div class="Result" [IF [!Valeur!]=]style="display:none"[/IF]>
-			<input type="text"  id="[!Prefixe!][!Prop::Nom!]" name="[!Prefixe!][!Prop::Nom!]" value="[!Valeur!]" class="Champ"/>
-			<a class="Toggle">
-			Changer de fichier
-			</a>
-			<span class="FileName" style="display:none;">
-			[!Valeur!]
-			</span>
-		</div>
+			<div class="Result" [IF [!Valeur!]=]style="display:none"[/IF]>
+				<input type="text"  id="[!Prefixe!][!Prop::Nom!]" name="[!Prefixe!][!Prop::Nom!]" value="[!Valeur!]" class="Champ"/>
+				<a class="Toggle">
+					Changer de fichier
+				</a>
+				<span class="FileName" style="display:none;">
+					[!Valeur!]
+				</span>
+			</div>
 		</div>
 		<ul id="[!Prefixe!][!Prop::Nom!]_List" style="display:none"></ul>
 		<script type="text/javascript">
+			var containerId = "[!Prefixe!][!Prop::Nom!]_DivUpload";
+			$(containerId).getElement('.Toggle').removeEvents('click');
+			$(containerId).getElement('.Toggle').addEvent('click',function(e){
+				e.stop();
+				this.getElement('.Content').setStyle('display','block');
+				this.getElement('.Result').setStyle('display','none');
+				this.getElement('.Result input').set('value','');
+			}.bind($(containerId)));
+
 			var Cook = Cookie.read('KE_SESSID');
-			Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload",
-			"[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
+			// Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload","[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
+			var uploader[!Prop::Nom!] = new qq.FineUploader({
+				element: document.getElementById(containerId+'_js'),
+				request: {
+					endpoint: '/Systeme/Interfaces/Formulaire/Upload2.htm?Module=[!Module::Actuel::Nom!]&obj=[!ObjectTT!]&KE_SESSID='+Cook
+				},
+				callbacks: {
+					onComplete: function(id, name, response, xhr) {
+						console.log(id, name, response, xhr);
+						$(containerId).getElement(".Content").setStyle("display","none");
+						$(containerId).getElement(".Result").setStyle("display","block");
+						var r= $(containerId).getElement(".Result span");
+						r.set('html',response.url);
+						var i= $(containerId).getElement(".Result input");
+						i.set('value',response.url);
+					}
+				}
+			});
 		</script>
+
 	[/CASE]
 	[CASE template]
 		[IF [!ObjectTT!]=ActiveTemplate]
