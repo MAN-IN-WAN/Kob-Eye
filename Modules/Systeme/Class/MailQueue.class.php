@@ -7,7 +7,7 @@ class MailQueue extends genericClass{
 	}
 
 	public static function SendMails() {
-		$ms = Sys::getData('Systeme', 'MailQueue/Status=0');
+		$ms = Sys::getData('Systeme', 'MailQueue/Status=0',0,500);
 		foreach($ms as $m) {
 			try {
 				$m->SendTime = time();

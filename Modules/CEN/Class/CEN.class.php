@@ -7,7 +7,7 @@ class CEN extends Module {
 //klog::l("GetCEN", $args);
 		switch($args['mode']) {
 			case 'ton_init':
-				return ToTonalli::InitApp($args);
+				return Tonalpohua::InitApp($args);
 			
 			case 'chacha-dict':
 				return Chachalaca::GetDics();
