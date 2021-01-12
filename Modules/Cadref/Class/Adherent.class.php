@@ -189,12 +189,12 @@ class Adherent extends genericClass {
 			if(isset($data->AvoirDu)) $a->AvoirDu = $data->AvoirDu;
 			if(isset($data->AvoirUtilise)) $a->AvoirUtilise = $data->AvoirUtilise;
 		}
-//klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaa",$a);
+
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours + $a->Dons - $regle - $diffe + $a->Regularisation - $a->AvoirUtilise;
+		$a->Solde = $a->Cotisation + $cours + $a->Dons - $regle - $diffe + $a->Regularisation - $a->AvoirUtilise + $a->AvoirDu;
 		$a->Save();
 
 		return true;
