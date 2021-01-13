@@ -473,8 +473,10 @@
 		<PROPERTIES type="varchar" length="254" category="Description" form="2" list="2" fiche="2">Parametres</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="ToCodex" driver="mysql" order="Nom" AccessPoint="1" Description="TCodex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="ToCodex" driver="mysql" order="Nom" AccessPoint="1" Description="TCodex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/ToCodex.class.php">
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Codex</PROPERTIES>
+		<PROPERTIES type="file" progress="1" category="Description" form="4" fiche="4" description="Fichier zip">ZipFile</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="Description" form="1" fiche="1">Repertoire</PROPERTIES>
 		<PROPERTIES type="varchar" length="16" category="Description" form="1" list="1" fiche="1">Image</PROPERTIES>
 		<PROPERTIES type="int" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Ordre</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Tonalli</PROPERTIES>
