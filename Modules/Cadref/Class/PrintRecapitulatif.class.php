@@ -79,7 +79,11 @@ class PrintRecapitulatif extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, '');
 		$this->Cell($this->width[1], 4.5, $mode ? '' : 'Totaux', 0, 0, 'R');
-		for($i = 0; $i < 12; $i++) $this->Cell($this->width[$i+2], 4.5, $t[$i], 0, 0, 'R');
+		for($i = 0; $i < 12; $i++) {
+			if($i == 2 && $mode && $t[$i] && $t[$i] != Cadref::$Soutien) $this->SetTextColor(255,0,0);
+			$this->Cell($this->width[$i+2], 4.5, $t[$i], 0, 0, 'R');
+			if($i == 2 && $mode && $t[$i] && $t[$i] != Cadref::$Soutien) $this->SetTextColor(0,0,0);
+		}
 		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]+$t[8]-$t[11];
 		$this->Cell($this->width[14], 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
@@ -178,7 +182,9 @@ class PrintRecapitulatif extends FPDF {
 		$this->Cell($this->width[1], 4.5, $s);
 		$this->Cell($this->width[2], 4.5, $prx ?: '', 0, 0, 'R');
 		$this->Cell($this->width[3], 4.5, $red ?: '', 0, 0, 'R');
+		if($sou && $sou != Cadref::$Soutien) $this->SetTextColor(255,0,0);
 		$this->Cell($this->width[4], 4.5, $sou ?: '', 0, 0, 'R');
+		$this->SetTextColor(0,0,0);
 		switch($sup) {
 			case 0:
 				$t = &$this->total;

@@ -6,7 +6,13 @@ class CEN extends Module {
 	public static function GetCEN($args) {	
 //klog::l("GetCEN", $args);
 		switch($args['mode']) {
-			case 'ton_init':
+			case 'ton-codex':
+				return ToCodex::GetCodex($args);
+				
+			case 'ton-images':
+				return ToCodex::GetImages($args);
+				
+			case 'ton-init':
 				return Tonalpohua::InitApp($args);
 			
 			case 'chacha-dict':

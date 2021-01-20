@@ -12,6 +12,7 @@ class Cadref extends Module {
 	public static $WEB;
 	public static $Annee;
 	public static $Cotisation = null;
+	public static $Soutien = null;
 	public static $Group = null;
 	public static $Adherent = null;
 	public static $Enseignant = null;
@@ -32,6 +33,7 @@ class Cadref extends Module {
 		$annee = Sys::getOneData('Cadref', 'Annee/EnCours=1');
 		self::$Annee = $annee->Annee;
 		self::$Cotisation = $annee->Cotisation;
+		self::$Soutien = $annee->Reduction;
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
 		$utl = Sys::getOneData('Cadref', 'Parametre/Domaine=UTL&SousDomaine=UTL&Parametre=UTL');
