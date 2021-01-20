@@ -84,7 +84,7 @@ class PrintRecapitulatif extends FPDF {
 			$this->Cell($this->width[$i+2], 4.5, $t[$i], 0, 0, 'R');
 			if($i == 2 && $mode && $t[$i] && $t[$i] != Cadref::$Soutien) $this->SetTextColor(0,0,0);
 		}
-		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]+$t[8]-$t[11];
+		$s = $t[3]+$t[4]+$t[5]-$t[6]-$t[7]+$t[8]-$t[11]+$t[10];
 		$this->Cell($this->width[14], 4.5, $s, 0, 0, 'R');
 		$this->posy += 4.5;
 		$this->SetXY($this->left, $this->posy);

@@ -2179,6 +2179,7 @@ where ce.Visite=:cid";
 
 		
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
+		$soutien = Cadref::$Soutien;
 
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
@@ -2194,8 +2195,8 @@ where ce.Visite=:cid";
 			."left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
 			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
-			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 "
-			."or a.Cotisation=0 or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0)";		
+			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 "   //
+			."or a.Cotisation=0 or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0 or (a.Soutien<>0 and a.Soutien<>$soutien))";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
