@@ -2196,7 +2196,7 @@ where ce.Visite=:cid";
 			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
 			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 "   //
-			."or a.Cotisation=0 or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0 )";		
+			."or (a.Cours<>0 and a.Cotisation=0) or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0 or (a.Soutien<>0 and a.Soutien<>$soutien))";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
