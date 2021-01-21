@@ -122,23 +122,27 @@ class ToCodex extends genericClass {
 				else $flds = ['DJ','D13','DN','D13ene','D20ene','Treizaine','Volatile','Arbre'];
 				break;
 		}
-		$sql = "select ToCodexId";
-		foreach($flds as $fld) $sql .= ",$fld";
+		$sql = "select i.ToCodexId";
+		if($codex) $sql .= ",t.Id";
+		foreach($flds as $fld) $sql .= ",i.$fld";
 		$sql .= " from `##_CEN-ToImage` i "
-			."left join `##_CEN-ToCodex` c on i.ToCodexId=c.Id "
-			."where `Type`=$type ".($god ? "and Nom='$god' " : '').($codex ? "and ToCodexId=$codex" : '')
-			."order by c.Ordre";
+			." left join `##_CEN-ToCodex` c on i.ToCodexId=c.Id ";
+			if($codex) $sql .= " left join `##_CEN-Tonalpohua` t on t.Nahuatl=Nom"
+			." where i.`Type`=$type ".($god ? "and i.Nom='$god' " : '').($codex ? "and i.ToCodexId=$codex" : '')
+			." order by ".($codex ? 't.Id' : 'c.Ordre');
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l($sql);
+//klog::l($sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$tmp = [];
+		$id = 0;
 		foreach($rs as $r) {
 			$cdx = $r['ToCodexId'];
+			if($codex) $id = $r['Id'];
 			foreach($flds as $fld) {
 				if($r[$fld]) {
 					$imgs = explode(',', $r[$fld]);
 					foreach($imgs as $img) {
-						$tmp[] = ['codex'=>$cdx,'dir'=>$fld,'role'=>$fld2role[$fld],'img'=>trim($img)];
+						$tmp[] = ['codex'=>$cdx,'id'=>$id,'dir'=>$fld,'role'=>$fld2role[$fld],'img'=>trim($img)];
 					}
 				}
 			}
