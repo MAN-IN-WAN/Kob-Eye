@@ -55,7 +55,7 @@ class ToCodex extends genericClass {
 		$dir = "$basedir/".$this->Repertoire;
 		$s = "mv $basedir/tmp $dir";
 		system($s);
-		unlink($zfile);
+		//unlink($zfile);
 		
 		if($id) {
 			$sql = "delete from `##_CEN-ToImage` where ToCodexId=$id";
@@ -82,6 +82,7 @@ class ToCodex extends genericClass {
 			$img->D20ene = $cs[10];
 			$img->Treizaine = $cs[11];
 			$img->Arbre = isset($cs[12]) ? $cs[12] : '';
+			$img->G20ene = isset($cs[13]) ? $cs[13] : '';
 			$img->Save();
 		}
 		return $ret;
