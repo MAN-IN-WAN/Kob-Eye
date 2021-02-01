@@ -6,6 +6,9 @@ class CEN extends Module {
 	public static function GetCEN($args) {	
 //klog::l("GetCEN", $args);
 		switch($args['mode']) {
+			case 'ton-god-text':
+				return Tonalpohua::GetGodText($args);
+				
 			case 'ton-codex':
 				return ToCodex::GetCodex($args);
 				

@@ -48,7 +48,6 @@ class ToCodex extends genericClass {
 			CEN::rmDir($tmp);
 			return false;		
 		}
-		klog::l(">>>>CSV");
 
 		// remove old dir and create new one
 		if($old && $old->Repertoire) CEN::rmDir($basedir.'/'.$old->Repertoire);
@@ -62,28 +61,31 @@ class ToCodex extends genericClass {
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$GLOBALS['Systeme']->Db[0]->exec($sql);
 		}
+		$flds = [];
+		$cols = 0;
 		$n = 0;
 		$ls = explode("\r\n", file_get_contents("$dir/$clef.csv"));
 		foreach($ls as $l) {
-			if(!$n++ || empty(trim($l))) continue;
+			if(empty(trim($l))) continue;
+			if(!$n++) {
+				$flds = explode(';', trim($l));
+				$cols = count($flds);
+				continue;
+			}
 			$cs = explode(';', trim($l));
 			$img = genericClass::createInstance('CEN', 'ToImage');
 			$img->addParent($this);
 			$img->Type = $cs[0];
 			$img->Nom = $cs[1];
-			$img->Jour = $cs[2];
-			$img->Nombre = $cs[3];
-			$img->Mois = $cs[4];
-			$img->DJ = $cs[5];
-			$img->D13 = $cs[6];
-			$img->DN = $cs[7];
-			$img->Volatile = $cs[8];
-			$img->D13ene = $cs[9];
-			$img->D20ene = $cs[10];
-			$img->Treizaine = $cs[11];
-			$img->Arbre = isset($cs[12]) ? $cs[12] : '';
-			$img->G20ene = isset($cs[13]) ? $cs[13] : '';
-			$img->Save();
+			$ok = false;
+			for($i = 2; $i < $cols; $i++) {
+				if(isset($cs[$i]) && $cs[$i]) {
+					$tmp = $flds[$i];
+					$img->$tmp = $cs[$i];
+					$ok = true;
+				}
+			}
+			if($ok) $img->Save();
 		}
 		return $ret;
 	}
@@ -106,9 +108,10 @@ class ToCodex extends genericClass {
 	}
 
 	static public function GetImages($args) {
-		$type2fld = ['A'=>'DJ','B'=>'D13','C'=>'DN','D'=>'D13ene','O'=>'Volatile'];
-		$fld2role = ['Jour'=>'Jour','Mois'=>'Mois','Nombre'=>'Nombre','DJ'=>'Dieu du jour','D13'=>'Dieu du treizième','DN'=>'Seigneur de la nuit',
-			'D13ene'=>'Dieu de la treizaine','D20ene'=>'Dieu de la vingtaine','Treizaine'=>'Image de la treizaine','Volatile'=>'Volatile','Arbre'=>'Arbre'];
+		$type2fld = ['A'=>'DJ','B'=>'D13','C'=>'DN','D'=>'D13ene','O'=>'Volatile','P'=>'Arbre','M'=>'G20ene'];
+		$fld2role = ['Jour'=>'Jour','Mois'=>'Mois','Nombre'=>'Nombre','DJ'=>'Dieu du jour','D13'=>'Seigneur diurne','DN'=>'Seigneur nocturne',
+			'D13ene'=>'Dieu de la treizaine','D20ene'=>'Dieu de la vingtaine','Treizaine'=>'Glyphe de la treizaine','Volatile'=>'Volatile',
+			'Arbre'=>'Arbre','G20ene'=>'Glyphe de la vingtaine'];
 		$type = $args['type'];
 		$select = isset($args['select']) ? $args['select'] : '';
 		$god = isset($args['god']) ? $args['god'] : '';
@@ -120,19 +123,20 @@ class ToCodex extends genericClass {
 			case 2: $flds = ['Nombre']; break;
 			case 3: 
 				if($select)  $flds = [$type2fld[$select]];
-				else $flds = ['DJ','D13','DN','D13ene','D20ene','Treizaine','Volatile','Arbre'];
+				else $flds = ['DJ','D13','DN','D13ene','D20ene','Treizaine','Volatile','Arbre','G20ene'];
 				break;
 		}
 		$sql = "select i.ToCodexId";
 		if($codex) $sql .= ",t.Id";
 		foreach($flds as $fld) $sql .= ",i.$fld";
 		$sql .= " from `##_CEN-ToImage` i "
-			." left join `##_CEN-ToCodex` c on i.ToCodexId=c.Id ";
-			if($codex) $sql .= " left join `##_CEN-Tonalpohua` t on t.Nahuatl=Nom"
-			." where i.`Type`=$type ".($god ? "and i.Nom='$god' " : '').($codex ? "and i.ToCodexId=$codex" : '')
-			." order by ".($codex ? 't.Id' : 'c.Ordre');
+			." left join `##_CEN-ToCodex` c on i.ToCodexId=c.Id "
+			." left join `##_CEN-Tonalpohua` t on t.Nahuatl=Nom "
+			." where i.`Type`=$type ".($god ? "and i.Nom='$god' " : '').($codex ? "and i.ToCodexId=$codex" : '');			
+		//foreach($flds as $fld) $sql .= " and $fld<>'' ";
+		$sql .= " order by ".($codex ? 't.Id' : 'c.Ordre');
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-//klog::l($sql);
+klog::l($sql);
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$tmp = [];
 		$id = 0;

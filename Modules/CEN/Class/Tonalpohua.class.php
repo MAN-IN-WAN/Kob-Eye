@@ -35,18 +35,52 @@ class Tonalpohua extends genericClass {
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 		$epo = array();
 		foreach($rs as $r) $epo[$r['Id']] = ['id'=>$r['Id'],'nahuatl'=>$r['Nahuatl'],'rules'=>$r['Regles']];
+		
+		$sql = "select e.Id,Exemple,Regles,ToCodexId from `##_CEN-ToExemple` e "
+			."left join `##_CEN-ToCodex` c on c.Id=e.ToCodexId order by c.Ordre,e.Id";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$exp = array();
+		foreach($rs as $r) $exp[$r['Id']] = ['id'=>$r['Id'],'exemple'=>$r['Exemple'],'rules'=>$r['Regles'],'codex'=>$r['ToCodexId']];
 
 		
 		$days = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>0]);
 		$months = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>1]);
 		$number = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>2]);
 		
-		$type2role = ['Jour'=>'Jour','Mois'=>'Mois','Nombre'=>'Nombre','A'=>'Dieu du jour','B'=>'Dieu du treizième','C'=>'Seigneur de la nuit',
-			'D'=>'Dieu de la treizaine','O'=>'Volatile'];
+		$type2role = ['Jour'=>'Jour','Mois'=>'Mois','Nombre'=>'Nombre','A'=>'Dieu du jour','B'=>'Seigneur diurne','C'=>'Seigneur nocturne',
+			'D'=>'Dieu de la treizaine','O'=>'Volatile','P'=>'Arbre','M'=>'Glyphe de la vingtaine'];
 
 
 		return array('success'=>true,data=>['tonalpohua'=>$ton,'xihuitl'=>$xih,'codex'=>$cod,'days'=>$days['images'],'months'=>$months['images'],
-			'roles'=>$type2role,'nemontemi'=>$nem,'eponyme'=>$epo,'translation'=>[],'directory'=>'/Home/2/CEN/ToCodex/']);
+			'roles'=>$type2role,'nemontemi'=>$nem,'eponymes'=>$epo,'exemples'=>$exp,'translation'=>[],'directory'=>'/Home/2/CEN/ToCodex/']);
+	}
+
+	static public function GetGodText($args) {
+		$lang = $args['lang'];
+		$god = strtoupper($args['god']);
+	
+		$cwd = getcwd();
+		$file = "$cwd/Home/2/CEN/Tonalpohua/text/Dioses/$god.rtf";
+		$html = self::importRtf($file);
+		
+		return ['success'=>$html != '', 'text'=>$html, 'file'=>$file];
+	}
+	
+	static private function importRtf($file) {
+		require_once ('Class/Lib/rtf-html-php.php');
+		
+		$html = '';
+		if(file_exists($file)) {
+			$reader = new RtfReader();
+			$rtf = file_get_contents($file);
+			$result = $reader->Parse($rtf);
+			if($result) {
+				$formatter = new RtfHtml();
+				$html = $formatter->Format($reader->root);
+			}
+		} 
+		return $html;
 	}
 
 }
