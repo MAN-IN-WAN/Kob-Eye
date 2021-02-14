@@ -2,13 +2,17 @@
 class MailQueue extends genericClass{
 	
 	function Save() {
-		if(!$this->Id) $this->CreationTime = time();
+		if(!$this->Id) {
+			$this->CreationTime = time();
+			$smtp = Sys::getOneData('Systeme', 'MailSMTP/Selected=1');
+			if($smtp) $this->MailSMTPId = $smtp->Id;
+		}
+		
 		return parent::Save();
 	}
 
 	public static function SendMails() {
 		$retry = time()-600;
-		klog::l("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT$retry");
 		$ms = Sys::getData('Systeme', "MailQueue/Status=0+(!Status=2&Tries<5&SendTime<$retry!)",0,50);
 		foreach($ms as $m) {
 			$m->SendTime = time();
@@ -17,9 +21,7 @@ class MailQueue extends genericClass{
 				self::SendMessage($m);
 				$m->Error = '';
 				$m->Status = 1;
-				klog::l('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
 			} catch(phpmailerException $e) {
-				klog::l("EEEEEEEEEEEEEEEEEEEEEEE",$e);
 				$m->Error = $e->errorMessage();
 				$m->Status = 2;
 			}
@@ -86,7 +88,6 @@ class MailQueue extends genericClass{
 				$Mail->SMTPSecure = $smtp->SMTPSecure;
 				$Mail->SMTPAuth = $smtp->SMTPAuth;
 			}
-			klog::l("SMTP>>>>>>>>>>>>>>>>>>>>>$Mail->Host");
 		}
 		
 		$ret = $Mail->Send();
