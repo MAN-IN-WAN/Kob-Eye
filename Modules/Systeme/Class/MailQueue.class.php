@@ -7,13 +7,19 @@ class MailQueue extends genericClass{
 	}
 
 	public static function SendMails() {
-		$ms = Sys::getData('Systeme', 'MailQueue/Status=0',0,50);
+		$retry = time()-600;
+		klog::l("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT$retry");
+		$ms = Sys::getData('Systeme', "MailQueue/Status=0+(!Status=2&Tries<5&SendTime<$retry!)",0,50);
 		foreach($ms as $m) {
+			$m->SendTime = time();
+			$m->Tries++;
 			try {
-				$m->SendTime = time();
 				self::SendMessage($m);
+				$m->Error = '';
 				$m->Status = 1;
+				klog::l('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
 			} catch(phpmailerException $e) {
+				klog::l("EEEEEEEEEEEEEEEEEEEEEEE",$e);
 				$m->Error = $e->errorMessage();
 				$m->Status = 2;
 			}
@@ -68,6 +74,21 @@ class MailQueue extends genericClass{
 				$Mail->EmbeddedImage($a[0], $a[1]);
 			}
 		}
+		
+		if($m->MailSMTPId) {
+			$smtp = Sys::getOneData('Systeme', 'MailSMTP/'.$m->MailSMTPId);
+			if($smtp && $smtp->Mailer != '') {
+				$Mail->Mailer = $smtp->Mailer;
+				$Mail->Host = $smtp->Host;
+				$Mail->Port = $smtp->Port;
+				$Mail->Username = $smtp->Username;
+				$Mail->Password = $smtp->Password;
+				$Mail->SMTPSecure = $smtp->SMTPSecure;
+				$Mail->SMTPAuth = $smtp->SMTPAuth;
+			}
+			klog::l("SMTP>>>>>>>>>>>>>>>>>>>>>$Mail->Host");
+		}
+		
 		$ret = $Mail->Send();
 	}
 }

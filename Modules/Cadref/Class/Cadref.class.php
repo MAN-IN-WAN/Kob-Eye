@@ -924,6 +924,7 @@ where ce.Classe=$cid
 	}
 
 	public static function MailSignature($from = '') {
+		$p = '';
 		if($from) $p = self::GetParametre('MAIL', 'SIGNATURE', $from);
 		if(!$p) $p = self::GetParametre('MAIL', 'SIGNATURE', 'STANDARD');
 		return $p ? $p->Texte : '';

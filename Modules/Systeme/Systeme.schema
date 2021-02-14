@@ -382,6 +382,7 @@
     </OBJECTCLASS>
 
 	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="MailQueue" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
+		<PROPERTIES type="int" default="0" fiche="1" list="1" >MailSMTPId</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1"  form="1">From</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" form="1" fiche="1" list="1" >To</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1">Cc</PROPERTIES>
@@ -393,8 +394,19 @@
 		<PROPERTIES type="varchar" length="1024" fiche="1">EmbeddedImages</PROPERTIES>
 		<PROPERTIES type="datetime" fiche="1" list="1" >CreationTime</PROPERTIES>
 		<PROPERTIES type="datetime" fiche="1" list="1" >SendTime</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="4" fiche="1" list="1" >Status</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="4" fiche="1" list="1" >Status</PROPERTIES>
+		<PROPERTIES type="int" default="0" fiche="1" list="1" >Tries</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" list="1" >Error</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="MailSMTP" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="MailSMTP" Icon="/Skins/AdminV2/Img/brick.png" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" form="1" fiche="1" list="1">Mailer</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" form="2" fiche="2" list="2">Host</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="3" form="3" fiche="3" list="3">Port</PROPERTIES>
+		<PROPERTIES type="varchar" form="4" fiche="4">Username</PROPERTIES>
+		<PROPERTIES type="varchar" form="5" fiche="5">Password</PROPERTIES>
+		<PROPERTIES type="varchar" form="6" fiche="6" list="3">SMTPSecure</PROPERTIES>
+		<PROPERTIES type="int" default="0" form="7" fiche="7">SMTPAuth</PROPERTIES>
 	</OBJECTCLASS>
 
 </SCHEMA>
