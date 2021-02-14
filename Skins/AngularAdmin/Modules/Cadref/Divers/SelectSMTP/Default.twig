@@ -22,7 +22,7 @@
 										<div class="col-md-1">
 											<select id="SMTP" class="form-control cadref-input" ng-model="obj.SMTP" style="width:200px">
 												{% for v,c in smtps %}
-													<option value="{{ v }}" {% if v == SMTP %}selected="true"{% endif %}>{{ c }}</option>
+													<option value="{{ v }}">{{ c }}</option>
 												{% endfor %}
 											</select>
 										</div>
