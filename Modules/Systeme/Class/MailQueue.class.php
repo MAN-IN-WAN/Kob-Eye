@@ -5,7 +5,13 @@ class MailQueue extends genericClass{
 		if(!$this->Id) {
 			$this->CreationTime = time();
 			$smtp = Sys::getOneData('Systeme', 'MailSMTP/Selected=1');
-			if($smtp) $this->MailSMTPId = $smtp->Id;
+			if($smtp) {
+				$this->MailSMTPId = $smtp->Id;
+				if($smtp->Domain) {
+					$f = explode('@',$this->From);
+					$this->From = $f[0].'@'.$smtp->Domain;
+				}
+			}
 		}
 		
 		return parent::Save();

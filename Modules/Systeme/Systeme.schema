@@ -401,6 +401,7 @@
 
 	<OBJECTCLASS title="MailSMTP" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="MailSMTP" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailSMTP.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" form="1" fiche="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" form="1" fiche="1" >Domain</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" form="1" fiche="1" list="1">Mailer</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" form="2" fiche="2" list="2">Host</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3" form="3" fiche="3" list="3">Port</PROPERTIES>

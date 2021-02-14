@@ -45,10 +45,10 @@ class Cadref extends Module {
 		
 		$d = explode('@', self::$MAIL);
 		$d = $d[1];
-		self::$MAIL_ADH = 'adherent@cadref.org';//.$d;
-		self::$MAIL_ADM = 'gestion@cadref.org';//.$d;
-		self::$MAIL_ENS = 'cours@cadref.org';//.$d;
-		self::$MAIL_LET = 'noreply@cadref.org';//.$d;
+		self::$MAIL_ADH = 'adherent@'.$d;
+		self::$MAIL_ADM = 'gestion@'.$d;
+		self::$MAIL_ENS = 'cours@'.$d;
+		self::$MAIL_LET = 'noreply@'.$d;
 
 		if(isset($_GET['classe'])) {
 			$_SESSION['classe'] = serialize(strtoupper($_GET['classe']));
