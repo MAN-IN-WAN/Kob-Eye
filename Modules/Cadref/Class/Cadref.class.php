@@ -904,6 +904,7 @@ where ce.Classe=$cid
 
 		if(isset($params['To'])) $m->To = implode(',', $params['To']);
 		if(isset($params['ReplyTo'])) $m->ReplyTo = implode(',', $params['ReplyTo']);
+		else $m->ReplyTo = self::$MAIL_ADM;
 		
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
