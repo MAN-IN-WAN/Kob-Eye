@@ -47,13 +47,15 @@ class Tonalpohua extends genericClass {
 		$days = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>0]);
 		$months = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>1]);
 		$number = ToCodex::GetImageTable(['codex'=>$codex, 'type'=>2]);
+		$menus = ToMenu::GetMenus($lang);
 		
 		$type2role = ['Jour'=>'Jour','Mois'=>'Mois','Nombre'=>'Nombre','A'=>'Dieu du jour','B'=>'Seigneur diurne','C'=>'Seigneur nocturne',
 			'D'=>'Dieu de la treizaine','O'=>'Volatile','P'=>'Arbre','M'=>'Glyphe de la vingtaine'];
 
 
-		return array('success'=>true,data=>['tonalpohua'=>$ton,'xihuitl'=>$xih,'codex'=>$cod,'days'=>$days['images'],'months'=>$months['images'],
-			'roles'=>$type2role,'nemontemi'=>$nem,'eponymes'=>$epo,'exemples'=>$exp,'translation'=>[],'directory'=>'/Home/2/CEN/ToCodex/']);
+		return array('success'=>true,'data'=>['tonalpohua'=>$ton,'xihuitl'=>$xih,'codex'=>$cod,'days'=>$days['images'],'months'=>$months['images'],
+			'roles'=>$type2role,'nemontemi'=>$nem,'eponymes'=>$epo,'exemples'=>$exp,'translation'=>[],'directory'=>'/Home/2/CEN/ToCodex/',
+			'menus'=>$menus ]);
 	}
 
 	static public function GetGodText($args) {

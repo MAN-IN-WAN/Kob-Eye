@@ -103,7 +103,7 @@ class ToCodex extends genericClass {
 		$rs = $GLOBALS['Systeme']->Db[0]->query($sql);
 //klog::l($sql);
 		$tmp = [];
-		foreach($rs as $r) $tmp[$r['Nom']] = ['codex'=>$codex,'dir'=>$field,'role'=>$fld,'img'=>$r['img']];
+		foreach($rs as $r) $tmp[$r['Nom']] = ['codex'=>$codex,'dir'=>$field,'role'=>$field,'img'=>$r['img']];
 		return ['success'=>true,'images'=>$tmp];
 	}
 
