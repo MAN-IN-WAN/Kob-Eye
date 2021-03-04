@@ -15,16 +15,28 @@
 		<CATEGORY title="Communication">
 			<PROPERTIES Order="8"     obligatoire="0"  description="Lien réservation"      type="text"   fiche="0" form="0" >LienReservation</PROPERTIES>
 			<PROPERTIES Order="9"     obligatoire="0"  description="Lien eshop"      type="text"   fiche="0" form="0" >LienEshop</PROPERTIES>
-			<PROPERTIES Order="10"     obligatoire="1"  description="Mail de contact"      type="varchar" length="100"  fiche="1" form="1" list="1">EmailContact</PROPERTIES>
+			<PROPERTIES Order="10"     obligatoire="0"  description="Mail de contact"      type="varchar" length="100"  fiche="1" form="1" list="1">EmailContact</PROPERTIES>
 			<PROPERTIES Order="11" description="Téléphone" type="varchar" length="20"   fiche="1" form="1">Tel</PROPERTIES>
-			<PROPERTIES Order="11" description="Fax" type="varchar" length="20"  fiche="1" form="1">Fax</PROPERTIES>
-			<PROPERTIES Order="12" description="Portable"  type="varchar" length="20" >Portable</PROPERTIES>
-			<PROPERTIES Order="13"     obligatoire="0"  description="Lien Fb"      type="text"   fiche="1" form="1" >LienFacebook</PROPERTIES>
-			<PROPERTIES Order="14"     obligatoire="0"  description="Lien Instagram"      type="text"   fiche="1" form="1" >LienInstagram</PROPERTIES>
+			<PROPERTIES Order="12" description="Téléphone d'urgence" type="varchar" length="20"   fiche="1" form="1">TelUrgence</PROPERTIES>
+			<PROPERTIES Order="13" description="Fax" type="varchar" length="20"  fiche="1" form="1">Fax</PROPERTIES>
+			<PROPERTIES Order="14" description="Portable"  type="varchar" length="20" >Portable</PROPERTIES>
+			<PROPERTIES Order="15"     obligatoire="0"  description="Lien Fb"      type="text"   fiche="1" form="1" >LienFacebook</PROPERTIES>
+			<PROPERTIES Order="16"     obligatoire="0"  description="Lien Instagram"      type="text"   fiche="1" form="1" >LienInstagram</PROPERTIES>
 		</CATEGORY>
 
 		<FKEY card="0,n" data="Activite,Id" link="1"  parentDescription="Activite" listDescr="Activite" fiche="1" form="1" >ActiviteId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Client,Id" link="1"  parentDescription="Client" listDescr="Client" hasRole="VETO_ADM">ClientId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Accessibilite" driver="mysql" AccessPoint="1" master="1" Description="Accessibilité"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Operations="add::VETO_ADM,edit::VETO_ADM,delete::VETO_ADM">
+		<PROPERTIES searchOrder="1" Order="1" description="Nom" type="varchar"  list="1" fiche="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES searchOrder="1" Order="2" description="Titre" type="varchar" fiche="1" form="1">Titre</PROPERTIES>
+		<PROPERTIES searchOrder="1" Order="3" description="Logo" type="image" fiche="1" form="1">Logo</PROPERTIES>
+		<PROPERTIES searchOrder="1" Order="4" description="Type" type="varchar" values="Service,Langue" fiche="1" form="1">Type</PROPERTIES>
+		<PROPERTIES searchOrder="1" Order="5" description="Ordre" type="ordre" fiche="1" form="1">Ordre</PROPERTIES>
+
+		<FKEY card="0,n" data="Adherent,Id" link="1"  parentDescription="Adherent" listDescr="Adherent" fiche="1" form="1" >AdherentId</FKEY>
+
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Personnel" driver="mysql" AccessPoint="1" Description="Personnel" Class="Modules/Vetoccitan/Class/Personnel.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
@@ -34,6 +46,7 @@
 			<PROPERTIES searchOrder="2" description="Prénom" type="varchar" length="255" fiche="1" form="1" list="1">Prenom</PROPERTIES>
 			<PROPERTIES type="image" description="Photo petite taille" form="1" fiche="1">Photo</PROPERTIES>
 			<PROPERTIES type="image" description="Photo grande taille" form="1" fiche="1">Photo2</PROPERTIES>
+			<PROPERTIES type="boolean" description="Mise en avant" form="1" fiche="1">EnAvant</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Description">
 			<PROPERTIES type="varchar" query="Vetoccitan/Poste::Nom" searchOrder="3" list="1" form="1" fiche="1">Poste</PROPERTIES>
@@ -46,25 +59,30 @@
 
 	<OBJECTCLASS title="Service" driver="mysql"  AccessPoint="1" Description="Service" Class="Modules/Vetoccitan/Class/Service.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  browseable="1" >
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" length="255" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" fiche="1" hasRole="ABTEL" >Template</PROPERTIES>
+		<PROPERTIES type="order" description="Ordre affichage"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
 		<PROPERTIES type="html"  form="1" fiche="1">Description</PROPERTIES>
-		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>
-		<FKEY card="0,1" data="Categorie,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
+		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent" hasRole="VETO_ADM">AdherentId</FKEY>
+		<FKEY card="0,n" data="Categorie,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Conseil" driver="mysql"  AccessPoint="1" Description="Conseil" Class="Modules/Vetoccitan/Class/Conseil.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1" >
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" length="255" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="html"  form="1" fiche="1">Description</PROPERTIES>
-		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>
+		<PROPERTIES type="date" description="Date Début Affichage" list="1" form="1" fiche="1">DatePublication</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" fiche="1" hasRole="ABTEL" >Template</PROPERTIES>
+		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent" hasRole="VETO_ADM">AdherentId</FKEY>
 		<FKEY card="0,n" data="Categorie,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="News" driver="mysql"  AccessPoint="1" Description="News" Class="Modules/Vetoccitan/Class/News.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  browseable="1">
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" length="255" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="html"  form="1" fiche="1">Description</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" fiche="1" hasRole="ABTEL">Template</PROPERTIES>
 		<PROPERTIES type="boolean" list="1" form="1" fiche="1">AlaUne</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" form="1" fiche="1" default="1" values="1::Sites Adhérents,2::Site Public Vetoccitan,3::Site Pro Vetoccitan,4::Réseaux sociaux,Newsletter">Canal</PROPERTIES>
-		<FKEY card="0,1" data="Categorie,Id" link="1" list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
-		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent">AdherentId</FKEY>
+		<FKEY card="0,n" data="Categorie,Id" link="1" list="1" form="1" fiche="1" parentDescription="Categorie" listDescr="Categorie">CategorieId</FKEY>
+		<FKEY card="0,n" data="Adherent,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Adherent" listDescr="Adherent" hasRole="VETO_ADM">AdherentId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Bandeau" driver="mysql" logEvent="1" AccessPoint="1" Description="Bandeau" Class="Modules/Vetoccitan/Class/Bandeau.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="add::VETO_ADM,edit,delete">

@@ -6,6 +6,10 @@
 	</div>
 </div>
 
+</br>
+
+<iframe class="contactMaps" height="200" width="100%" style="border:0"  src="https://www.google.com/maps/embed/v1/place?q={{ Adresse }}&key=AIzaSyA8WzSVq6D0wZFAsNwdsqSExgHlNO3_S68" allowfullscreen style="width: 100%;"></iframe>
+
 {% if (Adherent.LienFacebook is not empty) or (Adherent.LienInstagram is not empty)  %}
 		<div class="boxnum">
 			Suivez nous sur {%  if (Adherent.LienFacebook is not empty) and (Adherent.LienInstagram is empty) %}
