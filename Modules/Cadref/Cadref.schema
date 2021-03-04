@@ -287,7 +287,7 @@
 		<PROPERTIES type="varchar" length="16" category="RIB" form="29" fiche="29" description="RUM">RUM</PROPERTIES>
 		<PROPERTIES type="date" category="RIB" form="29" fiche="29" description="Date signature">DateRUM</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="RIB" form="29" fiche="29" description="Etat RUM">EtatRUM</PROPERTIES>
-		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="IBAN">IBAN</PROPERTIES>
+		<PROPERTIES type="varchar" length="35" searchOrder="7" category="RIB" form="29" fiche="29" description="IBAN">IBAN</PROPERTIES>
 		<PROPERTIES type="varchar" length="11" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
 
 		<PROPERTIES type="float" default="0" auto="1" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>

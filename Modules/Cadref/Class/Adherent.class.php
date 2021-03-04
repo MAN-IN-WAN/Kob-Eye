@@ -105,12 +105,16 @@ class Adherent extends genericClass {
 		$visit = 0;
 		$regle = 0;
 		$diffe = 0;
+		$soutien = 0;
 		$id = $this->Id;
 		
-		$sql = "select ifnull(sum(Prix-Reduction-Soutien),0) as total from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
+		$sql = "select ifnull(sum(Prix-Reduction-Soutien),0) as total, ifnull(sum(Soutien),0) as soutien from `##_Cadref-Inscription` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		foreach($pdo as $p) $cours = $p['total'];
+		foreach($pdo as $p) {
+			$cours = $p['total'];
+			$soutien = $p['soutien'];
+		}
 		$sql = "select ifnull(sum(Prix-Reduction-Assurance),0) as total from `##_Cadref-Reservation` where AdherentId=$id and Annee='$annee' and Supprime=0 and Attente=0";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
@@ -189,12 +193,13 @@ class Adherent extends genericClass {
 			if(isset($data->AvoirDu)) $a->AvoirDu = $data->AvoirDu;
 			if(isset($data->AvoirUtilise)) $a->AvoirUtilise = $data->AvoirUtilise;
 		}
-//klog::l("aaaaaaaaaaaaaaaaaaaaaaaaaa",$a);
+
 		$a->Cours = $cours;
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours + $a->Dons - $regle - $diffe + $a->Regularisation - $a->AvoirUtilise;
+		$a->Soutien = $soutien;
+		$a->Solde = $a->Cotisation + $cours + $a->Dons - $regle - $diffe + $a->Regularisation - $a->AvoirUtilise + $a->AvoirDu;
 		$a->Save();
 
 		return true;
@@ -2174,6 +2179,7 @@ where ce.Visite=:cid";
 
 		
 		$nsold = (isset($params['NonSolde']) && $params['NonSolde']) ? true : false;
+		$soutien = Cadref::$Soutien;
 
 //		$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 //		$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
@@ -2189,7 +2195,8 @@ where ce.Visite=:cid";
 			."left join `##_Cadref-Discipline` d on d.Id=n.DisciplineId "
 			."where a.Annee='$annee' and (a.Cours<>0 or a.Reglement<>0 or a.Differe<>0 or a.Regularisation<>0 or a.Dons<>0 or a.Cotisation<>0 or a.Visites<>0 or a.AvoirReporte<>0)";
 		if($nsold)
-			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 or a.Cotisation=0 or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0)";		
+			$sql .= " and (a.Cours+a.Cotisation+a.Dons-a.Reglement-a.Differe+a.Regularisation-a.AvoirUtilise<>0 "   //
+			."or (a.Cours<>0 and a.Cotisation=0) or a.AvoirReporte+a.Avoirdu-AvoirUtilise<>0 or (a.Soutien<>0 and a.Soutien<>$soutien))";		
 		$sql .= " order by e.Nom,e.Prenom,e.Id,i.CodeClasse";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
