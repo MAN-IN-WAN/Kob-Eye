@@ -1,0 +1,11 @@
+<div class="container">
+    {% if bloc.Lien is not empty  %}
+    <a href="{{ bloc.Lien }}"  {% if bloc.Externe == 1 %} target="_blank"  {%  endif %}>
+        {%  endif %}
+        <h2 style="color: {{ bloc.Couleur }};text-align:center;font-size:1.8em;">{{ bloc.Titre }}</h2>
+        {% if bloc.Lien is not empty  %}
+    </a>
+    {%  endif %}
+    <div style="color: {{ bloc.Couleur }};font-size:1.2em;">{{ bloc.Text | raw}}</div>
+
+</div>

@@ -1,0 +1,354 @@
+<div id="container" class="panel">
+    <div class="panel-heading"><h3>Statistiques Avancées</h3></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen">Sommaire</div>
+            <ul>
+                <li><a href="/#/StatistiquesAvancees/Reservations#NbrPlacesResa">Nombre de places et de réservations</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaGenreMois">Répartition des réservations par Genre par Mois</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaGenreAn">Répartition des réservations par Genre par An</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#PlaceDispoGenreMois">Nombre de places disponibles par Genre par Mois</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#PlaceDispoGenreAn">Nombre de places disponibles par Genre par An</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#SpectProgGenre">Nombre de spectacles programmés par Genre</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaAcc">Répartition des réservations accompagnateurs</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaRSA">Répartition des réservations RSA</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaHF">Répartition des réservations Hommes / Femmes</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaVille">Répartition des réservations par ville</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#RepResaAge">Répartition des réservations par tranche d'âge</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#NbrPersSpect">Nombre de personne par spectacle</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#SpectAnnee">Spectacle(s) de l'année courante</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#SpectAnneePrec">Spectacle(s) de l'année précédente</a></li>
+                <li><a href="/#/StatistiquesAvancees/Reservations#ActStructSoc">Activités par Structures Sociales</a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="NbrPlacesResa">Nombre de places et de réservations</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 TitreStats">Pour le mois courant ({{ thisMonth }})</div>
+            <div id="HistNbPersCurrentMonth" class="col-lg-12">
+            </div>
+            <div>Total Resa : {{ NbResaMoisCourant }}</div>
+            <div>Total Personne : {{ NbPlacesMoisCourant }}</div>
+        </div>
+        <div class="row">
+        <div class="col-lg-12 TitreStats">Pour le mois précédent ({{ prevMonth }})</div>
+            <div id="HistNbPersOldMonth" class="col-lg-12">
+            </div>
+            <div>Total Resa : {{ NbResaMoisPasse }}</div>
+            <div>Total Personne : {{ NbPlacesMoisPasse }}</div>
+        </div>
+        <div class="row">
+        <div class="col-lg-12 TitreStats">Pour l'année courante ({{ thisYear }})</div>
+            <div id="HistNbPersCurrentYear" class="col-lg-12">
+            </div>
+            <div>Total Resa : {{ NbResaAnneeCourant }}</div>
+            <div>Total Personne : {{ NbPlacesAnneeCourant }}</div>
+        </div>
+        <div class="row">
+        <div class="col-lg-12 TitreStats">Pour l'année précédente ({{ prevYear }})</div>
+            <div id="HistNbPersOldYear" class="col-lg-12">
+            </div>
+            <div>Total Resa : {{ NbResaAnneePasse }}</div>
+            <div>Total Personne : {{ NbPlacesAnneePasse }}</div>
+        </div>
+
+        <!---- REPARTITION MENSUELLE RESERVATION PAR GENRE -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaGenreMois" >Répartition des réservations par Genre<br >Pour le mois courant ({{ thisMonth }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbPersCurrentMonth" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total Resa : {{ NbResaGenreCurrentMonth }}</div>
+            <div>Total Personne : {{ NbPlacesGenreCurrentMonth }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-lg-10 TitreStats" >Répartition des réservations par Genre<br >Pour le mois précédent ({{ prevMonth }})</div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbPlacesGenrePassMonth }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbPersOldMonth" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaGenreAn">Répartition des réservations par Genre<br >Pour l'année courante ({{ thisYear }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbPersCurrentYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbPlacesGenreCurrentYears }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-lg-10 TitreStats" >Répartition des réservations par Genre<br >Pour l'année précédente ({{ prevYear }})</div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbPersOldYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbPlacesGenrePassYears }}</div>
+        </div>
+
+        <!---- REPARTITION MENSUELLE Nombre de places disponibles  PAR GENRE -->
+         <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="PlaceDispoGenreMois" >Nombre de places disponibles par Genre <br>Pour le mois courant ({{ thisMonth }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbProgCurrentMonth" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResGenreCurrentMonth }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-lg-10 TitreStats" >Nombre de places disponibles par Genre <br>Pour le mois précédent ({{ prevMonth }})</div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbProgOldMonth" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResGenrePassMonth }}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="PlaceDispoGenreAn" >Nombre de places disponibles par Genre <br>Pour l'année courante ({{ thisYear }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbProgCurrentYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResGenreCurrentYear }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-lg-10 TitreStats" >Nombre de places disponibles par Genre <br>Pour l'année précédente ({{ prevYear }})</div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbProgOldYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResGenrePassYear }}</div>
+        </div>
+
+
+    <!-- NB DE SPECTACLE PROGRAMMÉS PAR GENRE -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="SpectProgGenre">Nombre de spectacles programmés par Genre<br />Pour l'année courante ({{ thisYear }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbSpecCurrentYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbSpecCurrentYear }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-lg-10 TitreStats" >Nombre de spectacles programmés par Genre<br />Pour l'année précédente ({{ prevYear }})</div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div id="PieNbSpecOldYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbSpecOldYear }}</div>
+        </div>
+        <!-- RÉSERVATION ACCOMPAGNATEURS -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaAcc" >Répartition des réservations accompagnateurs</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 TitreStats" >Pour l'année courante ({{ thisYear }})</div>
+            <div class="col-lg-6 TitreStats" >Pour l'année précédente ({{ prevYear }})</div>
+        </div>
+        <div class="row">
+            <div>Total personnes accompagnées : {{ NbPersonneAccom }}</div>
+            <div>Total personnes NON accompagnées : {{ NbPersonneNonAccom }}</div>
+            <div>Total : {{ NbPersonneNonAccom + NbPersonneAccom }}</div>
+            <div id="PieAccomCurrentYear" class="col-lg-6"></div>
+            <div>Total personnes accompagnées : {{ NbPersonneAccomOldYear }}</div>
+            <div>Total personnes NON accompagnées : {{ NbPersonneNonAccomOldYear }}</div>
+            <div>Total : {{ NbPersonneNonAccomOldYear + NbPersonneAccomOldYear }}</div>
+            <div id="PieAccomOldYear" class="col-lg-6"></div>
+        </div>
+
+        <!-- RÉSERVATION RSA -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaRSA" >Répartition des réservations RSA</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 TitreStats" >Pour l'année courante ({{ thisYear }})</div>
+            <div class="col-lg-6 TitreStats" >Pour l'année précédente ({{ prevYear }})</div>
+        </div>
+        <div class="row">
+            <div>Total personnes RSA : {{ NbPersonneRsa }}</div>
+            <div>Total personnes NON RSA : {{ NbPersonneNonRsa }}</div>
+            <div>Total : {{ NbPersonneNonRsa + NbPersonneRsa }}</div>
+            <div id="PieRsaCurrentYear" class="col-lg-6"></div>
+            <div>Total personnes RSA : {{ NbPersonneRsaOldYear }}</div>
+            <div>Total personnes NON RSA : {{ NbPersonneNonRsaOldYear }}</div>
+            <div>Total : {{ NbPersonneNonRsaOldYear + NbPersonneRsaOldYear }}</div>
+             <div id="PieRsaOldYear" class="col-lg-6"></div>
+        </div>
+
+        <!-- RÉSERVATION H/F -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaHF" >Répartition des réservations Hommes / Femmes</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 TitreStats" >Pour l'année courante ({{ thisYear }})</div>
+            <div class="col-lg-6 TitreStats" >Pour l'année précédente ({{ prevYear }})</div>
+        </div>
+        <div class="row">
+            <div>Total Homme : {{ NbPersonneH }}</div>
+            <div>Total Femme : {{ NbPersonneF }}</div>
+            <div>Total : {{ NbPersonneF + NbPersonneH }}</div>
+              <div id="PieHCurrentYear" class="col-lg-6"></div>
+            <div>Total Homme : {{ NbPersonneHOldYear }}</div>
+            <div>Total Femme : {{ NbPersonneFOldYear }}</div>
+            <div>Total : {{ NbPersonneFOldYear + NbPersonneHOldYear }}</div>
+            <div id="PieHOldYear" class="col-lg-6"></div>
+        </div>
+
+        <!-- REPARTITION DES RESERVATIONS  PAR VILLE -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaVille" >Répartition des réservations par ville<br />Pour le mois courant ({{ thisMonth }})</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResaVilleCurrentMonth }}</div>
+            <div id="PieResVilCurrentMonth" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 TitreStats" >Répartition des réservations par ville<br />Pour le mois précédent ({{ prevMonth }})</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResaVilleCurrentYear }}</div>
+            <div id="PieResVilCurrentYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div>Total : {{ NbResaVilleOldYear }}</div>
+            <div id="PieResVilOldYear" class="col-lg-10"></div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <!-- RÉSERVATION PAR TRANCHES D'AGES -->
+         <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="RepResaAge" >Répartition des réservations par tranche d'âge</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 TitreStats" >Pour l'année courante ({{ thisYear }})</div>
+            <div class="col-lg-6 TitreStats" >Pour l'année précédente ({{ prevYear }})</div>
+        </div>
+        <div class="row">
+            <div>Total : {{ NbPersCurrentYear }}</div>
+            <div id="PieAgeCurrentYear" class="col-lg-6"></div>
+            <div>Total : {{ NbPersOldYear }}</div>
+            <div id="PieAgeOldYear" class="col-lg-6"></div>
+        </div>
+
+        <!-- NB DE PERSONNES PAR SPECTACLE -->
+        <div class="row">
+            <div class="col-lg-12 TitreStatsGen" id="NbrPersSpect" >Nombre de personne par spectacle</div>
+        </div>
+        <div class="row">
+            <div>Total : {{ NbSpeParPersTot }}</div>
+              <div id="PieNbPersSpec" class="col-lg-12"></div>
+        </div>
+
+        <div class="col-lg-12 TitreStatsGen" id="SpectAnnee"> Spectacle(s) de l'année courante</div>
+            <table>
+                <tr>
+                    <td class="TabStats">Nombre de spectacle cumulé</td>
+                    <td class="TabStats">Nombre d'evenements</td>
+                </tr>
+                <tr>
+                    <td class="TabContentStats">{{ ListSpecCurrent.0 }}</td>
+                    <td class="TabContentStats">{{ ListSpecCurrent.1 }}</td>
+                </tr>
+            </table>
+            <div class="TitreStats">Liste des spectacles sans événements</div>
+            <table class="col-lg-12">
+                <tr>
+                    <td class="TabStats">Nom du Spectacle</td>
+                    <td class="TabStats">Date de Debut</td>
+                    <td class="TabStats">Date de Fin</td>
+                    <td class="TabStats">Nombre Evenement</td>
+                </tr>
+                {% for spec in ListSpecNoEventCurrentYear %}
+                    {% if spec.TotEve == 0 %}
+                        <tr>
+                            <td style="border: 1px solid #000">{{ spec.Nom }}</td>
+                            <td class="TabContentStats">{{ spec.Debut }}</td>
+                            <td class="TabContentStats">{{ spec.Fin }}</td>
+                            <td class="TabContentStats">{{ spec.TotEve }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+
+            <div class="col-lg-12 TitreStatsGen" id="SpectAnneePrec"> Spectacle(s) de l'année précédente</div>
+            <table>
+                <tr>
+                    <td class="TabStats">Nombre de spectacle cumulé</td>
+                    <td class="TabStats">Nombre d'evenements</td>
+                </tr>
+                <tr>
+                    <td class="TabContentStats">{{ ListSpecOld.0 }}</td>
+                    <td class="TabContentStats">{{ ListSpecOld.1 }}</td>
+                </tr>
+            </table>
+            <div class="TitreStats">Liste des spectacles sans événements</div>
+            <table class="col-lg-12">
+                <tr>
+                    <td class="TabStats">Nom</td>
+                    <td class="TabStats">Debut</td>
+                    <td class="TabStats">Fin</td>
+                    <td class="TabStats">Nb Event</td>
+                </tr>
+                {% for spec in ListSpecNoEventOldYear %}
+                    {% if spec.TotEve == 0 %}
+                        <tr>
+                            <td style="border: 1px solid #000">{{ spec.Nom }}</td>
+                            <td class="TabContentStats">{{ spec.Debut }}</td>
+                            <td class="TabContentStats">{{ spec.Fin }}</td>
+                            <td class="TabContentStats">{{ spec.TotEve }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+
+
+            <div class="col-lg-12 TitreStatsGen" id="ActStructSoc"> Activité par structure sociales</div>
+
+            <table>
+                <tr>
+                    <td class="TabStats">Nom de la structure</td>
+                    <td class="TabStats">Reservations</td>
+                    <td class="TabStats">Personnes</td>
+                </tr>
+                {% for spec in ActiviteStruct %}
+                    {% if spec.TotEve == 0 %}
+                        <tr>
+                            <td style="border: 1px solid #000">{{ spec.Nom }}, {{ spec.Tel }}, {{ spec.Mail }}</td>
+                            <td class="TabContentStats">{{ spec.NbResa }}</td>
+                            <td class="TabContentStats">{{ spec.NbPlaces }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+         </div>
+    </div>
+</div>

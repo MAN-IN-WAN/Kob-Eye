@@ -1,0 +1,26 @@
+### OSX template
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+*.iml
+.idea/
+*.ipr
+*.iws
+.idea_modules/
+
+# Node
+node_modules
+npm-debug.log
+build
+
+coverage/

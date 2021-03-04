@@ -84,8 +84,11 @@ foreach ($srv as $s) {
         $accList = $zimbra->getAllAccounts($d);$cosesTemp = array();
 
         $nbPro = 0;
+        $nbProActive = 0;
         $nbPop = 0;
+        $nbPopActive = 0;
         $nbBus = 0;
+        $nbBusActive = 0;
         $maxLimit = 0;
         $useQuota = 0;
 
@@ -113,18 +116,37 @@ foreach ($srv as $s) {
                 if ($cos == 'MAIL_PRO'){
                     $nbPro += 1;
                     $data[$clientId]['Domaines'][$d->get('name')]['MAIL_PRO'] = $nbPro;
+                    if ($data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['Status'] != 'closed'){
+                        $nbProActive++;
+                        $data[$clientId]['Domaines'][$d->get('name')]['MAIL_PRO_ACTIVE'] = $nbProActive;
+                    }
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaLimitProActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaLimit'];
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaUsedProActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaUsed'];
                 }
             }
             if (isset($nbPop)){
                 if ($cos == 'MAIL_POP'){
                     $nbPop += 1;
                     $data[$clientId]['Domaines'][$d->get('name')]['MAIL_POP'] = $nbPop;
+                    if ($data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['Status'] != 'closed'){
+                        $nbPopActive++;
+                        $data[$clientId]['Domaines'][$d->get('name')]['MAIL_POP_ACTIVE'] = $nbPopActive;
+                    }
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaLimitPopActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaLimit'];
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaUsedPopActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaUsed'];
                 }
+
             }
             if (isset($nbBus)){
                 if ($cos == 'MAIL_BUS'){
                     $nbBus += 1;
                     $data[$clientId]['Domaines'][$d->get('name')]['MAIL_BUS'] = $nbBus;
+                    if ($data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['Status'] != 'closed'){
+                        $nbBusActive++;
+                        $data[$clientId]['Domaines'][$d->get('name')]['MAIL_BUS_ACTIVE'] = $nbBusActive;
+                    }
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaLimitBusActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaLimit'];
+                    $data[$clientId]['Domaines'][$d->get('name')]['QuotaUsedBusActive'] += $data[$clientId]['Domaines'][$d->get('name')]['Boites'][$accId]['QuotaUsed'];
                 }
             }
 
@@ -202,6 +224,12 @@ foreach ($data as &$client){
         $domain['percentageDom'] = ($client['QuotasUsedDomain']/$client['QuotasLimitDomain'])*100;
         $domain['QuotasLimitDomain'] = formatSize($domain['QuotasLimitDomain']);
         $domain['QuotasUsedDomain'] = formatSize($domain['QuotasUsedDomain']);
+        $domain['QuotaUsedProActive'] = formatSize($domain['QuotaUsedProActive']);
+        $domain['QuotaLimitProActive'] = formatSize($domain['QuotaLimitProActive']);
+        $domain['QuotaUsedPopActive'] = formatSize($domain['QuotaUsedPopActive']);
+        $domain['QuotaLimitPopActive'] = formatSize($domain['QuotaLimitPopActive']);
+        $domain['QuotaUsedBusActive'] = formatSize($domain['QuotaUsedBusActive']);
+        $domain['QuotaLimitBusActive'] = formatSize($domain['QuotaLimitBusActive']);
         foreach ($domain['Boites'] as &$account){
             $account['QuotaLimit'] = formatSize($account['QuotaLimit']);
             $account['QuotaUsed'] = formatSize($account['QuotaUsed']);

@@ -8,7 +8,9 @@ if (isset($data['state'])){
 }
 if ($vars['state'] == 0){
     $vars['client'] = Sys::getData('Reservation','Client',0,100000);
-    $html = 'Année : <input type="text" class="form-control" ng-model="StatsStructures.args.Date"><br>';
+//    $html = 'Année : <input type="text" class="form-control" ng-model="StatsStructures.args.Date"><br>';
+    $html = 'Date Debut : <h2 style="color:red">Attention le format de date doit être jj/mm/aaaa pour être valide !</h2><input type="text" class="form-control" ng-model="StatsStructures.args.DateDebut"><br>';
+    $html .= 'Date Fin : <h2 style="color:red">Attention le format de date doit être jj/mm/aaaa pour être valide !</h2><input type="text" class="form-control" ng-model="StatsStructures.args.DateFin"><br>';
     $tuc = '';
     foreach ($data['client'] as $items){
         $tuc.= $items['Nom'];
@@ -28,7 +30,7 @@ if ($vars['state'] == 0){
 
 //    setcookie('clientSelect',$client,3600,'/',Sys::$domain);
     $html = '<button ng-click="reInitStatsStructures();">Retour à la selection</button>
-    <iframe src="/Reservation/Statistiques/StatsStructures.pdf?state=3&Date='.$data['Date'].'&uid='.$uid.'" frameborder="0" style="width:100%;height:900px;"></iframe>';
+    <iframe src="/Reservation/Statistiques/StatsStructures.pdf?state=3&Date='.$data['Date'].'&DateDebut='.$data['DateDebut'].'&DateFin='.$data['DateFin'].'&uid='.$uid.'" frameborder="0" style="width:100%;height:900px;"></iframe>';
     $ret = array(
         'html'=>$html,
         'client'=>$data['client'],
@@ -40,10 +42,16 @@ if ($vars['state'] == 0){
     $choix = file_get_contents('/tmp/bidule'.$data['uid'].'.cli');
     $choix = unserialize($choix);
     $Date = $data['Date'];
-    $DateDebut = mktime(0, 0, 0, 1, 1, $Date);
-    $DateFin = mktime(23, 59, 59, 12, 31, $Date);
+//    $DateDebut = mktime(0, 0, 0, 1, 1, $Date);
+//    $DateFin = mktime(23, 59, 59, 12, 31, $Date);
+    $DateDebut = $data['DateDebut'];
+    $DateFin = $data['DateFin'];
 
+    list($day, $month, $year) = explode('/', $DateDebut);
+    $DateDebut = mktime(0, 0, 0, $month, $day, $year);
 
+    list($day, $month, $year) = explode('/', $DateFin);
+    $DateFin = mktime(0, 0, 0, $month, $day, $year);
 
     $html = '<table border="1" cellspacing="0" cellspadding="0" style="max-width:700px">';
     $html .= '<tr><th colspan="4" style="font-size:14px;font-weight:bold;text-align:center;">Liste des réservations du '.date('d/m/Y',$DateDebut).' au '.date('d/m/Y',$DateFin).'</th>   
@@ -71,12 +79,10 @@ if ($vars['state'] == 0){
             foreach ($evenements as $event) {
                 if($event->DateDebut<$DateDebut || $event->DateDebut>$DateFin) continue;
                 $sp = $event->getOneParent('Spectacle');
-                $genre[] = $sp->Genre;
-
                 $cpt = Sys::getCount('Reservation', 'Reservations/' . $reserv->Id . '/Personne');
                 $NbResa++;
                 $NbPers += $cpt;
-                $genre[$sp->Genre] = $NbPers;
+                $genre[$sp->Genre] += $cpt;
             }
         }
         $html .= '<tr>
@@ -84,10 +90,11 @@ if ($vars['state'] == 0){
                     <td>'.$objCli->Ville.'</td>
                     <td>'.$NbResa.'</td>
                     <td>'.$NbPers.'</td>
-                    </tr>';
+                  </tr>';
         $TotResa += $NbResa;
         $TotPers += $NbPers;
     }
+
     $html .= '<tr style="width:190mm;font-size:10px;background-color:#ccc;">
                 <td colspan="2" style="text-align:right;font-size:20px;font-weight:bold;color:#ff0000;padding:20px;">Total GÉNÉRAL</td>
                 <td style="text-align:right;font-weight:bold;padding-right:10px;font-size:16px;">'.$TotResa.'</td>
@@ -95,19 +102,19 @@ if ($vars['state'] == 0){
             </tr>
             <tr style="width:190mm;font-size:10px;">
 				<td colspan="4" style="text-align:center;font-size:12px;font-weight:bold;color:#000;padding:5px;">Répartition par genre</td>
-			</tr>
-            ';
+			</tr>';
 
-//    $nombre = array_count_values($genre);
-//    foreach ($genre as $value){
-//        $nombre[$value]++;
-//    }
+    foreach($genre as $key => $value){
+        $html .= '<tr><td colspan="3" style="text-align:center;font-size:12px;font-weight:bold;color:#000;padding:5px;">'.$key.'</td><td>'.$value.'</td></tr>';
+    }
+    $sum = array_sum($genre);
 
-    $test = print_r($genre,true);
-//    $totNbGenre = sizeof($nombre);
+
 //    $test = print_r($genre,true);
+//    $totNbGenre = sizeof($nombre);
+//    $test = print_r($reservations,true);
 
-    $html .= '<tr><td>'.$test.'</td></tr>';
+//    $html .= '<tr><td>'.$test.'</td></tr>';
 
     $html .= '</table>';
 

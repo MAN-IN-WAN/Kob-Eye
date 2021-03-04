@@ -1,0 +1,6 @@
+{%  if Direct %}
+    {{ include(template_from_string(module('Vetoccitan/Conseil/Fiche'))) }}
+{%  else %}
+    {{ include(template_from_string(module('Vetoccitan/Conseil/List'))) }}
+
+{%  endif %}

@@ -1,0 +1,32 @@
+<script>
+    var FooterData = {
+        "contact":{
+            "url": "contact",
+            "alias":"contact",
+            "titre":"Contact"
+        },
+        "infoLegales":{
+            "url": "mentionsLegales",
+            "alias":"mentionsLegales",
+            "titre":"Mentions légales"
+        }
+    };
+    var AccessData = {
+        "Service":[
+            {% for serv in service %}
+                {
+                    "logo": "{{ serv.Logo }}",
+                    "titre": "{{ serv.Titre }}"
+                },
+            {% endfor %}
+        ],
+        "Langue":[
+            {% for l in langue %}
+                {
+                    "logo": "{{ l.Logo }}",
+                    "titre": "{{ l.Titre }}"
+                },
+            {% endfor %}
+        ]
+    }
+</script>

@@ -1,0 +1,1206 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+/* FONT */
+
+/*@font-face {*/
+/*	font-family: 'latoblack';*/
+/*	src: url('../Fonts/lato-black-webfont.eot');*/
+/*	src: url('../Fonts/lato-black-webfont.eot?#iefix') format('embedded-opentype'),*/
+/*	url('../Fonts/lato-black-webfont.woff2') format('woff2'),*/
+/*	url('../Fonts/lato-black-webfont.woff') format('woff'),*/
+/*	url('../Fonts/lato-black-webfont.ttf') format('truetype'),*/
+/*	url('../Fonts/lato-black-webfont.svg#latoblack') format('svg');*/
+/*	font-weight: normal;*/
+/*	font-style: normal;*/
+
+/*}*/
+
+/*
+@font-face {
+	font-family: 'SuisseIntl-Book-WebM';
+	url('../Fonts/SuisseIntl-Book-WebM.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebM.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+@font-face {
+	font-family: 'SuisseIntl-Book-WebS';
+	url('../Fonts/SuisseIntl-Book-WebS.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebS.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+@font-face {
+	font-family: 'SuisseIntl-Book-WebXL';
+	url('../Fonts/SuisseIntl-Book-WebXL.woff') format('woff'),
+	url('../Fonts/SuisseIntl-Book-WebXL.woff2') format('woff2'),
+	font-weight: normal;
+	font-style: normal;
+
+}*/
+
+@font-face {
+	font-family: 'neue-haas-grotesk-display';
+	src: url('../Fonts/NHaasGroteskTXPro-55Rg.ttf') format('truetype');
+	font-style: normal;
+	font-weight: 400;
+}
+
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	/*font-family: 'SuisseIntl-Book-WebM', Sans-Serif;*/
+	font-family: 'neue-haas-grotesk-display', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size:12px;
+	width: 100%;
+	line-height:20px;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.fullWidth {
+	width:100%;
+	margin:auto;
+}
+.Container {
+	max-width:1600px/*100%*/;
+	margin:auto;
+}
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+h1 {
+	font-size:22px;
+}
+h2 {
+	font-size:24px;
+}
+body {
+	font-size:16px;
+}
+
+
+input, textarea, select, button {
+	font-family: 'neue-haas-grotesk-display', sans-serif;
+	font-size: 12px;
+
+}
+
+a {
+	text-decoration: none;
+	color:#ccc;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+p {
+	/*text-align: justify;*/
+}
+
+/** divers **/
+
+#SiteVeto1 {
+	position: relative;
+	width:100% /*1200px*/;
+	margin:22px auto;
+}
+
+#SiteVeto1 .bloc-infos {
+	margin: 10px 0;
+	padding-bottom: 10px;
+	border-bottom :1px solid #000;
+}
+.bloc-infos .col-lg-3.col-md-3.col-sm-3,
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+	padding: 0;
+}
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+    text-align: right;
+}
+.btn-default {
+	border: 2px solid #000;
+	padding: 5px;
+}
+.borderAnim {
+	border-bottom: 1px solid #000;
+}
+.borderTop {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+	margin-top: 15px;
+}
+.borderTopContenu {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+}
+/** CAROUSEL **/
+
+#SiteVeto1 #Bando {
+	width: 100%;
+	object-fit: cover;
+	object-position: center;
+	border-bottom:1px solid #000;
+}
+/*** MENU  **/
+
+#SiteVeto1 #MenuBar {
+	padding: 25px 0;
+	height: 75px;
+	width: 100%;
+	margin: 0 0 10px 0;
+	/*border-bottom: 1px solid #000;*/
+	font-size: 1.3em;
+	position:initial;
+	z-index: 1000;
+	background-color: #fff;
+}
+#SiteVeto1 #MenuBar .NotHome {
+	position: fixed; /* A NE PAS ENLEVER */
+	top: 0;
+}
+
+#SiteVeto1 #MenuBar h1 {
+	font-size:1em;
+}
+
+#SiteVeto1 #MenuBar .col-md-3,
+#SiteVeto1 #MenuBar .col-sm-3,
+#SiteVeto1 #MenuBar .col-lg-3
+/*#SiteVeto1 #Main .Gauche .col-md-3,*/
+/*#SiteVeto1 #Main .Gauche .col-sm-3,*/
+/*#SiteVeto1 #Main .Gauche .col-lg-3*/
+
+{
+	padding-left: 0;padding-right: 0;
+}
+
+#SiteVeto1 #MenuBar ul.Menu0 {
+	list-style: none;
+	display: flex;
+    /*float: right;*/
+}
+#MenuBar ul.Menu0 li {
+	float: left;
+    padding: 5px 35px 0 10px;
+}
+#MenuBar ul.Menu0 li.Last {
+    margin-right: -20px;
+}
+
+#MenuBar ul.Menu0 li a {
+	color:#000;
+	text-decoration: none;
+}
+#MenuBar ul.Menu0 li a:hover {
+	color:#ccc;
+	cursor:pointer;
+	text-decoration: none;
+}
+#MenuBar ul.Menu0 li.Current a{
+	color:#ccc;
+}
+#MenuBar ul.Menu0 li h1 {
+	line-height: inherit;
+
+}
+
+
+/** COL GAUCHE **/
+#SiteVeto1 #Content .Gauche h2 {
+	font-size:1em;
+}
+
+
+
+/*** CONTENU  **/
+#SiteVeto1 #Content {
+	position: relative;
+	margin-top:65px;
+}
+
+#SiteVeto1 #Content .Contenu
+{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+#SiteVeto1 #Content .ContenuMenu
+{
+	margin-left: 29px;
+}
+
+#SiteVeto1 #Content .titreImage .legende {
+	font-size:16px;
+	/*font-style: italic;*/
+	margin-top:15px;
+}
+#SiteVeto1 #Content .titreArticle h2 {
+	font-size:24px;
+	text-transform: uppercase;
+	margin-top:15px;
+}
+#SiteVeto1 #Content .equipe img:hover {
+	cursor: pointer;
+}
+#SiteVeto1 #Content .equipe h5 {
+	font-size:1em;
+	text-transform: uppercase;
+	margin-bottom:15px;
+}
+#SiteVeto1 #Content .textArticle .texte {
+	font-size:16px;
+	font-style: normal;
+	margin-top:15px;
+	margin-bottom: 15px;
+
+}
+#SiteVeto1 #Content .Contenu .row.equipe {
+	margin-left:18px;
+	margin-bottom: 12px;
+}
+#SiteVeto1 #Content .Contenu .row.equipeteam {
+	margin-bottom: 22px;
+}
+
+#SiteVeto1 #Content .Contenu .row.conseils,
+#SiteVeto1 #Content .Contenu .row.services,
+#SiteVeto1 #Content .Contenu .row.news
+{
+	margin-bottom: 22px;
+}
+
+
+/** NEWS **/
+#SiteVeto1 .bloc-infos.news {
+	border: none;
+}
+
+h2.news {
+ font-size: 16px;
+ text-align: center;
+ border: 1px solid #000;
+ padding: 5px;
+ margin: 40px 0 10px 0;
+}
+
+#Footer{
+	border-top: 1px solid black;
+}
+
+#Pre-Footer {
+    background-color: #ccc;
+    height: 290px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    /*margin:10px 0 10px 0;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.filtres {
+	display: flex;
+    list-style: none;
+    font-size:20px;
+    text-align: center;
+
+}
+.filtres li {
+	    border: 1px solid #000;
+    	padding: 5px;
+        margin: 0 5px 10px 5px;
+        width:115px;
+        height:29px;
+		cursor: pointer;
+}
+.filtres li.active {
+	border: 1px solid #000;
+    padding: 5px;
+    background-color: #000;
+    margin: 0 5px 10px 5px;
+    color:#fff;
+    width:115px;
+        height:29px;
+}
+
+
+
+/** SCROLL */
+#newsGauche {
+	position: relative;
+	/* POUR REUNION WEB ON DESACTIVE */
+	overflow-y: scroll;
+	height: 820px;
+	width: 100%;
+	/*padding-right: 5px;*/
+	margin-bottom: 22px;
+}
+#newsGauche::-webkit-scrollbar {
+	display: none;
+}
+#Contenu-scroll {
+	position: relative;
+	/* POUR REUNION WEB ON DESACTIVE */
+	overflow-y: scroll;
+	height: 800px;
+	width: 100%;
+	margin-bottom: 22px;
+	/* Ajout padding a gauche car texte coupé avec le overflow*/
+	padding-left: 20px;
+}
+
+.scrollbar-transparent::-webkit-scrollbar {
+	display: none;
+}
+
+
+#newsGauche::-webkit-scrollbar {
+	display: none;
+}
+
+.boutonCentre {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.boutonCentre a {
+    /*color: #000;*/
+    color: #fff;
+	background-color: black;
+    border: 1px solid #000;
+    padding: 5px;
+	text-decoration: none;
+}
+
+.titreCentre {
+    border-bottom: 1px solid #000;
+    margin-top: 20px;
+}
+#SiteVeto1 .bloc-Horaires .bloc-infos {
+    padding: 0;
+    margin: 0;
+}
+#SiteVeto1 .bloc-Horaires {
+   font-size: 15px;
+   line-height: 22px;
+}
+.nomClinique {
+  border-top: 1px solid #000;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
+/* Formulaire */
+.labelform {
+	display:block;
+	padding: 5px 0 5px 0;
+}
+.inputform,
+.textform {
+	width:100%;
+}
+.textform {
+	resize:none;
+	width:100%;
+	height:200px;
+}
+button {
+    color: #000;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: initial;
+}
+button:hover {
+    color: #fff;
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: #000;
+    font-family: inherit;
+    font-size: initial;
+}
+/** Anim Equipe */
+#leftSide {
+	background: #d7d7d7;
+	top: 0px;
+	z-index: 100;
+	width: 50%;
+	/*height: 1500px;*/
+	display: inline-block;
+	position: relative;
+}
+#rightSide {
+	background: white;
+	bottom:0px;
+	width: 50%;
+	/*height: 1500px;*/
+	display: inline-block;
+	position: relative;
+	z-index: 100;
+	/*overflow: scroll;*/
+	/*overflow:auto;*/
+}
+#anim{
+	 display: flex;
+	 /*position: absolute;*/
+	 /* height: 600px; */
+ }
+#animBot{
+	display: flex;
+	/*position: absolute;
+	/* height: 600px; */
+}
+#rightSide p {
+	position:absolute;
+	top:450px;
+	left:80px;
+}
+#rightSide span {
+	position:absolute;
+	top:750px;
+	left:80px;
+}
+#rightSide div {
+	position:absolute;
+	top:650px;
+	left:260px;
+	border: 1px solid #000;
+	padding: 1%;
+}
+#rightSide h2 {
+	position:absolute;
+	top:27px;
+	left:701px;
+}
+#animAccueil{
+	position:relative;
+	top:0px;
+	background-color:white;
+	z-index: 100;
+}
+
+
+#testouille {
+	position: relative;
+	/*
+	bottom: -200px;
+	*/
+	/*background-color: black;*/
+}
+#durAccueil{
+	display:none;
+}
+#durClinique{
+	display:none;
+}
+#durConseils{
+	display:none;
+}
+#durContact{
+	display:none;
+}
+#durEquipe{
+	display:none;
+}
+#durNews{
+	display:none;
+}
+#durServices{
+	display:none;
+}
+
+#mLegal{
+	text-align: center;
+	cursor: pointer;
+	color: #ccc;
+	padding: 10px 0;
+}
+
+#mention{
+	border-top: 1px solid black;
+	/*margin-left: 20px;
+	margin-right: 20px;*/
+}
+
+/* PAGE CONTACT */
+form.Contact {
+	margin-top: 20px;
+}
+
+
+/**** carousel clinique **/
+#myCarousel h2{
+	font-size:2em;
+	color:#000;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+}
+#myCarousel2 .item {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background1.active {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background2.active {
+	background-color: #1b9e1b;
+}
+#myCarousel2 .item.background3.active {
+	background-color: #0d7bdc ;
+}
+#myCarousel2 h2{
+	 font-size:2em;
+	 color:#000;
+	 font-weight: bold;
+	 text-align: center;
+	 text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+ }
+
+ /* ajout Marie 01/04/20 pour logo clinique dans menu*/
+/* Modif Patrick 20/04/20 taille du logo dans menu bar de 41% à 27%, full size à voir pour obtenir un logo plus grand  */
+
+ #MenuBar img {
+    width: 27%;
+}
+
+#durPubAccueil{
+display:none
+}
+#durPubFootAccueil{
+	display:none
+}
+
+.col-lg-11.col-md-11.col-sm-11.borderTopContenu,
+.col-lg-10.col-md-10.col-sm-10.borderTopContenu,
+.col-lg-9.col-md-9.col-sm-9.borderTopContenu,
+.col-lg-8.col-md-8.col-sm-8.borderTopContenu
+ {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.row.news.borderTop,
+.row.conseils.borderTop,
+.row.services.borderTop {
+    margin-left: 5px;
+    margin-right: -18px;
+}
+
+
+.row.news.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.conseils.borderTop .col-lg-5.col-md-5.col-sm-5,
+.row.services.borderTop .col-lg-5.col-md-5.col-sm-5 {
+    margin-left: -14px;
+}
+
+.row.borderTop {
+     margin-right: 0;
+}
+.tutu{
+	border-bottom: 1px solid black;
+}
+
+.Services,
+.Conseils,
+.News {
+    margin-left: -20px;
+}
+
+.row.equipe .col-lg-1.col-md-1.col-sm-1{
+	width:16%;
+}
+
+.row.news.borderTop .titreImage .legende,
+.row.conseils.borderTop .titreImage .legende,
+.row.services.borderTop .titreImage .legende {
+    font-size: 16px;
+    margin-bottom: -17px;
+    margin-top:0px !important;
+}
+
+.imgLogo{
+	margin-left:2%;
+}
+
+.row.filtresarticle {
+	margin-left: -20px;
+}
+.row.Articles {
+	margin-left:0px !important;
+}
+
+.boutonretour {
+    border: 1px solid #000;
+   padding: 4px;
+    margin: 0 5px 10px 5px;
+    width: 135px;
+    height: 35px;
+    float: right;
+    font-size: 22px;
+    text-align: center;
+    vertical-align: middle;
+
+}
+.boutonretour a {
+    text-align: center;
+	text-decoration: none;
+    vertical-align: middle;
+    color: #000;
+}
+.boutonretour a:hover {
+    text-align: center;
+	text-decoration: none;
+    vertical-align: middle;
+    color: #ccc;
+}
+.cercle{
+	position: absolute;
+	left: 688px!important;
+	top: 20px!important;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	border: 1px solid black;
+}
+
+.carousel {
+    position: relative;
+    margin-bottom: -60px !important; 
+}
+form.Contact {
+    margin-top: 20px;
+    margin-left: -17px;
+}
+
+#Bando img {
+    margin-top: -22px;
+    max-height: 800px;
+    width:100%;
+}
+.News img {
+    width: 420px;
+    height: 290px;
+}
+
+.borderBottom{
+	border-bottom: 1px solid black;
+}
+
+#detailVeto{
+	text-decoration: underline;
+}
+
+
+
+/** Gestion CSS du Menu selon les résolutions**/
+@media screen and (min-width: 1158px) and (max-width: 1197px) { 
+#MenuBar ul.Menu0 li {
+    float: left;
+    padding: 5px 7px 0 7px;
+}
+}
+@media screen and (min-width: 1198px) and (max-width: 1318px) {
+#MenuBar ul.Menu0 li {
+    float: left;
+    padding: 5px 9px 0 9px;
+}
+#SiteVeto1 .bloc-Horaires .bloc-infos {
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+}
+
+@media screen and (min-width: 1319px) and (max-width: 1370px){
+	#MenuBar ul.Menu0 li {
+		float: left;
+		padding: 5px 15px 0 12px;
+	}
+	#Bando img {
+    margin-top: -22px;
+    max-height: 550px;
+    width:100%;
+}
+}
+
+@media screen and (min-width: 1371px) and (max-width: 1440px) {
+	#MenuBar ul.Menu0 li {
+		float: left;
+		padding: 5px 18px 0 12px; }
+
+		#Bando img {
+    margin-top: -22px;
+    max-height: 550px;
+    width:100%;
+	}
+}
+
+@media screen and (min-width: 1440px) and (max-width:1580px) {
+
+#MenuBar ul.Menu0 li {
+    float: left;
+    padding: 5px 27px 0 10px;
+}
+}
+
+@media screen and (min-width: 1370px) and (max-width:1600px) {
+
+#Bando img {
+    margin-top: -22px;
+    max-height: 674px;
+    width: 100%;
+}
+}
+
+/** fin gestion menu selon resolution **/
+
+
+/*** RESPONSIVE ***/
+/** Extra small devices (portrait phones, less than 576px)**/
+@media screen and (max-width: 575.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#Main{
+		/*border-top: 1px solid black;*/
+		padding-top: 10px;
+	}
+	#SiteVeto1 #Content {
+		margin:0!important;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	/*#SiteVeto1 #MenuBar #wrap {*/
+	/*	display:block;*/
+	/*}*/
+
+#SiteVeto1 #Content .Contenu {
+    margin-left: -8px;
+    margin-top: 0;
+}
+#newsGauche {
+    position: relative;
+    overflow-y: scroll;
+    height: 435px;
+    width: 100%;
+    margin-left: -8px;
+}
+#Contenu-scroll {
+    position: relative;
+    overflow-y: scroll;
+    height: 570px;
+    width: 100%;
+    margin-bottom: 22px;
+    padding-left: 20px;
+}
+.bloc-infos .col-lg-9.col-md-9.col-sm-9 {
+    padding: 0px;
+    padding-right: 1px;
+}
+#PubClinique {
+    /*margin-top: 52px;*/
+        border-top: 1px solid #000;
+}
+.col-lg-11.col-md-11.col-sm-11.borderTopContenu, 
+.col-lg-10.col-md-10.col-sm-10.borderTopContenu, 
+.col-lg-8.col-md-8.col-sm-8.borderTopContenu {
+    padding-left: 0px;
+    padding-right: 15px;
+}
+.col-lg-9.col-md-9.col-sm-9.borderTopContenu {
+	padding-left: 0px;
+    padding-right: 15px;
+    margin-left: 0;
+}
+.services img.img-responsive,
+.conseils img.img-responsive {
+    width: 100%;
+}
+.services .col-xs-12,
+.conseils .col-xs-12,
+.Clinique .col-xs-12{
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.borderTopContenu {
+    border-top: 1px solid #000;
+    padding-top: 15px;
+    margin-left: -15px;
+ }
+
+.Clinique .imgArticle,
+.Clinique .titreImage,
+.Clinique .titreArticle,
+.Clinique .textArticle {
+	margin-left: 15px;
+}
+#SiteVeto1 #Content .Contenu .row.equipe {
+    margin-left: 18px;
+    margin-right: 0px;
+    margin-bottom: 12px;
+}
+.equipe .col-lg-10.col-md-10.col-sm-10.borderTopContenu {
+    padding-right: 0;
+    margin-left: 0;
+}
+.row.equipe .col-lg-1.col-md-1.col-sm-1 {
+    width: 25%;
+}
+.filtres {
+    display: flex;
+    list-style: none;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+.filtres li {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    margin: 0 5px 10px 5px;
+    width: 105px;
+    height: 30px;
+    cursor: pointer;
+}
+ .filtres li.active {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    background-color: #000;
+    margin: 0 5px 10px 5px;
+    color: #fff;
+    width: 105px;
+    height: 30px;
+}
+.row.Articles {
+    margin-left: 18px !important;
+}
+
+/* Menu responsive */
+
+
+h1.catresponsive {
+    padding-top: 8px;
+    padding-left: 24px;
+}
+ul.Menu0.cssMenu {
+    border-bottom: 1px solid #000;
+        padding-left: 20px;
+}
+
+#SiteVeto1 #Bando {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-bottom: none;
+}
+
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#Main{
+		border-top: 1px solid black;
+		padding-top: 10px;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	/*#SiteVeto1 #MenuBar #wrap {*/
+	/*	display:block;*/
+	/*}*/
+#SiteVeto1 .bloc-infos {
+    margin: 10px 0;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #000;
+}
+.responsiveaccueil {
+column-count:2;
+}
+#newsGauche {
+    position: relative;
+    overflow-y: scroll;
+    height: 215px;
+    width: 100%;
+    /* padding-right: 5px; */
+    margin-bottom: 22px;
+}
+#SiteVeto1 #Content .Contenu {
+    margin-left: 0 ;
+    margin-top: 20px;
+}
+.titreCentre {
+    border-bottom: 1px solid #000;
+    margin-top: 20px;
+    padding-top: 24px;
+}
+.titreCentre p {
+    border-top: 1px solid #000;
+}
+.textArticle {
+	width: 50%;
+    float: right;
+    margin-top: -75px;
+ }
+
+.filtres {
+    display: flex;
+    list-style: none;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+.filtres li {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    margin: 0 5px 10px 5px;
+    width: 96px;
+    height: 27px;
+    cursor: pointer;
+}
+ .filtres li.active {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    background-color: #000;
+    margin: 0 5px 10px 5px;
+    color: #fff;
+    width: 96px;
+    height: 27px;
+}
+.borderTopContenu {
+    border-top: 1px solid #000;
+    padding-top: 15px;
+    margin-left: -15px !important;
+}
+
+}
+
+/** Medium devices (tablets, 768px and up) **/
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#Main{
+		border-top: 1px solid black;
+		padding-top: 10px;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	/*#SiteVeto1 #MenuBar #wrap {*/
+	/*	display:block;*/
+	/*}*/
+.responsiveaccueil {
+	column-count: 2;
+	margin-right: 12px;
+ }
+ #SiteVeto1 .bloc-infos {
+    margin: 10px 12px 0 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000;
+}
+ #newsGauche {
+    position: relative;
+    overflow-y: scroll;
+    height: 220px;
+    width: 100%;
+    /* padding-right: 5px; */
+    margin-bottom: 22px;
+}
+.titreCentre {
+    border-bottom: 1px solid #000;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+.titreCentre p {
+    border-top: 1px solid #000;
+}
+
+.filtres {
+    display: flex;
+    list-style: none;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+.filtres li {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    margin: 0 5px 10px 5px;
+    width: 96px;
+    height: 27px;
+    cursor: pointer;
+}
+ .filtres li.active {
+    border: 1px solid #000;
+    /* padding: 5px; */
+    background-color: #000;
+    margin: 0 5px 10px 5px;
+    color: #fff;
+    width: 96px;
+    height: 27px;
+}
+.imgArticle {
+	float: left;
+    width: 50%;
+    margin-left: -13px;
+    margin-right: 12px;
+}
+#SiteVeto1 #Content .titreImage .legende {
+    font-size: 16px;
+    /* font-style: italic; */
+    margin-top: 0px;
+}
+}
+
+/*
+
+Jusqu’à 479px : smartphone en portrait
+		   De 480px à 959px : smartphone en paysage, tablette en portrait et petite tablette en paysage
+De 960px à 1280px : tablette en paysage, écran d’ordinateur de taille petite et moyenne
+1281px et au delà : grand écran d’ordinateur (21″ et + en plein écran )
+
+Et dans les cas où votre design initial est basé sur une largeur de 1024px, il suffit de remplacer le point de rupture 960px par 1024px.
+
+ Donc pour résumer : 480px | 960px ou 1024px ( selon votre design )  | 1281px*/
+
+
+#wrap {
+	font-family: sans-serif;
+	font-size: 21px;
+	line-height: 1.6;
+	margin: 0;
+	/*display: none;*/
+	/*color: #f00;*/
+	-webkit-transition: all .5s ease-in;
+	transition: all .5s ease-in;
+}
+
+#open,
+#close {
+	display: block;
+}
+
+#close a {
+	color: black;
+	text-decoration: none;
+	display: block;
+	z-index: 10000;
+}
+
+
+svg {
+	width: 30px;
+	display: block;
+	float:right;
+	margin-right: 10px;
+}
+
+
+#float{
+	position:absolute;
+	/*display:none;*/
+	top:-350px;
+	width:100%;
+	z-index:1000;
+	background-color: white;
+	-webkit-transition: left 0.5s linear;
+}
+
+
+#wrap:target #float {
+	top: 0px;
+}
+
+/* ecran tablette portrait */
+@media (min-width: 469px) and (max-width: 1024px) {
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#Main{
+		border-top: 1px solid black;
+		padding-top: 10px;
+	}
+	.container {
+		width: 100%;
+		padding: 0;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	/*#float{*/
+	/*	left: -830px;*/
+	/*}*/
+
+	#submenu .container {
+		width: 100%;
+	}
+
+	#submenu .container .col-sm-3 {
+		width: 24%;
+	}
+	.spectacles-list {
+		margin: 0;
+		column-count: 2;
+		column-gap: 0;
+	}
+	#SiteVeto1 #MenuBar #wrap {
+		display:block;
+	}
+
+	/* ADMIN */
+
+}
+

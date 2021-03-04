@@ -445,7 +445,7 @@ h2.news {
     list-style: none;
     font-size: 20px;
     text-align: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-content: stretch;
     margin-top: 15px;
     padding-bottom: 15px;
@@ -460,7 +460,7 @@ h2.news {
 .filtres li {
     border: 1px solid #000;
     padding: 6px;
-    margin: 0 10px 0 0;
+    margin: 0 10px 5px 0;
     /*width: 115px;*/
     height: 33px;
     cursor: pointer;
@@ -474,6 +474,7 @@ h2.news {
 .lien a {
     display: block;
     text-decoration: none;
+    width: max-content;
 }
 
 .filtres li.active a {
@@ -1147,7 +1148,7 @@ li.menuLink {
 
 
 .logovetoccitan img {
-    width: 110px;
+    width: 80%;
 }
 .logovetoccitan {
 text-align:center;

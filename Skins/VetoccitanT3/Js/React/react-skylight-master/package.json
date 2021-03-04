@@ -1,0 +1,80 @@
+{
+  "name": "react-skylight",
+  "version": "0.5.1",
+  "description": "A react component for modals and dialogs.",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "watch": "babel src --watch -d lib",
+    "develop": "karma start --tdd",
+    "karma": "karma start",
+    "test": "npm-run-all karma build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:marcio/react-skylight.git"
+  },
+  "bugs": "https://github.com/marcio/react-skylight/issues",
+  "keywords": [
+    "React",
+    "Modal",
+    "Dialog",
+    "react-component"
+  ],
+  "tags": [
+    "react",
+    "modal",
+    "dialog"
+  ],
+  "author": "Marcio Gasparotto",
+  "contributors": [
+    {
+      "name": "Chris Trevino",
+      "email": "darthtrevino@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.1 || ^16.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.3.13",
+    "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-loader": "^1.3.0",
+    "eslint-plugin-react": "^7.0.1",
+    "isparta-loader": "^2.0.0",
+    "jest-cli": "^20.0.3",
+    "karma": "^1.7.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-coverage": "^1.1.1",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.3",
+    "mocha": "^3.4.1",
+    "npm-run-all": "^4.0.2",
+    "phantomjs-polyfill-object-assign": "0.0.2",
+    "phantomjs-prebuilt": "^2.1.7",
+    "react": "^15.0.1",
+    "react-addons-test-utils": "^15.0.1 || ^0.14.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ],
+    "plugins": []
+  },
+  "dependencies": {
+    "prop-types": "^15.5.10"
+  }
+}

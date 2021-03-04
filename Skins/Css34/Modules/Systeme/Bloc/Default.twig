@@ -17,4 +17,7 @@
         <i class="fas fa-{{ bloc.Icone }} fa-6x"></i>
         <span>{{ bloc.Titre }}</span>
     </a>
+    {% if bloc.Text is not empty  %}
+        <div class="TextDefaultBloc">{{ bloc.Text | raw}}</div>
+    {% endif %}
 </div>

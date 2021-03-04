@@ -48,8 +48,8 @@
     {% endif %}
     <div class="boutonCentre">
         {% if Adherent.LienReservation %}
-            <a href="/{{ Adherent.LienReservation }}">Prendre rendez-vous</a>
+            <a href="{{ Adherent.LienReservation }}"   target="_blank" >Prendre rendez-vous</a>
         {% else %}
-            <a href="/contact">Prendre rendez-vous</a>
+            <a href="/contact"  >Prendre rendez-vous</a>
         {% endif %}
     </div>

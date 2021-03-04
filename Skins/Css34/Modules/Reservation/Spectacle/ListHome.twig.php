@@ -21,9 +21,14 @@ foreach ($vars['spectacles'] as $k=>$s){
         $vars['spectacles'][$k]->Couleur = $genre->Couleur;
         $vars['spectacles'][$k]->_Genre = $genre;
         $vars['spectacles'][$k]->_Organisation = $sc;
-    }else
-        $vars['spectacles'][$k]->Couleur = "#fff";
-
+    }else {
+       $vars['spectacles'][$k]->Couleur = "#fff";
+        // a voir avec GC  car pb de filtres :2020-07-16 : Modification demandé on met autre genre
+//        $genreAutre = Sys::getOneData('Reservation','Genre/Id=12');
+//        $vars['spectacles'][$k]->Couleur = $genreAutre->Couleur;
+//        $vars['spectacles'][$k]->_Genre = $genreAutre;
+//        $vars['spectacles'][$k]->_Organisation = $sc;
+    }
     if (in_array($k,$big)){
         $vars['spectacles'][$k]->big = 'big';
     }

@@ -1,0 +1,21 @@
+<ul class="filtres ">
+    <li class="lien">Tous</li>
+    <li class="lien active">Équidé</li>
+    <li class="lien">Rural</li>
+    <li class="lien">Canin</li>
+    <li class="lien">Félin</li>
+    <li class="lien">NAC</li>
+</ul>
+
+
+<script>
+   $('.lien').click(function() {
+           $('.lien').removeClass('active');
+           $(this).addClass('active');
+         
+         
+
+
+    });
+    
+</script>

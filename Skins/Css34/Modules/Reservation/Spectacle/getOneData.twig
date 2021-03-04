@@ -2,7 +2,7 @@
     {
     "id":"{{ row.Id }}",
     "creator":"{{ row.userCreate }}",
-    "label":"{{ row.label }}",
+    "label":"{{ row.label   }}",
     "description":{{ row.description | json_encode | raw }},
     {% if recursiv %}
         "_tail":{{ row.isTail }},
@@ -37,7 +37,7 @@
             "id": {{ event.Id }},
             "DateCloture": {{ event.DateCloture }},
             "DateDebut": {{ event.DateDebut }},
-            "Nom": "{{ event.Nom }}",
+            "Nom": "{{ event.Nom | raw }}",
             "CodPos": "{{ event.CodPos }}",
             "Ville": "{{ event.Ville }}",
             "DateFin": {{ event.DateFin }},
@@ -45,7 +45,7 @@
             "Valide": {{ event.Valide }},
             "Salle": {
                 "id": {{ event.salle.Id }},
-                "Nom": "{{ event.salle.Nom }}",
+                "Nom": "{{ event.salle.Nom | raw }}",
                 "Adresse": "{{ event.salle.Adresse }}",
                 "Ville": "{{ event.salle.Ville }}",
                 "CodPos": "{{ event.salle.CodPos }}",
@@ -63,7 +63,7 @@
     {% for part in partenaires %}
         {
         "id": {{ part.Id }},
-        "titre": "{{ part.Titre }}",
+        "titre": "{{ part.Titre | raw }}",
         "ordre": {{ part.Ordre }},
         "image": "{{ part.Image }}",
         "lien": "{{ part.Lien }}"

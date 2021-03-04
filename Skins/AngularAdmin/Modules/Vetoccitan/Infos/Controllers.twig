@@ -1,0 +1,122 @@
+app.controller('infosCtrl', function($location, $scope, $rootScope, $timeout, VetoccitanAdherentStore,VetoccitanActiviteStore) {
+
+    var pade = VetoccitanAdherentStore.getOneData({{ adherent.Id }},"default");
+    pade.then(function (data){
+        $scope.obj = data;
+    });
+
+    $scope.modalObj = {};
+    $scope.FocusValue = '';
+    $scope.FocusProperty = 'None';
+
+    $scope.modalFocus = function (prop,obj,img){
+        console.warn(prop,obj);
+        $('#modalFocus .modal-dialog').spin();
+        $("#modalFocus").modal();
+
+        var FocusValue = obj[prop];
+        if(img){
+            var FocusValue = '<div style="text-align:center;height: 100%;display: flex;align-items: center; justify-content: center;"><img src="/'+FocusValue+'" alt="'+prop+'" style="border: 1px solid #ddd;"/></div>';
+        }
+        var $iframe = $('#focusFrame');
+        $iframe.ready(function() {
+            $iframe.contents().find("body").html(FocusValue);
+        });
+        $scope.FocusProperty = prop;
+
+        $('#modalFocus .modal-dialog').spin(false);
+    }
+
+    $scope.modify = function (obj){
+        console.log('edit ',obj.id);
+        VetoccitanAdherentStore.getOneData(obj.id,'fiche',false).then(function (data) {
+            data.success = false;
+            $scope.modalObj = data;
+            $scope.modalObj.title = 'Modifier mes infos ';
+            console.log('edit obj copy',$scope.modalObj);
+        });
+        $("#modalfiche-VetoccitanAdherent").modal();
+    }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        console.log('reset modalobj',$scope.modalObj);
+        $scope.modalObj = {};
+        $scope.$digest();
+    })
+    $scope.modalSave = function (callback){
+        console.log('save ',$scope.modalObj);
+        //affichage spinner
+        $('#modalfiche-VetoccitanAdherent .modal-dialog').spin();
+        VetoccitanAdherentStore.saveData($scope.modalObj).then(function (data) {
+            $('#modalfiche-VetoccitanAdherent .modal-dialog').spin(false);
+            if (data.success){
+                //console.warn(data.data);
+                $scope.modalObj = data.data;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+
+                $scope.obj = data.data;
+                if (!data.warning.length&&!data.success.length) {
+                    var modfic = $("#modalfiche-VetoccitanAdherent");
+                    modfic.modal('toggle');
+                    if(callback != undefined) {
+                        if(modfic[0] == undefined) callback(data);
+                        else modfic.on('hidden.bs.modal', function(e) {
+                            callback(data);
+                        });
+                    }
+                }
+            }else {
+                //gestion des erreurs
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+                $scope.modalObj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.modalObj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+
+
+    var lasttimeoutCParentVetoccitanActivite = false;
+
+    VetoccitanActiviteStore.setFilters('','cparentselect');
+
+    $scope.VetoccitanActiviteCPSelect = {
+        data: VetoccitanActiviteStore.data.cparentselect,
+        store: VetoccitanActiviteStore,
+        filter: VetoccitanActiviteStore.filter.cparentselect.global,
+        currentPage: VetoccitanActiviteStore.currentPage.cparentselect,
+        itemsPerPage: VetoccitanActiviteStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+    $scope.$watch('VetoccitanActiviteCPSelect.currentPage', function() {
+        if ($scope.VetoccitanActiviteCPSelect.currentPage!=VetoccitanActiviteStore.getCurrentPage('cparentselect')){
+            console.log('cparentselect > VetoccitanActivite > changeCurrentPage > '+$scope.VetoccitanActiviteCPSelect.currentPage+' <> '+VetoccitanActiviteStore.getCurrentPage('cparentselect'));
+            VetoccitanActiviteStore.setPage($scope.VetoccitanActiviteCPSelect.currentPage,'cparentselect');
+        }
+    });
+    $scope.$watch('VetoccitanActiviteCPSelect.filter', function() {
+        //on lance la recherche depuis le store
+        if ($scope.VetoccitanActiviteCPSelect.filter!=VetoccitanActiviteStore.getFilters('cparentselect',true)){
+            VetoccitanActiviteStore.setFilters($scope.VetoccitanActiviteCPSelect.filter,'cparentselect');
+            if (lasttimeoutCParentVetoccitanActivite){
+                $timeout.cancel(lasttimeoutCParentVetoccitanActivite);
+                lasttimeoutCParentVetoccitanActivite = false;
+            }
+            lasttimeoutCParentVetoccitanActivite=$timeout(function () {
+                VetoccitanActiviteStore.getData(1,'cparentselect');
+            },400);
+        }
+    });
+});

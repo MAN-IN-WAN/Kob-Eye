@@ -1,0 +1,70 @@
+<div id="Contenu-scroll" class="scrollbar-transparent" style="overflow: hidden;position:relative">
+    <div class="CacheScroll">
+        <div class="Contenu" style="margin-left:0; margin-top:0;">
+            <div class="row equipe">
+                <div class="col-lg-10 col-md-10 col-sm-10 borderTopContenu">
+                    <div class="imgArticle ">
+                        <!---- ON DOIT RECUPÉRER VALUE DANS MINISITE POUR PRESENTATION EQUIPE : IMAGE -  TITRE IMAGE - "L'ÉQUIPE" - TEXTE -->
+                        <img src="/{{ Image }}" class="img-responsive respImage" alt="" title=""/>
+                    </div>
+                    <div class="titreImage">
+                        <p class="legende">{{ Titre_Image }}</p>
+                    </div>
+                    <div class="titreArticle">
+                        <h2>L'équipe</h2>
+                    </div>
+                    <div class="textArticle">
+                        <p class="texte"> {{ Texte_page_Equipe }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <!-- vide conforme à la maquette-->
+                </div>
+            </div>
+            <div class="row equipe">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 borderTopContenu">
+                    <div class="row equipeteam">
+                        {% set  i=0 %}
+                        {% for Equi in Equipiers %}
+                            {% if  i==2 %}
+                                {% set  i=0 %}
+                                </div>
+                                <div class="row equipeteam">
+                            {% endif %}
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 equipier horizonPhone">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        {% if Equi.Photo %}
+                                            <img src="{{ Equi.Photo }}" class="img-responsive"  alt="{{ Equi.Nom }}" title="{{ Equi.Nom }}" onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {{ Equi.Photo|json_encode }})"/>
+                                        {% else %}
+                                            <img src="/Home/no-image.png" class="img-responsive"  alt="{{ Equi.Nom }}" title="{{ Equi.Nom }}" onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})"/>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-xs-7">
+
+                                        <h5 style="cursor:pointer"
+                                            {% if Equi.Photo %}
+                                            onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {{ Equi.Photo|json_encode }})"
+                                            {% else %}
+                                                onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})"
+                                            {% endif %}
+                                        >
+                                            {{ Equi.Intitule }} {{ Equi.Prenom }} {{ Equi.Nom }}
+                                        </h5>
+
+                                        <p class="textePresentation">{{ Equi.Poste }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                        {% if i!=2 %}  </div>{% endif %}
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+                    <!--    // vide conforme à la maquette-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

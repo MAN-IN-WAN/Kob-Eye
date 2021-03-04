@@ -1,0 +1,43 @@
+<script>
+    {% set cpt = 1 %}
+    var MenusData = {
+        {% for menu in Menu %}
+        {% if menu.MenuPrincipal == 1 %}
+        "menu_{{ cpt }}":{
+            "current":{% if menu.current %}true {% else %}false{% endif %} ,
+            "url": "{{ menu.Url }}",
+            "alias":"{{ menu.Alias }}",
+            "titre":"{{ menu.Titre | raw}}"
+        },
+        {% set cpt = cpt + 1 %}
+        {% endif %}
+        {% endfor %}
+    };
+    var filtreData = {
+        "Tous":0,
+        {%  for Fil in Filtres %}
+            "{{ Fil.Nom }}":{{ Fil.Id }},
+        {%  endfor %}
+    };
+    var paginationData = {
+        "itemsCount":10
+    };
+    var adherentData = {
+        "Adresse":"{{ Adresse }}",
+        "CodePostal":"{{ CodePostal }}",
+        "Ville":"{{ Ville }}",
+        "Tel":"{{ Tel }}",
+        "Nom":"{{ Nom }}",
+        "EmailContact":"{{ EmailContact }}",
+        "TelUrgence":"{{ TelUrgence }}",
+        "LienFacebook":"{{ LienFacebook }}",
+        "LienInstagram":"{{ LienInstagram }}"
+    };
+    var mentionsData = {
+        "Centre":"{{ mentions.ColonneCentre | raw }}",
+        "Droite":"{{ mentions.ColonneDroite | raw }}",
+        "Gauche":"{{ mentions.ColonneGauche | raw }}"
+    };
+    var mainColor = "{{ mainColor }}";
+
+</script>

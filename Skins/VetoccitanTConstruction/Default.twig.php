@@ -20,10 +20,12 @@ if (!empty($_COOKIE['myCookie'])){
 //if ($_POST['email']) var_dump($_POST['email']);
 
 // Récupération de l'adherent
+
 $Minisite = Sys::getOneData("Parc", "MiniSite/Domaine=".Sys::$domain);
 $LeClient = Sys::getOneData("Parc","Client/MiniSite/".$Minisite->Id);
 
 $lAdherent = $LeClient->getOneChild("Adherent");
+
 $lAdherent->Module="Vetoccitan";
 $lAdherent->Media= $lAdherent->getOneChild("Media");
 $vars['Adherent']=$lAdherent;

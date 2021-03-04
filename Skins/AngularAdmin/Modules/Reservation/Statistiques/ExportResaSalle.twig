@@ -1,0 +1,20 @@
+// A FAIRE
+// Export des Réservations dans un bornage de dates pour une salle choisie
+{% if state == 0 %}
+    {{ return | raw }}
+{% elseif state == 1%}
+    <div>Exports des Réservations par Salle</div>
+    <div>
+        <u>Sélection demandée :</u><br />
+        <span>{%  if S is not empty %}Salle : {{ S }} {% endif %} </span>
+        <span>{%  if D is not empty %}Du : {{ D }} {% endif %} </span>
+        <span>{%  if F is not empty %}Au : {{ F }} {% endif %} </span>
+    </div>
+    <div>
+        <button ng-click="validExpCli();">Générer PDF</button>
+        <button ng-click="initClient();">Retour à la selection</button>
+    </div>
+{% elseif state == 2 %}
+    <button ng-click="initClient();">Retour à la selection</button>
+    <iframe src="/Reservation/Statistiques/ExportResaSalle.pdf?v={{ S }}&d={{ D }}&f={{ F }}" frameborder="0" style="width:100%;height:900px;"></iframe>
+{% endif %}

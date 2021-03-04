@@ -1,0 +1,74 @@
+{#
+    ########################################################" COULEUR PRINCIPALE + COULEUR TEXTE ###########################################################################################"
+#}
+.couleurPrincipale{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important;{% endif %}
+}
+.couleurPrincipal{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+.current{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+.couleurPrincipale a{
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important;{% endif %}
+}
+
+a.LienNewsColonne:hover{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+
+body a:hover {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} ;{% endif %}
+}
+
+.textePresentation {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+.contactEquipe {
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+#filtresNsc li.inactive,
+.nsc a.voirplus,
+.itemPerso .voirplus,
+.voirplus input{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important;{% endif %}
+}
+
+.boutonretour:hover {
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}
+}
+button:hover{
+    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}
+}
+.wrapWrap #wrap{
+{#    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}#}
+    {% if Couleur_Principale is defined %}background-color: #fff !important;{% endif %}
+{#    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important;{% endif %}#}
+}
+#close{
+{#    {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important;{% endif %}#}
+{% if Couleur_Principale is defined %}background-color: #fff !important;{% endif %}
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important;{% endif %}
+}
+.testPost{
+    {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important;{% endif %}
+}
+svg{
+    {% if Couleur_Principale is defined %}fill: {{ Couleur_Principale }} !important;{% endif %}
+}
+
+{%  for i in 0..20 %}
+    .awssld--active .messageSlide *:nth-child({{ i }}){
+        transition-delay:calc({{ i }} * 0.25s);
+    }
+{% endfor %}
+
+{#
+########################################################" FORM CONTACT ###########################################################################################"
+#}
+.Contact{
+{% if Form_contact == false%}display:none !important;{% endif %}
+}

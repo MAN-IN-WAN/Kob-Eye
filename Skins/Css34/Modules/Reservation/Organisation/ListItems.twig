@@ -22,7 +22,7 @@
         <a class="card" v-for="(organisation,index) in organisations" v-bind:key="index" :to="{path: organisation.Url, params: {organisation: organisation}}" v-on:click.prevent="goToFiche(organisation)"  v-bind:style="{backgroundColor:organisation.couleur}">
             <div class="organisation-item">
                 <div class="card-body">
-                    <h5 class="card-title">{{ organisation.Nom  }}</h5>
+                    <h5 class="card-title"  v-html="organisation.Nom "></h5>
                 </div>
             </div>
         </a>

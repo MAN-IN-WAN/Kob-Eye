@@ -33,7 +33,7 @@
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" unique="1" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
 		<PROPERTIES category="Coordonnées" obligatoire="1" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
@@ -330,7 +330,7 @@
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTP" hasRole="PARC_TECHNICIEN">ProxyConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTPS" hasRole="PARC_TECHNICIEN">ProxyConfigSsl</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Redirection vers https">RedirectSsl</PROPERTIES>
-		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activation du cache de proxy pagespeed">ProxyPageSpeed</PROPERTIES>
+		<PROPERTIES category="Configuration" type="boolean" fiche="0" form="0" list="0" description="Activation du cache de proxy pagespeed">ProxyPageSpeed</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy pagespeed">ProxyPageSpeedConfig</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur" fiche="1" form="1">HtaccessUser</PROPERTIES>
@@ -489,13 +489,13 @@
 		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Mo" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active::Active,maintenance::Maintenance,locked::Verrouillée,closed::Fermée,pending::En attente" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" description="Prénom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="4" description="Nom du contact" list="0" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" description="Prénom du contact" list="0" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
         <PROPERTIES type="boolean" description="Compte externe virtuel (pour partage)" fiche="1" default="0" listDescr="Compte externe">Externe</PROPERTIES>
         <PROPERTIES type="date" description="Marqué pour suppression le" fiche="1" canBeNull="1" listDescr="Marqué pour suppression le">Suppression</PROPERTIES>
 		<PROPERTIES type="boolean" description="Compte protégé sur MIB" form="1" fiche="1" hasRole="PARC_TECHNICIEN">MailFilter</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
-		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+		<FKEY card="0,1" data="Server,Id" list="1" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 		<FKEY card="0,1" data="EmailProfile,Id" fiche="1" form="1" description="Profil Mail">EmailProfileId</FKEY>
 		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">CompteMailTacheId</RKEY>
 	</OBJECTCLASS>
@@ -541,7 +541,7 @@
 		<PROPERTIES type="varchar" searchOrder="4" description="Nom de la ressource" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
         <PROPERTIES type="date" description="Marqué pour suppression le" fiche="1"  canBeNull="1" listDescr="Marqué pour suppression le">Suppression</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
-		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" list="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" description="Titre" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
@@ -554,7 +554,7 @@
 
 	<OBJECTCLASS title="Ticket" logEvent="1" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php" Operations="closeTicket::PARC_TECHNICIEN,shutTicket::PARC_TECHNICIEN,moveTicket::PARC_TECHNICIEN,edit::PARC_TECHNICIEN,export,add::PARC_TECHNICIEN">
 		<FUNCTION title="Créer un ticket" hidden="1">createTicket</FUNCTION>
-		<FUNCTION title="Clôturer le ticket" >closeTicket</FUNCTION>
+		<FUNCTION title="Clôturer le ticket" group="1">closeTicket</FUNCTION>
 		<FUNCTION title="Fermer le ticket" >shutTicket</FUNCTION>
 		<FUNCTION title="Réaffecter le ticket" >moveTicket</FUNCTION>
 
@@ -699,17 +699,18 @@
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" >HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
-		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1" >ModeleId</FKEY>
+		<FKEY card="0,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" form="10" fiche="1" list="1"  hasRole="VETO_ADM">ModeleId</FKEY>
 		<FKEY card="0,1" data="Server,Id" description="Serveur" listDescr="Serveur" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PageMiniSite" logEvent="0" AccessPoint="1" driver="mysql" browseable="1" Description="Page MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/PageMiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la page" list="1" form="1" fiche="1" unique="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
+<!--		<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>-->
 		<CATEGORY title="Menu">
 			<PROPERTIES type="boolean" description="Afficher le menu" list="1" form="1" fiche="1" listDescr="Afficher Menu" default="1">MenuAffiche</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="6" description="Titre du menu" form="1" fiche="1" listDescr="Titre Menu">MenuTitre</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="7" description="Url du menu" form="1" fiche="1" listDescr="Url Menu">MenuUrl</PROPERTIES>
 			<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="1" >Template</PROPERTIES>
+			<PROPERTIES type="order"  fiche="1" form="1" list="1" description="Ordre" listDescr="Ordre">Order</PROPERTIES>
 			<PROPERTIES type="alias"  fiche="1" form="1">Alias</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,1" data="ModeleMiniSite,Id" description="Modèle" listDescr="Modèle" fiche="1" list="1" >ModeleId</FKEY>
@@ -850,7 +851,7 @@
 		<PROPERTIES type="boolean" description="Infrastructure par défaut" form="1" hasRole="PARC_TECHNICIEN" list="1">Default</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type d'Infra" list="1" form="1" fiche="1" listDescr="Type" default="Web" values="Web,Mail">Type</PROPERTIES>
 		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN" list="1">ClientId</FKEY>
-		<FKEY data="Revendeur,Id" card="0,n" inline="1" description="Revendeur" hasRole="PARC_TECHNICIEN" list="1">RevendeurId</FKEY>
+		<FKEY data="Revendeur,Id" card="0,n" inline="1" description="Revendeur" hasRole="PARC_TECHNICIEN" list="1" form="1">RevendeurId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Certificate" driver="mysql" Description="Certificats par défaut" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Domaine" list="1" form="1" fiche="1" listDescr="Domaine">Domain</PROPERTIES>

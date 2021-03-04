@@ -71,6 +71,11 @@ class Domain extends genericClass
 
                 if (is_object($mc) && !$mc->domainExists($this->Url)) {
                     if (!$res = $mc->addDomain($this->Url)) $this->addError(array('Message' => 'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (1)', 'Obj' => $res));
+
+                    $params = array("supportname" => "Support Abtel","supportemail"=>"support@abtel.fr");
+                    if (!$res = $mc->editDomain($this->Url, $params)) {
+                        $this->addError(array('Message' => 'Une erreur s\'est produite lors de l\'enregistrement du domaine sur la plate-forme MailCLeaner (1b)', 'Obj' => $res));
+                    }
                 }
 
 

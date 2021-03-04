@@ -1,0 +1,19 @@
+
+<div id="newsDroite">
+
+  {{ include(template_from_string(component('Vetoccitan/HorairesCab-Colonne'))) }}
+  
+  <div class="boxnum">
+        <p><img src="/Skins/Vetoccitan2/Fonts/TELEPHONE_ICON.png" class="logoContact"> 05.53.67.89.90 <img src="/Skins/Vetoccitan2/Fonts/TELEPHONE_ICON.png" class="logoContact"></p>
+    </div>
+    <div class="boxnews hidden-xs">
+        <h2 class="news">Dernières Actus </h2>
+        {%  set i = 0 %}
+        {% for i in 0..2 %}
+            <div class="bloc-infos">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae tincidunt ipsum. Aenean nec malesuada ipsum. </p>
+            </div>
+        {%  endfor %}
+        <div class="boutonCentre"><a href="/news"  >Voir toutes les news</a></div>
+    </div>
+</div>

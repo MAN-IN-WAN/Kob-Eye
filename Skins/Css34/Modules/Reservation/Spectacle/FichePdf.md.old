@@ -1,0 +1,120 @@
+[LIB HTML2PDF|html2pdf]
+[METHOD html2pdf|writeHTML]
+	[PARAM]
+		<page  pageset="old" backtop="10mm" backbottom="15mm" backleft="5mm" backright="5mm" style="font-size: 12pt;">
+			<div class="FicheSpectacle">
+				[STORPROC [!Query!]|S|0|1]
+					[!DD:=[!Utils::getDate(d-m-Y,[!S::DateDebut!])!]!]
+					[!DF:=[!Utils::getDate(d-m-Y,[!S::DateFin!])!]!]
+					[IF [!DD!]=[!DF!]]					
+						Le [DATE d.m.Y][!S::DateDebut!][/DATE]
+						[TITLE][!S::Nom!]| Le [DATE d.m.Y][!S::DateDebut!][/DATE][/TITLE]
+					[ELSE]
+						[TITLE][!S::Nom!]| Du [DATE d.m.Y][!S::DateDebut!][/DATE] au [DATE d.m.Y][!S::DateFin!][/DATE][/TITLE]
+					[/IF]
+					<table class="Detail" cellspacing="2" cellpadding="0" > 
+						<tr >
+							<td style="width:160mm;overflow:hidden;" colspan="2">
+								<table class="colonneDetailD" cellspacing="2" cellpadding="0"  style="text-align:justify;width:185mm;"><tr>
+								<td class="Entete" style="text-align:center;width:125mm;" >
+									<h3>
+										<br /><br /><br />[!S::Nom!] 
+									</h3>
+								</td>
+								<td style="text-align:right;width:60mm;" ><img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/logo.jpg"  alt="[!S::Nom!]" title="[!S::Nom!]" /></td>
+								</tr></table>
+							</td>
+							
+						</tr>
+						<tr style="width:160mm;padding-top:5px;margin:5px">
+							<td class="ColonneGauche" style="width:70mm;overflow:hidden;">
+								<table class="colonneDetailG" cellspacing="2" cellpadding="0" >
+									<tr><td colspan="2" class="ImgTable">
+										[IF [!S::Logo!]]
+											<img src="[!Domaine!]/[!S::Logo!].limit.350x250.jpg"  alt="[!S::Nom!]" title="[!S::Nom!]" />
+										[/IF]
+									</td></tr>
+								</table>
+							</td>
+							<td class="ColonneDroite" style="width:90mm;overflow:hidden;">
+								<table class="colonneDetailD" cellspacing="2" cellpadding="0"  style="text-align:justify;">
+									<tr class="Genre"><td class="Nom">[IF [!S::Genre!]!=]Type de Spectacle :<span style="font-weight:bold;"> [!S::Genre!]</span>[ELSE]Type de Sortie :<span style="font-weight:bold;"> [!S::TypeSortie!]</span>[/IF]</td></tr>
+									<tr><td class="Nom">Public :<span style="font-weight:bold;"> [!S::TypePublic!]</span></td></tr>
+									<tr><td class="Nom"> Duree :<span style="font-weight:bold;"> [IF [!S::Duree!]>0][!S::getduree!][ELSE]NC[/IF]</span></td></tr>
+									<tr><td class="Nom"> </td></tr>
+
+									[STORPROC Reservation/Organisation/Spectacle/[!S::Id!]|Org|0|1]
+										<tr><td  class="Cell_GrisFonce" style="text-decoration:underline;">Partenaires</td></tr>
+										<tr><td class="Nom">[!Org::Nom!]</td></tr>
+										<tr><td class="Adresse">[!Org::Adresse!]</td></tr>
+										<tr><td class="Ville">[!Org::Codpos!][!Org::Ville!]</td></tr>
+										<tr><td class="Tel">Tél:[!Org::Tel!]</td></tr>
+										<tr><td class="SiteWeb"><a href="[IF [!Org::SiteWeb!]~http][!Org::SiteWeb!][ELSE]http://[!Org::SiteWeb!][/IF]" onclick="window.open(this.href);return false;" title="[!Org::Nom!]">[!Org::SiteWeb!]</a></td></tr>
+									[/STORPROC]
+								</table>
+							</td>
+						</tr>
+						<tr><td  colspan="2" style="height:10px;"></td></tr>
+						[IF [!S::Disponibilite!]=0]
+							<tr style="width:160mm;padding-top:5px;margin:20px 5px;">
+								<td class="InformationDispo" colspan="2" style="width:160mm;">Plus d'invitation disponible pour nos partenaires sociaux</td>
+							</tr>
+						[/IF]
+						[IF [!S::Lieu!]!=]<tr><td colspan="2">Lieu : [!S::Lieu!]</td></tr>[/IF]
+						<tr><td  class="InformationsPresentation" colspan="2" style="width:190mm;text-align:justify;">[!Utils::noHtml([!S::Presentation!])!]</td></tr>
+						<tr><td  class="Texte" colspan="2" style="width:190mm;text-align:justify;">[!Utils::noHtml([!S::Resume!])!]</td></tr>
+						<tr><td  colspan="2" style="height:10px;"></td></tr>
+					</table>
+					[COUNT Reservation/Spectacle/[!S::Id!]/Evenement/DateDebut>=[!TMS::Now!]|NbEv]
+					[IF [!NbEv!]]
+						<table class="Evenements" cellpadding="0" cellspacing="2" style="border-top:1px dotted #ccccc;border-left:1px dotted #ccccc;border-right:1px dotted #ccccc;">
+							<tr style="width:160mm;padding-top:5px;margin:20px 5px;">
+								<th style="width:35mm;border-right:1px dotted #ccccc;border-bottom:1px dotted #ccccc;text-align:center;">Dates</th>
+								<th style="width:105mm;border-right:1px dotted #ccccc;border-bottom:1px dotted #ccccc;text-align:center;">Info Lieu</th>
+								<th style="width:15mm;border-right:1px dotted #ccccc;border-bottom:1px dotted #ccccc;text-align:center;">Acc&egrave;s<br />handicap&eacute;</th>
+								<th style="width:10mm;border-bottom:1px dotted #ccccc;text-align:center;">Dispo</th>
+							</tr>
+							[STORPROC Reservation/Spectacle/[!S::Id!]/Evenement/DateDebut>=[!TMS::Now!]|Eve]
+								[!AccesHand:=0!][!SalleAdresse:=!][!SalleTelInfo:=!][!SiteWebSalle:=!]
+								[STORPROC Reservation/Salle/Evenement/[!Eve::Id!]|Sal]
+									[!AccesHand:=[!Sal::Handi!]!]
+									[IF [!Sal::Adresse!]!=][!SalleAdresse:=[!Sal::Adresse!]<br />!][/IF]
+									[IF [!Sal::CodPos!]!=][!SalleAdresse+=[!Sal::CodPos!]!][/IF]
+									[IF [!Sal::Ville!]!=][!SalleAdresse+= [!Sal::Ville!]!][/IF]
+									[IF [!Sal::Transport!]!=][!SalleAdresse+=<br />[!Sal::Transport!]!][/IF]
+									[IF [!Sal::TelInfo!]!=][!SalleAdresse+=<br />[!Sal::TelInfo!]!][/IF]
+									[IF [!Sal::SiteWeb!]!=][!SalleAdresse+=<br />[!Sal::SiteWeb!]!][/IF]
+								[/STORPROC]
+								<tr style="width:160mm;padding-top:5px;margin:5px;border-bottom:1px dotted #ccccc;">
+									<td class="Texte" style="padding:5px;border-right:1px dotted #ccccc;border-bottom:1px dotted #ccccc;width:35mm;">
+										[!LeDebut:=[!Utils::getDate(D/M/Y,[!Eve::DateDebut!])!]!]
+										[!LaFin:=[!Utils::getDate(D/M/Y,[!Eve::DateFin!])!]!]
+										[IF [!LeDebut!]=[!LaFin!]]
+											Le [DATE d/m/Y][!Eve::DateDebut!][/DATE]<br />de [DATE H:i][!Eve::DateDebut!][/DATE] à [DATE H:i][!Eve::DateFin!][/DATE]
+										[ELSE]
+											Du [DATE d/m/Y à H:i][!Eve::DateDebut!][/DATE]<br /> Au Le [DATE d/m/Y à H:i][!Eve::DateFin!][/DATE]<br />
+										[/IF]
+									</td>
+									<td class="Texte" style="padding:5px;border-right:1px dotted #ccccc;border-bottom:1px dotted #ccccc;width:105mm;">[!Sal::Nom!]<br />[!SalleAdresse!]</td>
+									<td class="[IF [!AccesHand!]=1]AutreTexte[ELSE]TexteImg[/IF]"  style="text-align:center;width:15mm;padding:5px;border-bottom:1px dotted #ccccc;border-right:1px dotted #ccccc;" >
+										[IF [!AccesHand!]=1]
+											<img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/handi.jpg" width="20" height="20" alt="Acc&egrave;s Handicap&eacute;s" title="Acc&egrave;s Handicap&eacute;s" />
+										[ELSE]
+											<img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/handiRed.jpg" width="20" height="19" alt="Attention : pas d'accès handicapés" title="Attention : pas d'accès handicapés" /><br />Non
+										[/IF]
+									</td>
+									<td class="[IF [!Eve::NbPlace!]=0]Texte[ELSE]AutreTexte[/IF]" style="width:10mm;padding:5px;border-bottom:1px dotted #ccccc;text-align:center;">[!Eve::NbPlace!]</td>
+								</tr>
+							[/STORPROC]
+						</table>
+					[/IF]
+				[/STORPROC]
+			</div>
+		</page>	
+	[/PARAM]
+	[PARAM][/PARAM]
+[/METHOD]
+
+//[!html2pdf::Output(Home/Pdf/Sorties_[!Utils::getDate(Ymd,[!TMS::Now!])!].pdf,FI)!]
+
+[!html2pdf::Output(Home/Pdf/Spectacle_[!S::Id!]_[!Utils::getDate(Ymd,[!TMS::Now!])!].pdf,FI)!]

@@ -535,35 +535,42 @@ class Connection extends Root{
             $this->login = $_SERVER["PHP_AUTH_USER"];
             $this->pass = md5($_SERVER["PHP_AUTH_PW"]);
             $this->clearpass = $_SERVER["PHP_AUTH_PW"];
+			$GLOBALS["Systeme"]->Log->log("KERBEROS AUTH W/ TICKET");
 		}elseif ($GLOBALS["Systeme"]->getPostVars("login")!=""){
 			//Ils sont dans les parametres Post
 			$this->login = $GLOBALS["Systeme"]->getPostVars("login");
 			$this->pass = md5($GLOBALS["Systeme"]->getPostVars("pass"));
 			$this->clearpass = $GLOBALS["Systeme"]->getPostVars("pass");
+			$GLOBALS["Systeme"]->Log->log("POST VARS");
 			return true;
 		}elseif (defined("ALLOW_GET_CONNECTION")&&ALLOW_GET_CONNECTION&&$GLOBALS["Systeme"]->getGetVars("login")!=""&&($GLOBALS["Systeme"]->getGetVars("pass")!=""||$GLOBALS["Systeme"]->getGetVars("passmd5")!="")){
 			//Ils sont dans les parametres Get
 			$this->login = $GLOBALS["Systeme"]->getGetVars("login");
 			$this->pass = ($GLOBALS["Systeme"]->getGetVars("pass")=="") ? $GLOBALS["Systeme"]->getGetVars("passmd5") : md5($GLOBALS["Systeme"]->getGetVars("pass"));
 			$this->clearpass = $GLOBALS["Systeme"]->getGetVars("pass");
+			$GLOBALS["Systeme"]->Log->log("GET VARS");
 			return true;
 		}elseif ($GLOBALS["Systeme"]->getGetVars("login")!=""&&$GLOBALS["Systeme"]->getGetVars("passmd5")!=""&&$GLOBALS["Systeme"]->getGetVars("codeverif")!=""){
 			$this->login = $GLOBALS["Systeme"]->getGetVars("login");
 			$this->passmd5 = $GLOBALS["Systeme"]->getGetVars("passmd5");
 			$this->codeverif = $GLOBALS["Systeme"]->getGetVars("codeverif");
+			$GLOBALS["Systeme"]->Log->log("CODE VERIF");
 			return true;
 		}elseif (isset($_SESSION['login'])&&$_SESSION['login'] && $_SESSION['pass']){
         		$this->login = $_SESSION['login'];
 		       	$this->pass = $_SESSION['pass'];
+			$GLOBALS["Systeme"]->Log->log("SESSION");
 		}elseif (isset($_SERVER["PHP_AUTH_USER"])&&isset($_SERVER["PHP_AUTH_PW"])){
 			$this->login = $_SERVER["PHP_AUTH_USER"];
 			$this->pass = md5($_SERVER["PHP_AUTH_PW"]);
 			$this->clearpass = $_SERVER["PHP_AUTH_PW"];
+			$GLOBALS["Systeme"]->Log->log("PHP AUTH");
         }elseif (is_object(json_decode(file_get_contents('php://input')))){
 			$data = json_decode(file_get_contents('php://input'));
 			if (isset($data->login)) {
                 $this->login = $data->login;
                 $this->pass = md5($data->pass);
+				$GLOBALS["Systeme"]->Log->log("PHP INPUT");
             }
         }else{
 			if ($this->login==""||$this->pass=="")	{

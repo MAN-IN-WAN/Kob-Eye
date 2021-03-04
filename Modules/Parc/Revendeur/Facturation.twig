@@ -1,0 +1,324 @@
+<script
+        src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    var ajax = {};
+    ajax.x = function () {
+        if (typeof XMLHttpRequest !== 'undefined') {
+            return new XMLHttpRequest();
+        }
+        var versions = [
+            "MSXML2.XmlHttp.6.0",
+            "MSXML2.XmlHttp.5.0",
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0",
+            "MSXML2.XmlHttp.2.0",
+            "Microsoft.XmlHttp"
+        ];
+
+        var xhr;
+        for (var i = 0; i < versions.length; i++) {
+            try {
+                xhr = new ActiveXObject(versions[i]);
+                break;
+            } catch (e) {
+            }
+        }
+        return xhr;
+    };
+
+    ajax.send = function (url, callback, method, data, async) {
+        if (async === undefined) {
+            async = true;
+        }
+        var x = ajax.x();
+        x.open(method, url, async);
+        x.onreadystatechange = function () {
+            if (x.readyState == 4) {
+                callback(x.responseText)
+            }
+        };
+        if (method == 'POST') {
+            x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        }
+        x.send(data)
+    };
+
+    ajax.get = function (url, data, callback, async) {
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+        ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, async)
+    };
+
+    ajax.post = function (url, data, callback, async) {
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+        ajax.send(url, callback, 'POST', query.join('&'), async)
+    };
+
+    $(document).ready(function(){
+        $('.cliLine').click(function(){
+            $(this).toggleClass('active');
+            $(this).nextUntil('.cliLine').toggleClass('active');
+        });
+    });
+</script>
+<style>
+    body{
+        font-family: "Lato", sans;
+        background: #eceff4;
+        color: #514d6a;
+    }
+    h1{
+        margin: 0;
+    }
+    ul{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .container{
+        max-width: 1600px;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 5px;
+        border: none;
+        -webkit-box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);
+        box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);
+        padding: 15px;
+    }
+    .recap,
+    .listCli{
+        padding: 0;
+        margin-top: 15px;
+    }
+    .recap tr:nth-child(2n){
+        background-color: #f3f3f3;
+    }
+    .recapHeader,
+    .cliHeader{
+        background-color: #000;
+        color: #fff;
+    }
+    .priceRecap{
+        width: 150px;
+        text-align: right;
+    }
+    .listCli{
+        /*border-collapse: collapse;*/
+    }
+    .listCli td{
+        text-align: center;
+    }
+    .cliLine{
+        background-color: #eceff4 !important;
+        border: 2px solid #fff;
+        border-bottom: none;
+        font-weight: 600;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+    .cliLine.pair{
+        background-color: #ebf3ff !important;
+    }
+    .cliLine:hover{
+        background-color: #d8e1f5 !important;
+    }
+
+    .ending{
+        font-weight: 600;
+        font-size: 1.2em;
+        background-color: #f39834 !important;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+    .hostLine{
+        display: none;
+        border-left: 2px solid #fff;
+        border-right: 2px solid #fff;
+        border-top: 1px solid #ccc;
+    }
+    .hostLine.active{
+        display: table-row;
+    }
+    .red{
+        background-color: #fb434a;
+        color: #fff;
+    }
+    .green{
+        background-color: #46be8a;
+        color: #fff;
+    }
+</style>
+<div class="container">
+    <h1>Récap des tarifs</h1>
+    <table class="recap">
+        <tr class="recapHeader">
+            <th>Produit</th>
+            <th>Prix</th>
+        </tr>
+        <tr><td>Hébergement basic</td><td class="priceRecap">{{ BaseTarif|number_format(2) }}€</td></tr>
+        <tr><td>Hébergement business</td><td class="priceRecap">{{ ExpertTarif|number_format(2) }}€</td></tr>
+        <tr><td>Hébergement expert</td><td class="priceRecap">{{ HorsTarif|number_format(2) }}€</td></tr>
+        <tr><td>Base de donnée en dépassement </td><td class="priceRecap">{{ BddTarif|number_format(2) }}€/{{ MaxBdd }}Mo</td></tr>
+        <tr><td>Hébergement en dépassement</td><td class="priceRecap">{{ sizeTarif|number_format(2) }}€/Go</td></tr>
+        <tr><td>Vhost supplémentaire</td><td class="priceRecap">{{ VhostTarif|number_format(2) }}€</td></tr>
+    </table>
+    <br><br>
+    <h1>Résumé par client</h1>
+    <table class="listCli">
+        <tr class="cliHeader">
+            <th></th>
+            <th>Client</th>
+            <th>Instances</th>
+            <th>Hosts</th>
+            <th>Domaines (Gestion Dns)</th>
+            <th>Heb. Basic</th>
+            <th>Heb. Business</th>
+            <th>Heb. Expert</th>
+            <th>Surcout vHost</th>
+            <th>Stockage Site forfait (Go)</th>
+            <th>Stockage Site utilisé (Go)</th>
+            <th>Stockage Site Surcout</th>
+            <th>Stockage Bdd forfait (Mo)</th>
+            <th>Stockage Bdd utilisé (Mo)</th>
+            <th>Stockage Bdd Surcout</th>
+            <th>Liste Bdds</th>
+            <th>Liste Domaines</th>
+        </tr>
+    {% for c in clients %}
+        <tr class="cliLine{% if loop.index is odd %} pair{% endif %}">
+            <td style="font-size: 0.5em;font-weight: 400;">{{ loop.index }}</td>
+            <td>{{ c.Nom }}</td>
+            <td>{{ c.cInstances|length }}</td>
+            <td>{{ c.hosts|length }}</td>
+            <td>{{ c.domaines|length }}</td>
+            <td>{{ c.basic }}</td>
+            <td>{{ c.business }}</td>
+            <td>{{ c.expert }}</td>
+            <td {% if c.scVhost > 0 %}class="red" {% else %} class="green"{% endif %}>{{ c.scVhost|number_format(2) }}</td>
+            <td>{{ (c.siteProv/1024)|round(1, 'ceil') }}</td>
+            <td>{{ (c.siteUtil/1024)|round(1, 'ceil') }}</td>
+            <td {% if c.scSite > 0 %}class="red" {% else %} class="green"{% endif %}>{{ c.scSite|number_format(2) }}</td>
+            <td>{{ c.bddProv }}</td>
+            <td>{{ c.bddUtil }}</td>
+            <td {% if c.scBdd > 0 %}class="red" {% else %} class="green"{% endif %}>{{ c.scBdd|number_format(2) }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for h in c.hosts %}
+            <tr class="hostLine">
+                <td></td>
+                <td style="text-align: left;">{{ h.Nom }}</td>
+                <td>{% if h.instance %}O{% else %}N{% endif %}</td>
+                <td></td>
+                <td></td>
+                <td>{% if h.basic %}O{% else %}N{% endif %}</td>
+                <td>{% if h.business %}O{% else %}N{% endif %}</td>
+                <td>{% if h.expert %}O{% else %}N{% endif %}</td>
+                <td {% if h.surcoutAp > 0 %}class="red" {% else %} class="green"{% endif %}>{{ h.surcoutAp|number_format(2) }}</td>
+                <td>{{ (h.siteProv/1024)|round(1, 'ceil') }}</td>
+                <td>{{ (h.siteUtil/1024)|round(1, 'ceil') }}</td>
+                <td {% if h.scSite > 0 %}class="red" {% else %} class="green"{% endif %}>{{ h.scSite|number_format(2) }}</td>
+                <td>{{ h.bddProv }}</td>
+                <td>{{ h.bddUtil }}</td>
+                <td {% if h.scBdd > 0 %}class="red" {% else %} class="green"{% endif %}>{{ h.scBdd|number_format(2) }}</td>
+                <td>
+                    <ul>
+                    {% for b in h.bdds %}
+                        <li>{{ b.Nom }}</li>
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for d in h.domaines %}
+                            <li>{{ d }} - <span id="{{ d }}"> ...chargement...</span></li></li>
+                            <script type="text/javascript">
+                                ajax.get('/Parc/Apache/getDomainIp.htm', {domain: '{{ d }}'}, function(response) {
+                                    switch (response){
+                                        case '185.87.66.11':
+                                            document.getElementById("{{ d }}").innerHTML = '<b style="color:green;">'+response+'</b>';
+                                            break;
+                                        case '178.32.130.20':
+                                        case '178.32.130.24':
+                                        case '145.239.103.211':
+                                            document.getElementById("{{ d }}").innerHTML = '<b style="color:orange;">'+response+'</b>';
+                                            break;
+                                        default:
+                                            document.getElementById("{{ d }}").innerHTML = '<b style="color:red;">'+response+'</b>';
+                                            break;
+                                    }
+                                },true);
+                            </script>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+        <tr class="cliLine"></tr>
+        <tr class="ending">
+            <td></td>
+            <td style="text-align: left;"><b>Totaux</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ NbHost }}</td>
+            <td>{{ NbHostExpert }}</td>
+            <td>{{ NbHostHors }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="ending">
+            <td></td>
+            <td style="text-align: left;"><b>Tarif</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ BaseTarif|number_format(2) }}</td>
+            <td>{{ ExpertTarif|number_format(2) }}</td>
+            <td>{{ HorsTarif|number_format(2) }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="ending">
+            <td></td>
+            <td style="text-align: left;"><b>Total dû</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ (NbHost * BaseTarif)|number_format(2) }}</td>
+            <td>{{ (NbHostExpert * ExpertTarif)|number_format(2) }}</td>
+            <td>{{ (NbHostHors * HorsTarif)|number_format(2) }}</td>
+            <td>{{ TotalHTAp|number_format(2) }}</td>
+            <td></td>
+            <td></td>
+            <td>{{ TotalHTHd|number_format(2) }}</td>
+            <td></td>
+            <td></td>
+            <td>{{ TotalHTBdd|number_format(2) }}</td>
+            <td></td>
+            <td style="background-color: #0a83b6"><b>{{ ((NbHost * BaseTarif) + (NbHostExpert * ExpertTarif) + (NbHostHors * HorsTarif) + TotalHTAp + TotalHTHd + TotalHTBdd)|number_format(2) }}</b></td>
+        </tr>
+    </table>
+</div>

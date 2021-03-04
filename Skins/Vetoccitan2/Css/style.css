@@ -1,0 +1,1924 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+/* FONT */
+
+@font-face {
+	font-family: 'Poppins-Medium';
+	src: url('../Fonts/Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Poppins-Regular';
+	src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: 'Poppins-Regular', sans-serif;
+	font-size:18px;
+	width: 100%;
+	line-height:20px;
+	color:#000;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.fullWidth {
+	width:100%;
+	margin:auto;
+}
+.Container {
+	max-width:1600px/*100%*/;
+	margin:auto;
+}
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+h1 {
+	font-size:1em;
+	font-family: 'Poppins-Medium', sans-serif;
+
+}
+h2 {
+	font-size:1.5em;
+}
+
+
+
+input, textarea, select, button {
+	font-family: 'Poppins-Regular', sans-serif;
+	font-size: 0.9em;
+
+}
+
+a {
+	text-decoration: none;
+	color:#ccc;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+
+/** divers **/
+
+#SiteVeto1 {
+	position: relative;
+	width:100% /*1200px*/;
+	margin:22px auto;
+}
+
+/* colDroite */
+
+/*box horaire*/
+
+.boxhoraire {
+	background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+   	padding: 30px;
+}
+.blocjours {
+    line-height: 1.6;
+    width: 100%;
+}
+
+.jours {
+	text-align: left; padding-left: 0; 
+}
+
+/* box numéro*/
+
+.boxnum {
+	box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+/* box news*/
+
+.boxnews {
+	box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+  padding: 5px 30px 5px 30px; }
+
+h2.news {
+font-size:1em;
+padding: 30px 0 20px 0;
+}
+
+.blocnews {
+	margin: 20px 0;
+}
+
+.boutonCentre {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color:#000;
+}
+.boutonCentre a {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color:#000;
+}
+i.fa.fa-phone {
+    margin-left: 70px;
+    margin-right: 70px;
+}
+/* fin colDroite */
+
+/** Accueil **/
+
+.Accueil .imgArticle img {
+    width: 59%;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    height: 386px;
+}
+.textArticle {
+    margin-bottom:15px;
+}
+#newsDroite {
+    margin-bottom: 22px;
+
+}
+.blocnumbando {
+    float: right;
+    position: relative;
+    top: -40px;
+    right: 14%;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    text-align: center;
+    background-color: #fff;
+    padding: 5px 55px;
+}
+
+/** fin Accueil **/
+
+/** Clinique **/
+
+.Clinique .imgArticle img {
+    width: 59%;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+/** fin Clinique **/
+
+/** BOUTON **/
+
+.boutonretour {
+    padding: 8px;
+    margin: 0 5px 10px 5px;
+    width: 135px;
+    height: 35px;
+    float: right;
+    font-size: 1.2em;
+    text-align: center;
+    border-radius:15px;
+    box-shadow: 0 0 10px #ddd;
+    text-transform: uppercase;
+
+}
+
+.boutonretour:hover {
+    background-color: #ffd132;
+}
+
+.btn-default {
+	border: 2px solid #000;
+	padding: 5px;
+}
+.boutonretour a {
+    text-align: center;
+	text-decoration: none;
+    vertical-align: middle;
+    color: #000;
+}
+.boutonretour a:hover {
+    text-align: center;
+	text-decoration: none;
+    vertical-align: middle;
+    color: #fff;
+}
+
+button {
+    padding: 8px;
+    margin: 0 5px 10px 5px;
+    width: 135px;
+    height: 35px;
+    font-size: 1.2em;
+    text-align: center;
+    border-radius:15px;
+    box-shadow: 0 0 10px #ddd;
+    text-transform: uppercase;
+    background-color:#fff;
+    border-style: none;
+}
+button:hover {
+    text-align: center;
+	text-decoration: none;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #ffd132;
+}
+
+/** FIN BOUTON **/
+.borderAnim {
+	border-bottom: 1px solid #000;
+}
+.borderTop {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+	margin-top: 15px;
+}
+.borderTopContenu {
+	border-top: 1px solid #000;
+	padding-top: 15px;
+}
+/** CAROUSEL **/
+
+#SiteVeto1 #Bando {
+	width: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+#myCarousel {
+    box-shadow: 0 8px 8px #ddd;
+}
+
+.carousel {
+    position: relative;
+    margin-bottom: -30px !important; 
+}
+/**** carousel clinique **/
+#myCarousel h2{
+	font-size:2em;
+	color:#000;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+}
+#myCarousel2 .item {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background1.active {
+	background-color:#c9cccf;
+}
+#myCarousel2 .item.background2.active {
+	background-color: #1b9e1b;
+}
+#myCarousel2 .item.background3.active {
+	background-color: #0d7bdc ;
+}
+#myCarousel2 h2{
+	 font-size:2em;
+	 color:#000;
+	 font-weight: bold;
+	 text-align: center;
+	 text-shadow: 0.1em 0.1em 0.05em #ffffff ;
+ }
+
+/*** MENU  **/
+
+#SiteVeto1 #MenuBar {
+	padding: 25px 0;
+	height: 75px;
+	width: 100%;
+	margin: 0 0 10px 0;
+	font-size: 1.2em;
+	position:initial;
+	z-index: 1000;
+	background-color: #ffd132;
+	box-shadow: 0 2px 5px #ddd; 
+	font-family: 'Poppins-Medium';
+	text-transform: uppercase;
+}
+
+#SiteVeto1 #MenuBar ul.Menu0 {
+	list-style: none;
+	display: flex;
+}
+
+#MenuBar ul.Menu0 li {
+    padding-left: 27px;
+        padding-top: 10px;
+    max-width: 30%;
+}
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 12%;
+}
+
+#SiteVeto1 #MenuBar .NotHome {
+	position: fixed; /* A NE PAS ENLEVER */
+	top: 0;
+}
+
+#SiteVeto1 #MenuBar .col-md-3,
+#SiteVeto1 #MenuBar .col-sm-3,
+#SiteVeto1 #MenuBar .col-lg-3
+{
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#MenuBar ul.Menu0 li a {
+	color:#000;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+#MenuBar ul.Menu0 li a:hover {
+	color:#fff;
+	cursor:pointer;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#MenuBar ul.Menu0 li:hover {
+	color:#fff;
+}
+#MenuBar ul.Menu0 li.Current a{
+	color:#fff;
+	text-transform: uppercase;
+}
+#MenuBar ul.Menu0 li h1 {
+	line-height: inherit;
+
+}
+ #MenuBar img {
+    width: 50%;
+    margin-top: -10px;
+}
+#Content #MenuBar .imgLogo {
+    margin-top: 0;
+}
+.ContenuMenu {
+    margin-top: -10px;
+}
+#Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+}
+
+
+/** FIN MENU **/
+
+/** PAGE EQUIPE **/
+.row.equipe .col-lg-1.col-md-1.col-sm-1{
+	width:16%;
+}
+.imgequipe {
+	border-radius:60px;
+}
+.row.equipeteam {
+    margin-bottom: 60px;
+}
+
+.textePresentation {
+	color:#ffd132;
+
+}
+#SiteVeto1 #Content .equipe img:hover {
+	cursor: pointer;
+}
+#SiteVeto1 #Content .equipe h5 {
+	font-size:1em;
+	text-transform: uppercase;
+	margin-bottom:15px;
+}
+#SiteVeto1 #Content .Contenu .row.equipe {
+	margin-left:18px;
+	margin-bottom: 12px;
+}
+#SiteVeto1 #Content .Contenu .row.equipeteam {
+	margin-bottom: 22px;
+}
+
+/** Anim Equipe */
+#leftSide {
+	background: #d7d7d7;
+	top: 0px;
+	z-index: 101;
+	width: 68%;
+	height: 1500px;
+	/*display: inline-block;*/
+	/*position: relative;*/
+	/*left:-90px;*/
+	display:none;
+	border-right: 1px solid black;
+}
+#rightSide {
+	background: white;
+	bottom:620px;
+	width: 50%;
+	height: 1500px;
+	/*display: inline-block;*/
+	position: relative;
+	z-index: 101;
+	/*overflow: scroll;*/
+	/*overflow:auto;*/
+	display:none;
+}
+#anim{
+	 display: flex;
+	 /*position: absolute;*/
+	 /* height: 600px; */
+ }
+#animBot{
+	display: flex;
+	/*position: absolute;
+	/* height: 600px; */
+}
+#rightSide p {
+	position:absolute;
+	top:450px;
+	left:80px;
+}
+#rightSide span {
+	position:absolute;
+	top:750px;
+	left:80px;
+}
+#rightSide div {
+	position:absolute;
+	top:650px;
+	left:260px;
+	border-radius:20px;
+	padding: 1%;
+	box-shadow: 0 0 10px #ddd;
+}
+#rightSide h2 {
+	position:absolute;
+	top:62px;
+	left:628px;
+}
+#rightSide a {
+	color:#000;
+}
+#animAccueil{
+	position:relative;
+	top:0px;
+	background-color:white;
+	z-index: 100;
+}
+.cercle{
+	position: absolute;
+	left: 615px!important;
+	top: 55px!important;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	box-shadow: 0 0 10px #ddd;
+}
+#rightSide .nomdct {
+	text-transform:uppercase;
+	top:0;
+	left:0;
+	font-family: 'Poppins-Medium';	
+}
+
+
+/** FIN PAGE EQUIPE **/
+
+/** PAGE SERVICES CONSEILS NEWS **/
+
+.imgservices,
+.imgconseils,
+.imgnews {
+	display: block;
+    height: 215px;
+    width: 464px;
+    border-radius: 15px;
+
+}
+
+#SiteVeto1 #Content .Contenu .row.conseils,
+#SiteVeto1 #Content .Contenu .row.services,
+#SiteVeto1 #Content .Contenu .row.news
+{
+	margin-bottom: 22px;
+	margin-top:15px;
+}
+
+
+/** FIN PAGE SERVICES **/
+
+/*** CONTENU  **/
+#SiteVeto1 #Content {
+	position: relative;
+	margin-top:65px;
+}
+
+#SiteVeto1 #Content .titreImage .legende {
+	font-size:1em;
+	margin-top:15px;
+}
+#SiteVeto1 #Content .titreArticle h2 {
+	font-family: 'Poppins-Medium';
+	font-size:1em;
+	margin-top:15px;
+}
+
+/*#SiteVeto1 #Content .textArticle .texte {*/
+/*    margin-top: 25px;*/
+/*    margin-bottom: 25px;*/
+/*}*/
+
+
+#Footer {
+    margin-top: 20px;
+}
+
+#Pre-Footer {
+    background-color: #ccc;
+    height: 290px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 9px 10px #ddd;
+}
+
+.filtres {
+	display: flex;
+    list-style: none;
+    font-size:1em;
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+.filtres li {
+    padding: 5px;
+    margin: 0 5px 10px 5px;
+    width:115px;
+    height:29px;
+	cursor: pointer;
+	box-shadow: 0 0 10px #ddd;
+	border-radius:15px;
+	text-transform: uppercase;
+}
+.filtres li.active {
+    padding: 5px;
+    background-color: #ffd132;
+    margin: 0 5px 10px 5px;
+    color:#fff;
+    width:115px;
+    height:29px;
+    border-radius:15px;
+    box-shadow: 0 0 10px #ddd;
+    text-transform: uppercase;
+}
+
+
+
+/** SCROLL */
+
+#Contenu-scroll {
+	position: relative;
+	/* POUR REUNION WEB ON DESACTIVE */
+	overflow-y: scroll;
+	height: 800px;
+	width: 100%;
+	margin-bottom: 22px;
+	/* Ajout padding a gauche car texte coupé avec le overflow*/
+	padding-left: 20px;
+}
+
+.scrollbar-transparent::-webkit-scrollbar {
+	display: none;
+}
+
+/* Formulaire */
+.labelform {
+	display:block;
+	padding: 5px 0 5px 0;
+}
+.inputform,
+.textform {
+	width:100%;
+    box-shadow: 0 0px 10px #ddd;
+    border-style: none;
+    border-radius: 20px;
+    padding: 5px;
+}
+.textform {
+	resize:none;
+	width:100%;
+	height:200px;
+}
+
+
+#testouille {
+	position: relative;
+	/*
+	bottom: -200px;
+	*/
+	/*background-color: black;*/
+}
+#durAccueil{
+	display:none;
+}
+#durClinique{
+	display:none;
+}
+#durConseils{
+	display:none;
+}
+#durContact{
+	display:none;
+}
+#durEquipe{
+	display:none;
+}
+#durNews{
+	display:none;
+}
+#durServices{
+	display:none;
+}
+
+#mLegal{
+	text-align: center;
+	cursor: pointer;
+	color: #ccc;
+	padding: 10px 0;
+}
+
+
+
+/* PAGE CONTACT */
+form.Contact {
+	margin-top: 20px;
+}
+
+
+
+ /* ajout Marie 01/04/20 pour logo clinique dans menu*/
+/* Modif Patrick 20/04/20 taille du logo dans menu bar de 41% à 27%, full size à voir pour obtenir un logo plus grand  */
+
+
+#durPubAccueil{
+display:none
+}
+#durPubFootAccueil{
+	display:none
+}
+
+
+.tutu{
+	border-bottom: 1px solid black;
+}
+
+.Services,
+.Conseils,
+.News {
+    margin-left: -20px;
+}
+
+
+
+.row.news.borderTop .titreImage .legende,
+.row.conseils.borderTop .titreImage .legende,
+.row.services.borderTop .titreImage .legende {
+    font-size: 0.9em;
+    margin-bottom: -17px;
+    margin-top:0px !important;
+}
+
+.imgLogo{
+	margin-left:2%;
+}
+
+.row.filtresarticle {
+	margin-left: -35px;
+}
+
+
+
+
+form.Contact {
+    margin-top: 20px;
+    margin-left: -17px;
+}
+
+#Bando img {
+    margin-top: -22px;
+    max-height: 800px;
+    width:100%;
+}
+
+
+.borderBottom{
+	border-bottom: 1px solid black;
+}
+
+.logoContact{
+	width:5%;
+	margin-left: 70px;
+	margin-right: 70px;
+}
+
+
+/** Gestion CSS du Menu selon les résolutions**/
+@media screen and (min-width: 1024px) and (max-width: 1110px) {
+
+    #SiteVeto1 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+        #MenuBar ul.Menu0 li {
+    padding-left: 10px;
+    padding-top: 10px;
+    max-width: 20%;
+}
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+    #Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+    margin-left: -56px;
+    font-size: 0.9em;
+}
+#SiteVeto1 #MenuBar ul.Menu0 {
+    list-style: none;
+    display: flex;
+    margin-left: -15px;
+}
+
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 0.9em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+.boxhoraire .col-md-9 {
+    width: 71%;
+}
+.blocjours {
+    line-height: 1.6;
+    width: 100%;
+    font-size:  0.8em;
+}
+.jours {
+    text-align: left;
+    padding-left: 15px;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+.boxnews {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px 30px 5px 30px;
+    font-size: 0.9em;
+}
+}
+@media screen and (min-width: 1110px) and (max-width: 1195px) {
+
+    #SiteVeto1 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+        #MenuBar ul.Menu0 li {
+    padding-left: 10px;
+    padding-top: 10px;
+    max-width: 20%;
+}
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+    #Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+    margin-left: 0px;
+    font-size: 0.9em;
+}
+#SiteVeto1 #MenuBar ul.Menu0 {
+    list-style: none;
+    display: flex;
+    margin-left: -15px;
+}
+
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 0.9em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+.boxhoraire .col-md-9 {
+    width: 73%;
+}
+.jours {
+        text-align: left;
+    padding-left: 11px;
+    margin-left: 0px;
+}
+.blocjours {
+    line-height: 1.6;
+    width: 100%;
+    font-size: 0.9em;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+.boxnews {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px 30px 5px 30px;
+    font-size: 0.9em;
+}
+}
+@media screen and (min-width: 1195px) and (max-width: 1220px) {
+
+    #SiteVeto1 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+        #MenuBar ul.Menu0 li {
+    padding-left: 10px;
+    padding-top: 10px;
+    max-width: 20%;
+}
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+    #Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+    margin-left: 70px;
+    font-size: 0.9em;
+}
+#SiteVeto1 #MenuBar ul.Menu0 {
+    list-style: none;
+    display: flex;
+    margin-left: -15px;
+}
+
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 0.9em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+.boxhoraire .col-md-9 {
+    width: 75%;
+}
+.jours {
+        text-align: left;
+    padding-left: 11px;
+    margin-left: 0px;
+}
+.blocjours {
+    line-height: 1.6;
+    width: 100%;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.boxnews {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px 30px 5px 30px;
+    font-size: 0.9em;
+}
+}
+@media screen and (min-width: 1221px) and (max-width: 1280px) {
+
+    #SiteVeto1 .bloc-Horaires .bloc-infos {
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+        #MenuBar ul.Menu0 li {
+    padding-left: 10px;
+    padding-top: 10px;
+    max-width: 20%;
+}
+    #MenuBar ul.Menu0 li.Last {
+        margin-left: 15px;
+        padding-left: 0;
+    }
+    #Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+    margin-left: 70px;
+    font-size: 0.9em;
+}
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 0.9em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+.boxhoraire .col-md-9 {
+    width: 89%;
+}
+.jours {
+    text-align: left;
+    padding-left: 0;
+    margin-left: -18px;
+}
+.blocjours {
+    line-height: 1.6;
+    width: 80%;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+.boxnews {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px 30px 5px 30px;
+    font-size: 0.9em;
+}
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1318px) {
+
+	#SiteVeto1 .bloc-Horaires .bloc-infos {
+	    padding: 0;
+	    margin: 0;
+	    font-size: 0.9em;
+	}
+		#MenuBar ul.Menu0 li {
+    padding-left: 15px;
+    padding-top: 10px;
+    max-width: 20%;
+}
+	#MenuBar ul.Menu0 li.Last {
+	    margin-left: 15px;
+	    padding-left: 0;
+	}
+	#Content #MenuBar .ContenuMenu {
+    margin-top: 0;
+    margin-left: -15px;
+}
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 8px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+}
+
+@media screen and (min-width: 1319px) and (max-width: 1370px){
+	#Bando img {
+    margin-top: -22px;
+    max-height: 550px;
+    width:100%;
+}
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 8px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+}
+
+@media screen and (min-width: 1371px) and (max-width: 1440px) {
+	#Bando img {
+    margin-top: -22px;
+    max-height: 550px;
+    width:100%;
+	}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.Contenu {
+    margin-left: 20px;
+}
+}
+
+@media screen and (min-width: 1370px) and (max-width:1600px) {
+
+#Bando img {
+    margin-top: -22px;
+    max-height: 674px;
+    width: 100%;
+}
+.Contenu {
+    margin-left: 20px;
+}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+
+@media screen and (min-width: 1560px) and (max-width:1595px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 10%;
+}
+
+}
+
+@media screen and (min-width: 1528px) and (max-width:1560px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 8%;
+}
+
+}
+
+@media screen and (min-width: 1511px) and (max-width:1528px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 7%;
+}
+
+}
+@media screen and (min-width: 1480px) and (max-width:1511px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 5%;
+}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+@media screen and (min-width: 1452px) and (max-width:1480px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 3%;
+}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+@media screen and (min-width: 1440px) and (max-width:1452px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 37px;
+    padding-left: 0;
+}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+@media screen and (min-width: 1393px) and (max-width:1440px) {
+
+#MenuBar ul.Menu0 li.Last {
+        margin-left: 25px;
+    padding-left: 0;
+}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+@media screen and (min-width: 1380px) and (max-width:1393px) {
+	#MenuBar ul.Menu0 li {
+	    padding-left: 27px;
+	    padding-top: 10px;
+	    max-width: 20%;
+	}
+	#MenuBar ul.Menu0 li.Last {
+	    margin-left: 15px;
+	    padding-left: 0;
+	}
+	.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 20px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+}
+
+@media screen and (min-width: 1314px) and (max-width:1380px) {
+	#MenuBar ul.Menu0 li {
+	    padding-left: 20px;
+	    padding-top: 10px;
+	    max-width: 20%;
+	}
+	#MenuBar ul.Menu0 li.Last {
+	    margin-left: 15px;
+	    padding-left: 0;
+	}
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 8px;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+}
+
+
+/** fin gestion menu selon resolution **/
+
+#Main {
+	box-shadow: 0 9px 10px #ddd;
+}
+
+/*** RESPONSIVE ***/
+/** Extra small devices (portrait phones, less than 576px)**/
+@media screen and (max-width: 325px) {
+
+.jours {
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 0.9em;
+    margin-right: -45px;
+}
+.boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0 20px 6px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 0.9em;
+}
+.boxhoraire .col-xs-9 {
+    width: 89%;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 1em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+}
+@media screen and (min-width: 326px) and (max-width: 575.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#Main{
+		/*border-top: 1px solid black;*/
+		padding-top: 10px;
+	}
+	#SiteVeto1 #Content {
+		margin:0!important;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	.logoContact{
+		width:5%;
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.jours {
+		font-family: 'Poppins-Regular', sans-serif;
+		font-size: 1em;
+            margin-right: -55px;
+	}
+	
+    .boxhoraire {
+    background-color: #fff;
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 20px 0 20px 6px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: 1em;
+
+}
+.boxhoraire .col-xs-9 {
+    width: 89%;
+}
+.boxnum {
+    box-shadow: 0 0 10px #ddd;
+    border-radius: 15px;
+    margin: 20px 5px 5px 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 1em;
+}
+.logoContact {
+    width: 5%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+	.Accueil .imgArticle img{
+		width:100%!important;
+	}
+
+	#SiteVeto1 #Content .Contenu {
+		margin-left: -8px;
+		margin-top: 0;
+	}
+
+	#Contenu-scroll {
+		position: relative;
+		overflow-y: scroll;
+		height: 570px;
+		width: 100%;
+		margin-bottom: 22px;
+		padding-left: 20px;
+	}
+
+	#PubClinique {
+		/*margin-top: 52px;*/
+	}
+	.col-lg-11.col-md-11.col-sm-11.borderTopContenu,
+	.col-lg-10.col-md-10.col-sm-10.borderTopContenu,
+	.col-lg-8.col-md-8.col-sm-8.borderTopContenu {
+		padding-left: 0px;
+		padding-right: 15px;
+	}
+	.col-lg-9.col-md-9.col-sm-9.borderTopContenu {
+		padding-left: 0px;
+		padding-right: 15px;
+		margin-left: 0;
+	}
+	.services img.img-responsive,
+	.conseils img.img-responsive {
+		width: 100%;
+	}
+	.services .col-xs-12,
+	.conseils .col-xs-12,
+	.Clinique .col-xs-12{
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.borderTopContenu {
+		border-top: 1px solid #000;
+		padding-top: 15px;
+		margin-left: -15px;
+	 }
+
+	.Clinique .imgArticle,
+	.Clinique .titreImage,
+	.Clinique .titreArticle,
+	.Clinique .textArticle {
+		/*margin-left: 15px;*/
+		text-align: center;
+	}
+	#SiteVeto1 #Content .Contenu .row.equipe {
+		margin-left: 18px;
+		margin-right: 0px;
+		margin-bottom: 12px;
+	}
+	.equipe .col-lg-10.col-md-10.col-sm-10.borderTopContenu {
+		padding-right: 0;
+		margin-left: 0;
+	}
+	.row.equipe .col-lg-1.col-md-1.col-sm-1 {
+		width: 25%;
+	}
+	.filtres {
+		display: flex;
+		list-style: none;
+		font-size: 0.9em;
+		text-align: center;
+		vertical-align: middle;
+		margin-bottom: 10px;
+		flex-wrap: wrap;
+	}
+	.filtres li {
+		border: 1px solid #000;
+		/* padding: 5px; */
+		margin: 0 5px 10px 5px;
+		width: 105px;
+		height: 30px;
+		cursor: pointer;
+	}
+	 .filtres li.active {
+		border: 1px solid #000;
+		/* padding: 5px; */
+		background-color: #000;
+		margin: 0 5px 10px 5px;
+		color: #fff;
+		width: 105px;
+		height: 30px;
+	}
+	.Clinique .imgArticle img {
+		width:100%;
+		margin-left:0px;
+	}
+	.paddResp{
+		padding-bottom: 21px;
+	}
+	.row.equipeteam {
+		margin-bottom: 0px;
+	}
+
+}
+
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#Main{
+		/*border-top: 1px solid black;*/
+		padding-top: 10px;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	.logoContact{
+		width:5%;
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.jours {
+		font-family: 'Poppins-Regular', sans-serif;
+		font-size: 1em;
+	}
+	.boxhoraire {
+		font-size: 0.75em;
+		padding: 10px;
+	}
+	.row.Accueil{
+		margin:15px!important;
+	}
+	.Accueil .imgArticle img{
+		width:100%!important;
+	}
+
+	#newsDroite {
+		position: relative;
+		overflow-y: scroll;
+		height: 215px;
+		width: 100%;
+		/* padding-right: 5px; */
+		margin-bottom: 22px;
+
+	}
+	#SiteVeto1 #Content .Contenu {
+		margin-left: 0 ;
+		margin-top: 20px;
+	}
+	#SiteVeto1 #Content {
+		position: relative;
+		 margin-top: 0px;
+	}
+    .titreCentre {
+        border-bottom: 1px solid #000;
+        margin-top: 20px;
+        padding-top: 24px;
+    }
+    .titreCentre p {
+        border-top: 1px solid #000;
+    }
+
+
+    .filtres {
+        display: flex;
+        list-style: none;
+        font-size: 0.9em;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .filtres li {
+        border: 1px solid #000;
+        /* padding: 5px; */
+		margin: 0 5px 10px 5px;
+		width: 96px;
+		height: 27px;
+		cursor: pointer;
+	}
+	.filtres li.active {
+		border: 1px solid #000;
+		/* padding: 5px; */
+		background-color: #000;
+		margin: 0 5px 10px 5px;
+		color: #fff;
+		width: 96px;
+		height: 27px;
+	}
+	.borderTopContenu {
+		border-top: 1px solid #000;
+		padding-top: 15px;
+		margin-left: -15px !important;
+	}
+	.Clinique .imgArticle img {
+		width:100%;
+		margin-left:0px;
+
+	}
+	.paddResp{
+		padding-bottom: 21px;
+	}
+	.row.equipeteam {
+		margin-bottom: 0px;
+	}
+	.Clinique .imgArticle,
+	.Clinique .titreImage,
+	.Clinique .titreArticle,
+	.Clinique .textArticle {
+		/*margin-left: 15px;*/
+		text-align: center;
+	}
+    .textArticle {
+    font-size: 0.9em;
+}
+.titreAtricle {
+    font-size:  0.9em;
+}
+
+}
+
+/** Medium devices (tablets, 768px and up) **/
+@media (min-width: 768px) and (max-width: 1024.98px) {
+
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#Main{
+		/*border-top: 1px solid black;*/
+		padding-top: 10px;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	.row{
+		margin:15px!important;
+	}
+	.boxhoraire {
+		font-size: 0.75em;
+		padding: 10px;
+	}
+	 #newsDroite {
+		position: relative;
+		overflow-y: scroll;
+		height: 220px;
+		width: 100%;
+		/* padding-right: 5px; */
+		margin-bottom: 22px;
+	}
+	.titreCentre {
+		border-bottom: 1px solid #000;
+		margin-top: 20px;
+		padding-top: 20px;
+	}
+	.titreCentre p {
+		border-top: 1px solid #000;
+	}
+
+	.filtres {
+		display: flex;
+		list-style: none;
+		font-size: 0.9em;
+		text-align: center;
+		vertical-align: middle;
+	}
+	.filtres li {
+		border: 1px solid #000;
+		/* padding: 5px; */
+		margin: 0 5px 10px 5px;
+		width: 96px;
+		height: 27px;
+		cursor: pointer;
+	}
+	 .filtres li.active {
+		border: 1px solid #000;
+		/* padding: 5px; */
+		background-color: #000;
+		margin: 0 5px 10px 5px;
+		color: #fff;
+		width: 96px;
+		height: 27px;
+	}
+	.imgArticle {
+    float: left;
+    width: 50%;
+    margin-left: 0;
+    margin-right: 15px;
+}
+	#SiteVeto1 #Content .titreImage .legende {
+		font-size: 0.9em;
+		/* font-style: italic; */
+		margin-top: 0px;
+	}
+	#SiteVeto1 #Content {
+		position: relative;
+		margin-top: 0px;
+	}
+    .textArticle {
+    font-size: 0.9em;
+}
+.titreArticle {
+    font-size:  0.9em;
+}
+.Clinique .titreArticle {
+        margin-top: -20px;
+}
+.Clinique .imgArticle img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.blocjours {
+    line-height: 0;
+    width: 100%;
+}
+}
+
+/*
+
+Jusqu’à 479px : smartphone en portrait
+		   De 480px à 959px : smartphone en paysage, tablette en portrait et petite tablette en paysage
+De 960px à 1280px : tablette en paysage, écran d’ordinateur de taille petite et moyenne
+1281px et au delà : grand écran d’ordinateur (21″ et + en plein écran )
+
+Et dans les cas où votre design initial est basé sur une largeur de 1024px, il suffit de remplacer le point de rupture 960px par 1024px.
+
+ Donc pour résumer : 480px | 960px ou 1024px ( selon votre design )  | 1281px*/
+
+
+#wrap {
+	font-family: sans-serif;
+	font-size: 1.3em;
+	line-height: 1.6;
+	margin: 0;
+	/*display: none;*/
+	/*color: #f00;*/
+	-webkit-transition: all .5s ease-in;
+	transition: all .5s ease-in;
+}
+
+#open,
+#close {
+	display: block;
+}
+
+#close a {
+	color: black;
+	text-decoration: none;
+	display: block;
+	z-index: 10000;
+}
+
+
+svg {
+	width: 30px;
+	display: block;
+	float:right;
+	margin-right: 10px;
+}
+
+
+#float{
+	/*position:absolute;*/
+	display:none;
+	top:-350px;
+	width:100%;
+	z-index:1000;
+	background-color: white;
+	-webkit-transition: left 0.5s linear;
+}
+
+
+#wrap:target #float {
+	top: 0px;
+}
+
+/* ecran tablette portrait */
+@media (min-width: 469px) and (max-width: 1024px) {
+	#SiteVeto1 #burger {
+		display:none!important;
+	}
+	#SiteVeto1{
+		margin:0 !important
+	}
+	#MenuBar{
+		position:static!important;
+	}
+	#Main{
+		/*border-top: 1px solid black;*/
+		padding-top: 10px;
+	}
+	.container {
+		width: 100%;
+		padding: 0;
+	}
+	.carousel {
+		position: relative;
+		margin-bottom: -15px !important;
+	}
+	/*#float{*/
+	/*	left: -830px;*/
+	/*}*/
+
+	#submenu .container {
+		width: 100%;
+	}
+
+	#submenu .container .col-sm-3 {
+		width: 24%;
+	}
+	.spectacles-list {
+		margin: 0;
+		column-count: 2;
+		column-gap: 0;
+	}
+	#SiteVeto1 #MenuBar #wrap {
+		display:block;
+	}
+
+	/* ADMIN */
+
+}
+
+/* Menu responsive maquette 2 */
+
+.MenuResponsiv{
+	text-align: center;
+	border: 1px solid #ddd;
+	border-radius: 20px;
+	padding: 10px;
+	margin: 12px;
+	box-shadow: 0 0px 10px #ddd;
+	font-size: 1.4em;
+    font-family: 'Poppins-Medium';
+}
+
+/* page service */
+
+ div.spoiler {
+    padding: 20px 10px 10px 10px;
+    width: 100%;
+    position: relative;
+}
+ 
+div.spoiler div.boutonAfficher, div.spoiler div.boutonMasquer {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    margin-left: -10px;
+    color: #ccc;
+}
+ 
+div.spoiler[data-isOuvert="false"] div.contenuSpoiler {
+    display: none;
+}
+ 
+div.spoiler[data-isOuvert="false"] div.boutonMasquer {
+    display: none;
+}
+ 
+div.spoiler[data-isOuvert="true"] div.boutonAfficher {
+    display: none;
+}

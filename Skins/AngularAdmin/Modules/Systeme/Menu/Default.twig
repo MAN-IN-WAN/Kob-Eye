@@ -12,9 +12,9 @@
         <ul class="left-menu-list left-menu-list-root list-unstyled">
 {#            <li class="left-menu-list-submenu">#}
             {%  for m in menus %}
-                {% if m.getMainSubMenus()|length > 0 %}
+                {% if m.getSubMenus()|length > 0 %}
                     <li class="left-menu-list-submenu">
-                        <a class="left-menu-link aaaa"  href="javascript: void(0);">
+                        <a class="left-menu-link" href="javascript: void(0);">
                             <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-files-empty2{% endif %}"><!-- --></i>
                             <span>{{ m.Titre }}</span>
                         </a>
@@ -22,12 +22,14 @@
 							<li class="submenu-title">
 								{{ m.Titre }}
 							</li>
-                            {% for m2 in m.getMainSubMenus() %}
+                            {% for m2 in m.getSubMenus() %}
+                                {% if m2.Affiche %}
                                 <li>
                                     <a class="left-menu-link" href="#/{{ m.Url }}/{{ m2.Url }}">
                                         {{ m2.Titre }}
                                     </a>
                                 </li>
+                                {% endif %}
                             {%  endfor %}
                         </ul>
                     </li>

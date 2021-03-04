@@ -1,0 +1,18 @@
+
+    <div id="myCarousel2" class="carousel slide ">
+        <div class="carousel-inner">
+            {% set i = 0 %}
+            {% for i in 0..2 %}
+                  <div class="item {% if i == 1 %}active {% endif %} background{{i}}">
+                    <h2>PUBLICITE VETOCCITAN..... {{i}}</h2>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready( function(){
+            $('.carousel').carousel({
+                  interval: 3500
+            })
+        });
+    </script>

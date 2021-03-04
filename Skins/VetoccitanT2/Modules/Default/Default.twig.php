@@ -5,6 +5,12 @@ $Modele = $Minisite->getOneParent("ModeleMiniSite");
 $Pages = $Modele->getChildren("PageMiniSite/15");
 $Menu = Sys::$CurrentMenu->Url;
 
+$LeClient = Sys::getOneData("Parc","Client/MiniSite/".$Minisite->Id);
+$lAdherent = $LeClient->getOneChild("Adherent");
+$lAdherent->Module="Vetoccitan";
+
+$vars['Adherent']=$lAdherent;
+
 foreach($Pages as $Page){
     $PageUrl = strtolower($Page->MenuUrl);
     $PageUrl = Utils::checkSyntaxe($PageUrl);

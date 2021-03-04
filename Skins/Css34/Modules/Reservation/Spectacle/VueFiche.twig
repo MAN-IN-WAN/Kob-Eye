@@ -3,6 +3,7 @@
         <div id="spectacle-fiche" v-if="display">
             <div class="row btn-retour">
                 <div class="pull-left" > <router-link :style="{backgroundColor: spectacle.Couleur}" :to="from.fullPath">Retour à la liste <i class="fas fa-reply"></i></router-link></div>
+                <div class="pull-right"><a target="_blank" style="color:inherit;" :href="spectacle.Url+'/FichePdf'"><i class="fas fa-print"></i></a></div>
             </div>
             <div class="row">
                 <div class="col-lg-8">
@@ -42,7 +43,7 @@
                     <table class="table table-striped">
                         <thead>
                         <th>DATE</th>
-                        <th>LIEU</th>
+                        <th>LIEU </th>
                         <th class="hidden-xs">ADRESSE</th>
                         <th>TELEPHONE</th>
                         <th>ACCÈS</th>
@@ -50,9 +51,9 @@
                         <th>DISPO</th>
                         </thead>
                         <tbody>
-                            <tr v-for="e in spectacle.events">
-                                <td :inner-html.prop="e.DateDebut | timestamp"></td>
-                                <td>{{ e.Salle.Nom }}</td>
+                            <tr v-for="e in spectacle.events" >
+                                <td :inner-html.prop="e.DateDebut | timestamp"> </td>
+                                <td>{{ e.Salle.Nom  }}</td>
                                 <td class="hidden-xs">{{ e.Salle.Adresse }} {{ e.Salle.Ville }} {{ e.Salle.CodPos }} <!--{{ e.Salle.Handi }} --> </td>
                                   <td style="text-align: center">
                                <!--     <a v-if="e.Structure.Tel!=''" :href="'tel:'+e.Structure.Tel"><i  class="fas fa-phone" style="color:green"></i></a>
@@ -71,8 +72,9 @@
                                     <i v-if="e.Structure.SiteWeb==''" class="fas fa-times" style="color:red"></i>
                                 </td>
                                 <td style="text-align: center">
-                                    <i v-if="e.NbPlace>0" class="fas fa-check" style="color:green"></i>
                                     <i v-if="e.NbPlace==0" class="fas fa-times" style="color:red"></i>
+                                   <i v-else-if="e.DateCloture<Date.now()/1000" class="fas fa-times" style="color:red"></i>
+                                   <i v-else-if="e.DateCloture>Date.now()/1000" class="fas fa-check" style="color:green"></i>
                                 </td>
                             </tr>
                         </tbody>
@@ -88,18 +90,15 @@
                     <h1 :style="{backgroundColor: spectacle.Couleur}">{{ spectacle.Nom }}</h1>
                     <img :src="'/'+spectacle.Logo" class="img-responsive"/>
                     <p v-html="spectacle.Resume" class="Resume"></p>
-<!--                <div>-->
-<!--                    <h3>ACCES</h3>-->
-<!--                    <p >{{ spectacle.Acces }}</p>-->
-<!--                </div>-->
+                    <p v-html="spectacle.Video" class="Resume"></p>
                     <p class="Partenaires">
                         <h3>PARTENAIRES</h3>
-                        <h3 class="titre-partenaires" :style="{backgroundColor: spectacle.Couleur, color: '#ffffff'}">{{ spectacle.OrganisationOrganisationIdlabel }}</h3>
+                        <h3 class="titre-partenaires" :style="{backgroundColor: spectacle.Couleur, color: '#ffffff'}" v-html="spectacle.OrganisationOrganisationIdlabel"></h3>
                         <div class="partList">
                             <a :href="p.lien" v-for="p in spectacle.partenaires" >
                                 <div class="card partenaires-item" :style="{borderColor: spectacle.Couleur}">
                                     <img :src="'/'+p.image" class="card-img-top ">
-                                    <span v-html="p.titre" class="card-body" :style="{backgroundColor: spectacle.Couleur , color: '#ffffff' }"></span>
+                                    <span v-html="p.titre " class="card-body" :style="{backgroundColor: spectacle.Couleur , color: '#ffffff' }"></span>
                                 </div>
                             </a>
                         </div>
@@ -111,6 +110,7 @@
 </template>
 
 <script>
+    console.log(Date.now());
     module.exports = {
         name: 'spectacle-fiche',
         data: function () {
@@ -166,6 +166,7 @@
         },
         beforeRouteLeave : function(to, from , next) {
             this.$parent.$data.specId.val = null;
+            this.spectacle = null;
             next();
         }
     }

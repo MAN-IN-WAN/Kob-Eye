@@ -1,0 +1,58 @@
+{
+  "name": "react-sticky",
+  "version": "6.0.3",
+  "description": "Sticky component for React",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "compile": "babel src --loose --out-dir lib",
+    "demos:start": "webpack-dev-server --watch",
+    "demos:build": "NODE_ENV=production webpack",
+    "prepublish": "npm run prepare",
+    "prepare": "npm run clean && npm run compile",
+    "test": "mocha test/setup.js test/spec/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captivationsoftware/react-sticky"
+  },
+  "keywords": [
+    "react-component",
+    "React",
+    "Sticky"
+  ],
+  "author": "Captivation Software",
+  "license": "MIT",
+  "homepage": "https://github.com/captivationsoftware/react-sticky",
+  "dependencies": {
+    "@babel/runtime": "^7.3.1",
+    "prop-types": "^15.5.8",
+    "raf": "^3.3.0"
+  },
+  "peerDependencies": {
+    "react": ">=15",
+    "react-dom": ">=15"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "chai": "^4",
+    "enzyme": "^2.8.2",
+    "jsdom": "8.0.4",
+    "mocha": "^5",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router-dom": "^4.2.2",
+    "react-test-renderer": "^15.5.4",
+    "rimraf": "^2.5.2",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.0"
+  }
+}

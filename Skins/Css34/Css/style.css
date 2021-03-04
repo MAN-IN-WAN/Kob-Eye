@@ -34,6 +34,7 @@ h6 {
 
 p {
     font-size: 1em;
+    margin:0!important;
 }
 
 .container {
@@ -437,6 +438,12 @@ p {
     margin: auto;
     float: left;
 }
+.TextDefaultBloc {
+    position:absolute;
+    bottom: 20px;
+    left:15px;right:15px;
+    text-align: center;
+}
 
 #partenaires {
     margin: 50px 0;
@@ -518,6 +525,8 @@ p {
     line-height: 1.5em;
     text-transform: uppercase;
     text-align: left;
+    white-space: unset!important;
+    overflow-wrap: anywhere;
 }
 
 #filters a.selected {
@@ -644,7 +653,7 @@ div#news-fiche {
 h3.titre-partenaires {
     margin: 0 0 10px 0;
     padding:0 10px;
-    height: 40px;
+    height: auto /*40px*/;
     line-height: 40px;
 }
 
@@ -955,6 +964,9 @@ h3.titre-partenaires {
 #spectacle-fiche #description > p {
     margin: 10px 0 10px 0;
     text-align: justify;
+}
+#spectacle-fiche #description ul {
+    margin-left:15px;
 }
 
 /** TIMELINE **/
