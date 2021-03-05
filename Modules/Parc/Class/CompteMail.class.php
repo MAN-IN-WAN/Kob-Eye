@@ -66,6 +66,7 @@ class CompteMail extends genericClass
             return false;
         }
         $this->addParent($this->getKEServer());
+        $this->addParent($client);
 
         parent::Save();
 
@@ -364,7 +365,7 @@ class CompteMail extends genericClass
             }
             if(!empty($one)){
                 $srv = $one[0]->get('zimbraMailHost');
-                $gsrv = Sys::getOneData('Parc','Server/DNSNom='.$srv);
+                $gsrv = Sys::getOneData('Parc','Server/DNSNom='.$srv,'','','','','','',true);
                 $this->_KEServer = $gsrv;
             }
 
@@ -729,7 +730,7 @@ class CompteMail extends genericClass
         //$preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
         //$url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
         //$url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
-        $url = 'https://mail.abtel.link/mail?auth=qp&zauthtoken=' . $datoken;
+        $url = 'https://mx1.abtel.link/mail?auth=qp&zauthtoken=' . $datoken;
         return $url;
     }
 
