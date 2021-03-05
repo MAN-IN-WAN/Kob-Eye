@@ -12,8 +12,20 @@ foreach ($menus as &$m){
     if ( empty($m->Url) && empty($vars['Lien']) ){
         $m->current = true;
     }
+    if ($m->Url == "urgence") {
+       continue;
+    }
+    else {
+        $menu2 []=$m;
+    }
 }
 
+$Minisite = Sys::getOneData("Parc", "MiniSite/Domaine=".Sys::$domain);
+$params = $Minisite->getParamsValues();
+foreach($params as $param){
+    $vars[$param->Nom] = $param->vms;
+}
 
-
-$vars['Menu'] = $menus;
+//print_r($vars);
+//
+$vars['Menu'] = $menu2;

@@ -27,8 +27,7 @@
 
 </script>#}
 
-
-
+{% if POSITION == "bandoHaut"%}
 <div id="myCarousel{{ POSITION }}" class="carousel" >
 	{% for Pub in Publicites  |slice(0, 4) %}
 		<div class="item">
@@ -39,6 +38,15 @@
 		</div>
 	{%  endfor %}
 </div>
+{% endif %}
+{% if POSITION == "bandoBAS"%}
+	<div id="myCarousel{{ POSITION }}" class="carousel" >
+		<div class="item">
+			<img src="/{{imageBas.Media.Image}}.limit.2000x2000.jpg" class="img-responsive" style="width:100% !important;" alt="{{imageBas.Titre}}" title="{{imageBas.Titre}}" />
+		</div>
+	</div>
+{% endif %}
+
 <script type="text/javascript">
 	$(document).ready( function() {
 		$('#myCarousel{{ POSITION }}').slick({

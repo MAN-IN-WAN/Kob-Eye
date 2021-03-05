@@ -1,0 +1,6 @@
+{%  if Direct %}
+    {{ include(template_from_string(module('Vetoccitan/News/Fiche'))) }}
+{%  else %}
+    {{ include(template_from_string(module('Vetoccitan/News/List'))) }}
+
+{%  endif %}

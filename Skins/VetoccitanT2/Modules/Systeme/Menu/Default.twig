@@ -5,7 +5,8 @@
             {% if menu.MenuPrincipal == 1 %}
             <li class="{% if menu.current %}Current{% endif %} menuLink">
                 <a href="/{{ menu.Url }}" data-alias="{{ menu.Alias }}">
-                    {{ menu.Titre }}
+
+                    {% if (Cabinet) and ( menu.Titre == "La clinique") %} Le cabinet {% else %}{{ menu.Titre }}{% endif %}
                 </a>
              </li>
             {% endif %}

@@ -15,6 +15,9 @@ class Mail extends PHPMailer{
     public $Username      = MAIL_USER;
     public $Password      = MAIL_PASS;
     public $SMTPDebug     = false;
+	public $SMTPSecure	  = '';
+	public $SMTPAuth	  = false;
+	protected $exceptions = true;
 
     public function __construct($exceptions = null)
     {
@@ -56,5 +59,6 @@ class Mail extends PHPMailer{
 	}
     function BuildMail(){}
     function Priority(){}
+	
 }
 ?>

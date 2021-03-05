@@ -62,7 +62,13 @@ foreach ($evts as $ev){
     if(!empty($filters)) {
         $tmpFilters=ltrim($filters,'~');
 //            print_r($tmpFilters.'  '.$spt->Nom);
-        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false && strpos(strtolower($spt->Localisation),strtolower($tmpFilters)) === false) {
+//        print_r(strtolower($spt->TypeSortie));
+//        echo PHP_EOL;
+//        print_r(strtolower($tmpFilters));
+//        echo PHP_EOL;
+//        var_dump(strpos(strtolower($spt->TypeSortie),strtolower($tmpFilters)));
+//        echo PHP_EOL;
+        if (strpos(strtolower($spt->Nom),strtolower($tmpFilters)) === false && strpos(strtolower($spt->Localisation),strtolower($tmpFilters)) === false && strpos(strtolower($spt->TypeSortie),strtolower($tmpFilters)) === false) {
             $ok = false;
         }
 
@@ -294,7 +300,6 @@ if (sizeof($children)){
 
 
 $vars['total'] = Sys::getCount($info['Module'],$path.'/'.$filters);
-
 
 function endPacket(){
     echo "0\r\n\r\n";

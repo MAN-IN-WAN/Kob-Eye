@@ -124,7 +124,17 @@ class DeviceConnexion extends genericClass{
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-drive','true')";
                         $q = $dbGuac->query($query);
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'drive-path','/home/dakota')";
+                        if(isset($cli->Nom)){
+                            $name = strtoupper(str_replace('\'',' ',$cli->Nom));
+                            $name = str_replace(' ','_',$name);
+                            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'drive-path','/home/".$name."')";
+                        }
                         $q = $dbGuac->query($query);
+                        if(isset($cli->Nom)){
+                            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'create-drive-path','true')";
+                            $q = $dbGuac->query($query);
+                        }
+
                         //Clavier
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'server-layout','fr-fr-azerty')";
                         $q = $dbGuac->query($query);
@@ -178,7 +188,17 @@ class DeviceConnexion extends genericClass{
                     $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'enable-drive','true')";
                     $q = $dbGuac->query($query);
                     $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'drive-path','/home/dakota')";
+                    if(isset($cli->Nom)){
+                        $name = strtoupper(str_replace('\'',' ',$cli->Nom));
+                        $name = str_replace(' ','_',$name);
+                        $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'drive-path','/home/".$name."')";
+                    }
                     $q = $dbGuac->query($query);
+                    if(isset($cli->Nom)){
+                        $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'create-drive-path','true')";
+                        $q = $dbGuac->query($query);
+                    }
+
                     //Clavier
                     $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'server-layout','fr-fr-azerty')";
                     $q = $dbGuac->query($query);

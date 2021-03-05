@@ -28,6 +28,20 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
         args:{}
     }
 
+    $scope.StatsOrganisations = {
+        html: "",
+        organisation:[],
+        state:0,
+        args:{}
+    }
+
+    $scope.StatsSalles = {
+        html: "",
+        salle:[],
+        state:0,
+        args:{}
+    }
+
     $scope.ExportGeneral = {
         state: 0,
         html: "",
@@ -68,6 +82,40 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
             });
     }
     $scope.initStatsStructures();
+
+    $scope.initStatsOrganisations = function () {
+        console.log($scope.StatsOrganisations);
+        $http.post('/Reservation/Statistiques/StatsOrganisations.json', {
+            })
+            .success(function (data) {
+                $scope.StatsOrganisations.html = data.html;
+                $scope.StatsOrganisations.organisation = data.organisation;
+                $scope.StatsOrganisations.state = $scope.StatsOrganisations.state +=1;
+                $scope.getSelectOrganisation($scope.StatsOrganisations.searchTermorganisation);
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsOrganisations.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsOrganisations();">Réessayer</button>';
+            });
+    }
+    $scope.initStatsOrganisations();
+
+    $scope.initStatsSalles = function () {
+        console.log($scope.StatsSalles);
+        $http.post('/Reservation/Statistiques/StatsSalles.json', {
+            })
+            .success(function (data) {
+                $scope.StatsSalles.html = data.html;
+                $scope.StatsSalles.salle = data.salle;
+                $scope.StatsSalles.state = $scope.StatsSalles.state +=1;
+                $scope.getSelectSalle($scope.StatsSalles.searchTermsalle);
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsSalles.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsSalles();">Réessayer</button>';
+            });
+        }
+    $scope.initStatsSalles();
 
 
     $scope.initMail = function () {
@@ -151,6 +199,21 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
             });
     }
 
+    $scope.validExpSalle = function () {
+        $http.post('/Reservation/Statistiques/ExpSalles.htm', {
+            state: $scope.ExpSalles.state,
+            args: $scope.ExpSalles.args
+        })
+        .success(function (data) {
+            $scope.ExpSalles.html = data;
+            $scope.ExpSalles.state += 1;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.ExpSalles.html = "Oups...";
+        });
+    }
+
     $scope.onExportMailStCult = function () {
         $http.post('/Reservation/Statistiques/ExportMail.json', {
             state: $scope.ExportMail.state +=1
@@ -198,25 +261,65 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
         });
     }
 
-    $scope.onSelecClient = function(){
+    $scope.onSelecClient = function() {
         console.log($scope.StatsStructures);
         $http.post('/Reservation/Statistiques/StatsStructures.json', {
-            html:$scope.StatsStructures.html,
-            client:$scope.StatsStructures.args.client,
-            Date:$scope.StatsStructures.args.Date,
-            state:$scope.StatsStructures.state
+            html: $scope.StatsStructures.html,
+            client: $scope.StatsStructures.args.client,
+            Date: $scope.StatsStructures.args.Date,
+            DateDebut: $scope.StatsStructures.args.DateDebut,
+            DateFin: $scope.StatsStructures.args.DateFin,
+            state: $scope.StatsStructures.state
         })
             .success(function (data) {
                 $scope.StatsStructures.html = data.html;
                 $scope.StatsStructures.client = data.client;
-                $scope.StatsStructures.state +=1;
-        })
+                $scope.StatsStructures.state += 1;
+            })
             .error(function (data) {
                 console.error(data);
                 $scope.StatsStructures.html = "Oups...";
-    });
-
+            });
+    };
+    $scope.onSelecOrga = function(){
+        $http.post('/Reservation/Statistiques/StatsOrganisations.json', {
+            html:$scope.StatsOrganisations.html,
+            organisation:$scope.StatsOrganisations.args.organisation,
+            Date:$scope.StatsOrganisations.args.Date,
+            DateDebut:$scope.StatsOrganisations.args.DateDebut,
+            DateFin:$scope.StatsOrganisations.args.DateFin,
+            state:$scope.StatsOrganisations.state
+        })
+            .success(function (data) {
+                $scope.StatsOrganisations.html = data.html;
+                $scope.StatsOrganisations.organisation = data.organisation;
+                $scope.StatsOrganisations.state +=1;
+            })
+            .error(function (data) {
+                console.error(data);
+                $scope.StatsOrganisations.html = "Oups...";
+        });
     }
+    $scope.onSelecSalle = function(){
+        $http.post('/Reservation/Statistiques/StatsSalles.json', {
+            html:$scope.StatsSalles.html,
+            salle:$scope.StatsSalles.args.salle,
+            Date:$scope.StatsSalles.args.Date,
+            DateDebut:$scope.StatsSalles.args.DateDebut,
+            DateFin:$scope.StatsSalles.args.DateFin,
+            state:$scope.StatsSalles.state
+        })
+        .success(function (data) {
+            $scope.StatsSalles.html = data.html;
+            $scope.StatsSalles.salle = data.salle;
+            $scope.StatsSalles.state +=1;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.StatsSalles.html = "Oups...";
+        });
+    }
+
     $scope.filteredClients = new Array();
     $scope.StatsStructures.currentPageClient = 1;
     $scope.getSelectClient = function (search) {
@@ -239,6 +342,55 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
     $scope.$watch('StatsStructures.searchTermclient',function(){
             $scope.getSelectClient($scope.StatsStructures.searchTermclient);
     });
+
+    $scope.filteredOrganisations = new Array();
+    $scope.StatsOrganisations.currentPageOrganisation = 1;
+    $scope.getSelectOrganisation = function (search) {
+        if(search == undefined || search == null || search == '') {
+            $scope.filteredOrganisations = $scope.StatsOrganisations.organisation;
+            return true;
+        }
+        search = search.toLowerCase();
+        var temp2 = new Array();
+        for(var n = 0; n < $scope.StatsOrganisations.organisation.length;n++){
+            var tempNom2 = $scope.StatsOrganisations.organisation[n]['Nom'].toLowerCase();
+            if(tempNom2.indexOf(search) != -1 ){
+                temp2.push( $scope.StatsOrganisations.organisation[n]);
+            }
+        }
+
+        $scope.filteredOrganisations = temp2;
+        return true;
+    }
+    $scope.$watch('StatsOrganisations.searchTermorganisation',function(){
+        $scope.getSelectOrganisation($scope.StatsOrganisations.searchTermorganisation);
+    });
+
+    $scope.filteredSalles = new Array();
+    $scope.StatsSalles.currentPageSalle = 1;
+    $scope.getSelectSalle = function (search) {
+        if(search == undefined || search == null || search == '') {
+            $scope.filteredSalles = $scope.StatsSalles.salle;
+            return true;
+        }
+        search = search.toLowerCase();
+        var temp3 = new Array();
+        for(var n = 0; n < $scope.StatsSalles.salle.length;n++){
+            var tempNom3 = $scope.StatsSalles.salle[n]['Nom'].toLowerCase();
+            if(tempNom3.indexOf(search) != -1 ){
+                temp3.push( $scope.StatsSalles.salle[n]);
+            }
+        }
+        $scope.filteredSalles = temp3;
+        return true;
+    }
+    $scope.$watch('StatsSalles.searchTermsalle',function(){
+        $scope.getSelectSalle($scope.StatsSalles.searchTermsalle);
+    });
+
+
+
+
 
     $scope.reInitExportGeneral = function () {
 
@@ -273,6 +425,33 @@ app.controller('{{ identifier }}Ctrl', function ($interval, $timeout, $location,
                 $scope.StatsStructures.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsStructures();">Réessayer</button>';
             });
 
+    }
+    $scope.reInitStatsOrganisations = function () {
+        console.log($scope.StatsOrganisations);
+        $http.post('/Reservation/Statistiques/StatsOrganisations.json', {
+        })
+        .success(function (data) {
+            $scope.StatsOrganisations.html = data.html;
+            $scope.StatsOrganisations.state = 1;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.StatsOrganisations.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsOrganisations();">Réessayer</button>';
+        });
+    }
+
+    $scope.reInitStatsSalles = function () {
+        console.log($scope.StatsSalles);
+        $http.post('/Reservation/Statistiques/StatsSalles.json', {
+        })
+        .success(function (data) {
+            $scope.StatsSalles.html = data.html;
+            $scope.StatsSalles.state = 1;
+        })
+        .error(function (data) {
+            console.error(data);
+            $scope.StatsSalles.html = '<h2>Oups... quelque chose s\'est mal passé, try again :</h2><button ng-click="initStatsSalles();">Réessayer</button>';
+        });
     }
 
     $scope.$watch('ExpOrganisations.args.Ville', function () {

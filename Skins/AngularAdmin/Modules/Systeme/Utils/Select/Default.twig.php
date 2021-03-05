@@ -2,7 +2,11 @@
 $info = Info::getInfos($vars['Path']);
 
 if(empty($vars['Object'])){
-    $infoParent = Info::getInfos($vars['Query']);
+    $q = $vars['Query'];
+    if (!empty($vars['QueryOverride'])){
+        $q = $vars['QueryOverride'];
+    }
+    $infoParent = Info::getInfos($q);
     $parent = genericClass::createInstance($info['Module'],$infoParent['ObjectType']);
 } else{
     $module = !empty($vars['Module']) ? $vars['Module'] : $info['Module'];

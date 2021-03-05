@@ -276,12 +276,17 @@ class RestorePoint extends genericClass{
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/sql -R';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
                 $bddsrv = $bdd->getOneParent('Server');
                 $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom.' - ID: '.$task->Id.' PID: '.$task->ThreadId, 'Info', $task);
                 $bddIP = !empty($bddsrv->InternalIP) ? $bddsrv->InternalIP : '127.0.0.1';
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.$bddIP.' --lock-tables=false --single-transaction -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.$bddIP.' --lock-tables=false --single-transaction -u ' . $host->NomLDAP . ' -p"' . $host->Password . '" ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
                 $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);

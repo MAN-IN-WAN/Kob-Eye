@@ -79,7 +79,7 @@ $curmen = '/Partenaires/';
 }*/
 // PERMET DE FAIRE UN PATCHWORK DE COULEUR POUR LES PARTENAIRES
 $index = 0;
-$genres = Sys::getData('Reservation','Genre');
+$genres = Sys::getData('Reservation','Genre/FrontFilter=1');
 $couleurs =array();
 foreach ($genres as $g) {
     if (!empty($g->Couleur  )) $couleurs[]= $g->Couleur;

@@ -455,23 +455,16 @@
 		<PROPERTIES type="text" category="Description" form="2" list="2" fiche="2">CommentaireEs</PROPERTIES>
 	</OBJECTCLASS>
 
-	<!-- TONALLI -->
+	<!-- TONALPOHUA -->
 
-	<OBJECTCLASS title="ToTonalli" driver="mysql" order="Nom" AccessPoint="1" Description="Tonalli" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/CEN/Class/ToTonalli.class.php">
-		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Tonalli</PROPERTIES>
-		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Maya</PROPERTIES>
-		<PROPERTIES type="varchar" length="20" category="Description" form="3" list="3" fiche="3">Divinite</PROPERTIES>
+	<OBJECTCLASS title="Tonalpohua" driver="mysql" order="Nom" AccessPoint="1" Description="Tonalpohua" Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/CEN/Class/Tonalpohua.class.php">
+		<PROPERTIES type="int" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="1" list="1" fiche="1">Nahuatl</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">Maya</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="3" list="3" fiche="3">FR</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">ES</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">EN</PROPERTIES>
-	</OBJECTCLASS>
-
-	<OBJECTCLASS title="ToMeztli" driver="mysql" order="Nom" AccessPoint="1" Description="Meztli" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="varchar" length="20" searchOrder="1" category="Description" form="1" list="1" fiche="1">Meztli</PROPERTIES>
-		<PROPERTIES type="varchar" length="20" category="Description" form="2" list="2" fiche="2">Maya</PROPERTIES>
-		<PROPERTIES type="varchar" length="32" category="Description" form="3" list="3" fiche="3">FR</PROPERTIES>
-		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">ES</PROPERTIES>
-		<PROPERTIES type="varchar" length="32" category="Description" form="2" list="2" fiche="2">EN</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" category="Description" form="2" list="2" fiche="2">Regles</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="ToXihuitl" driver="mysql" order="Nom" AccessPoint="1" Description="Xihuitl" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
@@ -480,8 +473,61 @@
 		<PROPERTIES type="varchar" length="254" category="Description" form="2" list="2" fiche="2">Parametres</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="ToTCodex" driver="mysql" order="Nom" AccessPoint="1" Description="TCodex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="ToCodex" driver="mysql" order="Nom" AccessPoint="1" Description="ToCodex" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/ToCodex.class.php">
 		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="1" fiche="1">Codex</PROPERTIES>
+		<PROPERTIES type="file" progress="1" category="Description" form="4" fiche="4" description="Fichier zip">ZipFile</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" fiche="1">Repertoire</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="1" list="1" fiche="1">Image</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Tonalli</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToImage" driver="mysql" order="Nom" AccessPoint="1" Description="ToImage" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="ToCodex,Id" form="1" fiche="1" >ToCodexId</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" form="1" list="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="64" searchOrder="1" category="Description" form="1" list="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Nombre</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Mois</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">DJ</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">D13</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">DN</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Volatile</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">D13ene</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">D20ene</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Treizaine</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">Arbre</PROPERTIES>
+		<PROPERTIES type="varchar" length="128" category="Description" form="1" fiche="1">G20ene</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToExemple" driver="mysql" order="Nom" AccessPoint="1" Description="ToExemple" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/ToExemple.class.php">
+		<FKEY card="1,1" module="CEN" data="ToCodex,Id" category="Description" form="1" fiche="1" list="1" >ToCodexId</FKEY>
+		<PROPERTIES type="varchar" length="32" searchOrder="1" category="Description" form="1" list="2" fiche="1">Exemple</PROPERTIES>
+		<PROPERTIES type="varchar" length="256" category="Description" form="1" fiche="1">Regles</PROPERTIES>
+		<PROPERTIES type="varchar" length="256" category="Description" form="1" fiche="1">Images</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToMenu" driver="mysql" order="Nom" AccessPoint="1" Description="ToMenu" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/CEN/Class/ToMenu.class.php">
+		<PROPERTIES type="int" default="0" searchOrder="1" category="Description" form="1" list="1" fiche="1">Tab</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">MenuFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">MenuES</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">MenuEN</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="3" form="3" fiche="3">Ordre</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="4" fiche="4">Repertoire</PROPERTIES>
+		<PROPERTIES type="file" progress="1" category="Description" form="5" fiche="5" description="Fichier zip">ZipFile</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" form="6" fiche="6">Icone</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ToDetail" driver="mysql" order="Nom" AccessPoint="1" Description="ToDetail" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FKEY card="1,1" module="CEN" data="ToMenu,Id" form="1" fiche="1" >ToMenuId</FKEY>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">TitreFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">TitreES</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">TitreEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="4" fiche="4">DetailFR</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="4" fiche="4">DetailES</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Description" form="4" fiche="4">DetailEN</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" searchOrder="2" category="Description" form="2" list="2" fiche="2">Fichier</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" list="3" form="3" fiche="3">Ordre</PROPERTIES>
 	</OBJECTCLASS>
 
 </SCHEMA>

@@ -1,0 +1,2 @@
+<?php
+$vars['test'] = 'ahah';

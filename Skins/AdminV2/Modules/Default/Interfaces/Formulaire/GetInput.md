@@ -171,30 +171,31 @@
 		</div>
 		<ul id="[!Prefixe!][!Prop::Nom!]_List" style="display:none"></ul>
 		<script type="text/javascript">
-			var containerId = "[!Prefixe!][!Prop::Nom!]_DivUpload";
-			$(containerId).getElement('.Toggle').removeEvents('click');
-			$(containerId).getElement('.Toggle').addEvent('click',function(e){
+			if(containerId == undefined) var containerId = [];
+			containerId['[!Prop::Nom!]'] = "[!Prefixe!][!Prop::Nom!]_DivUpload";
+			$(containerId['[!Prop::Nom!]']).getElement('.Toggle').removeEvents('click');
+			$(containerId['[!Prop::Nom!]']).getElement('.Toggle').addEvent('click',function(e){
 				e.stop();
 				this.getElement('.Content').setStyle('display','block');
 				this.getElement('.Result').setStyle('display','none');
 				this.getElement('.Result input').set('value','');
-			}.bind($(containerId)));
+			}.bind($(containerId['[!Prop::Nom!]'])));
 
 			var Cook = Cookie.read('KE_SESSID');
 			// Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload","[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
 			var uploader[!Prop::Nom!] = new qq.FineUploader({
-				element: document.getElementById(containerId+'_js'),
+				element: document.getElementById(containerId['[!Prop::Nom!]']+'_js'),
 				request: {
 					endpoint: '/Systeme/Interfaces/Formulaire/Upload2.htm?Module=[!Module::Actuel::Nom!]&obj=[!ObjectTT!]&KE_SESSID='+Cook
 				},
 				callbacks: {
 					onComplete: function(id, name, response, xhr) {
 						console.log(id, name, response, xhr);
-						$(containerId).getElement(".Content").setStyle("display","none");
-						$(containerId).getElement(".Result").setStyle("display","block");
-						var r= $(containerId).getElement(".Result span");
+						$(containerId['[!Prop::Nom!]']).getElement(".Content").setStyle("display","none");
+						$(containerId['[!Prop::Nom!]']).getElement(".Result").setStyle("display","block");
+						var r= $(containerId['[!Prop::Nom!]']).getElement(".Result span");
 						r.set('html',response.url);
-						var i= $(containerId).getElement(".Result input");
+						var i= $(containerId['[!Prop::Nom!]']).getElement(".Result input");
 						i.set('value',response.url);
 					}
 				}
@@ -220,30 +221,31 @@
 		</div>
 		<ul id="[!Prefixe!][!Prop::Nom!]_List" style="display:none"></ul>
 		<script type="text/javascript">
-			var containerId = "[!Prefixe!][!Prop::Nom!]_DivUpload";
-			$(containerId).getElement('.Toggle').removeEvents('click');
-			$(containerId).getElement('.Toggle').addEvent('click',function(e){
+			if(containerId == undefined) var containerId = [];
+			containerId['[!Prop::Nom!]'] = "[!Prefixe!][!Prop::Nom!]_DivUpload";
+			$(containerId['[!Prop::Nom!]']).getElement('.Toggle').removeEvents('click');
+			$(containerId['[!Prop::Nom!]']).getElement('.Toggle').addEvent('click',function(e){
 				e.stop();
 				this.getElement('.Content').setStyle('display','block');
 				this.getElement('.Result').setStyle('display','none');
 				this.getElement('.Result input').set('value','');
-			}.bind($(containerId)));
+			}.bind($(containerId['[!Prop::Nom!]'])));
 
 			var Cook = Cookie.read('KE_SESSID');
 			// Fl.makeUpload("[!Prefixe!][!Prop::Nom!]_DivUpload","[!Prefixe!][!Prop::Nom!]_List",Cook,"[!Module::Actuel::Nom!]","[!ObjectTT!]"[IF [!Type!]=Popup],true[/IF]);
 			var uploader[!Prop::Nom!] = new qq.FineUploader({
-				element: document.getElementById(containerId+'_js'),
+				element: document.getElementById(containerId['[!Prop::Nom!]']+'_js'),
 				request: {
 					endpoint: '/Systeme/Interfaces/Formulaire/Upload2.htm?Module=[!Module::Actuel::Nom!]&obj=[!ObjectTT!]&KE_SESSID='+Cook
 				},
 				callbacks: {
 					onComplete: function(id, name, response, xhr) {
 						console.log(id, name, response, xhr);
-						$(containerId).getElement(".Content").setStyle("display","none");
-						$(containerId).getElement(".Result").setStyle("display","block");
-						var r= $(containerId).getElement(".Result span");
+						$(containerId['[!Prop::Nom!]']).getElement(".Content").setStyle("display","none");
+						$(containerId['[!Prop::Nom!]']).getElement(".Result").setStyle("display","block");
+						var r= $(containerId['[!Prop::Nom!]']).getElement(".Result span");
 						r.set('html',response.url);
-						var i= $(containerId).getElement(".Result input");
+						var i= $(containerId['[!Prop::Nom!]']).getElement(".Result input");
 						i.set('value',response.url);
 					}
 				}

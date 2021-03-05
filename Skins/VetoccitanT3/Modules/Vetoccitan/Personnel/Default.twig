@@ -1,0 +1,57 @@
+<div id="Content">
+        {% for Post in Postes %}
+            <div class="poste noPadding">
+                <div class="row postHead text-center">
+                    <div class="row testPost text-center">
+                        <h3>{{ Post.Nom }}</h3>
+                    </div>
+                </div>
+                <div class="row equipeteam text-center">
+                {% for Equi in attribute(Equipiers,Post.Nom) %}
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 paddResp" onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {% if Equi.Photo2 %}{{ Equi.Photo2|json_encode }}{% else %}{{ Equi.Photo|json_encode }}{% endif %})">
+                        {#<img src="{{ Equi.Photo }}" class="img-responsive imgequipe" alt="{{ Equi.Nom }}" title="{{ Equi.Nom }}"  onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})" />#}
+                        {% if Equi.Photo %}
+                            <img src="{{ Equi.Photo }}.limit.200x200.jpg"
+                                 class="img-responsive imgequipe" alt="{{ Equi.Nom }}"
+                                 title="{{ Equi.Nom }}"
+                                 onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {% if Equi.Photo2 %}{{ Equi.Photo2|json_encode }}{% else %}{{ Equi.Photo|json_encode }}{% endif %})"/>
+                        {% else %}
+                            <img src="/Home/no-image.png"
+                                 class="img-responsive imgequipe" alt="{{ Equi.Nom }}"
+                                 title="{{ Equi.Nom }}"
+                                 onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})"/>
+                        {% endif %}
+                        <h5 style="cursor:pointer; padding-top:20px;"
+                                {% if Equi.Photo %}
+                                  onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }}, {% if Equi.Photo2 %}{{ Equi.Photo2|json_encode }}{% else %}{{ Equi.Photo|json_encode }}{% endif %})"
+                                {% else %}
+                                  onclick="animTeam(event,{{ Equi.Prenom|json_encode }},{{ Equi.Nom|json_encode }},{{ Equi.Poste|json_encode }},{{ Equi.Description|json_encode }})"
+                                {% endif %}
+                        >
+                            {{ Equi.Intitule }} {{ Equi.Nom }}
+                        </h5>
+                        <p>{{ Equi.Prenom }} </p>
+                        <p class="textePresentation">  {{ Equi.Poste }} </p>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+    <div class="equipe">
+        <div class="imgArticle ">
+            <!---- ON DOIT RECUPÉRER VALUE DANS MINISITE POUR PRESENTATION EQUIPE : IMAGE -  TITRE IMAGE - "L'ÉQUIPE" - TEXTE -->
+            <img src="/{{ Image }}" class="img-responsive respImage" alt="" title=""/>
+        </div>
+        <div class="titreImage">
+            <p class="legende">{{ Titre_Image }}</p>
+        </div>
+        <div class="titreArticle">
+            <h2>L'équipe</h2>
+        </div>
+        <div class="textArticle">
+            <div class="texte"> {{ Texte_page_Equipe |raw }}
+            </div>
+        </div>
+    </div>
+</div>

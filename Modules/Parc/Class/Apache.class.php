@@ -467,7 +467,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}else{
-			//$entry['apacheOptions'] = Array('Require all granted');
+			$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -814,11 +814,11 @@ RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,L]";
             $ip = Apache::getDomainIp($this->getFirstDomain());
             $act->addDetails(print_r($ip, true));
         }catch (Exception $e) {
-            $act->addDetails(print_r($ip, true));
-            Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
+            $act->addDetails(print_r($ip?$ip:'no ip', true));
+            Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($e->getCode(), true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, false);
             return false;
         }
-        Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, true);
+//        Incident::createIncident('Le domaine ' . $this->getFirstDomain() . ' n\'existe pas .', 'Le code de retour est ' . print_r($code, true), $this, 'CERTIFICATE_DOMAIN', $this->getFirstDomain(), 4, true);
 
         if ($ip){
             $act = $task->createActivity('Recherche du proxy pour l\'ip '.$ip);

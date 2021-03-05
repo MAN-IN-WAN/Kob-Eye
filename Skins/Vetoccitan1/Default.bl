@@ -1,0 +1,338 @@
+//JQUERY
+[HEADER JS]Tools/Js/Jquery/1.11.3/jquery.min.js[/HEADER]
+//BOOTSTRAP
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap.css[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap-theme.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3.1/js/bootstrap.js[/HEADER]
+//FONTAWESOME
+[HEADER CSS]Tools/Fonts/fontawesome-free-5.0.10/web-fonts-with-css/css/fontawesome-all.css[/HEADER]
+
+<script>
+
+function animTeam(event){
+    transitionTop();
+    transitionBot();
+    document.getElementById("anim").style.height = '0px';
+    document.getElementById("animBot").style.height = '0px';
+    document.getElementById("leftSide").style.borderRight = '1px solid black';
+    document.getElementById("Footer").style.display = 'none';
+
+}
+function transitionTop(){
+       for (let bnHeight=0;bnHeight <= 1075;bnHeight++){
+       (function(bnHeight) {
+               setTimeout(function() {
+                   document.getElementById("leftSide").style.height = bnHeight+"px";
+               }, 0.7 * bnHeight );
+           })(bnHeight);
+       }
+}
+function transitionBot(){
+
+    for (let bnTopB=0;bnTopB <= 959;bnTopB++){
+           (function(bnTopB) {
+                   setTimeout(function() {
+                       document.getElementById("rightSide").style.bottom = bnTopB+"px";
+                   }, 0.7 * bnTopB );
+           })(bnTopB);
+    }
+
+    for (let bnHeightB=0;bnHeightB <= 1075;bnHeightB++){
+           (function(bnHeightB) {
+                   setTimeout(function() {
+                       document.getElementById("rightSide").style.height = bnHeightB+"px";
+                   }, 0.7 * bnHeightB );
+           })(bnHeightB);
+    }
+     document.getElementById("rightSide").innerHTML = "<span class='cercle'></span><h2 style='cursor:pointer' onclick='Out();'>X</h2><p id='detailVeto'>Docteur Denis VALENSI</br> Vétérinaire & fondateur de la clinique.</br>Médecine interne, Dermatologie, Chirurgie générale et orthopédique.</br>Diplomé de l'Ecole Vétérinaire de Maisons Alfort en 1988.</br> Lauréat de la Faculté de Médecine de Créteil en 1991 <br>suite à des travaux de thèse de recherche en dermatologie et immunologie.</p></br><div><a href='/contact' style='text-decoration:none;cursor:pointer' >Contactez-nous</a></div>";
+}
+
+
+function Out() {
+    BackTransitionTop();
+    BackTransitionBot();
+    document.getElementById("leftSide").style.borderRight = 'none';
+    document.getElementById("leftSide").style.height = '0px';
+    document.getElementById("Footer").style.display = 'block';
+}
+
+function BackTransitionTop(){
+
+    for (let BackHeight=1075;BackHeight > 0;BackHeight--){
+           (function(BackHeight) {
+                   setTimeout(function() {
+                       document.getElementById("leftSide").style.height = BackHeight+"px";
+                       console.log(BackHeight);
+                   }, 1 / BackHeight );
+               })(BackHeight);
+            }
+    }
+
+   function BackTransitionBot(){
+
+    for (let BackTopB=1350;BackTopB >= 0;BackTopB--){
+           (function(BackTopB) {
+                   setTimeout(function() {
+                       document.getElementById("rightSide").style.bottom = BackTopB+"px";
+                   }, 1 / BackTopB );
+           })(BackTopB);
+    }
+
+    for (let BackHeightB=1400;BackHeightB >= 0;BackHeightB--){
+           (function(BackHeightB) {
+                   setTimeout(function() {
+                       document.getElementById("rightSide").style.height = BackHeightB+"px";
+                   }, 1 / BackHeightB );
+           })(BackHeightB);
+    }
+    document.getElementById("rightSide").innerHTML = "";
+   }
+
+function animAccueil(page) {
+    function transAccueil() {
+        var pix = 0;
+        if( screen.width >= 1300 && screen.width <= 1439){
+            pix = -500
+        }
+        else if( screen.width > 1439 && screen.width <= 1919){
+            pix = -680
+        }
+        else if( screen.width >= 1920 && screen.width < 2500){
+            pix = -800
+        }
+        else if( screen.width >= 2560 ){
+            pix = -800
+        }
+        else if( screen.width >= 3500 ){
+            pix = -1800
+        }
+        setTimeout(function(){
+            if ( document.location.href == "http://inst-demo-vetoccitan.abtel.fr/"){
+
+            for (let topBando=0;topBando > pix;topBando--){
+                (function(topBando) {
+                     setTimeout(function() {
+                         document.getElementById("animAccueil").style.top = topBando+"px";
+                     }, -0.7 * topBando );
+                 })(topBando);
+                 console.log(pix);
+            }
+        }
+        },1000)
+
+                setTimeout(function(){
+                    document.getElementById("MenuBar").style.display = "none";
+                },1000)
+
+    }
+    if (page == 1){
+
+        $("#testouille").load("Modules/Redaction/Modeles/Accueil.md")
+        transAccueil();
+
+        setTimeout(function() {
+                   document.getElementById("durAccueil").style.display = "block"
+                   document.getElementById("durPubAccueil").style.display = "block"
+                   document.getElementById("durPubFootAccueil").style.display = "block"
+                   document.getElementById("testouille").getElementsByTagName('div')[4].style.borderBottom = "1px solid black"
+        }, 1000 );
+    }
+    if (page == 2){
+    $("#testouille").load("Modules/Redaction/Modeles/clinique.md")
+            transAccueil();
+        setTimeout(function() {
+            document.getElementById("durClinique").style.display = "block"
+        }, 1000 );
+    }
+    if (page == 3){
+            $("#testouille").load("Modules/Redaction/Modeles/equipe.md")
+            transAccueil();
+             setTimeout(function() {
+                 document.getElementById("durEquipe").style.display = "block"
+             }, 1000 );
+         }
+    if (page == 4){
+        $("#testouille").load("Modules/Redaction/Modeles/services.md")
+        transAccueil();
+            setTimeout(function() {
+                document.getElementById("durServices").style.display = "block"
+            }, 1000 );
+        }
+    if (page == 5){
+        $("#testouille").load("Modules/Redaction/Modeles/conseils.md")
+        transAccueil();
+                 setTimeout(function() {
+                    document.getElementById("durConseils").style.display = "block"
+                 }, 1000 );
+            }
+    if (page == 6){
+    $("#testouille").load("Modules/Redaction/Modeles/eshop.md")
+           transAccueil();
+                setTimeout(function() {
+                    document.getElementById("durEshop").style.display = "block"
+                }, 1000 );
+            }
+    if (page == 7){
+     $("#testouille").load("Modules/Redaction/Modeles/news.md")
+                transAccueil();
+                 setTimeout(function() {
+                     document.getElementById("durNews").style.display = "block"
+                 }, 1000 );
+            }
+    if (page == 8){
+    $("#testouille").load("Modules/Redaction/Modeles/contact.md")
+                transAccueil();
+                 setTimeout(function() {
+                      document.getElementById("durContact").style.display = "block"
+                 }, 1000 );
+            }
+    if (page == 9){
+    $("#testouille").load("Modules/Redaction/Modeles/contact.md")
+           transAccueil();
+                setTimeout(function() {
+                      document.getElementById("durContact").style.display = "block"
+                }, 1000 );
+            }
+}
+
+</script>
+
+<div id="SiteVeto1">
+    <div id="animAccueil">
+        <div id="Header"  class="fullWidth">
+            <div id="Bando" >
+                [IF [!Lien!]=]
+                    <img src="[!Domaine!]/Skins/Vetoccitan1/Images/Bando.jpeg" class="img-responsive" alt="Accueil" title="Accueil" />
+                [/IF]
+            </div>
+        </div>
+        [IF [!Lien!]!=]
+            <div id="wrap" class="hidden-lg hidden-md"style="flex-direction: column;">
+                <div id="open">
+                <h1 style="float:left"  class="catresponsive">
+                    [STORPROC [!Systeme::Menus!]/MenuPrincipal=1&Affiche=1|M]
+                        [IF[!M::Url!]=[!Lien!]]
+                            [!M::Titre!]
+                        [/IF]
+                    [/STORPROC]
+                </h1>
+                    <a href="#wrap" id="open">
+                        <svg viewBox="0 0 100 80" width="40" height="40">
+                            <rect width="100" height="20" rx="8"></rect>
+                            <rect y="30" width="100" height="20" rx="8"></rect>
+                            <rect y="60" width="100" height="20" rx="8"></rect>
+                        </svg>
+                    </a>
+                </div>
+                <div id="close" style="width: 100%;">
+                     <div id="float">
+                         <a href="#">
+                         <svg viewBox="0 0 100 80" width="40" height="40" style="float:right">
+                            <rect width="100" height="15" transform="translate(8 -18) rotate(42)"></rect>
+                            <rect width="100" height="15" transform="translate(-1 48) rotate(-44)"></rect>
+                         </svg>
+                         </a>
+                         [STORPROC [!Systeme::Menus!]/MenuPrincipal=1&Affiche=1|M]
+                                <ul class="Menu0 cssMenu">
+                                    [LIMIT 0|100]
+                                        <h1>
+                                            <a href="[!M::Url!]">[!M::Titre!]</a>
+                                        </h1>
+                                    [/LIMIT]
+                                </ul>
+                            [/STORPROC]
+                     </div>
+                </div>
+            </div>
+        [/IF]
+        <div id="MenuBar" class="hidden-xs" [IF [!Lien!]!=]style="position:fixed;top:0;padding:20px 0;border-bottom:1px solid black"[/IF]">
+            <div class="row Container">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="/Accueil"><img class="imgLogo"src="[!Domaine!]/Skins/Vetoccitan1/Images/logo_valensi.jpg" class="img-responsive" alt="Clinique" title="Clinique"/></a>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 " >
+                    <div class="ContenuMenu">
+                        [MODULE Systeme/Menu]
+                    </div>
+                </div>
+             </div>
+        </div>
+        <div id="testouille"></div>
+
+        [IF [!Lien!]=]
+            // !!!!  ÇA NE SERT PAS-->  C'EST VIDE MAIS JE LE LAISSE AU CAS OU ÇA CHANGE !!!!
+            [MODULE Redaction/Modeles/AccueilDefault]
+        [ELSE]
+            <div id="anim" >
+               <div id="leftSide" onclick="Out()";></div>
+            </div>
+            <div style="clear:both"></div>
+            <div id="PubClinique" class="fullWidth">
+                [IF [!Lien!]=Accueil]
+                     [MODULE Systeme/Structure/PublicitesClinique]
+                [/IF]
+                <div id="durPubAccueil">[MODULE Systeme/Structure/PublicitesClinique]</div>
+            </div>
+            <div id="Main">
+                <div id="Content">
+                     <div id="MenuBar" class="hidden-xs"[IF [!Lien!]!=]style="position:fixed;top:0;padding:20px 0;border-bottom:1px solid black"[/IF]">
+                        <div class="row Container">
+                            <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+                                <a href="/Accueil"><img class="imgLogo" src="[!Domaine!]/Skins/Vetoccitan1/Images/logo_valensi.jpg" class="img-responsive" alt="Clinique" title="Clinique"/></a>
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-sm-9 " >
+                                <div class="ContenuMenu">
+                                 [MODULE Systeme/Menu]
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                    <div class="row Gauche Container">
+                        <div class="col-lg-3 col-md-3 col-sm-12">
+                            [MODULE Systeme/Structure/Gauche]
+                        </div>
+                         <div class="col-lg-9 col-md-9 col-sm-12 ">
+                            <div class="Contenu">
+                                <div [IF [!Lien!]!=equipe]id="Contenu-scroll" class="scrollbar-transparent" style="overflow: hidden;position:relative"[/IF]>
+                                [IF [!Lien!]!=equipe][IF [!Lien!]!=contact]<div style="height: 100%;width: 100%;right: -17px;overflow: auto;padding-right: 15px;position:absolute">[/IF][/IF]
+                                     [IF [!Lien!]~Article]
+                                        [MODULE Redaction/Modeles/Article]
+                                    [ELSE]
+                                        [MODULE Redaction/Modeles/[!Lien!]]
+                                    [/IF]
+                                [IF [!Lien!]!=equipe][IF [!Lien!]!=contact]</div>[/IF][/IF]
+                                    <div id="durAccueil">[MODULE Redaction/Modeles/Accueil]</div>
+                                    <div id="durClinique">[MODULE Redaction/Modeles/clinique]</div>
+                                    <div id="durConseils">[MODULE Redaction/Modeles/conseils]</div>
+                                    <div id="durContact">[MODULE Redaction/Modeles/contact]</div>
+                                    <div id="durEquipe">[MODULE Redaction/Modeles/equipe]</div>
+                                    <div id="durNews">[MODULE Redaction/Modeles/news]</div>
+                                    <div id="durServices">[MODULE Redaction/Modeles/services]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+            [IF [!Lien!]=Accueil]
+                <div id="Pre-Footer" class="fullWidth hidden-xs">
+                    [MODULE Systeme/Structure/PublicitesVetoccitan]
+                </div>
+            [/IF]
+            <div id="durPubFootAccueil">
+                <div id="Pre-Footer">[MODULE Systeme/Structure/PublicitesVetoccitan]</div>
+            </div>
+            <div id="Footer" class="Container hidden-xs" style="position:relative;bottom:1px;background-color:white;z-index:100" class="Container">
+                <div id="Bottom" class="fullWidth" >
+                    [MODULE Systeme/Structure/Footer]
+                </div>
+            </div>
+            <div id="animBot">
+                <div style="width:50%"></div>
+                <div id="rightSide" onclick="Out();"></div>
+            </div>
+        </div>
+
+        [/IF]
+</div>

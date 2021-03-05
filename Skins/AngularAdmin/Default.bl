@@ -1,4 +1,5 @@
 
+
 [IF [!Lien!]!=]
     [IF [!Lien!]!=Systeme/Deconnexion]
         [REDIRECT][/REDIRECT]
@@ -13,6 +14,7 @@
 [HEADER]
 [IF [!Systeme::isModule(Cadref)!]]
 <link href="Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_bleu64.png" rel="icon" type="image/png">
+[TITLE]Espace CADREF[/TITLE]
 [ELSE]
 <link rel="apple-touch-icon" sizes="57x57" href="Skins/AngularAdmin/assets/common/img/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="Skins/AngularAdmin/assets/common/img/apple-icon-60x60.png">

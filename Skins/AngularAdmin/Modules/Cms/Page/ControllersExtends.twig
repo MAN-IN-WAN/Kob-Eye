@@ -50,8 +50,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         $scope.maxRow = 0;
         var rows = $scope.tempHtml.querySelectorAll('[data-row]');
         for(var n in rows){
-            if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
-                $scope.maxRow = rows[n].getAttribute('data-row')
+            if(rows[n] instanceof HTMLDivElement && parseInt($scope.maxRow) < parseInt(rows[n].getAttribute('data-row')))
+                $scope.maxRow = parseInt(rows[n].getAttribute('data-row'));
         }
     }
 

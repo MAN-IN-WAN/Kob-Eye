@@ -64,4 +64,8 @@ foreach ($PubsAdherent as &$PUBS) {
 
 shuffle($PubsAdherent);
 
+$max = sizeof($PubsAdherent);
+//var_dump($PubsAdherent[0]);
+
 $vars['Publicites']=$PubsAdherent;
+$vars['imageBas']=$PubsAdherent[rand(0,$max)];

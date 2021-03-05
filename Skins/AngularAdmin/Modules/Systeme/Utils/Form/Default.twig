@@ -17,7 +17,12 @@
                     <div id="cat_{{ loop.index0 }}" data-cat="{{ loop.index0 }}"  {% if fields.condition %}ng-if="{{ include(template_from_string(fields.condition)) }}"{% endif %}
                          class="formCatContainer{% if loop.first %} active{% endif %}">
                         {#            <h3>{{ cat }}</h3>#}
+                        {% if QueryOverride  %}
+                            {{ form_properties(fields.fields,scopeObj,ObjectType,Module,QueryOverride) }}
+                        {% else %}
                         {{ form_properties(fields.fields,scopeObj,ObjectType,Module) }}
+                        {% endif %}
+
                     </div>
                 {% endfor %}
             </div>

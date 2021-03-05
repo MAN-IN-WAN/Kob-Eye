@@ -78,7 +78,7 @@ $curmen = '/Relais-Sociaux/';
 }*/
 // PERMET DE FAIRE UN PATCHWORK DE COULEUR POUR LES PARTENAIRES
 $index = 0;
-$genres = Sys::getData('Reservation','Genre');
+$genres = Sys::getData('Reservation','Genre/FrontFilter=1');
 $couleurs =array();
 foreach ($genres as $g) {
     if (!empty($g->Couleur  )) $couleurs[]= $g->Couleur;
@@ -115,7 +115,7 @@ foreach ($vars['rows'] as $k=>$v){
             case 'titre':
             case 'html':
             case 'raw':
-                //transformation des timestamps en format js
+            //transformation des timestamps en format js
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 //Clean des symboles twig
                 $v->{$f['name']} = str_replace('{{','{&zwnj;{', $v->{$f['name']});

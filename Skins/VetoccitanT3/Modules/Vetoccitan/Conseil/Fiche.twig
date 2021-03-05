@@ -1,0 +1,23 @@
+<div class="row Articles ">
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <div class="boutonretour">
+            <a href="/{{  Retour }}">Retour</a>
+        </div>
+        <div class="imgArticle">
+            <img src="/{{ UnConseil.Media.Image }}" class="img-responsive" alt="{{ UnConseil.Media.Titre }}" title="{{ UnConseil.Media.Titre }}" />
+        </div>
+        <div class="titreImage">
+            <p class="legende">{{ UnConseil.Media.Legende }}</p>
+        </div>
+        <div class="titreArticle">
+            <h2>{{ UnConseil.Titre}}</h2>
+        </div>
+        <div class="textArticle">
+            <p class="texte">{{ UnConseil.Description | raw  }}
+            </p>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+{#        vide conforme à la maquette#}
+    </div>
+</div>

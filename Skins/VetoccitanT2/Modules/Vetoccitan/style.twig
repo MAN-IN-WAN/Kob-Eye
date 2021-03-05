@@ -38,10 +38,13 @@ button:hover{
 }
 #close{
     {% if Couleur_Principale is defined %}background-color: {{ Couleur_Principale }} !important{% endif %};
-{% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
+    {% if Couleur_Texte is defined %}color: {{ Couleur_Texte }} !important{% endif %};
 }
 .testPost{
     {% if Couleur_Principale is defined %}color: {{ Couleur_Principale }} !important{% endif %};
+}
+.imgBlocAccueil {
+    {% if Couleur_Principale is defined %}fill: {{ Couleur_Principale }} !important;{% endif %}
 }
 
 {#
@@ -81,3 +84,9 @@ button{
     }
 {% endfor %}
 
+{#
+########################################################" FORM CONTACT ###########################################################################################"
+#}
+.Contact{
+{% if Form_contact == false%}display:none !important;{% endif %}
+}

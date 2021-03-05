@@ -7,7 +7,7 @@ $LeClient = Sys::getOneData("Parc","Client/MiniSite/".$Minisite->Id);
 $lAdherent = $LeClient->getOneChild("Adherent");
 $lAdherent->Module="Vetoccitan";
 
-$donnees = $lAdherent->Recup_InfosVeto($lAdherent,"Service");
+$donnees = $lAdherent->Recup_Service($lAdherent);
 
 $vars['Services']=$donnees;
 

@@ -31,7 +31,7 @@ RewriteRule  ^ckeditor/plugins/imageuploader(.*)$ Tools/Js/ckeditor4.8/plugins/i
 
 #CAS GLOBAL
 RewriteCond  %{REQUEST_URI} !^/Tools/Js/ckeditor4.8/plugins/imageuploader
-RewriteCond %{REQUEST_FILENAME} !\.(bmp|ico|jpe?g|JPE?G|png|gif|map|ogg|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|bat|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg|pptx|docx|xlsx|pdf|obj|prlv|txt)$
+RewriteCond %{REQUEST_FILENAME} !\.(bmp|ico|jpe?g|JPE?G|png|gif|map|ogg|wav|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|bat|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg|pptx|docx|xlsx|pdf|obj|prlv|txt)$
 RewriteRule   ^.*$	index.php  [L]
 
 #GESTION DES ENTETES

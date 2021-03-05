@@ -25,6 +25,8 @@
  * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
  * @author Brent R. Matzelle (original founder)
  */
+include __DIR__ .'/class.smtp.php';
+
 class PHPMailer
 {
     /**
@@ -1624,6 +1626,7 @@ class PHPMailer
             $hostinfo = array();
             if (!preg_match('/^((ssl|tls):\/\/)*([a-zA-Z0-9:\[\]\.-]*):?([0-9]*)$/', trim($hostentry), $hostinfo)) {
                 // Not a valid host entry
+				
                 continue;
             }
             // $hostinfo[2]: optional ssl or tls prefix

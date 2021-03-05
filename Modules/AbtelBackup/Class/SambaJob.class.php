@@ -286,13 +286,13 @@ class SambaJob extends Job {
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
 
         //pour chaque vm
-        $vms = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaDevice');
+        $vms = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare');
 
         foreach ($vms as $v){
             $act = $task->createActivity(' > Rotation du partage Samba : '.$v->Titre.' ('.$v->Id.')','Info');
             $act->Terminate();
-//            $esx = $v->getOneParent('SambaDevice');
-            $borg = $v->getOneParent('BorgRepo');
+            $dev = $v->getOneParent('SambaDevice');
+            $borg = $dev->getOneParent('BorgRepo');
             try {
                 $act->addDetails($v->Titre.' Redéfinition des droits '.$borg->Path);
                 //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Suppression du cache eventuellement corrompu
@@ -301,9 +301,9 @@ class SambaJob extends Job {
                 AbtelBackup::localExec('borg break-lock '.$borg->Path); //Suppression des locks borg
 
                 //Recup taille pour graphique/progression
-                $v->BackupSize = AbtelBackup::getSize($borg->Path);
-                $v->Save();
-                $prs = Sys::getData('AbtelBackup','SambaDevice/'.$v->Id.'/RestorePoint/tmsCreate<'.(time()-(86400*intval($this->Retention))));
+                /*$v->BackupSize = AbtelBackup::getSize($borg->Path);
+                $v->Save();*/
+                $prs = Sys::getData('AbtelBackup','SambaDevice/'.$dev->Id.'/RestorePoint/tmsCreate<'.(time()-(86400*intval($this->Retention))));
                 foreach ($prs as $pr){
                     $pr->Delete();
                 }

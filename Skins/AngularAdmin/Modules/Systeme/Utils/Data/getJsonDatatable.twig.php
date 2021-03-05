@@ -108,6 +108,13 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = str_replace('#}','#&zwnj;}', $v->{$f['name']});
                 $v->{$f['name']} = str_replace('{%','{&zwnj;%', $v->{$f['name']});
                 $v->{$f['name']} = str_replace('%}','%&zwnj;}', $v->{$f['name']});
+            if($context != 'fiche' && $f['dislen']){
+                $v->{$f['name']} = strip_tags(html_entity_decode($v->{$f['name']}));
+                $v->{$f['name']} = mb_substr($v->{$f['name']} ,0,$f['dislen']);
+                if(strlen(trim($v->{$f['name']})))
+                    $v->{$f['name']}.='...';
+                //var_dump($v->{$f['name']});
+            }
                 break;
         }
         if (isset($f['Values'])&&isset($f['Values'][$v->{$f['name']}])){

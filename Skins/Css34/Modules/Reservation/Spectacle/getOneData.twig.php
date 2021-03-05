@@ -1,4 +1,6 @@
 <?php
+// AVEC JAVASCRIPT
+
 session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
@@ -41,7 +43,7 @@ $vars['rows'] = Sys::getData($module, $path );
 $vars['structure'] = $vars['rows'][0]->getOneParent('Organisation');
 
 //EVENEMENTS
-$vars['events'] = $vars['rows'][0]->getChildren('Evenement');
+$vars['events'] = $vars['rows'][0]->getChildren('Evenement/DateDebut>='.time());
 foreach ($vars['events'] as $k=>$v){
     //SALLE
     $v->salle = $v->getOneParent('Salle');
@@ -79,7 +81,7 @@ $vars['children'] = $getCchild;
 
 
 //CURRENT MENU
-$curmen = '/sorties/';
+$curmen = '/Sorties/';
 //DESACTIVE POUR DES RAISONS DE PERF
 /*if ($site = Site::getCurrentSite()) {
     $mens =  Sys::getMenus($o->Module.'/'.$o->ObjectType,true,false);
@@ -191,7 +193,6 @@ if (sizeof($children)){
 
 
 $vars['total'] = Sys::getCount($info['Module'],$path.'/'.$filters);
-
 
 function endPacket(){
     echo "0\r\n\r\n";

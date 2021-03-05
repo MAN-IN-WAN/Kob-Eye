@@ -257,4 +257,17 @@ public function Save($regenMenu = false){
         return $params;
     }
 
+    public function getPagesParamsValues($full=true){
+        $params = array();
+        $model =   $this->getOneParent("ModeleMiniSite");
+        $allPages = $model->getChildren("PageMiniSite");
+        foreach ($allPages as $page){
+            $params[] = array(
+                "page" => $page,
+                "params" => $page->getParamsValues($this->Id,$full)
+            );
+        }
+        return $params;
+    }
+
 }

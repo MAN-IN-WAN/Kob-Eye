@@ -1,6 +1,8 @@
-{% for f in filters %}
-<a href="?genre={{ f.Nom }}&search={{ search }}&date={{ date }}" v-on:click.prevent="onGenderClick('{{ f.Nom }}')" class="btn btn-css34 {{ genre==f.Nom ? 'selected':'' }} hidden-xs" style="background-color: {{ f.Couleur }}" :class="{selected: genre == '{{ f.Nom }}'}">{{ f.Nom }}</a>
-{% endfor %}
+<div style="width:auto">
+    {% for f in filters %}
+        <a href="?genre={{ f.Nom }}&search={{ search }}&date={{ date }}" v-on:click.prevent="onGenderClick('{{ f.Nom }}')" class="btn btn-css34 {{ genre==f.Nom ? 'selected':'' }} hidden-xs" style="background-color: {{ f.Couleur }}" :class="{selected: genre == '{{ f.Nom }}'}">{{ f.Nom }}</a>
+    {% endfor %}
+</div>
 <input type="text" name="search" class="input-css34" v-model="search" placeholder="Recherche" value="{{ search }}"/>
 {#<input type="date" name="date" class="input-css34" v-model="appDate" value="{{ appDate }}"/>#}
 <vuejs-datepicker :language="dpfr" v-model="appDate" name="appDate" :input-class="'input-css34'" :placeholder="'Date'"></vuejs-datepicker>

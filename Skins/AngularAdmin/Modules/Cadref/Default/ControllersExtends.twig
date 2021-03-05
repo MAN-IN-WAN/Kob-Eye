@@ -798,7 +798,7 @@
 		// solde adherent
 		$scope.soldeAdherent = function() {
 			var o = $scope.obj;
-			var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Dons)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation)-Number(o.AvoirUtilise);
+			var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Dons)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation)-Number(o.AvoirUtilise)+Number(o.AvoirDu);
 			o.Solde = s;
 			o.nonSolde = s != 0;
 		}
@@ -1182,7 +1182,7 @@
 		
 		// calcul du solde
 		$scope.classeCalcul = function() {
-			var cad = $scope.CadrefClasse.Inscr;
+			let cad = $scope.CadrefClasse.Inscr;
 			cad.cours = 0;
 			var t = $scope.CadrefInscription.store.data.temp;
 			var l = t.length;
@@ -1191,14 +1191,15 @@
 				if(c.Attente>0 || c.Supprime>0) continue;
 				cad.cours += Number(c.Prix)-Number(c.Reduction)-Number(c.Soutien);
 			}
-			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.dons)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.avoirUtilise);
+			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.dons)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.avoirUtilise)+Number(cad.avoirDu);
+	console.log(cad)
 			cad.solde = 0;
 			cad.nonSolde = false;
 			$scope.nextControle(false);
 		}
 		$scope.classePaye = function() {
-			var cad = $scope.CadrefClasse.Inscr;
-			cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.dons)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye)-Number(cad.avoirUtilise);
+			let cad = $scope.CadrefClasse.Inscr;
+			cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.dons)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye)-Number(cad.avoirUtilise)+Number(cad.avoirDu);
 			cad.nonSolde = Number(cad.solde) != 0;
 			cad.updated = true;
 			$scope.nextControle(false);

@@ -5,6 +5,11 @@
     <p>Il restait, lors de la génération de cette fenêtre <b style="color:{% if evt.nbPlace > 0 %}#55ff55{% else %}#ff5555{% endif %} ">{{ evt.NbPlace }}</b> place(s)</p>
     <div class="row">
         <div class="col-md-6">
+            <div style="color:red;font-weight: bold">{{ spectacleInfo|raw }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <label class="form-control-label" for="l0">Combien de places souhaitez-vous réserver ?</label>
             {#<small><i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.help }}</span></i></small>#}
         </div>

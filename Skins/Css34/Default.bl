@@ -46,8 +46,12 @@
         [MODULE Systeme/Header/Menu]
     </div>
     <div id="content">
-        <div class="container">
+         <div class="container">
+        [IF [!Lien!]=]
+            [MODULE Systeme/Bloc/Accueil?CODE=HOME_MESSAGE_TOP]
+        [/IF]
             <keep-alive><router-view></router-view></keep-alive>
+
             <div v-if="!render">[DATA]</div>
         </div>
     </div>
