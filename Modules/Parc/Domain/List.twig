@@ -1,0 +1,229 @@
+<script
+        src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    var ajax = {};
+    ajax.x = function () {
+        if (typeof XMLHttpRequest !== 'undefined') {
+            return new XMLHttpRequest();
+        }
+        var versions = [
+            "MSXML2.XmlHttp.6.0",
+            "MSXML2.XmlHttp.5.0",
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0",
+            "MSXML2.XmlHttp.2.0",
+            "Microsoft.XmlHttp"
+        ];
+
+        var xhr;
+        for (var i = 0; i < versions.length; i++) {
+            try {
+                xhr = new ActiveXObject(versions[i]);
+                break;
+            } catch (e) {
+            }
+        }
+        return xhr;
+    };
+
+    ajax.send = function (url, callback, method, data, async) {
+        if (async === undefined) {
+            async = true;
+        }
+        var x = ajax.x();
+        x.open(method, url, async);
+        x.onreadystatechange = function () {
+            if (x.readyState == 4) {
+                callback(x.responseText)
+            }
+        };
+        if (method == 'POST') {
+            x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        }
+        x.send(data)
+    };
+
+    ajax.get = function (url, data, callback, async) {
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+        ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, async)
+    };
+
+    ajax.post = function (url, data, callback, async) {
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+        ajax.send(url, callback, 'POST', query.join('&'), async)
+    };
+
+    $(document).ready(function(){
+        $('.cliLine').click(function(){
+            $(this).toggleClass('active');
+            $(this).nextUntil('.cliLine').toggleClass('active');
+        });
+    });
+</script>
+<style>
+    body{
+        font-family: "Lato", sans;
+        background: #eceff4;
+        color: #514d6a;
+    }
+    h1{
+        margin: 0;
+    }
+    ul{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .container{
+        max-width: 1600px;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 5px;
+        border: none;
+        -webkit-box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);
+        box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);
+        padding: 15px;
+    }
+    .recap,
+    .listCli{
+        padding: 0;
+        margin-top: 15px;
+    }
+    .recap tr:nth-child(2n){
+        background-color: #f3f3f3;
+    }
+    .recapHeader,
+    .cliHeader{
+        background-color: #000;
+        color: #fff;
+    }
+    .priceRecap{
+        width: 150px;
+        text-align: right;
+    }
+    .listCli{
+        /*border-collapse: collapse;*/
+    }
+    .listCli td{
+        text-align: center;
+    }
+    .cliLine{
+        background-color: #eceff4 !important;
+        border: 2px solid #fff;
+        border-bottom: none;
+        font-weight: 600;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+    .cliLine.pair{
+        background-color: #ebf3ff !important;
+    }
+    .cliLine:hover{
+        background-color: #d8e1f5 !important;
+    }
+
+    .ending{
+        font-weight: 600;
+        font-size: 1.2em;
+        background-color: #f39834 !important;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+    .hostLine{
+        display: none;
+        border-left: 2px solid #fff;
+        border-right: 2px solid #fff;
+        border-top: 1px solid #ccc;
+    }
+    .hostLine.active{
+        display: table-row;
+    }
+    .red{
+        background-color: #fb434a;
+        color: #fff;
+    }
+    .green{
+        background-color: #46be8a;
+        color: #fff;
+    }
+</style>
+<div class="container">
+    <h1>Récap des Domaines</h1>
+    <ul style="display:flex;justify-content: center;">
+        {% for p in 1..nbPage %}
+            <li style="padding: 10px;">
+                <a href="http://parc.abtel.fr/Parc/Domain/List.htm?page={{ p }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <table class="listCli">
+        <tr class="cliHeader">
+            <th></th>
+            <th>Client</th>
+            <th>Domaine</th>
+            <th>Ips</th>
+            <th>DNS chez Abtel</th>
+        </tr>
+        {% for d in doms %}
+            <tr class="cliLine{% if loop.index is odd %} pair{% endif %}">
+                <td style="font-size: 0.5em;font-weight: 400;">{{ loop.index }}</td>
+                <td>{{ d.cli.Nom }} / {{ d.cli.CodeGestion }}</td>
+                <td>{{ d.Url }}</td>
+                <td>
+                    <ul>
+                        {% for k,i in d.ips %}
+                            <li>{{ k }} - {{ i }} - <span id="{{ i~loop.parent.loop.index~loop.index }}"> ...chargement...</span></li></li>
+                            <script type="text/javascript">
+                                ajax.get('/Parc/Domain/getWhois.htm', {ip: '{{ i }}'}, function(response) {
+              /*                      switch (response){
+                                        case 'OVH':
+                                            document.getElementById("{{ i~loop.parent.loop.index~loop.index }}").innerHTML = '<b style="color:red;">'+response+'</b>';
+                                            break;
+                                        default:
+                                            document.getElementById("{{ i~loop.parent.loop.index~loop.index }}").innerHTML = '<b style="color:green;">'+response+'</b>';
+                                            break;
+                                    }*/
+                                    switch (true){
+                                        case /OVH/i.test(response):
+                                        case /Weber/i.test(response):
+                                            document.getElementById("{{ i~loop.parent.loop.index~loop.index }}").innerHTML = '<b style="color:red;">'+response+'</b>';
+                                            break;
+                                        case /Abtel/i.test(response):
+                                            document.getElementById("{{ i~loop.parent.loop.index~loop.index }}").innerHTML = '<b style="color:green;">'+response+'</b>';
+                                            break;
+                                        default:
+                                            document.getElementById("{{ i~loop.parent.loop.index~loop.index }}").innerHTML = '<b style="color:orange;">'+response+'</b>';
+                                            break;
+                                    }
+                                },true);
+                            </script>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <span id="{{ d.Url }}"></span>
+                    <script type="text/javascript">
+                        ajax.get('/Parc/Domain/getNS.htm', {domain: '{{ d.Url }}'}, function(response) {
+                            document.getElementById("{{ d.Url }}").innerHTML = '<b style="color:green;">'+response+'</b>';
+                        },true);
+                    </script>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <ul style="display:flex;justify-content: center;">
+        {% for p in 1..nbPage %}
+            <li style="padding: 10px;">
+                <a href="http://parc.abtel.fr/Parc/Domain/List.htm?page={{ p }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
